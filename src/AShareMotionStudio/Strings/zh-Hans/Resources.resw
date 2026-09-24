@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <!-- 本文件对应的区域设置，让月份、星期名与这些字符串出自同一次解析。
+       CultureInfo.CurrentCulture 跟随操作系统，而不是应用当前显示的语言。 -->
+  <data name="CultureName"><value>zh-Hans</value></data>
+
+  <!-- 这个产品有两个名字，不是一处翻译：中文市场用「A股指标动画工作室」，
+       其余市场用 AShare Motion Studio。商店列表名与包标识始终是英文名。 -->
+  <data name="AppTitle.Text"><value>A股指标动画工作室</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <!-- 导航 -->
+  <data name="NavMarketTurnover.Content"><value>全市场成交额</value></data>
+  <data name="NavStockVolume.Content"><value>个股成交量</value></data>
+  <data name="NavHelp.Content"><value>帮助</value></data>
+  <data name="NavSettings.Content"><value>设置</value></data>
+
+  <!-- 页面标题，同时作为任务名复用，避免同一件事被翻译两遍 -->
+  <data name="MarketTurnoverPageTitle.Text"><value>全市场成交额</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>全市场每日成交额，或上证指数每日涨跌。三种画面形态，切换不用重新取数。</value></data>
+  <data name="StockVolumePageTitle.Text"><value>个股成交量</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>单只股票的成交量与换手率，可看一段区间，也可看某一天之内。</value></data>
+  <data name="SettingsPageTitle.Text"><value>设置</value></data>
+  <data name="HelpPageTitle.Text"><value>帮助</value></data>
+  <data name="HelpPageSubtitle.Text"><value>每个页面做什么、数据从哪来，以及这些视频不是什么。</value></data>
+  <data name="HelpDocument"><value>help-zh-Hans.md</value></data>
+  <data name="HelpMissing"><value>无法打开该语言的帮助文档。</value></data>
+
+  <!-- 两个指标页共用的控件 -->
+  <data name="StudioDataSection.Text"><value>数据</value></data>
+  <data name="StudioTitleSection.Text"><value>标题</value></data>
+  <data name="StudioTitleText.Header"><value>标题文字</value></data>
+  <data name="StudioTitleNote.Text"><value>留空则使用默认标题。过长的标题会按比例缩小字号而不是被裁掉，最多缩到一半。</value></data>
+  <data name="StudioHideTitle.Header"><value>隐藏标题</value></data>
+  <data name="StudioHideTitleNote.Text"><value>标题占的那一行还给图表，下面的内容整体上移一行。底边由下边距锁住不动，所以面板会长高。取消勾选可精确恢复原样。</value></data>
+  <data name="StockTitlePlaceholder"><value>使用抓到的股票名称</value></data>
+  <data name="StudioVideoSection.Text"><value>视频</value></data>
+  <data name="StudioLayoutSection.Text"><value>版面</value></data>
+  <data name="StudioRange.Header"><value>数据区间</value></data>
+  <data name="StudioRange1M"><value>近 1 个月</value></data>
+  <data name="StudioRange3M"><value>近 3 个月</value></data>
+  <data name="StudioRange6M"><value>近 6 个月</value></data>
+  <data name="StudioRange12M"><value>近 12 个月</value></data>
+  <data name="StudioRangeCustom"><value>自定义</value></data>
+  <data name="StudioRangeFrom.Header"><value>起始日期</value></data>
+  <data name="StudioRangeTo.Header"><value>结束日期</value></data>
+  <data name="StudioDuration"><value>视频时长：{0} 秒</value></data>
+  <data name="StudioResolution.Text"><value>分辨率</value></data>
+  <data name="StudioFrameRate.Text"><value>帧率</value></data>
+  <data name="StudioQuality.Text"><value>清晰度</value></data>
+  <data name="StudioQualityStandard"><value>标准</value></data>
+  <data name="StudioQualityHigh"><value>高清</value></data>
+  <data name="StudioQualityUltra"><value>超清</value></data>
+  <data name="StudioBitrate"><value>约 {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>左边距：{0}</value></data>
+  <data name="StudioMarginRight"><value>右边距：{0}</value></data>
+  <data name="StudioMarginBottom"><value>下边距：{0}</value></data>
+  <data name="StudioMarginNote.Text"><value>以 1080×1920 为基准记数，渲染时按所选分辨率等比缩放，所以在这里调好的值换分辨率不用重调。左边距同时决定 Y 轴刻度的落点。</value></data>
+  <data name="StudioSafeArea.Header"><value>安全区参考线</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>标出手机应用会用自己界面遮住的区域。只画在预览里，绝不会进入视频文件。</value></data>
+  <data name="StudioPlay.Content"><value>播放</value></data>
+  <data name="StudioPause.Content"><value>暂停</value></data>
+  <data name="StudioFetch.Content"><value>获取数据</value></data>
+  <data name="StudioExport.Content"><value>导出 MP4</value></data>
+  <data name="StudioCancel.Content"><value>取消</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioStageNoData"><value>尚无数据</value></data>
+  <data name="StudioCredit"><value>数据来源：腾讯财经</value></data>
+  <data name="StudioDisclaimer.Text"><value>仅供参考，不构成投资建议。</value></data>
+  <data name="StudioDataLayerPending"><value>取数还没做。视频与版面参数、预览现在都可用；数据层是下一步。</value></data>
+  <data name="StudioEncoderPending"><value>导出还没做。预览走的已经是真正的渲染路径；编码器是下一步。</value></data>
+  <data name="MarketTurnoverStageTitle"><value>全市场成交额</value></data>
+  <data name="StockVolumeStageTitle"><value>成交量与换手率</value></data>
+
+  <!-- 全市场成交额 -->
+  <data name="MarketShanghai"><value>沪市</value></data>
+  <data name="MarketShenzhen"><value>深市</value></data>
+  <data name="MarketBeijing"><value>北交所</value></data>
+  <data name="TurnoverUnit"><value>亿元</value></data>
+  <data name="TurnoverSubtitle"><value>{0}合计 · 单位：{1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} 至 {1} · 共 {2} 个交易日</value></data>
+  <data name="TurnoverAverageLabel"><value>日均 {0}</value></data>
+  <data name="TurnoverStatAverage"><value>日均</value></data>
+  <data name="TurnoverStatPeak"><value>最高</value></data>
+  <data name="TurnoverStatLow"><value>最低</value></data>
+  <data name="TurnoverStatRatio"><value>峰谷</value></data>
+  <data name="TurnoverFetching"><value>正在获取 {0} …</value></data>
+  <data name="TurnoverFetched"><value>共 {0} 个交易日（{1} ~ {2}）· 日均 {3} · 最高 {4} · 最低 {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>区间过长。单次最多约 {0} 个自然日，请缩短区间。</value></data>
+  <data name="TurnoverTooFewDays"><value>该区间内可用交易日不足。</value></data>
+  <data name="TurnoverView.Header"><value>画面形态</value></data>
+  <data name="TurnoverViewBars"><value>柱状竞长</value></data>
+  <data name="TurnoverViewCalendar"><value>日历热力图</value></data>
+  <data name="TurnoverViewReturns"><value>涨跌日历</value></data>
+  <data name="ReturnStageTitle"><value>上证指数每日涨跌</value></data>
+  <data name="ReturnSubtitle"><value>上证指数 · 收盘价日涨跌幅 · 单位：%</value></data>
+  <data name="ReturnStatUp"><value>上涨</value></data>
+  <data name="ReturnStatDown"><value>下跌</value></data>
+  <data name="ReturnStatBest"><value>最大涨</value></data>
+  <data name="ReturnStatWorst"><value>最大跌</value></data>
+  <data name="ReturnDayCount"><value>{0} 天</value></data>
+  <data name="StudioCover.Content"><value>导出封面 PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>存的就是预览里当前停着的这一帧，按导出分辨率输出。</value></data>
+  <data name="StudioCoverSaved"><value>封面已保存：{0} · {1}×{2} · 位于 {3}</value></data>
+  <data name="StudioCoverCancelled"><value>未选择文件夹，封面没有保存。</value></data>
+  <data name="StudioExporting"><value>正在编码… {0}%</value></data>
+  <data name="StudioExported"><value>已导出 {0} · {1} MB · 用 {2} 秒编出 {3} 秒视频 · 位于 {4}</value></data>
+  <data name="StudioExportCancelled"><value>未选择文件夹，没有导出。</value></data>
+  <data name="TurnoverViewNote.Text"><value>随时切换；两种形态画的是同一份数据，不会重新取数。</value></data>
+  <data name="TurnoverIncludeBeijing.Header"><value>计入北交所</value></data>
+  <data name="TurnoverIncludeBeijingNote.Text"><value>加入北证 50，这是成分股口径而非北交所全市场。得到的合计是另一种口径，数值偏小。默认关闭。</value></data>
+
+  <!-- 个股成交量 -->
+  <data name="StockSearch.Header"><value>股票</value></data>
+  <data name="StockSearch.PlaceholderText"><value>代码、中文名或拼音</value></data>
+  <data name="StockNoneChosen"><value>尚未选择股票。</value></data>
+  <data name="StockModeLabel.Text"><value>模式</value></data>
+  <data name="StockModeDaily.Content"><value>多个交易日</value></data>
+  <data name="StockModeIntraday.Content"><value>指定某一交易日</value></data>
+  <data name="StockTradingDay.Header"><value>交易日</value></data>
+
+  <!-- 页面状态 -->
+  <data name="PageCancelled"><value>已停止。</value></data>
+  <data name="PageTimedOut"><value>耗时过长，已放弃。</value></data>
+  <data name="PageWorkFailed"><value>{0}失败：{1}</value></data>
+
+  <!-- 设置 -->
+  <data name="SettingsLanguageLabel.Text"><value>语言</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>跟随 Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>语言会在应用重启后生效。</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>立即重启</value></data>
+  <data name="SettingsThemeLabel.Text"><value>外观</value></data>
+  <data name="SettingsThemeSystem"><value>跟随 Windows</value></data>
+  <data name="SettingsThemeLight"><value>浅色</value></data>
+  <data name="SettingsThemeDark"><value>深色</value></data>
+  <data name="SettingsThemeNote.Text"><value>选中即生效，且只影响应用本身。视频有自己固定的配色，所以预览仍然能代表成片。</value></data>
+  <data name="SettingsOutput.Text"><value>视频保存位置</value></data>
+  <data name="SettingsOutputNote.Text"><value>通过文件夹选取器指定，因为打包应用不能随意往任意位置写文件。未设置时，第一次导出会询问并记住。</value></data>
+  <data name="SettingsOutputNotSet"><value>未设置 —— 第一次导出时会询问。</value></data>
+  <data name="SettingsOutputChoose.Content"><value>选择文件夹…</value></data>
+  <data name="SettingsOutputForget.Content"><value>忘记</value></data>
+  <data name="SettingsOutputFailed"><value>无法设置该文件夹：{0}</value></data>
+  <data name="SettingsStorage.Text"><value>应用数据</value></data>
+  <data name="SettingsStorageNote.Text"><value>设置和崩溃日志存在这里。卸载应用时 Windows 会一并删除；导出的视频不在其中。</value></data>
+  <data name="SettingsSources.Text"><value>数据</value></data>
+  <data name="SettingsSourcesNote.Text"><value>行情来自腾讯财经的公开接口。成交额换算为亿元；尚未收盘的当日会被剔除，因为未走完的一天只有集合竞价量。</value></data>
+  <data name="SettingsContact.Text"><value>出了问题？</value></data>
+  <data name="SettingsContactNote.Text"><value>说明你当时在做什么、本来期望看到什么。上面的版本号已经带在邮件主题里了。</value></data>
+  <data name="SettingsContactSubject"><value>A股指标动画工作室 {0}</value></data>
+  <data name="SettingsContactFailed"><value>没有邮件应用响应。请改为写信到 {0}。（{1}）</value></data>
+  <data name="SettingsVersion"><value>版本 {0}</value></data>
+  <data name="SettingsRestartFailed"><value>应用无法重启：{0}</value></data>
+
+</root>

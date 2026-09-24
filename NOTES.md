@@ -1,0 +1,428 @@
+# Working notes
+
+Open questions and unfinished edges, kept out of the README because they describe the state of
+the work rather than the tool. Settled reasoning lives in commit messages; this file is only
+for what is still owed.
+
+Last reviewed: 2026-09-24 (after the gain/loss calendar, settings persistence and cover export).
+
+## Before the first Store submission
+
+**Data rights are the real gate, and nothing in the code can settle them.** Both indicators
+read Tencent Finance's undocumented endpoints — `proxy.finance.qq.com/.../newfqkline/get`,
+`ifzq.gtimg.cn`, `qt.gtimg.cn`, `smartbox.gtimg.cn`. A-share quote data is licensed by the
+Shanghai and Shenzhen exchanges, and Store policy requires the publisher to hold rights to
+content the app redistributes. A video *is* redistribution: the numbers leave the machine
+inside a file meant to be posted publicly. This wants an answer from whoever can give one
+legally, before submitting rather than after a rejection. It is the same shape as the parent
+shell's unresolved Esri icon licence, and it is the more exposed of the two because the output
+is public by design.
+
+Worth pricing the alternatives while that is open: a licensed vendor feed, or shipping without
+the fetch and letting the user supply a CSV. The second is unattractive but it is a product
+that can ship.
+
+**Package identity is decided once.** `Identity Name` and `Publisher` come from the name
+reserved in Partner Center and cannot be changed for that product afterwards; the display name
+can. The manifest still carries the development placeholder `AShareMotionStudio.Dev` with a
+self-signed publisher, so the identity is still open — but only until the first submission.
+The name to reserve is **AShare Motion Studio**.
+
+**The disclaimer is in four places and should stay in all four.** Store description, both
+indicator pages, Settings, and the end of the help document. A financial app that draws market
+data has to say what it is not, and each of those is a place someone arrives from without
+passing the others.
+
+**The contact address is inherited and probably wrong.** `SettingsPage.ContactAddress` and the
+last line of all fourteen help documents say `gaqo@outlook.com`, carried over from the parent
+shell. If this product has its own address, that is fifteen files.
+
+## The package carries ~80 MB of machine-learning runtime it never uses
+
+Measured from the bundle built on 2026-09-24, not estimated:
+
+| entry | size |
+|---|---|
+| `runtimes/win-arm64/native/onnxruntime.dll` | 21.9 MB |
+| `runtimes/win-x64/native/onnxruntime.dll` | 21.7 MB |
+| `runtimes/win-arm64ec/native/onnxruntime.dll` | 19.4 MB |
+| `runtimes/win-arm64ec/native/DirectML.dll` | 18.9 MB |
+| `runtimes/win-x64/native/DirectML.dll` | 18.7 MB |
+| `runtimes/win-arm64/native/DirectML.dll` | 18.6 MB |
+
+Each per-architecture `.msix` is about 65 MB. `Microsoft.Windows.SDK.NET.dll` is another
+26 MB, which is ordinary for the Windows App SDK; the ML runtimes are not, because nothing in
+this app calls them. They arrive with `Microsoft.WindowsAppSDK` 2.5.1.
+
+**Unresolved.** A search of the Windows App SDK's `.props` and `.targets` in the local NuGet
+cache for a property naming ML, AI, ONNX or DirectML found nothing, so there may be no opt-out
+switch at this version, or it may be named something the search did not anticipate — the
+search finding nothing is not evidence that nothing exists. Worth one focused attempt before
+release, because a first-time download is the one number a Store listing cannot hide, and it
+is far cheaper to fix now than after users have the large version. Do not guess at a property
+name and declare it fixed: measure the bundle again.
+
+## The renderers are the next real work, and the source is the HTML
+
+The whole-market renderers exist: `TurnoverRenderer` holds the shared chrome, with
+`BarRaceRenderer` and `CalendarHeatmapRenderer` over it. What does not exist is the per-stock
+one, and `StageRenderer` is the empty frame standing in for it.
+
+**`ashare_turnover_studio.html` has been read twice now** — once at 677 lines for the bar form,
+once at 804 for the calendar — and both forms are ports of it. **`stock_dual_studio.html`
+(1061 lines) has still not been read**, and that is what the per-stock renderer needs. Reading it
+is the first step of that work, not an optional check.
+
+**What reading the first file corrected, as a warning about the second.** Every one of these was
+wrong in code written from the README alone:
+
+- **The colour ramp's stops are not evenly spaced.** Cyan sits at 0.45 and orange at 0.75, so
+  the warm end is compressed into the top quarter — which is what makes an exceptional day stand
+  out instead of merely being redder. Evenly spaced stops flatten the one distinction the colour
+  exists to draw. `Palette.RateRamp` is still guessed and is the obvious place for the same
+  mistake to be sitting right now.
+- **The background is a three-stop vertical gradient**, not a flat fill.
+- **The margin sliders have different ranges per side**: 40–260 step 2 for left and right,
+  150–420 step 5 for the bottom. A single 40–700 range let the bottom margin be set to values
+  that push content out of frame.
+- **The default duration is 90 seconds**, not 45.
+- **`CreditGap` is 278 baseline pixels and the statistic cards sit 192 above the credit.** The
+  values invented for `StageRenderer` were 150 and 60 — close enough to look plausible and wrong
+  enough to misplace the whole lower stack.
+- **The plot top is a fixed fraction of frame height (0.377)**, not a measurement below the
+  title rows. It has to clear a 128-pixel running total whose own position is also a fraction,
+  so deriving it from stacked row heights would drift whenever a font changed.
+- **`easeOutBack` uses 1.1, not the textbook 1.70158.** With a hundred bars rising at once the
+  standard overshoot reads as wobble.
+
+`FrameContext.TitleRowHeight` (90) came from the per-stock README and is the one invented-looking
+number that turned out to be stated.
+
+**The cumulative series must not use a bouncing ease.** The intraday turnover curve is
+monotonic, and `easeOutBack` on a monotonic value draws an overshoot-and-retreat that reads as
+the data going backwards. The browser version already learned this and used `easeOutCubic`
+there; the distinction has to survive the port.
+
+## Owed on the data layer
+
+- **`Ink.Glow` runs an effect graph per glowing element per frame.** At 30 fps with one growing
+  bar that is one blur per frame, which is fine; the per-stock chart has a following light on its
+  cumulative curve as well. If the preview starts dropping frames, this is the first thing to
+  measure, and the fix is to record the command list once per frame rather than once per element.
+- **Nothing is cached between fetches.** Pressing Get data twice re-requests the same days. Not
+  worth fixing for a button somebody presses deliberately, but worth knowing before any feature
+  fetches on its own.
+- **`TencentKline` sends no `Referer` and identifies itself as `AShareMotionStudio/0.1`.** That is
+  deliberate — a request that says what it is can be blocked on purpose rather than by
+  fingerprinting — but it also means this traffic is trivially identifiable, which is a
+  consideration for the data-rights question above rather than a technical one.
+
+## The encoder is written and does not work yet
+
+`Render/VideoExporter.cs` exists, compiles, and is wired to the export button. It **does not complete
+an export.** Do not believe the README on faster-than-real-time or container shape until this is
+finished; those claims are still unearned and the README now says so.
+
+**One real bug was found and fixed, and it is worth knowing about beyond this class.** The first
+version drew frames on the media pipeline's `SampleRequested` thread using
+`CanvasDevice.GetSharedDevice()` — the same device the UI draws the preview with. Concurrent access to
+one D3D device from two threads is not serialised for you, and the failure mode is brutal: **the
+process disappears with no crash log, no Windows Error Reporting entry and no fault in the event
+log.** It is indistinguishable from somebody closing the window, which is exactly how it was
+misdiagnosed for a while. Giving the exporter `new CanvasDevice()` stopped it dead. Anything that
+draws off the UI thread needs its own device.
+
+**Where it is stuck now.** After that fix the app survives, stays responsive, and spins up the media
+pipeline (thread count goes from ~30 to ~160). But for a 15-second, 450-frame export it reports no
+progress and — the decisive fact — **no `.mp4` is ever created**, even though `CreateFileAsync` runs
+*before* the transcode. So execution never reaches the file creation, which means it is blocked in
+one of:
+
+- `OutputFolder.TryGetAsync()` or `ChooseAsync` — a picker that opened without being found. The
+  earlier dialog scan only looked for window class `#32770`; a WinAppSDK picker may not use it.
+- the `MediaStreamSource` / descriptor construction,
+- `new CanvasDevice()`,
+- or `OnExport` never actually reaching `EncodeAsync`.
+
+**How to find out, cheaply.** Put a `ShowStatus` (or a `CrashLog.Write`) immediately before each of
+those four, run once, and read which one is the last to report. That distinguishes all four in a
+single run, where inspecting UI text distinguishes none of them — the InfoBar is simply closed, which
+is what "no `ShowStatus` has run" looks like and is why reading the status told us nothing for two
+attempts.
+
+Also worth checking once it runs: that `profile.Audio = null` is actually accepted alongside a
+video-only `MediaStreamSource`. If `CanTranscode` were false the code throws with the reason, and no
+such message appeared — but nor did any other, so that has not been *observed* to be fine.
+
+## What the encoder has to honour, and how to check it
+
+`IFrameRenderer` is a pure function of `Progress` precisely so the encoder can own the clock.
+The shape that follows: walk `0 → 1` in `Format.FrameCount(duration)` steps, draw each frame
+into a `CanvasRenderTarget`, feed the pixels to a `MediaStreamSource`, and transcode to
+H.264 MP4 with `MediaTranscoder` at `Format.BitsPerSecond`.
+
+Two things to verify rather than assume when it lands, because both are claims the README now
+makes:
+
+- **That the output is a non-fragmented MP4.** The whole point of leaving `MediaRecorder`
+  behind. Check the container by reading the boxes, not by whether an editor happens to open
+  it.
+- **That export is faster than real time.** Also the point. Time a 90-second export; if it
+  takes 90 seconds, something is still pacing on a clock.
+
+`Playback` deliberately *is* wall-clock, because a preview exists to answer "is this too fast
+to read". Do not let that leak into the encoder.
+
+## Data-layer details the browser version had to discover
+
+Carried forward so they are not rediscovered. All of these are handled in the HTML and none of
+them are handled here yet.
+
+- Science-and-technology-board volume is quoted in **shares, not lots**. The browser version
+  detects it by taking the median of `volume × price ÷ amount` and normalises. A chart that
+  silently mixes the two units is wrong by a factor of 100 for those names.
+- The intraday endpoint **pads to 15:30** after the close, and the tail is a flat run where
+  cumulative volume stops changing. Both have to be trimmed or the video ends on a still.
+- The intraday endpoint **does not return turnover rate**. It is derived: float market cap ÷
+  current price gives float shares, then cumulative volume ÷ that.
+- Responses are **GBK while the header claims UTF-8**. In .NET this needs
+  `CodePagesEncodingProvider`; `System.Text.Encoding.CodePages` is deliberately *not*
+  referenced yet, because a package that arrives before the code using it cannot be judged by
+  what it is doing.
+- A single request returns at most about **640 calendar days**. The UI should refuse a longer
+  range rather than truncate it silently, which is what the READMEs say the browser version
+  does.
+
+## Decisions worth re-examining
+
+- **No notification-area icon and no startup task.** The parent shell has both because an
+  organization scan runs for half an hour and must survive the window being closed. A native
+  encode of a 90-second video is foreground work somebody is watching, so the tray would have
+  bought an extra third-party dependency — `H.NotifyIcon.WinUI`, which goes through Store
+  certification and whose licence becomes this project's problem — for no benefit. What
+  replaced it is the window title saying what is running, which is the only thing a window
+  behind another window can still say. If an export of a 1440p/60 video turns out to take
+  minutes rather than seconds, revisit this.
+- **`VideoSettingsPanel.SetDefaultMargins` is gone, along with the per-page margin defaults.**
+  The two indicators started from 108/108/480 and 110/110/230, and both now start from
+  `ChartMargins.Default` (150/150/250). The divergence existed only because the bottom margin
+  measured to the chart baseline, and the upstream tools removed the reason for it when they
+  redefined that margin as content-to-edge. The mechanism went with it rather than being kept
+  "in case": a setter implying a difference that no longer exists is a claim about the design.
+  If the two ever want different margins again, this is the thing to bring back, and the
+  condition is a genuine difference in what sits below the baseline — not a difference in taste.
+- **`AppServices` holds only `BackgroundWork`.** No shared series cache. Two pages drawing two
+  different indicators of two different things have nothing to share, and a shared cache would
+  only create the question of when to invalidate it. If a third indicator reuses the first
+  one's data, this is where that changes.
+- **`Playback` is a 60 Hz `DispatcherTimer` rather than `CompositionTarget.Rendering`.** Good
+  enough to judge pacing, and it does not tie preview smoothness to the compositor. If the
+  preview stutters on large series, the redraw cost is the thing to measure first, not the
+  timer.
+- **Margins are capped at 700 baseline pixels.** On a 1920-tall frame a bottom margin at the
+  maximum crosses the title block; `FrameContext.ChartHeight` clamps to at least 1 so it draws
+  as nothing rather than inverted. A real upper bound derived from the frame would be better
+  than a constant, but it needs the renderers to exist to know what they need.
+
+## Not verified from a build
+
+This is what can and cannot be claimed as of the last review.
+
+**Verified here:** both configurations compile; the Store bundle builds and reports
+`PackageSuccessfullyCreated`; the inner x64 package holds all fourteen help documents,
+nineteen logo and splash assets, `resources.pri` and Win2D's native
+`Microsoft.Graphics.Canvas.dll` for x64 and arm64; all fourteen resw files carry 90 keys in
+the same order with no `U+FFFD` and no double-encoded sequences; every `x:Uid` names a
+property its element actually has; all 90 defined keys are reached from either C# or XAML;
+all fourteen help documents parse to 24 blocks; every generated PNG is 32-bit with a
+transparent corner and an opaque centre, and the `.ico` loads.
+
+**Verified by running it**, registered from the debug output and driven through UI Automation:
+
+- The window opens, carries its own title and icon, and navigation reaches all four pages.
+- The preview letterboxes a 9:16 frame and `StageRenderer` draws it: title block under the top
+  safe area, four dashed gridlines, a brighter baseline, the credit hanging below it, and the
+  progress bar on the bottom edge.
+- Both pages start from `ChartMargins.Default`, 150/150/250, and the credit sits low in the
+  frame rather than in the middle of a dead band — the bottom margin is measuring to the
+  lowest content, as intended.
+- Hiding the title on the per-stock page does what its README says, measured rather than
+  eyeballed: the subtitle moved up 25 preview pixels, which at that preview's scale (about
+  310 device pixels for a 1080-pixel frame) is 90 baseline pixels — exactly one title row —
+  while the baseline and the credit did not move at all, because the bottom margin holds the
+  lower edge. Turning it back off restored the first layout.
+- The title box, its placeholder (the fetched instrument's name on the per-stock page, a fixed
+  label on the whole-market one) and the shrink-to-fit note all render.
+- **Market Turnover works end to end against live data.** A three-month fetch returned 67
+  trading days for Shanghai plus Shenzhen; the frame drew the title block, the running total with
+  its date advancing, the axis at rounded 10,000 steps, the bars in the corrected ramp, the mean
+  line at 23,807, both extremes boxed with their dates, the four statistic cards
+  (23,807 / 36,600 / 16,127 / 2.27x) and the credit. Scrubbing to 0.45 showed bars grown only as
+  far as 2026-08-07, per-bar date labels faded in behind them, and none of the closing elements —
+  so the stagger, the per-bar fades and the finale gating all behave.
+- Three defects were found by looking at that frame and fixed: dates rendered as `6/24/2026`
+  because a `DateOnly` went into a format string and picked up the current culture; the status
+  line printed `23807` where the frame printed `23,807`; and the glow behind the running total
+  was a visible box, because the concentric-rectangle approximation does not survive being put
+  behind 128-pixel glyphs. It is now a real `GaussianBlurEffect` over a `CanvasCommandList`.
+- **The calendar heat map works, in both its layout decisions.** Four month blocks for a
+  three-month range (the span crosses four calendar months) were arranged two by two by the
+  column search; cells coloured consistently with the bar form, warm in June and July and cool in
+  August and September. Scrubbed to 0.62 the August block was filling to 2026-08-26 and the
+  September block had not appeared at all, which is the documented behaviour — a block's frame
+  arrives just before its own first day, so cells never land in empty space.
+- **The gain/loss calendar works.** 37 up days against 29 down over 67 trading days, best +1.79%,
+  worst −3.05%, the running figure reading "−1.22" in green with the correct sign and two decimals,
+  and the title and subtitle switching to name the index rather than the market combination. The
+  square-root depth mapping does what it is for: small moves are visibly red or green rather than
+  all collapsing to near-black.
+- The card counts are worth knowing about before someone reports them as a bug: **37 + 29 = 66
+  against 67 days**. Day zero is 0% because the day before it is outside the range, and the counts
+  are strictly greater and strictly less than zero, so an unchanged day belongs to neither. Honest
+  rather than tidy, and stated here because "the numbers do not add up" is the obvious first
+  reading.
+- **Settings persistence survives a restart**, driven end to end: duration 90 → 65, left margin
+  150 → 212, form bars → gain/loss calendar; the window closed through its own close path (which
+  ended the app, as designed with no tray icon); on relaunch all three came back. So
+  `StudioPreferences.Restoring` is doing its job — a handler firing as a control is assigned is not
+  writing a half-restored value back over the one being read.
+- **The cover export works, and it is the more important of the two tests.** A 1080×1920 PNG,
+  32-bit and fully opaque, written to the remembered folder with the metric's default title in the
+  file name. Its numbers are identical to the preview screenshots taken earlier — 16,534 running
+  total, mean 23,807, high 36,600, low 16,127, ratio 2.27x — which is `one-render-path.mdc` verified
+  from the encoder's side rather than the preview's: the same renderer through a transform and at
+  1:1 produces the same frame.
+  - It also answers an open question above: the extreme markers **are** legible at 1080p. They were
+    illegible only in a quarter-scale preview.
+  - **One unexplained thing, recorded rather than smoothed over.** The first invocation reported
+    success naming a file, and an unfiltered listing of that folder immediately afterwards showed no
+    such file; a second invocation produced it. No crash log, no exception, and the message is only
+    written on the success path. Either the first write went somewhere else or the report preceded
+    the write becoming visible. Worth one focused look before trusting the success message, because
+    a save that says it worked and did not is the worst class of bug this feature can have.
+  - Unrelated to the app, but it cost time: `Get-ChildItem -Filter "*_1080x1920.png"` does **not**
+    match a file whose name begins with CJK characters. An unfiltered listing found it immediately.
+    Use `Where-Object` on the extension rather than `-Filter` when names may be non-ASCII.
+- A fourth defect surfaced only in the calendar, and it is the most generally useful finding so
+  far: the month read **"Jun"** and the weekday row **"M T W T F"** inside a Chinese frame.
+  `CultureInfo.CurrentCulture` follows the operating system, not the language the app resolved —
+  see the README entry. Fixed by having each resw declare its own `CultureName`, so the culture
+  comes from the same resolution that chose every other string. Worth remembering that this bug
+  is invisible on a machine whose system locale already matches the chosen language, which is
+  most development machines.
+- The bit-rate readout computes: 1080×1920 at 30 fps on High shows "约 10.0 Mbps".
+- The safe-area toggle draws the three occlusion zones over the frame.
+- Choosing a language and pressing restart works end to end: the app came back in Simplified
+  Chinese and Settings read the stored choice back as 简体中文.
+- `WindowPlacement` restored a maximised window across that restart.
+- Settings shows the real package-container path
+  (`...\Packages\AShareMotionStudio.Dev_cdwthxytk4q78\LocalState`), which is the MSIX
+  redirection the output-folder design exists to work around, visible rather than described.
+- The output folder starts unset, and **Forget** is correctly disabled until one is chosen.
+- The help page renders all of the hand-written Markdown subset — headings, paragraphs and
+  wrapped bullets — in Chinese.
+- The export button reports `StudioEncoderPending` through the page's status bar.
+- No `crash.log`, no Windows Error Reporting entry, and no fault in the Application log across
+  roughly a dozen launches. The app also sat untouched for 25 seconds and then took a
+  navigation to Stock Volume without incident, which is how "it keeps dying" was ruled out —
+  the window was being closed by hand, and with no tray icon that ends the app by design.
+
+**Still not seen:**
+
+- Playback in motion. Scrubbing has now been exercised through automation, but the transport has
+  never been *started*, so whether the thumb fights the person holding it during playback is
+  still untested — and so is whether a 67-bar frame redraws fast enough at 60 Hz to look like
+  the video rather than like a slideshow. That second one matters: if the preview cannot keep up,
+  it stops answering the question it exists for.
+- **Everything about the `bj899050` path.** Including the Beijing index has never been switched
+  on against the live endpoint, so neither the third request nor the intersect-to-common-days
+  rule has run with three venues. The two-venue case is what was verified.
+- **The refusal paths.** A range over 640 days, a range with fewer than three trading days, and
+  a network failure all have messages and none has been triggered.
+- **Playback still has not been started**, so the 60 Hz redraw cost of a 67-bar frame is unmeasured.
+- **The calendar's extreme markers at full resolution.** The peak and low cells get a boxed
+  outline and a label at 20 baseline pixels, which in a preview scaled to about a quarter is
+  under a pixel of stroke and illegible — so it could not be judged from the screenshots. It
+  should be legible at 1080p and that is the size to check it at. The bar form's equivalents were
+  clearly visible and are fine.
+- **A month starting on a weekend.** `CellOf` computes the week index on a seven-day week even
+  though five columns are drawn, which is what keeps rows correct when the 1st is a Thursday. The
+  ranges tested happened not to include a month whose first trading day is far into its first
+  week, so the row arithmetic has not been stressed. A January (1st often a holiday) is the case
+  to try.
+- **Every language except Simplified Chinese.** The culture fix was verified in zh-Hans on an
+  en-US system. The other twelve read their `CultureName` through the same path, and the check
+  above confirms all fourteen declare a valid tag matching their folder, but no frame has been
+  drawn in any of them.
+- **Shrink-to-fit has never been given a title long enough to shrink.** `StageRenderer.FitSize`
+  measures with a `CanvasTextLayout` and clamps at half size, and both of those paths are
+  untried: every title seen so far fitted, so the code that runs is the early return. Type
+  something absurd into the box and watch it reach the floor rather than keep going.
+- Whether the 360-pixel parameter column survives German and Russian, the two that overflow a
+  column tuned in English. Chinese fits comfortably.
+- Whether any of the fourteen translations reads badly to a native speaker.
+- Everything about export, which is not written.
+
+To run it again:
+
+```powershell
+cd src\AShareMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0
+Add-AppxPackage -Register .\AppxManifest.xml
+```
+
+## Translations are unreviewed
+
+The fourteen languages were produced in one pass and **no native speaker has read them**. They
+are good enough to develop and demo against; they are not good enough to ship to paying users
+unchecked. The help documents are the larger half of that by volume and carry more meaning per
+sentence.
+
+Review these first, because they are the strings where a wrong word misleads about data rather
+than about a control:
+
+- `TurnoverIncludeBeijingNote` — that the Beijing option is a *different measure*, not merely
+  an addition. A reader who misses this publishes a chart whose axis label is wrong.
+- `StudioDisclaimer` — the reference-only line, in all fourteen.
+- `SettingsSourcesNote` — where the data comes from and that an unfinished day is excluded.
+- `StudioMarginNote` — that the numbers are baseline pixels, not pixels of the chosen
+  resolution.
+
+The rest is navigation and status text, where an awkward phrase is merely awkward.
+
+Placeholders are positional. Every `{n}` must survive translation, and `PageWorkFailed`,
+`SettingsContactFailed` and `TitleBusy` each carry two.
+
+The checks that hold the set together are in `.cursor/rules/keep-translations-complete.mdc`.
+All fourteen must report `ok`, `fffd=0`, `doubled=0`, and all fourteen help documents must
+report the same block count.
+
+## The help documents now under-describe the feature
+
+**Owed, in all fourteen.** `Assets\Help\help-<tag>.md` describes the whole-market chart as bars and
+says nothing about the two calendars, the gain/loss metric, the remembered settings or the cover
+export. Nothing in them is *false* — the bar form still exists and behaves as described — but a
+reader who opens Help to find out what the calendar is will not find out.
+
+This was left rather than half-done because the fourteen must keep an identical block count, so the
+edit is one careful pass across all of them, not a sentence added to the English one. The check is in
+`keep-translations-complete.mdc`; they currently report 24 blocks each.
+
+What needs adding, and roughly where: the "全市场成交额 / Market Turnover" section wants a sentence
+per form and the note that switching does not re-fetch; the "视频 / Video" section wants the title
+box and the cover button; and a line somewhere that parameters are remembered but data is not. That
+is about four blocks, so the target becomes 28 in all fourteen.
+
+## Scaffold markers to remove
+
+Two resource strings exist only to say a feature is not built, and both should go with the
+feature that replaces them — along with the handlers that show them in
+`MarketTurnoverPage.OnFetch`, `OnExport`, `StockVolumePage.OnFetch`, `OnExport`,
+`OnSearchTextChanged` and `OnSearchSubmitted`:
+
+- `StudioDataLayerPending`
+- `StudioEncoderPending`
+
+They are deliberately shown through the pages' own status bar rather than as disabled buttons
+with no explanation, so the state is legible rather than looking like a fault. That also means
+they are easy to leave in by accident: fourteen languages each, and nothing in the build will
+mention them.

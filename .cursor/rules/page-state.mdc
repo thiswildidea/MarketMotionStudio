@@ -1,0 +1,73 @@
+---
+description: How a studio page keeps its state across navigation
+alwaysApply: true
+---
+
+# Page state
+
+A page someone has tuned — a stock chosen, margins dragged, a duration settled on — should be
+found as they left it. Navigating to the other indicator and back is not a request to start
+over.
+
+## Keep the page, do not rebuild it
+
+Set `NavigationCacheMode="Required"` on the page root. The frame then keeps the instance and
+everything in it: the fetched series, the slider positions, the scrub position.
+
+Re-fetching instead restores *less* — a fetch brings back data, not the margins you spent two
+minutes on — and pays a network round trip to arrive somewhere worse. Re-fetch only when asked.
+
+## Caching moves where you subscribe
+
+The constructor runs **once**; `Loaded` and `Unloaded` fire on **every** navigation. A
+subscription made in the constructor and cancelled in `Unloaded` is gone from the second visit
+onwards, and the page goes quietly deaf — it looks fine and stops reacting.
+
+Subscribe in `Loaded`, unsubscribe in `Unloaded`, and remove before adding so a re-entry cannot
+double up.
+
+`VideoSettings.Changed` is wired in the constructor and never detached, which is correct for
+exactly one reason: the panel is a child of the page, so it dies with it. A subscription to
+anything that outlives the page does not get that.
+
+## A flag protects only what comes after it
+
+`VideoSettingsPanel._loading` is raised **before** the first item is added to a combo box, not
+after the defaults are set. Adding an item selects it, so setting defaults first and raising
+the flag second lets the first `SelectionChanged` through — and on a page that persists these,
+that handler saves the default over the value being restored two lines later.
+
+Restoring from storage is one region, and it starts at the first assignment, not at the first
+one that looks like a restore.
+
+## Handlers fire during construction
+
+`RangeCombo.SelectedIndex = 1` in a page constructor raises `SelectionChanged` before the rest
+of the page's controls have been reached by the loader. That is why `OnRangeChanged` checks
+`CustomRange is null` and `OnModeChanged` checks three fields. Those null checks are not
+defensive decoration; removing one is a null reference on first navigation.
+
+## Playback and the scrub bar must not fight
+
+`Playback` drives the position, and the scrub slider shows it. Assigning `Scrub.Value` from
+playback would re-enter `OnScrub`, which stops playback — so the handler is detached for the
+assignment and reattached after.
+
+The distinction the code is preserving: a person moving the thumb means "stop and show me this
+moment"; playback moving it means nothing of the kind. If a third thing ever moves it, it needs
+the same treatment, and the symptom of getting it wrong is playback that stops itself after one
+frame.
+
+## Persist the question, never the answer
+
+Chosen range, chosen stock, watchlist, video and layout parameters — persist these; re-entering
+them is the friction that makes a feature go unused.
+
+A fetched series is not persisted. It belongs to one instrument at one moment, so storing it
+means deciding how long it stays true, and a stale chart is worse than an empty one.
+
+## Run work on entry only if it is bounded
+
+Opening a page may restore what was chosen, but it must not fetch or encode. Nobody agreed to a
+network round trip, still less to writing a video, by clicking a navigation item. Restore the
+selection and leave it for the button.

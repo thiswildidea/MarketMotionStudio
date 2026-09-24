@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>tr</value></data>
+
+  <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Piyasa işlem hacmi</value></data>
+  <data name="NavStockVolume.Content"><value>Hisse işlem miktarı</value></data>
+  <data name="NavHelp.Content"><value>Yardım</value></data>
+  <data name="NavSettings.Content"><value>Ayarlar</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Piyasa işlem hacmi</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Tüm piyasanın günlük işlem hacmi ya da endeksin günlük değişimi. Üç biçim, yeniden veri çekmeden değiştirilebilir.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Hisse işlem miktarı</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>Bir hissenin işlem miktarı ile devir hızı — bir dönem boyunca ya da tek bir gün içinde.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Ayarlar</value></data>
+  <data name="HelpPageTitle.Text"><value>Yardım</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Her sayfanın ne yaptığı, sayıların nereden geldiği ve bu videoların ne olmadığı.</value></data>
+  <data name="HelpDocument"><value>help-tr.md</value></data>
+  <data name="HelpMissing"><value>Bu dilin yardım belgesi açılamadı.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Veri</value></data>
+  <data name="StudioTitleSection.Text"><value>Başlık</value></data>
+  <data name="StudioTitleText.Header"><value>Başlık metni</value></data>
+  <data name="StudioTitleNote.Text"><value>Varsayılan başlığı kullanmak için boş bırakın. Uzun bir başlık kırpılmak yerine oranlı biçimde küçültülür, en çok yarı boyuta kadar.</value></data>
+  <data name="StudioHideTitle.Header"><value>Başlığı gizle</value></data>
+  <data name="StudioHideTitleNote.Text"><value>Başlığın satırı grafiğe geri döner ve altındaki her şey o satıra yukarı kayar. Alt kenar boşluğu alt kenarı sabit tuttuğu için paneller uzar. Kapatılınca yerleşim birebir geri gelir.</value></data>
+  <data name="StockTitlePlaceholder"><value>Çekilen hissenin adı</value></data>
+  <data name="StudioVideoSection.Text"><value>Video</value></data>
+  <data name="StudioLayoutSection.Text"><value>Yerleşim</value></data>
+  <data name="StudioRange.Header"><value>Tarih aralığı</value></data>
+  <data name="StudioRange1M"><value>Son 1 ay</value></data>
+  <data name="StudioRange3M"><value>Son 3 ay</value></data>
+  <data name="StudioRange6M"><value>Son 6 ay</value></data>
+  <data name="StudioRange12M"><value>Son 12 ay</value></data>
+  <data name="StudioRangeCustom"><value>Özel</value></data>
+  <data name="StudioRangeFrom.Header"><value>Başlangıç</value></data>
+  <data name="StudioRangeTo.Header"><value>Bitiş</value></data>
+  <data name="StudioDuration"><value>Süre: {0} sn</value></data>
+  <data name="StudioResolution.Text"><value>Çözünürlük</value></data>
+  <data name="StudioFrameRate.Text"><value>Kare hızı</value></data>
+  <data name="StudioQuality.Text"><value>Kalite</value></data>
+  <data name="StudioQualityStandard"><value>Standart</value></data>
+  <data name="StudioQualityHigh"><value>Yüksek</value></data>
+  <data name="StudioQualityUltra"><value>En yüksek</value></data>
+  <data name="StudioBitrate"><value>Yaklaşık {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>Sol kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginRight"><value>Sağ kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Alt kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 tabanına göre ölçülür ve seçilen çözünürlüğe oranlanır; burada ayarlanan bir değer her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler.</value></data>
+  <data name="StudioSafeArea.Header"><value>Güvenli alan kılavuzları</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Bir telefon uygulamasının kendi arayüzüyle kapattığı bölgeleri gösterir. Yalnızca ön izlemede çizilir, dosyaya hiç girmez.</value></data>
+  <data name="StudioPlay.Content"><value>Oynat</value></data>
+  <data name="StudioPause.Content"><value>Duraklat</value></data>
+  <data name="StudioFetch.Content"><value>Veriyi al</value></data>
+  <data name="StudioExport.Content"><value>MP4 olarak ver</value></data>
+  <data name="StudioCancel.Content"><value>İptal</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} sn</value></data>
+  <data name="StudioStageNoData"><value>Henüz veri yok</value></data>
+  <data name="StudioCredit"><value>Kaynak: Tencent Finance</value></data>
+  <data name="StudioDisclaimer.Text"><value>Yalnızca bilgi amaçlıdır. Yatırım tavsiyesi değildir.</value></data>
+  <data name="StudioDataLayerPending"><value>Fiyat verisi çekme henüz yazılmadı. Video ve yerleşim denetimleri ile ön izleme şimdiden çalışıyor; veri katmanı bir sonraki adım.</value></data>
+  <data name="StudioEncoderPending"><value>Dışa verme henüz yazılmadı. Ön izleme zaten gerçek çizim yolundan geçiyor; kodlayıcı bir sonraki adım.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Tüm piyasanın işlem hacmi</value></data>
+  <data name="StockVolumeStageTitle"><value>İşlem miktarı ve devir hızı</value></data>
+
+  <data name="MarketShanghai"><value>Şanghay</value></data>
+  <data name="MarketShenzhen"><value>Shenzhen</value></data>
+  <data name="MarketBeijing"><value>Pekin</value></data>
+  <data name="TurnoverUnit"><value>100 milyon CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} toplamı · birim: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} – {1} · {2} işlem günü</value></data>
+  <data name="TurnoverAverageLabel"><value>Ortalama {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Ortalama</value></data>
+  <data name="TurnoverStatPeak"><value>En yüksek</value></data>
+  <data name="TurnoverStatLow"><value>En düşük</value></data>
+  <data name="TurnoverStatRatio"><value>Yüksek/düşük</value></data>
+  <data name="TurnoverFetching"><value>{0} alınıyor…</value></data>
+  <data name="TurnoverFetched"><value>{0} işlem günü ({1} – {2}) · ortalama {3} · en yüksek {4} · en düşük {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>Aralık çok uzun. Tek bir istek yaklaşık {0} takvim gününe uzanır, kısaltın.</value></data>
+  <data name="TurnoverTooFewDays"><value>Bu aralıkta yeterli işlem günü yok.</value></data>
+  <data name="TurnoverView.Header"><value>Görüntü biçimi</value></data>
+  <data name="TurnoverViewBars"><value>Çubuk yarışı</value></data>
+  <data name="TurnoverViewCalendar"><value>Takvim ısı haritası</value></data>
+  <data name="TurnoverViewReturns"><value>Yükseliş-düşüş takvimi</value></data>
+  <data name="ReturnStageTitle"><value>SSE Composite günlük değişim</value></data>
+  <data name="ReturnSubtitle"><value>SSE Composite · kapanışa göre günlük değişim · birim: %</value></data>
+  <data name="ReturnStatUp"><value>Yükselen</value></data>
+  <data name="ReturnStatDown"><value>Düşen</value></data>
+  <data name="ReturnStatBest"><value>En iyi gün</value></data>
+  <data name="ReturnStatWorst"><value>En kötü gün</value></data>
+  <data name="ReturnDayCount"><value>{0} gün</value></data>
+  <data name="StudioCover.Content"><value>Kapağı PNG olarak kaydet</value></data>
+  <data name="StudioCoverNote.Text"><value>Ön izlemenin durduğu kareyi tam dışa verme çözünürlüğünde kaydeder.</value></data>
+  <data name="StudioCoverSaved"><value>Kapak kaydedildi: {0} · {1}×{2} · konum {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Klasör seçilmediği için hiçbir şey kaydedilmedi.</value></data>
+  <data name="StudioExporting"><value>Kodlanıyor… %{0}</value></data>
+  <data name="StudioExported"><value>{0} dışa verildi · {1} MB · {3} sn videoyu {2} sn'de · konum {4}</value></data>
+  <data name="StudioExportCancelled"><value>Klasör seçilmediği için hiçbir şey dışa verilmedi.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Her an değiştirilebilir; ikisi de aynı seriyi çizer, yeniden veri çekilmez.</value></data>
+  <data name="TurnoverIncludeBeijing.Header"><value>Pekin borsasını dahil et</value></data>
+  <data name="TurnoverIncludeBeijingNote.Text"><value>BSE 50 endeksini ekler; bu endeks yalnızca kendi bileşenlerini kapsar, Pekin borsasının tümünü değil. Çıkan toplam başka bir ölçüdür ve daha küçüktür. Varsayılan olarak kapalıdır.</value></data>
+
+  <data name="StockSearch.Header"><value>Hisse</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Kod, ad veya pinyin</value></data>
+  <data name="StockNoneChosen"><value>Hisse seçilmedi.</value></data>
+  <data name="StockModeLabel.Text"><value>Kip</value></data>
+  <data name="StockModeDaily.Content"><value>Birden çok işlem günü</value></data>
+  <data name="StockModeIntraday.Content"><value>Tek bir işlem günü içinde</value></data>
+  <data name="StockTradingDay.Header"><value>İşlem günü</value></data>
+
+  <data name="PageCancelled"><value>Durduruldu.</value></data>
+  <data name="PageTimedOut"><value>Çok uzun sürdü ve vazgeçildi.</value></data>
+  <data name="PageWorkFailed"><value>{0} başarısız: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Dil</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Windows'u izle</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>Dil, uygulama yeniden başladığında değişir.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Şimdi yeniden başlat</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Görünüm</value></data>
+  <data name="SettingsThemeSystem"><value>Windows'u izle</value></data>
+  <data name="SettingsThemeLight"><value>Açık</value></data>
+  <data name="SettingsThemeDark"><value>Koyu</value></data>
+  <data name="SettingsThemeNote.Text"><value>Seçtiğiniz anda uygulanır ve yalnızca uygulamayı etkiler. Video kendi renk düzenini korur, böylece ön izleme dosyayı yine de haber verir.</value></data>
+  <data name="SettingsOutput.Text"><value>Videoların kaydedildiği yer</value></data>
+  <data name="SettingsOutputNote.Text"><value>Klasör seçiciyle belirlenir, çünkü paketlenmiş bir uygulama istediği yere yazamaz. Belirlenmemişse ilk dışa verme sorar ve sonra hatırlar.</value></data>
+  <data name="SettingsOutputNotSet"><value>Belirlenmedi — ilk dışa verme soracak.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Klasör seç…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Unut</value></data>
+  <data name="SettingsOutputFailed"><value>Klasör belirlenemedi: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Uygulama verisi</value></data>
+  <data name="SettingsStorageNote.Text"><value>Ayarlar ve çökme günlüğü burada. Uygulama kaldırılırken Windows bunu siler; dışa verilen videolar burada değildir.</value></data>
+  <data name="SettingsSources.Text"><value>Veri</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir. İşlem hacmi yüz milyon yuan birimine çevrilir ve hâlâ işlem gören gün dışarıda bırakılır, çünkü bitmemiş bir gün yalnızca açılış seansını içerir.</value></data>
+  <data name="SettingsContact.Text"><value>Bir sorun mu var?</value></data>
+  <data name="SettingsContactNote.Text"><value>Ne yaptığınızı ve bunun yerine ne beklediğinizi yazın. Yukarıdaki sürüm e-postanın konusunda zaten var.</value></data>
+  <data name="SettingsContactSubject"><value>AShare Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Hiçbir e-posta uygulaması yanıt vermedi. {0} adresine yazın. ({1})</value></data>
+  <data name="SettingsVersion"><value>Sürüm {0}</value></data>
+  <data name="SettingsRestartFailed"><value>Uygulama yeniden başlatılamadı: {0}</value></data>
+
+</root>

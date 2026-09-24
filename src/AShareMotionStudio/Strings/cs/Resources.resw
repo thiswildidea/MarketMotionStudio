@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>cs</value></data>
+
+  <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Obrat celého trhu</value></data>
+  <data name="NavStockVolume.Content"><value>Objem jedné akcie</value></data>
+  <data name="NavHelp.Content"><value>Nápověda</value></data>
+  <data name="NavSettings.Content"><value>Nastavení</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Obrat celého trhu</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Denní obrat celého trhu, nebo denní změna indexu. Tři typy obrazu, přepínatelné bez nového načítání.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Objem jedné akcie</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>Objem jedné akcie proti její míře obratu — za období, nebo v průběhu jediného dne.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Nastavení</value></data>
+  <data name="HelpPageTitle.Text"><value>Nápověda</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Co dělá každá stránka, odkud jsou čísla a co tato videa nejsou.</value></data>
+  <data name="HelpDocument"><value>help-cs.md</value></data>
+  <data name="HelpMissing"><value>Dokument nápovědy pro tento jazyk se nepodařilo otevřít.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Data</value></data>
+  <data name="StudioTitleSection.Text"><value>Titulek</value></data>
+  <data name="StudioTitleText.Header"><value>Text titulku</value></data>
+  <data name="StudioTitleNote.Text"><value>Nechte prázdné, chcete-li použít výchozí titulek. Dlouhý titulek se proporcionálně zmenší, místo aby se odřízl — nejvýše na polovinu.</value></data>
+  <data name="StudioHideTitle.Header"><value>Skrýt titulek</value></data>
+  <data name="StudioHideTitleNote.Text"><value>Řádek titulku se vrátí grafu a vše pod ním se do něj posune nahoru. Dolní okraj drží spodní hranu, takže panely vyrostou. Po odškrtnutí se rozvržení obnoví přesně.</value></data>
+  <data name="StockTitlePlaceholder"><value>Název načtené akcie</value></data>
+  <data name="StudioVideoSection.Text"><value>Video</value></data>
+  <data name="StudioLayoutSection.Text"><value>Rozvržení</value></data>
+  <data name="StudioRange.Header"><value>Období</value></data>
+  <data name="StudioRange1M"><value>Poslední měsíc</value></data>
+  <data name="StudioRange3M"><value>Poslední 3 měsíce</value></data>
+  <data name="StudioRange6M"><value>Posledních 6 měsíců</value></data>
+  <data name="StudioRange12M"><value>Posledních 12 měsíců</value></data>
+  <data name="StudioRangeCustom"><value>Vlastní</value></data>
+  <data name="StudioRangeFrom.Header"><value>Od</value></data>
+  <data name="StudioRangeTo.Header"><value>Do</value></data>
+  <data name="StudioDuration"><value>Délka: {0} s</value></data>
+  <data name="StudioResolution.Text"><value>Rozlišení</value></data>
+  <data name="StudioFrameRate.Text"><value>Počet snímků</value></data>
+  <data name="StudioQuality.Text"><value>Kvalita</value></data>
+  <data name="StudioQualityStandard"><value>Standardní</value></data>
+  <data name="StudioQualityHigh"><value>Vysoká</value></data>
+  <data name="StudioQualityUltra"><value>Nejvyšší</value></data>
+  <data name="StudioBitrate"><value>Přibližně {0} Mb/s</value></data>
+  <data name="StudioMarginLeft"><value>Levý okraj: {0}</value></data>
+  <data name="StudioMarginRight"><value>Pravý okraj: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Dolní okraj: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>Měřeno proti 1080×1920 a přepočítáno na zvolené rozlišení, takže hodnota vyladěná tady platí v každé velikosti. Levý okraj také rozhoduje, kam dopadnou popisky osy.</value></data>
+  <data name="StudioSafeArea.Header"><value>Vodítka bezpečné oblasti</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Vyznačuje oblasti, které aplikace v telefonu zakryje vlastním rozhraním. Kreslí se jen v náhledu, nikdy do souboru.</value></data>
+  <data name="StudioPlay.Content"><value>Přehrát</value></data>
+  <data name="StudioPause.Content"><value>Pozastavit</value></data>
+  <data name="StudioFetch.Content"><value>Získat data</value></data>
+  <data name="StudioExport.Content"><value>Exportovat MP4</value></data>
+  <data name="StudioCancel.Content"><value>Zrušit</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
+  <data name="StudioStageNoData"><value>Zatím žádná data</value></data>
+  <data name="StudioCredit"><value>Zdroj: Tencent Finance</value></data>
+  <data name="StudioDisclaimer.Text"><value>Pouze pro orientaci. Není to investiční doporučení.</value></data>
+  <data name="StudioDataLayerPending"><value>Načítání kurzů ještě není hotové. Ovládání videa a rozvržení i náhled už fungují; datová vrstva je další krok.</value></data>
+  <data name="StudioEncoderPending"><value>Export ještě není hotový. Náhled už prochází skutečnou cestou vykreslování; kodér je další krok.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Obrat celého trhu</value></data>
+  <data name="StockVolumeStageTitle"><value>Objem a míra obratu</value></data>
+
+  <data name="MarketShanghai"><value>Šanghaj</value></data>
+  <data name="MarketShenzhen"><value>Šen-čen</value></data>
+  <data name="MarketBeijing"><value>Peking</value></data>
+  <data name="TurnoverUnit"><value>100 mil. CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} dohromady · jednotka: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} až {1} · {2} obchodních dní</value></data>
+  <data name="TurnoverAverageLabel"><value>Průměr {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Průměr</value></data>
+  <data name="TurnoverStatPeak"><value>Maximum</value></data>
+  <data name="TurnoverStatLow"><value>Minimum</value></data>
+  <data name="TurnoverStatRatio"><value>Max./min.</value></data>
+  <data name="TurnoverFetching"><value>Načítání {0}…</value></data>
+  <data name="TurnoverFetched"><value>{0} obchodních dní ({1} – {2}) · průměr {3} · maximum {4} · minimum {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>Období je příliš dlouhé. Jeden dotaz dosáhne asi {0} kalendářních dní, zkraťte je.</value></data>
+  <data name="TurnoverTooFewDays"><value>V tomto období není dost obchodních dní.</value></data>
+  <data name="TurnoverView.Header"><value>Typ obrazu</value></data>
+  <data name="TurnoverViewBars"><value>Závod sloupců</value></data>
+  <data name="TurnoverViewCalendar"><value>Kalendářová heatmapa</value></data>
+  <data name="TurnoverViewReturns"><value>Kalendář vzestupů a poklesů</value></data>
+  <data name="ReturnStageTitle"><value>Denní změna indexu SSE Composite</value></data>
+  <data name="ReturnSubtitle"><value>SSE Composite · denní změna při závěru · jednotka: %</value></data>
+  <data name="ReturnStatUp"><value>Vzestup</value></data>
+  <data name="ReturnStatDown"><value>Pokles</value></data>
+  <data name="ReturnStatBest"><value>Nejlepší den</value></data>
+  <data name="ReturnStatWorst"><value>Nejhorší den</value></data>
+  <data name="ReturnDayCount"><value>{0} dní</value></data>
+  <data name="StudioCover.Content"><value>Uložit obálku jako PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>Uloží ten snímek, na kterém náhled stojí, v plném rozlišení exportu.</value></data>
+  <data name="StudioCoverSaved"><value>Obálka uložena: {0} · {1}×{2} · v {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Nebyla vybrána složka, takže se nic neuložilo.</value></data>
+  <data name="StudioExporting"><value>Kódování… {0} %</value></data>
+  <data name="StudioExported"><value>Exportováno {0} · {1} MB · {2} s na {3} s videa · v {4}</value></data>
+  <data name="StudioExportCancelled"><value>Nebyla vybrána složka, takže se nic neexportovalo.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Lze přepnout kdykoli; obojí kreslí stejnou řadu, bez nového načítání.</value></data>
+  <data name="TurnoverIncludeBeijing.Header"><value>Zahrnout pekingskou burzu</value></data>
+  <data name="TurnoverIncludeBeijingNote.Text"><value>Přidá index BSE 50, který pokrývá jen své složky, ne celou pekingskou burzu. Výsledný součet je jiná míra, a menší. Ve výchozím stavu vypnuto.</value></data>
+
+  <data name="StockSearch.Header"><value>Akcie</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Kód, název nebo pinyin</value></data>
+  <data name="StockNoneChosen"><value>Není vybrána žádná akcie.</value></data>
+  <data name="StockModeLabel.Text"><value>Režim</value></data>
+  <data name="StockModeDaily.Content"><value>Přes více obchodních dní</value></data>
+  <data name="StockModeIntraday.Content"><value>V rámci jednoho dne</value></data>
+  <data name="StockTradingDay.Header"><value>Obchodní den</value></data>
+
+  <data name="PageCancelled"><value>Zastaveno.</value></data>
+  <data name="PageTimedOut"><value>Trvalo to příliš dlouho a bylo to vzdáno.</value></data>
+  <data name="PageWorkFailed"><value>{0} selhalo: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Jazyk</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Podle Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>Jazyk se změní po restartu aplikace.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Restartovat nyní</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Vzhled</value></data>
+  <data name="SettingsThemeSystem"><value>Podle Windows</value></data>
+  <data name="SettingsThemeLight"><value>Světlý</value></data>
+  <data name="SettingsThemeDark"><value>Tmavý</value></data>
+  <data name="SettingsThemeNote.Text"><value>Platí ihned po zvolení a týká se jen aplikace. Video si drží vlastní paletu, takže náhled dál předpovídá soubor.</value></data>
+  <data name="SettingsOutput.Text"><value>Kam se ukládají videa</value></data>
+  <data name="SettingsOutputNote.Text"><value>Vybírá se dialogem pro volbu složky, protože zabalená aplikace nemůže zapisovat, kam se jí zachce. Bez nastavení se první export zeptá a odpověď si zapamatuje.</value></data>
+  <data name="SettingsOutputNotSet"><value>Nenastaveno — první export se zeptá.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Vybrat složku…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Zapomenout</value></data>
+  <data name="SettingsOutputFailed"><value>Složku nebylo možné nastavit: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Data aplikace</value></data>
+  <data name="SettingsStorageNote.Text"><value>Zde jsou nastavení a protokol pádů. Windows to odstraní při odinstalaci; exportovaná videa v tom nejsou.</value></data>
+  <data name="SettingsSources.Text"><value>Data</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Kurzy přicházejí z veřejných rozhraní Tencent Finance. Obraty se přepočítávají na stovky milionů jüanů a den, který se ještě obchoduje, se vynechává, protože nedokončený den obsahuje jen svou otevírací aukci.</value></data>
+  <data name="SettingsContact.Text"><value>Něco není v pořádku?</value></data>
+  <data name="SettingsContactNote.Text"><value>Napište, co jste dělali a co jste místo toho očekávali. Verze výše už jede v předmětu zprávy.</value></data>
+  <data name="SettingsContactSubject"><value>AShare Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Žádná poštovní aplikace neodpověděla. Napište na {0}. ({1})</value></data>
+  <data name="SettingsVersion"><value>Verze {0}</value></data>
+  <data name="SettingsRestartFailed"><value>Aplikaci nebylo možné restartovat: {0}</value></data>
+
+</root>

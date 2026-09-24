@@ -1,0 +1,171 @@
+---
+description: How to prove a change to this app actually landed, and what cannot be proved from a build
+alwaysApply: true
+---
+
+# Verifying changes
+
+## "Compiles clean" is not "deployed"
+
+This is a packaged MSIX app. A build compiles to `obj` and then copies to `bin`; if the app is
+running it holds `AShareMotionStudio.exe` and **the copy fails while the compilation succeeds**:
+
+```
+error MSB3027: Could not copy ... apphost.exe ...
+The file is locked by: "AShareMotionStudio (nnnnn)"
+```
+
+Filtering build output to `warning CS|error CS` hides this entirely, because it is an MSB error.
+Stop the app before building, or expect to deploy again afterwards.
+
+**Never `Rebuild` while the app might be running.** `Rebuild` cleans first. The clean succeeds,
+the copy back fails on the locked exe, and the output folder is left without
+`runtimeconfig.json` and `deps.json` — at which point the apphost reports that .NET is not
+installed, which is false and sends everyone looking in the wrong place.
+
+## Prove it from the artifact, not from the app starting
+
+That the app launched says nothing about which build it is. Ask the deployed files:
+
+```powershell
+$bin = "src\AShareMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0"
+$b = [System.IO.File]::ReadAllBytes("$bin\AShareMotionStudio.dll")
+$u8  = [System.Text.Encoding]::UTF8.GetString($b)
+$u16 = [System.Text.Encoding]::Unicode.GetString($b)
+```
+
+**Search both encodings, and include a control string.** String literals live in metadata as
+UTF-16, so an ASCII or UTF-8 search never finds them; decoding the whole file as UTF-16 from
+byte zero misses every string starting on an odd offset. Both failures look exactly like the
+change not having been built. A check that finds nothing must be shown able to find something —
+search for one string you know is there and one you know is not, and require both answers.
+
+For resources, dump the compiled PRI. A missing `x:Uid` key is a runtime XAML failure on one
+page and the build says nothing:
+
+```powershell
+$mp = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\makepri.exe"
+& $mp dump /if "$bin\resources.pri" /of "$PWD\artifacts\pri.xml" /o
+```
+
+`PRI249: Invalid qualifier: EN-US | PT-BR | ZH-HANS | ZH-HANT` on every build is **expected and
+cosmetic** — MakePri tries each hyphenated language folder name as a `qualifier-value` pair
+before falling back. It was settled by confirming the dumped index holds fourteen distinct
+`Language-*` qualifiers and fourteen candidates per key. Do not "fix" it; do notice if the
+count ever stops being fourteen.
+
+## Prove a package from inside it
+
+The Store bundle is a zip of zips. Reading the build log is not the same as looking:
+
+```powershell
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$b = [System.IO.Compression.ZipFile]::OpenRead("artifacts\<name>.msixbundle")
+$b.Entries | ForEach-Object { $_.FullName }
+```
+
+Extract the inner per-architecture `.msix` and check it holds the fourteen help documents,
+`resources.pri`, and Win2D's native component. That component is
+`runtimes/<rid>/native/Microsoft.Graphics.Canvas.dll` — searching for "Win2D" or "Direct2D"
+finds nothing and looks like a dependency that failed to travel.
+
+## An audit script reports; it does not adjudicate
+
+A throwaway script written to check this app's output knows less about the domain than the app
+does, and it is trusted more because it is the thing doing the checking. Two examples already
+from this repo:
+
+- A key audit matching `Strings.Get("` called four keys unused. They are reached through
+  ternaries — `Strings.Get(playing ? "StudioPause.Content" : "StudioPlay.Content")` — so the
+  pattern never saw them. Match the literal *anywhere it can appear*.
+- A regex looking for `"(Studio\w+)"` reported `StudioPage` as a missing resource. It was
+  `<see cref="StudioPage"/>` in a doc comment.
+
+Have these scripts **list what they found and leave the judgement**. Two numbers that disagree
+are worth looking at; a verdict is worth nothing.
+
+## What can and cannot be checked from here
+
+Checkable: compiling, package contents, resource parity and key reachability, generated image
+formats and alpha, help-document block counts.
+
+Not checkable: whether the window opens, whether the preview letterboxes correctly, whether the
+360-pixel parameter column survives German and Russian, whether an animation reads well, and
+whether a translation reads naturally.
+
+Claims should match. "Built, packaged, resources verified; the app has not been run" is the
+honest shape, and it is what lets the reader spend their attention where it is actually needed.
+
+## Verifying the render path specifically
+
+A change to a renderer cannot be judged by a build at all, and two of its properties are claims
+the README makes:
+
+- **Preview and file agree.** Export a short video and compare a frame against the preview
+  scrubbed to the same fraction. They should be identical, because it is the same code — so a
+  difference is a real defect and not a rounding argument.
+- **Export is faster than real time.** Time a 90-second export. If it takes 90 seconds,
+  something is pacing on a clock and `one-render-path.mdc` has been broken.
+
+## Screenshotting this app, which has three separate traps
+
+Layout has to be looked at, so capturing the window is part of checking a UI change. Each of
+these produced a confidently wrong picture before being understood.
+
+**`PrintWindow` cannot capture the preview.** `PrintWindow` with `PW_RENDERFULLCONTENT` renders
+the XAML layers but not Win2D's DirectX swap chain, so the 9:16 frame comes out **blank white**
+while every control around it is perfect. That looks exactly like a renderer that drew nothing.
+Use `PrintWindow` for Help and Settings, which hold no Win2D; use `CopyFromScreen` for anything
+showing a preview, and confirm a blank frame against a second method before believing it.
+
+**`SetForegroundWindow` fails silently from a background process.** Windows blocks foreground
+steals, the call returns false, and `CopyFromScreen` then captures whatever *is* on top — which
+in practice is the editor, at the app's coordinates, looking like the app rendered someone
+else's UI. `CopyFromScreen` is only trustworthy once the window is verified frontmost.
+
+**A 160×28 window rect means the window is minimized, not that the handle is wrong.** That is the
+rect Windows reports for a minimized window, and `GetWindowRect` returns it without complaint, so
+a capture silently produces a 160×28 image of the desktop. UIA is blunter about it: the element's
+`BoundingRectangle` comes back infinite, which fails as "Value was either too large or too small
+for an Int32".
+
+This was first misdiagnosed here as `MainWindowHandle` naming a transient helper window, and the
+wrong fix — polling for a handle whose rect looks big enough — happens to work only because a
+minimized window fails that test too. Restore first, then check:
+
+```powershell
+if ([W]::IsIconic($h)) { [W]::ShowWindow($h, 9) }   # SW_RESTORE
+$r = ...; if (($r.Rt - $r.L) -lt 600) { throw "refusing to capture a ${w}-wide window" }
+```
+
+Have the capture helper **refuse** a rect that small rather than saving it. A 160×28 PNG is a
+result that looks like a rendering failure, and it was read as one twice.
+
+**Do it in one command.** There is no notification-area icon, so closing the window ends the
+app. A handle captured in one shell call is routinely dead by the next, surfacing as
+`ElementNotAvailableException` from `AutomationElement.FromHandle`. Launch, navigate and capture
+in a single script.
+
+## A PowerShell helper that returns a string returns it as output
+
+A bare string inside a function joins the **return value**, so this is always truthy:
+
+```powershell
+function Click($n) { if (-not $el) { "  NOT FOUND"; return $false } }
+if (Click "Stock Volume") { Shot }      # runs even on NOT FOUND
+```
+
+`@("  NOT FOUND", $false)` is a two-element array, and an array is truthy. That is how three
+navigation clicks silently did nothing while the script reported success and captured the same
+page three times. Use `Write-Host` for diagnostics inside a function, and return one value.
+
+It is the same failure the rest of this file is about: a check that cannot fail is not a check.
+Drive navigation by **index** rather than by name, too — the label depends on which of fourteen
+languages the app started in, and the console mangles CJK to `?` so a name comparison looks
+broken when it is only unprintable.
+
+## Land a risky UI change as its own commit
+
+Anything that restructures a page's layout or the preview cannot be verified here beyond
+compiling and checking resources — it has to be looked at. Commit it alone, so the look can be
+answered with a revert rather than an unpicking.

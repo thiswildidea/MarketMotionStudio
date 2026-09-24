@@ -1,0 +1,61 @@
+---
+description: Update README.md and NOTES.md as part of finishing a piece of work
+alwaysApply: true
+---
+
+# Keep the docs current with the work
+
+Finishing a feature or a fix includes updating the docs it affected, in the same commit. A
+separate pass later does not happen, and the reader who is misled in the meantime is usually the
+next person to work here.
+
+## Where each thing goes
+
+Four places, no duplication — whatever is repeated is what goes stale.
+
+- **README.md** — the tool as it is *now*. What the two indicators do, the design rules, how to
+  build, and "Things learned the hard way": facts about WinUI, Win2D, MSIX, MakePri or Media
+  Foundation that cost time to find and would otherwise be found again.
+- **NOTES.md** — the state of the *work*. What is unverified and how to verify it, what is owed
+  to someone, measurements taken, decisions worth re-opening. Update its `Last reviewed` date.
+- **`.cursor/rules/*.mdc`** — conventions that have to hold in future work.
+- **Commit message** — why the change is the way it is. Settled reasoning lives here and is not
+  copied into the docs.
+
+A lesson that only describes what happened belongs in README. A lesson that should change what
+gets done next time belongs in a rule.
+
+## What triggers an edit
+
+- Added or changed a renderer, or anything about how frames are produced → README's design
+  rules, and check `one-render-path.mdc` still describes the code.
+- Hit a platform behaviour that cost real time, especially one that fails silently rather than
+  erroring → README "Things learned the hard way".
+- Left a scaffold marker, shipped something that could not be verified from a build, or took a
+  measurement worth keeping → NOTES.
+- Added any user-visible text → all fourteen languages, in the same change. See
+  `keep-translations-complete.mdc`; nothing in the build will catch it.
+- Narrowed or reversed a claim the README makes → fix that sentence in the same commit. A stale
+  claim is worse than no claim, and the README currently claims two things the encoder has yet
+  to earn: that export is faster than real time and that the container is a plain MP4.
+- Built or measured a package → if the size changed materially, the table in NOTES is the number
+  someone will quote, so it has to be the one that was measured.
+
+## Record what you did not check
+
+The "Not verified from a build" section of NOTES is a live list, not history. When something on
+it gets exercised, move it out; when a change adds something unverifiable, add it. A list that
+only grows is one nobody reads.
+
+## Editing these files
+
+Never through a PowerShell read-modify-write. PowerShell 5.1 reads BOM-less UTF-8 as ANSI, so
+every `Get-Content` / `Set-Content` cycle re-encodes em-dashes and CJK text. This repo is full
+of both, in fourteen languages. Use the editing tools instead, and check afterwards:
+
+```powershell
+$t = [System.Text.Encoding]::UTF8.GetString([System.IO.File]::ReadAllBytes("D:\path\to\file.md"))
+([regex]::Matches($t, [char]0xFFFD)).Count   # must be 0
+```
+
+Renaming files is fine in PowerShell; it is reading and rewriting content that does the damage.

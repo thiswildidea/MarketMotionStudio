@@ -1,0 +1,66 @@
+---
+description: The preview and the encoder must run the same renderer, and a renderer must not know which one called it
+alwaysApply: true
+---
+
+# One render path
+
+This is the invariant the whole app rests on. Break it and the preview stops predicting the
+file, which is the only thing the preview is for.
+
+## The rule
+
+`IFrameRenderer.Draw(session, context)` is the single entry point. The preview applies a
+letterboxing transform before calling it; the encoder applies none. Nothing else differs.
+
+A renderer therefore must not:
+
+- ask how large the control is, or whether one exists;
+- branch on being in a preview;
+- read the app's theme, the Windows accent colour, or anything about the machine;
+- keep state between calls.
+
+If a renderer needs something, it comes through `FrameContext`. If `FrameContext` cannot carry
+it, that is the design decision to make — not a second parameter passed only on one path.
+
+## Progress, never time
+
+`Draw` receives `Progress`, a fraction from 0 to 1. It must be a pure function of it: the same
+fraction produces the same pixels, every time, in any order.
+
+This is what lets the encoder run faster than real time. The tools this replaces could not,
+because `MediaRecorder` timestamped frames as they arrived, so the animation advanced with the
+wall clock and a ninety-second video took ninety seconds to write. A renderer that reads a
+clock, counts its own frames, or assumes it was called for frame *n−1* puts that limitation
+back, and the symptom is a file whose pacing does not match its preview.
+
+`Playback` is wall-clock on purpose, because a preview answers "is this too fast to read". That
+is the one place a clock belongs. It drives `Progress` and nothing else.
+
+## Anything preview-only lives in the preview
+
+The safe-area guides are drawn by `PreviewSurface` after the renderer returns. That is not
+tidiness — it is why they cannot reach a file: the encoder does not own a `PreviewSurface`.
+
+A flag on the renderer saying "do not draw the guides this time" would be the same guarantee
+resting on somebody remembering to clear it. If something must appear in a preview and never in
+a file, it goes on the preview side of the call. No exceptions, because the failure mode is a
+published video with diagnostic overlays on it.
+
+## Baseline pixels, always
+
+Every measurement is written against 1080×1920 and multiplied by `FrameContext.Scale`, or taken
+through `FrameContext.Px`. No drawing code contains a resolution.
+
+A font size or an offset assigned directly is correct at 1080p and wrong everywhere else, and
+that reads as a layout bug rather than as a missing multiplication. When adding a renderer,
+grep it for bare numbers that are not fractions before believing it.
+
+## A geometry question is answered once
+
+`FrameContext` computes `ChartLeft`, `ChartRight`, `Baseline`, `ChartHeight` and `TitleTop`. A
+renderer reads them; it does not re-derive them from `Margins` and `Height`.
+
+Two renderers each working out where the baseline sits is two answers free to disagree, and the
+one that drifts is whichever is edited second. `StageRenderer` exists for the same reason: the
+grid, baseline, title block and credit are drawn once for both indicators.

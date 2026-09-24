@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>ru</value></data>
+
+  <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Оборот всего рынка</value></data>
+  <data name="NavStockVolume.Content"><value>Объём по бумаге</value></data>
+  <data name="NavHelp.Content"><value>Справка</value></data>
+  <data name="NavSettings.Content"><value>Параметры</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Оборот всего рынка</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Дневной оборот всего рынка или дневное изменение индекса. Три вида кадра, переключаются без нового запроса.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Объём по бумаге</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>Объём одной бумаги против её оборачиваемости — за период или внутри одного дня.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Параметры</value></data>
+  <data name="HelpPageTitle.Text"><value>Справка</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Что делает каждая страница, откуда взяты числа и чем эти видео не являются.</value></data>
+  <data name="HelpDocument"><value>help-ru.md</value></data>
+  <data name="HelpMissing"><value>Не удалось открыть документ справки для этого языка.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Данные</value></data>
+  <data name="StudioTitleSection.Text"><value>Заголовок</value></data>
+  <data name="StudioTitleText.Header"><value>Текст заголовка</value></data>
+  <data name="StudioTitleNote.Text"><value>Оставьте пустым, чтобы использовать заголовок по умолчанию. Длинный заголовок пропорционально уменьшается, а не обрезается — не более чем вдвое.</value></data>
+  <data name="StudioHideTitle.Header"><value>Скрыть заголовок</value></data>
+  <data name="StudioHideTitleNote.Text"><value>Строка заголовка возвращается графику, и всё под ней поднимается в неё. Нижнее поле держит нижний край, поэтому панели становятся выше. Если снять галочку, компоновка восстанавливается в точности.</value></data>
+  <data name="StockTitlePlaceholder"><value>Название загруженной бумаги</value></data>
+  <data name="StudioVideoSection.Text"><value>Видео</value></data>
+  <data name="StudioLayoutSection.Text"><value>Компоновка</value></data>
+  <data name="StudioRange.Header"><value>Период</value></data>
+  <data name="StudioRange1M"><value>Последний месяц</value></data>
+  <data name="StudioRange3M"><value>Последние 3 месяца</value></data>
+  <data name="StudioRange6M"><value>Последние 6 месяцев</value></data>
+  <data name="StudioRange12M"><value>Последние 12 месяцев</value></data>
+  <data name="StudioRangeCustom"><value>Свой</value></data>
+  <data name="StudioRangeFrom.Header"><value>С</value></data>
+  <data name="StudioRangeTo.Header"><value>По</value></data>
+  <data name="StudioDuration"><value>Длительность: {0} с</value></data>
+  <data name="StudioResolution.Text"><value>Разрешение</value></data>
+  <data name="StudioFrameRate.Text"><value>Частота кадров</value></data>
+  <data name="StudioQuality.Text"><value>Качество</value></data>
+  <data name="StudioQualityStandard"><value>Обычное</value></data>
+  <data name="StudioQualityHigh"><value>Высокое</value></data>
+  <data name="StudioQualityUltra"><value>Максимальное</value></data>
+  <data name="StudioBitrate"><value>Около {0} Мбит/с</value></data>
+  <data name="StudioMarginLeft"><value>Левое поле: {0}</value></data>
+  <data name="StudioMarginRight"><value>Правое поле: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Нижнее поле: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>Отмеряются от 1080×1920 и масштабируются под выбранное разрешение, поэтому подобранное здесь значение верно при любом размере. Левое поле также определяет, где встанут подписи оси.</value></data>
+  <data name="StudioSafeArea.Header"><value>Направляющие безопасной зоны</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Обводят области, которые телефонное приложение закрывает своим интерфейсом. Рисуются только в предпросмотре и никогда не попадают в файл.</value></data>
+  <data name="StudioPlay.Content"><value>Воспроизвести</value></data>
+  <data name="StudioPause.Content"><value>Пауза</value></data>
+  <data name="StudioFetch.Content"><value>Получить данные</value></data>
+  <data name="StudioExport.Content"><value>Экспорт в MP4</value></data>
+  <data name="StudioCancel.Content"><value>Отмена</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} с</value></data>
+  <data name="StudioStageNoData"><value>Данных пока нет</value></data>
+  <data name="StudioCredit"><value>Источник: Tencent Finance</value></data>
+  <data name="StudioDisclaimer.Text"><value>Только для справки. Не является инвестиционной рекомендацией.</value></data>
+  <data name="StudioDataLayerPending"><value>Получение котировок пока не сделано. Настройки видео и компоновки и предпросмотр уже работают; слой данных — следующий шаг.</value></data>
+  <data name="StudioEncoderPending"><value>Экспорт пока не сделан. Предпросмотр уже идёт по настоящему пути отрисовки; кодировщик — следующий шаг.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Оборот всего рынка</value></data>
+  <data name="StockVolumeStageTitle"><value>Объём и оборачиваемость</value></data>
+
+  <data name="MarketShanghai"><value>Шанхай</value></data>
+  <data name="MarketShenzhen"><value>Шэньчжэнь</value></data>
+  <data name="MarketBeijing"><value>Пекин</value></data>
+  <data name="TurnoverUnit"><value>100 млн CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} вместе · единица: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} — {1} · {2} торговых дней</value></data>
+  <data name="TurnoverAverageLabel"><value>Среднее {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Среднее</value></data>
+  <data name="TurnoverStatPeak"><value>Максимум</value></data>
+  <data name="TurnoverStatLow"><value>Минимум</value></data>
+  <data name="TurnoverStatRatio"><value>Макс./мин.</value></data>
+  <data name="TurnoverFetching"><value>Загрузка {0}…</value></data>
+  <data name="TurnoverFetched"><value>{0} торговых дней ({1} — {2}) · среднее {3} · максимум {4} · минимум {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>Период слишком длинный. Один запрос достаёт примерно {0} календарных дней, сократите его.</value></data>
+  <data name="TurnoverTooFewDays"><value>В этом периоде недостаточно торговых дней.</value></data>
+  <data name="TurnoverView.Header"><value>Вид кадра</value></data>
+  <data name="TurnoverViewBars"><value>Гонка столбцов</value></data>
+  <data name="TurnoverViewCalendar"><value>Календарная теплокарта</value></data>
+  <data name="TurnoverViewReturns"><value>Календарь роста и падения</value></data>
+  <data name="ReturnStageTitle"><value>Дневное изменение SSE Composite</value></data>
+  <data name="ReturnSubtitle"><value>SSE Composite · дневное изменение по закрытию · единица: %</value></data>
+  <data name="ReturnStatUp"><value>Рост</value></data>
+  <data name="ReturnStatDown"><value>Падение</value></data>
+  <data name="ReturnStatBest"><value>Лучший день</value></data>
+  <data name="ReturnStatWorst"><value>Худший день</value></data>
+  <data name="ReturnDayCount"><value>{0} дн.</value></data>
+  <data name="StudioCover.Content"><value>Сохранить обложку PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>Сохраняет тот кадр, на котором стоит предпросмотр, в полном разрешении экспорта.</value></data>
+  <data name="StudioCoverSaved"><value>Обложка сохранена: {0} · {1}×{2} · в {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Папка не выбрана, поэтому ничего не сохранено.</value></data>
+  <data name="StudioExporting"><value>Кодирование… {0} %</value></data>
+  <data name="StudioExported"><value>Экспортировано {0} · {1} МБ · {2} с на {3} с видео · в {4}</value></data>
+  <data name="StudioExportCancelled"><value>Папка не выбрана, поэтому ничего не экспортировано.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Переключается в любой момент; оба рисуют тот же ряд, без нового запроса.</value></data>
+  <data name="TurnoverIncludeBeijing.Header"><value>Учитывать Пекинскую биржу</value></data>
+  <data name="TurnoverIncludeBeijingNote.Text"><value>Добавляет индекс BSE 50, который охватывает только свои компоненты, а не всю Пекинскую биржу. Получаемая сумма — другая мера, и меньшая. По умолчанию выключено.</value></data>
+
+  <data name="StockSearch.Header"><value>Бумага</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Код, название или пиньинь</value></data>
+  <data name="StockNoneChosen"><value>Бумага не выбрана.</value></data>
+  <data name="StockModeLabel.Text"><value>Режим</value></data>
+  <data name="StockModeDaily.Content"><value>За несколько торговых дней</value></data>
+  <data name="StockModeIntraday.Content"><value>Внутри одного дня</value></data>
+  <data name="StockTradingDay.Header"><value>Торговый день</value></data>
+
+  <data name="PageCancelled"><value>Остановлено.</value></data>
+  <data name="PageTimedOut"><value>Это заняло слишком долго и было прервано.</value></data>
+  <data name="PageWorkFailed"><value>Не удалось выполнить «{0}»: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Язык</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Как в Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>Язык сменится после перезапуска приложения.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Перезапустить сейчас</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Оформление</value></data>
+  <data name="SettingsThemeSystem"><value>Как в Windows</value></data>
+  <data name="SettingsThemeLight"><value>Светлое</value></data>
+  <data name="SettingsThemeDark"><value>Тёмное</value></data>
+  <data name="SettingsThemeNote.Text"><value>Применяется сразу и касается только приложения. У видео своя палитра, поэтому предпросмотр по-прежнему предсказывает файл.</value></data>
+  <data name="SettingsOutput.Text"><value>Куда сохраняются видео</value></data>
+  <data name="SettingsOutputNote.Text"><value>Выбирается диалогом папки, потому что упакованное приложение не может писать куда угодно. Если не задано, первый экспорт спросит и запомнит ответ.</value></data>
+  <data name="SettingsOutputNotSet"><value>Не задано — первый экспорт спросит.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Выбрать папку…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Забыть</value></data>
+  <data name="SettingsOutputFailed"><value>Не удалось задать папку: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Данные приложения</value></data>
+  <data name="SettingsStorageNote.Text"><value>Здесь лежат параметры и журнал сбоев. Windows удаляет это при удалении приложения; экспортированных видео здесь нет.</value></data>
+  <data name="SettingsSources.Text"><value>Данные</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Котировки берутся из открытых точек доступа Tencent Finance. Обороты переводятся в сотни миллионов юаней, а ещё идущий торговый день исключается, потому что незавершённый день содержит только свой открывающий аукцион.</value></data>
+  <data name="SettingsContact.Text"><value>Что-то не так?</value></data>
+  <data name="SettingsContactNote.Text"><value>Напишите, что вы делали и чего ожидали вместо этого. Версия выше уже уходит в теме письма.</value></data>
+  <data name="SettingsContactSubject"><value>AShare Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Ни одно почтовое приложение не ответило. Напишите на {0}. ({1})</value></data>
+  <data name="SettingsVersion"><value>Версия {0}</value></data>
+  <data name="SettingsRestartFailed"><value>Приложению не удалось перезапуститься: {0}</value></data>
+
+</root>

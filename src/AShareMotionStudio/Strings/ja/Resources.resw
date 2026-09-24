@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>ja</value></data>
+
+  <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>市場全体の売買代金</value></data>
+  <data name="NavStockVolume.Content"><value>個別銘柄の出来高</value></data>
+  <data name="NavHelp.Content"><value>ヘルプ</value></data>
+  <data name="NavSettings.Content"><value>設定</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>市場全体の売買代金</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>市場全体の日次売買代金、または指数の日次騰落。3 つの形式を取得しなおさずに切り替えられます。</value></data>
+  <data name="StockVolumePageTitle.Text"><value>個別銘柄の出来高</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>1 銘柄の出来高と売買回転率。期間で見ることも、1 日の中で見ることもできます。</value></data>
+  <data name="SettingsPageTitle.Text"><value>設定</value></data>
+  <data name="HelpPageTitle.Text"><value>ヘルプ</value></data>
+  <data name="HelpPageSubtitle.Text"><value>各ページの役割、数値の出どころ、そしてこの動画が何ではないか。</value></data>
+  <data name="HelpDocument"><value>help-ja.md</value></data>
+  <data name="HelpMissing"><value>この言語のヘルプ文書を開けませんでした。</value></data>
+
+  <data name="StudioDataSection.Text"><value>データ</value></data>
+  <data name="StudioTitleSection.Text"><value>タイトル</value></data>
+  <data name="StudioTitleText.Header"><value>タイトル文字</value></data>
+  <data name="StudioTitleNote.Text"><value>空のままにすると既定のタイトルを使います。長いタイトルは切り取らず、比例して縮小します（最小で半分まで）。</value></data>
+  <data name="StudioHideTitle.Header"><value>タイトルを隠す</value></data>
+  <data name="StudioHideTitleNote.Text"><value>タイトルの 1 行が図表に戻り、その下の内容が 1 行分上へ詰まります。下マージンが下端を固定するので、パネルは高くなります。外せば元のレイアウトに正確に戻ります。</value></data>
+  <data name="StockTitlePlaceholder"><value>取得した銘柄名を使う</value></data>
+  <data name="StudioVideoSection.Text"><value>動画</value></data>
+  <data name="StudioLayoutSection.Text"><value>レイアウト</value></data>
+  <data name="StudioRange.Header"><value>期間</value></data>
+  <data name="StudioRange1M"><value>直近 1 か月</value></data>
+  <data name="StudioRange3M"><value>直近 3 か月</value></data>
+  <data name="StudioRange6M"><value>直近 6 か月</value></data>
+  <data name="StudioRange12M"><value>直近 12 か月</value></data>
+  <data name="StudioRangeCustom"><value>カスタム</value></data>
+  <data name="StudioRangeFrom.Header"><value>開始日</value></data>
+  <data name="StudioRangeTo.Header"><value>終了日</value></data>
+  <data name="StudioDuration"><value>長さ: {0} 秒</value></data>
+  <data name="StudioResolution.Text"><value>解像度</value></data>
+  <data name="StudioFrameRate.Text"><value>フレームレート</value></data>
+  <data name="StudioQuality.Text"><value>画質</value></data>
+  <data name="StudioQualityStandard"><value>標準</value></data>
+  <data name="StudioQualityHigh"><value>高画質</value></data>
+  <data name="StudioQualityUltra"><value>最高画質</value></data>
+  <data name="StudioBitrate"><value>約 {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>左マージン: {0}</value></data>
+  <data name="StudioMarginRight"><value>右マージン: {0}</value></data>
+  <data name="StudioMarginBottom"><value>下マージン: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 を基準とした値で、描画時に選んだ解像度へ比例拡大されます。ここで調整した値は解像度を変えてもそのまま使えます。左マージンは Y 軸目盛りの位置も決めます。</value></data>
+  <data name="StudioSafeArea.Header"><value>セーフエリアのガイド</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>スマートフォンのアプリが自身の UI で覆う領域を示します。プレビューにのみ描かれ、ファイルには入りません。</value></data>
+  <data name="StudioPlay.Content"><value>再生</value></data>
+  <data name="StudioPause.Content"><value>一時停止</value></data>
+  <data name="StudioFetch.Content"><value>データを取得</value></data>
+  <data name="StudioExport.Content"><value>MP4 を書き出す</value></data>
+  <data name="StudioCancel.Content"><value>キャンセル</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioStageNoData"><value>データがありません</value></data>
+  <data name="StudioCredit"><value>出典: 騰訊財経</value></data>
+  <data name="StudioDisclaimer.Text"><value>参考情報です。投資助言ではありません。</value></data>
+  <data name="StudioDataLayerPending"><value>相場データの取得はまだ実装されていません。動画とレイアウトの設定、プレビューは今も動きます。データ層が次の段階です。</value></data>
+  <data name="StudioEncoderPending"><value>書き出しはまだ実装されていません。プレビューは既に本番の描画経路を通っています。エンコーダーが次の段階です。</value></data>
+  <data name="MarketTurnoverStageTitle"><value>市場全体の売買代金</value></data>
+  <data name="StockVolumeStageTitle"><value>出来高と売買回転率</value></data>
+
+  <data name="MarketShanghai"><value>上海</value></data>
+  <data name="MarketShenzhen"><value>深圳</value></data>
+  <data name="MarketBeijing"><value>北京</value></data>
+  <data name="TurnoverUnit"><value>億元</value></data>
+  <data name="TurnoverSubtitle"><value>{0} の合計 · 単位：{1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} 〜 {1} · 計 {2} 営業日</value></data>
+  <data name="TurnoverAverageLabel"><value>平均 {0}</value></data>
+  <data name="TurnoverStatAverage"><value>平均</value></data>
+  <data name="TurnoverStatPeak"><value>最高</value></data>
+  <data name="TurnoverStatLow"><value>最低</value></data>
+  <data name="TurnoverStatRatio"><value>最高/最低</value></data>
+  <data name="TurnoverFetching"><value>{0} を取得中…</value></data>
+  <data name="TurnoverFetched"><value>計 {0} 営業日（{1} 〜 {2}）· 平均 {3} · 最高 {4} · 最低 {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>期間が長すぎます。1 回の要求で届くのは約 {0} 暦日までなので、短くしてください。</value></data>
+  <data name="TurnoverTooFewDays"><value>この期間には十分な営業日がありません。</value></data>
+  <data name="TurnoverView.Header"><value>画面の形式</value></data>
+  <data name="TurnoverViewBars"><value>バーレース</value></data>
+  <data name="TurnoverViewCalendar"><value>カレンダーヒートマップ</value></data>
+  <data name="TurnoverViewReturns"><value>騰落カレンダー</value></data>
+  <data name="ReturnStageTitle"><value>上海総合指数の日次騰落</value></data>
+  <data name="ReturnSubtitle"><value>上海総合指数 · 終値の日次騰落率 · 単位：%</value></data>
+  <data name="ReturnStatUp"><value>上昇</value></data>
+  <data name="ReturnStatDown"><value>下落</value></data>
+  <data name="ReturnStatBest"><value>最大上昇</value></data>
+  <data name="ReturnStatWorst"><value>最大下落</value></data>
+  <data name="ReturnDayCount"><value>{0} 日</value></data>
+  <data name="StudioCover.Content"><value>サムネイルを PNG で保存</value></data>
+  <data name="StudioCoverNote.Text"><value>プレビューに止まっているそのフレームを、書き出し解像度で保存します。</value></data>
+  <data name="StudioCoverSaved"><value>サムネイルを保存しました: {0} · {1}×{2} · 保存先 {3}</value></data>
+  <data name="StudioCoverCancelled"><value>フォルダーが選ばれなかったので保存していません。</value></data>
+  <data name="StudioExporting"><value>エンコード中… {0}%</value></data>
+  <data name="StudioExported"><value>{0} を書き出しました · {1} MB · {3} 秒の動画に {2} 秒 · 保存先 {4}</value></data>
+  <data name="StudioExportCancelled"><value>フォルダーが選ばれなかったので書き出していません。</value></data>
+  <data name="TurnoverViewNote.Text"><value>いつでも切り替えられます。同じデータを描くので取得はやり直しません。</value></data>
+  <data name="TurnoverIncludeBeijing.Header"><value>北京証券取引所を含める</value></data>
+  <data name="TurnoverIncludeBeijingNote.Text"><value>BSE 50 指数を加えます。これは構成銘柄のみを対象とし、北京取引所の全体ではありません。得られる合計は別の定義であり、値は小さくなります。既定ではオフです。</value></data>
+
+  <data name="StockSearch.Header"><value>銘柄</value></data>
+  <data name="StockSearch.PlaceholderText"><value>コード、名称、またはピンイン</value></data>
+  <data name="StockNoneChosen"><value>銘柄が選ばれていません。</value></data>
+  <data name="StockModeLabel.Text"><value>モード</value></data>
+  <data name="StockModeDaily.Content"><value>複数の営業日</value></data>
+  <data name="StockModeIntraday.Content"><value>1 営業日の中</value></data>
+  <data name="StockTradingDay.Header"><value>営業日</value></data>
+
+  <data name="PageCancelled"><value>停止しました。</value></data>
+  <data name="PageTimedOut"><value>時間がかかりすぎたため中止しました。</value></data>
+  <data name="PageWorkFailed"><value>{0} に失敗しました: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>言語</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Windows に従う</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>言語はアプリを再起動すると変わります。</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>今すぐ再起動</value></data>
+  <data name="SettingsThemeLabel.Text"><value>外観</value></data>
+  <data name="SettingsThemeSystem"><value>Windows に従う</value></data>
+  <data name="SettingsThemeLight"><value>ライト</value></data>
+  <data name="SettingsThemeDark"><value>ダーク</value></data>
+  <data name="SettingsThemeNote.Text"><value>選ぶとすぐ反映され、アプリ自体にのみ及びます。動画は独自の配色を保つので、プレビューはファイルをそのまま表します。</value></data>
+  <data name="SettingsOutput.Text"><value>動画の保存先</value></data>
+  <data name="SettingsOutputNote.Text"><value>フォルダー選択ダイアログで指定します。パッケージ化されたアプリは任意の場所へ書き込めないためです。未設定なら、最初の書き出しで尋ねて記憶します。</value></data>
+  <data name="SettingsOutputNotSet"><value>未設定 — 最初の書き出しで尋ねます。</value></data>
+  <data name="SettingsOutputChoose.Content"><value>フォルダーを選ぶ…</value></data>
+  <data name="SettingsOutputForget.Content"><value>忘れる</value></data>
+  <data name="SettingsOutputFailed"><value>そのフォルダーを設定できませんでした: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>アプリのデータ</value></data>
+  <data name="SettingsStorageNote.Text"><value>設定とクラッシュログはここにあります。アンインストール時に Windows が削除します。書き出した動画はここには入りません。</value></data>
+  <data name="SettingsSources.Text"><value>データ</value></data>
+  <data name="SettingsSourcesNote.Text"><value>相場は騰訊財経の公開エンドポイントから取得します。売買代金は億元に換算し、まだ取引中の当日は除外します。終わっていない 1 日は寄り付きの板寄せ分しか持たないためです。</value></data>
+  <data name="SettingsContact.Text"><value>問題がありますか？</value></data>
+  <data name="SettingsContactNote.Text"><value>何をしていて、何を期待していたかを書いてください。上のバージョンはメールの件名に既に入ります。</value></data>
+  <data name="SettingsContactSubject"><value>AShare Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>応答するメールアプリがありません。{0} 宛に書いてください。({1})</value></data>
+  <data name="SettingsVersion"><value>バージョン {0}</value></data>
+  <data name="SettingsRestartFailed"><value>アプリを再起動できませんでした: {0}</value></data>
+
+</root>

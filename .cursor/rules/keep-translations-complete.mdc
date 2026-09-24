@@ -1,0 +1,102 @@
+---
+description: Every user-visible string ships in all fourteen languages, added in the same change
+alwaysApply: true
+---
+
+# Translations are part of the feature
+
+A feature that adds UI text is not done until the text exists in all fourteen languages. Adding
+it later does not happen, and nothing in the build will remind you:
+
+- **A missing `x:Uid` resource does not fail the build.** The control renders with no text — an
+  empty row, a blank header. The compiler is silent, and so is every language except the one
+  you happen to be running.
+- `Strings.Get` on an unknown key returns `[KeyName]`, which is visible but only to whoever is
+  running that language.
+
+## The fourteen
+
+`en-US` `de` `es` `fr` `it` `pl` `pt-BR` `cs` `tr` `ru` `ja` `ko` `zh-Hans` `zh-Hant`
+
+Each is `Strings\<tag>\Resources.resw`. `en-US` is the source of truth for the key list and the
+key order; the others must match it exactly.
+
+## Adding a string
+
+1. Prefer an existing key. Page titles already name the pages in every language and are reused
+   as job names, so a status message can lean on one instead of adding fourteen near-duplicates.
+2. Add the key to `en-US` first, then to the other thirteen in the same order.
+3. Keep every `{0}`, `{1}` present in every language. Some languages reorder them — that is
+   correct — but none may drop one.
+4. **The product name is translated in exactly two markets.** `AppTitle.Text` and
+   `SettingsContactSubject` carry the Chinese name in `zh-Hans` and `zh-Hant` and the English
+   name in the other twelve. Nothing else about the product name is translated, and the package
+   identity never is.
+
+## Moving an `x:Uid` means renaming its key
+
+The suffix names a property of the element the uid sits on, and nothing checks it until the page
+is opened. `Foo.Content` is right on a `Button` and fatal on a `TextBlock`, which has `Text` —
+the page then fails to load at runtime, on that page only.
+
+Wrapping a label in an icon-and-text layout moves the uid onto a `TextBlock`, so the key has to
+move with it. In this project: `TextBlock` wants `Text`, `Button` and `RadioButton` and
+`NavigationViewItem` want `Content`, and `ComboBox`, `DatePicker`, `ToggleSwitch` and
+`AutoSuggestBox` want `Header`.
+
+## Check before committing
+
+```powershell
+$repo = "D:\code\AShareMotionStudio\src\AShareMotionStudio"
+$en = [System.Text.Encoding]::UTF8.GetString([System.IO.File]::ReadAllBytes("$repo\Strings\en-US\Resources.resw"))
+$enKeys = [regex]::Matches($en, '<data name="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
+foreach ($d in Get-ChildItem "$repo\Strings" -Directory | Sort-Object Name) {
+    $t = [System.Text.Encoding]::UTF8.GetString([System.IO.File]::ReadAllBytes("$($d.FullName)\Resources.resw"))
+    $k = [regex]::Matches($t, '<data name="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
+    $same = if (($k -join '|') -eq ($enKeys -join '|')) { 'ok' } else { 'DIFFERS' }
+    $c2 = [char]0x00C2; $c3 = [char]0x00C3
+    $doubled = ([regex]::Matches($t, "[$c2$c3][\u0080-\u00BF]")).Count
+    "{0,-8} {1,3} keys  {2}  fffd={3} doubled={4}" -f `
+        $d.Name, $k.Count, $same, ([regex]::Matches($t, [char]0xFFFD)).Count, $doubled
+}
+```
+
+All fourteen must report `ok`, `fffd=0` and `doubled=0`.
+
+**Both encoding checks are needed.** `U+FFFD` catches bytes that could not be decoded. It does
+*not* catch the more common damage: UTF-8 written, then read as CP1252 and written again. That
+produces only valid characters — an em-dash becomes `Ã¢â‚¬—` — so a `U+FFFD` scan reports a clean
+file. The signature is `U+00C2` or `U+00C3` followed by another Latin-1 supplement character.
+
+Edit these files with the editing tools, never a PowerShell read-modify-write — see
+`keep-docs-current.mdc` for why.
+
+## The help documents are part of the set
+
+`Assets\Help\help-<tag>.md`, fourteen of them, and they are the larger half by volume. They must
+all parse to the same number of blocks, so a section dropped in translation shows up as a count
+that no longer matches:
+
+```powershell
+$dir = "D:\code\AShareMotionStudio\src\AShareMotionStudio\Assets\Help"
+foreach ($f in Get-ChildItem $dir -Filter *.md | Sort-Object Name) {
+    $t = [System.Text.Encoding]::UTF8.GetString([System.IO.File]::ReadAllBytes($f.FullName))
+    $blocks = 0; $open = $false
+    foreach ($raw in ($t -replace "`r`n", "`n").Split("`n")) {
+        $line = $raw.TrimEnd()
+        if ($line.Length -eq 0)      { if ($open) { $blocks++; $open = $false }; continue }
+        if ($line -match '^#{1,3} ') { if ($open) { $blocks++; $open = $false }; $blocks++; continue }
+        if ($line.StartsWith('- '))  { if ($open) { $blocks++ }; $open = $true; continue }
+        $open = $true
+    }
+    if ($open) { $blocks++ }
+    "{0,-18} blocks={1,3}" -f $f.Name, $blocks
+}
+```
+
+That replays `HelpDocument.Render`: one child per heading, per bullet, per paragraph. All
+fourteen currently report 24.
+
+**The file name has one dot.** `help-en-US.md`, not `help.en-US.md`. MakePri reads dot-separated
+filename segments as resource qualifiers — that is how `Square44x44Logo.targetsize-16.png`
+works — so a dotted language tag sits in qualifier position and survives only on a fallback.

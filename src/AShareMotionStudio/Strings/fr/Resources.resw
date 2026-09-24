@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>fr</value></data>
+
+  <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Volume d'échanges du marché</value></data>
+  <data name="NavStockVolume.Content"><value>Volume d'un titre</value></data>
+  <data name="NavHelp.Content"><value>Aide</value></data>
+  <data name="NavSettings.Content"><value>Paramètres</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Volume d'échanges du marché</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Montant échangé chaque jour sur tout le marché, ou variation quotidienne de l'indice. Trois rendus, commutables sans nouvelle requête.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volume d'un titre</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>Le volume d'un titre face à son taux de rotation, sur une période ou à l'intérieur d'une seule séance.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Paramètres</value></data>
+  <data name="HelpPageTitle.Text"><value>Aide</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Ce que fait chaque page, d'où viennent les chiffres, et ce que ces vidéos ne sont pas.</value></data>
+  <data name="HelpDocument"><value>help-fr.md</value></data>
+  <data name="HelpMissing"><value>Le document d'aide pour cette langue n'a pas pu être ouvert.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Données</value></data>
+  <data name="StudioTitleSection.Text"><value>Titre</value></data>
+  <data name="StudioTitleText.Header"><value>Texte du titre</value></data>
+  <data name="StudioTitleNote.Text"><value>Laissez vide pour utiliser le titre par défaut. Un titre trop long est réduit proportionnellement plutôt que rogné, jusqu'à la moitié de sa taille.</value></data>
+  <data name="StudioHideTitle.Header"><value>Masquer le titre</value></data>
+  <data name="StudioHideTitleNote.Text"><value>La ligne du titre revient au graphique et tout ce qui est en dessous y remonte. La marge basse maintient le bord inférieur, donc les panneaux s'agrandissent. Décoché, la disposition est restituée à l'identique.</value></data>
+  <data name="StockTitlePlaceholder"><value>Le nom de la valeur récupérée</value></data>
+  <data name="StudioVideoSection.Text"><value>Vidéo</value></data>
+  <data name="StudioLayoutSection.Text"><value>Mise en page</value></data>
+  <data name="StudioRange.Header"><value>Période</value></data>
+  <data name="StudioRange1M"><value>Dernier mois</value></data>
+  <data name="StudioRange3M"><value>3 derniers mois</value></data>
+  <data name="StudioRange6M"><value>6 derniers mois</value></data>
+  <data name="StudioRange12M"><value>12 derniers mois</value></data>
+  <data name="StudioRangeCustom"><value>Personnalisée</value></data>
+  <data name="StudioRangeFrom.Header"><value>Du</value></data>
+  <data name="StudioRangeTo.Header"><value>Au</value></data>
+  <data name="StudioDuration"><value>Durée : {0} s</value></data>
+  <data name="StudioResolution.Text"><value>Résolution</value></data>
+  <data name="StudioFrameRate.Text"><value>Fréquence d'images</value></data>
+  <data name="StudioQuality.Text"><value>Qualité</value></data>
+  <data name="StudioQualityStandard"><value>Standard</value></data>
+  <data name="StudioQualityHigh"><value>Élevée</value></data>
+  <data name="StudioQualityUltra"><value>Maximale</value></data>
+  <data name="StudioBitrate"><value>Environ {0} Mbit/s</value></data>
+  <data name="StudioMarginLeft"><value>Marge gauche : {0}</value></data>
+  <data name="StudioMarginRight"><value>Marge droite : {0}</value></data>
+  <data name="StudioMarginBottom"><value>Marge basse : {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>Exprimées par rapport à 1080×1920 puis mises à l'échelle de la résolution choisie ; une valeur réglée ici reste valable à toutes les tailles. La marge gauche détermine aussi où se posent les graduations de l'axe.</value></data>
+  <data name="StudioSafeArea.Header"><value>Repères de zone sûre</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Délimite les zones qu'une application mobile recouvre de sa propre interface. Tracés dans l'aperçu seulement, jamais dans un fichier.</value></data>
+  <data name="StudioPlay.Content"><value>Lire</value></data>
+  <data name="StudioPause.Content"><value>Pause</value></data>
+  <data name="StudioFetch.Content"><value>Récupérer les données</value></data>
+  <data name="StudioExport.Content"><value>Exporter en MP4</value></data>
+  <data name="StudioCancel.Content"><value>Annuler</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
+  <data name="StudioStageNoData"><value>Aucune donnée pour l'instant</value></data>
+  <data name="StudioCredit"><value>Source : Tencent Finance</value></data>
+  <data name="StudioDisclaimer.Text"><value>À titre indicatif uniquement. Ne constitue pas un conseil en investissement.</value></data>
+  <data name="StudioDataLayerPending"><value>La récupération des cours n'est pas encore écrite. Les réglages vidéo et de mise en page ainsi que l'aperçu fonctionnent déjà ; la couche de données est l'étape suivante.</value></data>
+  <data name="StudioEncoderPending"><value>L'export n'est pas encore écrit. L'aperçu suit déjà le vrai chemin de rendu ; l'encodeur est l'étape suivante.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Montant échangé sur le marché</value></data>
+  <data name="StockVolumeStageTitle"><value>Volume et taux de rotation</value></data>
+
+  <data name="MarketShanghai"><value>Shanghai</value></data>
+  <data name="MarketShenzhen"><value>Shenzhen</value></data>
+  <data name="MarketBeijing"><value>Pékin</value></data>
+  <data name="TurnoverUnit"><value>100 M CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} cumulés · unité : {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} au {1} · {2} séances</value></data>
+  <data name="TurnoverAverageLabel"><value>Moyenne {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Moyenne</value></data>
+  <data name="TurnoverStatPeak"><value>Haut</value></data>
+  <data name="TurnoverStatLow"><value>Bas</value></data>
+  <data name="TurnoverStatRatio"><value>Haut/bas</value></data>
+  <data name="TurnoverFetching"><value>Récupération de {0}…</value></data>
+  <data name="TurnoverFetched"><value>{0} séances ({1} au {2}) · moyenne {3} · haut {4} · bas {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>La période est trop longue. Une requête remonte d'environ {0} jours civils, veuillez la raccourcir.</value></data>
+  <data name="TurnoverTooFewDays"><value>Pas assez de séances dans cette période.</value></data>
+  <data name="TurnoverView.Header"><value>Type de rendu</value></data>
+  <data name="TurnoverViewBars"><value>Course de barres</value></data>
+  <data name="TurnoverViewCalendar"><value>Carte de chaleur calendaire</value></data>
+  <data name="TurnoverViewReturns"><value>Calendrier des hausses et baisses</value></data>
+  <data name="ReturnStageTitle"><value>Variation quotidienne du SSE Composite</value></data>
+  <data name="ReturnSubtitle"><value>SSE Composite · variation quotidienne en clôture · unité : %</value></data>
+  <data name="ReturnStatUp"><value>En hausse</value></data>
+  <data name="ReturnStatDown"><value>En baisse</value></data>
+  <data name="ReturnStatBest"><value>Meilleur jour</value></data>
+  <data name="ReturnStatWorst"><value>Pire jour</value></data>
+  <data name="ReturnDayCount"><value>{0} jours</value></data>
+  <data name="StudioCover.Content"><value>Enregistrer la vignette en PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>Enregistre l'image sur laquelle l'aperçu est arrêté, à la résolution d'export.</value></data>
+  <data name="StudioCoverSaved"><value>Vignette enregistrée : {0} · {1}×{2} · dans {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Aucun dossier choisi, rien n'a été enregistré.</value></data>
+  <data name="StudioExporting"><value>Encodage… {0} %</value></data>
+  <data name="StudioExported"><value>{0} exporté · {1} Mo · {2} s pour {3} s de vidéo · dans {4}</value></data>
+  <data name="StudioExportCancelled"><value>Aucun dossier choisi, rien n'a été exporté.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Commutable à tout moment ; les deux tracent la même série, sans nouvelle requête.</value></data>
+  <data name="TurnoverIncludeBeijing.Header"><value>Inclure la bourse de Pékin</value></data>
+  <data name="TurnoverIncludeBeijingNote.Text"><value>Ajoute l'indice BSE 50, qui ne couvre que ses composantes et non toute la bourse de Pékin. Le total obtenu est une autre mesure, et une plus petite. Désactivé par défaut.</value></data>
+
+  <data name="StockSearch.Header"><value>Titre</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Code, nom ou pinyin</value></data>
+  <data name="StockNoneChosen"><value>Aucun titre choisi.</value></data>
+  <data name="StockModeLabel.Text"><value>Mode</value></data>
+  <data name="StockModeDaily.Content"><value>Sur plusieurs séances</value></data>
+  <data name="StockModeIntraday.Content"><value>À l'intérieur d'une séance</value></data>
+  <data name="StockTradingDay.Header"><value>Séance</value></data>
+
+  <data name="PageCancelled"><value>Arrêté.</value></data>
+  <data name="PageTimedOut"><value>Cela a pris trop de temps et a été abandonné.</value></data>
+  <data name="PageWorkFailed"><value>Échec de {0} : {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Langue</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Suivre Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>La langue change au redémarrage de l'application.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Redémarrer maintenant</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Apparence</value></data>
+  <data name="SettingsThemeSystem"><value>Suivre Windows</value></data>
+  <data name="SettingsThemeLight"><value>Clair</value></data>
+  <data name="SettingsThemeDark"><value>Sombre</value></data>
+  <data name="SettingsThemeNote.Text"><value>S'applique dès que vous choisissez, et ne touche que l'application. Une vidéo garde sa propre palette, de sorte que l'aperçu continue de prédire le fichier.</value></data>
+  <data name="SettingsOutput.Text"><value>Emplacement d'enregistrement des vidéos</value></data>
+  <data name="SettingsOutputNote.Text"><value>Choisi par un sélecteur de dossier, car une application empaquetée ne peut pas écrire où elle veut. Sans réglage, le premier export demande puis retient.</value></data>
+  <data name="SettingsOutputNotSet"><value>Non défini — le premier export posera la question.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Choisir un dossier…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Oublier</value></data>
+  <data name="SettingsOutputFailed"><value>Le dossier n'a pas pu être défini : {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Données de l'application</value></data>
+  <data name="SettingsStorageNote.Text"><value>Les réglages et le journal des plantages sont ici. Windows les supprime à la désinstallation ; les vidéos exportées ne s'y trouvent pas.</value></data>
+  <data name="SettingsSources.Text"><value>Données</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Les cours viennent des points d'accès publics de Tencent Finance. Les montants sont convertis en centaines de millions de yuans, et une séance encore en cours est écartée, car une journée inachevée ne contient que sa fixation d'ouverture.</value></data>
+  <data name="SettingsContact.Text"><value>Un problème ?</value></data>
+  <data name="SettingsContactNote.Text"><value>Dites ce que vous faisiez et ce que vous attendiez à la place. La version ci-dessus voyage déjà dans l'objet du message.</value></data>
+  <data name="SettingsContactSubject"><value>AShare Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Aucune application de messagerie n'a répondu. Écrivez plutôt à {0}. ({1})</value></data>
+  <data name="SettingsVersion"><value>Version {0}</value></data>
+  <data name="SettingsRestartFailed"><value>L'application n'a pas pu redémarrer : {0}</value></data>
+
+</root>
