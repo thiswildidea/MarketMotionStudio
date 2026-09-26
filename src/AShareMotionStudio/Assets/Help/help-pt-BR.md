@@ -8,7 +8,7 @@ O volume financeiro de cada dia em todo o mercado: os valores dos índices compo
 
 - Só ficam os dias em que todos os mercados incluídos negociaram, para que o feriado de um deles não faça o total parecer ter desabado.
 - Um pregão ainda em andamento é deixado de fora. Um dia inacabado contém apenas seu leilão de abertura e seria desenhado como uma barra colada ao eixo.
-- A opção de Pequim acrescenta o índice BSE 50, que cobre apenas suas componentes e não a bolsa inteira. É outra medida, e menor.
+- Ou olhar só um segmento: cada bolsa, cada quadro principal, STAR, ChiNext. Os quadros principais são derivados do total da bolsa menos o seu quadro de crescimento; o BSE 50 continua sendo uma medida de componentes.
 
 ## Volume de uma ação
 

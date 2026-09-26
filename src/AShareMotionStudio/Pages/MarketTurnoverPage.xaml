@@ -78,15 +78,20 @@
                         <DatePicker x:Name="ToDate" x:Uid="StudioRangeTo" HorizontalAlignment="Stretch" />
                     </StackPanel>
 
-                    <ToggleSwitch x:Name="BeijingToggle"
-                                  x:Uid="TurnoverIncludeBeijing"
-                                  Toggled="OnBeijingToggled" />
+                    <!-- The board the series covers. Every option is the same animation on a
+                         different slice of the market; the main boards are derived (an
+                         exchange's composite less its growth board) because no main-board
+                         composite exists on the source. -->
+                    <ComboBox x:Name="ScopeCombo"
+                              x:Uid="TurnoverScope"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnScopeChanged" />
 
-                    <!-- The caveat is beside the switch, not in the help document.
-                         This one changes what the number means rather than how it
-                         looks, and someone turning it on is deciding whether a
-                         different definition of "the whole market" is acceptable. -->
-                    <TextBlock x:Uid="TurnoverIncludeBeijingNote"
+                    <!-- The caveat is beside the selector, not in the help document.
+                         Two of these choices change what the number means rather than how
+                         it looks, and someone picking them is deciding whether a different
+                         definition of "the market" is acceptable. -->
+                    <TextBlock x:Uid="TurnoverScopeNote"
                                TextWrapping="Wrap"
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />

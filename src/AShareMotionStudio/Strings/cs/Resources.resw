@@ -45,7 +45,7 @@
   <data name="NavSettings.Content"><value>Nastavení</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Obrat celého trhu</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>Denní obrat celého trhu. Dva typy obrazu, přepínatelné bez nového načítání.</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Denní obrat celého trhu nebo jednoho segmentu. Dvě podoby téhož obrazu; přepnutí nic znovu nestahuje.</value></data>
   <data name="StockVolumePageTitle.Text"><value>Objem akcií · Obrat</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Objem jedné akcie proti její míře obratu — za období, nebo v průběhu jediného dne.</value></data>
   <data name="SettingsPageTitle.Text"><value>Nastavení</value></data>
@@ -201,9 +201,16 @@
   <data name="StockFavNeedData"><value>Nejprve načtěte data: oblíbená položka si zapamatuje i název.</value></data>
   <data name="StockTradingDayNote.Text"><value>Zdroj uchovává jen posledních pět obchodních dnů.</value></data>
 
-  <data name="MarketShanghai"><value>Šanghaj</value></data>
-  <data name="MarketShenzhen"><value>Šen-čen</value></data>
-  <data name="MarketBeijing"><value>Peking</value></data>
+  <data name="TurnoverScope.Header"><value>Segment</value></data>
+  <data name="TurnoverScopeWhole"><value>Šanghaj + Šen-čen (celé)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Burza Šanghaj (celá)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Šanghaj, hlavní trh</value></data>
+  <data name="TurnoverScopeStar"><value>Trh STAR</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Burza Šen-čen (celá)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Šen-čen, hlavní trh</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Obě + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Hlavní trhy se počítají jako součet burzy minus její růstový trh; BSE 50 pokrývá padesát titulů, ne celou burzu.</value></data>
   <data name="TurnoverUnit"><value>100 mil. CNY</value></data>
   <data name="TurnoverSubtitle"><value>{0} dohromady · jednotka: {1}</value></data>
   <data name="TurnoverDaysLine"><value>{0} až {1} · {2} obchodních dní</value></data>
@@ -235,8 +242,6 @@
   <data name="StudioExported"><value>Exportováno {0} · {1} MB · {2} s na {3} s videa · v {4}</value></data>
   <data name="StudioExportCancelled"><value>Nebyla vybrána složka, takže se nic neexportovalo.</value></data>
   <data name="TurnoverViewNote.Text"><value>Lze přepnout kdykoli; obojí kreslí stejnou řadu, bez nového načítání.</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>Zahrnout pekingskou burzu</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>Přidá index BSE 50, který pokrývá jen své složky, ne celou pekingskou burzu. Výsledný součet je jiná míra, a menší. Ve výchozím stavu vypnuto.</value></data>
 
   <data name="StockSearch.Header"><value>Akcie</value></data>
   <data name="StockSearch.PlaceholderText"><value>Kód, název nebo pinyin</value></data>

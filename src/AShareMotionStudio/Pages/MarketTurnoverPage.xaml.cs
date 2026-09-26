@@ -49,6 +49,23 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         (View.Calendar, "TurnoverViewCalendar"),
     ];
 
+    /// <summary>
+    /// The boards a series can cover, in the loader's enum order. A separate list because the
+    /// combo wants display names while the loader wants the enum, and a Tag bridges them the same
+    /// way the range and view combos above do.
+    /// </summary>
+    private static readonly (MarketScope Scope, string Key)[] Scopes =
+    [
+        (MarketScope.Whole, "TurnoverScopeWhole"),
+        (MarketScope.Shanghai, "TurnoverScopeShanghai"),
+        (MarketScope.ShanghaiMain, "TurnoverScopeShanghaiMain"),
+        (MarketScope.Star, "TurnoverScopeStar"),
+        (MarketScope.Shenzhen, "TurnoverScopeShenzhen"),
+        (MarketScope.ShenzhenMain, "TurnoverScopeShenzhenMain"),
+        (MarketScope.ChiNext, "TurnoverScopeChiNext"),
+        (MarketScope.WithBeijing, "TurnoverScopeWithBeijing"),
+    ];
+
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
     private readonly StudioPreferences _prefs = new("Turnover.");
 
@@ -69,6 +86,13 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         }
 
         ViewCombo.SelectedIndex = 0;
+
+        foreach (var (scope, key) in Scopes)
+        {
+            ScopeCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = scope });
+        }
+
+        ScopeCombo.SelectedIndex = 0;
 
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddMonths(-3);
@@ -198,19 +222,22 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// next fetch asks for, not what the last one returned. Redrawing with a subtitle that named a
     /// market the numbers do not include would be worse than leaving it until the next fetch.
     /// </summary>
-    private void OnBeijingToggled(object sender, RoutedEventArgs e) => SavePreferences();
+    private void OnScopeChanged(object sender, SelectionChangedEventArgs e) => SavePreferences();
+
+    private MarketScope ChosenScope =>
+        ScopeCombo.SelectedItem is ComboBoxItem { Tag: MarketScope scope } ? scope : MarketScope.Whole;
 
     private async void OnFetch(object sender, RoutedEventArgs e)
     {
         var (start, end) = ChosenRange();
-        var beijing = BeijingToggle.IsOn;
+        var scope = ChosenScope;
 
         await RunAsync(FetchButton, async cancellation =>
         {
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
             var series = await MarketTurnover.LoadAsync(
-                Services.Quotes, beijing, start, end, progress, cancellation);
+                Services.Quotes, scope, start, end, progress, cancellation);
 
             _series = series;
             ApplyPreviewSettings();
@@ -442,7 +469,14 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         var view = _prefs.GetInt("View", (int)View.Bars);
         ViewCombo.SelectedIndex = view >= 0 && view < Views.Length ? view : 0;
 
-        BeijingToggle.IsOn = _prefs.GetBool("Beijing", false);
+        // By tag rather than by value: the combo's order groups the boards by exchange for
+        // reading, which is not the enum's order, and an index saved as one would be read as
+        // the other.
+        var scope = _prefs.GetInt("Scope", (int)MarketScope.Whole);
+        var scopeAt = Enum.IsDefined(typeof(MarketScope), scope)
+            ? Array.FindIndex(Scopes, s => (int)s.Scope == scope)
+            : -1;
+        ScopeCombo.SelectedIndex = scopeAt >= 0 ? scopeAt : 0;
 
         if (DateTime.TryParse(_prefs.GetString("From", string.Empty), out var from))
         {
@@ -463,7 +497,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     {
         _prefs.Save("Months", RangeCombo.SelectedItem is ComboBoxItem { Tag: int m } ? m : 3);
         _prefs.Save("View", (int)Chosen);
-        _prefs.Save("Beijing", BeijingToggle.IsOn);
+        _prefs.Save("Scope", (int)ChosenScope);
         _prefs.Save("From", FromDate.Date.ToString("O"));
         _prefs.Save("To", ToDate.Date.ToString("O"));
 

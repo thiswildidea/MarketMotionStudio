@@ -8,7 +8,7 @@ Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli ind
 
 - Restano solo i giorni in cui tutti i mercati inclusi hanno scambiato, così la festività di un singolo mercato non fa sembrare che il totale sia crollato.
 - Una seduta ancora in corso viene esclusa. Un giorno non finito contiene solo la sua asta di apertura e si disegnerebbe come una barra appiccicata all'asse.
-- L'opzione Pechino aggiunge l'indice BSE 50, che copre solo i suoi componenti e non l'intera borsa. È un'altra misura, e più piccola.
+- Oppure guardare un solo segmento: ciascuna borsa, ciascun mercato principale, STAR, ChiNext. I mercati principali sono ricavati dal totale della borsa meno il suo mercato di crescita; il BSE 50 resta una misura a componenti.
 
 ## Volumi di un titolo
 

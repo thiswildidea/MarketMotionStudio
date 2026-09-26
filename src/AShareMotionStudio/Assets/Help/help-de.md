@@ -8,7 +8,7 @@ Der tägliche Umsatz des gesamten Markts: die Beträge der Composite-Indizes von
 
 - Es bleiben nur Tage, an denen alle einbezogenen Märkte gehandelt haben. So kann der Feiertag eines einzelnen Markts die Summe nicht scheinbar einbrechen lassen.
 - Ein noch laufender Handelstag wird ausgelassen. Ein unfertiger Tag enthält nur seine Eröffnungsauktion und würde als Balken direkt auf der Achse erscheinen.
-- Die Peking-Option ergänzt den BSE-50-Index, der nur seine Indexmitglieder abdeckt und nicht die ganze Börse. Das ist eine andere Kennzahl, und eine kleinere.
+- Oder ein Segment allein betrachten: jede der Börsen, jeden Hauptmarkt, STAR, ChiNext. Hauptmärkte werden als Börsenwert minus Wachstumssegment hergeleitet; der BSE 50 bleibt eine Kennzahl der Indexmitglieder.
 
 ## Einzelwert-Volumen
 

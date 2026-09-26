@@ -8,7 +8,7 @@ Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerini
 
 - Yalnızca dahil edilen tüm piyasaların işlem gördüğü günler tutulur; böylece tek bir piyasanın tatili toplamın çöktüğü izlenimini veremez.
 - Hâlâ süren bir seans dışarıda bırakılır. Bitmemiş bir gün yalnızca açılış seansını içerir ve eksene yapışık bir çubuk olarak çizilirdi.
-- Pekin seçeneği BSE 50 endeksini ekler; bu endeks yalnızca kendi bileşenlerini kapsar, borsanın tamamını değil. Başka bir ölçüdür ve daha küçüktür.
+- Ya da yalnızca bir pazara bakın: her iki borsa, her ana pazar, STAR, ChiNext. Ana pazarlar borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50 hâlâ bileşen bazlı bir ölçüdür.
 
 ## Hisse işlem miktarı
 

@@ -51,7 +51,7 @@
   <!-- Page titles. Also used as job names, so a page's work is named the same
        way everywhere rather than translated a second time. -->
   <data name="MarketTurnoverPageTitle.Text"><value>Market Turnover</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>Whole-market daily turnover. Two forms, switchable without re-fetching.</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Daily turnover of the whole market or one board. Two forms of the same picture; switching re-fetches nothing.</value></data>
   <data name="StockVolumePageTitle.Text"><value>Stock Volume · Turnover</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>One stock's volume against its turnover rate, over a range of days or within a single one.</value></data>
   <data name="SettingsPageTitle.Text"><value>Settings</value></data>
@@ -209,9 +209,16 @@
   <data name="StockTradingDayNote.Text"><value>The source holds only the last five trading days.</value></data>
 
   <!-- Market turnover -->
-  <data name="MarketShanghai"><value>Shanghai</value></data>
-  <data name="MarketShenzhen"><value>Shenzhen</value></data>
-  <data name="MarketBeijing"><value>Beijing</value></data>
+  <data name="TurnoverScope.Header"><value>Board</value></data>
+  <data name="TurnoverScopeWhole"><value>Shanghai + Shenzhen (all)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Shanghai exchange (all)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Shanghai main board</value></data>
+  <data name="TurnoverScopeStar"><value>STAR board</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Shenzhen exchange (all)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Shenzhen main board</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext board</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Both + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Main boards are derived as the exchange total less its growth board; the BSE 50 covers fifty constituents, not the whole exchange.</value></data>
   <data name="TurnoverUnit"><value>100M CNY</value></data>
   <data name="TurnoverSubtitle"><value>{0} combined · unit: {1}</value></data>
   <data name="TurnoverDaysLine"><value>{0} to {1} · {2} trading days</value></data>
@@ -243,8 +250,6 @@
   <data name="StudioExported"><value>Exported {0} · {1} MB · took {2} s for {3} s of video · in {4}</value></data>
   <data name="StudioExportCancelled"><value>No folder chosen, so nothing was exported.</value></data>
   <data name="TurnoverViewNote.Text"><value>Switchable at any time; both draw the same series, so no new fetch.</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>Include the Beijing exchange</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>Adds the BSE 50 index, which covers its constituents rather than the whole Beijing exchange. The total it produces is a different measure, and a smaller one. Off by default.</value></data>
 
   <!-- Stock volume -->
   <data name="StockSearch.Header"><value>Stock</value></data>

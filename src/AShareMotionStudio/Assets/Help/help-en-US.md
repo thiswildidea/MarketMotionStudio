@@ -8,7 +8,7 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
 
 - Only days on which every included market traded are kept, so a single market's holiday cannot make the total appear to collapse.
 - A session still in progress is left out. An unfinished day holds only its opening auction, which would draw as a bar flat against the axis.
-- The Beijing option adds the BSE 50 index, which covers its constituents and not the whole exchange. It is a different measure, and a smaller one.
+- Or look at one slice alone: either exchange, either main board, STAR, ChiNext. Main boards are derived as the exchange total less its growth board; the BSE 50 remains a constituent measure.
 
 ## Stock Volume
 

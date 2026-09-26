@@ -45,7 +45,7 @@
   <data name="NavSettings.Content"><value>Параметры</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Оборот всего рынка</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>Дневной оборот всего рынка. Два вида кадра, переключаются без нового запроса.</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Дневной оборот всего рынка или одного сегмента. Две формы одной картинки; переключение ничего не загружает заново.</value></data>
   <data name="StockVolumePageTitle.Text"><value>Объём акций · Оборачиваемость</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Объём одной бумаги против её оборачиваемости — за период или внутри одного дня.</value></data>
   <data name="SettingsPageTitle.Text"><value>Параметры</value></data>
@@ -201,9 +201,16 @@
   <data name="StockFavNeedData"><value>Сначала загрузите данные: избранное запоминает и название.</value></data>
   <data name="StockTradingDayNote.Text"><value>Источник хранит только последние пять торговых дней.</value></data>
 
-  <data name="MarketShanghai"><value>Шанхай</value></data>
-  <data name="MarketShenzhen"><value>Шэньчжэнь</value></data>
-  <data name="MarketBeijing"><value>Пекин</value></data>
+  <data name="TurnoverScope.Header"><value>Сегмент</value></data>
+  <data name="TurnoverScopeWhole"><value>Шанхай + Шэньчжэнь (весь)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Шанхайская биржа (вся)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Шанхай, основная доска</value></data>
+  <data name="TurnoverScopeStar"><value>Доска STAR</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Шэньчжэньская биржа (вся)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Шэньчжэнь, основная доска</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Обе + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Основные доски выводятся как итог биржи минус её доска роста; BSE 50 охватывает пятьдесят бумаг, а не всю биржу.</value></data>
   <data name="TurnoverUnit"><value>100 млн CNY</value></data>
   <data name="TurnoverSubtitle"><value>{0} вместе · единица: {1}</value></data>
   <data name="TurnoverDaysLine"><value>{0} — {1} · {2} торговых дней</value></data>
@@ -235,8 +242,6 @@
   <data name="StudioExported"><value>Экспортировано {0} · {1} МБ · {2} с на {3} с видео · в {4}</value></data>
   <data name="StudioExportCancelled"><value>Папка не выбрана, поэтому ничего не экспортировано.</value></data>
   <data name="TurnoverViewNote.Text"><value>Переключается в любой момент; оба рисуют тот же ряд, без нового запроса.</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>Учитывать Пекинскую биржу</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>Добавляет индекс BSE 50, который охватывает только свои компоненты, а не всю Пекинскую биржу. Получаемая сумма — другая мера, и меньшая. По умолчанию выключено.</value></data>
 
   <data name="StockSearch.Header"><value>Бумага</value></data>
   <data name="StockSearch.PlaceholderText"><value>Код, название или пиньинь</value></data>

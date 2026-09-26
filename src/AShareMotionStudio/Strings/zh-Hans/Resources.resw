@@ -51,7 +51,7 @@
 
   <!-- 页面标题，同时作为任务名复用，避免同一件事被翻译两遍 -->
   <data name="MarketTurnoverPageTitle.Text"><value>全市场成交额</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>全市场每日成交额。两种画面形态，切换不用重新取数。</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>全市场或单个板块的每日成交额。两种画面形态，切换不用重新取数。</value></data>
   <data name="StockVolumePageTitle.Text"><value>个股成交量 · 换手率</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>单只股票的成交量与换手率，可看一段区间，也可看某一天之内。</value></data>
   <data name="SettingsPageTitle.Text"><value>设置</value></data>
@@ -209,9 +209,16 @@
   <data name="StockTradingDayNote.Text"><value>接口仅提供最近 5 个交易日。</value></data>
 
   <!-- 全市场成交额 -->
-  <data name="MarketShanghai"><value>沪市</value></data>
-  <data name="MarketShenzhen"><value>深市</value></data>
-  <data name="MarketBeijing"><value>北交所</value></data>
+  <data name="TurnoverScope.Header"><value>板块</value></data>
+  <data name="TurnoverScopeWhole"><value>沪深全市场</value></data>
+  <data name="TurnoverScopeShanghai"><value>上证全市场</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>沪市主板</value></data>
+  <data name="TurnoverScopeStar"><value>科创板</value></data>
+  <data name="TurnoverScopeShenzhen"><value>深证全市场</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>深市主板</value></data>
+  <data name="TurnoverScopeChiNext"><value>创业板</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>沪深＋北证50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>主板按交易所总额减去对应板块推导；北证 50 为成分股口径，不覆盖北交所全市场。</value></data>
   <data name="TurnoverUnit"><value>亿元</value></data>
   <data name="TurnoverSubtitle"><value>{0}合计 · 单位：{1}</value></data>
   <data name="TurnoverDaysLine"><value>{0} 至 {1} · 共 {2} 个交易日</value></data>
@@ -243,8 +250,6 @@
   <data name="StudioExported"><value>已导出 {0} · {1} MB · 用 {2} 秒编出 {3} 秒视频 · 位于 {4}</value></data>
   <data name="StudioExportCancelled"><value>未选择文件夹，没有导出。</value></data>
   <data name="TurnoverViewNote.Text"><value>随时切换；两种形态画的是同一份数据，不会重新取数。</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>计入北交所</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>加入北证 50，这是成分股口径而非北交所全市场。得到的合计是另一种口径，数值偏小。默认关闭。</value></data>
 
   <!-- 个股成交量 -->
   <data name="StockSearch.Header"><value>股票</value></data>

@@ -8,7 +8,7 @@ El importe negociado cada día en todo el mercado: los importes de los índices 
 
 - Solo se conservan los días en que negociaron todos los mercados incluidos, para que el festivo de uno de ellos no haga parecer que el total se desploma.
 - Una sesión aún en curso se descarta. Un día sin terminar contiene solo su subasta de apertura y se dibujaría como una barra pegada al eje.
-- La opción de Pekín añade el índice BSE 50, que cubre solo sus componentes y no la bolsa entera. Es otra medida, y menor.
+- O mirar solo un segmento: cada bolsa, cada board principal, STAR, ChiNext. Los boards principales se derivan del total de la bolsa menos su board de crecimiento; el BSE 50 sigue siendo una medida de componentes.
 
 ## Volumen de un valor
 

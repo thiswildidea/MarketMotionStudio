@@ -91,6 +91,15 @@ carries both measures; a `Metric` object says which one a frame is drawing and s
 that follows from the choice: the values, their colours, how a figure reads, the closing cards, and
 which two days get boxed.
 
+**The series covers whichever slice of the market was picked.** Eight scopes: both exchanges,
+either exchange, either main board, STAR, ChiNext, and both-exchanges-plus-BSE-50. Every board is
+measured by a *composite* index — on this source the Shenzhen component and composite carry the
+same amount while the STAR 50 carries a third of its board, so composites are the one rule that
+keeps every number the same kind of number. The main boards have no composite of their own, so they
+are derived per day as the exchange total less its growth board; both sides come from the same
+source and the same口径, so the subtraction is exact. The whole-market figure is unchanged by the
+rescope: the Shenzhen composite's amount is what the component index always carried.
+
 The calendar has two layout decisions that exist because the frame is portrait. It draws
 **Monday to Friday only**: A-shares do not trade at weekends, so two of seven columns would always
 be empty while costing every cell nearly a third of its width. And the number of month-blocks per

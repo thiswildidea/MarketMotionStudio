@@ -45,7 +45,7 @@
   <data name="NavSettings.Content"><value>설정</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>시장 전체 거래대금</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>시장 전체 일별 거래대금. 두 가지 형식을 다시 가져오지 않고 바꿀 수 있습니다.</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>전체 시장 또는 개별 시장 구분의 일별 거래대금. 같은 데이터의 두 가지 화면 형태이며 전환 시 재요청이 없습니다.</value></data>
   <data name="StockVolumePageTitle.Text"><value>개별 주식 거래량 · 회전율</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>한 종목의 거래량과 회전율. 기간으로도, 하루 안에서도 볼 수 있습니다.</value></data>
   <data name="SettingsPageTitle.Text"><value>설정</value></data>
@@ -201,9 +201,16 @@
   <data name="StockFavNeedData"><value>먼저 데이터를 가져오세요. 즐겨찾기는 종목명도 함께 저장합니다.</value></data>
   <data name="StockTradingDayNote.Text"><value>최근 5거래일만 제공됩니다.</value></data>
 
-  <data name="MarketShanghai"><value>상하이</value></data>
-  <data name="MarketShenzhen"><value>선전</value></data>
-  <data name="MarketBeijing"><value>베이징</value></data>
+  <data name="TurnoverScope.Header"><value>시장 구분</value></data>
+  <data name="TurnoverScopeWhole"><value>상해＋심천 (전체)</value></data>
+  <data name="TurnoverScopeShanghai"><value>상해거래소 (전체)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>상해 메인보드</value></data>
+  <data name="TurnoverScopeStar"><value>과창판 (STAR)</value></data>
+  <data name="TurnoverScopeShenzhen"><value>심천거래소 (전체)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>심천 메인보드</value></data>
+  <data name="TurnoverScopeChiNext"><value>창업판 (ChiNext)</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>양대시장＋북증50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>메인보드는 거래소 총액에서 해당 성장판을 빼서 계산합니다. 북증50은 50개 구성종목 기준으로 북경거래소 전체를 포함하지 않습니다.</value></data>
   <data name="TurnoverUnit"><value>억 위안</value></data>
   <data name="TurnoverSubtitle"><value>{0} 합계 · 단위: {1}</value></data>
   <data name="TurnoverDaysLine"><value>{0} ~ {1} · 총 {2} 거래일</value></data>
@@ -235,8 +242,6 @@
   <data name="StudioExported"><value>{0} 내보냄 · {1} MB · {3}초 영상에 {2}초 걸림 · 위치 {4}</value></data>
   <data name="StudioExportCancelled"><value>폴더를 고르지 않아 내보내지 않았습니다.</value></data>
   <data name="TurnoverViewNote.Text"><value>언제든 바꿀 수 있습니다. 같은 데이터를 그리므로 다시 가져오지 않습니다.</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>베이징 거래소 포함</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>BSE 50 지수를 더합니다. 이는 구성 종목만을 대상으로 하며 베이징 거래소 전체가 아닙니다. 그렇게 나온 합계는 다른 기준이고 값도 작습니다. 기본값은 꺼짐입니다.</value></data>
 
   <data name="StockSearch.Header"><value>종목</value></data>
   <data name="StockSearch.PlaceholderText"><value>코드, 이름 또는 병음</value></data>

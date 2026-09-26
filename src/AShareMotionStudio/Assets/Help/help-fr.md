@@ -8,7 +8,7 @@ Le montant échangé chaque jour sur tout le marché : les montants des indices 
 
 - Seules les journées où tous les marchés retenus ont traité sont conservées, afin qu'un jour férié sur un seul marché ne fasse pas paraître le total en chute libre.
 - Une séance encore en cours est écartée. Une journée inachevée ne contient que sa fixation d'ouverture et se dessinerait comme une barre collée à l'axe.
-- L'option Pékin ajoute l'indice BSE 50, qui ne couvre que ses composantes et non la bourse entière. C'est une autre mesure, et une plus petite.
+- Ou regarder un seul segment : chaque bourse, chaque marché principal, STAR, ChiNext. Les marchés principaux sont déduits du total de la bourse moins son marché de croissance ; le BSE 50 reste une mesure de composantes.
 
 ## Volume d'un titre
 

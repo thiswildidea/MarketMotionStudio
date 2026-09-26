@@ -8,7 +8,7 @@ Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu s
 
 - Zůstávají jen dny, kdy obchodovaly všechny zahrnuté trhy, aby svátek na jednom z nich nevypadal jako zhroucení součtu.
 - Den, který se ještě obchoduje, se vynechává. Nedokončený den obsahuje jen svou otevírací aukci a nakreslil by se jako sloupec přilepený k ose.
-- Pekingská volba přidává index BSE 50, který pokrývá jen své složky, ne celou burzu. Je to jiná míra, a menší.
+- Nebo se dívat jen na jeden segment: každou burzu, každý hlavní trh, STAR, ChiNext. Hlavní trhy se počítají jako součet burzy minus růstový trh; BSE 50 zůstává měrou podle složek.
 
 ## Objem jedné akcie
 

@@ -45,7 +45,7 @@
   <data name="NavSettings.Content"><value>Impostazioni</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Controvalore del mercato</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>Controvalore scambiato ogni giorno sull'intero mercato. Due rese, commutabili senza nuovo scarico.</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Il controvalore giornaliero dell'intero mercato o di un segmento. Due forme della stessa immagine; cambiare non scarica nulla.</value></data>
   <data name="StockVolumePageTitle.Text"><value>Volume azionario · Rotazione</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>I volumi di un titolo a confronto con il suo tasso di rotazione, su un periodo o all'interno di una singola seduta.</value></data>
   <data name="SettingsPageTitle.Text"><value>Impostazioni</value></data>
@@ -201,9 +201,16 @@
   <data name="StockFavNeedData"><value>Prima carica i dati: un preferito memorizza anche il nome.</value></data>
   <data name="StockTradingDayNote.Text"><value>La fonte conserva solo le ultime cinque sedute.</value></data>
 
-  <data name="MarketShanghai"><value>Shanghai</value></data>
-  <data name="MarketShenzhen"><value>Shenzhen</value></data>
-  <data name="MarketBeijing"><value>Pechino</value></data>
+  <data name="TurnoverScope.Header"><value>Segmento</value></data>
+  <data name="TurnoverScopeWhole"><value>Shanghai + Shenzhen (tutto)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Borsa di Shanghai (tutto)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Shanghai, mercato principale</value></data>
+  <data name="TurnoverScopeStar"><value>Mercato STAR</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Borsa di Shenzhen (tutto)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Shenzhen, mercato principale</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Entrambe + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>I mercati principali sono ricavati dal totale della borsa meno il suo mercato di crescita; il BSE 50 copre cinquanta titoli, non l'intera borsa.</value></data>
   <data name="TurnoverUnit"><value>100 mln CNY</value></data>
   <data name="TurnoverSubtitle"><value>{0} sommati · unità: {1}</value></data>
   <data name="TurnoverDaysLine"><value>dal {0} al {1} · {2} sedute</value></data>
@@ -235,8 +242,6 @@
   <data name="StudioExported"><value>{0} esportato · {1} MB · {2} s per {3} s di video · in {4}</value></data>
   <data name="StudioExportCancelled"><value>Nessuna cartella scelta, quindi non è stato esportato nulla.</value></data>
   <data name="TurnoverViewNote.Text"><value>Commutabile in ogni momento; entrambe disegnano la stessa serie, senza nuovo scarico.</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>Includi la borsa di Pechino</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>Aggiunge l'indice BSE 50, che copre solo i suoi componenti e non l'intera borsa di Pechino. Il totale che ne esce è un'altra misura, e più piccola. Disattivato per impostazione predefinita.</value></data>
 
   <data name="StockSearch.Header"><value>Titolo</value></data>
   <data name="StockSearch.PlaceholderText"><value>Codice, nome o pinyin</value></data>

@@ -45,7 +45,7 @@
   <data name="NavSettings.Content"><value>Ayarlar</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Piyasa işlem hacmi</value></data>
-  <data name="MarketTurnoverPageSubtitle.Text"><value>Tüm piyasanın günlük işlem hacmi. İki biçim, yeniden veri çekmeden değiştirilebilir.</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Tüm piyasaların veya tek bir pazarın günlük işlem hacmi. Aynı verinin iki görünümü; geçişte yeniden indirme yapılmaz.</value></data>
   <data name="StockVolumePageTitle.Text"><value>Hisse hacmi · Devir</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Bir hissenin işlem miktarı ile devir hızı — bir dönem boyunca ya da tek bir gün içinde.</value></data>
   <data name="SettingsPageTitle.Text"><value>Ayarlar</value></data>
@@ -201,9 +201,16 @@
   <data name="StockFavNeedData"><value>Önce veriyi alın: favori, adı da birlikte hatırlar.</value></data>
   <data name="StockTradingDayNote.Text"><value>Kaynak yalnızca son beş işlem gününü tutar.</value></data>
 
-  <data name="MarketShanghai"><value>Şanghay</value></data>
-  <data name="MarketShenzhen"><value>Shenzhen</value></data>
-  <data name="MarketBeijing"><value>Pekin</value></data>
+  <data name="TurnoverScope.Header"><value>Pazar</value></data>
+  <data name="TurnoverScopeWhole"><value>Şanghay + Shenzhen (tümü)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Şanghay Borsası (tümü)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Şanghay ana pazarı</value></data>
+  <data name="TurnoverScopeStar"><value>STAR pazarı</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Shenzhen Borsası (tümü)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Shenzhen ana pazarı</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>İkisi + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Ana pazarlar, borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50, borsanın tamamını değil elli hisseyi kapsar.</value></data>
   <data name="TurnoverUnit"><value>100 milyon CNY</value></data>
   <data name="TurnoverSubtitle"><value>{0} toplamı · birim: {1}</value></data>
   <data name="TurnoverDaysLine"><value>{0} – {1} · {2} işlem günü</value></data>
@@ -235,8 +242,6 @@
   <data name="StudioExported"><value>{0} dışa verildi · {1} MB · {3} sn videoyu {2} sn'de · konum {4}</value></data>
   <data name="StudioExportCancelled"><value>Klasör seçilmediği için hiçbir şey dışa verilmedi.</value></data>
   <data name="TurnoverViewNote.Text"><value>Her an değiştirilebilir; ikisi de aynı seriyi çizer, yeniden veri çekilmez.</value></data>
-  <data name="TurnoverIncludeBeijing.Header"><value>Pekin borsasını dahil et</value></data>
-  <data name="TurnoverIncludeBeijingNote.Text"><value>BSE 50 endeksini ekler; bu endeks yalnızca kendi bileşenlerini kapsar, Pekin borsasının tümünü değil. Çıkan toplam başka bir ölçüdür ve daha küçüktür. Varsayılan olarak kapalıdır.</value></data>
 
   <data name="StockSearch.Header"><value>Hisse</value></data>
   <data name="StockSearch.PlaceholderText"><value>Kod, ad veya pinyin</value></data>
