@@ -6,7 +6,7 @@ Cette application transforme des indicateurs du marché des actions A en vidéos
 
 Les paramètres déterminent de quel marché l'application tire ses cotations ; les actions A par défaut. Le changement prend effet après le redémarrage de l'application.
 
-- **Actions A** : les six pages sont disponibles.
+- **Actions A** : les sept pages sont disponibles.
 - **Hong Kong** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise les quatre sous-indices Hang Seng ; **il n'existe pas de chiffre pour l'ensemble du marché, cette page est donc masquée**.
 - **États-Unis** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise dix ETF sectoriels SPDR ; la page des volumes ne garde que le mode quotidien, car le point d'accès minute ne sert pas de données américaines ; **les montants sont en dollars et la page du volume d'échanges du marché est masquée**.
 
@@ -61,7 +61,15 @@ Acheter un titre à montant et cadence fixes — chaque jour de bourse, chaque s
 
 - Les instruments en un clic suivent le marché : ETF larges et or sur les actions A, fonds indiciels de Hong Kong, SPY, QQQ et GLD aux États-Unis.
 - Le montant et la fréquence se règlent librement ; la période fait trois, cinq ou dix ans, ou remonte aussi loin que les données le permettent (environ treize ans).
-- Le rendement est calculé sur des clôtures ajustées, sans frais. Le résultat décrit la série de prix, pas une facture que qui que ce soit aurait pu exécuter.
+- Le rendement est calculé sur des clôtures rétro-ajustées, sans frais. Le résultat décrit la série de prix, pas une facture que qui que ce soit aurait pu exécuter.
+
+## Rendement de position
+
+Un seul achat, conservé des années — un million dans 中国平安 en 2015, par exemple — animé comme ce que la valeur et le rendement ont fait.
+
+- Les noms proposés suivent le marché : en Chine, les actions que l'on dit réellement avoir gardées (Ping An, Moutai, CMB…), à Hong Kong Tencent, HSBC et le Tracker Fund, aux États-Unis Apple, Berkshire et SPY.
+- Le capital initial et la période de détention sont à vous ; la période couvre trois, cinq ou dix ans, ou aussi loin que les données remontent (environ treize ans).
+- Le rendement est calculé sur des cours rétro-ajustés — dividendes réinvestis, sans frais. L'ajustement rétroactif s'ancre à l'introduction en bourse et cumule les dividendes vers l'avant, si bien que les premières années d'un gros versant ne deviennent jamais négatives, ce que l'ajustement avant peut produire.
 
 ## Vidéo
 

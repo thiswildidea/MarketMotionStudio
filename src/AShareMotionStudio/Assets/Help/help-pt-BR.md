@@ -6,7 +6,7 @@ Este aplicativo transforma indicadores do mercado de ações A em vídeos vertic
 
 Em Configurações escolhe-se de qual mercado o app obtém suas cotações; ações A por padrão. A mudança vale após reiniciar o app.
 
-- **Ações A**: as seis páginas estão disponíveis.
+- **Ações A**: as sete páginas estão disponíveis.
 - **Hong Kong**: a matriz de retorno e o calendário funcionam; a corrida de setores usa os quatro subíndices Hang Seng; **não há número para o mercado inteiro, então essa página fica oculta**.
 - **Estados Unidos**: a matriz de retorno e o calendário funcionam; a corrida de setores usa dez ETFs setoriais SPDR; a página de volume mantém só o modo diário, porque o endpoint de minutos não serve dados americanos; **os valores estão em dólares e a página de volume do mercado fica oculta**.
 
@@ -61,7 +61,15 @@ Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda sem
 
 - Os ativos de um toque seguem o mercado: ETFs amplos e de ouro nas ações A, os fundos índice de Hong Kong, SPY, QQQ e GLD nos Estados Unidos.
 - Valor e frequência você define; o período é de três, cinco ou dez anos, ou até onde os dados alcançam (uns treze anos).
-- O retorno é calculado sobre fechamentos ajustados, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
+- O retorno é calculado sobre fechamentos ajustados retroativamente, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
+
+## Retorno de posição
+
+Uma única compra, mantida por anos — um milhão em 中国平安 em 2015, por exemplo — animada como o que o valor e o retorno fizeram.
+
+- Os nomes sugeridos seguem o mercado: na China, as ações que as pessoas de fato dizem ter mantido (Ping An, Moutai, CMB…); em Hong Kong, Tencent, HSBC e o Tracker Fund; nos Estados Unidos, Apple, Berkshire e SPY.
+- O capital inicial e o período de posição são seus; o período pode ser de três, cinco ou dez anos, ou até onde os dados alcançam (cerca de treze anos).
+- O retorno é calculado sobre fechamentos ajustados retroativamente — dividendos reinvestidos, sem taxas. O ajuste retroativo se ancora na abertura de capital e acumula os dividendos para frente, então os primeiros anos de um bom pagador nunca ficam negativos, como pode ocorrer no ajuste para frente.
 
 ## Vídeo
 

@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Son 10 yıl</value></data>
   <data name="DcaRangeMax"><value>En eski veriye kadar</value></data>
   <data name="DcaDefaultTitle"><value>DCA planı: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} → {3} · düzeltilmiş kapanış · ücretsiz</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} → {3} · geriye düzeltilmiş kapanış · ücretsiz</value></data>
   <data name="DcaRangeLine"><value>{0} - {1} · {2} alım</value></data>
   <data name="DcaReturnLabel"><value>Getiri</value></data>
   <data name="DcaLegendValue"><value>Değer</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0} işlem günü ({1} - {2}), {3} alım yüklendi</value></data>
   <data name="DcaAmountInvalid"><value>Alım tutarı pozitif bir sayı olmalı</value></data>
   <data name="WrongMarket"><value>Bu kod geçerli piyasaya ({0}) ait değil.</value></data>
+  <data name="NavPosition.Content"><value>Pozisyon Getirisi</value></data>
+  <data name="PositionPageTitle.Text"><value>Pozisyon Getirisi</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Tek bir alım, tutulan — değer ve getiri yıllar içinde ne yaptı</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Başlangıç sermayesi</value></data>
+  <data name="PositionRangeLabel.Header"><value>Elde tutma süresi</value></data>
+  <data name="PositionDefaultTitle"><value>Pozisyon getirisi: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: {3} için {1} {2} alındı · geriye düzeltilmiş kapanışlar · temettüler yeniden yatırıldı</value></data>
+  <data name="PositionRangeLine"><value>{0} - {1} · {2} gün tutuldu</value></data>
+  <data name="PositionLegendCapital"><value>Sermaye</value></data>
+  <data name="PositionCardCapital"><value>Yatırılan sermaye</value></data>
+  <data name="PositionCardDrawdown"><value>Maks. düşüş</value></data>
+  <data name="PositionFetched"><value>{0} işlem günü ({1} - {2}), {3} gün tutuldu</value></data>
+  <data name="PositionCapitalInvalid"><value>Başlangıç sermayesi pozitif bir sayı olmalıdır</value></data>
 </root>

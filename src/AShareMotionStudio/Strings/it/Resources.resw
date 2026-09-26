@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Ultimi 10 anni</value></data>
   <data name="DcaRangeMax"><value>Il più indietro disponibile</value></data>
   <data name="DcaDefaultTitle"><value>Piano DCA: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} in {3} · chiusure rettificate · nessuna commissione</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} in {3} · chiusure rettificate all'indietro · nessuna commissione</value></data>
   <data name="DcaRangeLine"><value>dal {0} al {1} · {2} acquisti</value></data>
   <data name="DcaReturnLabel"><value>Rendimento</value></data>
   <data name="DcaLegendValue"><value>Valore</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0} giorni di borsa ({1} al {2}), {3} acquisti caricati</value></data>
   <data name="DcaAmountInvalid"><value>L'importo per acquisto deve essere un numero positivo</value></data>
   <data name="WrongMarket"><value>Questo codice non appartiene al mercato corrente ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Rendimento di posizione</value></data>
+  <data name="PositionPageTitle.Text"><value>Rendimento di posizione</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Un solo acquisto, mantenuto — cosa hanno fatto valore e rendimento negli anni</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Capitale iniziale</value></data>
+  <data name="PositionRangeLabel.Header"><value>Periodo di detenzione</value></data>
+  <data name="PositionDefaultTitle"><value>Rendimento di: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: acquistati {1} {2} di {3} · chiusure rettificate all'indietro · dividendi reinvestiti</value></data>
+  <data name="PositionRangeLine"><value>{0} al {1} · detenuto {2} giorni</value></data>
+  <data name="PositionLegendCapital"><value>Capitale</value></data>
+  <data name="PositionCardCapital"><value>Capitale investito</value></data>
+  <data name="PositionCardDrawdown"><value>Massimo drawdown</value></data>
+  <data name="PositionFetched"><value>{0} giornate di borsa ({1} al {2}), {3} giorni di detenzione</value></data>
+  <data name="PositionCapitalInvalid"><value>Il capitale iniziale deve essere un numero positivo</value></data>
 </root>

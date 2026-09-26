@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Últimos 10 anos</value></data>
   <data name="DcaRangeMax"><value>O mais antigo disponível</value></data>
   <data name="DcaDefaultTitle"><value>Plano DCA: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} em {3} · fechamentos ajustados · sem taxas</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} em {3} · fechamentos ajustados retroativamente · sem taxas</value></data>
   <data name="DcaRangeLine"><value>{0} a {1} · {2} aportes</value></data>
   <data name="DcaReturnLabel"><value>Retorno</value></data>
   <data name="DcaLegendValue"><value>Valor</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0} dias de pregão ({1} a {2}), {3} aportes carregados</value></data>
   <data name="DcaAmountInvalid"><value>O valor por aporte deve ser um número positivo</value></data>
   <data name="WrongMarket"><value>Esse código não pertence ao mercado atual ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Retorno de posição</value></data>
+  <data name="PositionPageTitle.Text"><value>Retorno de posição</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Uma única compra, mantida — o que o valor e o retorno fizeram ao longo dos anos</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Capital inicial</value></data>
+  <data name="PositionRangeLabel.Header"><value>Período de posição</value></data>
+  <data name="PositionDefaultTitle"><value>Retorno de: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: comprados {1} {2} de {3} · fechamentos ajustados retroativamente · dividendos reinvestidos</value></data>
+  <data name="PositionRangeLine"><value>{0} a {1} · mantido por {2} dias</value></data>
+  <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardCapital"><value>Capital investido</value></data>
+  <data name="PositionCardDrawdown"><value>Queda máxima</value></data>
+  <data name="PositionFetched"><value>{0} dias de pregão ({1} a {2}), {3} dias de posição</value></data>
+  <data name="PositionCapitalInvalid"><value>O capital inicial deve ser um número positivo</value></data>
 </root>

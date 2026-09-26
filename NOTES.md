@@ -4,7 +4,7 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-09-26 (after the sixth page — the DCA plan; see the end).
+Last reviewed: 2026-09-26 (after the seventh page — Position Return; see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -769,8 +769,8 @@ invested in amber, value in red, the gap between them filled warm or cool — wi
 as the headline reading and four closing cards), and `DcaPlanPage` on the same page skeleton
 as the calendar: search, one-tap presets, favourites shared with the per-stock page,
 cadence/span/amount, the shared video panel. Twenty-nine keys in all fourteen resw files
-(now 294 keys, same order everywhere, `fffd=0`), and a help section in all fourteen
-documents (eleven sections each, block counts equal).
+(now 307 keys, same order everywhere, `fffd=0`), and a help section in all fourteen
+documents (twelve sections each, block counts equal).
 
 **Every preset code was probed against the endpoint before being written down** — seven
 A-share (broad ETFs, gold ETF, a Nasdaq tracker, two indices), five Hong Kong, five US —
@@ -811,3 +811,35 @@ deepest plan needs.
 the page; the weekly and monthly cadences have never been run (only daily); the saved
 instrument falling back to the market's first preset has not been exercised; and the export
 has been through 1080p30 only, like every page's first export.
+
+
+## The seventh page — Position Return, and the negative-close trap
+
+**Position Return** is built: `PositionLoader` (one purchase at the range's first close, then
+mark-to-market), `PositionRenderer` (flat capital line against the value line, fill coloured
+by which is on top, ratio as the headline, drawdown promoted to a closing card), and
+`PositionPage` on the shared skeleton. Thirteen new keys (now 307, same order everywhere,
+`fffd=0`), help section fourteen times (twelve sections each). Both year-long pages now
+share `HistoryWalk.ClosesAsync`, the backwards walk the plan page grew.
+
+**The trap this page found: the forward-adjusted series can go through zero.** 中国平安's
+qfq closes arrive **negative** for 280 trading days (2013-09 → late 2014, worst −5.09),
+because the forward adjustment rebases to today and a decade of dividends pushes the early
+years under. A ratio chart survives this; a page that *buys at a price* does not — shares
+come out negative and the frame draws a −1,146% holding, which is exactly what the first
+live fetch did. The fix is not a clamp: **both year-long pages now ask for `hfq`**, the
+backward-adjusted series, which anchors at the listing so every close is positive and the
+ratio between two days is the real total return with dividends reinvested. Hong Kong and US
+rows come back unadjusted whatever is asked (`day` alone), which for those venues is the
+same question. `StockBarsAsync` grew an `adjustment` parameter (default `qfq`, so the ratio
+pages are untouched); **the parameter must be passed through both of its own call sites** —
+the bare-US branch *and* the main path. The main path was missed on the first pass and the
+page kept drawing qfq numbers; the debug log in `FetchStockBarsAsync` (param + response keys,
+temp) is what found it, and the log is removed now.
+
+**Verified live through the running app**: 中国平安, ¥1,000,000, longest range — status
+「已取 3,160 个交易日（2013-09-26 至 2026-09-24），持有 4,746 天」, frame reads
+**+301.0%**, cards 市值 407万 / 本金 100万 / +307万 / **−53.8%** drawdown. Cross-checked
+against an independent fetch: hfq buy 38.76, last 155.43, +301.0% — the frame and the
+spreadsheet agree. The qfq pathology was reproduced in the log before the fix and is absent
+after it.

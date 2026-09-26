@@ -6,7 +6,7 @@ Questa app trasforma gli indicatori del mercato delle azioni A in video vertical
 
 Nelle impostazioni si sceglie da quale mercato l'app prende le quotazioni; come predefinite, le azioni A. La modifica ha effetto dopo il riavvio dell'app.
 
-- **Azioni A**: tutte e sei le pagine sono disponibili.
+- **Azioni A**: tutte e sette le pagine sono disponibili.
 - **Hong Kong**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa i quattro sottoindici Hang Seng; **non esiste un dato per l'intero mercato, quindi quella pagina è nascosta**.
 - **Stati Uniti**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa dieci ETF settoriali SPDR; la pagina dei volumi conserva solo la modalità giornaliera, perché l'endpoint dei minuti non serve dati statunitensi; **gli importi sono in dollari e la pagina del controvalore del mercato è nascosta**.
 
@@ -61,7 +61,15 @@ Comprare uno strumento a importe e cadenza fissi — ogni giorno di borsa, ogni 
 
 - Gli strumenti a un tocco seguono il mercato: ETF ampi e oro sulle azioni A, i fondi indicizzati di Hong Kong, SPY, QQQ e GLD negli Stati Uniti.
 - Importo e frequenza si impostano liberamente; il periodo è di tre, cinque o dieci anni, oppure fino al dato più antico disponibile (circa tredici anni).
-- Il rendimento è calcolato su chiusure rettificate, senza commissioni. Il risultato descrive la serie di prezzi, non una fattura che qualcuno avrebbe potuto eseguire.
+- Il rendimento è calcolato su chiusure rettificate all'indietro, senza commissioni. Il risultato descrive la serie di prezzi, non una fattura che qualcuno avrebbe potuto eseguire.
+
+## Rendimento di posizione
+
+Un solo acquisto, mantenuto per anni — un milione in 中国平安 nel 2015, ad esempio — animato come ciò che valore e rendimento hanno fatto.
+
+- I nomi proposti seguono il mercato: in Cina le azioni che la gente dice davvero di aver tenuto (Ping An, Moutai, CMB…), a Hong Kong Tencent, HSBC e il Tracker Fund, negli Stati Uniti Apple, Berkshire e SPY.
+- Capitale iniziale e periodo di detenzione sono tuoi; il periodo può essere di tre, cinque o dieci anni, o fino a dove arrivano i dati (circa tredici anni).
+- Il rendimento è calcolato su chiusure rettificate all'indietro — dividendi reinvestiti, nessuna commissione. La rettifica all'indietro si ancora alla quotazione e accumula i dividendi in avanti, così i primi anni di un grande pagatore non diventano mai negativi, come può fare la rettifica in avanti.
 
 ## Video
 

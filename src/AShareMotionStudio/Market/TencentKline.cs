@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Text.Json;
 
 namespace AShareMotionStudio.Market;
-
 /// <summary>
 /// One trading day, in the two fields this app reads out of a bar.
 /// </summary>
@@ -168,10 +167,14 @@ public sealed class TencentKline(HttpClient http)
     ///
     /// Same endpoint and same envelope as <see cref="DailyBarsAsync"/> — the market page and the
     /// stock page ask it different questions of the same rows — so the parsing here follows the
-    /// same rules: index-read fields, settled days only, exact range trim.
+    /// same rules: index-read fields, settled days only, exact range trim. The adjustment is a
+    /// parameter because the two pages that buy at a price want <c>hfq</c> (see
+    /// <see cref="HistoryWalk"/> for why the forward-adjusted series will not do), while the
+    /// pages that only read ratios stay on the default <c>qfq</c>.
     /// </summary>
     public async Task<List<StockBar>> StockBarsAsync(
-        string code, DateOnly start, DateOnly end, CancellationToken cancellation)
+        string code, DateOnly start, DateOnly end, CancellationToken cancellation,
+        string adjustment = "qfq")
     {
         if (!IsStockCode(code))
         {
@@ -194,7 +197,7 @@ public sealed class TencentKline(HttpClient http)
             {
                 try
                 {
-                    var bars = await FetchStockBarsAsync(candidate, start, end, cancellation);
+                    var bars = await FetchStockBarsAsync(candidate, start, end, cancellation, adjustment);
 
                     if (bars.Count >= FewestBars)
                     {
@@ -210,7 +213,7 @@ public sealed class TencentKline(HttpClient http)
             throw last ?? new InvalidOperationException($"{code}: no daily bars in that range.");
         }
 
-        return await FetchStockBarsAsync(code, start, end, cancellation);
+        return await FetchStockBarsAsync(code, start, end, cancellation, adjustment);
     }
 
     /// <summary>
@@ -233,13 +236,14 @@ public sealed class TencentKline(HttpClient http)
     private const int FewestBars = 2;
 
     private async Task<List<StockBar>> FetchStockBarsAsync(
-        string code, DateOnly start, DateOnly end, CancellationToken cancellation)
+        string code, DateOnly start, DateOnly end, CancellationToken cancellation,
+        string adjustment = "qfq")
     {
         var span = end.DayNumber - start.DayNumber;
         var count = Math.Clamp(span, 5, MostBarsPerRequest);
 
         var iso = CultureInfo.InvariantCulture;
-        var parameter = $"{code},day,{start:yyyy-MM-dd},{end:yyyy-MM-dd},{count.ToString(iso)},qfq";
+        var parameter = $"{code},day,{start:yyyy-MM-dd},{end:yyyy-MM-dd},{count.ToString(iso)},{adjustment}";
         var uri = $"{Endpoint}?param={Uri.EscapeDataString(parameter)}";
 
         using var response = await http.GetAsync(uri, cancellation);
@@ -261,8 +265,11 @@ public sealed class TencentKline(HttpClient http)
             throw new InvalidOperationException($"{code}: the response carried no data for this code.");
         }
 
-        var bars = node.TryGetProperty("qfqday", out var adjusted) && adjusted.GetArrayLength() > 0
-            ? adjusted
+        // The adjusted series named after the adjustment asked for, falling back to the
+        // plain one — venues whose rows are never adjusted (Hong Kong and US rows come
+        // back unadjusted whatever is asked) answer with `day` alone.
+        var bars = node.TryGetProperty(adjustment + "day", out var wanted) && wanted.GetArrayLength() > 0
+            ? wanted
             : node.TryGetProperty("day", out var plain) ? plain : default;
 
         if (bars.ValueKind != JsonValueKind.Array || bars.GetArrayLength() == 0)

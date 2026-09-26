@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Últimos 10 años</value></data>
   <data name="DcaRangeMax"><value>Lo más antiguo disponible</value></data>
   <data name="DcaDefaultTitle"><value>Plan DCA: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} en {3} · cierres ajustados · sin comisiones</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} en {3} · cierres ajustados hacia atrás · sin comisiones</value></data>
   <data name="DcaRangeLine"><value>{0} a {1} · {2} compras</value></data>
   <data name="DcaReturnLabel"><value>Rentabilidad</value></data>
   <data name="DcaLegendValue"><value>Valor</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0} días de bolsa ({1} a {2}), {3} compras cargadas</value></data>
   <data name="DcaAmountInvalid"><value>El importe por compra debe ser un número positivo</value></data>
   <data name="WrongMarket"><value>Ese código no pertenece al mercado actual ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Rentabilidad de cartera</value></data>
+  <data name="PositionPageTitle.Text"><value>Rentabilidad de cartera</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Una sola compra, mantenida — qué hicieron el valor y la rentabilidad con los años</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Capital inicial</value></data>
+  <data name="PositionRangeLabel.Header"><value>Periodo de tenencia</value></data>
+  <data name="PositionDefaultTitle"><value>Rentabilidad de: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: comprados {1} {2} de {3} · cierres ajustados hacia atrás · dividendos reinvertidos</value></data>
+  <data name="PositionRangeLine"><value>{0} a {1} · {2} días en cartera</value></data>
+  <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardCapital"><value>Capital invertido</value></data>
+  <data name="PositionCardDrawdown"><value>Máxima caída</value></data>
+  <data name="PositionFetched"><value>{0} días de negociación ({1} a {2}), {3} días en cartera</value></data>
+  <data name="PositionCapitalInvalid"><value>El capital inicial debe ser un número positivo</value></data>
 </root>

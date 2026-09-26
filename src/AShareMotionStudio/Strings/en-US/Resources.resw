@@ -333,7 +333,7 @@
   <data name="DcaRange10Y"><value>Past 10 years</value></data>
   <data name="DcaRangeMax"><value>As far back as available</value></data>
   <data name="DcaDefaultTitle"><value>DCA plan: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} into {3} · adjusted closes · no fees</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} into {3} · backward-adjusted closes · no fees</value></data>
   <data name="DcaRangeLine"><value>{0} to {1} · {2} buys</value></data>
   <data name="DcaReturnLabel"><value>Return</value></data>
   <data name="DcaLegendValue"><value>Value</value></data>
@@ -349,4 +349,17 @@
   <data name="DcaFetched"><value>{0} trading days ({1} to {2}), {3} buys</value></data>
   <data name="DcaAmountInvalid"><value>The amount per buy must be a positive number</value></data>
   <data name="WrongMarket"><value>That code is not on the current market ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Holdings Return</value></data>
+  <data name="PositionPageTitle.Text"><value>Holdings Return</value></data>
+  <data name="PositionPageSubtitle.Text"><value>One purchase, held for years — what the value and the return did</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Initial capital</value></data>
+  <data name="PositionRangeLabel.Header"><value>Holding span</value></data>
+  <data name="PositionDefaultTitle"><value>Holdings return: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: bought {1} {2} of {3} · backward-adjusted closes · dividends reinvested</value></data>
+  <data name="PositionRangeLine"><value>{0} to {1} · held {2} days</value></data>
+  <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardCapital"><value>Capital in</value></data>
+  <data name="PositionCardDrawdown"><value>Max drawdown</value></data>
+  <data name="PositionFetched"><value>{0} trading days ({1} to {2}), held {3} days</value></data>
+  <data name="PositionCapitalInvalid"><value>The initial capital must be a positive number</value></data>
 </root>

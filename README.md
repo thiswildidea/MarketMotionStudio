@@ -8,7 +8,7 @@ The product has two names on purpose. Chinese markets get 「A股指标动画工
 else, and in the Store listing and the package identity, it is AShare Motion Studio. See
 "Languages" below.
 
-Status: **six pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **seven pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -21,7 +21,10 @@ ten years; CSI Level-1 twelve months). Gain-loss Calendar is the fifth: the whol
 return calendar freed from its fixed series, run on any stock or index. **DCA Plan** is the sixth
 and the one that is not about a series: it buys one instrument on a fixed amount and a fixed
 cadence — daily, weekly or monthly — over years of closes, and animates what went in against what
-the shares became worth, in whichever currency that market quotes.
+the shares became worth, in whichever currency that market quotes. **Position Return** is the
+seventh and the mirror image of the plan: one purchase, once — 2015, a million, 中国平安 —
+and nothing but the mark-to-market after that, with the drawdown promoted to a headline figure
+because a holding's worst moment is the price of its whole story.
 
 **Export is now measured rather than designed.** Three consecutive 90-second 1080p30 exports, driven
 through the live app against 65 trading days of fetched data:
@@ -89,6 +92,7 @@ than assumed from the market's existence:
 | **Return Matrix** | monthly bars for indices and listings | monthly bars for indices and listings |
 | **Gain-loss Calendar** | daily bars for indices and listings | daily bars for indices and listings |
 | **DCA Plan** | the Tracker Fund, the Hang Seng China Enterprises and tech trackers, and the two indices themselves | SPY, QQQ, DIA, IWM and the gold trust |
+| **Position Return** | same preset families as the plan, plus the blue-chip singles | same, plus the broad singles |
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what
@@ -114,7 +118,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The six pages
+## The seven pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -229,8 +233,13 @@ Two decisions worth stating, because a naïve version gets both wrong silently:
 
 The simulation is deliberately plain — `amount / close` shares at that day's close, no fees,
 no slippage, no timing beyond the calendar — and says so on the frame. It is a description
-of a price series, not a record of something anyone could have executed. Adjusted closes are
-used where the source offers them, so splits do not read as crashes.
+of a price series, not a record of something anyone could have executed. Both pages that buy
+at a price read the **backward-adjusted** series, and that choice is not cosmetic: the
+forward-adjusted one rebases itself to today, and for a heavy payer like 中国平安 the rebase
+goes through zero — years of closes arrive negative, which a ratio chart survives but a
+purchase does not. The backward-adjusted series anchors at the listing, so every close is
+positive and the ratio between any two days is the holding's real total return, dividends
+reinvested.
 
 The preset lists are per market, because a plan is something people start on particular
 things: the A-shares get the broad ETFs (300, 500, ChiNext), the gold ETF that is the
@@ -240,6 +249,19 @@ siblings; the US gets SPY, QQQ, DIA, IWM and GLD. Every code was fetched and rea
 before being written down. The currency the amounts are named in comes from the market too —
 CNY, HKD or USD — because an amount invested is an amount *of something*, and three venues
 do not agree on what.
+
+**Position Return** — the plan's mirror image, and the page where the interesting number is
+a *ratio with a past*. One purchase, once: a capital, a day, one instrument. The capital line
+is flat because nothing was ever added; the value line does whatever the price did; the space
+between them fills warm while the holding is ahead and cool while it is behind, and the
+headline reading is the ratio between the two, coloured by its own sign so a holding crossing
+from loss to gain changes the colour of its number. The closing cards add what a return alone
+hides — the **maximum drawdown**, the deepest fall from the holding's own running peak, which
+is the price a holder paid for the whole story. Like the plan, the sim is deliberately plain:
+adjusted closes, no fees, and the frame says what it is not.
+
+Its range selector defaults to **as far back as the source goes**, because a holding's story
+starts where the holder says it did, and "since 2015" is a span no fixed choice covers.
 
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
@@ -435,14 +457,15 @@ the alpha correct; the 256-pixel entry records its size as `0`, because the fiel
 src/AShareMotionStudio/
   Market/          TencentKline (the only HTTP to a quote source), TurnoverSeries,
                    InstrumentCalendar (one instrument's bars as that record),
-                   DcaPlanner (the walk back through years, then the plan itself)
+                   HistoryWalk (years of closes, walked backwards a page at a time),
+                   DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
-                   DcaRenderer, FrameExporter (one frame to PNG)
+                   DcaRenderer, PositionRenderer, FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
-  Pages/           StudioPage base, the five indicator pages, the DCA plan page,
+  Pages/           StudioPage base, the five indicator pages, the two buy-at-a-price pages,
                    Settings, Help, Playback
   Localization/    Strings lookup and the language override
   Strings/<bcp47>/ Fourteen Resources.resw
@@ -528,8 +551,8 @@ commissioned with a Chinese name and an English one, so `AppTitle.Text` carries
 name everywhere else. The package identity and the Store listing name stay English in every
 market.
 
-Every language carries the same keys in the same order. All fourteen currently report 294 keys
-with no encoding damage, and all fourteen help documents carry the same eleven sections in the
+Every language carries the same keys in the same order. All fourteen currently report 307 keys
+with no encoding damage, and all fourteen help documents carry the same twelve sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance

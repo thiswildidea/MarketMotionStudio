@@ -104,6 +104,9 @@
                 <mux:NavigationViewItem x:Name="NavDcaPlan" x:Uid="NavDcaPlan" Tag="DcaPlan">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8C7;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavPosition" x:Uid="NavPosition" Tag="Position">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 
             <mux:NavigationView.FooterMenuItems>

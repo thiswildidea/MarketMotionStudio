@@ -6,7 +6,7 @@ Esta aplicación convierte indicadores del mercado de acciones A en vídeos vert
 
 En Ajustes se elige de qué mercado toma sus cotizaciones la aplicación; las acciones A por defecto. El cambio surte efecto tras reiniciar la aplicación.
 
-- **Acciones A**: las seis páginas están disponibles.
+- **Acciones A**: las siete páginas están disponibles.
 - **Hong Kong**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa los cuatro subíndices Hang Seng; **no hay cifra para todo el mercado, así que esa página se oculta**.
 - **Estados Unidos**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa diez ETF sectoriales SPDR; la página de volumen conserva solo el modo diario, porque el endpoint de minutos no sirve datos estadounidenses; **los importes están en dólares y la página de volumen del mercado se oculta**.
 
@@ -61,7 +61,15 @@ Comprar un valor con importe y cadencia fijos — cada día de bolsa, cada seman
 
 - Los instrumentos de un toque siguen al mercado: ETF amplios y de oro en las acciones A, los fondos rastreados de Hong Kong, SPY, QQQ y GLD en Estados Unidos.
 - El importe y la frecuencia se ajustan a gusto; el período es de tres, cinco o diez años, o hasta donde lleguen los datos (unos trece años).
-- La rentabilidad se calcula sobre cierres ajustados, sin comisiones. El resultado describe la serie de precios, no una factura que alguien pudiera haber ejecutado.
+- La rentabilidad se calcula sobre cierres ajustados hacia atrás, sin comisiones. El resultado describe la serie de precios, no una factura que alguien pudiera haber ejecutado.
+
+## Rentabilidad de cartera
+
+Una sola compra, mantenida durante años — un millón en 中国平安 en 2015, por ejemplo — animada como lo que hicieron el valor y la rentabilidad.
+
+- Los nombres sugeridos siguen al mercado: en China, las acciones que la gente de verdad dice haber mantenido (Ping An, Moutai, CMB…); en Hong Kong, Tencent, HSBC y el Tracker Fund; en Estados Unidos, Apple, Berkshire y SPY.
+- El capital inicial y el periodo de tenencia son tuyos; el periodo puede ser de tres, cinco o diez años, o hasta donde lleguen los datos (unos trece años).
+- La rentabilidad se calcula sobre cierres ajustados hacia atrás — dividendos reinvertidos, sin comisiones. El ajuste hacia atrás se ancla en la salida a bolsa y acumula los dividendos hacia delante, así que los primeros años de un gran pagador nunca se vuelven negativos, como puede pasar con el ajuste hacia delante.
 
 ## Vídeo
 

@@ -345,6 +345,7 @@ public sealed partial class MainWindow : Window
             "Matrix" => typeof(MonthlyMatrixPage),
             "GainCalendar" => typeof(GainCalendarPage),
             "DcaPlan" => typeof(DcaPlanPage),
+            "Position" => typeof(PositionPage),
             "Help" => typeof(HelpPage),
             "Settings" => typeof(SettingsPage),
             _ => null,

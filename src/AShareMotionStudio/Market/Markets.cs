@@ -63,10 +63,15 @@ public sealed record RosterList(string LabelKey, RaceEntry[] Entries);
 /// <param name="Rosters">The sector lists on offer. At least one, or the race page has nothing to run.</param>
 /// <param name="BroadIndices">One-tap instruments for the matrix and the calendar.</param>
 /// <param name="DcaInstruments">One-tap instruments for the plan page: the things a plan is plausibly started on.</param>
+/// <param name="PositionInstruments">
+/// One-tap instruments for the position page: the names a long-term holding is
+/// plausibly a story about — household stocks people actually say they have held,
+/// plus an index or tracker for asking what the market itself did.
+/// </param>
 /// <param name="CurrencyKey">
-/// Resource key for the venue's currency unit, which the plan's subtitle names — an
-/// amount invested is an amount *of something*, and the three venues do not agree
-/// on what.
+/// Resource key for the venue's currency unit, which the plan's and the position's
+/// subtitles name — an amount invested is an amount *of something*, and the three
+/// venues do not agree on what.
 /// </param>
 public sealed record MarketProfile(
     MarketId Id,
@@ -78,6 +83,7 @@ public sealed record MarketProfile(
     RosterList[] Rosters,
     RaceEntry[] BroadIndices,
     RaceEntry[] DcaInstruments,
+    RaceEntry[] PositionInstruments,
     string CurrencyKey)
 {
     public string Name => Strings.Get(NameKey);
@@ -198,6 +204,42 @@ public static class Markets
         new("usGLD.AM", "黄金ETF"),
     ];
 
+    /// <summary>
+    /// The A-share holdings: household names people actually say they have held for
+    /// years — the question this page is asked with is usually "what if I'd held
+    /// 中国平安 since 2015" — plus the broad tracker and the index for the market
+    /// itself. Every code fetched and read back before being written here.
+    /// </summary>
+    public static readonly RaceEntry[] AShareHoldings =
+    [
+        new("sh601318", "中国平安"),
+        new("sh600519", "贵州茅台"),
+        new("sh600036", "招商银行"),
+        new("sh600900", "长江电力"),
+        new("sz000858", "五粮液"),
+        new("sh510300", "沪深300ETF"),
+        new("sh000001", "上证指数"),
+    ];
+
+    /// <summary>Hong Kong's holdings: the tracker, the names, and the index.</summary>
+    public static readonly RaceEntry[] HongKongHoldings =
+    [
+        new("hk00700", "腾讯控股"),
+        new("hk00005", "汇丰控股"),
+        new("hk02800", "盈富基金"),
+        new("hkHSI", "恒生指数"),
+    ];
+
+    /// <summary>The US holdings: the compounding classics and the index trackers.</summary>
+    public static readonly RaceEntry[] UnitedStatesHoldings =
+    [
+        new("usAAPL.OQ", "苹果"),
+        new("usBRK.B.N", "伯克希尔B"),
+        new("usSPY.AM", "标普500ETF"),
+        new("usQQQ.OQ", "纳指100ETF"),
+        new("usGLD.AM", "黄金ETF"),
+    ];
+
     /// <summary>The US indices and the listings people look up by name.</summary>
     public static readonly RaceEntry[] UnitedStatesIndices =
     [
@@ -229,6 +271,7 @@ public static class Markets
             ],
             BroadIndices: MonthlySeries.BroadIndices,
             DcaInstruments: ASharePlans,
+            PositionInstruments: AShareHoldings,
             CurrencyKey: "DcaCurrencyCny"),
 
         new(
@@ -247,6 +290,7 @@ public static class Markets
             Rosters: [new("SectorListHangSeng", HangSengSectors)],
             BroadIndices: HongKongIndices,
             DcaInstruments: HongKongPlans,
+            PositionInstruments: HongKongHoldings,
             CurrencyKey: "DcaCurrencyHkd"),
 
         new(
@@ -265,6 +309,7 @@ public static class Markets
             Rosters: [new("SectorListSpdr", SpdrSectors)],
             BroadIndices: UnitedStatesIndices,
             DcaInstruments: UnitedStatesPlans,
+            PositionInstruments: UnitedStatesHoldings,
             CurrencyKey: "DcaCurrencyUsd"),
     ];
 

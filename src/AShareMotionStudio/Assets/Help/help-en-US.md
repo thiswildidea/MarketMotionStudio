@@ -6,7 +6,7 @@ This app turns A-share market indicators into vertical videos for phones. You pi
 
 Settings picks which market the app takes its quotes from; A-shares by default. A change takes effect after the app is restarted.
 
-- **A-shares**: all six pages are available.
+- **A-shares**: all seven pages are available.
 - **Hong Kong**: the return matrix and the gain-loss calendar work; the sector race runs on the four Hang Seng sub-indices; **there is no whole-market turnover figure, so that page is hidden**.
 - **United States**: the return matrix and the gain-loss calendar work; the sector race runs on ten SPDR sector ETFs; the volume page keeps its daily mode only, because the minute endpoint serves no US data; **amounts are quoted in dollars, and the whole-market turnover page is hidden**.
 
@@ -61,7 +61,15 @@ Buying one instrument for a fixed amount on a fixed cadence — every trading da
 
 - The one-tap instruments follow the market: broad and gold ETFs on the A-share market, the Hong Kong tracker funds, SPY, QQQ and GLD in the United States.
 - The amount and the cadence are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
-- Returns are computed on adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
+- Returns are computed on backward-adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
+
+## Holdings Return
+
+One purchase, held for years — a million into 中国平安 in 2015, say — animated as what the value and the return did.
+
+- The one-tap names follow the market: the A-share list is the stocks people actually say they have held (Ping An, Moutai, CMB...), Hong Kong gets Tencent, HSBC and the Tracker Fund, the United States gets Apple, Berkshire and SPY.
+- The initial capital and the holding span are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
+- Returns are computed on backward-adjusted closes — dividends reinvested, no fees. The backward adjustment anchors at the listing and accumulates dividends forward, so a heavy payer's early years never turn negative the way the forward-adjusted series can.
 
 ## Video
 

@@ -6,7 +6,7 @@ Diese App macht aus Kennzahlen des A-Aktien-Markts hochformatige Videos für das
 
 In den Einstellungen wird gewählt, aus welchem Markt die App ihre Kurse bezieht; voreingestellt sind A-Aktien. Eine Änderung gilt nach dem Neustart der App.
 
-- **A-Aktien**: alle sechs Seiten sind verfügbar.
+- **A-Aktien**: alle sieben Seiten sind verfügbar.
 - **Hongkong**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über die vier Hang-Seng-Subindizes; **eine Umsatzzahl für den Gesamtmarkt gibt es nicht, diese Seite wird ausgeblendet**.
 - **USA**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über zehn SPDR-Sektor-ETFs; die Volumenseite behält nur den Tagesmodus, weil der Minuten-Endpunkt keine US-Daten liefert; **Umsätze werden in Dollar angegeben, und die Seite für den Gesamtmarktumsatz ist ausgeblendet**.
 
@@ -61,7 +61,15 @@ Ein Wertpapier zum festen Betrag in festen Abständen gekauft — an jedem Hande
 
 - Die Ein-Tipp-Instrumente folgen dem Markt: Breite und Gold-ETFs auf dem A-Aktien-Markt, die Hongkonger Tracker-Fonds, in den USA SPY, QQQ und GLD.
 - Betrag und Rhythmus stellen Sie ein; der Zeitraum ist drei, fünf oder zehn Jahre, oder so weit zurück, wie es Daten gibt (etwa dreizehn Jahre).
-- Die Rendite wird auf bereinigten Schlusskursen gerechnet, ohne Gebühren. Das Ergebnis beschreibt die Kursreihe, nicht eine Rechnung, die so jemand hätte ausführen können.
+- Die Rendite wird auf rückwärts bereinigten Schlusskursen gerechnet, ohne Gebühren. Das Ergebnis beschreibt die Kursreihe, nicht eine Rechnung, die so jemand hätte ausführen können.
+
+## Depotrendite
+
+Ein einziger Kauf, über Jahre gehalten — etwa eine Million in 中国平安 im Jahr 2015 — als Animation dessen, was Wert und Rendite taten.
+
+- Die vorgeschlagenen Namen folgen dem Markt: In China sind es die Aktien, die Menschen wirklich lange gehalten haben (Ping An, Moutai, CMB …), in Hongkong Tencent, HSBC und der Tracker Fund, in den USA Apple, Berkshire und SPY.
+- Anfangskapital und Haltezeitraum sind frei wählbar; der Zeitraum umfasst drei, fünf oder zehn Jahre — oder alles, was die Daten hergeben (etwa dreizehn Jahre).
+- Die Rendite beruht auf rückwärts adjustierten Kursen — Dividenden reinvestiert, ohne Gebühren. Die rückwärtige Adjustierung verankert sich am Börsengang und trägt Dividenden nach vorn, sodass die frühen Jahre eines fleißigen Zahlers nie nichtpositiv werden, wie es die vorwärts adjustierte Reihe zulässt.
 
 ## Video
 

@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>10 dernières années</value></data>
   <data name="DcaRangeMax"><value>Le plus ancien disponible</value></data>
   <data name="DcaDefaultTitle"><value>Plan DCA : {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0} : {1} {2} dans {3} · clôtures ajustées · sans frais</value></data>
+  <data name="DcaSubtitleLine"><value>{0} : {1} {2} dans {3} · clôtures rétro-ajustées · sans frais</value></data>
   <data name="DcaRangeLine"><value>{0} au {1} · {2} achats</value></data>
   <data name="DcaReturnLabel"><value>Rendement</value></data>
   <data name="DcaLegendValue"><value>Valeur</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0} jours de bourse ({1} au {2}), {3} achats chargés</value></data>
   <data name="DcaAmountInvalid"><value>Le montant par achat doit être un nombre positif</value></data>
   <data name="WrongMarket"><value>Ce code n'appartient pas au marché actuel ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Rendement de position</value></data>
+  <data name="PositionPageTitle.Text"><value>Rendement de position</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Un seul achat, conservé — ce que la valeur et le rendement ont fait au fil des ans</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Capital initial</value></data>
+  <data name="PositionRangeLabel.Header"><value>Période de détention</value></data>
+  <data name="PositionDefaultTitle"><value>Rendement de : {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0} : {1} {2} de {3} achetés · cours rétro-ajustés · dividendes réinvestis</value></data>
+  <data name="PositionRangeLine"><value>{0} au {1} · conservé {2} jours</value></data>
+  <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardCapital"><value>Capital investi</value></data>
+  <data name="PositionCardDrawdown"><value>Recul maximal</value></data>
+  <data name="PositionFetched"><value>{0} jours de bourse ({1} au {2}), {3} jours de détention</value></data>
+  <data name="PositionCapitalInvalid"><value>Le capital initial doit être un nombre positif</value></data>
 </root>

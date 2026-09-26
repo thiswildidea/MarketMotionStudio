@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>최근 10년</value></data>
   <data name="DcaRangeMax"><value>가능한 최대</value></data>
   <data name="DcaDefaultTitle"><value>{0} 적립 투자</value></data>
-  <data name="DcaSubtitleLine"><value>{0} {1}{2}을 {3}에 적립 · 조정 종가 · 수수료 없음</value></data>
+  <data name="DcaSubtitleLine"><value>{0} {1}{2}을 {3}에 적립 · 후복원 종가 · 수수료 없음</value></data>
   <data name="DcaRangeLine"><value>{0} ~ {1} · {2}회 적립</value></data>
   <data name="DcaReturnLabel"><value>수익률</value></data>
   <data name="DcaLegendValue"><value>평가액</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>거래일 {0}일({1}~{2}), {3}회 적립 가져옴</value></data>
   <data name="DcaAmountInvalid"><value>회당 금액은 양수여야 합니다</value></data>
   <data name="WrongMarket"><value>이 코드는 현재 시장({0})에 속하지 않습니다.</value></data>
+  <data name="NavPosition.Content"><value>보유 수익</value></data>
+  <data name="PositionPageTitle.Text"><value>보유 수익</value></data>
+  <data name="PositionPageSubtitle.Text"><value>한 번 사서 계속 보유——가치와 수익률의 흐름</value></data>
+  <data name="PositionCapitalLabel.Header"><value>초기 자본</value></data>
+  <data name="PositionRangeLabel.Header"><value>보유 기간</value></data>
+  <data name="PositionDefaultTitle"><value>보유 수익: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}에 {1} {2}로 {3} 매수 · 후복원 종가 · 배당 재투자 포함</value></data>
+  <data name="PositionRangeLine"><value>{0} ~ {1} · {2}일 보유</value></data>
+  <data name="PositionLegendCapital"><value>투입 자본</value></data>
+  <data name="PositionCardCapital"><value>투입 자본</value></data>
+  <data name="PositionCardDrawdown"><value>최대 낙폭</value></data>
+  <data name="PositionFetched"><value>{0}거래일({1} ~ {2}), {3}일 보유</value></data>
+  <data name="PositionCapitalInvalid"><value>초기 자본은 0보다 큰 숫자여야 합니다</value></data>
 </root>

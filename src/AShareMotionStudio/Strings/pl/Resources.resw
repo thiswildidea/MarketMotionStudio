@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Ostatnie 10 lat</value></data>
   <data name="DcaRangeMax"><value>Najdalej wstecz</value></data>
   <data name="DcaDefaultTitle"><value>Plan DCA: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} w {3} · skorygowane zamknięcia · bez opłat</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} w {3} · zamknięcia skorygowane wstecz · bez opłat</value></data>
   <data name="DcaRangeLine"><value>od {0} do {1} · {2} zakupów</value></data>
   <data name="DcaReturnLabel"><value>Stopa zwrotu</value></data>
   <data name="DcaLegendValue"><value>Wartość</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>Wczytano {0} dni sesji ({1} do {2}), {3} zakupów</value></data>
   <data name="DcaAmountInvalid"><value>Kwota zakupu musi być liczbą dodatnią</value></data>
   <data name="WrongMarket"><value>Ten kod nie należy do bieżącego rynku ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Zwrot z pozycji</value></data>
+  <data name="PositionPageTitle.Text"><value>Zwrot z pozycji</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Jeden zakup, trzymany — co wartość i stopa zwrotu zrobiły przez te lata</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Kapitał początkowy</value></data>
+  <data name="PositionRangeLabel.Header"><value>Okres trzymania</value></data>
+  <data name="PositionDefaultTitle"><value>Zwrot z pozycji: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: kupione {1} {2} na {3} · ceny skorygowane wstecz · dywidendy reinwestowane</value></data>
+  <data name="PositionRangeLine"><value>{0} do {1} · trzymane {2} dni</value></data>
+  <data name="PositionLegendCapital"><value>Kapitał</value></data>
+  <data name="PositionCardCapital"><value>Włożony kapitał</value></data>
+  <data name="PositionCardDrawdown"><value>Maks. obsunięcie</value></data>
+  <data name="PositionFetched"><value>{0} dni sesyjnych ({1} do {2}), trzymane {3} dni</value></data>
+  <data name="PositionCapitalInvalid"><value>Kapitał początkowy musi być liczbą dodatnią</value></data>
 </root>

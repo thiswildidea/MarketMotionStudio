@@ -53,12 +53,9 @@ public sealed record DcaSeries(
 /// <summary>
 /// Builds a plan from one instrument's daily closes.
 ///
-/// The closes come from the same bars endpoint every other page reads, with one
-/// difference: a plan is about *years*, and one request carries only
-/// <see cref="TencentKline.MostBarsPerRequest"/> bars — about two and a half years.
-/// So the range is walked backwards one request at a time, each one ending the day
-/// before the earliest bar the last one returned, until the start date is under it
-/// or the source stops answering with earlier data.
+/// The closes come from <see cref="HistoryWalk"/>, the shared backwards walk that
+/// gathers years of bars from an endpoint that serves them six hundred and forty
+/// at a time; see there for why the range is negotiated rather than asked for.
 ///
 /// The simulation itself is deliberately plain: on each buy date the fixed amount
 /// buys <c>amount / close</c> shares at that day's close, and every day is marked
@@ -69,14 +66,6 @@ public sealed record DcaSeries(
 /// </summary>
 public static class DcaPlanner
 {
-    /// <summary>
-    /// Requests beyond this are not made. Twenty pages is about twelve years of
-    /// trading days, which is past where the source's adjusted history thins out
-    /// anyway — the walk stops on its own when a page returns nothing earlier, and
-    /// this is the backstop that keeps a pathological response from looping.
-    /// </summary>
-    private const int MostRequests = 20;
-
     public static async Task<DcaSeries> LoadAsync(
         TencentKline kline,
         string code,
@@ -93,40 +82,7 @@ public static class DcaPlanner
             throw new ArgumentException("The amount must be positive.", nameof(amount));
         }
 
-        // ---- the closes, walked backwards a page at a time --------------------------
-        var closes = new SortedList<DateOnly, double>();
-
-        var cursor = end;
-        var earliestSeen = end;
-
-        for (var request = 0; request < MostRequests; request++)
-        {
-            progress.Report($"{display}: {closes.Count} …");
-
-            var bars = await kline.StockBarsAsync(code, start, cursor, cancellation);
-
-            if (bars.Count == 0)
-            {
-                break;
-            }
-
-            foreach (var bar in bars)
-            {
-                closes.TryAdd(bar.Date, bar.Close);
-            }
-
-            var earliest = bars[0].Date;
-
-            // The page ends where the last one began, so nothing earlier arrived:
-            // either the range is covered or the source has no more. Either way, done.
-            if (earliest >= earliestSeen || earliest <= start)
-            {
-                break;
-            }
-
-            earliestSeen = earliest;
-            cursor = earliest.AddDays(-1);
-        }
+        var closes = await HistoryWalk.ClosesAsync(kline, code, display, start, end, progress, cancellation);
 
         if (closes.Count < 2)
         {

@@ -6,7 +6,7 @@ Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara 
 
 Ayarlarda uygulamanın hangi piyasadan fiyat aldığı seçilir; varsayılan A hisseleri. Değişiklik uygulama yeniden başlatıldıktan sonra geçerli olur.
 
-- **A hisseleri**: altı sayfanın tümü kullanılabilir.
+- **A hisseleri**: yedi sayfanın tümü kullanılabilir.
 - **Hong Kong**: getiri matrisi ve takvim çalışır; sektör yarışı dört Hang Seng alt endeksiyle koşulur; **tüm piyasa için veri yok, bu yüzden o sayfa gizlenir**.
 - **ABD**: getiri matrisi ve takvim çalışır; sektör yarışı on SPDR sektör ETF'i ile koşulur; hacim sayfasında yalnızca günlük mod kalır, çünkü dakikalık uç nokta ABD verisi sunmaz; **tutarlar dolar cinsindendir ve tüm piyasa hacmi sayfası gizlenir**.
 
@@ -61,7 +61,15 @@ Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her ha
 
 - Tek dokunuşla seçilen varlıklar piyasayı izler: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD.
 - Tutarı ve sıklığı siz belirlersiniz; süre üç, beş veya on yıl, ya da verinin geldiği en eski tarihe kadar (yaklaşık on üç yıl).
-- Getiri düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
+- Getiri geriye düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
+
+## Pozisyon Getirisi
+
+Tek bir alım, yıllarca tutulan — örneğin 2015'te 中国平安'a bir milyon — değer ve getirinin ne yaptığının animasyonu.
+
+- Önerilen isimler pazara göre değişir: Çin'de insanların gerçekten "tutmuştum" dediği hisseler (Ping An, Moutai, CMB…), Hong Kong'da Tencent, HSBC ve Tracker Fund, ABD'de Apple, Berkshire ve SPY.
+- Başlangıç sermayesi ve elde tutma süresi size ait; süre üç, beş veya on yıl olabilir, ya da verilerin yettiği kadar (yaklaşık on üç yıl).
+- Getiri geriye düzeltilmiş kapanışlarla — temettüler yeniden yatırıldı, ücretsiz — hesaplanır. Geriye düzeltme halka arzın ilk gününe demir atar ve temettüleri ileriye biriktirir, böylece cömert bir ödeyicinin ilk yılları asla negatif olmaz; ileriye düzeltmede bu olabilir.
 
 ## Video
 

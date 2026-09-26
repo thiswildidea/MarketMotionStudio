@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>近 10 年</value></data>
   <data name="DcaRangeMax"><value>最長（約 13 年）</value></data>
   <data name="DcaDefaultTitle"><value>{0}定投計劃</value></data>
-  <data name="DcaSubtitleLine"><value>{0}投入{1}{2}買入{3} · 前復權收盤價 · 不計費用</value></data>
+  <data name="DcaSubtitleLine"><value>{0}投入{1}{2}買入{3} · 後復權收盤價 · 不計費用</value></data>
   <data name="DcaRangeLine"><value>{0} 至 {1} · 定投 {2} 期</value></data>
   <data name="DcaReturnLabel"><value>報酬率</value></data>
   <data name="DcaLegendValue"><value>市值</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>已取 {0} 個交易日（{1} 至 {2}），定投 {3} 期</value></data>
   <data name="DcaAmountInvalid"><value>每期金額需是大於零的數字</value></data>
   <data name="WrongMarket"><value>此代碼不屬於目前的市場（{0}）。</value></data>
+  <data name="NavPosition.Content"><value>持倉收益</value></data>
+  <data name="PositionPageTitle.Text"><value>持倉收益</value></data>
+  <data name="PositionPageSubtitle.Text"><value>一筆買入、長期持有，動畫展示市值與收益率的起落</value></data>
+  <data name="PositionCapitalLabel.Header"><value>初始本金</value></data>
+  <data name="PositionRangeLabel.Header"><value>持有區間</value></data>
+  <data name="PositionDefaultTitle"><value>持倉收益：{0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}買入{1}{2}的{3} · 後復權收盤價 · 分紅按再投計入</value></data>
+  <data name="PositionRangeLine"><value>{0} 至 {1} · 持有 {2} 天</value></data>
+  <data name="PositionLegendCapital"><value>投入本金</value></data>
+  <data name="PositionCardCapital"><value>投入本金</value></data>
+  <data name="PositionCardDrawdown"><value>最大回撤</value></data>
+  <data name="PositionFetched"><value>已取 {0} 個交易日（{1} 至 {2}），持有 {3} 天</value></data>
+  <data name="PositionCapitalInvalid"><value>初始本金需是大於零的數字</value></data>
 </root>

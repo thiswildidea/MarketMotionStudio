@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Последние 10 лет</value></data>
   <data name="DcaRangeMax"><value>Насколько назад есть данные</value></data>
   <data name="DcaDefaultTitle"><value>DCA-план: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0}: {1} {2} в {3} · скорректированные цены закрытия · без комиссий</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} в {3} · цены закрытия с обратной корректировкой · без комиссий</value></data>
   <data name="DcaRangeLine"><value>с {0} по {1} · {2} взносов</value></data>
   <data name="DcaReturnLabel"><value>Доходность</value></data>
   <data name="DcaLegendValue"><value>Стоимость</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>Загружено {0} торговых дней ({1} — {2}), {3} взносов</value></data>
   <data name="DcaAmountInvalid"><value>Сумма взноса должна быть положительным числом</value></data>
   <data name="WrongMarket"><value>Этот код не относится к текущему рынку ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Доходность позиции</value></data>
+  <data name="PositionPageTitle.Text"><value>Доходность позиции</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Одна покупка, удерживаемая — как стоимость и доходность менялись за эти годы</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Начальный капитал</value></data>
+  <data name="PositionRangeLabel.Header"><value>Период владения</value></data>
+  <data name="PositionDefaultTitle"><value>Доходность позиции: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: куплено {1} {2} в {3} · цены с обратной корректировкой · дивиденды реинвестированы</value></data>
+  <data name="PositionRangeLine"><value>{0} — {1} · в владении {2} дн.</value></data>
+  <data name="PositionLegendCapital"><value>Капитал</value></data>
+  <data name="PositionCardCapital"><value>Вложенный капитал</value></data>
+  <data name="PositionCardDrawdown"><value>Максимальная просадка</value></data>
+  <data name="PositionFetched"><value>{0} торговых дней ({1} — {2}), период владения {3} дн.</value></data>
+  <data name="PositionCapitalInvalid"><value>Начальный капитал должен быть положительным числом</value></data>
 </root>

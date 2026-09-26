@@ -6,7 +6,7 @@ Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyber
 
 V nastavení se volí, z kterého trhu aplikace bere kurzy; výchozí jsou A-akcie. Změna se projeví po restartu aplikace.
 
-- **A-akcie**: všech šest stránek je k dispozici.
+- **A-akcie**: všech sedm stránek je k dispozici.
 - **Hongkong**: matice výnosů a kalendář fungují; závod sektorů běží na čtyřech subindexech Hang Seng; **údaj za celý trh neexistuje, proto je tato stránka skrytá**.
 - **USA**: matice výnosů a kalendář fungují; závod sektorů běží na deseti sektorových ETF SPDR; stránka objemu má jen denní režim, protože minutový endpoint data pro USA nevrací; **částky jsou v dolarech a stránka obratu celého trhu je skrytá**.
 
@@ -61,7 +61,15 @@ Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý o
 
 - Nástroje na jedno klepnutí sledují trh: široké a zlaté ETF u A-akcí, hongkongské trackerové fondy, ve USA SPY, QQQ a GLD.
 - Částku a frekvenci si nastavíte sami; období je tři, pět nebo deset let, nebo tak daleko zpět, jak jsou data k dispozici (zhruba třináct let).
-- Výnos se počítá na upravených uzavíracích cenách, bez poplatků. Výsledek popisuje řadu cen, nikoli účtenku, kterou by někdo mohl realizovat.
+- Výnos se počítá na zpětně upravených cenách, bez poplatků. Výsledek popisuje řadu cen, nikoli účtenku, kterou by někdo mohl realizovat.
+
+## Výnos pozice
+
+Jediný nákup, držený roky — třeba milion do 中国平安 v roce 2015 — animovaný jako to, co udělaly hodnota a výnos.
+
+- Nabízená jména odpovídají trhu: v Číně akcie, které lidé skutečně říkají, že drželi (Ping An, Moutai, CMB…), v Hongkongu Tencent, HSBC a Tracker Fund, v USA Apple, Berkshire a SPY.
+- Počáteční kapitál a doba držení jsou na vás; doba může být tři, pět nebo deset let, nebo až tam, kam data sahají (zhruba třináct let).
+- Výnos se počítá ze zpětně upravených cen — dividendy reinvestovány, bez poplatků. Zpětná úprava kotví u prvního dne emise a hromadí dividendy dopředu, takže rané roky štědrého plátce nikdy nejsou nekladné, jak se může stát u dopředné úpravy.
 
 ## Video
 

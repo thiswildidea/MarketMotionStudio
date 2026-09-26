@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>直近 10 年</value></data>
   <data name="DcaRangeMax"><value>取得できる最古まで</value></data>
   <data name="DcaDefaultTitle"><value>{0}積立投資</value></data>
-  <data name="DcaSubtitleLine"><value>{0}、{1}{2}を{3}に投入 · 調整済み終値 · 手数料なし</value></data>
+  <data name="DcaSubtitleLine"><value>{0}、{1}{2}を{3}に投入 · 後復権終値 · 手数料なし</value></data>
   <data name="DcaRangeLine"><value>{0} から {1} · 積立 {2} 回</value></data>
   <data name="DcaReturnLabel"><value>リターン</value></data>
   <data name="DcaLegendValue"><value>評価額</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0}営業日（{1}〜{2}）、積立{3}回を取得</value></data>
   <data name="DcaAmountInvalid"><value>1回の金額は正の数で入力してください</value></data>
   <data name="WrongMarket"><value>このコードは現在の市場（{0}）の銘柄ではありません。</value></data>
+  <data name="NavPosition.Content"><value>保有収益</value></data>
+  <data name="PositionPageTitle.Text"><value>保有収益</value></data>
+  <data name="PositionPageSubtitle.Text"><value>一度だけ買って持ち続ける——時価評価とリターンの移り変わり</value></data>
+  <data name="PositionCapitalLabel.Header"><value>初期資金</value></data>
+  <data name="PositionRangeLabel.Header"><value>保有期間</value></data>
+  <data name="PositionDefaultTitle"><value>保有収益：{0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}に{1}{2}で{3}を購入 · 後復権終値 · 配当は再投資として含む</value></data>
+  <data name="PositionRangeLine"><value>{0} 〜 {1} · {2}日保有</value></data>
+  <data name="PositionLegendCapital"><value>投入資本</value></data>
+  <data name="PositionCardCapital"><value>投入資本</value></data>
+  <data name="PositionCardDrawdown"><value>最大ドローダウン</value></data>
+  <data name="PositionFetched"><value>{0} 営業日（{1} 〜 {2}）、{3}日保有</value></data>
+  <data name="PositionCapitalInvalid"><value>初期資金は0より大きい数値を入力してください</value></data>
 </root>

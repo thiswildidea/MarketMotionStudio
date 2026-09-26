@@ -322,7 +322,7 @@
   <data name="DcaRange10Y"><value>Letzte 10 Jahre</value></data>
   <data name="DcaRangeMax"><value>So weit zurück wie möglich</value></data>
   <data name="DcaDefaultTitle"><value>Sparplan: {0}</value></data>
-  <data name="DcaSubtitleLine"><value>{0} {1} {2} in {3} · bereinigte Schlusskurse · ohne Gebühren</value></data>
+  <data name="DcaSubtitleLine"><value>{0} {1} {2} in {3} · rückwärts bereinigte Schlusskurse · ohne Gebühren</value></data>
   <data name="DcaRangeLine"><value>{0} bis {1} · {2} Käufe</value></data>
   <data name="DcaReturnLabel"><value>Rendite</value></data>
   <data name="DcaLegendValue"><value>Wert</value></data>
@@ -338,4 +338,17 @@
   <data name="DcaFetched"><value>{0} Handelstage ({1} bis {2}), {3} Käufe geladen</value></data>
   <data name="DcaAmountInvalid"><value>Der Betrag pro Kauf muss eine positive Zahl sein</value></data>
   <data name="WrongMarket"><value>Dieser Code gehört nicht zum aktuellen Markt ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Depotrendite</value></data>
+  <data name="PositionPageTitle.Text"><value>Depotrendite</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Ein einziger Kauf, gehalten — was Wert und Rendite über die Jahre taten</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Anfangskapital</value></data>
+  <data name="PositionRangeLabel.Header"><value>Haltezeitraum</value></data>
+  <data name="PositionDefaultTitle"><value>Depotrendite: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: {1} {2} in {3} gekauft · rückwärts adjustierte Kurse · Dividenden reinvestiert</value></data>
+  <data name="PositionRangeLine"><value>{0} bis {1} · {2} Tage gehalten</value></data>
+  <data name="PositionLegendCapital"><value>Kapital</value></data>
+  <data name="PositionCardCapital"><value>Eingesetztes Kapital</value></data>
+  <data name="PositionCardDrawdown"><value>Max. Drawdown</value></data>
+  <data name="PositionFetched"><value>{0} Handelstage ({1} bis {2}), {3} Tage gehalten</value></data>
+  <data name="PositionCapitalInvalid"><value>Das Anfangskapital muss eine positive Zahl sein</value></data>
 </root>
