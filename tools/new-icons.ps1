@@ -1,4 +1,4 @@
-<#
+﻿<#
     Generates every image the package manifest declares, from one drawing routine.
 
     Run from the repository root:
@@ -36,7 +36,7 @@ $ErrorActionPreference = 'Stop'
 
 Add-Type -AssemblyName System.Drawing
 
-$assets = Join-Path $PSScriptRoot '..\src\AShareMotionStudio\Assets'
+$assets = Join-Path $PSScriptRoot '..\src\MarketMotionStudio\Assets'
 $assets = [System.IO.Path]::GetFullPath($assets)
 New-Item -ItemType Directory -Force -Path $assets | Out-Null
 

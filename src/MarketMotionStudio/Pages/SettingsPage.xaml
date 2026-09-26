@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MarketMotionStudio.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls">
+
+    <ScrollViewer>
+        <StackPanel Padding="24" Spacing="16" MaxWidth="720" HorizontalAlignment="Left">
+
+            <TextBlock x:Uid="SettingsPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsLanguageLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ComboBox x:Name="LanguageCombo" MinWidth="240" SelectionChanged="OnLanguageChanged" />
+
+                    <!-- Beside the language because both are "how it looks", and next
+                         to each other the difference is visible: this one changes as
+                         you pick it. -->
+                    <TextBlock x:Uid="SettingsThemeLabel"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ComboBox x:Name="ThemeCombo" MinWidth="240" SelectionChanged="OnThemeChanged" />
+
+                    <TextBlock x:Uid="SettingsThemeNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <!-- The market is asked before the appearance settings rather than after,
+                 because it decides which pages exist at all: a page the chosen market
+                 has no data for is not offered, so it is the choice that changes most
+                 about what the app is. -->
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsMarketLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ComboBox x:Name="MarketCombo" MinWidth="240" SelectionChanged="OnMarketChanged" />
+                    <TextBlock x:Uid="SettingsMarketNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="SettingsOutput" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <TextBlock x:Name="OutputPathText"
+                               TextWrapping="Wrap"
+                               IsTextSelectionEnabled="True"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+
+                    <TextBlock x:Uid="SettingsOutputNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0">
+                        <Button x:Name="ChooseOutputButton" x:Uid="SettingsOutputChoose" Click="OnChooseOutput" />
+                        <Button x:Name="ForgetOutputButton" x:Uid="SettingsOutputForget" Click="OnForgetOutput" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="SettingsStorage" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Name="StoragePathText"
+                               TextWrapping="Wrap"
+                               IsTextSelectionEnabled="True"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsStorageNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="SettingsTrayIcon" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ToggleSwitch x:Name="TrayToggle" Toggled="OnTrayToggled" />
+                    <TextBlock x:Uid="SettingsTrayIconNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="SettingsStartup" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ToggleSwitch x:Name="StartupToggle" Toggled="OnStartupToggled" />
+                    <TextBlock x:Uid="SettingsStartupNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <!-- The disclaimer is in the Store listing, at the end of the help
+                 document and on both indicator pages. Repeated on purpose: this is
+                 the one sentence whose absence is a problem, and the places it
+                 appears are the places someone arrives from. -->
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="6">
+                    <TextBlock x:Uid="SettingsSources" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsSourcesNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="StudioDisclaimer"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="8"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="6">
+                    <TextBlock x:Uid="SettingsContact" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- The version is in the mail subject already, but that is no
+                         use to someone reading it out over a phone, and it is the
+                         first thing any reply would ask for. Selectable, because it
+                         exists to be copied. -->
+                    <TextBlock x:Name="VersionText"
+                               IsTextSelectionEnabled="True"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <HyperlinkButton x:Name="ContactLink" Padding="0" Click="OnContact" />
+
+                    <TextBlock x:Uid="SettingsContactNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <mux:InfoBar x:Name="Status" IsOpen="False" IsClosable="False">
+                <mux:InfoBar.ActionButton>
+                    <!-- The restart is the act that applies the language, so it is
+                         offered here rather than described and left to the user to
+                         perform. -->
+                    <Button x:Name="RestartButton"
+                            x:Uid="SettingsLanguageRestartNow"
+                            Visibility="Collapsed"
+                            Click="OnRestartNow" />
+                </mux:InfoBar.ActionButton>
+            </mux:InfoBar>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

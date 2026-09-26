@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Cover + MP4 at 1440p30, back to back in one fresh session.
 
 The earlier 1440p cover/video mismatch is suspect for a boring reason: the two files
@@ -15,10 +15,10 @@ import time
 
 import uiautomation as auto
 
-LOG = r"D:\software\AShareMotionStudio\artifacts\final.txt"
+LOG = r"D:\software\MarketMotionStudio\artifacts\final.txt"
 CRASH = (r"C:\Users\user\AppData\Local\Packages"
-         r"\AShareMotionStudio.Dev_cdwthxytk4q78\LocalState\crash.log")
-APPID = "AShareMotionStudio.Dev_cdwthxytk4q78!App"
+         r"\MarketMotionStudio.Dev_cdwthxytk4q78\LocalState\crash.log")
+APPID = "MarketMotionStudio.Dev_cdwthxytk4q78!App"
 OUTDIR = os.path.join(os.path.expanduser("~"), "Desktop", "新建文件夹")
 lines = []
 
@@ -65,9 +65,9 @@ def invoke(c, what):
 
 def alive():
     try:
-        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq AShareMotionStudio.exe"],
+        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq MarketMotionStudio.exe"],
                            capture_output=True)
-        return b"AShareMotionStudio.exe" in p.stdout
+        return b"MarketMotionStudio.exe" in p.stdout
     except Exception:
         return None
 
@@ -110,7 +110,7 @@ except Exception:
 
 open(LOG, "w", encoding="utf-8").close()
 
-p = subprocess.run(["taskkill", "/IM", "AShareMotionStudio.exe", "/F"],
+p = subprocess.run(["taskkill", "/IM", "MarketMotionStudio.exe", "/F"],
                    capture_output=True)
 say("kill: %s" % p.returncode)
 time.sleep(3)
@@ -121,7 +121,7 @@ win = None
 for _ in range(30):
     time.sleep(1)
     try:
-        w = auto.WindowControl(searchDepth=1, Name="A股指标动画工作室", foundIndex=1)
+        w = auto.WindowControl(searchDepth=1, Name="行情指标动画工作室", foundIndex=1)
         if w.Exists(maxSearchSeconds=2):
             win = w
             break

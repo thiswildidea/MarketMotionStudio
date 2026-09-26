@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>zh-Hant</value></data>
+
+  <data name="AppTitle.Text"><value>行情指標動畫工作室</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>市場成交額</value></data>
+  <data name="NavStockVolume.Content"><value>成交量換手率</value></data>
+  <data name="NavHelp.Content"><value>說明</value></data>
+  <data name="NavSettings.Content"><value>設定</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>市場成交額</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>全市場或單一板塊的每日成交額。兩種畫面形態，切換不用重新取數。</value></data>
+  <data name="StockVolumePageTitle.Text"><value>成交量換手率</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>單一股票的成交量與週轉率，可看一段區間，也可看某一天之內。</value></data>
+  <data name="SettingsPageTitle.Text"><value>設定</value></data>
+  <data name="HelpPageTitle.Text"><value>說明</value></data>
+  <data name="HelpPageSubtitle.Text"><value>每個頁面做什麼、資料從哪來，以及這些影片不是什麼。</value></data>
+  <data name="HelpDocument"><value>help-zh-Hant.md</value></data>
+  <data name="HelpMissing"><value>無法開啟該語言的說明文件。</value></data>
+
+  <data name="StudioDataSection.Text"><value>資料</value></data>
+  <data name="StudioTitleSection.Text"><value>標題</value></data>
+  <data name="StudioTitleText.Header"><value>標題文字</value></data>
+  <data name="StudioTitleNote.Text"><value>留空則使用預設標題。過長的標題會按比例縮小字號而不是被裁掉，最多縮到一半。</value></data>
+  <data name="StudioHideTitle.Header"><value>隱藏標題</value></data>
+  <data name="StudioHideTitleNote.Text"><value>標題佔的那一行還給圖表，下面的內容整體上移一行。底邊由下邊界鎖住不動，所以面板會長高。取消勾選可精確恢復原樣。</value></data>
+  <data name="StockTitlePlaceholder"><value>使用抓到的股票名稱</value></data>
+  <data name="StudioVideoSection.Text"><value>影片</value></data>
+  <data name="StudioLayoutSection.Text"><value>版面</value></data>
+  <data name="StudioRange.Header"><value>資料區間</value></data>
+  <data name="StudioRange1M"><value>近 1 個月</value></data>
+  <data name="StudioRange3M"><value>近 3 個月</value></data>
+  <data name="StudioRange6M"><value>近 6 個月</value></data>
+  <data name="StudioRange12M"><value>近 12 個月</value></data>
+  <data name="StudioRangeCustom"><value>自訂</value></data>
+  <data name="StudioRangeFrom.Header"><value>起始日期</value></data>
+  <data name="StudioRangeTo.Header"><value>結束日期</value></data>
+  <data name="StudioDuration"><value>影片長度：{0} 秒</value></data>
+  <data name="StudioResolution.Text"><value>解析度</value></data>
+  <data name="StudioFrameRate.Text"><value>影格率</value></data>
+  <data name="StudioQuality.Text"><value>畫質</value></data>
+  <data name="StudioQualityStandard"><value>標準</value></data>
+  <data name="StudioQualityHigh"><value>高畫質</value></data>
+  <data name="StudioQualityUltra"><value>超高畫質</value></data>
+  <data name="StudioBitrate"><value>約 {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>左邊界：{0}</value></data>
+  <data name="StudioMarginRight"><value>右邊界：{0}</value></data>
+  <data name="StudioMarginBottom"><value>下邊界：{0}</value></data>
+  <data name="StudioMarginTop"><value>上邊界：{0}</value></data>
+  <data name="StudioMarginNote.Text"><value>以 1080×1920 為基準計數，算繪時按所選解析度等比縮放，所以在這裡調好的值換解析度不必重調。左邊界同時決定 Y 軸刻度的落點。 上邊界從手機保留給系統介面的安全區起算，標題不會鑽進狀態列。</value></data>
+  <data name="StudioSafeArea.Header"><value>安全區參考線</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>標出手機應用程式會用自己介面遮住的區域。只畫在預覽裡，絕不會進入影片檔。</value></data>
+  <data name="StudioPlay.Content"><value>播放</value></data>
+  <data name="StudioPause.Content"><value>暫停</value></data>
+  <data name="StudioFetch.Content"><value>取得資料</value></data>
+  <data name="StudioExport.Content"><value>匯出 MP4</value></data>
+  <data name="StudioCancel.Content"><value>取消</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioStageNoData"><value>尚無資料</value></data>
+  <data name="StudioCredit"><value>資料來源：騰訊財經</value></data>
+  <data name="NavMatrix.Content"><value>收益矩陣</value></data>
+  <data name="MatrixPageTitle.Text"><value>收益矩陣</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>月K一次十年，格子逐個點亮；看單標的的季節性，或一籃子標的的輪動。</value></data>
+  <data name="MatrixModeLabel.Text"><value>矩陣類型</value></data>
+  <data name="MatrixModeYear.Content"><value>單標的 年×月</value></data>
+  <data name="MatrixModeCompare.Content"><value>多標的 標的×月</value></data>
+  <data name="MatrixTarget.Header"><value>標的</value></data>
+  <data name="MatrixYearsLabel.Text"><value>年數</value></data>
+  <data name="MatrixYears.Header"><value>年數</value></data>
+  <data name="MatrixYearsAll"><value>全部</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>月數</value></data>
+  <data name="MatrixMonths.Header"><value>月數</value></data>
+  <data name="MatrixListIndices"><value>寬基指數</value></data>
+  <data name="MatrixChosen"><value>當前：{0}（{1}）</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>月K介面異常或該代碼無資料。</value></data>
+  <data name="MatrixTooFewMonths"><value>可用月份不足。</value></data>
+  <data name="MatrixTooFewShared"><value>各標的共有的月份不足。</value></data>
+  <data name="MatrixTailYear"><value>全年</value></data>
+  <data name="MatrixTailSubtotal"><value>小計</value></data>
+  <data name="MatrixTailTotal"><value>累計</value></data>
+  <data name="MatrixYearSpan"><value>{0} 年至今 · 共 {1} 個月</value></data>
+  <data name="MatrixYearTitle"><value>{0}月度收益{1}年圖</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · 月度漲跌幅 · 單位：%</value></data>
+  <data name="MatrixCmpSpan"><value>{0} 至 {1} · 共 {2} 個月</value></data>
+  <data name="MatrixCmpTitle"><value>{0}月度輪動</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · 月度漲跌幅 · 單位：%</value></data>
+  <data name="MatrixStatBestMonth"><value>最強月</value></data>
+  <data name="MatrixStatWorstMonth"><value>最弱月</value></data>
+  <data name="MatrixStatUpRatio"><value>上漲月佔比</value></data>
+  <data name="MatrixStatBestSingle"><value>最強單月</value></data>
+  <data name="MatrixStatChampion"><value>冠軍</value></data>
+  <data name="MatrixStatLast"><value>墊底</value></data>
+  <data name="MatrixStatTargets"><value>標的數</value></data>
+  <data name="MatrixStatSpan"><value>跨度</value></data>
+  <data name="MatrixMonthValue"><value>{0}月 {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0} 個</value></data>
+  <data name="MatrixCountMonths"><value>{0} 個月</value></data>
+  <data name="MatrixCountBounds"><value>已選 {0} 個（需 {1}–{2}）</value></data>
+  <data name="MatrixTooFewTargets"><value>至少選 {0} {1}才有對比意義。</value></data>
+  <data name="MatrixTooManyTargets"><value>最多 {0} 個，再多豎屏放不下。</value></data>
+  <data name="MatrixFetching"><value>正在取得 {0} 的月K …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} 個格子 · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>收益矩陣</value></data>
+  <data name="NavSectorRace.Content"><value>行業板塊競速</value></data>
+  <data name="SectorRacePageTitle.Text"><value>行業板塊競速</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>十幾條橫向條形互相超車，名次一路變到最後一幀。</value></data>
+  <data name="SectorRosterLabel.Text"><value>競速對象</value></data>
+  <data name="SectorRoster.Header"><value>競速對象</value></data>
+  <data name="SectorListLevel1"><value>中證一級行業</value></data>
+  <data name="SectorListTheme"><value>熱門主題板塊</value></data>
+  <data name="SectorListCustom"><value>自訂板塊</value></data>
+  <data name="SectorListStocks"><value>自選股</value></data>
+  <data name="SectorMetricLabel.Text"><value>競速指標</value></data>
+  <data name="SectorMetric.Header"><value>競速指標</value></data>
+  <data name="SectorMetricReturn"><value>累計漲幅 %</value></data>
+  <data name="SectorMetricAmount"><value>累計成交額 億</value></data>
+  <data name="SectorMetricReturnShort"><value>漲幅</value></data>
+  <data name="SectorMetricAmountShort"><value>成交額</value></data>
+  <data name="SectorAutoTitleReturn"><value>{0}漲幅競速</value></data>
+  <data name="SectorAutoTitleAmount"><value>{0}成交額競速</value></data>
+  <data name="SectorCount"><value>已選 {0} 個</value></data>
+  <data name="SectorCountBounds"><value>已選 {0} 個（需 {1}–{2}）</value></data>
+  <data name="SectorTooFew"><value>至少選 {0} {1}才能競速。</value></data>
+  <data name="SectorTooMany"><value>最多 {0} {1}，再多豎屏放不下。</value></data>
+  <data name="SectorTooManyStocks"><value>最多 {0} 隻。</value></data>
+  <data name="SectorTooFewSharedDays"><value>各對象共有的交易日不足 5 天。</value></data>
+  <data name="SectorFetching"><value>正在取得 {0} …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} 個交易日 · 領先 {3} {4} · 墊底 {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>行業板塊競速</value></data>
+  <data name="SectorUnitYi"><value>億</value></data>
+  <data name="SectorUnitSectors"><value>個板塊</value></data>
+  <data name="SectorUnitStocks"><value>隻個股</value></data>
+  <data name="StudioDisclaimer.Text"><value>僅供參考，不構成投資建議。</value></data>
+  <data name="StudioDataLayerPending"><value>取數還沒做。影片與版面參數、預覽現在都可用；資料層是下一步。</value></data>
+  <data name="StudioEncoderPending"><value>匯出還沒做。預覽走的已經是真正的算繪路徑；編碼器是下一步。</value></data>
+  <data name="MarketTurnoverStageTitle"><value>市場成交額</value></data>
+  <data name="StockVolumeStageTitle"><value>成交量換手率</value></data>
+  <data name="StockBadCode"><value>無法識別這個代碼。請輸入代碼、中文名或拼音，並從清單中選擇。</value></data>
+  <data name="StockChosen"><value>已選擇 {0}（{1}）。</value></data>
+  <data name="StockFetching"><value>正在取得 {0} …</value></data>
+  <data name="StockFetchingIntraday"><value>正在取得 {0} 的分時資料 …</value></data>
+  <data name="StockIntradayUnavailable"><value>該代碼沒有分時資料。</value></data>
+  <data name="StockIntradayTooFew"><value>該交易日分時點數過少。</value></data>
+  <data name="StockNoRate"><value>該標的無換手率資料。</value></data>
+  <data name="StockNoFloatShares"><value>未取得流通股本，換手率不可用。</value></data>
+  <data name="StockFetchedDaily"><value>{0}（{1}）：{2} 個交易日 · 量均 {3} {4}，峰 {5} · 換手均 {6}%，峰 {7}%</value></data>
+  <data name="StockFetchedIntraday"><value>{0}（{1}）：{2} 分鐘 · 全日換手 {3}%</value></data>
+  <data name="StockDailyHint"><value>日線模式：按交易日展示成交量與換手率。</value></data>
+  <data name="StockIntradayHint"><value>分時模式：介面僅提供最近 5 個交易日，點「取得資料」後可選擇具體日期。</value></data>
+  <data name="StockUnitHands"><value>手</value></data>
+  <data name="StockUnitTenThousand"><value>萬手</value></data>
+  <data name="StockPanelVolume"><value>成交量</value></data>
+  <data name="StockPanelMinuteVolume"><value>每分鐘成交量</value></data>
+  <data name="StockPanelTurnover"><value>換手率</value></data>
+  <data name="StockPanelCumTurnover"><value>累計換手率</value></data>
+  <data name="StockMeanLabel"><value>均值 {0}</value></data>
+  <data name="StockHighLabel"><value>最高</value></data>
+  <data name="StockLowLabel"><value>最低</value></data>
+  <data name="StockDayTurnover"><value>全日換手 {0}%</value></data>
+  <data name="StockIntradayLabel"><value>日內分時</value></data>
+  <data name="StockRangeJoiner"><value>至</value></data>
+  <data name="StockTradingDaysUnit"><value>個交易日</value></data>
+  <data name="StockMinutesUnit"><value>分鐘</value></data>
+  <data name="StockAddFavourite.Content"><value>收藏</value></data>
+  <data name="StockFavNeedData"><value>請先取得資料，收藏時會一併記住股票名稱。</value></data>
+  <data name="StockTradingDayNote.Text"><value>介面僅提供最近 5 個交易日。</value></data>
+
+  <data name="TurnoverScope.Header"><value>板塊</value></data>
+  <data name="TurnoverScopeWhole"><value>滬深全市場</value></data>
+  <data name="TurnoverScopeShanghai"><value>上證全市場</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>滬市主板</value></data>
+  <data name="TurnoverScopeStar"><value>科創板</value></data>
+  <data name="TurnoverScopeShenzhen"><value>深證全市場</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>深市主板</value></data>
+  <data name="TurnoverScopeChiNext"><value>創業板</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>滬深＋北證50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>主板按交易所總額減去對應板塊推導；北證 50 為成分股口徑，不覆蓋北交所全市場。</value></data>
+  <data name="TurnoverUnit"><value>億元</value></data>
+  <data name="TurnoverSubtitle"><value>{0}合計 · 單位：{1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} 至 {1} · 共 {2} 個交易日</value></data>
+  <data name="TurnoverAverageLabel"><value>日均 {0}</value></data>
+  <data name="TurnoverStatAverage"><value>日均</value></data>
+  <data name="TurnoverStatPeak"><value>最高</value></data>
+  <data name="TurnoverStatLow"><value>最低</value></data>
+  <data name="TurnoverStatRatio"><value>峰谷</value></data>
+  <data name="TurnoverFetching"><value>正在取得 {0} …</value></data>
+  <data name="TurnoverFetched"><value>共 {0} 個交易日（{1} ~ {2}）· 日均 {3} · 最高 {4} · 最低 {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>區間過長。單次最多約 {0} 個自然日，請縮短區間。</value></data>
+  <data name="TurnoverRangeReversed"><value>起始日期必須早於結束日期。</value></data>
+  <data name="TurnoverTooFewDays"><value>該區間內可用交易日不足。</value></data>
+  <data name="TurnoverView.Header"><value>畫面形態</value></data>
+  <data name="TurnoverViewBars"><value>柱狀競長</value></data>
+  <data name="TurnoverViewCalendar"><value>日曆熱力圖</value></data>
+  <data name="ReturnStageTitle"><value>上證指數每日漲跌</value></data>
+  <data name="ReturnSubtitle"><value>{0} · 收盤價日漲跌幅 · 單位：%</value></data>
+  <data name="ReturnStatUp"><value>上漲</value></data>
+  <data name="ReturnStatDown"><value>下跌</value></data>
+  <data name="ReturnStatBest"><value>最大漲</value></data>
+  <data name="ReturnStatWorst"><value>最大跌</value></data>
+  <data name="ReturnDayCount"><value>{0} 天</value></data>
+  <data name="StudioCover.Content"><value>匯出封面 PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>存的就是預覽裡當前停著的這一幀，按匯出解析度輸出。</value></data>
+  <data name="StudioCoverSaved"><value>封面已儲存：{0} · {1}×{2} · 位於 {3}</value></data>
+  <data name="StudioCoverCancelled"><value>未選擇資料夾，封面沒有儲存。</value></data>
+  <data name="StudioExporting"><value>正在編碼… {0}%</value></data>
+  <data name="StudioExported"><value>已匯出 {0} · {1} MB · 用 {2} 秒編出 {3} 秒影片 · 位於 {4}</value></data>
+  <data name="StudioExportCancelled"><value>未選擇資料夾，沒有匯出。</value></data>
+  <data name="TurnoverViewNote.Text"><value>隨時切換；兩種形態畫的是同一份資料，不會重新取數。</value></data>
+
+  <data name="StockSearch.Header"><value>股票</value></data>
+  <data name="StockSearch.PlaceholderText"><value>代碼、中文名稱或拼音</value></data>
+  <data name="StockNoneChosen"><value>尚未選擇股票。</value></data>
+  <data name="StockModeLabel.Text"><value>模式</value></data>
+  <data name="StockModeDaily.Content"><value>多個交易日</value></data>
+  <data name="StockModeIntraday.Content"><value>指定某一交易日</value></data>
+  <data name="StockTradingDay.Header"><value>交易日</value></data>
+
+  <data name="PageCancelled"><value>已停止。</value></data>
+  <data name="PageTimedOut"><value>耗時過長，已放棄。</value></data>
+  <data name="PageWorkFailed"><value>{0}失敗：{1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>語言</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>跟隨 Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>語言會在應用程式重新啟動後生效。</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>立即重新啟動</value></data>
+  <data name="SettingsThemeLabel.Text"><value>外觀</value></data>
+  <data name="SettingsThemeSystem"><value>跟隨 Windows</value></data>
+  <data name="SettingsThemeLight"><value>淺色</value></data>
+  <data name="SettingsThemeDark"><value>深色</value></data>
+  <data name="SettingsThemeNote.Text"><value>選取即生效，且只影響應用程式本身。影片有自己固定的配色，所以預覽仍然能代表成品。</value></data>
+  <data name="SettingsOutput.Text"><value>影片儲存位置</value></data>
+  <data name="SettingsOutputNote.Text"><value>透過資料夾選取器指定，因為封裝應用程式不能隨意往任意位置寫入。未設定時，第一次匯出會詢問並記住。</value></data>
+  <data name="SettingsOutputNotSet"><value>未設定 —— 第一次匯出時會詢問。</value></data>
+  <data name="SettingsOutputChoose.Content"><value>選擇資料夾…</value></data>
+  <data name="SettingsOutputForget.Content"><value>忘記</value></data>
+  <data name="SettingsOutputFailed"><value>無法設定該資料夾：{0}</value></data>
+  <data name="SettingsStorage.Text"><value>應用程式資料</value></data>
+  <data name="SettingsStorageNote.Text"><value>設定與當機記錄存在這裡。解除安裝時 Windows 會一併刪除；匯出的影片不在其中。</value></data>
+  <data name="SettingsSources.Text"><value>資料</value></data>
+  <data name="SettingsSourcesNote.Text"><value>行情來自騰訊財經的公開介面。成交額換算為億元；尚未收盤的當日會被剔除，因為未走完的一天只有集合競價量。</value></data>
+  <data name="SettingsContact.Text"><value>出了問題？</value></data>
+  <data name="SettingsContactNote.Text"><value>說明你當時在做什麼、本來期望看到什麼。上面的版本號已經帶在郵件主旨裡了。</value></data>
+  <data name="SettingsContactSubject"><value>行情指標動畫工作室 {0}</value></data>
+  <data name="SettingsContactFailed"><value>沒有郵件應用程式回應。請改為寫信到 {0}。（{1}）</value></data>
+  <data name="SettingsVersion"><value>版本 {0}</value></data>
+  <data name="SettingsRestartFailed"><value>應用程式無法重新啟動：{0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>漲跌日曆</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>漲跌日曆</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>任一 A 股股票或指數，每個交易日一格——漲紅跌綠，按月鋪開。</value></data>
+  <data name="GainCalendarDefaultTitle"><value>{0}每日漲跌</value></data>
+  <data name="GainCalendarFetching"><value>正在取得 {0} …</value></data>
+  <data name="GainCalendarFetched"><value>{0} 個交易日（{1} ~ {2}）· 上漲 {3} 天 · 下跌 {4} 天</value></data>
+  <data name="GainCalendarAShareOnly"><value>僅支援 A 股股票與指數。</value></data>
+  <data name="IndexSSE"><value>上證指數</value></data>
+  <data name="TrayOpen.Text"><value>開啟</value></data>
+  <data name="TrayExit.Text"><value>結束</value></data>
+  <data name="TrayBusy"><value>處理中：{0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>通知區域圖示</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>關閉視窗後應用程式會收納到這裡而非結束。關掉它之後，關閉視窗將直接結束應用程式。</value></data>
+  <data name="SettingsStartup.Text"><value>開機時啟動</value></data>
+  <data name="SettingsStartupNote.Text"><value>登入時在通知區域啟動，開啟即可使用。</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>此項已在工作管理員中停用，Windows 不允許應用程式自行開啟。請到工作管理員的「開機應用程式」索引標籤重新啟用。</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>此項由你所屬組織的原則決定，無法在這裡變更。</value></data>
+  <data name="SettingsMarketLabel.Text"><value>市場</value></data>
+  <data name="SettingsMarketNote.Text"><value>決定各頁面取哪裡的行情，以及哪些頁面可用。更改後需要重新啟動應用程式。</value></data>
+  <data name="SettingsMarketRestart.Text"><value>市場會在應用程式重新啟動後生效。</value></data>
+  <data name="MarketAShare"><value>A股</value></data>
+  <data name="MarketHongKong"><value>港股</value></data>
+  <data name="MarketUnitedStates"><value>美股</value></data>
+  <data name="SectorListHangSeng"><value>恆生分類指數</value></data>
+  <data name="SectorListSpdr"><value>美股行業ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>累計成交額 億美元</value></data>
+
+  <data name="NavDcaPlan.Content"><value>定投計劃</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>定投計劃</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>按固定金額、固定頻率買入一個標的，動畫展示累計投入與市值的賽跑</value></data>
+  <data name="DcaFreqLabel.Header"><value>定投頻率</value></data>
+  <data name="DcaFreqDaily"><value>每個交易日</value></data>
+  <data name="DcaFreqWeekly"><value>每週</value></data>
+  <data name="DcaFreqMonthly"><value>每月</value></data>
+  <data name="DcaAmountLabel.Header"><value>每期金額</value></data>
+  <data name="DcaRangeLabel.Header"><value>定投區間</value></data>
+  <data name="DcaRange3Y"><value>近 3 年</value></data>
+  <data name="DcaRange5Y"><value>近 5 年</value></data>
+  <data name="DcaRange10Y"><value>近 10 年</value></data>
+  <data name="DcaRangeMax"><value>最長（約 13 年）</value></data>
+  <data name="DcaDefaultTitle"><value>{0}定投計劃</value></data>
+  <data name="DcaSubtitleLine"><value>{0}投入{1}{2}買入{3} · 後復權收盤價 · 不計費用</value></data>
+  <data name="DcaRangeLine"><value>{0} 至 {1} · 定投 {2} 期</value></data>
+  <data name="DcaReturnLabel"><value>報酬率</value></data>
+  <data name="DcaLegendValue"><value>市值</value></data>
+  <data name="DcaLegendInvested"><value>累計投入</value></data>
+  <data name="DcaCardValue"><value>期末市值</value></data>
+  <data name="DcaCardInvested"><value>累計投入</value></data>
+  <data name="DcaCardProfit"><value>累計收益</value></data>
+  <data name="DcaCardBuys"><value>定投期數</value></data>
+  <data name="DcaWanUnit"><value>萬</value></data>
+  <data name="DcaCurrencyCny"><value>元</value></data>
+  <data name="DcaCurrencyHkd"><value>港元</value></data>
+  <data name="DcaCurrencyUsd"><value>美元</value></data>
+  <data name="DcaFetched"><value>已取 {0} 個交易日（{1} 至 {2}），定投 {3} 期</value></data>
+  <data name="DcaAmountInvalid"><value>每期金額需是大於零的數字</value></data>
+  <data name="WrongMarket"><value>此代碼不屬於目前的市場（{0}）。</value></data>
+  <data name="NavPosition.Content"><value>持倉收益</value></data>
+  <data name="PositionPageTitle.Text"><value>持倉收益</value></data>
+  <data name="PositionPageSubtitle.Text"><value>一筆買入、長期持有，動畫展示市值與收益率的起落</value></data>
+  <data name="PositionCapitalLabel.Header"><value>初始本金</value></data>
+  <data name="PositionRangeLabel.Header"><value>持有區間</value></data>
+  <data name="PositionDefaultTitle"><value>持倉收益：{0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}買入{1}{2}的{3} · 後復權收盤價 · 分紅按再投計入</value></data>
+  <data name="PositionRangeLine"><value>{0} 至 {1} · 持有 {2} 天</value></data>
+  <data name="PositionLegendCapital"><value>投入本金</value></data>
+  <data name="PositionCardCapital"><value>投入本金</value></data>
+  <data name="PositionCardDrawdown"><value>最大回撤</value></data>
+  <data name="PositionFetched"><value>已取 {0} 個交易日（{1} 至 {2}），持有 {3} 天</value></data>
+  <data name="PositionCapitalInvalid"><value>初始本金需是大於零的數字</value></data>
+</root>

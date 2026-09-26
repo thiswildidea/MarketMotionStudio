@@ -1,0 +1,8 @@
+﻿{
+  "profiles": {
+    "MarketMotionStudio (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    }
+  }
+}

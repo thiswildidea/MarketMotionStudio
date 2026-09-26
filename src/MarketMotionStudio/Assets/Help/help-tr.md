@@ -1,0 +1,96 @@
+﻿# Market Motion Studio
+
+Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara dönüştürür. Bir dönem seçer, iyi okunana kadar ön izlemeye bakar ve MP4 olarak verirsiniz. Başka hiçbir şey kurmanız gerekmez.
+
+## Piyasa seçimi
+
+Ayarlarda uygulamanın hangi piyasadan fiyat aldığı seçilir; varsayılan A hisseleri. Değişiklik uygulama yeniden başlatıldıktan sonra geçerli olur.
+
+- **A hisseleri**: yedi sayfanın tümü kullanılabilir.
+- **Hong Kong**: getiri matrisi ve takvim çalışır; sektör yarışı dört Hang Seng alt endeksiyle koşulur; **tüm piyasa için veri yok, bu yüzden o sayfa gizlenir**.
+- **ABD**: getiri matrisi ve takvim çalışır; sektör yarışı on SPDR sektör ETF'i ile koşulur; hacim sayfasında yalnızca günlük mod kalır, çünkü dakikalık uç nokta ABD verisi sunmaz; **tutarlar dolar cinsindendir ve tüm piyasa hacmi sayfası gizlenir**.
+
+## Piyasa işlem hacmi
+
+Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerinin tutarları toplanır, her işlem günü için bir çubuk.
+
+- Yalnızca dahil edilen tüm piyasaların işlem gördüğü günler tutulur; böylece tek bir piyasanın tatili toplamın çöktüğü izlenimini veremez.
+- Hâlâ süren bir seans dışarıda bırakılır. Bitmemiş bir gün yalnızca açılış seansını içerir ve eksene yapışık bir çubuk olarak çizilirdi.
+- Ya da yalnızca bir pazara bakın: her iki borsa, her ana pazar, STAR, ChiNext. Ana pazarlar borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50 hâlâ bileşen bazlı bir ölçüdür.
+- Tüm piyasa için toplamı yalnızca A hisseleri verir. Hong Kong veya ABD seçildiğinde sayfa gezinmeden çıkarılır.
+
+## Hacim ve devir
+
+Bir hissenin işlem miktarı ile devir hızı, üst üste iki panel halinde.
+
+- İşlem günleri boyunca işlem miktarı ile devir hızı oranlıdır, dolayısıyla iki panel neredeyse aynı biçimi alır. Tek bir gün içinde dakikalık miktar ile birikimli devir gerçekten farklı görünür ve daha ilgi çekici olan resim budur.
+- Gün içi kaynağı yalnızca son birkaç işlem gününü tutar; bu yüzden o kip rastgele bir tarih değil, o günleri sunar.
+- Dakikalık veri yalnızca A hisseleri ve Hong Kong için sunulur; ABD’de bu mod sunulmaz.
+
+## Sektör yarışı
+
+Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini geçer, sıralama son kareye kadar değişir.
+
+- İki ölçüt: dönemin yüzde değişimi ve yüz milyonlarca yuan cinsinden işlem hacmi. Ölçütü değiştirmek aynı veriyi yeniden renklendirir, tekrar veri çekmez.
+- Dört liste: Shenwan 1. seviye sektörler, popüler temalar, özel (kutucukları işaretle) ve tekil hisseler (arama ile ekle). Özel liste başlangıçta Shenwan 1. seviye sektörlerle dolar.
+- Yerleşik listeler piyasaya göre değişir: A hisseleri için Shenwan 1. düzey sektörler ve güncel temalar, Hong Kong için dört Hang Seng alt endeksi, ABD için on SPDR sektör ETF'i. Özel liste ve hisse listesi her piyasada vardır.
+- Dönem 1, 3, 6 veya 12 ay ya da özel başlangıç ve bitiş tarihi olabilir.
+- Bir listenin en az ve en fazla sayıda kalemi vardır — çok az çubuk yarış olmaz, çok fazlası yığılır.
+
+## Getiri matrisi
+
+Aylık çubuklar bir ızgaraya dizilir: yıl modu bir aracın on yıllık mevsimselliğini, karşılaştırma modu birkaç aracı yan yana dizerek rotasyonu gösterir.
+
+- Yıl modu: bir araç seçin (arama veya ön tanımlı geniş endeks); aralık 1–10 yıl veya tümü. Tek istek on yıllık aylık çubuğu getirir.
+- Karşılaştırma modu: bir listeden (1. seviye sektörler / temalar / geniş endeksler / özel / hisseler) 2–14 aracı yan yana, 6–48 ay aralıkla.
+- Izgara zaman sırasıyla hücre hücre yanar; sonda aralıktaki en güçlü ve en zayıf ay ile diğer istatistikler verilir.
+- Aylık veriler bir seferde on yılı kapsar, bu yüzden günlük gün sınırı yoktur — ama çok fazla araç çerçeveyi aşar.
+
+## Yükseliş-düşüş takvimi
+
+Herhangi bir Çin hissesi veya endeksi, günlük yükseliş veya düşüşü aylık takvim hücrelerine dizilir: yükselişte kırmızı, düşüşte yeşil.
+
+- Kod, ad veya pinyin ile arayın; ön tanımlılar geniş endekslerdir. Yalnızca seçtiğiniz piyasanın enstrümanları desteklenir.
+- Favori listesi uygulamanın hisse sayfasıyla paylaşılır — iki yerden birinde eklenen favori her ikisinde görünür.
+- Dönem 1, 3, 6 veya 12 ay ya da özeldir; tek bir araç yine de yaklaşık 640 takvim günü sınırına tabidir.
+- Son istatistikler yükselen ve düşen işlem günü sayısını verir.
+
+## DCA Planı
+
+Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her hafta veya her ay — ve disiplinin neye dönüştüğünü animasyonla görmek.
+
+- Tek dokunuşla seçilen varlıklar piyasayı izler: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD.
+- Tutarı ve sıklığı siz belirlersiniz; süre üç, beş veya on yıl, ya da verinin geldiği en eski tarihe kadar (yaklaşık on üç yıl).
+- Getiri geriye düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
+
+## Pozisyon Getirisi
+
+Tek bir alım, yıllarca tutulan — örneğin 2015'te 中国平安'a bir milyon — değer ve getirinin ne yaptığının animasyonu.
+
+- Önerilen isimler pazara göre değişir: Çin'de insanların gerçekten "tutmuştum" dediği hisseler (Ping An, Moutai, CMB…), Hong Kong'da Tencent, HSBC ve Tracker Fund, ABD'de Apple, Berkshire ve SPY.
+- Başlangıç sermayesi ve elde tutma süresi size ait; süre üç, beş veya on yıl olabilir, ya da verilerin yettiği kadar (yaklaşık on üç yıl).
+- Getiri geriye düzeltilmiş kapanışlarla — temettüler yeniden yatırıldı, ücretsiz — hesaplanır. Geriye düzeltme halka arzın ilk gününe demir atar ve temettüleri ileriye biriktirir, böylece cömert bir ödeyicinin ilk yılları asla negatif olmaz; ileriye düzeltmede bu olabilir.
+
+## Video
+
+Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.
+
+- Süre, animasyonu kesmek yerine tempoyu değiştirir: açılış, çubukların büyümesi ve kapanıştaki istatistikler seçtiğiniz uzunluğa yeniden paylaştırılır.
+- Kenar boşlukları 1080×1920 karesine göre yazılır ve dışa verme çözünürlüğüne oranlanır; bir kez ayarlanan yerleşim her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler: çok küçükse sayılar kareden çıkar.
+- Güvenli alan kılavuzları, bir telefon uygulamasının kendi arayüzüyle kapattığı yeri gösterir. Ön izlemede çizilir, dosyaya hiç girmez.
+
+## Videolar nereye gider
+
+Dışa verilenler, seçiciyle belirlediğiniz bir klasöre yazılır. Belirlenmediği sürece ilk dışa verme sorar ve sonra hatırlar; ayarlardan değiştirilebilir ya da unutturulabilir.
+
+## Veri ve söylemeyecekleri
+
+Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir ve kare kaynağı her zaman belirtir. Bu videolar zaten gerçekleşmiş işlemleri anlatır. Yalnızca bilgi amaçlıdır ve yatırım tavsiyesi değildir.
+
+- İşlem hacmi yüz milyon yuan birimine çevrilir ve sayılar gerektirdiğinde işlem miktarı daha büyük bir birime geçer, böylece eksen okunabilir kalır.
+- Tutarlar yüz milyonlara çevrilir — anakara ve Hong Kong’da yuan, ABD’de dolar. Her piyasa kendi para birimini korur.
+- Yaklaşık 640 takvim gününden uzun bir dönem, sessizce kısaltılmak yerine reddedilir; çünkü kaynağa yapılan tek bir istek ancak bu kadarını döndürür.
+
+## Bir sorun mu var?
+
+gaqo@outlook.com adresine yazın ve ne yaptığınızı, bunun yerine ne beklediğinizi belirtin. Sürüm numarası ayarlar sayfasındadır.

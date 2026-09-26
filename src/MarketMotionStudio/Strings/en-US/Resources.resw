@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <!-- Which culture this file is, so date and month names come from the same resolution that
+       chose these strings. CultureInfo.CurrentCulture follows the OS, not the app's language. -->
+  <data name="CultureName"><value>en-US</value></data>
+
+  <!-- The product name is not translated in any market. -->
+  <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <!-- Navigation -->
+  <data name="NavMarketTurnover.Content"><value>Market Turnover</value></data>
+  <data name="NavStockVolume.Content"><value>Volume and Turnover</value></data>
+  <data name="NavHelp.Content"><value>Help</value></data>
+  <data name="NavSettings.Content"><value>Settings</value></data>
+
+  <!-- Page titles. Also used as job names, so a page's work is named the same
+       way everywhere rather than translated a second time. -->
+  <data name="MarketTurnoverPageTitle.Text"><value>Market Turnover</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Daily turnover of the whole market or one board. Two forms of the same picture; switching re-fetches nothing.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volume and Turnover</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>One stock's volume against its turnover rate, over a range of days or within a single one.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Settings</value></data>
+  <data name="HelpPageTitle.Text"><value>Help</value></data>
+  <data name="HelpPageSubtitle.Text"><value>What each page does, where the numbers come from, and what these videos are not.</value></data>
+  <data name="HelpDocument"><value>help-en-US.md</value></data>
+  <data name="HelpMissing"><value>The help document for this language could not be opened.</value></data>
+
+  <!-- Shared studio controls -->
+  <data name="StudioDataSection.Text"><value>Data</value></data>
+  <data name="StudioTitleSection.Text"><value>Title</value></data>
+  <data name="StudioTitleText.Header"><value>Title text</value></data>
+  <data name="StudioTitleNote.Text"><value>Leave it empty to use the default. A long title is scaled down to fit rather than clipped, to half size at most.</value></data>
+  <data name="StudioHideTitle.Header"><value>Hide the title</value></data>
+  <data name="StudioHideTitleNote.Text"><value>The title's row goes back to the chart and everything below shifts up into it. The bottom margin holds the lower edge still, so the panels grow taller. Turning it off restores the layout exactly.</value></data>
+  <data name="StockTitlePlaceholder"><value>The name of the stock fetched</value></data>
+  <data name="StudioVideoSection.Text"><value>Video</value></data>
+  <data name="StudioLayoutSection.Text"><value>Layout</value></data>
+  <data name="StudioRange.Header"><value>Date range</value></data>
+  <data name="StudioRange1M"><value>Last month</value></data>
+  <data name="StudioRange3M"><value>Last 3 months</value></data>
+  <data name="StudioRange6M"><value>Last 6 months</value></data>
+  <data name="StudioRange12M"><value>Last 12 months</value></data>
+  <data name="StudioRangeCustom"><value>Custom</value></data>
+  <data name="StudioRangeFrom.Header"><value>From</value></data>
+  <data name="StudioRangeTo.Header"><value>To</value></data>
+  <data name="StudioDuration"><value>Duration: {0} s</value></data>
+  <data name="StudioResolution.Text"><value>Resolution</value></data>
+  <data name="StudioFrameRate.Text"><value>Frame rate</value></data>
+  <data name="StudioQuality.Text"><value>Quality</value></data>
+  <data name="StudioQualityStandard"><value>Standard</value></data>
+  <data name="StudioQualityHigh"><value>High</value></data>
+  <data name="StudioQualityUltra"><value>Ultra</value></data>
+  <data name="StudioBitrate"><value>About {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>Left margin: {0}</value></data>
+  <data name="StudioMarginRight"><value>Right margin: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Bottom margin: {0}</value></data>
+  <data name="StudioMarginTop"><value>Top margin: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>Measured against 1080×1920 and scaled to the chosen resolution, so a value tuned here holds at every size. The left margin also decides where the axis labels land. The top margin starts at the band a phone keeps for its own interface, so the title can never slide under it.</value></data>
+  <data name="StudioSafeArea.Header"><value>Safe-area guides</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Outlines the regions a phone app covers with its own interface. Drawn in the preview only, and never in a file.</value></data>
+  <data name="StudioPlay.Content"><value>Play</value></data>
+  <data name="StudioPause.Content"><value>Pause</value></data>
+  <data name="StudioFetch.Content"><value>Get data</value></data>
+  <data name="StudioExport.Content"><value>Export MP4</value></data>
+  <data name="StudioCancel.Content"><value>Cancel</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
+  <data name="StudioStageNoData"><value>No data yet</value></data>
+  <data name="StudioCredit"><value>Source: Tencent Finance</value></data>
+  <data name="NavMatrix.Content"><value>Return Matrix</value></data>
+  <data name="MatrixPageTitle.Text"><value>Return Matrix</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>A decade of monthly bars per request; cells light up in time order — one target's seasonality, or a roster's rotation.</value></data>
+  <data name="MatrixModeLabel.Text"><value>Matrix kind</value></data>
+  <data name="MatrixModeYear.Content"><value>One target · years × months</value></data>
+  <data name="MatrixModeCompare.Content"><value>Many targets · targets × months</value></data>
+  <data name="MatrixTarget.Header"><value>Target</value></data>
+  <data name="MatrixYearsLabel.Text"><value>Years</value></data>
+  <data name="MatrixYears.Header"><value>Years</value></data>
+  <data name="MatrixYearsAll"><value>All</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>Months</value></data>
+  <data name="MatrixMonths.Header"><value>Months</value></data>
+  <data name="MatrixListIndices"><value>Broad indices</value></data>
+  <data name="MatrixChosen"><value>Current: {0} ({1})</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>The monthly endpoint failed or carries no data for this code.</value></data>
+  <data name="MatrixTooFewMonths"><value>Too few usable months.</value></data>
+  <data name="MatrixTooFewShared"><value>The targets share too few months.</value></data>
+  <data name="MatrixTailYear"><value>Year</value></data>
+  <data name="MatrixTailSubtotal"><value>Subtotal</value></data>
+  <data name="MatrixTailTotal"><value>Total</value></data>
+  <data name="MatrixYearSpan"><value>{0} to date · {1} months</value></data>
+  <data name="MatrixYearTitle"><value>{0} monthly returns, {1} years</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · monthly change · unit: %</value></data>
+  <data name="MatrixCmpSpan"><value>{0} to {1} · {2} months</value></data>
+  <data name="MatrixCmpTitle"><value>{0} monthly rotation</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · monthly change · unit: %</value></data>
+  <data name="MatrixStatBestMonth"><value>Best month</value></data>
+  <data name="MatrixStatWorstMonth"><value>Worst month</value></data>
+  <data name="MatrixStatUpRatio"><value>Up months</value></data>
+  <data name="MatrixStatBestSingle"><value>Best single</value></data>
+  <data name="MatrixStatChampion"><value>Champion</value></data>
+  <data name="MatrixStatLast"><value>Last</value></data>
+  <data name="MatrixStatTargets"><value>Targets</value></data>
+  <data name="MatrixStatSpan"><value>Span</value></data>
+  <data name="MatrixMonthValue"><value>month {0}: {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0}</value></data>
+  <data name="MatrixCountMonths"><value>{0} months</value></data>
+  <data name="MatrixCountBounds"><value>{0} selected (needs {1}–{2})</value></data>
+  <data name="MatrixTooFewTargets"><value>A comparison needs at least {0} {1}.</value></data>
+  <data name="MatrixTooManyTargets"><value>At most {0}; beyond that a vertical frame cannot hold the rows.</value></data>
+  <data name="MatrixFetching"><value>Fetching {0} monthly bars …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} cells · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>Return Matrix</value></data>
+  <data name="NavSectorRace.Content"><value>Sector Race</value></data>
+  <data name="SectorRacePageTitle.Text"><value>Sector Race</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>A dozen horizontal bars overtaking one another, the order changing to the last frame.</value></data>
+  <data name="SectorRosterLabel.Text"><value>Racers</value></data>
+  <data name="SectorRoster.Header"><value>Racers</value></data>
+  <data name="SectorListLevel1"><value>CSI Level-1 industries</value></data>
+  <data name="SectorListTheme"><value>Hot themes</value></data>
+  <data name="SectorListCustom"><value>Custom sectors</value></data>
+  <data name="SectorListStocks"><value>Watchlist stocks</value></data>
+  <data name="SectorMetricLabel.Text"><value>Metric</value></data>
+  <data name="SectorMetric.Header"><value>Metric</value></data>
+  <data name="SectorMetricReturn"><value>Cumulative return %</value></data>
+  <data name="SectorMetricAmount"><value>Cumulative turnover 100M</value></data>
+  <data name="SectorMetricReturnShort"><value>return</value></data>
+  <data name="SectorMetricAmountShort"><value>turnover</value></data>
+  <data name="SectorAutoTitleReturn"><value>{0} return race</value></data>
+  <data name="SectorAutoTitleAmount"><value>{0} turnover race</value></data>
+  <data name="SectorCount"><value>{0} selected</value></data>
+  <data name="SectorCountBounds"><value>{0} selected (needs {1}–{2})</value></data>
+  <data name="SectorTooFew"><value>A race needs at least {0} {1}.</value></data>
+  <data name="SectorTooMany"><value>At most {0} {1}; beyond that a vertical frame is a barcode.</value></data>
+  <data name="SectorTooManyStocks"><value>At most {0} stocks.</value></data>
+  <data name="SectorTooFewSharedDays"><value>The racers share fewer than 5 trading days.</value></data>
+  <data name="SectorFetching"><value>Fetching {0} …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} trading days · leading {3} {4} · last {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>Sector Race</value></data>
+  <data name="SectorUnitYi"><value>×100M</value></data>
+  <data name="SectorUnitSectors"><value>sectors</value></data>
+  <data name="SectorUnitStocks"><value>stocks</value></data>
+  <data name="StudioDisclaimer.Text"><value>For reference only. Not investment advice.</value></data>
+  <data name="StudioDataLayerPending"><value>Fetching quotes is not built yet. The video and layout controls and the preview work now; the data layer is the next step.</value></data>
+  <data name="StudioEncoderPending"><value>Exporting is not built yet. The preview already runs the real render path; the encoder is the next step.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Market turnover</value></data>
+  <data name="StockVolumeStageTitle"><value>Volume and turnover</value></data>
+  <data name="StockBadCode"><value>That code cannot be quoted here. Type a code, a name or pinyin and pick from the list.</value></data>
+  <data name="StockChosen"><value>{0} ({1}) chosen.</value></data>
+  <data name="StockFetching"><value>Fetching {0} …</value></data>
+  <data name="StockFetchingIntraday"><value>Fetching intraday data for {0} …</value></data>
+  <data name="StockIntradayUnavailable"><value>No intraday data for this code.</value></data>
+  <data name="StockIntradayTooFew"><value>Too few intraday points on that day.</value></data>
+  <data name="StockNoRate"><value>This listing reports no turnover rate.</value></data>
+  <data name="StockNoFloatShares"><value>Free-float size unavailable; the turnover rate cannot be computed.</value></data>
+  <data name="StockFetchedDaily"><value>{0} ({1}): {2} trading days · volume avg {3} {4}, peak {5} · turnover avg {6}%, peak {7}%</value></data>
+  <data name="StockFetchedIntraday"><value>{0} ({1}): {2} minutes · full-day turnover {3}%</value></data>
+  <data name="StockDailyHint"><value>Daily mode: one bar per trading day.</value></data>
+  <data name="StockIntradayHint"><value>Intraday mode: the source holds only the last five trading days. Fetch once, then pick the day.</value></data>
+  <data name="StockUnitHands"><value>lots</value></data>
+  <data name="StockUnitTenThousand"><value>×10k lots</value></data>
+  <data name="StockPanelVolume"><value>Volume</value></data>
+  <data name="StockPanelMinuteVolume"><value>Volume per minute</value></data>
+  <data name="StockPanelTurnover"><value>Turnover rate</value></data>
+  <data name="StockPanelCumTurnover"><value>Cumulative turnover</value></data>
+  <data name="StockMeanLabel"><value>Mean {0}</value></data>
+  <data name="StockHighLabel"><value>High</value></data>
+  <data name="StockLowLabel"><value>Low</value></data>
+  <data name="StockDayTurnover"><value>Full-day turnover {0}%</value></data>
+  <data name="StockIntradayLabel"><value>intraday</value></data>
+  <data name="StockRangeJoiner"><value>to</value></data>
+  <data name="StockTradingDaysUnit"><value>trading days</value></data>
+  <data name="StockMinutesUnit"><value>minutes</value></data>
+  <data name="StockAddFavourite.Content"><value>Save as favourite</value></data>
+  <data name="StockFavNeedData"><value>Fetch once first: a favourite remembers the name along with the code.</value></data>
+  <data name="StockTradingDayNote.Text"><value>The source holds only the last five trading days.</value></data>
+
+  <!-- Market turnover -->
+  <data name="TurnoverScope.Header"><value>Board</value></data>
+  <data name="TurnoverScopeWhole"><value>Shanghai + Shenzhen (all)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Shanghai exchange (all)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Shanghai main board</value></data>
+  <data name="TurnoverScopeStar"><value>STAR board</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Shenzhen exchange (all)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Shenzhen main board</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext board</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Both + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Main boards are derived as the exchange total less its growth board; the BSE 50 covers fifty constituents, not the whole exchange.</value></data>
+  <data name="TurnoverUnit"><value>100M CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} combined · unit: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} to {1} · {2} trading days</value></data>
+  <data name="TurnoverAverageLabel"><value>Mean {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Mean</value></data>
+  <data name="TurnoverStatPeak"><value>High</value></data>
+  <data name="TurnoverStatLow"><value>Low</value></data>
+  <data name="TurnoverStatRatio"><value>High:low</value></data>
+  <data name="TurnoverFetching"><value>Fetching {0}…</value></data>
+  <data name="TurnoverFetched"><value>{0} trading days ({1} to {2}) · mean {3} · high {4} · low {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>That range is too long. One request reaches about {0} calendar days, so shorten it.</value></data>
+  <data name="TurnoverRangeReversed"><value>The start date must fall before the end date.</value></data>
+  <data name="TurnoverTooFewDays"><value>Not enough trading days in that range.</value></data>
+  <data name="TurnoverView.Header"><value>Frame style</value></data>
+  <data name="TurnoverViewBars"><value>Bar race</value></data>
+  <data name="TurnoverViewCalendar"><value>Calendar heat map</value></data>
+  <data name="ReturnStageTitle"><value>SSE Composite daily change</value></data>
+  <data name="ReturnSubtitle"><value>{0} · daily change on close · unit: %</value></data>
+  <data name="ReturnStatUp"><value>Up</value></data>
+  <data name="ReturnStatDown"><value>Down</value></data>
+  <data name="ReturnStatBest"><value>Best day</value></data>
+  <data name="ReturnStatWorst"><value>Worst day</value></data>
+  <data name="ReturnDayCount"><value>{0} days</value></data>
+  <data name="StudioCover.Content"><value>Save cover PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>Saves whichever frame the preview is parked on, at the full export resolution.</value></data>
+  <data name="StudioCoverSaved"><value>Cover saved: {0} · {1}×{2} · in {3}</value></data>
+  <data name="StudioCoverCancelled"><value>No folder chosen, so nothing was saved.</value></data>
+  <data name="StudioExporting"><value>Encoding… {0}%</value></data>
+  <data name="StudioExported"><value>Exported {0} · {1} MB · took {2} s for {3} s of video · in {4}</value></data>
+  <data name="StudioExportCancelled"><value>No folder chosen, so nothing was exported.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Switchable at any time; both draw the same series, so no new fetch.</value></data>
+
+  <!-- Stock volume -->
+  <data name="StockSearch.Header"><value>Stock</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Code, name or pinyin</value></data>
+  <data name="StockNoneChosen"><value>No stock chosen.</value></data>
+  <data name="StockModeLabel.Text"><value>Mode</value></data>
+  <data name="StockModeDaily.Content"><value>Across trading days</value></data>
+  <data name="StockModeIntraday.Content"><value>Within one trading day</value></data>
+  <data name="StockTradingDay.Header"><value>Trading day</value></data>
+
+  <!-- Page status -->
+  <data name="PageCancelled"><value>Stopped.</value></data>
+  <data name="PageTimedOut"><value>That took too long and was given up on.</value></data>
+  <data name="PageWorkFailed"><value>{0} failed: {1}</value></data>
+
+  <!-- Settings -->
+  <data name="SettingsLanguageLabel.Text"><value>Language</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Follow Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>The language changes when the app restarts.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Restart now</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Appearance</value></data>
+  <data name="SettingsThemeSystem"><value>Follow Windows</value></data>
+  <data name="SettingsThemeLight"><value>Light</value></data>
+  <data name="SettingsThemeDark"><value>Dark</value></data>
+  <data name="SettingsThemeNote.Text"><value>Applies as you pick it, and reaches the app only. A video keeps its own palette, so the preview still predicts the file.</value></data>
+  <data name="SettingsOutput.Text"><value>Where videos are saved</value></data>
+  <data name="SettingsOutputNote.Text"><value>Chosen through a folder picker, because a packaged app cannot write wherever it likes. Left unset, the first export asks and then remembers.</value></data>
+  <data name="SettingsOutputNotSet"><value>Not set — the first export will ask.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Choose folder…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Forget</value></data>
+  <data name="SettingsOutputFailed"><value>The folder could not be set: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>App data</value></data>
+  <data name="SettingsStorageNote.Text"><value>Settings and the crash log live here. Windows removes it when the app is uninstalled; exported videos are not kept in it.</value></data>
+  <data name="SettingsSources.Text"><value>Data</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Quotes come from Tencent Finance's public endpoints. Turnover is converted to hundreds of millions of yuan, and a session still trading is left out, because an unfinished day holds only its opening auction.</value></data>
+  <data name="SettingsContact.Text"><value>Something wrong?</value></data>
+  <data name="SettingsContactNote.Text"><value>Say what you were doing and what you expected instead. The version above travels in the mail subject already.</value></data>
+  <data name="SettingsContactSubject"><value>Market Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>No mail app answered. Write to {0} instead. ({1})</value></data>
+  <data name="SettingsVersion"><value>Version {0}</value></data>
+  <data name="SettingsRestartFailed"><value>The app could not restart: {0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>Gain-loss calendar</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>Gain-loss calendar</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>Any A-share stock or index, one cell per trading day — red for a rise, green for a fall.</value></data>
+  <data name="GainCalendarDefaultTitle"><value>{0} daily change</value></data>
+  <data name="GainCalendarFetching"><value>Fetching {0}…</value></data>
+  <data name="GainCalendarFetched"><value>{0} trading days ({1} to {2}) · {3} up · {4} down</value></data>
+  <data name="GainCalendarAShareOnly"><value>Only A-share stocks and indices are supported.</value></data>
+  <data name="IndexSSE"><value>SSE Composite</value></data>
+  <data name="TrayOpen.Text"><value>Open</value></data>
+  <data name="TrayExit.Text"><value>Exit</value></data>
+  <data name="TrayBusy"><value>Working: {0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>Notification area icon</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>Closing the window hides the app here instead of ending it. Turn this off and closing the window quits the app.</value></data>
+  <data name="SettingsStartup.Text"><value>Start with Windows</value></data>
+  <data name="SettingsStartupNote.Text"><value>Starts in the notification area at sign-in, so it is ready when you open it.</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>Windows is blocking this because it was turned off in Task Manager. Re-enable it there, on the Startup apps tab.</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>Your organization's policy decides this, and it cannot be changed here.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Market</value></data>
+  <data name="SettingsMarketNote.Text"><value>Decides where each page takes its quotes from, and which pages are offered. Takes effect after a restart.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>The market will change when the app is restarted.</value></data>
+  <data name="MarketAShare"><value>A-shares</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>United States</value></data>
+  <data name="SectorListHangSeng"><value>Hang Seng sub-indices</value></data>
+  <data name="SectorListSpdr"><value>US sector ETFs</value></data>
+  <data name="SectorMetricAmountUsd"><value>Cumulative turnover, $100M</value></data>
+
+  <data name="NavDcaPlan.Content"><value>DCA Plan</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>DCA Plan</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Buy one instrument on a fixed amount and a fixed cadence, and watch what the discipline turned into</value></data>
+  <data name="DcaFreqLabel.Header"><value>Cadence</value></data>
+  <data name="DcaFreqDaily"><value>Every trading day</value></data>
+  <data name="DcaFreqWeekly"><value>Every week</value></data>
+  <data name="DcaFreqMonthly"><value>Every month</value></data>
+  <data name="DcaAmountLabel.Header"><value>Amount per buy</value></data>
+  <data name="DcaRangeLabel.Header"><value>Plan span</value></data>
+  <data name="DcaRange3Y"><value>Past 3 years</value></data>
+  <data name="DcaRange5Y"><value>Past 5 years</value></data>
+  <data name="DcaRange10Y"><value>Past 10 years</value></data>
+  <data name="DcaRangeMax"><value>As far back as available</value></data>
+  <data name="DcaDefaultTitle"><value>DCA plan: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} into {3} · backward-adjusted closes · no fees</value></data>
+  <data name="DcaRangeLine"><value>{0} to {1} · {2} buys</value></data>
+  <data name="DcaReturnLabel"><value>Return</value></data>
+  <data name="DcaLegendValue"><value>Value</value></data>
+  <data name="DcaLegendInvested"><value>Invested</value></data>
+  <data name="DcaCardValue"><value>Final value</value></data>
+  <data name="DcaCardInvested"><value>Total in</value></data>
+  <data name="DcaCardProfit"><value>Profit</value></data>
+  <data name="DcaCardBuys"><value>Buys</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} trading days ({1} to {2}), {3} buys</value></data>
+  <data name="DcaAmountInvalid"><value>The amount per buy must be a positive number</value></data>
+  <data name="WrongMarket"><value>That code is not on the current market ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Holdings Return</value></data>
+  <data name="PositionPageTitle.Text"><value>Holdings Return</value></data>
+  <data name="PositionPageSubtitle.Text"><value>One purchase, held for years — what the value and the return did</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Initial capital</value></data>
+  <data name="PositionRangeLabel.Header"><value>Holding span</value></data>
+  <data name="PositionDefaultTitle"><value>Holdings return: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: bought {1} {2} of {3} · backward-adjusted closes · dividends reinvested</value></data>
+  <data name="PositionRangeLine"><value>{0} to {1} · held {2} days</value></data>
+  <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardCapital"><value>Capital in</value></data>
+  <data name="PositionCardDrawdown"><value>Max drawdown</value></data>
+  <data name="PositionFetched"><value>{0} trading days ({1} to {2}), held {3} days</value></data>
+  <data name="PositionCapitalInvalid"><value>The initial capital must be a positive number</value></data>
+</root>

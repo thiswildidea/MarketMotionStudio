@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>tr</value></data>
+
+  <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Piyasa işlem hacmi</value></data>
+  <data name="NavStockVolume.Content"><value>Hacim ve devir</value></data>
+  <data name="NavHelp.Content"><value>Yardım</value></data>
+  <data name="NavSettings.Content"><value>Ayarlar</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Piyasa işlem hacmi</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Tüm piyasaların veya tek bir pazarın günlük işlem hacmi. Aynı verinin iki görünümü; geçişte yeniden indirme yapılmaz.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Hacim ve devir</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>Bir hissenin işlem miktarı ile devir hızı — bir dönem boyunca ya da tek bir gün içinde.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Ayarlar</value></data>
+  <data name="HelpPageTitle.Text"><value>Yardım</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Her sayfanın ne yaptığı, sayıların nereden geldiği ve bu videoların ne olmadığı.</value></data>
+  <data name="HelpDocument"><value>help-tr.md</value></data>
+  <data name="HelpMissing"><value>Bu dilin yardım belgesi açılamadı.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Veri</value></data>
+  <data name="StudioTitleSection.Text"><value>Başlık</value></data>
+  <data name="StudioTitleText.Header"><value>Başlık metni</value></data>
+  <data name="StudioTitleNote.Text"><value>Varsayılan başlığı kullanmak için boş bırakın. Uzun bir başlık kırpılmak yerine oranlı biçimde küçültülür, en çok yarı boyuta kadar.</value></data>
+  <data name="StudioHideTitle.Header"><value>Başlığı gizle</value></data>
+  <data name="StudioHideTitleNote.Text"><value>Başlığın satırı grafiğe geri döner ve altındaki her şey o satıra yukarı kayar. Alt kenar boşluğu alt kenarı sabit tuttuğu için paneller uzar. Kapatılınca yerleşim birebir geri gelir.</value></data>
+  <data name="StockTitlePlaceholder"><value>Çekilen hissenin adı</value></data>
+  <data name="StudioVideoSection.Text"><value>Video</value></data>
+  <data name="StudioLayoutSection.Text"><value>Yerleşim</value></data>
+  <data name="StudioRange.Header"><value>Tarih aralığı</value></data>
+  <data name="StudioRange1M"><value>Son 1 ay</value></data>
+  <data name="StudioRange3M"><value>Son 3 ay</value></data>
+  <data name="StudioRange6M"><value>Son 6 ay</value></data>
+  <data name="StudioRange12M"><value>Son 12 ay</value></data>
+  <data name="StudioRangeCustom"><value>Özel</value></data>
+  <data name="StudioRangeFrom.Header"><value>Başlangıç</value></data>
+  <data name="StudioRangeTo.Header"><value>Bitiş</value></data>
+  <data name="StudioDuration"><value>Süre: {0} sn</value></data>
+  <data name="StudioResolution.Text"><value>Çözünürlük</value></data>
+  <data name="StudioFrameRate.Text"><value>Kare hızı</value></data>
+  <data name="StudioQuality.Text"><value>Kalite</value></data>
+  <data name="StudioQualityStandard"><value>Standart</value></data>
+  <data name="StudioQualityHigh"><value>Yüksek</value></data>
+  <data name="StudioQualityUltra"><value>En yüksek</value></data>
+  <data name="StudioBitrate"><value>Yaklaşık {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>Sol kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginRight"><value>Sağ kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Alt kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginTop"><value>Üst kenar boşluğu: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 tabanına göre ölçülür ve seçilen çözünürlüğe oranlanır; burada ayarlanan bir değer her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler. Üst kenar boşluğu, telefonun kendi arayüzü için ayırdığı banttan başlar; böylece başlık asla altına girmez.</value></data>
+  <data name="StudioSafeArea.Header"><value>Güvenli alan kılavuzları</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Bir telefon uygulamasının kendi arayüzüyle kapattığı bölgeleri gösterir. Yalnızca ön izlemede çizilir, dosyaya hiç girmez.</value></data>
+  <data name="StudioPlay.Content"><value>Oynat</value></data>
+  <data name="StudioPause.Content"><value>Duraklat</value></data>
+  <data name="StudioFetch.Content"><value>Veriyi al</value></data>
+  <data name="StudioExport.Content"><value>MP4 olarak ver</value></data>
+  <data name="StudioCancel.Content"><value>İptal</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} sn</value></data>
+  <data name="StudioStageNoData"><value>Henüz veri yok</value></data>
+  <data name="StudioCredit"><value>Kaynak: Tencent Finance</value></data>
+  <data name="NavMatrix.Content"><value>Getiri matrisi</value></data>
+  <data name="MatrixPageTitle.Text"><value>Getiri matrisi</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>Tek istekte on yıllık aylık veri; hücreler zaman sırasıyla yanar.</value></data>
+  <data name="MatrixModeLabel.Text"><value>Matris türü</value></data>
+  <data name="MatrixModeYear.Content"><value>Tek hedef · yıl × ay</value></data>
+  <data name="MatrixModeCompare.Content"><value>Çok hedef · hedef × ay</value></data>
+  <data name="MatrixTarget.Header"><value>Hedef</value></data>
+  <data name="MatrixYearsLabel.Text"><value>Yıllar</value></data>
+  <data name="MatrixYears.Header"><value>Yıllar</value></data>
+  <data name="MatrixYearsAll"><value>Tümü</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>Aylar</value></data>
+  <data name="MatrixMonths.Header"><value>Aylar</value></data>
+  <data name="MatrixListIndices"><value>Geniş endeksler</value></data>
+  <data name="MatrixChosen"><value>Şu an: {0} ({1})</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>Aylık uç noktası başarısız oldu veya bu kodu tanımıyor.</value></data>
+  <data name="MatrixTooFewMonths"><value>Kullanılabilir ay çok az.</value></data>
+  <data name="MatrixTooFewShared"><value>Hedeflerin ortak ayı çok az.</value></data>
+  <data name="MatrixTailYear"><value>Yıl</value></data>
+  <data name="MatrixTailSubtotal"><value>Ara toplam</value></data>
+  <data name="MatrixTailTotal"><value>Toplam</value></data>
+  <data name="MatrixYearSpan"><value>{0} günümüze · {1} ay</value></data>
+  <data name="MatrixYearTitle"><value>{0} aylık getiriler, {1} yıl</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · aylık değişim · birim: %</value></data>
+  <data name="MatrixCmpSpan"><value>{0} - {1} · {2} ay</value></data>
+  <data name="MatrixCmpTitle"><value>{0} aylık rotasyon</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · aylık değişim · birim: %</value></data>
+  <data name="MatrixStatBestMonth"><value>En iyi ay</value></data>
+  <data name="MatrixStatWorstMonth"><value>En kötü ay</value></data>
+  <data name="MatrixStatUpRatio"><value>Artı aylar</value></data>
+  <data name="MatrixStatBestSingle"><value>En iyi tek ay</value></data>
+  <data name="MatrixStatChampion"><value>Şampiyon</value></data>
+  <data name="MatrixStatLast"><value>Sonuncu</value></data>
+  <data name="MatrixStatTargets"><value>Hedefler</value></data>
+  <data name="MatrixStatSpan"><value>Aralık</value></data>
+  <data name="MatrixMonthValue"><value>ay {0}: {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0}</value></data>
+  <data name="MatrixCountMonths"><value>{0} ay</value></data>
+  <data name="MatrixCountBounds"><value>{0} seçildi ({1}–{2} gerekli)</value></data>
+  <data name="MatrixTooFewTargets"><value>Karşılaştırma için en az {0} {1} gerekli.</value></data>
+  <data name="MatrixTooManyTargets"><value>En fazla {0}; fazlası dikeyde sığmaz.</value></data>
+  <data name="MatrixFetching"><value>{0} aylık verileri alınıyor …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} hücre · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>Getiri matrisi</value></data>
+  <data name="NavSectorRace.Content"><value>Sektör yarışı</value></data>
+  <data name="SectorRacePageTitle.Text"><value>Sektör yarışı</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>Bir düzine çubuk birbirini geçiyor; sıralama son kareye kadar değişiyor.</value></data>
+  <data name="SectorRosterLabel.Text"><value>Yarışmacılar</value></data>
+  <data name="SectorRoster.Header"><value>Yarışmacılar</value></data>
+  <data name="SectorListLevel1"><value>CSI 1. düzey sektörler</value></data>
+  <data name="SectorListTheme"><value>Popüler temalar</value></data>
+  <data name="SectorListCustom"><value>Özel sektörler</value></data>
+  <data name="SectorListStocks"><value>Takip edilen hisseler</value></data>
+  <data name="SectorMetricLabel.Text"><value>Ölçüt</value></data>
+  <data name="SectorMetric.Header"><value>Ölçüt</value></data>
+  <data name="SectorMetricReturn"><value>Kümülatif getiri %</value></data>
+  <data name="SectorMetricAmount"><value>Kümülatif hacim 100 M</value></data>
+  <data name="SectorMetricReturnShort"><value>getiri</value></data>
+  <data name="SectorMetricAmountShort"><value>hacim</value></data>
+  <data name="SectorAutoTitleReturn"><value>{0} getiri yarışı</value></data>
+  <data name="SectorAutoTitleAmount"><value>{0} hacim yarışı</value></data>
+  <data name="SectorCount"><value>{0} seçildi</value></data>
+  <data name="SectorCountBounds"><value>{0} seçildi ({1}–{2} gerekli)</value></data>
+  <data name="SectorTooFew"><value>Bir yarış için en az {0} {1} gerekli.</value></data>
+  <data name="SectorTooMany"><value>En fazla {0} {1}; fazlası dikey karede barkod olur.</value></data>
+  <data name="SectorTooManyStocks"><value>En fazla {0} hisse.</value></data>
+  <data name="SectorTooFewSharedDays"><value>Yarışmacılar 5 iş gününden az paylaşıyor.</value></data>
+  <data name="SectorFetching"><value>{0} alınıyor …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} işlem günü · önde {3} {4} · sonda {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>Sektör yarışı</value></data>
+  <data name="SectorUnitYi"><value>×100 M</value></data>
+  <data name="SectorUnitSectors"><value>sektör</value></data>
+  <data name="SectorUnitStocks"><value>hisse</value></data>
+  <data name="StudioDisclaimer.Text"><value>Yalnızca bilgi amaçlıdır. Yatırım tavsiyesi değildir.</value></data>
+  <data name="StudioDataLayerPending"><value>Fiyat verisi çekme henüz yazılmadı. Video ve yerleşim denetimleri ile ön izleme şimdiden çalışıyor; veri katmanı bir sonraki adım.</value></data>
+  <data name="StudioEncoderPending"><value>Dışa verme henüz yazılmadı. Ön izleme zaten gerçek çizim yolundan geçiyor; kodlayıcı bir sonraki adım.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Piyasa işlem hacmi</value></data>
+  <data name="StockVolumeStageTitle"><value>Hacim ve devir</value></data>
+  <data name="StockBadCode"><value>Bu kod burada sorgulanamıyor. Kod, ad veya pinyin yazın ve listeden seçin.</value></data>
+  <data name="StockChosen"><value>{0} ({1}) seçildi.</value></data>
+  <data name="StockFetching"><value>{0} alınıyor …</value></data>
+  <data name="StockFetchingIntraday"><value>{0} için gün içi veriler alınıyor …</value></data>
+  <data name="StockIntradayUnavailable"><value>Bu kod için gün içi veri yok.</value></data>
+  <data name="StockIntradayTooFew"><value>O gün için gün içi nokta sayısı çok az.</value></data>
+  <data name="StockNoRate"><value>Bu menkul kıymet devir hızını bildirmiyor.</value></data>
+  <data name="StockNoFloatShares"><value>Dolaşımdaki pay verisi yok; devir hızı hesaplanamıyor.</value></data>
+  <data name="StockFetchedDaily"><value>{0} ({1}): {2} işlem günü · hacim ort. {3} {4}, zirve {5} · devir ort. {6} %, zirve {7} %</value></data>
+  <data name="StockFetchedIntraday"><value>{0} ({1}): {2} dakika · günün devri {3} %</value></data>
+  <data name="StockDailyHint"><value>Günlük mod: işlem günü başına bir çubuk.</value></data>
+  <data name="StockIntradayHint"><value>Gün içi mod: kaynak yalnızca son beş işlem gününü tutar. Bir kez yükleyin, sonra günü seçin.</value></data>
+  <data name="StockUnitHands"><value>lot</value></data>
+  <data name="StockUnitTenThousand"><value>×10 bin lot</value></data>
+  <data name="StockPanelVolume"><value>Hacim</value></data>
+  <data name="StockPanelMinuteVolume"><value>Dakika başına hacim</value></data>
+  <data name="StockPanelTurnover"><value>Devir hızı</value></data>
+  <data name="StockPanelCumTurnover"><value>Kümülatif devir</value></data>
+  <data name="StockMeanLabel"><value>Ort. {0}</value></data>
+  <data name="StockHighLabel"><value>En yüksek</value></data>
+  <data name="StockLowLabel"><value>En düşük</value></data>
+  <data name="StockDayTurnover"><value>Günün devri {0} %</value></data>
+  <data name="StockIntradayLabel"><value>gün içi</value></data>
+  <data name="StockRangeJoiner"><value>-</value></data>
+  <data name="StockTradingDaysUnit"><value>işlem günü</value></data>
+  <data name="StockMinutesUnit"><value>dakika</value></data>
+  <data name="StockAddFavourite.Content"><value>Favorilere ekle</value></data>
+  <data name="StockFavNeedData"><value>Önce veriyi alın: favori, adı da birlikte hatırlar.</value></data>
+  <data name="StockTradingDayNote.Text"><value>Kaynak yalnızca son beş işlem gününü tutar.</value></data>
+
+  <data name="TurnoverScope.Header"><value>Pazar</value></data>
+  <data name="TurnoverScopeWhole"><value>Şanghay + Shenzhen (tümü)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Şanghay Borsası (tümü)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Şanghay ana pazarı</value></data>
+  <data name="TurnoverScopeStar"><value>STAR pazarı</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Shenzhen Borsası (tümü)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Shenzhen ana pazarı</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>İkisi + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Ana pazarlar, borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50, borsanın tamamını değil elli hisseyi kapsar.</value></data>
+  <data name="TurnoverUnit"><value>100 milyon CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} toplamı · birim: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} – {1} · {2} işlem günü</value></data>
+  <data name="TurnoverAverageLabel"><value>Ortalama {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Ortalama</value></data>
+  <data name="TurnoverStatPeak"><value>En yüksek</value></data>
+  <data name="TurnoverStatLow"><value>En düşük</value></data>
+  <data name="TurnoverStatRatio"><value>Yüksek/düşük</value></data>
+  <data name="TurnoverFetching"><value>{0} alınıyor…</value></data>
+  <data name="TurnoverFetched"><value>{0} işlem günü ({1} – {2}) · ortalama {3} · en yüksek {4} · en düşük {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>Aralık çok uzun. Tek bir istek yaklaşık {0} takvim gününe uzanır, kısaltın.</value></data>
+  <data name="TurnoverRangeReversed"><value>Başlangıç tarihi bitiş tarihinden önce olmalı.</value></data>
+  <data name="TurnoverTooFewDays"><value>Bu aralıkta yeterli işlem günü yok.</value></data>
+  <data name="TurnoverView.Header"><value>Görüntü biçimi</value></data>
+  <data name="TurnoverViewBars"><value>Çubuk yarışı</value></data>
+  <data name="TurnoverViewCalendar"><value>Takvim ısı haritası</value></data>
+  <data name="ReturnStageTitle"><value>SSE Composite günlük değişim</value></data>
+  <data name="ReturnSubtitle"><value>{0} · kapanışta günlük değişim · birim: %</value></data>
+  <data name="ReturnStatUp"><value>Yükselen</value></data>
+  <data name="ReturnStatDown"><value>Düşen</value></data>
+  <data name="ReturnStatBest"><value>En iyi gün</value></data>
+  <data name="ReturnStatWorst"><value>En kötü gün</value></data>
+  <data name="ReturnDayCount"><value>{0} gün</value></data>
+  <data name="StudioCover.Content"><value>Kapağı PNG olarak kaydet</value></data>
+  <data name="StudioCoverNote.Text"><value>Ön izlemenin durduğu kareyi tam dışa verme çözünürlüğünde kaydeder.</value></data>
+  <data name="StudioCoverSaved"><value>Kapak kaydedildi: {0} · {1}×{2} · konum {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Klasör seçilmediği için hiçbir şey kaydedilmedi.</value></data>
+  <data name="StudioExporting"><value>Kodlanıyor… %{0}</value></data>
+  <data name="StudioExported"><value>{0} dışa verildi · {1} MB · {3} sn videoyu {2} sn'de · konum {4}</value></data>
+  <data name="StudioExportCancelled"><value>Klasör seçilmediği için hiçbir şey dışa verilmedi.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Her an değiştirilebilir; ikisi de aynı seriyi çizer, yeniden veri çekilmez.</value></data>
+
+  <data name="StockSearch.Header"><value>Hisse</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Kod, ad veya pinyin</value></data>
+  <data name="StockNoneChosen"><value>Hisse seçilmedi.</value></data>
+  <data name="StockModeLabel.Text"><value>Kip</value></data>
+  <data name="StockModeDaily.Content"><value>Birden çok işlem günü</value></data>
+  <data name="StockModeIntraday.Content"><value>Tek bir işlem günü içinde</value></data>
+  <data name="StockTradingDay.Header"><value>İşlem günü</value></data>
+
+  <data name="PageCancelled"><value>Durduruldu.</value></data>
+  <data name="PageTimedOut"><value>Çok uzun sürdü ve vazgeçildi.</value></data>
+  <data name="PageWorkFailed"><value>{0} başarısız: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Dil</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Windows'u izle</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>Dil, uygulama yeniden başladığında değişir.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Şimdi yeniden başlat</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Görünüm</value></data>
+  <data name="SettingsThemeSystem"><value>Windows'u izle</value></data>
+  <data name="SettingsThemeLight"><value>Açık</value></data>
+  <data name="SettingsThemeDark"><value>Koyu</value></data>
+  <data name="SettingsThemeNote.Text"><value>Seçtiğiniz anda uygulanır ve yalnızca uygulamayı etkiler. Video kendi renk düzenini korur, böylece ön izleme dosyayı yine de haber verir.</value></data>
+  <data name="SettingsOutput.Text"><value>Videoların kaydedildiği yer</value></data>
+  <data name="SettingsOutputNote.Text"><value>Klasör seçiciyle belirlenir, çünkü paketlenmiş bir uygulama istediği yere yazamaz. Belirlenmemişse ilk dışa verme sorar ve sonra hatırlar.</value></data>
+  <data name="SettingsOutputNotSet"><value>Belirlenmedi — ilk dışa verme soracak.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Klasör seç…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Unut</value></data>
+  <data name="SettingsOutputFailed"><value>Klasör belirlenemedi: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Uygulama verisi</value></data>
+  <data name="SettingsStorageNote.Text"><value>Ayarlar ve çökme günlüğü burada. Uygulama kaldırılırken Windows bunu siler; dışa verilen videolar burada değildir.</value></data>
+  <data name="SettingsSources.Text"><value>Veri</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir. İşlem hacmi yüz milyon yuan birimine çevrilir ve hâlâ işlem gören gün dışarıda bırakılır, çünkü bitmemiş bir gün yalnızca açılış seansını içerir.</value></data>
+  <data name="SettingsContact.Text"><value>Bir sorun mu var?</value></data>
+  <data name="SettingsContactNote.Text"><value>Ne yaptığınızı ve bunun yerine ne beklediğinizi yazın. Yukarıdaki sürüm e-postanın konusunda zaten var.</value></data>
+  <data name="SettingsContactSubject"><value>Market Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Hiçbir e-posta uygulaması yanıt vermedi. {0} adresine yazın. ({1})</value></data>
+  <data name="SettingsVersion"><value>Sürüm {0}</value></data>
+  <data name="SettingsRestartFailed"><value>Uygulama yeniden başlatılamadı: {0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>Yükseliş-düşüş takvimi</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>Yükseliş-düşüş takvimi</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>Herhangi bir Çin hissesi veya endeksi, işlem günü başına bir hücre — yükselişte kırmızı, düşüşte yeşil.</value></data>
+  <data name="GainCalendarDefaultTitle"><value>{0} günlük değişim</value></data>
+  <data name="GainCalendarFetching"><value>{0} alınıyor…</value></data>
+  <data name="GainCalendarFetched"><value>{0} işlem günü ({1} – {2}) · {3} yükseliş · {4} düşüş</value></data>
+  <data name="GainCalendarAShareOnly"><value>Yalnızca Çin borsası hisseleri ve endeksleri desteklenir.</value></data>
+  <data name="IndexSSE"><value>Şanghay Bileşik Endeksi</value></data>
+  <data name="TrayOpen.Text"><value>Aç</value></data>
+  <data name="TrayExit.Text"><value>Çık</value></data>
+  <data name="TrayBusy"><value>Çalışıyor: {0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>Bildirim alanı simgesi</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>Pencereyi kapatmak uygulamayı sonlandırmak yerine buraya gizler. Kapatırsanız pencereyi kapatmak uygulamadan çıkar.</value></data>
+  <data name="SettingsStartup.Text"><value>Windows ile başlat</value></data>
+  <data name="SettingsStartupNote.Text"><value>Oturum açıldığında bildirim alanında başlar; böylece açtığınızda hazır olur.</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>Görev Yöneticisi'nde kapatıldığı için Windows buna izin vermiyor. Başlangıç uygulamaları sekmesinden yeniden etkinleştirin.</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>Buna kuruluşunuzun ilkesi karar verir ve burada değiştirilemez.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Piyasa</value></data>
+  <data name="SettingsMarketNote.Text"><value>Her sayfanın verileri nereden aldığını ve hangi sayfaların sunulacağını belirler. Yeniden başlattıktan sonra geçerli olur.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Piyasa, uygulama yeniden başlatıldığında değişecek.</value></data>
+  <data name="MarketAShare"><value>A hisseleri</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>ABD</value></data>
+  <data name="SectorListHangSeng"><value>Hang Seng alt endeksleri</value></data>
+  <data name="SectorListSpdr"><value>ABD sektör ETF'leri</value></data>
+  <data name="SectorMetricAmountUsd"><value>Kümülatif hacim, 100 M$</value></data>
+
+  <data name="NavDcaPlan.Content"><value>DCA Planı</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>DCA Planı</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Sabit tutarla sabit aralıklarla bir varlık almak — disiplinin neye dönüştüğünü animasyonla görmek</value></data>
+  <data name="DcaFreqLabel.Header"><value>Sıklık</value></data>
+  <data name="DcaFreqDaily"><value>Her işlem günü</value></data>
+  <data name="DcaFreqWeekly"><value>Her hafta</value></data>
+  <data name="DcaFreqMonthly"><value>Her ay</value></data>
+  <data name="DcaAmountLabel.Header"><value>Alım tutarı</value></data>
+  <data name="DcaRangeLabel.Header"><value>Süre</value></data>
+  <data name="DcaRange3Y"><value>Son 3 yıl</value></data>
+  <data name="DcaRange5Y"><value>Son 5 yıl</value></data>
+  <data name="DcaRange10Y"><value>Son 10 yıl</value></data>
+  <data name="DcaRangeMax"><value>En eski veriye kadar</value></data>
+  <data name="DcaDefaultTitle"><value>DCA planı: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} → {3} · geriye düzeltilmiş kapanış · ücretsiz</value></data>
+  <data name="DcaRangeLine"><value>{0} - {1} · {2} alım</value></data>
+  <data name="DcaReturnLabel"><value>Getiri</value></data>
+  <data name="DcaLegendValue"><value>Değer</value></data>
+  <data name="DcaLegendInvested"><value>Yatırılan</value></data>
+  <data name="DcaCardValue"><value>Son değer</value></data>
+  <data name="DcaCardInvested"><value>Toplam yatırım</value></data>
+  <data name="DcaCardProfit"><value>Kâr</value></data>
+  <data name="DcaCardBuys"><value>Alımlar</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} işlem günü ({1} - {2}), {3} alım yüklendi</value></data>
+  <data name="DcaAmountInvalid"><value>Alım tutarı pozitif bir sayı olmalı</value></data>
+  <data name="WrongMarket"><value>Bu kod geçerli piyasaya ({0}) ait değil.</value></data>
+  <data name="NavPosition.Content"><value>Pozisyon Getirisi</value></data>
+  <data name="PositionPageTitle.Text"><value>Pozisyon Getirisi</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Tek bir alım, tutulan — değer ve getiri yıllar içinde ne yaptı</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Başlangıç sermayesi</value></data>
+  <data name="PositionRangeLabel.Header"><value>Elde tutma süresi</value></data>
+  <data name="PositionDefaultTitle"><value>Pozisyon getirisi: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: {3} için {1} {2} alındı · geriye düzeltilmiş kapanışlar · temettüler yeniden yatırıldı</value></data>
+  <data name="PositionRangeLine"><value>{0} - {1} · {2} gün tutuldu</value></data>
+  <data name="PositionLegendCapital"><value>Sermaye</value></data>
+  <data name="PositionCardCapital"><value>Yatırılan sermaye</value></data>
+  <data name="PositionCardDrawdown"><value>Maks. düşüş</value></data>
+  <data name="PositionFetched"><value>{0} işlem günü ({1} - {2}), {3} gün tutuldu</value></data>
+  <data name="PositionCapitalInvalid"><value>Başlangıç sermayesi pozitif bir sayı olmalıdır</value></data>
+</root>

@@ -1,4 +1,4 @@
-# Working notes
+﻿# Working notes
 
 Open questions and unfinished edges, kept out of the README because they describe the state of
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
@@ -65,9 +65,11 @@ that can ship.
 
 **Package identity is decided once.** `Identity Name` and `Publisher` come from the name
 reserved in Partner Center and cannot be changed for that product afterwards; the display name
-can. The manifest still carries the development placeholder `AShareMotionStudio.Dev` with a
+can. The manifest still carries the development placeholder `MarketMotionStudio.Dev` with a
 self-signed publisher, so the identity is still open — but only until the first submission.
-The name to reserve is **AShare Motion Studio**.
+The name to reserve is **Market Motion Studio**. (The package identity `MarketMotionStudio`
+is frozen and never changes — only the display name and Store listing name were renamed when
+the app grew beyond A-shares to Hong Kong and US markets.)
 
 **The disclaimer is in four places and should stay in all four.** Store description, both
 indicator pages, Settings, and the end of the help document. A financial app that draws market
@@ -157,7 +159,7 @@ there; the distinction has to survive the port.
 - **Nothing is cached between fetches.** Pressing Get data twice re-requests the same days. Not
   worth fixing for a button somebody presses deliberately, but worth knowing before any feature
   fetches on its own.
-- **`TencentKline` sends no `Referer` and identifies itself as `AShareMotionStudio/0.1`.** That is
+- **`TencentKline` sends no `Referer` and identifies itself as `MarketMotionStudio/0.1`.** That is
   deliberate — a request that says what it is can be blocked on purpose rather than by
   fingerprinting — but it also means this traffic is trivially identifiable, which is a
   consideration for the data-rights question above rather than a technical one.
@@ -467,7 +469,7 @@ transparent corner and an opaque centre, and the `.ico` loads.
   Chinese and Settings read the stored choice back as 简体中文.
 - `WindowPlacement` restored a maximised window across that restart.
 - Settings shows the real package-container path
-  (`...\Packages\AShareMotionStudio.Dev_cdwthxytk4q78\LocalState`), which is the MSIX
+  (`...\Packages\MarketMotionStudio.Dev_cdwthxytk4q78\LocalState`), which is the MSIX
   redirection the output-folder design exists to work around, visible rather than described.
 - The output folder starts unset, and **Forget** is correctly disabled until one is chosen.
 - The help page renders all of the hand-written Markdown subset — headings, paragraphs and
@@ -536,7 +538,7 @@ transparent corner and an opaque centre, and the `.ico` loads.
 To run it again:
 
 ```powershell
-cd src\AShareMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0
+cd src\MarketMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0
 Add-AppxPackage -Register .\AppxManifest.xml
 ```
 

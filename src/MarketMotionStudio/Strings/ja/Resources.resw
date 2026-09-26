@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>ja</value></data>
+
+  <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>市場の売買代金</value></data>
+  <data name="NavStockVolume.Content"><value>出来高と回転率</value></data>
+  <data name="NavHelp.Content"><value>ヘルプ</value></data>
+  <data name="NavSettings.Content"><value>設定</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>市場の売買代金</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>全市場または単一ボードの日次売買代金。同じデータの2つの表示形態で、切替時に再取得は不要です。</value></data>
+  <data name="StockVolumePageTitle.Text"><value>出来高と回転率</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>1 銘柄の出来高と売買回転率。期間で見ることも、1 日の中で見ることもできます。</value></data>
+  <data name="SettingsPageTitle.Text"><value>設定</value></data>
+  <data name="HelpPageTitle.Text"><value>ヘルプ</value></data>
+  <data name="HelpPageSubtitle.Text"><value>各ページの役割、数値の出どころ、そしてこの動画が何ではないか。</value></data>
+  <data name="HelpDocument"><value>help-ja.md</value></data>
+  <data name="HelpMissing"><value>この言語のヘルプ文書を開けませんでした。</value></data>
+
+  <data name="StudioDataSection.Text"><value>データ</value></data>
+  <data name="StudioTitleSection.Text"><value>タイトル</value></data>
+  <data name="StudioTitleText.Header"><value>タイトル文字</value></data>
+  <data name="StudioTitleNote.Text"><value>空のままにすると既定のタイトルを使います。長いタイトルは切り取らず、比例して縮小します（最小で半分まで）。</value></data>
+  <data name="StudioHideTitle.Header"><value>タイトルを隠す</value></data>
+  <data name="StudioHideTitleNote.Text"><value>タイトルの 1 行が図表に戻り、その下の内容が 1 行分上へ詰まります。下マージンが下端を固定するので、パネルは高くなります。外せば元のレイアウトに正確に戻ります。</value></data>
+  <data name="StockTitlePlaceholder"><value>取得した銘柄名を使う</value></data>
+  <data name="StudioVideoSection.Text"><value>動画</value></data>
+  <data name="StudioLayoutSection.Text"><value>レイアウト</value></data>
+  <data name="StudioRange.Header"><value>期間</value></data>
+  <data name="StudioRange1M"><value>直近 1 か月</value></data>
+  <data name="StudioRange3M"><value>直近 3 か月</value></data>
+  <data name="StudioRange6M"><value>直近 6 か月</value></data>
+  <data name="StudioRange12M"><value>直近 12 か月</value></data>
+  <data name="StudioRangeCustom"><value>カスタム</value></data>
+  <data name="StudioRangeFrom.Header"><value>開始日</value></data>
+  <data name="StudioRangeTo.Header"><value>終了日</value></data>
+  <data name="StudioDuration"><value>長さ: {0} 秒</value></data>
+  <data name="StudioResolution.Text"><value>解像度</value></data>
+  <data name="StudioFrameRate.Text"><value>フレームレート</value></data>
+  <data name="StudioQuality.Text"><value>画質</value></data>
+  <data name="StudioQualityStandard"><value>標準</value></data>
+  <data name="StudioQualityHigh"><value>高画質</value></data>
+  <data name="StudioQualityUltra"><value>最高画質</value></data>
+  <data name="StudioBitrate"><value>約 {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>左マージン: {0}</value></data>
+  <data name="StudioMarginRight"><value>右マージン: {0}</value></data>
+  <data name="StudioMarginBottom"><value>下マージン: {0}</value></data>
+  <data name="StudioMarginTop"><value>上マージン: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 を基準とした値で、描画時に選んだ解像度へ比例拡大されます。ここで調整した値は解像度を変えてもそのまま使えます。左マージンは Y 軸目盛りの位置も決めます。 上マージンはスマホが自前のUIのために確保する帯から始まるため、タイトルがその下に入り込むことはありません。</value></data>
+  <data name="StudioSafeArea.Header"><value>セーフエリアのガイド</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>スマートフォンのアプリが自身の UI で覆う領域を示します。プレビューにのみ描かれ、ファイルには入りません。</value></data>
+  <data name="StudioPlay.Content"><value>再生</value></data>
+  <data name="StudioPause.Content"><value>一時停止</value></data>
+  <data name="StudioFetch.Content"><value>データを取得</value></data>
+  <data name="StudioExport.Content"><value>MP4 を書き出す</value></data>
+  <data name="StudioCancel.Content"><value>キャンセル</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioStageNoData"><value>データがありません</value></data>
+  <data name="StudioCredit"><value>出典: 騰訊財経</value></data>
+  <data name="NavMatrix.Content"><value>リターンマトリクス</value></data>
+  <data name="MatrixPageTitle.Text"><value>リターンマトリクス</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>月足は1リクエストで10年分。セルが時系列に灯っていきます。</value></data>
+  <data name="MatrixModeLabel.Text"><value>マトリクスの種類</value></data>
+  <data name="MatrixModeYear.Content"><value>単一銘柄 · 年×月</value></data>
+  <data name="MatrixModeCompare.Content"><value>複数銘柄 · 銘柄×月</value></data>
+  <data name="MatrixTarget.Header"><value>対象</value></data>
+  <data name="MatrixYearsLabel.Text"><value>年数</value></data>
+  <data name="MatrixYears.Header"><value>年数</value></data>
+  <data name="MatrixYearsAll"><value>すべて</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>月数</value></data>
+  <data name="MatrixMonths.Header"><value>月数</value></data>
+  <data name="MatrixListIndices"><value>主要指数</value></data>
+  <data name="MatrixChosen"><value>現在：{0}（{1}）</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>月足の取得に失敗したか、このコードのデータがありません。</value></data>
+  <data name="MatrixTooFewMonths"><value>利用できる月が足りません。</value></data>
+  <data name="MatrixTooFewShared"><value>対象間で共通する月が足りません。</value></data>
+  <data name="MatrixTailYear"><value>年間</value></data>
+  <data name="MatrixTailSubtotal"><value>小計</value></data>
+  <data name="MatrixTailTotal"><value>累計</value></data>
+  <data name="MatrixYearSpan"><value>{0}年〜現在 · {1}ヶ月</value></data>
+  <data name="MatrixYearTitle"><value>{0} 月次リターン {1}年</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · 月次騰落率 · 単位：%</value></data>
+  <data name="MatrixCmpSpan"><value>{0}〜{1} · {2}ヶ月</value></data>
+  <data name="MatrixCmpTitle"><value>{0} 月次ローテーション</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · 月次騰落率 · 単位：%</value></data>
+  <data name="MatrixStatBestMonth"><value>最良月</value></data>
+  <data name="MatrixStatWorstMonth"><value>最悪月</value></data>
+  <data name="MatrixStatUpRatio"><value>上昇月比率</value></data>
+  <data name="MatrixStatBestSingle"><value>最良単月</value></data>
+  <data name="MatrixStatChampion"><value>1位</value></data>
+  <data name="MatrixStatLast"><value>最下位</value></data>
+  <data name="MatrixStatTargets"><value>対象数</value></data>
+  <data name="MatrixStatSpan"><value>期間</value></data>
+  <data name="MatrixMonthValue"><value>{0}月 {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0}</value></data>
+  <data name="MatrixCountMonths"><value>{0}ヶ月</value></data>
+  <data name="MatrixCountBounds"><value>{0}件選択中（{1}–{2}が必要）</value></data>
+  <data name="MatrixTooFewTargets"><value>比較には最低 {0} {1} が必要です。</value></data>
+  <data name="MatrixTooManyTargets"><value>最大 {0}。それ以上は縦画面に収まりません。</value></data>
+  <data name="MatrixFetching"><value>{0} の月足を取得中 …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} セル · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>リターンマトリクス</value></data>
+  <data name="NavSectorRace.Content"><value>業界セクター競争</value></data>
+  <data name="SectorRacePageTitle.Text"><value>業界セクター競争</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>十数本のバーが追い抜きを繰り返し、順位は最終フレームまで変わります。</value></data>
+  <data name="SectorRosterLabel.Text"><value>出場者</value></data>
+  <data name="SectorRoster.Header"><value>出場者</value></data>
+  <data name="SectorListLevel1"><value>CSI レベル1業種</value></data>
+  <data name="SectorListTheme"><value>人気テーマ</value></data>
+  <data name="SectorListCustom"><value>カスタムセクター</value></data>
+  <data name="SectorListStocks"><value>ウォッチリスト銘柄</value></data>
+  <data name="SectorMetricLabel.Text"><value>指標</value></data>
+  <data name="SectorMetric.Header"><value>指標</value></data>
+  <data name="SectorMetricReturn"><value>累積騰落率 %</value></data>
+  <data name="SectorMetricAmount"><value>累積売買代金 億</value></data>
+  <data name="SectorMetricReturnShort"><value>騰落率</value></data>
+  <data name="SectorMetricAmountShort"><value>売買代金</value></data>
+  <data name="SectorAutoTitleReturn"><value>{0}騰落率レース</value></data>
+  <data name="SectorAutoTitleAmount"><value>{0}売買代金レース</value></data>
+  <data name="SectorCount"><value>{0} 件選択中</value></data>
+  <data name="SectorCountBounds"><value>{0} 件選択中（{1}–{2} が必要）</value></data>
+  <data name="SectorTooFew"><value>レースには最低 {0} {1} が必要です。</value></data>
+  <data name="SectorTooMany"><value>最大 {0} {1}。それ以上は縦画面では棒になります。</value></data>
+  <data name="SectorTooManyStocks"><value>最大 {0} 銘柄。</value></data>
+  <data name="SectorTooFewSharedDays"><value>出場者に共通する営業日が 5 日未満です。</value></data>
+  <data name="SectorFetching"><value>{0} を取得中 …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} 営業日 · 先頭 {3} {4} · 最下位 {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>業界セクター競争</value></data>
+  <data name="SectorUnitYi"><value>億</value></data>
+  <data name="SectorUnitSectors"><value>セクター</value></data>
+  <data name="SectorUnitStocks"><value>銘柄</value></data>
+  <data name="StudioDisclaimer.Text"><value>参考情報です。投資助言ではありません。</value></data>
+  <data name="StudioDataLayerPending"><value>相場データの取得はまだ実装されていません。動画とレイアウトの設定、プレビューは今も動きます。データ層が次の段階です。</value></data>
+  <data name="StudioEncoderPending"><value>書き出しはまだ実装されていません。プレビューは既に本番の描画経路を通っています。エンコーダーが次の段階です。</value></data>
+  <data name="MarketTurnoverStageTitle"><value>市場の売買代金</value></data>
+  <data name="StockVolumeStageTitle"><value>出来高と回転率</value></data>
+  <data name="StockBadCode"><value>このコードは取得できません。コード・名称・ピンインを入力し、一覧から選んでください。</value></data>
+  <data name="StockChosen"><value>{0}（{1}）を選択しました。</value></data>
+  <data name="StockFetching"><value>{0} を取得中 …</value></data>
+  <data name="StockFetchingIntraday"><value>{0} の分足データを取得中 …</value></data>
+  <data name="StockIntradayUnavailable"><value>このコードに分足データはありません。</value></data>
+  <data name="StockIntradayTooFew"><value>この日の分足データが少なすぎます。</value></data>
+  <data name="StockNoRate"><value>この銘柄は回転率を報告していません。</value></data>
+  <data name="StockNoFloatShares"><value>流通株数を取得できず、回転率を計算できません。</value></data>
+  <data name="StockFetchedDaily"><value>{0}（{1}）：{2} 営業日 · 出来高平均 {3} {4}、最高 {5} · 回転率平均 {6} %、最高 {7} %</value></data>
+  <data name="StockFetchedIntraday"><value>{0}（{1}）：{2} 分 · 通日回転率 {3} %</value></data>
+  <data name="StockDailyHint"><value>日足モード：営業日ごとに 1 本のバー。</value></data>
+  <data name="StockIntradayHint"><value>分足モード：取得できるのは直近 5 営業日のみ。一度取得してから日を選んでください。</value></data>
+  <data name="StockUnitHands"><value>株</value></data>
+  <data name="StockUnitTenThousand"><value>万株</value></data>
+  <data name="StockPanelVolume"><value>出来高</value></data>
+  <data name="StockPanelMinuteVolume"><value>毎分出来高</value></data>
+  <data name="StockPanelTurnover"><value>回転率</value></data>
+  <data name="StockPanelCumTurnover"><value>累積回転率</value></data>
+  <data name="StockMeanLabel"><value>平均 {0}</value></data>
+  <data name="StockHighLabel"><value>最高</value></data>
+  <data name="StockLowLabel"><value>最低</value></data>
+  <data name="StockDayTurnover"><value>通日回転率 {0} %</value></data>
+  <data name="StockIntradayLabel"><value>日内分足</value></data>
+  <data name="StockRangeJoiner"><value>〜</value></data>
+  <data name="StockTradingDaysUnit"><value>営業日</value></data>
+  <data name="StockMinutesUnit"><value>分</value></data>
+  <data name="StockAddFavourite.Content"><value>お気に入りに追加</value></data>
+  <data name="StockFavNeedData"><value>先にデータを取得してください。お気に入りは銘柄名も一緒に保存します。</value></data>
+  <data name="StockTradingDayNote.Text"><value>取得できるのは直近 5 営業日のみです。</value></data>
+
+  <data name="TurnoverScope.Header"><value>ボード</value></data>
+  <data name="TurnoverScopeWhole"><value>上海＋深セン（全市場）</value></data>
+  <data name="TurnoverScopeShanghai"><value>上海証券取引所（全体）</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>上海メインボード</value></data>
+  <data name="TurnoverScopeStar"><value>科創板</value></data>
+  <data name="TurnoverScopeShenzhen"><value>深セン証券取引所（全体）</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>深センメインボード</value></data>
+  <data name="TurnoverScopeChiNext"><value>創業板</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>両市＋北証50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>メインボードは取引所合計から該当ボードを差し引いて算出。北証50は成分株ベースで、北交所全体をカバーしません。</value></data>
+  <data name="TurnoverUnit"><value>億元</value></data>
+  <data name="TurnoverSubtitle"><value>{0} の合計 · 単位：{1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} 〜 {1} · 計 {2} 営業日</value></data>
+  <data name="TurnoverAverageLabel"><value>平均 {0}</value></data>
+  <data name="TurnoverStatAverage"><value>平均</value></data>
+  <data name="TurnoverStatPeak"><value>最高</value></data>
+  <data name="TurnoverStatLow"><value>最低</value></data>
+  <data name="TurnoverStatRatio"><value>最高/最低</value></data>
+  <data name="TurnoverFetching"><value>{0} を取得中…</value></data>
+  <data name="TurnoverFetched"><value>計 {0} 営業日（{1} 〜 {2}）· 平均 {3} · 最高 {4} · 最低 {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>期間が長すぎます。1 回の要求で届くのは約 {0} 暦日までなので、短くしてください。</value></data>
+  <data name="TurnoverRangeReversed"><value>開始日は終了日より前にしてください。</value></data>
+  <data name="TurnoverTooFewDays"><value>この期間には十分な営業日がありません。</value></data>
+  <data name="TurnoverView.Header"><value>画面の形式</value></data>
+  <data name="TurnoverViewBars"><value>バーレース</value></data>
+  <data name="TurnoverViewCalendar"><value>カレンダーヒートマップ</value></data>
+  <data name="ReturnStageTitle"><value>上海総合指数の日次騰落</value></data>
+  <data name="ReturnSubtitle"><value>{0} · 終値の日次騰落 · 単位：%</value></data>
+  <data name="ReturnStatUp"><value>上昇</value></data>
+  <data name="ReturnStatDown"><value>下落</value></data>
+  <data name="ReturnStatBest"><value>最大上昇</value></data>
+  <data name="ReturnStatWorst"><value>最大下落</value></data>
+  <data name="ReturnDayCount"><value>{0} 日</value></data>
+  <data name="StudioCover.Content"><value>サムネイルを PNG で保存</value></data>
+  <data name="StudioCoverNote.Text"><value>プレビューに止まっているそのフレームを、書き出し解像度で保存します。</value></data>
+  <data name="StudioCoverSaved"><value>サムネイルを保存しました: {0} · {1}×{2} · 保存先 {3}</value></data>
+  <data name="StudioCoverCancelled"><value>フォルダーが選ばれなかったので保存していません。</value></data>
+  <data name="StudioExporting"><value>エンコード中… {0}%</value></data>
+  <data name="StudioExported"><value>{0} を書き出しました · {1} MB · {3} 秒の動画に {2} 秒 · 保存先 {4}</value></data>
+  <data name="StudioExportCancelled"><value>フォルダーが選ばれなかったので書き出していません。</value></data>
+  <data name="TurnoverViewNote.Text"><value>いつでも切り替えられます。同じデータを描くので取得はやり直しません。</value></data>
+
+  <data name="StockSearch.Header"><value>銘柄</value></data>
+  <data name="StockSearch.PlaceholderText"><value>コード、名称、またはピンイン</value></data>
+  <data name="StockNoneChosen"><value>銘柄が選ばれていません。</value></data>
+  <data name="StockModeLabel.Text"><value>モード</value></data>
+  <data name="StockModeDaily.Content"><value>複数の営業日</value></data>
+  <data name="StockModeIntraday.Content"><value>1 営業日の中</value></data>
+  <data name="StockTradingDay.Header"><value>営業日</value></data>
+
+  <data name="PageCancelled"><value>停止しました。</value></data>
+  <data name="PageTimedOut"><value>時間がかかりすぎたため中止しました。</value></data>
+  <data name="PageWorkFailed"><value>{0} に失敗しました: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>言語</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Windows に従う</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>言語はアプリを再起動すると変わります。</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>今すぐ再起動</value></data>
+  <data name="SettingsThemeLabel.Text"><value>外観</value></data>
+  <data name="SettingsThemeSystem"><value>Windows に従う</value></data>
+  <data name="SettingsThemeLight"><value>ライト</value></data>
+  <data name="SettingsThemeDark"><value>ダーク</value></data>
+  <data name="SettingsThemeNote.Text"><value>選ぶとすぐ反映され、アプリ自体にのみ及びます。動画は独自の配色を保つので、プレビューはファイルをそのまま表します。</value></data>
+  <data name="SettingsOutput.Text"><value>動画の保存先</value></data>
+  <data name="SettingsOutputNote.Text"><value>フォルダー選択ダイアログで指定します。パッケージ化されたアプリは任意の場所へ書き込めないためです。未設定なら、最初の書き出しで尋ねて記憶します。</value></data>
+  <data name="SettingsOutputNotSet"><value>未設定 — 最初の書き出しで尋ねます。</value></data>
+  <data name="SettingsOutputChoose.Content"><value>フォルダーを選ぶ…</value></data>
+  <data name="SettingsOutputForget.Content"><value>忘れる</value></data>
+  <data name="SettingsOutputFailed"><value>そのフォルダーを設定できませんでした: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>アプリのデータ</value></data>
+  <data name="SettingsStorageNote.Text"><value>設定とクラッシュログはここにあります。アンインストール時に Windows が削除します。書き出した動画はここには入りません。</value></data>
+  <data name="SettingsSources.Text"><value>データ</value></data>
+  <data name="SettingsSourcesNote.Text"><value>相場は騰訊財経の公開エンドポイントから取得します。売買代金は億元に換算し、まだ取引中の当日は除外します。終わっていない 1 日は寄り付きの板寄せ分しか持たないためです。</value></data>
+  <data name="SettingsContact.Text"><value>問題がありますか？</value></data>
+  <data name="SettingsContactNote.Text"><value>何をしていて、何を期待していたかを書いてください。上のバージョンはメールの件名に既に入ります。</value></data>
+  <data name="SettingsContactSubject"><value>Market Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>応答するメールアプリがありません。{0} 宛に書いてください。({1})</value></data>
+  <data name="SettingsVersion"><value>バージョン {0}</value></data>
+  <data name="SettingsRestartFailed"><value>アプリを再起動できませんでした: {0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>騰落カレンダー</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>騰落カレンダー</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>中国の任意の銘柄・指数を、営業日ごとに一マスずつ——上昇は赤、下落は緑。</value></data>
+  <data name="GainCalendarDefaultTitle"><value>{0}の日次騰落</value></data>
+  <data name="GainCalendarFetching"><value>{0} を取得中…</value></data>
+  <data name="GainCalendarFetched"><value>{0} 営業日（{1}〜{2}）· 上昇 {3} 日・下落 {4} 日</value></data>
+  <data name="GainCalendarAShareOnly"><value>中国A股の銘柄と指数のみ対応しています。</value></data>
+  <data name="IndexSSE"><value>上海総合指数</value></data>
+  <data name="TrayOpen.Text"><value>開く</value></data>
+  <data name="TrayExit.Text"><value>終了</value></data>
+  <data name="TrayBusy"><value>処理中: {0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>通知領域のアイコン</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>ウィンドウを閉じるとアプリは終了せずここに隠れます。オフにすると、ウィンドウを閉じるとアプリが終了します。</value></data>
+  <data name="SettingsStartup.Text"><value>Windows の起動時に開始</value></data>
+  <data name="SettingsStartupNote.Text"><value>サインイン時に通知領域で起動するので、開いたときにすぐ使えます。</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>タスク マネージャーで無効にされているため、Windows がこれを妨げています。[スタートアップ アプリ] タブで再度有効にしてください。</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>これは組織のポリシーで決まっており、ここでは変更できません。</value></data>
+  <data name="SettingsMarketLabel.Text"><value>市場</value></data>
+  <data name="SettingsMarketNote.Text"><value>各ページがどの市場の株価を取得するか、どのページを表示するかを決めます。再起動後に有効になります。</value></data>
+  <data name="SettingsMarketRestart.Text"><value>市場はアプリの再起動後に切り替わります。</value></data>
+  <data name="MarketAShare"><value>A株</value></data>
+  <data name="MarketHongKong"><value>香港株</value></data>
+  <data name="MarketUnitedStates"><value>米国株</value></data>
+  <data name="SectorListHangSeng"><value>ハンセン分類指数</value></data>
+  <data name="SectorListSpdr"><value>米国セクターETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>累計売買代金 億ドル</value></data>
+
+  <data name="NavDcaPlan.Content"><value>積立投資</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>積立投資</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>一定額を一定の頻度で買い続けると、積み上がった投入額と評価額がどう届くかをアニメで見せる</value></data>
+  <data name="DcaFreqLabel.Header"><value>積立頻度</value></data>
+  <data name="DcaFreqDaily"><value>毎営業日</value></data>
+  <data name="DcaFreqWeekly"><value>毎週</value></data>
+  <data name="DcaFreqMonthly"><value>毎月</value></data>
+  <data name="DcaAmountLabel.Header"><value>1回の金額</value></data>
+  <data name="DcaRangeLabel.Header"><value>期間</value></data>
+  <data name="DcaRange3Y"><value>直近 3 年</value></data>
+  <data name="DcaRange5Y"><value>直近 5 年</value></data>
+  <data name="DcaRange10Y"><value>直近 10 年</value></data>
+  <data name="DcaRangeMax"><value>取得できる最古まで</value></data>
+  <data name="DcaDefaultTitle"><value>{0}積立投資</value></data>
+  <data name="DcaSubtitleLine"><value>{0}、{1}{2}を{3}に投入 · 後復権終値 · 手数料なし</value></data>
+  <data name="DcaRangeLine"><value>{0} から {1} · 積立 {2} 回</value></data>
+  <data name="DcaReturnLabel"><value>リターン</value></data>
+  <data name="DcaLegendValue"><value>評価額</value></data>
+  <data name="DcaLegendInvested"><value>投入額</value></data>
+  <data name="DcaCardValue"><value>最終評価額</value></data>
+  <data name="DcaCardInvested"><value>投入合計</value></data>
+  <data name="DcaCardProfit"><value>収益</value></data>
+  <data name="DcaCardBuys"><value>積立回数</value></data>
+  <data name="DcaWanUnit"><value>万</value></data>
+  <data name="DcaCurrencyCny"><value>元</value></data>
+  <data name="DcaCurrencyHkd"><value>香港ドル</value></data>
+  <data name="DcaCurrencyUsd"><value>米ドル</value></data>
+  <data name="DcaFetched"><value>{0}営業日（{1}〜{2}）、積立{3}回を取得</value></data>
+  <data name="DcaAmountInvalid"><value>1回の金額は正の数で入力してください</value></data>
+  <data name="WrongMarket"><value>このコードは現在の市場（{0}）の銘柄ではありません。</value></data>
+  <data name="NavPosition.Content"><value>保有収益</value></data>
+  <data name="PositionPageTitle.Text"><value>保有収益</value></data>
+  <data name="PositionPageSubtitle.Text"><value>一度だけ買って持ち続ける——時価評価とリターンの移り変わり</value></data>
+  <data name="PositionCapitalLabel.Header"><value>初期資金</value></data>
+  <data name="PositionRangeLabel.Header"><value>保有期間</value></data>
+  <data name="PositionDefaultTitle"><value>保有収益：{0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}に{1}{2}で{3}を購入 · 後復権終値 · 配当は再投資として含む</value></data>
+  <data name="PositionRangeLine"><value>{0} 〜 {1} · {2}日保有</value></data>
+  <data name="PositionLegendCapital"><value>投入資本</value></data>
+  <data name="PositionCardCapital"><value>投入資本</value></data>
+  <data name="PositionCardDrawdown"><value>最大ドローダウン</value></data>
+  <data name="PositionFetched"><value>{0} 営業日（{1} 〜 {2}）、{3}日保有</value></data>
+  <data name="PositionCapitalInvalid"><value>初期資金は0より大きい数値を入力してください</value></data>
+</root>

@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Drives the running app end to end: launch, fetch, export — and reports what happened.
 
 This is the harness that proved export works. It needs `uiautomation` and the app to be
 registered already:
 
     <python> -m pip install uiautomation
-    cd src\\AShareMotionStudio\\bin\\x64\\Debug\\net10.0-windows10.0.26100.0
+    cd src\\MarketMotionStudio\\bin\\x64\\Debug\\net10.0-windows10.0.26100.0
     Add-AppxPackage -Register .\\AppxManifest.xml
 
 Then: `<python> tools\\drive-studio.py`, and read `artifacts\\drive4.txt` afterwards.
@@ -23,9 +23,9 @@ instance**. Change `Name=` below if the app is pinned to another language.
 import io, os, time, subprocess
 import uiautomation as auto
 
-LOG = r"D:\software\AShareMotionStudio\artifacts\drive4.txt"
-CRASH = r"C:\Users\user\AppData\Local\Packages\AShareMotionStudio.Dev_cdwthxytk4q78\LocalState\crash.log"
-APPID = "AShareMotionStudio.Dev_cdwthxytk4q78!App"
+LOG = r"D:\software\MarketMotionStudio\artifacts\drive4.txt"
+CRASH = r"C:\Users\user\AppData\Local\Packages\MarketMotionStudio.Dev_cdwthxytk4q78\LocalState\crash.log"
+APPID = "MarketMotionStudio.Dev_cdwthxytk4q78!App"
 
 def say(s):
     with open(LOG, "a", encoding="utf-8") as f:
@@ -58,9 +58,9 @@ def btn(root, name):
 
 def alive():
     try:
-        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq AShareMotionStudio.exe"],
+        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq MarketMotionStudio.exe"],
                            capture_output=True)
-        return b"AShareMotionStudio.exe" in p.stdout
+        return b"MarketMotionStudio.exe" in p.stdout
     except Exception:
         return None
 
@@ -95,7 +95,7 @@ win = None
 for _ in range(30):
     time.sleep(1)
     try:
-        w = auto.WindowControl(searchDepth=1, Name="A股指标动画工作室", foundIndex=1)
+        w = auto.WindowControl(searchDepth=1, Name="行情指标动画工作室", foundIndex=1)
         if w.Exists(maxSearchSeconds=2):
             win = w
             break

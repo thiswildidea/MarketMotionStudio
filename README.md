@@ -1,12 +1,12 @@
-# AShare Motion Studio
+﻿# Market Motion Studio
 
-**A股指标动画工作室** — a Windows desktop tool that turns stock-market indicators into
+**行情指标动画工作室** — a Windows desktop tool that turns stock-market indicators into
 vertical data-visualisation videos and exports them as H.264 MP4. It points at one market at
 a time, chosen in Settings: A-shares by default, or Hong Kong, or the United States.
 
-The product has two names on purpose. Chinese markets get 「A股指标动画工作室」; everywhere
-else, and in the Store listing and the package identity, it is AShare Motion Studio. See
-"Languages" below.
+The product has two display names on purpose. Chinese markets get 「行情指标动画工作室」; everywhere
+else, and in the Store listing, it is Market Motion Studio. The package identity MarketMotionStudio
+stays fixed in every market and is never shown to users. See "Languages" below.
 
 Status: **seven pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
@@ -454,7 +454,7 @@ the alpha correct; the 256-pixel entry records its size as `0`, because the fiel
 ## Layout
 
 ```
-src/AShareMotionStudio/
+src/MarketMotionStudio/
   Market/          TencentKline (the only HTTP to a quote source), TurnoverSeries,
                    InstrumentCalendar (one instrument's bars as that record),
                    HistoryWalk (years of closes, walked backwards a page at a time),
@@ -501,17 +501,17 @@ Requires Visual Studio 2026 (18.x), the Windows SDK 26100, and the .NET 10 SDK.
 $msb = "C:\Program Files\Microsoft Visual Studio\18\Professional\MSBuild\Current\Bin\MSBuild.exe"
 
 # Debug build
-& $msb src\AShareMotionStudio\AShareMotionStudio.csproj /restore /p:Platform=x64 /p:Configuration=Debug
+& $msb src\MarketMotionStudio\MarketMotionStudio.csproj /restore /p:Platform=x64 /p:Configuration=Debug
 
 # Store submission package, x64 and ARM64 in one bundle
-& $msb src\AShareMotionStudio\AShareMotionStudio.csproj /restore `
+& $msb src\MarketMotionStudio\MarketMotionStudio.csproj /restore `
   /p:Configuration=Release /p:Platform=x64 `
   /p:AppxBundlePlatforms="x64|arm64" /p:AppxBundle=Always `
   /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=false `
   /p:GenerateAppxPackageOnBuild=true /p:AppxPackageDir="$PWD\artifacts\\"
 ```
 
-The second command produces `artifacts\AShareMotionStudio_<version>_x64_arm64_bundle.msixupload`,
+The second command produces `artifacts\MarketMotionStudio_<version>_x64_arm64_bundle.msixupload`,
 which is the file Partner Center takes.
 
 Use `Build`, not `Rebuild`, when the app may be running: `Rebuild` cleans first, the clean
@@ -522,7 +522,7 @@ installed, which is false.
 To run a local build, enable Developer Mode and register the loose files:
 
 ```powershell
-cd src\AShareMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0
+cd src\MarketMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0
 Add-AppxPackage -Register .\AppxManifest.xml
 ```
 
@@ -547,9 +547,9 @@ disagree.
 **The product name is translated, in exactly two markets.** This departs from the parent
 shell's rule that a product name is never translated, and it is deliberate: the product was
 commissioned with a Chinese name and an English one, so `AppTitle.Text` carries
-「A股指标动画工作室」 in `zh-Hans` and 「A股指標動畫工作室」 in `zh-Hant`, and the English
-name everywhere else. The package identity and the Store listing name stay English in every
-market.
+「行情指标动画工作室」 in `zh-Hans` and 「行情指標動畫工作室」 in `zh-Hant`, and the English
+name `Market Motion Studio` everywhere else. The package identity stays `MarketMotionStudio`
+in every market and is never shown to users.
 
 Every language carries the same keys in the same order. All fourteen currently report 307 keys
 with no encoding damage, and all fourteen help documents carry the same twelve sections in the

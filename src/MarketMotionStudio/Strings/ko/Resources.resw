@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>ko</value></data>
+
+  <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>시장 거래대금</value></data>
+  <data name="NavStockVolume.Content"><value>거래량과 회전율</value></data>
+  <data name="NavHelp.Content"><value>도움말</value></data>
+  <data name="NavSettings.Content"><value>설정</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>시장 거래대금</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>전체 시장 또는 개별 시장 구분의 일별 거래대금. 같은 데이터의 두 가지 화면 형태이며 전환 시 재요청이 없습니다.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>거래량과 회전율</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>한 종목의 거래량과 회전율. 기간으로도, 하루 안에서도 볼 수 있습니다.</value></data>
+  <data name="SettingsPageTitle.Text"><value>설정</value></data>
+  <data name="HelpPageTitle.Text"><value>도움말</value></data>
+  <data name="HelpPageSubtitle.Text"><value>각 페이지가 하는 일, 숫자의 출처, 그리고 이 영상이 아닌 것.</value></data>
+  <data name="HelpDocument"><value>help-ko.md</value></data>
+  <data name="HelpMissing"><value>이 언어의 도움말 문서를 열 수 없습니다.</value></data>
+
+  <data name="StudioDataSection.Text"><value>데이터</value></data>
+  <data name="StudioTitleSection.Text"><value>제목</value></data>
+  <data name="StudioTitleText.Header"><value>제목 문구</value></data>
+  <data name="StudioTitleNote.Text"><value>비워 두면 기본 제목을 씁니다. 긴 제목은 잘리지 않고 비례해 줄어들며, 최소 절반까지입니다.</value></data>
+  <data name="StudioHideTitle.Header"><value>제목 숨기기</value></data>
+  <data name="StudioHideTitleNote.Text"><value>제목이 쓰던 한 줄을 차트가 돌려받고, 아래 내용이 그 줄로 올라옵니다. 아래쪽 여백이 하단을 고정하므로 패널이 높아집니다. 끄면 원래 배치로 정확히 돌아옵니다.</value></data>
+  <data name="StockTitlePlaceholder"><value>가져온 종목 이름 사용</value></data>
+  <data name="StudioVideoSection.Text"><value>영상</value></data>
+  <data name="StudioLayoutSection.Text"><value>레이아웃</value></data>
+  <data name="StudioRange.Header"><value>기간</value></data>
+  <data name="StudioRange1M"><value>최근 1개월</value></data>
+  <data name="StudioRange3M"><value>최근 3개월</value></data>
+  <data name="StudioRange6M"><value>최근 6개월</value></data>
+  <data name="StudioRange12M"><value>최근 12개월</value></data>
+  <data name="StudioRangeCustom"><value>사용자 지정</value></data>
+  <data name="StudioRangeFrom.Header"><value>시작일</value></data>
+  <data name="StudioRangeTo.Header"><value>종료일</value></data>
+  <data name="StudioDuration"><value>길이: {0}초</value></data>
+  <data name="StudioResolution.Text"><value>해상도</value></data>
+  <data name="StudioFrameRate.Text"><value>프레임 레이트</value></data>
+  <data name="StudioQuality.Text"><value>화질</value></data>
+  <data name="StudioQualityStandard"><value>표준</value></data>
+  <data name="StudioQualityHigh"><value>고화질</value></data>
+  <data name="StudioQualityUltra"><value>초고화질</value></data>
+  <data name="StudioBitrate"><value>약 {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>왼쪽 여백: {0}</value></data>
+  <data name="StudioMarginRight"><value>오른쪽 여백: {0}</value></data>
+  <data name="StudioMarginBottom"><value>아래쪽 여백: {0}</value></data>
+  <data name="StudioMarginTop"><value>위쪽 여백: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 기준으로 적은 값이며 선택한 해상도에 비례해 확대됩니다. 여기서 맞춘 값은 해상도를 바꿔도 그대로 쓸 수 있습니다. 왼쪽 여백은 Y축 눈금의 위치도 결정합니다. 위쪽 여백은 휴대폰이 자체 UI를 위해 확보한 영역에서 시작하므로 제목이 그 아래로 들어가지 않습니다.</value></data>
+  <data name="StudioSafeArea.Header"><value>안전 영역 가이드</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>휴대폰 앱이 자체 인터페이스로 가리는 영역을 표시합니다. 미리 보기에만 그려지고 파일에는 들어가지 않습니다.</value></data>
+  <data name="StudioPlay.Content"><value>재생</value></data>
+  <data name="StudioPause.Content"><value>일시 중지</value></data>
+  <data name="StudioFetch.Content"><value>데이터 가져오기</value></data>
+  <data name="StudioExport.Content"><value>MP4 내보내기</value></data>
+  <data name="StudioCancel.Content"><value>취소</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1}초</value></data>
+  <data name="StudioStageNoData"><value>데이터 없음</value></data>
+  <data name="StudioCredit"><value>출처: 텐센트 금융</value></data>
+  <data name="NavMatrix.Content"><value>수익 매트릭스</value></data>
+  <data name="MatrixPageTitle.Text"><value>수익 매트릭스</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>월봉 한 번에 10년치. 칸이 시간 순서대로 켜집니다.</value></data>
+  <data name="MatrixModeLabel.Text"><value>매트릭스 종류</value></data>
+  <data name="MatrixModeYear.Content"><value>단일 종목 · 연×월</value></data>
+  <data name="MatrixModeCompare.Content"><value>다수 종목 · 종목×월</value></data>
+  <data name="MatrixTarget.Header"><value>대상</value></data>
+  <data name="MatrixYearsLabel.Text"><value>연수</value></data>
+  <data name="MatrixYears.Header"><value>연수</value></data>
+  <data name="MatrixYearsAll"><value>전체</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>월 수</value></data>
+  <data name="MatrixMonths.Header"><value>월 수</value></data>
+  <data name="MatrixListIndices"><value>대표 지수</value></data>
+  <data name="MatrixChosen"><value>현재: {0}({1})</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>월봉 조회에 실패했거나 이 코드의 데이터가 없습니다.</value></data>
+  <data name="MatrixTooFewMonths"><value>사용 가능한 월이 부족합니다.</value></data>
+  <data name="MatrixTooFewShared"><value>대상 간 공유되는 월이 부족합니다.</value></data>
+  <data name="MatrixTailYear"><value>연간</value></data>
+  <data name="MatrixTailSubtotal"><value>소계</value></data>
+  <data name="MatrixTailTotal"><value>누계</value></data>
+  <data name="MatrixYearSpan"><value>{0}년~현재 · {1}개월</value></data>
+  <data name="MatrixYearTitle"><value>{0} 월간 수익률 {1}년</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · 월간 등락률 · 단위: %</value></data>
+  <data name="MatrixCmpSpan"><value>{0}~{1} · {2}개월</value></data>
+  <data name="MatrixCmpTitle"><value>{0} 월간 로테이션</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · 월간 등락률 · 단위: %</value></data>
+  <data name="MatrixStatBestMonth"><value>최고의 달</value></data>
+  <data name="MatrixStatWorstMonth"><value>최악의 달</value></data>
+  <data name="MatrixStatUpRatio"><value>상승 월 비율</value></data>
+  <data name="MatrixStatBestSingle"><value>최고 단일 월</value></data>
+  <data name="MatrixStatChampion"><value>1위</value></data>
+  <data name="MatrixStatLast"><value>꼴찌</value></data>
+  <data name="MatrixStatTargets"><value>대상 수</value></data>
+  <data name="MatrixStatSpan"><value>기간</value></data>
+  <data name="MatrixMonthValue"><value>{0}월 {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0}</value></data>
+  <data name="MatrixCountMonths"><value>{0}개월</value></data>
+  <data name="MatrixCountBounds"><value>{0}개 선택됨({1}–{2} 필요)</value></data>
+  <data name="MatrixTooFewTargets"><value>비교에는 최소 {0}개의 {1}이(가) 필요합니다.</value></data>
+  <data name="MatrixTooManyTargets"><value>최대 {0}개. 더는 세로 화면에 들어가지 않습니다.</value></data>
+  <data name="MatrixFetching"><value>{0} 월봉 가져오는 중 …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2}칸 · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>수익 매트릭스</value></data>
+  <data name="NavSectorRace.Content"><value>업종 경주</value></data>
+  <data name="SectorRacePageTitle.Text"><value>업종 경주</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>열두 개 남짓한 막대가 서로를 추월하고 순위는 마지막 장면까지 바뀝니다.</value></data>
+  <data name="SectorRosterLabel.Text"><value>참가자</value></data>
+  <data name="SectorRoster.Header"><value>참가자</value></data>
+  <data name="SectorListLevel1"><value>CSI 1급 업종</value></data>
+  <data name="SectorListTheme"><value>인기 테마</value></data>
+  <data name="SectorListCustom"><value>사용자 지정 업종</value></data>
+  <data name="SectorListStocks"><value>관심 종목</value></data>
+  <data name="SectorMetricLabel.Text"><value>지표</value></data>
+  <data name="SectorMetric.Header"><value>지표</value></data>
+  <data name="SectorMetricReturn"><value>누적 수익률 %</value></data>
+  <data name="SectorMetricAmount"><value>누적 거래대금 억</value></data>
+  <data name="SectorMetricReturnShort"><value>수익률</value></data>
+  <data name="SectorMetricAmountShort"><value>거래대금</value></data>
+  <data name="SectorAutoTitleReturn"><value>{0} 수익률 레이스</value></data>
+  <data name="SectorAutoTitleAmount"><value>{0} 거래대금 레이스</value></data>
+  <data name="SectorCount"><value>{0}개 선택됨</value></data>
+  <data name="SectorCountBounds"><value>{0}개 선택됨({1}–{2} 필요)</value></data>
+  <data name="SectorTooFew"><value>경주에는 최소 {0}개의 {1}이(가) 필요합니다.</value></data>
+  <data name="SectorTooMany"><value>최대 {0} {1}. 그 이상은 세로 화면에서 바코드가 됩니다.</value></data>
+  <data name="SectorTooManyStocks"><value>최대 {0}개 종목.</value></data>
+  <data name="SectorTooFewSharedDays"><value>참가자들이 공유하는 거래일이 5일 미만입니다.</value></data>
+  <data name="SectorFetching"><value>{0} 가져오는 중 …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2}거래일 · 선두 {3} {4} · 꼴찌 {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>업종 경주</value></data>
+  <data name="SectorUnitYi"><value>억</value></data>
+  <data name="SectorUnitSectors"><value>업종</value></data>
+  <data name="SectorUnitStocks"><value>종목</value></data>
+  <data name="StudioDisclaimer.Text"><value>참고용입니다. 투자 조언이 아닙니다.</value></data>
+  <data name="StudioDataLayerPending"><value>시세 가져오기는 아직 만들지 않았습니다. 영상과 레이아웃 설정, 미리 보기는 지금도 동작합니다. 데이터 계층이 다음 단계입니다.</value></data>
+  <data name="StudioEncoderPending"><value>내보내기는 아직 만들지 않았습니다. 미리 보기는 이미 실제 렌더링 경로를 지나갑니다. 인코더가 다음 단계입니다.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>시장 거래대금</value></data>
+  <data name="StockVolumeStageTitle"><value>거래량과 회전율</value></data>
+  <data name="StockBadCode"><value>이 코드로는 조회할 수 없습니다. 코드·이름·병음을 입력하고 목록에서 선택하세요.</value></data>
+  <data name="StockChosen"><value>{0}({1}) 선택됨.</value></data>
+  <data name="StockFetching"><value>{0} 가져오는 중 …</value></data>
+  <data name="StockFetchingIntraday"><value>{0} 분별 데이터 가져오는 중 …</value></data>
+  <data name="StockIntradayUnavailable"><value>이 코드에는 분별 데이터가 없습니다.</value></data>
+  <data name="StockIntradayTooFew"><value>이 날짜의 분별 데이터가 너무 적습니다.</value></data>
+  <data name="StockNoRate"><value>이 종목은 회전율을 제공하지 않습니다.</value></data>
+  <data name="StockNoFloatShares"><value>유통 주식수를 알 수 없어 회전율을 계산할 수 없습니다.</value></data>
+  <data name="StockFetchedDaily"><value>{0}({1}): {2}거래일 · 거래량 평균 {3} {4}, 최고 {5} · 회전율 평균 {6} %, 최고 {7} %</value></data>
+  <data name="StockFetchedIntraday"><value>{0}({1}): {2}분 · 하루 회전율 {3} %</value></data>
+  <data name="StockDailyHint"><value>일별 모드: 거래일마다 막대 하나.</value></data>
+  <data name="StockIntradayHint"><value>분별 모드: 최근 5거래일만 제공됩니다. 한 번 가져온 뒤 날짜를 선택하세요.</value></data>
+  <data name="StockUnitHands"><value>주</value></data>
+  <data name="StockUnitTenThousand"><value>만주</value></data>
+  <data name="StockPanelVolume"><value>거래량</value></data>
+  <data name="StockPanelMinuteVolume"><value>분당 거래량</value></data>
+  <data name="StockPanelTurnover"><value>회전율</value></data>
+  <data name="StockPanelCumTurnover"><value>누적 회전율</value></data>
+  <data name="StockMeanLabel"><value>평균 {0}</value></data>
+  <data name="StockHighLabel"><value>최고</value></data>
+  <data name="StockLowLabel"><value>최저</value></data>
+  <data name="StockDayTurnover"><value>하루 회전율 {0} %</value></data>
+  <data name="StockIntradayLabel"><value>분별</value></data>
+  <data name="StockRangeJoiner"><value>~</value></data>
+  <data name="StockTradingDaysUnit"><value>거래일</value></data>
+  <data name="StockMinutesUnit"><value>분</value></data>
+  <data name="StockAddFavourite.Content"><value>즐겨찾기 추가</value></data>
+  <data name="StockFavNeedData"><value>먼저 데이터를 가져오세요. 즐겨찾기는 종목명도 함께 저장합니다.</value></data>
+  <data name="StockTradingDayNote.Text"><value>최근 5거래일만 제공됩니다.</value></data>
+
+  <data name="TurnoverScope.Header"><value>시장 구분</value></data>
+  <data name="TurnoverScopeWhole"><value>상해＋심천 (전체)</value></data>
+  <data name="TurnoverScopeShanghai"><value>상해거래소 (전체)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>상해 메인보드</value></data>
+  <data name="TurnoverScopeStar"><value>과창판 (STAR)</value></data>
+  <data name="TurnoverScopeShenzhen"><value>심천거래소 (전체)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>심천 메인보드</value></data>
+  <data name="TurnoverScopeChiNext"><value>창업판 (ChiNext)</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>양대시장＋북증50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>메인보드는 거래소 총액에서 해당 성장판을 빼서 계산합니다. 북증50은 50개 구성종목 기준으로 북경거래소 전체를 포함하지 않습니다.</value></data>
+  <data name="TurnoverUnit"><value>억 위안</value></data>
+  <data name="TurnoverSubtitle"><value>{0} 합계 · 단위: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} ~ {1} · 총 {2} 거래일</value></data>
+  <data name="TurnoverAverageLabel"><value>평균 {0}</value></data>
+  <data name="TurnoverStatAverage"><value>평균</value></data>
+  <data name="TurnoverStatPeak"><value>최고</value></data>
+  <data name="TurnoverStatLow"><value>최저</value></data>
+  <data name="TurnoverStatRatio"><value>최고/최저</value></data>
+  <data name="TurnoverFetching"><value>{0} 가져오는 중…</value></data>
+  <data name="TurnoverFetched"><value>총 {0} 거래일 ({1} ~ {2}) · 평균 {3} · 최고 {4} · 최저 {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>기간이 너무 깁니다. 한 번의 요청으로 약 {0}일(달력 기준)까지만 닿으니 줄여 주세요.</value></data>
+  <data name="TurnoverRangeReversed"><value>시작 날짜는 종료 날짜보다 앞서야 합니다.</value></data>
+  <data name="TurnoverTooFewDays"><value>그 기간에는 거래일이 충분하지 않습니다.</value></data>
+  <data name="TurnoverView.Header"><value>화면 형식</value></data>
+  <data name="TurnoverViewBars"><value>바 레이스</value></data>
+  <data name="TurnoverViewCalendar"><value>캘린더 히트맵</value></data>
+  <data name="ReturnStageTitle"><value>상하이종합지수 일간 등락</value></data>
+  <data name="ReturnSubtitle"><value>{0} · 종가 일일 등락 · 단위: %</value></data>
+  <data name="ReturnStatUp"><value>상승</value></data>
+  <data name="ReturnStatDown"><value>하락</value></data>
+  <data name="ReturnStatBest"><value>최대 상승</value></data>
+  <data name="ReturnStatWorst"><value>최대 하락</value></data>
+  <data name="ReturnDayCount"><value>{0}일</value></data>
+  <data name="StudioCover.Content"><value>커버 PNG 저장</value></data>
+  <data name="StudioCoverNote.Text"><value>미리 보기에 멈춰 있는 그 프레임을 내보내기 해상도로 저장합니다.</value></data>
+  <data name="StudioCoverSaved"><value>커버를 저장했습니다: {0} · {1}×{2} · 위치 {3}</value></data>
+  <data name="StudioCoverCancelled"><value>폴더를 고르지 않아 저장하지 않았습니다.</value></data>
+  <data name="StudioExporting"><value>인코딩 중… {0}%</value></data>
+  <data name="StudioExported"><value>{0} 내보냄 · {1} MB · {3}초 영상에 {2}초 걸림 · 위치 {4}</value></data>
+  <data name="StudioExportCancelled"><value>폴더를 고르지 않아 내보내지 않았습니다.</value></data>
+  <data name="TurnoverViewNote.Text"><value>언제든 바꿀 수 있습니다. 같은 데이터를 그리므로 다시 가져오지 않습니다.</value></data>
+
+  <data name="StockSearch.Header"><value>종목</value></data>
+  <data name="StockSearch.PlaceholderText"><value>코드, 이름 또는 병음</value></data>
+  <data name="StockNoneChosen"><value>선택된 종목이 없습니다.</value></data>
+  <data name="StockModeLabel.Text"><value>모드</value></data>
+  <data name="StockModeDaily.Content"><value>여러 거래일</value></data>
+  <data name="StockModeIntraday.Content"><value>하루 안에서</value></data>
+  <data name="StockTradingDay.Header"><value>거래일</value></data>
+
+  <data name="PageCancelled"><value>중지했습니다.</value></data>
+  <data name="PageTimedOut"><value>너무 오래 걸려 중단했습니다.</value></data>
+  <data name="PageWorkFailed"><value>{0} 실패: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>언어</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Windows 따르기</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>언어는 앱을 다시 시작하면 바뀝니다.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>지금 다시 시작</value></data>
+  <data name="SettingsThemeLabel.Text"><value>모양</value></data>
+  <data name="SettingsThemeSystem"><value>Windows 따르기</value></data>
+  <data name="SettingsThemeLight"><value>밝게</value></data>
+  <data name="SettingsThemeDark"><value>어둡게</value></data>
+  <data name="SettingsThemeNote.Text"><value>고르는 즉시 적용되며 앱 자체에만 미칩니다. 영상은 자체 색을 유지하므로 미리 보기가 파일을 그대로 보여 줍니다.</value></data>
+  <data name="SettingsOutput.Text"><value>영상 저장 위치</value></data>
+  <data name="SettingsOutputNote.Text"><value>폴더 선택 창으로 지정합니다. 패키지된 앱은 아무 곳에나 쓸 수 없기 때문입니다. 지정하지 않으면 첫 내보내기에서 묻고 기억합니다.</value></data>
+  <data name="SettingsOutputNotSet"><value>지정되지 않음 — 첫 내보내기에서 묻습니다.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>폴더 선택…</value></data>
+  <data name="SettingsOutputForget.Content"><value>잊기</value></data>
+  <data name="SettingsOutputFailed"><value>해당 폴더를 설정할 수 없습니다: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>앱 데이터</value></data>
+  <data name="SettingsStorageNote.Text"><value>설정과 크래시 로그가 여기에 있습니다. 앱을 제거하면 Windows가 함께 지웁니다. 내보낸 영상은 여기에 없습니다.</value></data>
+  <data name="SettingsSources.Text"><value>데이터</value></data>
+  <data name="SettingsSourcesNote.Text"><value>시세는 텐센트 금융의 공개 엔드포인트에서 옵니다. 거래대금은 억 위안으로 환산하며, 아직 거래 중인 당일은 제외합니다. 끝나지 않은 하루는 시초 동시호가 물량만 갖고 있기 때문입니다.</value></data>
+  <data name="SettingsContact.Text"><value>문제가 있나요?</value></data>
+  <data name="SettingsContactNote.Text"><value>무엇을 하고 있었고 무엇을 기대했는지 적어 주세요. 위의 버전은 메일 제목에 이미 들어갑니다.</value></data>
+  <data name="SettingsContactSubject"><value>Market Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>응답하는 메일 앱이 없습니다. {0} 으로 보내 주세요. ({1})</value></data>
+  <data name="SettingsVersion"><value>버전 {0}</value></data>
+  <data name="SettingsRestartFailed"><value>앱을 다시 시작할 수 없습니다: {0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>등락 달력</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>등락 달력</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>중국 개별 종목이나 지수를 거래일마다 한 칸에——상승은 빨강, 하락은 초록.</value></data>
+  <data name="GainCalendarDefaultTitle"><value>{0} 일일 등락</value></data>
+  <data name="GainCalendarFetching"><value>{0} 가져오는 중…</value></data>
+  <data name="GainCalendarFetched"><value>{0} 거래일({1} ~ {2}) · 상승 {3}일 · 하락 {4}일</value></data>
+  <data name="GainCalendarAShareOnly"><value>중국 A주 종목과 지수만 지원됩니다.</value></data>
+  <data name="IndexSSE"><value>상하이종합지수</value></data>
+  <data name="TrayOpen.Text"><value>열기</value></data>
+  <data name="TrayExit.Text"><value>종료</value></data>
+  <data name="TrayBusy"><value>작업 중: {0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>알림 영역 아이콘</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>창을 닫으면 앱이 종료되지 않고 여기에 숨겨집니다. 이를 끄면 창을 닫을 때 앱이 종료됩니다.</value></data>
+  <data name="SettingsStartup.Text"><value>Windows 시작 시 실행</value></data>
+  <data name="SettingsStartupNote.Text"><value>로그인할 때 알림 영역에서 시작하므로, 열면 바로 사용할 수 있습니다.</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>작업 관리자에서 사용 안 함으로 설정되어 Windows가 이를 막고 있습니다. [시작 앱] 탭에서 다시 사용하도록 설정하세요.</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>조직 정책에 따라 결정되며 여기서는 변경할 수 없습니다.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>시장</value></data>
+  <data name="SettingsMarketNote.Text"><value>각 페이지가 어떤 시장의 시세를 가져올지, 어떤 페이지를 제공할지 결정합니다. 다시 시작하면 적용됩니다.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>시장은 앱을 다시 시작하면 바뀝니다.</value></data>
+  <data name="MarketAShare"><value>A주</value></data>
+  <data name="MarketHongKong"><value>홍콩 주식</value></data>
+  <data name="MarketUnitedStates"><value>미국 주식</value></data>
+  <data name="SectorListHangSeng"><value>항셍 분류 지수</value></data>
+  <data name="SectorListSpdr"><value>미국 섹터 ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>누적 거래대금 억 달러</value></data>
+
+  <data name="NavDcaPlan.Content"><value>적립 투자</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>적립 투자</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>일정 금액을 일정한 주기로 사 모아, 누적 투입액과 평가액의 경주를 애니메이션으로 보여줍니다</value></data>
+  <data name="DcaFreqLabel.Header"><value>적립 주기</value></data>
+  <data name="DcaFreqDaily"><value>매 거래일</value></data>
+  <data name="DcaFreqWeekly"><value>매 주</value></data>
+  <data name="DcaFreqMonthly"><value>매 월</value></data>
+  <data name="DcaAmountLabel.Header"><value>회당 금액</value></data>
+  <data name="DcaRangeLabel.Header"><value>기간</value></data>
+  <data name="DcaRange3Y"><value>최근 3년</value></data>
+  <data name="DcaRange5Y"><value>최근 5년</value></data>
+  <data name="DcaRange10Y"><value>최근 10년</value></data>
+  <data name="DcaRangeMax"><value>가능한 최대</value></data>
+  <data name="DcaDefaultTitle"><value>{0} 적립 투자</value></data>
+  <data name="DcaSubtitleLine"><value>{0} {1}{2}을 {3}에 적립 · 후복원 종가 · 수수료 없음</value></data>
+  <data name="DcaRangeLine"><value>{0} ~ {1} · {2}회 적립</value></data>
+  <data name="DcaReturnLabel"><value>수익률</value></data>
+  <data name="DcaLegendValue"><value>평가액</value></data>
+  <data name="DcaLegendInvested"><value>투입액</value></data>
+  <data name="DcaCardValue"><value>최종 평가액</value></data>
+  <data name="DcaCardInvested"><value>총 투입</value></data>
+  <data name="DcaCardProfit"><value>수익</value></data>
+  <data name="DcaCardBuys"><value>적립 횟수</value></data>
+  <data name="DcaWanUnit"><value>만</value></data>
+  <data name="DcaCurrencyCny"><value>위안</value></data>
+  <data name="DcaCurrencyHkd"><value>홍콩달러</value></data>
+  <data name="DcaCurrencyUsd"><value>달러</value></data>
+  <data name="DcaFetched"><value>거래일 {0}일({1}~{2}), {3}회 적립 가져옴</value></data>
+  <data name="DcaAmountInvalid"><value>회당 금액은 양수여야 합니다</value></data>
+  <data name="WrongMarket"><value>이 코드는 현재 시장({0})에 속하지 않습니다.</value></data>
+  <data name="NavPosition.Content"><value>보유 수익</value></data>
+  <data name="PositionPageTitle.Text"><value>보유 수익</value></data>
+  <data name="PositionPageSubtitle.Text"><value>한 번 사서 계속 보유——가치와 수익률의 흐름</value></data>
+  <data name="PositionCapitalLabel.Header"><value>초기 자본</value></data>
+  <data name="PositionRangeLabel.Header"><value>보유 기간</value></data>
+  <data name="PositionDefaultTitle"><value>보유 수익: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}에 {1} {2}로 {3} 매수 · 후복원 종가 · 배당 재투자 포함</value></data>
+  <data name="PositionRangeLine"><value>{0} ~ {1} · {2}일 보유</value></data>
+  <data name="PositionLegendCapital"><value>투입 자본</value></data>
+  <data name="PositionCardCapital"><value>투입 자본</value></data>
+  <data name="PositionCardDrawdown"><value>최대 낙폭</value></data>
+  <data name="PositionFetched"><value>{0}거래일({1} ~ {2}), {3}일 보유</value></data>
+  <data name="PositionCapitalInvalid"><value>초기 자본은 0보다 큰 숫자여야 합니다</value></data>
+</root>

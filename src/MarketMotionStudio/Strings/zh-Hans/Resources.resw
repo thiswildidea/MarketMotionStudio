@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <!-- 本文件对应的区域设置，让月份、星期名与这些字符串出自同一次解析。
+       CultureInfo.CurrentCulture 跟随操作系统，而不是应用当前显示的语言。 -->
+  <data name="CultureName"><value>zh-Hans</value></data>
+
+  <!-- 这个产品有两个显示名，不是一处翻译：中文市场用「行情指标动画工作室」，
+       其余市场用 Market Motion Studio。商店列表名是 Market Motion Studio，包标识 MarketMotionStudio 始终不变。 -->
+  <data name="AppTitle.Text"><value>行情指标动画工作室</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <!-- 导航 -->
+  <data name="NavMarketTurnover.Content"><value>市场成交额</value></data>
+  <data name="NavStockVolume.Content"><value>成交量换手率</value></data>
+  <data name="NavHelp.Content"><value>帮助</value></data>
+  <data name="NavSettings.Content"><value>设置</value></data>
+
+  <!-- 页面标题，同时作为任务名复用，避免同一件事被翻译两遍 -->
+  <data name="MarketTurnoverPageTitle.Text"><value>市场成交额</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>全市场或单个板块的每日成交额。两种画面形态，切换不用重新取数。</value></data>
+  <data name="StockVolumePageTitle.Text"><value>成交量换手率</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>单只股票的成交量与换手率，可看一段区间，也可看某一天之内。</value></data>
+  <data name="SettingsPageTitle.Text"><value>设置</value></data>
+  <data name="HelpPageTitle.Text"><value>帮助</value></data>
+  <data name="HelpPageSubtitle.Text"><value>每个页面做什么、数据从哪来，以及这些视频不是什么。</value></data>
+  <data name="HelpDocument"><value>help-zh-Hans.md</value></data>
+  <data name="HelpMissing"><value>无法打开该语言的帮助文档。</value></data>
+
+  <!-- 两个指标页共用的控件 -->
+  <data name="StudioDataSection.Text"><value>数据</value></data>
+  <data name="StudioTitleSection.Text"><value>标题</value></data>
+  <data name="StudioTitleText.Header"><value>标题文字</value></data>
+  <data name="StudioTitleNote.Text"><value>留空则使用默认标题。过长的标题会按比例缩小字号而不是被裁掉，最多缩到一半。</value></data>
+  <data name="StudioHideTitle.Header"><value>隐藏标题</value></data>
+  <data name="StudioHideTitleNote.Text"><value>标题占的那一行还给图表，下面的内容整体上移一行。底边由下边距锁住不动，所以面板会长高。取消勾选可精确恢复原样。</value></data>
+  <data name="StockTitlePlaceholder"><value>使用抓到的股票名称</value></data>
+  <data name="StudioVideoSection.Text"><value>视频</value></data>
+  <data name="StudioLayoutSection.Text"><value>版面</value></data>
+  <data name="StudioRange.Header"><value>数据区间</value></data>
+  <data name="StudioRange1M"><value>近 1 个月</value></data>
+  <data name="StudioRange3M"><value>近 3 个月</value></data>
+  <data name="StudioRange6M"><value>近 6 个月</value></data>
+  <data name="StudioRange12M"><value>近 12 个月</value></data>
+  <data name="StudioRangeCustom"><value>自定义</value></data>
+  <data name="StudioRangeFrom.Header"><value>起始日期</value></data>
+  <data name="StudioRangeTo.Header"><value>结束日期</value></data>
+  <data name="StudioDuration"><value>视频时长：{0} 秒</value></data>
+  <data name="StudioResolution.Text"><value>分辨率</value></data>
+  <data name="StudioFrameRate.Text"><value>帧率</value></data>
+  <data name="StudioQuality.Text"><value>清晰度</value></data>
+  <data name="StudioQualityStandard"><value>标准</value></data>
+  <data name="StudioQualityHigh"><value>高清</value></data>
+  <data name="StudioQualityUltra"><value>超清</value></data>
+  <data name="StudioBitrate"><value>约 {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>左边距：{0}</value></data>
+  <data name="StudioMarginRight"><value>右边距：{0}</value></data>
+  <data name="StudioMarginBottom"><value>下边距：{0}</value></data>
+  <data name="StudioMarginTop"><value>上边距：{0}</value></data>
+  <data name="StudioMarginNote.Text"><value>以 1080×1920 为基准记数，渲染时按所选分辨率等比缩放，所以在这里调好的值换分辨率不用重调。左边距同时决定 Y 轴刻度的落点。 上边距从手机留给系统界面的安全区起算，标题不会钻进状态栏。</value></data>
+  <data name="StudioSafeArea.Header"><value>安全区参考线</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>标出手机应用会用自己界面遮住的区域。只画在预览里，绝不会进入视频文件。</value></data>
+  <data name="StudioPlay.Content"><value>播放</value></data>
+  <data name="StudioPause.Content"><value>暂停</value></data>
+  <data name="StudioFetch.Content"><value>获取数据</value></data>
+  <data name="StudioExport.Content"><value>导出 MP4</value></data>
+  <data name="StudioCancel.Content"><value>取消</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioStageNoData"><value>尚无数据</value></data>
+  <data name="StudioCredit"><value>数据来源：腾讯财经</value></data>
+  <data name="NavMatrix.Content"><value>收益矩阵</value></data>
+  <data name="MatrixPageTitle.Text"><value>收益矩阵</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>月K一次十年，格子逐个点亮；看单标的的季节性，或一篮子标的的轮动。</value></data>
+  <data name="MatrixModeLabel.Text"><value>矩阵类型</value></data>
+  <data name="MatrixModeYear.Content"><value>单标的 年×月</value></data>
+  <data name="MatrixModeCompare.Content"><value>多标的 标的×月</value></data>
+  <data name="MatrixTarget.Header"><value>标的</value></data>
+  <data name="MatrixYearsLabel.Text"><value>年数</value></data>
+  <data name="MatrixYears.Header"><value>年数</value></data>
+  <data name="MatrixYearsAll"><value>全部</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>月数</value></data>
+  <data name="MatrixMonths.Header"><value>月数</value></data>
+  <data name="MatrixListIndices"><value>宽基指数</value></data>
+  <data name="MatrixChosen"><value>当前：{0}（{1}）</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>月K接口异常或该代码无数据。</value></data>
+  <data name="MatrixTooFewMonths"><value>可用月份不足。</value></data>
+  <data name="MatrixTooFewShared"><value>各标的共有的月份不足。</value></data>
+  <data name="MatrixTailYear"><value>全年</value></data>
+  <data name="MatrixTailSubtotal"><value>小计</value></data>
+  <data name="MatrixTailTotal"><value>累计</value></data>
+  <data name="MatrixYearSpan"><value>{0} 年至今 · 共 {1} 个月</value></data>
+  <data name="MatrixYearTitle"><value>{0}月度收益{1}年图</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · 月度涨跌幅 · 单位：%</value></data>
+  <data name="MatrixCmpSpan"><value>{0} 至 {1} · 共 {2} 个月</value></data>
+  <data name="MatrixCmpTitle"><value>{0}月度轮动</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · 月度涨跌幅 · 单位：%</value></data>
+  <data name="MatrixStatBestMonth"><value>最强月</value></data>
+  <data name="MatrixStatWorstMonth"><value>最弱月</value></data>
+  <data name="MatrixStatUpRatio"><value>上涨月占比</value></data>
+  <data name="MatrixStatBestSingle"><value>最强单月</value></data>
+  <data name="MatrixStatChampion"><value>冠军</value></data>
+  <data name="MatrixStatLast"><value>垫底</value></data>
+  <data name="MatrixStatTargets"><value>标的数</value></data>
+  <data name="MatrixStatSpan"><value>跨度</value></data>
+  <data name="MatrixMonthValue"><value>{0}月 {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0} 个</value></data>
+  <data name="MatrixCountMonths"><value>{0} 个月</value></data>
+  <data name="MatrixCountBounds"><value>已选 {0} 个（需 {1}–{2}）</value></data>
+  <data name="MatrixTooFewTargets"><value>至少选 {0} {1}才有对比意义。</value></data>
+  <data name="MatrixTooManyTargets"><value>最多 {0} 个，再多竖屏放不下。</value></data>
+  <data name="MatrixFetching"><value>正在获取 {0} 的月K …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} 个格子 · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>收益矩阵</value></data>
+  <data name="NavSectorRace.Content"><value>行业板块竞速</value></data>
+  <data name="SectorRacePageTitle.Text"><value>行业板块竞速</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>十几条横向条形互相超车，名次一路变到最后一帧。</value></data>
+  <data name="SectorRosterLabel.Text"><value>竞速对象</value></data>
+  <data name="SectorRoster.Header"><value>竞速对象</value></data>
+  <data name="SectorListLevel1"><value>中证一级行业</value></data>
+  <data name="SectorListTheme"><value>热门主题板块</value></data>
+  <data name="SectorListCustom"><value>自定义板块</value></data>
+  <data name="SectorListStocks"><value>自选股</value></data>
+  <data name="SectorMetricLabel.Text"><value>竞速指标</value></data>
+  <data name="SectorMetric.Header"><value>竞速指标</value></data>
+  <data name="SectorMetricReturn"><value>累计涨幅 %</value></data>
+  <data name="SectorMetricAmount"><value>累计成交额 亿</value></data>
+  <data name="SectorMetricReturnShort"><value>涨幅</value></data>
+  <data name="SectorMetricAmountShort"><value>成交额</value></data>
+  <data name="SectorAutoTitleReturn"><value>{0}涨幅竞速</value></data>
+  <data name="SectorAutoTitleAmount"><value>{0}成交额竞速</value></data>
+  <data name="SectorCount"><value>已选 {0} 个</value></data>
+  <data name="SectorCountBounds"><value>已选 {0} 个（需 {1}–{2}）</value></data>
+  <data name="SectorTooFew"><value>至少选 {0} {1}才能竞速。</value></data>
+  <data name="SectorTooMany"><value>最多 {0} {1}，再多竖屏放不下。</value></data>
+  <data name="SectorTooManyStocks"><value>最多 {0} 只。</value></data>
+  <data name="SectorTooFewSharedDays"><value>各对象共有的交易日不足 5 天。</value></data>
+  <data name="SectorFetching"><value>正在获取 {0} …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} 个交易日 · 领先 {3} {4} · 垫底 {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>行业板块竞速</value></data>
+  <data name="SectorUnitYi"><value>亿</value></data>
+  <data name="SectorUnitSectors"><value>个板块</value></data>
+  <data name="SectorUnitStocks"><value>只个股</value></data>
+  <data name="StudioDisclaimer.Text"><value>仅供参考，不构成投资建议。</value></data>
+  <data name="StudioDataLayerPending"><value>取数还没做。视频与版面参数、预览现在都可用；数据层是下一步。</value></data>
+  <data name="StudioEncoderPending"><value>导出还没做。预览走的已经是真正的渲染路径；编码器是下一步。</value></data>
+  <data name="MarketTurnoverStageTitle"><value>市场成交额</value></data>
+  <data name="StockVolumeStageTitle"><value>成交量换手率</value></data>
+  <data name="StockBadCode"><value>无法识别这个代码。请输入代码、中文名或拼音，并从列表中选择。</value></data>
+  <data name="StockChosen"><value>已选择 {0}（{1}）。</value></data>
+  <data name="StockFetching"><value>正在获取 {0} …</value></data>
+  <data name="StockFetchingIntraday"><value>正在获取 {0} 的分时数据 …</value></data>
+  <data name="StockIntradayUnavailable"><value>该代码没有分时数据。</value></data>
+  <data name="StockIntradayTooFew"><value>该交易日分时点数过少。</value></data>
+  <data name="StockNoRate"><value>该标的无换手率数据。</value></data>
+  <data name="StockNoFloatShares"><value>未取到流通股本，换手率不可用。</value></data>
+  <data name="StockFetchedDaily"><value>{0}（{1}）：{2} 个交易日 · 量均 {3} {4}，峰 {5} · 换手均 {6}%，峰 {7}%</value></data>
+  <data name="StockFetchedIntraday"><value>{0}（{1}）：{2} 分钟 · 全日换手 {3}%</value></data>
+  <data name="StockDailyHint"><value>日线模式：按交易日展示成交量与换手率。</value></data>
+  <data name="StockIntradayHint"><value>分时模式：接口仅提供最近 5 个交易日，点「获取数据」后可选择具体日期。</value></data>
+  <data name="StockUnitHands"><value>手</value></data>
+  <data name="StockUnitTenThousand"><value>万手</value></data>
+  <data name="StockPanelVolume"><value>成交量</value></data>
+  <data name="StockPanelMinuteVolume"><value>每分钟成交量</value></data>
+  <data name="StockPanelTurnover"><value>换手率</value></data>
+  <data name="StockPanelCumTurnover"><value>累计换手率</value></data>
+  <data name="StockMeanLabel"><value>均值 {0}</value></data>
+  <data name="StockHighLabel"><value>最高</value></data>
+  <data name="StockLowLabel"><value>最低</value></data>
+  <data name="StockDayTurnover"><value>全日换手 {0}%</value></data>
+  <data name="StockIntradayLabel"><value>日内分时</value></data>
+  <data name="StockRangeJoiner"><value>至</value></data>
+  <data name="StockTradingDaysUnit"><value>个交易日</value></data>
+  <data name="StockMinutesUnit"><value>分钟</value></data>
+  <data name="StockAddFavourite.Content"><value>收藏</value></data>
+  <data name="StockFavNeedData"><value>请先获取数据，收藏时会一并记住股票名称。</value></data>
+  <data name="StockTradingDayNote.Text"><value>接口仅提供最近 5 个交易日。</value></data>
+
+  <!-- 市场成交额 -->
+  <data name="TurnoverScope.Header"><value>板块</value></data>
+  <data name="TurnoverScopeWhole"><value>沪深全市场</value></data>
+  <data name="TurnoverScopeShanghai"><value>上证全市场</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>沪市主板</value></data>
+  <data name="TurnoverScopeStar"><value>科创板</value></data>
+  <data name="TurnoverScopeShenzhen"><value>深证全市场</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>深市主板</value></data>
+  <data name="TurnoverScopeChiNext"><value>创业板</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>沪深＋北证50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>主板按交易所总额减去对应板块推导；北证 50 为成分股口径，不覆盖北交所全市场。</value></data>
+  <data name="TurnoverUnit"><value>亿元</value></data>
+  <data name="TurnoverSubtitle"><value>{0}合计 · 单位：{1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} 至 {1} · 共 {2} 个交易日</value></data>
+  <data name="TurnoverAverageLabel"><value>日均 {0}</value></data>
+  <data name="TurnoverStatAverage"><value>日均</value></data>
+  <data name="TurnoverStatPeak"><value>最高</value></data>
+  <data name="TurnoverStatLow"><value>最低</value></data>
+  <data name="TurnoverStatRatio"><value>峰谷</value></data>
+  <data name="TurnoverFetching"><value>正在获取 {0} …</value></data>
+  <data name="TurnoverFetched"><value>共 {0} 个交易日（{1} ~ {2}）· 日均 {3} · 最高 {4} · 最低 {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>区间过长。单次最多约 {0} 个自然日，请缩短区间。</value></data>
+  <data name="TurnoverRangeReversed"><value>起始日期必须早于结束日期。</value></data>
+  <data name="TurnoverTooFewDays"><value>该区间内可用交易日不足。</value></data>
+  <data name="TurnoverView.Header"><value>画面形态</value></data>
+  <data name="TurnoverViewBars"><value>柱状竞长</value></data>
+  <data name="TurnoverViewCalendar"><value>日历热力图</value></data>
+  <data name="ReturnStageTitle"><value>上证指数每日涨跌</value></data>
+  <data name="ReturnSubtitle"><value>{0} · 收盘价日涨跌幅 · 单位：%</value></data>
+  <data name="ReturnStatUp"><value>上涨</value></data>
+  <data name="ReturnStatDown"><value>下跌</value></data>
+  <data name="ReturnStatBest"><value>最大涨</value></data>
+  <data name="ReturnStatWorst"><value>最大跌</value></data>
+  <data name="ReturnDayCount"><value>{0} 天</value></data>
+  <data name="StudioCover.Content"><value>导出封面 PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>存的就是预览里当前停着的这一帧，按导出分辨率输出。</value></data>
+  <data name="StudioCoverSaved"><value>封面已保存：{0} · {1}×{2} · 位于 {3}</value></data>
+  <data name="StudioCoverCancelled"><value>未选择文件夹，封面没有保存。</value></data>
+  <data name="StudioExporting"><value>正在编码… {0}%</value></data>
+  <data name="StudioExported"><value>已导出 {0} · {1} MB · 用 {2} 秒编出 {3} 秒视频 · 位于 {4}</value></data>
+  <data name="StudioExportCancelled"><value>未选择文件夹，没有导出。</value></data>
+  <data name="TurnoverViewNote.Text"><value>随时切换；两种形态画的是同一份数据，不会重新取数。</value></data>
+
+  <!-- 成交量换手率 -->
+  <data name="StockSearch.Header"><value>股票</value></data>
+  <data name="StockSearch.PlaceholderText"><value>代码、中文名或拼音</value></data>
+  <data name="StockNoneChosen"><value>尚未选择股票。</value></data>
+  <data name="StockModeLabel.Text"><value>模式</value></data>
+  <data name="StockModeDaily.Content"><value>多个交易日</value></data>
+  <data name="StockModeIntraday.Content"><value>指定某一交易日</value></data>
+  <data name="StockTradingDay.Header"><value>交易日</value></data>
+
+  <!-- 页面状态 -->
+  <data name="PageCancelled"><value>已停止。</value></data>
+  <data name="PageTimedOut"><value>耗时过长，已放弃。</value></data>
+  <data name="PageWorkFailed"><value>{0}失败：{1}</value></data>
+
+  <!-- 设置 -->
+  <data name="SettingsLanguageLabel.Text"><value>语言</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>跟随 Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>语言会在应用重启后生效。</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>立即重启</value></data>
+  <data name="SettingsThemeLabel.Text"><value>外观</value></data>
+  <data name="SettingsThemeSystem"><value>跟随 Windows</value></data>
+  <data name="SettingsThemeLight"><value>浅色</value></data>
+  <data name="SettingsThemeDark"><value>深色</value></data>
+  <data name="SettingsThemeNote.Text"><value>选中即生效，且只影响应用本身。视频有自己固定的配色，所以预览仍然能代表成片。</value></data>
+  <data name="SettingsOutput.Text"><value>视频保存位置</value></data>
+  <data name="SettingsOutputNote.Text"><value>通过文件夹选取器指定，因为打包应用不能随意往任意位置写文件。未设置时，第一次导出会询问并记住。</value></data>
+  <data name="SettingsOutputNotSet"><value>未设置 —— 第一次导出时会询问。</value></data>
+  <data name="SettingsOutputChoose.Content"><value>选择文件夹…</value></data>
+  <data name="SettingsOutputForget.Content"><value>忘记</value></data>
+  <data name="SettingsOutputFailed"><value>无法设置该文件夹：{0}</value></data>
+  <data name="SettingsStorage.Text"><value>应用数据</value></data>
+  <data name="SettingsStorageNote.Text"><value>设置和崩溃日志存在这里。卸载应用时 Windows 会一并删除；导出的视频不在其中。</value></data>
+  <data name="SettingsSources.Text"><value>数据</value></data>
+  <data name="SettingsSourcesNote.Text"><value>行情来自腾讯财经的公开接口。成交额换算为亿元；尚未收盘的当日会被剔除，因为未走完的一天只有集合竞价量。</value></data>
+  <data name="SettingsContact.Text"><value>出了问题？</value></data>
+  <data name="SettingsContactNote.Text"><value>说明你当时在做什么、本来期望看到什么。上面的版本号已经带在邮件主题里了。</value></data>
+  <data name="SettingsContactSubject"><value>行情指标动画工作室 {0}</value></data>
+  <data name="SettingsContactFailed"><value>没有邮件应用响应。请改为写信到 {0}。（{1}）</value></data>
+  <data name="SettingsVersion"><value>版本 {0}</value></data>
+  <data name="SettingsRestartFailed"><value>应用无法重启：{0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>涨跌日历</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>涨跌日历</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>任一 A 股股票或指数，每个交易日一格——涨红跌绿，按月铺开。</value></data>
+  <data name="GainCalendarDefaultTitle"><value>{0}每日涨跌</value></data>
+  <data name="GainCalendarFetching"><value>正在获取 {0} …</value></data>
+  <data name="GainCalendarFetched"><value>{0} 个交易日（{1} ~ {2}）· 上涨 {3} 天 · 下跌 {4} 天</value></data>
+  <data name="GainCalendarAShareOnly"><value>仅支持 A 股股票与指数。</value></data>
+  <data name="IndexSSE"><value>上证指数</value></data>
+  <data name="TrayOpen.Text"><value>打开</value></data>
+  <data name="TrayExit.Text"><value>退出</value></data>
+  <data name="TrayBusy"><value>正在处理：{0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>通知区域图标</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>关闭窗口后应用会收起到这里，而不是退出。关掉它之后，关闭窗口将直接退出应用。</value></data>
+  <data name="SettingsStartup.Text"><value>开机时启动</value></data>
+  <data name="SettingsStartupNote.Text"><value>登录时在通知区域启动，打开即可使用。</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>此项已在任务管理器中被禁用，Windows 不允许应用自行开启。请到任务管理器的「启动应用」选项卡重新启用。</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>此项由你所在组织的策略决定，无法在这里更改。</value></data>
+  <data name="SettingsMarketLabel.Text"><value>市场</value></data>
+  <data name="SettingsMarketNote.Text"><value>决定各页面取哪里的行情，以及哪些页面可用。更改后需要重启应用。</value></data>
+  <data name="SettingsMarketRestart.Text"><value>市场会在应用重启后生效。</value></data>
+  <data name="MarketAShare"><value>A股</value></data>
+  <data name="MarketHongKong"><value>港股</value></data>
+  <data name="MarketUnitedStates"><value>美股</value></data>
+  <data name="SectorListHangSeng"><value>恒生分类指数</value></data>
+  <data name="SectorListSpdr"><value>美股行业ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>累计成交额 亿美元</value></data>
+
+  <data name="NavDcaPlan.Content"><value>定投计划</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>定投计划</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>按固定金额、固定频率买入一个标的，动画展示累计投入与市值的赛跑</value></data>
+  <data name="DcaFreqLabel.Header"><value>定投频率</value></data>
+  <data name="DcaFreqDaily"><value>每个交易日</value></data>
+  <data name="DcaFreqWeekly"><value>每周</value></data>
+  <data name="DcaFreqMonthly"><value>每月</value></data>
+  <data name="DcaAmountLabel.Header"><value>每期金额</value></data>
+  <data name="DcaRangeLabel.Header"><value>定投区间</value></data>
+  <data name="DcaRange3Y"><value>近 3 年</value></data>
+  <data name="DcaRange5Y"><value>近 5 年</value></data>
+  <data name="DcaRange10Y"><value>近 10 年</value></data>
+  <data name="DcaRangeMax"><value>最长（约 13 年）</value></data>
+  <data name="DcaDefaultTitle"><value>{0}定投计划</value></data>
+  <data name="DcaSubtitleLine"><value>{0}投入{1}{2}买入{3} · 后复权收盘价 · 不计费用</value></data>
+  <data name="DcaRangeLine"><value>{0} 至 {1} · 定投 {2} 期</value></data>
+  <data name="DcaReturnLabel"><value>收益率</value></data>
+  <data name="DcaLegendValue"><value>市值</value></data>
+  <data name="DcaLegendInvested"><value>累计投入</value></data>
+  <data name="DcaCardValue"><value>期末市值</value></data>
+  <data name="DcaCardInvested"><value>累计投入</value></data>
+  <data name="DcaCardProfit"><value>累计收益</value></data>
+  <data name="DcaCardBuys"><value>定投期数</value></data>
+  <data name="DcaWanUnit"><value>万</value></data>
+  <data name="DcaCurrencyCny"><value>元</value></data>
+  <data name="DcaCurrencyHkd"><value>港元</value></data>
+  <data name="DcaCurrencyUsd"><value>美元</value></data>
+  <data name="DcaFetched"><value>已取 {0} 个交易日（{1} 至 {2}），定投 {3} 期</value></data>
+  <data name="DcaAmountInvalid"><value>每期金额需是大于零的数字</value></data>
+  <data name="WrongMarket"><value>该代码不属于当前市场（{0}）。</value></data>
+  <data name="NavPosition.Content"><value>持仓收益</value></data>
+  <data name="PositionPageTitle.Text"><value>持仓收益</value></data>
+  <data name="PositionPageSubtitle.Text"><value>一笔买入、长期持有，动画展示市值与收益率的起落</value></data>
+  <data name="PositionCapitalLabel.Header"><value>初始本金</value></data>
+  <data name="PositionRangeLabel.Header"><value>持有区间</value></data>
+  <data name="PositionDefaultTitle"><value>持仓收益：{0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}买入{1}{2}的{3} · 后复权收盘价 · 分红按再投计入</value></data>
+  <data name="PositionRangeLine"><value>{0} 至 {1} · 持有 {2} 天</value></data>
+  <data name="PositionLegendCapital"><value>投入本金</value></data>
+  <data name="PositionCardCapital"><value>投入本金</value></data>
+  <data name="PositionCardDrawdown"><value>最大回撤</value></data>
+  <data name="PositionFetched"><value>已取 {0} 个交易日（{1} 至 {2}），持有 {3} 天</value></data>
+  <data name="PositionCapitalInvalid"><value>初始本金需是大于零的数字</value></data>
+</root>

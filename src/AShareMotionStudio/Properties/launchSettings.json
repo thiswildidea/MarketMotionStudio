@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "AShareMotionStudio (Package)": {
-      "commandName": "MsixPackage",
-      "nativeDebugging": true
-    }
-  }
-}

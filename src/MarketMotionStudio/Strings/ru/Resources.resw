@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>ru</value></data>
+
+  <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Оборот рынка</value></data>
+  <data name="NavStockVolume.Content"><value>Объём и оборачиваемость</value></data>
+  <data name="NavHelp.Content"><value>Справка</value></data>
+  <data name="NavSettings.Content"><value>Параметры</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Оборот рынка</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Дневной оборот всего рынка или одного сегмента. Две формы одной картинки; переключение ничего не загружает заново.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Объём и оборачиваемость</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>Объём одной бумаги против её оборачиваемости — за период или внутри одного дня.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Параметры</value></data>
+  <data name="HelpPageTitle.Text"><value>Справка</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Что делает каждая страница, откуда взяты числа и чем эти видео не являются.</value></data>
+  <data name="HelpDocument"><value>help-ru.md</value></data>
+  <data name="HelpMissing"><value>Не удалось открыть документ справки для этого языка.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Данные</value></data>
+  <data name="StudioTitleSection.Text"><value>Заголовок</value></data>
+  <data name="StudioTitleText.Header"><value>Текст заголовка</value></data>
+  <data name="StudioTitleNote.Text"><value>Оставьте пустым, чтобы использовать заголовок по умолчанию. Длинный заголовок пропорционально уменьшается, а не обрезается — не более чем вдвое.</value></data>
+  <data name="StudioHideTitle.Header"><value>Скрыть заголовок</value></data>
+  <data name="StudioHideTitleNote.Text"><value>Строка заголовка возвращается графику, и всё под ней поднимается в неё. Нижнее поле держит нижний край, поэтому панели становятся выше. Если снять галочку, компоновка восстанавливается в точности.</value></data>
+  <data name="StockTitlePlaceholder"><value>Название загруженной бумаги</value></data>
+  <data name="StudioVideoSection.Text"><value>Видео</value></data>
+  <data name="StudioLayoutSection.Text"><value>Компоновка</value></data>
+  <data name="StudioRange.Header"><value>Период</value></data>
+  <data name="StudioRange1M"><value>Последний месяц</value></data>
+  <data name="StudioRange3M"><value>Последние 3 месяца</value></data>
+  <data name="StudioRange6M"><value>Последние 6 месяцев</value></data>
+  <data name="StudioRange12M"><value>Последние 12 месяцев</value></data>
+  <data name="StudioRangeCustom"><value>Свой</value></data>
+  <data name="StudioRangeFrom.Header"><value>С</value></data>
+  <data name="StudioRangeTo.Header"><value>По</value></data>
+  <data name="StudioDuration"><value>Длительность: {0} с</value></data>
+  <data name="StudioResolution.Text"><value>Разрешение</value></data>
+  <data name="StudioFrameRate.Text"><value>Частота кадров</value></data>
+  <data name="StudioQuality.Text"><value>Качество</value></data>
+  <data name="StudioQualityStandard"><value>Обычное</value></data>
+  <data name="StudioQualityHigh"><value>Высокое</value></data>
+  <data name="StudioQualityUltra"><value>Максимальное</value></data>
+  <data name="StudioBitrate"><value>Около {0} Мбит/с</value></data>
+  <data name="StudioMarginLeft"><value>Левое поле: {0}</value></data>
+  <data name="StudioMarginRight"><value>Правое поле: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Нижнее поле: {0}</value></data>
+  <data name="StudioMarginTop"><value>Верхнее поле: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>Отмеряются от 1080×1920 и масштабируются под выбранное разрешение, поэтому подобранное здесь значение верно при любом размере. Левое поле также определяет, где встанут подписи оси. Верхнее поле начинается с полосы, которую телефон оставляет под собственный интерфейс, поэтому заголовок никогда не заедет под неё.</value></data>
+  <data name="StudioSafeArea.Header"><value>Направляющие безопасной зоны</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Обводят области, которые телефонное приложение закрывает своим интерфейсом. Рисуются только в предпросмотре и никогда не попадают в файл.</value></data>
+  <data name="StudioPlay.Content"><value>Воспроизвести</value></data>
+  <data name="StudioPause.Content"><value>Пауза</value></data>
+  <data name="StudioFetch.Content"><value>Получить данные</value></data>
+  <data name="StudioExport.Content"><value>Экспорт в MP4</value></data>
+  <data name="StudioCancel.Content"><value>Отмена</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} с</value></data>
+  <data name="StudioStageNoData"><value>Данных пока нет</value></data>
+  <data name="StudioCredit"><value>Источник: Tencent Finance</value></data>
+  <data name="NavMatrix.Content"><value>Матрица доходности</value></data>
+  <data name="MatrixPageTitle.Text"><value>Матрица доходности</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>Десятилетие месячных баров за один запрос; ячейки загораются в порядке времени.</value></data>
+  <data name="MatrixModeLabel.Text"><value>Тип матрицы</value></data>
+  <data name="MatrixModeYear.Content"><value>Одна цель · годы × месяцы</value></data>
+  <data name="MatrixModeCompare.Content"><value>Несколько целей · цели × месяцы</value></data>
+  <data name="MatrixTarget.Header"><value>Цель</value></data>
+  <data name="MatrixYearsLabel.Text"><value>Годы</value></data>
+  <data name="MatrixYears.Header"><value>Годы</value></data>
+  <data name="MatrixYearsAll"><value>Все</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>Месяцы</value></data>
+  <data name="MatrixMonths.Header"><value>Месяцы</value></data>
+  <data name="MatrixListIndices"><value>Широкие индексы</value></data>
+  <data name="MatrixChosen"><value>Сейчас: {0} ({1})</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>Месячный сервис не ответил или не знает этот код.</value></data>
+  <data name="MatrixTooFewMonths"><value>Слишком мало пригодных месяцев.</value></data>
+  <data name="MatrixTooFewShared"><value>Цели делят слишком мало месяцев.</value></data>
+  <data name="MatrixTailYear"><value>Год</value></data>
+  <data name="MatrixTailSubtotal"><value>Промеж.</value></data>
+  <data name="MatrixTailTotal"><value>Итого</value></data>
+  <data name="MatrixYearSpan"><value>{0} по сегодня · {1} месяцев</value></data>
+  <data name="MatrixYearTitle"><value>Месячная доходность {0}, {1} лет</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · месячное изменение · единица: %</value></data>
+  <data name="MatrixCmpSpan"><value>{0} — {1} · {2} месяцев</value></data>
+  <data name="MatrixCmpTitle"><value>Месячная ротация: {0}</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · месячное изменение · единица: %</value></data>
+  <data name="MatrixStatBestMonth"><value>Лучший месяц</value></data>
+  <data name="MatrixStatWorstMonth"><value>Худший месяц</value></data>
+  <data name="MatrixStatUpRatio"><value>Месяцев в плюсе</value></data>
+  <data name="MatrixStatBestSingle"><value>Лучший одиночный</value></data>
+  <data name="MatrixStatChampion"><value>Чемпион</value></data>
+  <data name="MatrixStatLast"><value>Последний</value></data>
+  <data name="MatrixStatTargets"><value>Цели</value></data>
+  <data name="MatrixStatSpan"><value>Период</value></data>
+  <data name="MatrixMonthValue"><value>месяц {0}: {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0}</value></data>
+  <data name="MatrixCountMonths"><value>{0} мес.</value></data>
+  <data name="MatrixCountBounds"><value>Выбрано {0} (нужно {1}–{2})</value></data>
+  <data name="MatrixTooFewTargets"><value>Для сравнения нужно минимум {0} {1}.</value></data>
+  <data name="MatrixTooManyTargets"><value>Не больше {0}; больше в вертикаль не поместится.</value></data>
+  <data name="MatrixFetching"><value>Загрузка месячных баров {0} …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} ячеек · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>Матрица доходности</value></data>
+  <data name="NavSectorRace.Content"><value>Гонка секторов</value></data>
+  <data name="SectorRacePageTitle.Text"><value>Гонка секторов</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>Дюжина полос обгоняет друг друга; порядок меняется до последнего кадра.</value></data>
+  <data name="SectorRosterLabel.Text"><value>Участники</value></data>
+  <data name="SectorRoster.Header"><value>Участники</value></data>
+  <data name="SectorListLevel1"><value>Отрасли CSI уровня 1</value></data>
+  <data name="SectorListTheme"><value>Популярные темы</value></data>
+  <data name="SectorListCustom"><value>Свои секторы</value></data>
+  <data name="SectorListStocks"><value>Акции из списка</value></data>
+  <data name="SectorMetricLabel.Text"><value>Метрика</value></data>
+  <data name="SectorMetric.Header"><value>Метрика</value></data>
+  <data name="SectorMetricReturn"><value>Накопленная доходность %</value></data>
+  <data name="SectorMetricAmount"><value>Накопленный оборот 100 млн</value></data>
+  <data name="SectorMetricReturnShort"><value>доходность</value></data>
+  <data name="SectorMetricAmountShort"><value>оборота</value></data>
+  <data name="SectorAutoTitleReturn"><value>Гонка доходности: {0}</value></data>
+  <data name="SectorAutoTitleAmount"><value>Гонка оборота: {0}</value></data>
+  <data name="SectorCount"><value>Выбрано: {0}</value></data>
+  <data name="SectorCountBounds"><value>Выбрано: {0} (нужно {1}–{2})</value></data>
+  <data name="SectorTooFew"><value>Для гонки нужно минимум {0} {1}.</value></data>
+  <data name="SectorTooMany"><value>Не больше {0} {1}; иначе вертикальный кадр превращается в штрихкод.</value></data>
+  <data name="SectorTooManyStocks"><value>Не больше {0} акций.</value></data>
+  <data name="SectorTooFewSharedDays"><value>Участников связывает меньше 5 торговых дней.</value></data>
+  <data name="SectorFetching"><value>Загрузка {0} …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} торговых дней · впереди {3} {4} · позади {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>Гонка секторов</value></data>
+  <data name="SectorUnitYi"><value>×100 млн</value></data>
+  <data name="SectorUnitSectors"><value>секторов</value></data>
+  <data name="SectorUnitStocks"><value>акций</value></data>
+  <data name="StudioDisclaimer.Text"><value>Только для справки. Не является инвестиционной рекомендацией.</value></data>
+  <data name="StudioDataLayerPending"><value>Получение котировок пока не сделано. Настройки видео и компоновки и предпросмотр уже работают; слой данных — следующий шаг.</value></data>
+  <data name="StudioEncoderPending"><value>Экспорт пока не сделан. Предпросмотр уже идёт по настоящему пути отрисовки; кодировщик — следующий шаг.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Оборот рынка</value></data>
+  <data name="StockVolumeStageTitle"><value>Объём и оборачиваемость</value></data>
+  <data name="StockBadCode"><value>Такой код здесь получить нельзя. Введите код, название или пиньинь и выберите из списка.</value></data>
+  <data name="StockChosen"><value>Выбрано: {0} ({1}).</value></data>
+  <data name="StockFetching"><value>Загрузка {0} …</value></data>
+  <data name="StockFetchingIntraday"><value>Загрузка внутридневных данных {0} …</value></data>
+  <data name="StockIntradayUnavailable"><value>Для этого кода нет внутридневных данных.</value></data>
+  <data name="StockIntradayTooFew"><value>Слишком мало внутридневных точек за этот день.</value></data>
+  <data name="StockNoRate"><value>Этот инструмент не публикует оборачиваемость.</value></data>
+  <data name="StockNoFloatShares"><value>Размер свободного обращения неизвестен; оборачиваемость не рассчитать.</value></data>
+  <data name="StockFetchedDaily"><value>{0} ({1}): {2} торговых дней · объём в среднем {3} {4}, пик {5} · оборачиваемость в среднем {6} %, пик {7} %</value></data>
+  <data name="StockFetchedIntraday"><value>{0} ({1}): {2} минут · оборачиваемость за день {3} %</value></data>
+  <data name="StockDailyHint"><value>Дневной режим: один столбец на торговый день.</value></data>
+  <data name="StockIntradayHint"><value>Внутридневной режим: источник хранит только последние пять торговых дней. Загрузите один раз, затем выберите день.</value></data>
+  <data name="StockUnitHands"><value>лотов</value></data>
+  <data name="StockUnitTenThousand"><value>×10 тыс. лотов</value></data>
+  <data name="StockPanelVolume"><value>Объём</value></data>
+  <data name="StockPanelMinuteVolume"><value>Объём в минуту</value></data>
+  <data name="StockPanelTurnover"><value>Оборачиваемость</value></data>
+  <data name="StockPanelCumTurnover"><value>Накопленная оборачиваемость</value></data>
+  <data name="StockMeanLabel"><value>Сред. {0}</value></data>
+  <data name="StockHighLabel"><value>Максимум</value></data>
+  <data name="StockLowLabel"><value>Минимум</value></data>
+  <data name="StockDayTurnover"><value>Оборачиваемость за день {0} %</value></data>
+  <data name="StockIntradayLabel"><value>внутридневные</value></data>
+  <data name="StockRangeJoiner"><value>—</value></data>
+  <data name="StockTradingDaysUnit"><value>торговых дней</value></data>
+  <data name="StockMinutesUnit"><value>минут</value></data>
+  <data name="StockAddFavourite.Content"><value>В избранное</value></data>
+  <data name="StockFavNeedData"><value>Сначала загрузите данные: избранное запоминает и название.</value></data>
+  <data name="StockTradingDayNote.Text"><value>Источник хранит только последние пять торговых дней.</value></data>
+
+  <data name="TurnoverScope.Header"><value>Сегмент</value></data>
+  <data name="TurnoverScopeWhole"><value>Шанхай + Шэньчжэнь (весь)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Шанхайская биржа (вся)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Шанхай, основная доска</value></data>
+  <data name="TurnoverScopeStar"><value>Доска STAR</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Шэньчжэньская биржа (вся)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Шэньчжэнь, основная доска</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Обе + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>Основные доски выводятся как итог биржи минус её доска роста; BSE 50 охватывает пятьдесят бумаг, а не всю биржу.</value></data>
+  <data name="TurnoverUnit"><value>100 млн CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} вместе · единица: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>{0} — {1} · {2} торговых дней</value></data>
+  <data name="TurnoverAverageLabel"><value>Среднее {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Среднее</value></data>
+  <data name="TurnoverStatPeak"><value>Максимум</value></data>
+  <data name="TurnoverStatLow"><value>Минимум</value></data>
+  <data name="TurnoverStatRatio"><value>Макс./мин.</value></data>
+  <data name="TurnoverFetching"><value>Загрузка {0}…</value></data>
+  <data name="TurnoverFetched"><value>{0} торговых дней ({1} — {2}) · среднее {3} · максимум {4} · минимум {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>Период слишком длинный. Один запрос достаёт примерно {0} календарных дней, сократите его.</value></data>
+  <data name="TurnoverRangeReversed"><value>Начальная дата должна быть раньше конечной.</value></data>
+  <data name="TurnoverTooFewDays"><value>В этом периоде недостаточно торговых дней.</value></data>
+  <data name="TurnoverView.Header"><value>Вид кадра</value></data>
+  <data name="TurnoverViewBars"><value>Гонка столбцов</value></data>
+  <data name="TurnoverViewCalendar"><value>Календарная теплокарта</value></data>
+  <data name="ReturnStageTitle"><value>Дневное изменение SSE Composite</value></data>
+  <data name="ReturnSubtitle"><value>{0} · ежедневное изменение закрытия · единица: %</value></data>
+  <data name="ReturnStatUp"><value>Рост</value></data>
+  <data name="ReturnStatDown"><value>Падение</value></data>
+  <data name="ReturnStatBest"><value>Лучший день</value></data>
+  <data name="ReturnStatWorst"><value>Худший день</value></data>
+  <data name="ReturnDayCount"><value>{0} дн.</value></data>
+  <data name="StudioCover.Content"><value>Сохранить обложку PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>Сохраняет тот кадр, на котором стоит предпросмотр, в полном разрешении экспорта.</value></data>
+  <data name="StudioCoverSaved"><value>Обложка сохранена: {0} · {1}×{2} · в {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Папка не выбрана, поэтому ничего не сохранено.</value></data>
+  <data name="StudioExporting"><value>Кодирование… {0} %</value></data>
+  <data name="StudioExported"><value>Экспортировано {0} · {1} МБ · {2} с на {3} с видео · в {4}</value></data>
+  <data name="StudioExportCancelled"><value>Папка не выбрана, поэтому ничего не экспортировано.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Переключается в любой момент; оба рисуют тот же ряд, без нового запроса.</value></data>
+
+  <data name="StockSearch.Header"><value>Бумага</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Код, название или пиньинь</value></data>
+  <data name="StockNoneChosen"><value>Бумага не выбрана.</value></data>
+  <data name="StockModeLabel.Text"><value>Режим</value></data>
+  <data name="StockModeDaily.Content"><value>За несколько торговых дней</value></data>
+  <data name="StockModeIntraday.Content"><value>Внутри одного дня</value></data>
+  <data name="StockTradingDay.Header"><value>Торговый день</value></data>
+
+  <data name="PageCancelled"><value>Остановлено.</value></data>
+  <data name="PageTimedOut"><value>Это заняло слишком долго и было прервано.</value></data>
+  <data name="PageWorkFailed"><value>Не удалось выполнить «{0}»: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Язык</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Как в Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>Язык сменится после перезапуска приложения.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Перезапустить сейчас</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Оформление</value></data>
+  <data name="SettingsThemeSystem"><value>Как в Windows</value></data>
+  <data name="SettingsThemeLight"><value>Светлое</value></data>
+  <data name="SettingsThemeDark"><value>Тёмное</value></data>
+  <data name="SettingsThemeNote.Text"><value>Применяется сразу и касается только приложения. У видео своя палитра, поэтому предпросмотр по-прежнему предсказывает файл.</value></data>
+  <data name="SettingsOutput.Text"><value>Куда сохраняются видео</value></data>
+  <data name="SettingsOutputNote.Text"><value>Выбирается диалогом папки, потому что упакованное приложение не может писать куда угодно. Если не задано, первый экспорт спросит и запомнит ответ.</value></data>
+  <data name="SettingsOutputNotSet"><value>Не задано — первый экспорт спросит.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Выбрать папку…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Забыть</value></data>
+  <data name="SettingsOutputFailed"><value>Не удалось задать папку: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Данные приложения</value></data>
+  <data name="SettingsStorageNote.Text"><value>Здесь лежат параметры и журнал сбоев. Windows удаляет это при удалении приложения; экспортированных видео здесь нет.</value></data>
+  <data name="SettingsSources.Text"><value>Данные</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Котировки берутся из открытых точек доступа Tencent Finance. Обороты переводятся в сотни миллионов юаней, а ещё идущий торговый день исключается, потому что незавершённый день содержит только свой открывающий аукцион.</value></data>
+  <data name="SettingsContact.Text"><value>Что-то не так?</value></data>
+  <data name="SettingsContactNote.Text"><value>Напишите, что вы делали и чего ожидали вместо этого. Версия выше уже уходит в теме письма.</value></data>
+  <data name="SettingsContactSubject"><value>Market Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Ни одно почтовое приложение не ответило. Напишите на {0}. ({1})</value></data>
+  <data name="SettingsVersion"><value>Версия {0}</value></data>
+  <data name="SettingsRestartFailed"><value>Приложению не удалось перезапуститься: {0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>Календарь роста и падения</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>Календарь роста и падения</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>Любая китайская акция или индекс, одна ячейка на торговый день: красный — рост, зелёный — падение.</value></data>
+  <data name="GainCalendarDefaultTitle"><value>Ежедневное изменение {0}</value></data>
+  <data name="GainCalendarFetching"><value>Получение {0}…</value></data>
+  <data name="GainCalendarFetched"><value>{0} торговых дней ({1} — {2}) · {3} дней роста · {4} дней падения</value></data>
+  <data name="GainCalendarAShareOnly"><value>Поддерживаются только китайские акции и индексы.</value></data>
+  <data name="IndexSSE"><value>Шанхайский композитный индекс</value></data>
+  <data name="TrayOpen.Text"><value>Открыть</value></data>
+  <data name="TrayExit.Text"><value>Выход</value></data>
+  <data name="TrayBusy"><value>Выполняется: {0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>Значок в области уведомлений</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>Закрытие окна сворачивает приложение сюда вместо завершения. Если отключить, закрытие окна завершит работу приложения.</value></data>
+  <data name="SettingsStartup.Text"><value>Запускать вместе с Windows</value></data>
+  <data name="SettingsStartupNote.Text"><value>Запускается при входе в область уведомлений, чтобы приложение было готово к моменту открытия.</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>Windows блокирует это, поскольку функция отключена в диспетчере задач. Включите её там, на вкладке «Автозагрузка приложений».</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>Это определяется политикой вашей организации и не может быть изменено здесь.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Рынок</value></data>
+  <data name="SettingsMarketNote.Text"><value>Определяет, откуда каждая страница берёт котировки и какие страницы доступны. Вступает в силу после перезапуска.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Рынок изменится после перезапуска приложения.</value></data>
+  <data name="MarketAShare"><value>А-акции</value></data>
+  <data name="MarketHongKong"><value>Гонконг</value></data>
+  <data name="MarketUnitedStates"><value>США</value></data>
+  <data name="SectorListHangSeng"><value>Субиндексы Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>Секторальные ETF США</value></data>
+  <data name="SectorMetricAmountUsd"><value>Накопленный оборот, 100 млн $</value></data>
+
+  <data name="NavDcaPlan.Content"><value>План DCA</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>План DCA</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Покупка одного инструмента на фиксированную сумму с фиксированным интервалом — и анимация того, во что превратилась дисциплина</value></data>
+  <data name="DcaFreqLabel.Header"><value>Периодичность</value></data>
+  <data name="DcaFreqDaily"><value>Каждый торговый день</value></data>
+  <data name="DcaFreqWeekly"><value>Еженедельно</value></data>
+  <data name="DcaFreqMonthly"><value>Ежемесячно</value></data>
+  <data name="DcaAmountLabel.Header"><value>Сумма взноса</value></data>
+  <data name="DcaRangeLabel.Header"><value>Срок</value></data>
+  <data name="DcaRange3Y"><value>Последние 3 года</value></data>
+  <data name="DcaRange5Y"><value>Последние 5 лет</value></data>
+  <data name="DcaRange10Y"><value>Последние 10 лет</value></data>
+  <data name="DcaRangeMax"><value>Насколько назад есть данные</value></data>
+  <data name="DcaDefaultTitle"><value>DCA-план: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} в {3} · цены закрытия с обратной корректировкой · без комиссий</value></data>
+  <data name="DcaRangeLine"><value>с {0} по {1} · {2} взносов</value></data>
+  <data name="DcaReturnLabel"><value>Доходность</value></data>
+  <data name="DcaLegendValue"><value>Стоимость</value></data>
+  <data name="DcaLegendInvested"><value>Вложено</value></data>
+  <data name="DcaCardValue"><value>Итоговая стоимость</value></data>
+  <data name="DcaCardInvested"><value>Всего вложено</value></data>
+  <data name="DcaCardProfit"><value>Прибыль</value></data>
+  <data name="DcaCardBuys"><value>Взносы</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>Загружено {0} торговых дней ({1} — {2}), {3} взносов</value></data>
+  <data name="DcaAmountInvalid"><value>Сумма взноса должна быть положительным числом</value></data>
+  <data name="WrongMarket"><value>Этот код не относится к текущему рынку ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Доходность позиции</value></data>
+  <data name="PositionPageTitle.Text"><value>Доходность позиции</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Одна покупка, удерживаемая — как стоимость и доходность менялись за эти годы</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Начальный капитал</value></data>
+  <data name="PositionRangeLabel.Header"><value>Период владения</value></data>
+  <data name="PositionDefaultTitle"><value>Доходность позиции: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: куплено {1} {2} в {3} · цены с обратной корректировкой · дивиденды реинвестированы</value></data>
+  <data name="PositionRangeLine"><value>{0} — {1} · в владении {2} дн.</value></data>
+  <data name="PositionLegendCapital"><value>Капитал</value></data>
+  <data name="PositionCardCapital"><value>Вложенный капитал</value></data>
+  <data name="PositionCardDrawdown"><value>Максимальная просадка</value></data>
+  <data name="PositionFetched"><value>{0} торговых дней ({1} — {2}), период владения {3} дн.</value></data>
+  <data name="PositionCapitalInvalid"><value>Начальный капитал должен быть положительным числом</value></data>
+</root>

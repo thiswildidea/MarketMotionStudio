@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a2c561934e089</value></resheader>
+
+  <data name="CultureName"><value>it</value></data>
+
+  <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <data name="TitleBusy"><value>{0} — {1}</value></data>
+
+  <data name="NavMarketTurnover.Content"><value>Controvalore del mercato</value></data>
+  <data name="NavStockVolume.Content"><value>Volume e rotazione</value></data>
+  <data name="NavHelp.Content"><value>Guida</value></data>
+  <data name="NavSettings.Content"><value>Impostazioni</value></data>
+
+  <data name="MarketTurnoverPageTitle.Text"><value>Controvalore del mercato</value></data>
+  <data name="MarketTurnoverPageSubtitle.Text"><value>Il controvalore giornaliero dell'intero mercato o di un segmento. Due forme della stessa immagine; cambiare non scarica nulla.</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volume e rotazione</value></data>
+  <data name="StockVolumePageSubtitle.Text"><value>I volumi di un titolo a confronto con il suo tasso di rotazione, su un periodo o all'interno di una singola seduta.</value></data>
+  <data name="SettingsPageTitle.Text"><value>Impostazioni</value></data>
+  <data name="HelpPageTitle.Text"><value>Guida</value></data>
+  <data name="HelpPageSubtitle.Text"><value>Cosa fa ogni pagina, da dove vengono i numeri e cosa questi video non sono.</value></data>
+  <data name="HelpDocument"><value>help-it.md</value></data>
+  <data name="HelpMissing"><value>Non è stato possibile aprire il documento della guida per questa lingua.</value></data>
+
+  <data name="StudioDataSection.Text"><value>Dati</value></data>
+  <data name="StudioTitleSection.Text"><value>Titolo</value></data>
+  <data name="StudioTitleText.Header"><value>Testo del titolo</value></data>
+  <data name="StudioTitleNote.Text"><value>Lascialo vuoto per usare il titolo predefinito. Un titolo lungo viene ridotto in proporzione invece di essere tagliato, fino a metà della dimensione.</value></data>
+  <data name="StudioHideTitle.Header"><value>Nascondi il titolo</value></data>
+  <data name="StudioHideTitleNote.Text"><value>La riga del titolo torna al grafico e tutto ciò che sta sotto risale al suo posto. Il margine inferiore tiene fermo il bordo basso, quindi i pannelli si alzano. Togliendo la spunta l'impaginazione torna identica.</value></data>
+  <data name="StockTitlePlaceholder"><value>Il nome dello strumento scaricato</value></data>
+  <data name="StudioVideoSection.Text"><value>Video</value></data>
+  <data name="StudioLayoutSection.Text"><value>Impaginazione</value></data>
+  <data name="StudioRange.Header"><value>Periodo</value></data>
+  <data name="StudioRange1M"><value>Ultimo mese</value></data>
+  <data name="StudioRange3M"><value>Ultimi 3 mesi</value></data>
+  <data name="StudioRange6M"><value>Ultimi 6 mesi</value></data>
+  <data name="StudioRange12M"><value>Ultimi 12 mesi</value></data>
+  <data name="StudioRangeCustom"><value>Personalizzato</value></data>
+  <data name="StudioRangeFrom.Header"><value>Dal</value></data>
+  <data name="StudioRangeTo.Header"><value>Al</value></data>
+  <data name="StudioDuration"><value>Durata: {0} s</value></data>
+  <data name="StudioResolution.Text"><value>Risoluzione</value></data>
+  <data name="StudioFrameRate.Text"><value>Frequenza fotogrammi</value></data>
+  <data name="StudioQuality.Text"><value>Qualità</value></data>
+  <data name="StudioQualityStandard"><value>Standard</value></data>
+  <data name="StudioQualityHigh"><value>Alta</value></data>
+  <data name="StudioQualityUltra"><value>Massima</value></data>
+  <data name="StudioBitrate"><value>Circa {0} Mbps</value></data>
+  <data name="StudioMarginLeft"><value>Margine sinistro: {0}</value></data>
+  <data name="StudioMarginRight"><value>Margine destro: {0}</value></data>
+  <data name="StudioMarginBottom"><value>Margine inferiore: {0}</value></data>
+  <data name="StudioMarginTop"><value>Margine superiore: {0}</value></data>
+  <data name="StudioMarginNote.Text"><value>Misurati su 1080×1920 e riscalati sulla risoluzione scelta, così un valore messo a punto qui vale a ogni dimensione. Il margine sinistro decide anche dove finiscono le etichette dell'asse. Il margine superiore parte dalla fascia che il telefono riserva alla sua interfaccia, così il titolo non finisce mai sotto di essa.</value></data>
+  <data name="StudioSafeArea.Header"><value>Guide dell'area sicura</value></data>
+  <data name="StudioSafeAreaNote.Text"><value>Delimita le zone che un'app per telefono copre con la propria interfaccia. Disegnate solo nell'anteprima, mai in un file.</value></data>
+  <data name="StudioPlay.Content"><value>Riproduci</value></data>
+  <data name="StudioPause.Content"><value>Pausa</value></data>
+  <data name="StudioFetch.Content"><value>Scarica i dati</value></data>
+  <data name="StudioExport.Content"><value>Esporta MP4</value></data>
+  <data name="StudioCancel.Content"><value>Annulla</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
+  <data name="StudioStageNoData"><value>Ancora nessun dato</value></data>
+  <data name="StudioCredit"><value>Fonte: Tencent Finance</value></data>
+  <data name="NavMatrix.Content"><value>Matrice dei rendimenti</value></data>
+  <data name="MatrixPageTitle.Text"><value>Matrice dei rendimenti</value></data>
+  <data name="MatrixPageSubtitle.Text"><value>Un decennio di barre mensili per richiesta; le celle si accendono in ordine temporale.</value></data>
+  <data name="MatrixModeLabel.Text"><value>Tipo di matrice</value></data>
+  <data name="MatrixModeYear.Content"><value>Un bersaglio · anni × mesi</value></data>
+  <data name="MatrixModeCompare.Content"><value>Più bersagli · bersagli × mesi</value></data>
+  <data name="MatrixTarget.Header"><value>Bersaglio</value></data>
+  <data name="MatrixYearsLabel.Text"><value>Anni</value></data>
+  <data name="MatrixYears.Header"><value>Anni</value></data>
+  <data name="MatrixYearsAll"><value>Tutti</value></data>
+  <data name="MatrixMonthsLabel.Text"><value>Mesi</value></data>
+  <data name="MatrixMonths.Header"><value>Mesi</value></data>
+  <data name="MatrixListIndices"><value>Indici larghi</value></data>
+  <data name="MatrixChosen"><value>Attuale: {0} ({1})</value></data>
+  <data name="MatrixMonthlyUnavailable"><value>L'endpoint mensile ha fallito o non conosce questo codice.</value></data>
+  <data name="MatrixTooFewMonths"><value>Troppo pochi mesi utilizzabili.</value></data>
+  <data name="MatrixTooFewShared"><value>I bersagli condividono troppo pochi mesi.</value></data>
+  <data name="MatrixTailYear"><value>Anno</value></data>
+  <data name="MatrixTailSubtotal"><value>Subtotale</value></data>
+  <data name="MatrixTailTotal"><value>Totale</value></data>
+  <data name="MatrixYearSpan"><value>{0} a oggi · {1} mesi</value></data>
+  <data name="MatrixYearTitle"><value>Rendimenti mensili di {0}, {1} anni</value></data>
+  <data name="MatrixYearSubtitle"><value>{0} {1} · variazione mensile · unità: %</value></data>
+  <data name="MatrixCmpSpan"><value>{0} a {1} · {2} mesi</value></data>
+  <data name="MatrixCmpTitle"><value>Rotazione mensile: {0}</value></data>
+  <data name="MatrixCmpSubtitle"><value>{0} · variazione mensile · unità: %</value></data>
+  <data name="MatrixStatBestMonth"><value>Mese migliore</value></data>
+  <data name="MatrixStatWorstMonth"><value>Mese peggiore</value></data>
+  <data name="MatrixStatUpRatio"><value>Mesi in rialzo</value></data>
+  <data name="MatrixStatBestSingle"><value>Migliore singolo</value></data>
+  <data name="MatrixStatChampion"><value>Vincitore</value></data>
+  <data name="MatrixStatLast"><value>Ultimo</value></data>
+  <data name="MatrixStatTargets"><value>Bersagli</value></data>
+  <data name="MatrixStatSpan"><value>Periodo</value></data>
+  <data name="MatrixMonthValue"><value>mese {0}: {1}</value></data>
+  <data name="MatrixCountTargets"><value>{0}</value></data>
+  <data name="MatrixCountMonths"><value>{0} mesi</value></data>
+  <data name="MatrixCountBounds"><value>{0} selezionati (servono {1}–{2})</value></data>
+  <data name="MatrixTooFewTargets"><value>Un confronto richiede almeno {0} {1}.</value></data>
+  <data name="MatrixTooManyTargets"><value>Al massimo {0}; oltre non entra in verticale.</value></data>
+  <data name="MatrixFetching"><value>Caricamento delle barre mensili di {0} …</value></data>
+  <data name="MatrixFetched"><value>{0} · {1} · {2} celle · {3} {4} · {5} {6}</value></data>
+  <data name="MatrixStageTitle"><value>Matrice dei rendimenti</value></data>
+  <data name="NavSectorRace.Content"><value>Gara di settori</value></data>
+  <data name="SectorRacePageTitle.Text"><value>Gara di settori</value></data>
+  <data name="SectorRacePageSubtitle.Text"><value>Una dozzina di barre che si sorpassano; l'ordine cambia fino all'ultimo fotogramma.</value></data>
+  <data name="SectorRosterLabel.Text"><value>Concorrenti</value></data>
+  <data name="SectorRoster.Header"><value>Concorrenti</value></data>
+  <data name="SectorListLevel1"><value>Industrie CSI livello 1</value></data>
+  <data name="SectorListTheme"><value>Temi caldi</value></data>
+  <data name="SectorListCustom"><value>Settori personalizzati</value></data>
+  <data name="SectorListStocks"><value>Azioni seguite</value></data>
+  <data name="SectorMetricLabel.Text"><value>Metrica</value></data>
+  <data name="SectorMetric.Header"><value>Metrica</value></data>
+  <data name="SectorMetricReturn"><value>Rendimento cumulato %</value></data>
+  <data name="SectorMetricAmount"><value>Controvalore cumulato 100 M</value></data>
+  <data name="SectorMetricReturnShort"><value>rendimento</value></data>
+  <data name="SectorMetricAmountShort"><value>controvalore</value></data>
+  <data name="SectorAutoTitleReturn"><value>Gara di rendimento: {0}</value></data>
+  <data name="SectorAutoTitleAmount"><value>Gara di controvalore: {0}</value></data>
+  <data name="SectorCount"><value>{0} selezionati</value></data>
+  <data name="SectorCountBounds"><value>{0} selezionati (servono {1}–{2})</value></data>
+  <data name="SectorTooFew"><value>Una gara richiede almeno {0} {1}.</value></data>
+  <data name="SectorTooMany"><value>Al massimo {0} {1}; oltre, un formato verticale diventa un codice a barre.</value></data>
+  <data name="SectorTooManyStocks"><value>Al massimo {0} azioni.</value></data>
+  <data name="SectorTooFewSharedDays"><value>I concorrenti condividono meno di 5 sedute.</value></data>
+  <data name="SectorFetching"><value>Caricamento di {0} …</value></data>
+  <data name="SectorFetched"><value>{0} {1} · {2} sedute · primo {3} {4} · ultimo {5} {6}</value></data>
+  <data name="SectorRaceStageTitle"><value>Gara di settori</value></data>
+  <data name="SectorUnitYi"><value>×100 M</value></data>
+  <data name="SectorUnitSectors"><value>settori</value></data>
+  <data name="SectorUnitStocks"><value>azioni</value></data>
+  <data name="StudioDisclaimer.Text"><value>Solo a titolo informativo. Non è una consulenza di investimento.</value></data>
+  <data name="StudioDataLayerPending"><value>Il recupero delle quotazioni non è ancora scritto. I comandi di video e impaginazione e l'anteprima funzionano già; il livello dati è il passo successivo.</value></data>
+  <data name="StudioEncoderPending"><value>L'esportazione non è ancora scritta. L'anteprima percorre già il vero cammino di rendering; l'encoder è il passo successivo.</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Controvalore del mercato</value></data>
+  <data name="StockVolumeStageTitle"><value>Volume e rotazione</value></data>
+  <data name="StockBadCode"><value>Questo codice non è interrogabile qui. Inserisci un codice, un nome o pinyin e scegli dall'elenco.</value></data>
+  <data name="StockChosen"><value>{0} ({1}) selezionato.</value></data>
+  <data name="StockFetching"><value>Caricamento di {0} …</value></data>
+  <data name="StockFetchingIntraday"><value>Caricamento dei dati intraday di {0} …</value></data>
+  <data name="StockIntradayUnavailable"><value>Nessun dato intraday per questo codice.</value></data>
+  <data name="StockIntradayTooFew"><value>Troppi pochi punti intraday in quella giornata.</value></data>
+  <data name="StockNoRate"><value>Questo titolo non riporta il tasso di rotazione.</value></data>
+  <data name="StockNoFloatShares"><value>Capitale flottante non disponibile; rotazione non calcolabile.</value></data>
+  <data name="StockFetchedDaily"><value>{0} ({1}): {2} sedute · volume medio {3} {4}, picco {5} · rotazione media {6} %, picco {7} %</value></data>
+  <data name="StockFetchedIntraday"><value>{0} ({1}): {2} minuti · rotazione del giorno {3} %</value></data>
+  <data name="StockDailyHint"><value>Modo giornaliero: una barra per seduta.</value></data>
+  <data name="StockIntradayHint"><value>Modo intraday: la fonte conserva solo le ultime cinque sedute. Carica una volta, poi scegli il giorno.</value></data>
+  <data name="StockUnitHands"><value>lotti</value></data>
+  <data name="StockUnitTenThousand"><value>×10 mila lotti</value></data>
+  <data name="StockPanelVolume"><value>Volume</value></data>
+  <data name="StockPanelMinuteVolume"><value>Volume al minuto</value></data>
+  <data name="StockPanelTurnover"><value>Rotazione</value></data>
+  <data name="StockPanelCumTurnover"><value>Rotazione cumulativa</value></data>
+  <data name="StockMeanLabel"><value>Media {0}</value></data>
+  <data name="StockHighLabel"><value>Massimo</value></data>
+  <data name="StockLowLabel"><value>Minimo</value></data>
+  <data name="StockDayTurnover"><value>Rotazione del giorno {0} %</value></data>
+  <data name="StockIntradayLabel"><value>intraday</value></data>
+  <data name="StockRangeJoiner"><value>a</value></data>
+  <data name="StockTradingDaysUnit"><value>sedute</value></data>
+  <data name="StockMinutesUnit"><value>minuti</value></data>
+  <data name="StockAddFavourite.Content"><value>Aggiungi ai preferiti</value></data>
+  <data name="StockFavNeedData"><value>Prima carica i dati: un preferito memorizza anche il nome.</value></data>
+  <data name="StockTradingDayNote.Text"><value>La fonte conserva solo le ultime cinque sedute.</value></data>
+
+  <data name="TurnoverScope.Header"><value>Segmento</value></data>
+  <data name="TurnoverScopeWhole"><value>Shanghai + Shenzhen (tutto)</value></data>
+  <data name="TurnoverScopeShanghai"><value>Borsa di Shanghai (tutto)</value></data>
+  <data name="TurnoverScopeShanghaiMain"><value>Shanghai, mercato principale</value></data>
+  <data name="TurnoverScopeStar"><value>Mercato STAR</value></data>
+  <data name="TurnoverScopeShenzhen"><value>Borsa di Shenzhen (tutto)</value></data>
+  <data name="TurnoverScopeShenzhenMain"><value>Shenzhen, mercato principale</value></data>
+  <data name="TurnoverScopeChiNext"><value>ChiNext</value></data>
+  <data name="TurnoverScopeWithBeijing"><value>Entrambe + BSE 50</value></data>
+  <data name="TurnoverScopeNote.Text"><value>I mercati principali sono ricavati dal totale della borsa meno il suo mercato di crescita; il BSE 50 copre cinquanta titoli, non l'intera borsa.</value></data>
+  <data name="TurnoverUnit"><value>100 mln CNY</value></data>
+  <data name="TurnoverSubtitle"><value>{0} sommati · unità: {1}</value></data>
+  <data name="TurnoverDaysLine"><value>dal {0} al {1} · {2} sedute</value></data>
+  <data name="TurnoverAverageLabel"><value>Media {0}</value></data>
+  <data name="TurnoverStatAverage"><value>Media</value></data>
+  <data name="TurnoverStatPeak"><value>Massimo</value></data>
+  <data name="TurnoverStatLow"><value>Minimo</value></data>
+  <data name="TurnoverStatRatio"><value>Max/min</value></data>
+  <data name="TurnoverFetching"><value>Scarico di {0}…</value></data>
+  <data name="TurnoverFetched"><value>{0} sedute ({1} — {2}) · media {3} · massimo {4} · minimo {5}</value></data>
+  <data name="TurnoverRangeTooLong"><value>Il periodo è troppo lungo. Una richiesta arriva a circa {0} giorni di calendario, accorcialo.</value></data>
+  <data name="TurnoverRangeReversed"><value>La data di inizio deve precedere la data di fine.</value></data>
+  <data name="TurnoverTooFewDays"><value>Sedute insufficienti in quel periodo.</value></data>
+  <data name="TurnoverView.Header"><value>Tipo di resa</value></data>
+  <data name="TurnoverViewBars"><value>Gara di barre</value></data>
+  <data name="TurnoverViewCalendar"><value>Mappa di calore a calendario</value></data>
+  <data name="ReturnStageTitle"><value>Variazione giornaliera dello SSE Composite</value></data>
+  <data name="ReturnSubtitle"><value>{0} · variazione giornaliera alla chiusura · unità: %</value></data>
+  <data name="ReturnStatUp"><value>In rialzo</value></data>
+  <data name="ReturnStatDown"><value>In ribasso</value></data>
+  <data name="ReturnStatBest"><value>Giorno migliore</value></data>
+  <data name="ReturnStatWorst"><value>Giorno peggiore</value></data>
+  <data name="ReturnDayCount"><value>{0} giorni</value></data>
+  <data name="StudioCover.Content"><value>Salva la copertina in PNG</value></data>
+  <data name="StudioCoverNote.Text"><value>Salva il fotogramma su cui è fermata l'anteprima, alla risoluzione di esportazione.</value></data>
+  <data name="StudioCoverSaved"><value>Copertina salvata: {0} · {1}×{2} · in {3}</value></data>
+  <data name="StudioCoverCancelled"><value>Nessuna cartella scelta, quindi non è stato salvato nulla.</value></data>
+  <data name="StudioExporting"><value>Codifica in corso… {0} %</value></data>
+  <data name="StudioExported"><value>{0} esportato · {1} MB · {2} s per {3} s di video · in {4}</value></data>
+  <data name="StudioExportCancelled"><value>Nessuna cartella scelta, quindi non è stato esportato nulla.</value></data>
+  <data name="TurnoverViewNote.Text"><value>Commutabile in ogni momento; entrambe disegnano la stessa serie, senza nuovo scarico.</value></data>
+
+  <data name="StockSearch.Header"><value>Titolo</value></data>
+  <data name="StockSearch.PlaceholderText"><value>Codice, nome o pinyin</value></data>
+  <data name="StockNoneChosen"><value>Nessun titolo scelto.</value></data>
+  <data name="StockModeLabel.Text"><value>Modalità</value></data>
+  <data name="StockModeDaily.Content"><value>Su più sedute</value></data>
+  <data name="StockModeIntraday.Content"><value>All'interno di una seduta</value></data>
+  <data name="StockTradingDay.Header"><value>Seduta</value></data>
+
+  <data name="PageCancelled"><value>Interrotto.</value></data>
+  <data name="PageTimedOut"><value>Ha richiesto troppo tempo ed è stato abbandonato.</value></data>
+  <data name="PageWorkFailed"><value>{0} non riuscito: {1}</value></data>
+
+  <data name="SettingsLanguageLabel.Text"><value>Lingua</value></data>
+  <data name="SettingsLanguageSystem.Content"><value>Segui Windows</value></data>
+  <data name="SettingsLanguageRestart.Text"><value>La lingua cambia al riavvio dell'app.</value></data>
+  <data name="SettingsLanguageRestartNow.Content"><value>Riavvia ora</value></data>
+  <data name="SettingsThemeLabel.Text"><value>Aspetto</value></data>
+  <data name="SettingsThemeSystem"><value>Segui Windows</value></data>
+  <data name="SettingsThemeLight"><value>Chiaro</value></data>
+  <data name="SettingsThemeDark"><value>Scuro</value></data>
+  <data name="SettingsThemeNote.Text"><value>Si applica appena lo scegli e riguarda solo l'app. Un video conserva la propria tavolozza, così l'anteprima continua a prevedere il file.</value></data>
+  <data name="SettingsOutput.Text"><value>Dove vengono salvati i video</value></data>
+  <data name="SettingsOutputNote.Text"><value>Scelta con un selettore di cartelle, perché un'app pacchettizzata non può scrivere dove vuole. Se non è impostata, la prima esportazione la chiede e poi la ricorda.</value></data>
+  <data name="SettingsOutputNotSet"><value>Non impostata: la prima esportazione la chiederà.</value></data>
+  <data name="SettingsOutputChoose.Content"><value>Scegli cartella…</value></data>
+  <data name="SettingsOutputForget.Content"><value>Dimentica</value></data>
+  <data name="SettingsOutputFailed"><value>Non è stato possibile impostare la cartella: {0}</value></data>
+  <data name="SettingsStorage.Text"><value>Dati dell'app</value></data>
+  <data name="SettingsStorageNote.Text"><value>Qui stanno le impostazioni e il registro degli arresti. Windows li rimuove alla disinstallazione; i video esportati non sono lì.</value></data>
+  <data name="SettingsSources.Text"><value>Dati</value></data>
+  <data name="SettingsSourcesNote.Text"><value>Le quotazioni vengono dagli endpoint pubblici di Tencent Finance. I controvalori sono convertiti in centinaia di milioni di yuan, e una seduta ancora in corso viene esclusa, perché un giorno non finito contiene solo la sua asta di apertura.</value></data>
+  <data name="SettingsContact.Text"><value>Qualcosa non va?</value></data>
+  <data name="SettingsContactNote.Text"><value>Racconta cosa stavi facendo e cosa ti aspettavi invece. La versione qui sopra viaggia già nell'oggetto del messaggio.</value></data>
+  <data name="SettingsContactSubject"><value>Market Motion Studio {0}</value></data>
+  <data name="SettingsContactFailed"><value>Nessuna app di posta ha risposto. Scrivi a {0}. ({1})</value></data>
+  <data name="SettingsVersion"><value>Versione {0}</value></data>
+  <data name="SettingsRestartFailed"><value>L'app non è riuscita a riavviarsi: {0}</value></data>
+
+  <data name="NavGainCalendar.Content"><value>Calendario di rialzi e ribassi</value></data>
+  <data name="GainCalendarPageTitle.Text"><value>Calendario di rialzi e ribassi</value></data>
+  <data name="GainCalendarPageSubtitle.Text"><value>Qualsiasi titolo o indice cinese, una casella per seduta: rosso al rialzo, verde al ribasso.</value></data>
+  <data name="GainCalendarDefaultTitle"><value>Variazione giornaliera di {0}</value></data>
+  <data name="GainCalendarFetching"><value>Recupero di {0}…</value></data>
+  <data name="GainCalendarFetched"><value>{0} sedute ({1} – {2}) · {3} in rialzo · {4} in ribasso</value></data>
+  <data name="GainCalendarAShareOnly"><value>Sono supportati solo titoli e indici cinesi.</value></data>
+  <data name="IndexSSE"><value>SSE Composite</value></data>
+  <data name="TrayOpen.Text"><value>Apri</value></data>
+  <data name="TrayExit.Text"><value>Esci</value></data>
+  <data name="TrayBusy"><value>In corso: {0}</value></data>
+  <data name="SettingsTrayIcon.Text"><value>Icona nell'area di notifica</value></data>
+  <data name="SettingsTrayIconNote.Text"><value>Chiudere la finestra nasconde l'app qui invece di terminarla. Disattivandola, chiudere la finestra esce dall'app.</value></data>
+  <data name="SettingsStartup.Text"><value>Avvia con Windows</value></data>
+  <data name="SettingsStartupNote.Text"><value>Si avvia nell'area di notifica all'accesso, così è pronto quando lo apri.</value></data>
+  <data name="SettingsStartupBlockedByUser"><value>Windows lo blocca perché è stato disattivato in Gestione attività. Riattivalo lì, nella scheda App di avvio.</value></data>
+  <data name="SettingsStartupBlockedByPolicy"><value>Lo decide il criterio della tua organizzazione e non è modificabile qui.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Mercato</value></data>
+  <data name="SettingsMarketNote.Text"><value>Determina da dove ogni pagina prende le quotazioni e quali pagine sono offerte. Ha effetto dopo un riavvio.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Il mercato cambierà al riavvio dell'app.</value></data>
+  <data name="MarketAShare"><value>Azioni A</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>Stati Uniti</value></data>
+  <data name="SectorListHangSeng"><value>Subindici Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>ETF settoriali USA</value></data>
+  <data name="SectorMetricAmountUsd"><value>Controvalore cumulato, 100 M$</value></data>
+
+  <data name="NavDcaPlan.Content"><value>Piano DCA</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>Piano DCA</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Comprare uno strumento a importe e cadenza fissi, e vedere in animazione cosa la disciplina è diventata</value></data>
+  <data name="DcaFreqLabel.Header"><value>Frequenza</value></data>
+  <data name="DcaFreqDaily"><value>Ogni giorno di borsa</value></data>
+  <data name="DcaFreqWeekly"><value>Ogni settimana</value></data>
+  <data name="DcaFreqMonthly"><value>Ogni mese</value></data>
+  <data name="DcaAmountLabel.Header"><value>Importo per acquisto</value></data>
+  <data name="DcaRangeLabel.Header"><value>Periodo</value></data>
+  <data name="DcaRange3Y"><value>Ultimi 3 anni</value></data>
+  <data name="DcaRange5Y"><value>Ultimi 5 anni</value></data>
+  <data name="DcaRange10Y"><value>Ultimi 10 anni</value></data>
+  <data name="DcaRangeMax"><value>Il più indietro disponibile</value></data>
+  <data name="DcaDefaultTitle"><value>Piano DCA: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} in {3} · chiusure rettificate all'indietro · nessuna commissione</value></data>
+  <data name="DcaRangeLine"><value>dal {0} al {1} · {2} acquisti</value></data>
+  <data name="DcaReturnLabel"><value>Rendimento</value></data>
+  <data name="DcaLegendValue"><value>Valore</value></data>
+  <data name="DcaLegendInvested"><value>Investito</value></data>
+  <data name="DcaCardValue"><value>Valore finale</value></data>
+  <data name="DcaCardInvested"><value>Totale investito</value></data>
+  <data name="DcaCardProfit"><value>Utile</value></data>
+  <data name="DcaCardBuys"><value>Acquisti</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} giorni di borsa ({1} al {2}), {3} acquisti caricati</value></data>
+  <data name="DcaAmountInvalid"><value>L'importo per acquisto deve essere un numero positivo</value></data>
+  <data name="WrongMarket"><value>Questo codice non appartiene al mercato corrente ({0}).</value></data>
+  <data name="NavPosition.Content"><value>Rendimento di posizione</value></data>
+  <data name="PositionPageTitle.Text"><value>Rendimento di posizione</value></data>
+  <data name="PositionPageSubtitle.Text"><value>Un solo acquisto, mantenuto — cosa hanno fatto valore e rendimento negli anni</value></data>
+  <data name="PositionCapitalLabel.Header"><value>Capitale iniziale</value></data>
+  <data name="PositionRangeLabel.Header"><value>Periodo di detenzione</value></data>
+  <data name="PositionDefaultTitle"><value>Rendimento di: {0}</value></data>
+  <data name="PositionSubtitleLine"><value>{0}: acquistati {1} {2} di {3} · chiusure rettificate all'indietro · dividendi reinvestiti</value></data>
+  <data name="PositionRangeLine"><value>{0} al {1} · detenuto {2} giorni</value></data>
+  <data name="PositionLegendCapital"><value>Capitale</value></data>
+  <data name="PositionCardCapital"><value>Capitale investito</value></data>
+  <data name="PositionCardDrawdown"><value>Massimo drawdown</value></data>
+  <data name="PositionFetched"><value>{0} giornate di borsa ({1} al {2}), {3} giorni di detenzione</value></data>
+  <data name="PositionCapitalInvalid"><value>Il capitale iniziale deve essere un numero positivo</value></data>
+</root>
