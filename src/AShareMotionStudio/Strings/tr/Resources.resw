@@ -307,5 +307,35 @@
   <data name="SectorListHangSeng"><value>Hang Seng alt endeksleri</value></data>
   <data name="SectorListSpdr"><value>ABD sektör ETF'leri</value></data>
   <data name="SectorMetricAmountUsd"><value>Kümülatif hacim, 100 M$</value></data>
+
+  <data name="NavDcaPlan.Content"><value>DCA Planı</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>DCA Planı</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Sabit tutarla sabit aralıklarla bir varlık almak — disiplinin neye dönüştüğünü animasyonla görmek</value></data>
+  <data name="DcaFreqLabel.Header"><value>Sıklık</value></data>
+  <data name="DcaFreqDaily"><value>Her işlem günü</value></data>
+  <data name="DcaFreqWeekly"><value>Her hafta</value></data>
+  <data name="DcaFreqMonthly"><value>Her ay</value></data>
+  <data name="DcaAmountLabel.Header"><value>Alım tutarı</value></data>
+  <data name="DcaRangeLabel.Header"><value>Süre</value></data>
+  <data name="DcaRange3Y"><value>Son 3 yıl</value></data>
+  <data name="DcaRange5Y"><value>Son 5 yıl</value></data>
+  <data name="DcaRange10Y"><value>Son 10 yıl</value></data>
+  <data name="DcaRangeMax"><value>En eski veriye kadar</value></data>
+  <data name="DcaDefaultTitle"><value>DCA planı: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} → {3} · düzeltilmiş kapanış · ücretsiz</value></data>
+  <data name="DcaRangeLine"><value>{0} - {1} · {2} alım</value></data>
+  <data name="DcaReturnLabel"><value>Getiri</value></data>
+  <data name="DcaLegendValue"><value>Değer</value></data>
+  <data name="DcaLegendInvested"><value>Yatırılan</value></data>
+  <data name="DcaCardValue"><value>Son değer</value></data>
+  <data name="DcaCardInvested"><value>Toplam yatırım</value></data>
+  <data name="DcaCardProfit"><value>Kâr</value></data>
+  <data name="DcaCardBuys"><value>Alımlar</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} işlem günü ({1} - {2}), {3} alım yüklendi</value></data>
+  <data name="DcaAmountInvalid"><value>Alım tutarı pozitif bir sayı olmalı</value></data>
   <data name="WrongMarket"><value>Bu kod geçerli piyasaya ({0}) ait değil.</value></data>
 </root>

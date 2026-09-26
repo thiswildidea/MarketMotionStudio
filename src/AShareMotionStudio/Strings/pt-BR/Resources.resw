@@ -307,5 +307,35 @@
   <data name="SectorListHangSeng"><value>Subíndices Hang Seng</value></data>
   <data name="SectorListSpdr"><value>ETFs setoriais dos EUA</value></data>
   <data name="SectorMetricAmountUsd"><value>Volume acumulado, 100 M$</value></data>
+
+  <data name="NavDcaPlan.Content"><value>Plano DCA</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>Plano DCA</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Comprar um ativo com valor e frequência fixos, e ver em animação o que a disciplina virou</value></data>
+  <data name="DcaFreqLabel.Header"><value>Frequência</value></data>
+  <data name="DcaFreqDaily"><value>Todo dia de pregão</value></data>
+  <data name="DcaFreqWeekly"><value>Toda semana</value></data>
+  <data name="DcaFreqMonthly"><value>Todo mês</value></data>
+  <data name="DcaAmountLabel.Header"><value>Valor por aporte</value></data>
+  <data name="DcaRangeLabel.Header"><value>Período</value></data>
+  <data name="DcaRange3Y"><value>Últimos 3 anos</value></data>
+  <data name="DcaRange5Y"><value>Últimos 5 anos</value></data>
+  <data name="DcaRange10Y"><value>Últimos 10 anos</value></data>
+  <data name="DcaRangeMax"><value>O mais antigo disponível</value></data>
+  <data name="DcaDefaultTitle"><value>Plano DCA: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} em {3} · fechamentos ajustados · sem taxas</value></data>
+  <data name="DcaRangeLine"><value>{0} a {1} · {2} aportes</value></data>
+  <data name="DcaReturnLabel"><value>Retorno</value></data>
+  <data name="DcaLegendValue"><value>Valor</value></data>
+  <data name="DcaLegendInvested"><value>Investido</value></data>
+  <data name="DcaCardValue"><value>Valor final</value></data>
+  <data name="DcaCardInvested"><value>Total investido</value></data>
+  <data name="DcaCardProfit"><value>Lucro</value></data>
+  <data name="DcaCardBuys"><value>Aportes</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} dias de pregão ({1} a {2}), {3} aportes carregados</value></data>
+  <data name="DcaAmountInvalid"><value>O valor por aporte deve ser um número positivo</value></data>
   <data name="WrongMarket"><value>Esse código não pertence ao mercado atual ({0}).</value></data>
 </root>

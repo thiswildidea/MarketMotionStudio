@@ -318,5 +318,35 @@
   <data name="SectorListHangSeng"><value>Hang Seng sub-indices</value></data>
   <data name="SectorListSpdr"><value>US sector ETFs</value></data>
   <data name="SectorMetricAmountUsd"><value>Cumulative turnover, $100M</value></data>
+
+  <data name="NavDcaPlan.Content"><value>DCA Plan</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>DCA Plan</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Buy one instrument on a fixed amount and a fixed cadence, and watch what the discipline turned into</value></data>
+  <data name="DcaFreqLabel.Header"><value>Cadence</value></data>
+  <data name="DcaFreqDaily"><value>Every trading day</value></data>
+  <data name="DcaFreqWeekly"><value>Every week</value></data>
+  <data name="DcaFreqMonthly"><value>Every month</value></data>
+  <data name="DcaAmountLabel.Header"><value>Amount per buy</value></data>
+  <data name="DcaRangeLabel.Header"><value>Plan span</value></data>
+  <data name="DcaRange3Y"><value>Past 3 years</value></data>
+  <data name="DcaRange5Y"><value>Past 5 years</value></data>
+  <data name="DcaRange10Y"><value>Past 10 years</value></data>
+  <data name="DcaRangeMax"><value>As far back as available</value></data>
+  <data name="DcaDefaultTitle"><value>DCA plan: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} into {3} · adjusted closes · no fees</value></data>
+  <data name="DcaRangeLine"><value>{0} to {1} · {2} buys</value></data>
+  <data name="DcaReturnLabel"><value>Return</value></data>
+  <data name="DcaLegendValue"><value>Value</value></data>
+  <data name="DcaLegendInvested"><value>Invested</value></data>
+  <data name="DcaCardValue"><value>Final value</value></data>
+  <data name="DcaCardInvested"><value>Total in</value></data>
+  <data name="DcaCardProfit"><value>Profit</value></data>
+  <data name="DcaCardBuys"><value>Buys</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} trading days ({1} to {2}), {3} buys</value></data>
+  <data name="DcaAmountInvalid"><value>The amount per buy must be a positive number</value></data>
   <data name="WrongMarket"><value>That code is not on the current market ({0}).</value></data>
 </root>

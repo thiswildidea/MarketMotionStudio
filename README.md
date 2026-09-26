@@ -8,7 +8,7 @@ The product has two names on purpose. Chinese markets get 「A股指标动画工
 else, and in the Store listing and the package identity, it is AShare Motion Studio. See
 "Languages" below.
 
-Status: **five pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **six pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -18,7 +18,10 @@ their order interpolated smoothly to the last frame, on four rosters and two met
 Matrix is the fourth — a decade of monthly bars per request, cells lighting up in time order, as
 a year × month seasonality table or a targets × months rotation, both verified live (上证指数
 ten years; CSI Level-1 twelve months). Gain-loss Calendar is the fifth: the whole-market page's
-return calendar freed from its fixed series, run on any A-share stock or index.
+return calendar freed from its fixed series, run on any stock or index. **DCA Plan** is the sixth
+and the one that is not about a series: it buys one instrument on a fixed amount and a fixed
+cadence — daily, weekly or monthly — over years of closes, and animates what went in against what
+the shares became worth, in whichever currency that market quotes.
 
 **Export is now measured rather than designed.** Three consecutive 90-second 1080p30 exports, driven
 through the live app against 65 trading days of fetched data:
@@ -85,6 +88,7 @@ than assumed from the market's existence:
 | **Sector Race** | the four Hang Seng sub-indices (finance, property, utilities, commerce & industry) | ten SPDR sector ETFs |
 | **Return Matrix** | monthly bars for indices and listings | monthly bars for indices and listings |
 | **Gain-loss Calendar** | daily bars for indices and listings | daily bars for indices and listings |
+| **DCA Plan** | the Tracker Fund, the Hang Seng China Enterprises and tech trackers, and the two indices themselves | SPY, QQQ, DIA, IWM and the gold trust |
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what
@@ -110,7 +114,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The five pages
+## The six pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -200,6 +204,42 @@ small against a period's largest one, and a linear ramp leaves nearly every cell
 near-black while the picture says only "there was one big day". Verified live both ways:
 上证指数 by preset, 贵州茅台 by typed code, each fetched, covered and encoded to MP4 with the
 last frame matching its cover.
+
+**DCA Plan** — the only page where the interesting number is a *difference* rather than a
+level. A fixed amount goes into one instrument on every trading day, or every week, or
+every month; what accumulates is shares, and the frame draws two lines on one axis — what
+has been paid in, in amber, and what those shares are worth, in red — with the space
+between them filled warm while the plan is ahead and cool while it is behind. The headline
+reading is the ratio between them, which is the thing a plan is for: how the discipline
+did, not how the price did.
+
+Two decisions worth stating, because a naïve version gets both wrong silently:
+
+- **The cadence is read off the trading calendar, not off a date grid.** A weekly plan buys
+  on the first *trading* day of an ISO week and a monthly one on the first trading day of a
+  month, so a Monday holiday moves that week's buy to Tuesday — which is what a person
+  putting money in would have done, and which a "every seven rows" rule would not have.
+  Whether a bar is a buy has to be decided bar by bar for this reason, not by index.
+- **Years are walked backwards one request at a time.** One request carries about 640 bars,
+  roughly two and a half years, so a ten-year plan is four or five requests stitched
+  together, each asked for the window ending the day before the last one's earliest bar,
+  deduplicated by date. It stops when a request brings nothing earlier than what it already
+  has — which is both "the range is covered" and "this instrument's history starts here",
+  two states the source does not distinguish.
+
+The simulation is deliberately plain — `amount / close` shares at that day's close, no fees,
+no slippage, no timing beyond the calendar — and says so on the frame. It is a description
+of a price series, not a record of something anyone could have executed. Adjusted closes are
+used where the source offers them, so splits do not read as crashes.
+
+The preset lists are per market, because a plan is something people start on particular
+things: the A-shares get the broad ETFs (300, 500, ChiNext), the gold ETF that is the
+non-equity arm of the same habit, a Nasdaq tracker, and the two indices for asking what the
+market itself would have returned; Hong Kong gets the Tracker Fund and its H-share and tech
+siblings; the US gets SPY, QQQ, DIA, IWM and GLD. Every code was fetched and read back
+before being written down. The currency the amounts are named in comes from the market too —
+CNY, HKD or USD — because an amount invested is an amount *of something*, and three venues
+do not agree on what.
 
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
@@ -393,14 +433,17 @@ the alpha correct; the 256-pixel entry records its size as `0`, because the fiel
 
 ```
 src/AShareMotionStudio/
-  Market/          TencentKline (the only HTTP to a quote source), TurnoverSeries
+  Market/          TencentKline (the only HTTP to a quote source), TurnoverSeries,
+                   InstrumentCalendar (one instrument's bars as that record),
+                   DcaPlanner (the walk back through years, then the plan itself)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
-                   FrameExporter (one frame to PNG)
+                   DcaRenderer, FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
-  Pages/           StudioPage base, the two indicator pages, Settings, Help, Playback
+  Pages/           StudioPage base, the five indicator pages, the DCA plan page,
+                   Settings, Help, Playback
   Localization/    Strings lookup and the language override
   Strings/<bcp47>/ Fourteen Resources.resw
   Assets/Help/     Fourteen help-<tag>.md
@@ -485,8 +528,8 @@ commissioned with a Chinese name and an English one, so `AppTitle.Text` carries
 name everywhere else. The package identity and the Store listing name stay English in every
 market.
 
-Every language carries the same keys in the same order. All fourteen currently report 265 keys
-with no encoding damage, and all fourteen help documents carry the same ten sections in the
+Every language carries the same keys in the same order. All fourteen currently report 294 keys
+with no encoding damage, and all fourteen help documents carry the same eleven sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -499,13 +542,16 @@ not depend on the colour of the wallpaper behind the app.
 ## Settings are remembered, results are not
 
 Range, duration, resolution, frame rate, quality, margins, the typed title, the chosen form, the
-guides — all persisted, because re-entering them every session is the friction that makes a feature
+guides — and on the plan page, the instrument, the cadence and the amount per buy — all
+persisted, because re-entering them every session is the friction that makes a feature
 go unused. A fetched series is deliberately not: it belongs to one moment, so keeping it would mean
 deciding how long it stays true, and a stale chart is worse than an empty one.
 
 The market is persisted too, and like the language it needs a restart — see "Markets" above.
-A code saved under one market is not silently fetched under another: the per-stock page and the
-calendar both refuse it and name the market they are on.
+A code saved under one market is not silently fetched under another: the per-stock page, the
+calendar and the plan page all refuse it and name the market they are on — the plan's saved
+instrument falls back to that market's first preset rather than requesting a code the current
+venue never quoted.
 
 Two details that are not incidental. Keys are **prefixed per page**, because the video and layout
 controls are one shared control used by both indicators — without the prefix, tuning the margins for
@@ -540,3 +586,7 @@ first export asks and then remembers.
 - **The per-stock export at 1440p60 has run once** (a 90-second 242-minute intraday file and a
   daily one, both verified upright against their covers) — but not the full format matrix the
   whole-market page has been through, nor the Beijing venue, nor a cancel mid-export. See NOTES.
+- **The DCA plan page has had one of everything, once**: one fetch (沪深300ETF, daily ¥100,
+  past three years — 726 buys; a ten-year plan of 2,429 buys fetched by hand the same day),
+  one cover, one 1080p30 export with its boxes verified. Not the Hong Kong or US preset
+  lists, not the weekly or monthly cadences, not another format. See NOTES.

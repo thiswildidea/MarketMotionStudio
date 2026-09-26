@@ -318,5 +318,35 @@
   <data name="SectorListHangSeng"><value>恒生分类指数</value></data>
   <data name="SectorListSpdr"><value>美股行业ETF</value></data>
   <data name="SectorMetricAmountUsd"><value>累计成交额 亿美元</value></data>
+
+  <data name="NavDcaPlan.Content"><value>定投计划</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>定投计划</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>按固定金额、固定频率买入一个标的，动画展示累计投入与市值的赛跑</value></data>
+  <data name="DcaFreqLabel.Header"><value>定投频率</value></data>
+  <data name="DcaFreqDaily"><value>每个交易日</value></data>
+  <data name="DcaFreqWeekly"><value>每周</value></data>
+  <data name="DcaFreqMonthly"><value>每月</value></data>
+  <data name="DcaAmountLabel.Header"><value>每期金额</value></data>
+  <data name="DcaRangeLabel.Header"><value>定投区间</value></data>
+  <data name="DcaRange3Y"><value>近 3 年</value></data>
+  <data name="DcaRange5Y"><value>近 5 年</value></data>
+  <data name="DcaRange10Y"><value>近 10 年</value></data>
+  <data name="DcaRangeMax"><value>最长（约 13 年）</value></data>
+  <data name="DcaDefaultTitle"><value>{0}定投计划</value></data>
+  <data name="DcaSubtitleLine"><value>{0}投入{1}{2}买入{3} · 前复权收盘价 · 不计费用</value></data>
+  <data name="DcaRangeLine"><value>{0} 至 {1} · 定投 {2} 期</value></data>
+  <data name="DcaReturnLabel"><value>收益率</value></data>
+  <data name="DcaLegendValue"><value>市值</value></data>
+  <data name="DcaLegendInvested"><value>累计投入</value></data>
+  <data name="DcaCardValue"><value>期末市值</value></data>
+  <data name="DcaCardInvested"><value>累计投入</value></data>
+  <data name="DcaCardProfit"><value>累计收益</value></data>
+  <data name="DcaCardBuys"><value>定投期数</value></data>
+  <data name="DcaWanUnit"><value>万</value></data>
+  <data name="DcaCurrencyCny"><value>元</value></data>
+  <data name="DcaCurrencyHkd"><value>港元</value></data>
+  <data name="DcaCurrencyUsd"><value>美元</value></data>
+  <data name="DcaFetched"><value>已取 {0} 个交易日（{1} 至 {2}），定投 {3} 期</value></data>
+  <data name="DcaAmountInvalid"><value>每期金额需是大于零的数字</value></data>
   <data name="WrongMarket"><value>该代码不属于当前市场（{0}）。</value></data>
 </root>

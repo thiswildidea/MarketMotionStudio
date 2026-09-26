@@ -62,6 +62,12 @@ public sealed record RosterList(string LabelKey, RaceEntry[] Entries);
 /// </param>
 /// <param name="Rosters">The sector lists on offer. At least one, or the race page has nothing to run.</param>
 /// <param name="BroadIndices">One-tap instruments for the matrix and the calendar.</param>
+/// <param name="DcaInstruments">One-tap instruments for the plan page: the things a plan is plausibly started on.</param>
+/// <param name="CurrencyKey">
+/// Resource key for the venue's currency unit, which the plan's subtitle names — an
+/// amount invested is an amount *of something*, and the three venues do not agree
+/// on what.
+/// </param>
 public sealed record MarketProfile(
     MarketId Id,
     string NameKey,
@@ -70,7 +76,9 @@ public sealed record MarketProfile(
     bool WholeMarketTurnover,
     bool Intraday,
     RosterList[] Rosters,
-    RaceEntry[] BroadIndices)
+    RaceEntry[] BroadIndices,
+    RaceEntry[] DcaInstruments,
+    string CurrencyKey)
 {
     public string Name => Strings.Get(NameKey);
 
@@ -153,6 +161,43 @@ public static class Markets
         new("hk01299", "友邦保险"),
     ];
 
+    /// <summary>
+    /// The plans the A-share market offers one tap for: the broad ETFs people
+    /// actually start a plan on, the gold ETF that is the non-equity arm of the
+    /// same habit, and the two indices for asking what the *market* would have
+    /// returned. Every code fetched and read back before being written here.
+    /// </summary>
+    public static readonly RaceEntry[] ASharePlans =
+    [
+        new("sh510300", "沪深300ETF"),
+        new("sh510500", "中证500ETF"),
+        new("sz159915", "创业板ETF"),
+        new("sh518880", "黄金ETF"),
+        new("sh513100", "纳指ETF"),
+        new("sh000001", "上证指数"),
+        new("sz399006", "创业板指"),
+    ];
+
+    /// <summary>Hong Kong's plans: the tracker funds and the indices they follow.</summary>
+    public static readonly RaceEntry[] HongKongPlans =
+    [
+        new("hk02800", "盈富基金"),
+        new("hk02828", "恒生中国企业"),
+        new("hk03067", "安硕恒生科技"),
+        new("hkHSI", "恒生指数"),
+        new("hkHSTECH", "恒生科技指数"),
+    ];
+
+    /// <summary>The US plans: the broad ETFs and the gold trust.</summary>
+    public static readonly RaceEntry[] UnitedStatesPlans =
+    [
+        new("usSPY.AM", "标普500ETF"),
+        new("usQQQ.OQ", "纳指100ETF"),
+        new("usDIA.AM", "道琼斯ETF"),
+        new("usIWM.AM", "罗素2000ETF"),
+        new("usGLD.AM", "黄金ETF"),
+    ];
+
     /// <summary>The US indices and the listings people look up by name.</summary>
     public static readonly RaceEntry[] UnitedStatesIndices =
     [
@@ -182,7 +227,9 @@ public static class Markets
                 new("SectorListLevel1", SectorLists.Level1),
                 new("SectorListTheme", SectorLists.Themes),
             ],
-            BroadIndices: MonthlySeries.BroadIndices),
+            BroadIndices: MonthlySeries.BroadIndices,
+            DcaInstruments: ASharePlans,
+            CurrencyKey: "DcaCurrencyCny"),
 
         new(
             MarketId.HongKong,
@@ -198,7 +245,9 @@ public static class Markets
             WholeMarketTurnover: false,
             Intraday: true,
             Rosters: [new("SectorListHangSeng", HangSengSectors)],
-            BroadIndices: HongKongIndices),
+            BroadIndices: HongKongIndices,
+            DcaInstruments: HongKongPlans,
+            CurrencyKey: "DcaCurrencyHkd"),
 
         new(
             MarketId.UnitedStates,
@@ -214,7 +263,9 @@ public static class Markets
             // The minute endpoint answers a US code with an empty body and code -1.
             Intraday: false,
             Rosters: [new("SectorListSpdr", SpdrSectors)],
-            BroadIndices: UnitedStatesIndices),
+            BroadIndices: UnitedStatesIndices,
+            DcaInstruments: UnitedStatesPlans,
+            CurrencyKey: "DcaCurrencyUsd"),
     ];
 
     /// <summary>

@@ -6,7 +6,7 @@ This app turns A-share market indicators into vertical videos for phones. You pi
 
 Settings picks which market the app takes its quotes from; A-shares by default. A change takes effect after the app is restarted.
 
-- **A-shares**: all five pages are available.
+- **A-shares**: all six pages are available.
 - **Hong Kong**: the return matrix and the gain-loss calendar work; the sector race runs on the four Hang Seng sub-indices; **there is no whole-market turnover figure, so that page is hidden**.
 - **United States**: the return matrix and the gain-loss calendar work; the sector race runs on ten SPDR sector ETFs; the volume page keeps its daily mode only, because the minute endpoint serves no US data; **amounts are quoted in dollars, and the whole-market turnover page is hidden**.
 
@@ -54,6 +54,14 @@ Any A-share stock or index, its daily rise or fall laid into calendar cells by m
 - The watchlist is shared with this app's stock page - a favourite added in either place shows in both.
 - The interval is 1, 3, 6 or 12 months, or custom; a single instrument is still bound by the ~640-calendar-day fetch limit.
 - The close-out stats give the count of up and down trading days.
+
+## DCA Plan
+
+Buying one instrument for a fixed amount on a fixed cadence — every trading day, every week or every month — and watching what the discipline turned into.
+
+- The one-tap instruments follow the market: broad and gold ETFs on the A-share market, the Hong Kong tracker funds, SPY, QQQ and GLD in the United States.
+- The amount and the cadence are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
+- Returns are computed on adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
 
 ## Video
 

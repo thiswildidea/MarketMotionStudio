@@ -6,7 +6,7 @@ Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara 
 
 Ayarlarda uygulamanın hangi piyasadan fiyat aldığı seçilir; varsayılan A hisseleri. Değişiklik uygulama yeniden başlatıldıktan sonra geçerli olur.
 
-- **A hisseleri**: beş sayfanın tümü kullanılabilir.
+- **A hisseleri**: altı sayfanın tümü kullanılabilir.
 - **Hong Kong**: getiri matrisi ve takvim çalışır; sektör yarışı dört Hang Seng alt endeksiyle koşulur; **tüm piyasa için veri yok, bu yüzden o sayfa gizlenir**.
 - **ABD**: getiri matrisi ve takvim çalışır; sektör yarışı on SPDR sektör ETF'i ile koşulur; hacim sayfasında yalnızca günlük mod kalır, çünkü dakikalık uç nokta ABD verisi sunmaz; **tutarlar dolar cinsindendir ve tüm piyasa hacmi sayfası gizlenir**.
 
@@ -54,6 +54,14 @@ Herhangi bir Çin hissesi veya endeksi, günlük yükseliş veya düşüşü ayl
 - Favori listesi uygulamanın hisse sayfasıyla paylaşılır — iki yerden birinde eklenen favori her ikisinde görünür.
 - Dönem 1, 3, 6 veya 12 ay ya da özeldir; tek bir araç yine de yaklaşık 640 takvim günü sınırına tabidir.
 - Son istatistikler yükselen ve düşen işlem günü sayısını verir.
+
+## DCA Planı
+
+Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her hafta veya her ay — ve disiplinin neye dönüştüğünü animasyonla görmek.
+
+- Tek dokunuşla seçilen varlıklar piyasayı izler: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD.
+- Tutarı ve sıklığı siz belirlersiniz; süre üç, beş veya on yıl, ya da verinin geldiği en eski tarihe kadar (yaklaşık on üç yıl).
+- Getiri düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
 
 ## Video
 

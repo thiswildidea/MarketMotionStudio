@@ -307,5 +307,35 @@
   <data name="SectorListHangSeng"><value>Subíndices Hang Seng</value></data>
   <data name="SectorListSpdr"><value>ETF sectoriales de EE. UU.</value></data>
   <data name="SectorMetricAmountUsd"><value>Volumen acumulado, 100 M$</value></data>
+
+  <data name="NavDcaPlan.Content"><value>Plan DCA</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>Plan DCA</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Comprar un valor con importe y cadencia fijos, y ver en animación lo que la disciplina llegó a ser</value></data>
+  <data name="DcaFreqLabel.Header"><value>Frecuencia</value></data>
+  <data name="DcaFreqDaily"><value>Cada día de bolsa</value></data>
+  <data name="DcaFreqWeekly"><value>Cada semana</value></data>
+  <data name="DcaFreqMonthly"><value>Cada mes</value></data>
+  <data name="DcaAmountLabel.Header"><value>Importe por compra</value></data>
+  <data name="DcaRangeLabel.Header"><value>Período</value></data>
+  <data name="DcaRange3Y"><value>Últimos 3 años</value></data>
+  <data name="DcaRange5Y"><value>Últimos 5 años</value></data>
+  <data name="DcaRange10Y"><value>Últimos 10 años</value></data>
+  <data name="DcaRangeMax"><value>Lo más antiguo disponible</value></data>
+  <data name="DcaDefaultTitle"><value>Plan DCA: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} en {3} · cierres ajustados · sin comisiones</value></data>
+  <data name="DcaRangeLine"><value>{0} a {1} · {2} compras</value></data>
+  <data name="DcaReturnLabel"><value>Rentabilidad</value></data>
+  <data name="DcaLegendValue"><value>Valor</value></data>
+  <data name="DcaLegendInvested"><value>Invertido</value></data>
+  <data name="DcaCardValue"><value>Valor final</value></data>
+  <data name="DcaCardInvested"><value>Total invertido</value></data>
+  <data name="DcaCardProfit"><value>Ganancia</value></data>
+  <data name="DcaCardBuys"><value>Compras</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>{0} días de bolsa ({1} a {2}), {3} compras cargadas</value></data>
+  <data name="DcaAmountInvalid"><value>El importe por compra debe ser un número positivo</value></data>
   <data name="WrongMarket"><value>Ese código no pertenece al mercado actual ({0}).</value></data>
 </root>

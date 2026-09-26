@@ -307,5 +307,35 @@
   <data name="SectorListHangSeng"><value>Subindexy Hang Seng</value></data>
   <data name="SectorListSpdr"><value>Americké sektorové ETF</value></data>
   <data name="SectorMetricAmountUsd"><value>Kumulovaný obrat, 100 mil. $</value></data>
+
+  <data name="NavDcaPlan.Content"><value>DCA plán</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>DCA plán</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Nákup jednoho nástroje za pevnou částku v pevných intervalech — a animace toho, čeho disciplína dosáhla</value></data>
+  <data name="DcaFreqLabel.Header"><value>Frekvence</value></data>
+  <data name="DcaFreqDaily"><value>Každý obchodní den</value></data>
+  <data name="DcaFreqWeekly"><value>Každý týden</value></data>
+  <data name="DcaFreqMonthly"><value>Každý měsíc</value></data>
+  <data name="DcaAmountLabel.Header"><value>Částka nákupu</value></data>
+  <data name="DcaRangeLabel.Header"><value>Období</value></data>
+  <data name="DcaRange3Y"><value>Poslední 3 roky</value></data>
+  <data name="DcaRange5Y"><value>Posledních 5 let</value></data>
+  <data name="DcaRange10Y"><value>Posledních 10 let</value></data>
+  <data name="DcaRangeMax"><value>Nejstarší dostupné</value></data>
+  <data name="DcaDefaultTitle"><value>DCA plán: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} do {3} · upravené závěry · bez poplatků</value></data>
+  <data name="DcaRangeLine"><value>{0} až {1} · {2} nákupů</value></data>
+  <data name="DcaReturnLabel"><value>Výnos</value></data>
+  <data name="DcaLegendValue"><value>Hodnota</value></data>
+  <data name="DcaLegendInvested"><value>Vloženo</value></data>
+  <data name="DcaCardValue"><value>Konečná hodnota</value></data>
+  <data name="DcaCardInvested"><value>Celkem vloženo</value></data>
+  <data name="DcaCardProfit"><value>Zisk</value></data>
+  <data name="DcaCardBuys"><value>Nákupy</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>Načteno {0} obchodních dnů ({1} až {2}), {3} nákupů</value></data>
+  <data name="DcaAmountInvalid"><value>Částka nákupu musí být kladné číslo</value></data>
   <data name="WrongMarket"><value>Tento kód nepatří na aktuální trh ({0}).</value></data>
 </root>

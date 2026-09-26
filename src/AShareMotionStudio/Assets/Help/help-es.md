@@ -6,7 +6,7 @@ Esta aplicación convierte indicadores del mercado de acciones A en vídeos vert
 
 En Ajustes se elige de qué mercado toma sus cotizaciones la aplicación; las acciones A por defecto. El cambio surte efecto tras reiniciar la aplicación.
 
-- **Acciones A**: las cinco páginas están disponibles.
+- **Acciones A**: las seis páginas están disponibles.
 - **Hong Kong**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa los cuatro subíndices Hang Seng; **no hay cifra para todo el mercado, así que esa página se oculta**.
 - **Estados Unidos**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa diez ETF sectoriales SPDR; la página de volumen conserva solo el modo diario, porque el endpoint de minutos no sirve datos estadounidenses; **los importes están en dólares y la página de volumen del mercado se oculta**.
 
@@ -54,6 +54,14 @@ Cualquier acción o índice chino, su subida o bajada diaria dispuesta en celdas
 - La lista de favoritos se comparte con la página de acciones de la app: un favorito añadido en cualquiera de las dos aparece en ambas.
 - El periodo es de 1, 3, 6 o 12 meses, o personalizado; un instrumento solo sigue sujeto al límite de unos 640 días calendario.
 - Las estadísticas finales dan el recuento de sesiones al alza y a la baja.
+
+## Plan DCA
+
+Comprar un valor con importe y cadencia fijos — cada día de bolsa, cada semana o cada mes — y ver en animación lo que la disciplina llegó a ser.
+
+- Los instrumentos de un toque siguen al mercado: ETF amplios y de oro en las acciones A, los fondos rastreados de Hong Kong, SPY, QQQ y GLD en Estados Unidos.
+- El importe y la frecuencia se ajustan a gusto; el período es de tres, cinco o diez años, o hasta donde lleguen los datos (unos trece años).
+- La rentabilidad se calcula sobre cierres ajustados, sin comisiones. El resultado describe la serie de precios, no una factura que alguien pudiera haber ejecutado.
 
 ## Vídeo
 

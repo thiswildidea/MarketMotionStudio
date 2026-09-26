@@ -307,5 +307,35 @@
   <data name="SectorListHangSeng"><value>Субиндексы Hang Seng</value></data>
   <data name="SectorListSpdr"><value>Секторальные ETF США</value></data>
   <data name="SectorMetricAmountUsd"><value>Накопленный оборот, 100 млн $</value></data>
+
+  <data name="NavDcaPlan.Content"><value>План DCA</value></data>
+  <data name="DcaPlanPageTitle.Text"><value>План DCA</value></data>
+  <data name="DcaPlanPageSubtitle.Text"><value>Покупка одного инструмента на фиксированную сумму с фиксированным интервалом — и анимация того, во что превратилась дисциплина</value></data>
+  <data name="DcaFreqLabel.Header"><value>Периодичность</value></data>
+  <data name="DcaFreqDaily"><value>Каждый торговый день</value></data>
+  <data name="DcaFreqWeekly"><value>Еженедельно</value></data>
+  <data name="DcaFreqMonthly"><value>Ежемесячно</value></data>
+  <data name="DcaAmountLabel.Header"><value>Сумма взноса</value></data>
+  <data name="DcaRangeLabel.Header"><value>Срок</value></data>
+  <data name="DcaRange3Y"><value>Последние 3 года</value></data>
+  <data name="DcaRange5Y"><value>Последние 5 лет</value></data>
+  <data name="DcaRange10Y"><value>Последние 10 лет</value></data>
+  <data name="DcaRangeMax"><value>Насколько назад есть данные</value></data>
+  <data name="DcaDefaultTitle"><value>DCA-план: {0}</value></data>
+  <data name="DcaSubtitleLine"><value>{0}: {1} {2} в {3} · скорректированные цены закрытия · без комиссий</value></data>
+  <data name="DcaRangeLine"><value>с {0} по {1} · {2} взносов</value></data>
+  <data name="DcaReturnLabel"><value>Доходность</value></data>
+  <data name="DcaLegendValue"><value>Стоимость</value></data>
+  <data name="DcaLegendInvested"><value>Вложено</value></data>
+  <data name="DcaCardValue"><value>Итоговая стоимость</value></data>
+  <data name="DcaCardInvested"><value>Всего вложено</value></data>
+  <data name="DcaCardProfit"><value>Прибыль</value></data>
+  <data name="DcaCardBuys"><value>Взносы</value></data>
+  <data name="DcaWanUnit"><value></value></data>
+  <data name="DcaCurrencyCny"><value>CNY</value></data>
+  <data name="DcaCurrencyHkd"><value>HKD</value></data>
+  <data name="DcaCurrencyUsd"><value>USD</value></data>
+  <data name="DcaFetched"><value>Загружено {0} торговых дней ({1} — {2}), {3} взносов</value></data>
+  <data name="DcaAmountInvalid"><value>Сумма взноса должна быть положительным числом</value></data>
   <data name="WrongMarket"><value>Этот код не относится к текущему рынку ({0}).</value></data>
 </root>

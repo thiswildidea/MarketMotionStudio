@@ -101,6 +101,9 @@
                 <mux:NavigationViewItem x:Name="NavGainCalendar" x:Uid="NavGainCalendar" Tag="GainCalendar">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE787;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavDcaPlan" x:Uid="NavDcaPlan" Tag="DcaPlan">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8C7;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 
             <mux:NavigationView.FooterMenuItems>

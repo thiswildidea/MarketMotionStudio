@@ -6,7 +6,7 @@ Diese App macht aus Kennzahlen des A-Aktien-Markts hochformatige Videos für das
 
 In den Einstellungen wird gewählt, aus welchem Markt die App ihre Kurse bezieht; voreingestellt sind A-Aktien. Eine Änderung gilt nach dem Neustart der App.
 
-- **A-Aktien**: alle fünf Seiten sind verfügbar.
+- **A-Aktien**: alle sechs Seiten sind verfügbar.
 - **Hongkong**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über die vier Hang-Seng-Subindizes; **eine Umsatzzahl für den Gesamtmarkt gibt es nicht, diese Seite wird ausgeblendet**.
 - **USA**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über zehn SPDR-Sektor-ETFs; die Volumenseite behält nur den Tagesmodus, weil der Minuten-Endpunkt keine US-Daten liefert; **Umsätze werden in Dollar angegeben, und die Seite für den Gesamtmarktumsatz ist ausgeblendet**.
 
@@ -54,6 +54,14 @@ Jede chinesische Aktie oder jeder Index, sein täglicher Anstieg oder Rückgang 
 - Die Favoritenliste wird mit der Aktienseite der App geteilt — ein Favorit, der auf einer Seite hinzugefügt wird, erscheint auf beiden.
 - Der Zeitraum ist 1, 3, 6 oder 12 Monate oder frei; ein einzelnes Instrument unterliegt weiter der Grenze von etwa 640 Kalendertagen.
 - Die Abschlusswerte nennen die Zahl der Handelstage im Plus und im Minus.
+
+## Sparplan
+
+Ein Wertpapier zum festen Betrag in festen Abständen gekauft — an jedem Handelstag, wöchentlich oder monatlich — und als Animation verfolgt, was aus der Disziplin geworden ist.
+
+- Die Ein-Tipp-Instrumente folgen dem Markt: Breite und Gold-ETFs auf dem A-Aktien-Markt, die Hongkonger Tracker-Fonds, in den USA SPY, QQQ und GLD.
+- Betrag und Rhythmus stellen Sie ein; der Zeitraum ist drei, fünf oder zehn Jahre, oder so weit zurück, wie es Daten gibt (etwa dreizehn Jahre).
+- Die Rendite wird auf bereinigten Schlusskursen gerechnet, ohne Gebühren. Das Ergebnis beschreibt die Kursreihe, nicht eine Rechnung, die so jemand hätte ausführen können.
 
 ## Video
 

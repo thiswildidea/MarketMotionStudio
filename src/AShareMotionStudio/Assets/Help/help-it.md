@@ -6,7 +6,7 @@ Questa app trasforma gli indicatori del mercato delle azioni A in video vertical
 
 Nelle impostazioni si sceglie da quale mercato l'app prende le quotazioni; come predefinite, le azioni A. La modifica ha effetto dopo il riavvio dell'app.
 
-- **Azioni A**: tutte e cinque le pagine sono disponibili.
+- **Azioni A**: tutte e sei le pagine sono disponibili.
 - **Hong Kong**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa i quattro sottoindici Hang Seng; **non esiste un dato per l'intero mercato, quindi quella pagina è nascosta**.
 - **Stati Uniti**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa dieci ETF settoriali SPDR; la pagina dei volumi conserva solo la modalità giornaliera, perché l'endpoint dei minuti non serve dati statunitensi; **gli importi sono in dollari e la pagina del controvalore del mercato è nascosta**.
 
@@ -54,6 +54,14 @@ Qualsiasi titolo o indice cinese, il suo rialzo o ribasso giornaliero disposto i
 - L'elenco dei preferiti è condiviso con la pagina azioni dell'app: un preferito aggiunto da una parte appare in entrambe.
 - Il periodo è di 1, 3, 6 o 12 mesi, o personalizzato; un singolo strumento resta soggetto al limite di circa 640 giorni di calendario.
 - Le statistiche finali danno il conteggio delle sedute in rialzo e in ribasso.
+
+## Piano DCA
+
+Comprare uno strumento a importe e cadenza fissi — ogni giorno di borsa, ogni settimana o ogni mese — e vedere in animazione cosa la disciplina è diventata.
+
+- Gli strumenti a un tocco seguono il mercato: ETF ampi e oro sulle azioni A, i fondi indicizzati di Hong Kong, SPY, QQQ e GLD negli Stati Uniti.
+- Importo e frequenza si impostano liberamente; il periodo è di tre, cinque o dieci anni, oppure fino al dato più antico disponibile (circa tredici anni).
+- Il rendimento è calcolato su chiusure rettificate, senza commissioni. Il risultato descrive la serie di prezzi, non una fattura che qualcuno avrebbe potuto eseguire.
 
 ## Video
 

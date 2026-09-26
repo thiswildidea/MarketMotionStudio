@@ -4,8 +4,7 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-09-26 (after the fifth page — the gain-loss calendar on any A-share
-stock or index; see the end).
+Last reviewed: 2026-09-26 (after the sixth page — the DCA plan; see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -762,3 +761,53 @@ Two more that were found because a wrong answer was indistinguishable from a rig
 that figure only feeds the animation plan's axis maths and is never drawn — but it is not a real
 number and would be wrong the moment anything displays it. And Hong Kong's four sub-indices have
 never been watched through a full race; the data is there, the picture has not been looked at.
+
+## The sixth page — the DCA plan, and what years cost the data layer
+
+**DCA Plan** is built: `DcaPlanner` (the loader), `DcaRenderer` (two lines on one axis —
+invested in amber, value in red, the gap between them filled warm or cool — with the ratio
+as the headline reading and four closing cards), and `DcaPlanPage` on the same page skeleton
+as the calendar: search, one-tap presets, favourites shared with the per-stock page,
+cadence/span/amount, the shared video panel. Twenty-nine keys in all fourteen resw files
+(now 294 keys, same order everywhere, `fffd=0`), and a help section in all fourteen
+documents (eleven sections each, block counts equal).
+
+**Every preset code was probed against the endpoint before being written down** — seven
+A-share (broad ETFs, gold ETF, a Nasdaq tracker, two indices), five Hong Kong, five US —
+and all seventeen answered with bars and a display name (`artifacts/verify-dca-endpoint.txt`).
+The pagination facts the planner is built on were measured the same way: **640 bars to a
+request, confirmed**, and five requests reach 2013-07 for 沪深300ETF, 2013-09 for the
+Tracker Fund and 2014-01 for SPY — so "as far back as available" is about a dozen years on
+all three markets, and the twenty-request backstop in `DcaPlanner` is twice what the
+deepest plan needs.
+
+**Verified live through the running app** (driven by UI Automation, screenshots in
+`artifacts/dca-state*.png`):
+
+- **Fetch:** 沪深300ETF, every trading day, ¥100, past three years → status reads
+  「已取 726 个交易日（2023-09-26 至 2026-09-24），定投 726 期」, the frame drew
+  +17.0% with 市值 8.8万 against 投入 7.4万. The ten-year plan had been fetched by hand
+  earlier the same day: 2016-05-03 → 2026-09-24, **2,429 buys**, +35.4% — which is the
+  four-request walk producing a real plan, seen with eyes.
+- **Cover:** 1080×1920 PNG written to the remembered folder, name carrying the span.
+- **Export:** 45-second 1080p30, **18.9 s wall time**, 7.5 MB, boxes
+  `ftyp`/`uuid`/`mdat`/`moov` with no `moof`, `mvhd` exactly 45.00 s, `stsz` 1,350 =
+  45 × 30 — one sample per frame drawn. Same `VideoExporter`, nothing new to trust.
+
+**Three driving traps from tonight, all reusable:**
+
+- **A control handle captured before a click hangs forever when read afterwards.** Not an
+  exception, not a timeout — the property get blocks. Every poll must re-find the control;
+  a fresh search costs milliseconds and cannot hang.
+- **A button scrolled out of its panel reports `BoundingRectangle` 0×0 and `IsOffscreen`
+  true, and both `Click` and `Invoke` silently do nothing useful from there.** Scroll the
+  ancestor `ScrollViewer` until `IsOffscreen` is false, then invoke.
+- **Endpoint latency swung from seconds to minutes tonight** (a five-year, three-request
+  fetch took minutes; a three-year one took seconds). A poll loop that assumes seconds
+  misreads a slow fetch as a hang, and the page's own three-minute timeout is the clock to
+  trust — when it fires the status says so.
+
+**Owed on this page:** the Hong Kong and US preset lists have never been fetched through
+the page; the weekly and monthly cadences have never been run (only daily); the saved
+instrument falling back to the market's first preset has not been exercised; and the export
+has been through 1080p30 only, like every page's first export.

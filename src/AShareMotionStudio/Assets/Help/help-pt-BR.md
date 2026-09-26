@@ -6,7 +6,7 @@ Este aplicativo transforma indicadores do mercado de ações A em vídeos vertic
 
 Em Configurações escolhe-se de qual mercado o app obtém suas cotações; ações A por padrão. A mudança vale após reiniciar o app.
 
-- **Ações A**: as cinco páginas estão disponíveis.
+- **Ações A**: as seis páginas estão disponíveis.
 - **Hong Kong**: a matriz de retorno e o calendário funcionam; a corrida de setores usa os quatro subíndices Hang Seng; **não há número para o mercado inteiro, então essa página fica oculta**.
 - **Estados Unidos**: a matriz de retorno e o calendário funcionam; a corrida de setores usa dez ETFs setoriais SPDR; a página de volume mantém só o modo diário, porque o endpoint de minutos não serve dados americanos; **os valores estão em dólares e a página de volume do mercado fica oculta**.
 
@@ -54,6 +54,14 @@ Qualquer ação ou índice da bolsa chinesa, seu alta ou baixa diária disposta 
 - A lista de favoritos é compartilhada com a página de ações do app: um favorito adicionado em qualquer uma das duas aparece em ambas.
 - O intervalo é de 1, 3, 6 ou 12 meses, ou personalizado; um instrumento sozinho ainda está sujeito ao limite de cerca de 640 dias de calendário.
 - As estatísticas finais dão a contagem de pregões em alta e em baixa.
+
+## Plano DCA
+
+Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda semana ou todo mês — e ver em animação o que a disciplina virou.
+
+- Os ativos de um toque seguem o mercado: ETFs amplos e de ouro nas ações A, os fundos índice de Hong Kong, SPY, QQQ e GLD nos Estados Unidos.
+- Valor e frequência você define; o período é de três, cinco ou dez anos, ou até onde os dados alcançam (uns treze anos).
+- O retorno é calculado sobre fechamentos ajustados, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
 
 ## Vídeo
 
