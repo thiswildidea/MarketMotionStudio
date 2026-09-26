@@ -28,11 +28,18 @@ namespace AShareMotionStudio.Market;
 /// bar depend on a day the chart does not show.
 /// </param>
 /// <param name="Markets">Display names of the markets summed, for the frame's subtitle.</param>
+/// <param name="ReturnSource">
+/// The name of whatever <see cref="Returns"/> was computed from. The whole-market page's returns
+/// come from one venue's composite index; the gain-loss calendar page's come from the chosen
+/// instrument. The return metric's subtitle names it, so an arbitrary instrument needs to hand
+/// its name through here — empty means the whole-market default.
+/// </param>
 public sealed record TurnoverSeries(
     IReadOnlyList<DateOnly> Dates,
     IReadOnlyList<double> Totals,
     IReadOnlyList<double> Returns,
-    IReadOnlyList<string> Markets)
+    IReadOnlyList<string> Markets,
+    string ReturnSource = "")
 {
     public int Count => Dates.Count;
 
@@ -137,6 +144,16 @@ public static class MarketTurnover
             // worth, so a longer range would come back trimmed at the far end with nothing saying
             // so — a chart that claims a range it does not cover.
             throw new InvalidOperationException(Strings.Format("TurnoverRangeTooLong", TencentKline.MostBarsPerRequest));
+        }
+
+        // Checked here as well as in the client, because here it can be said in the reader's
+        // language. Left to the client it arrives as an English `ArgumentException` inside an
+        // otherwise translated status line. It is also the one rejection the page cannot rule
+        // out by construction: the month ranges count backwards from today, but the custom
+        // range is two pickers that can be set either way round.
+        if (start >= end)
+        {
+            throw new InvalidOperationException(Strings.Get("TurnoverRangeReversed"));
         }
 
         var wanted = Venues.Take(includeBeijing ? 3 : 2).ToArray();

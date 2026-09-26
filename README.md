@@ -7,16 +7,47 @@ The product has two names on purpose. Chinese markets get 「A股指标动画工
 else, and in the Store listing and the package identity, it is AShare Motion Studio. See
 "Languages" below.
 
-Status: **one indicator working in three forms, plus a cover still. Video export is written but does
-not yet work.** Market Turnover fetches live quotes and animates them as a bar race, a turnover
-calendar, or a gain/loss calendar, all verified against 67 trading days of real data. Its parameters
-are remembered between runs, and a cover PNG exports correctly at full resolution. Stock Volume is
-still a shell.
+Status: **five pages working, and export working on all of them.** Market Turnover fetches
+live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
+between runs; a cover PNG and an MP4 both export at full resolution.
+Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
+bars and per-minute intraday), favourites, covers and exports all verified against live data for
+贵州茅台. Sector Race is the third: a dozen sectors' or stocks' bars overtaking one another,
+their order interpolated smoothly to the last frame, on four rosters and two metrics. Monthly
+Matrix is the fourth — a decade of monthly bars per request, cells lighting up in time order, as
+a year × month seasonality table or a targets × months rotation, both verified live (上证指数
+ten years; CSI Level-1 twelve months). Gain-loss Calendar is the fifth: the whole-market page's
+return calendar freed from its fixed series, run on any A-share stock or index.
 
-`Render/VideoExporter.cs` exists and compiles but has never completed an export — see NOTES for where
-it is stuck. **The two claims below about export speed and container shape are therefore statements
-about the design, not measurements.** They are why the design is what it is; they have not been
-verified, and this line stays here until they are.
+**Export is now measured rather than designed.** Three consecutive 90-second 1080p30 exports, driven
+through the live app against 65 trading days of fetched data:
+
+| | measured |
+|---|---|
+| wall time to encode 2,700 frames | 28 s, 35 s, 28 s — about a third of the video's own length |
+| container | `ftyp` + `uuid` + `mdat` + `moov`, **no `moof`** — a plain, non-fragmented MP4 |
+| duration in `mvhd` | 90.00 s, exactly as asked |
+| samples in `stsz` | 2,700, one per frame drawn |
+| size | 18.9–21.0 MB (High quality, 10 Mbps) |
+| **the picture** | the last decoded frame matches a cover export of the same frame at a mean difference of **2.23** — the residue is H.264. Unflipped it was 26.99, which is how the vertical flip was found |
+
+**Every format the settings offer has now been through the encoder**, each verified upright by
+the same cover comparison, in a fresh session with both files exported back to back:
+
+| format | frames | wall time | result |
+|---|---|---|---|
+| 1080×1920 · 30 fps | 2,700 | 28–35 s | complete, non-fragmented, MAD 2.25 |
+| 1080×1920 · 60 fps | 5,400 | 58 s | complete, non-fragmented |
+| 1440×2560 · 30 fps | 2,700 | 53 s | complete, non-fragmented, MAD 1.87 |
+| 1440×2560 · 60 fps | 3,900 | 85 s | complete, non-fragmented, MAD 1.87 |
+
+One 1440p60 run of 5,400 frames stalled at sample 3,200 with the app alive and the file left
+truncated. It has not reproduced and no cause is established — see NOTES before assuming the
+format is at fault.
+
+That turned on one line: `MediaTranscoder.HardwareAccelerationEnabled` has to be **false**. See
+"Things learned the hard way" — with it true, `PrepareMediaStreamSourceTranscodeAsync` never returns,
+and nothing anywhere reports an error.
 
 ## What it is for
 
@@ -35,7 +66,7 @@ Drawing with Win2D and encoding through Media Foundation removes all three: the 
 the clock, the container is an ordinary MP4, and nothing outside the package is required.
 Fetching over `HttpClient` also disposes of CORS and the JSONP workaround entirely.
 
-## The two indicators
+## The three indicators
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -44,26 +75,21 @@ an unfinished day holds only its opening auction. The Beijing option adds the BS
 covers its constituents rather than the whole exchange — a different measure, and a smaller one,
 so it is off by default.
 
-It draws in **three forms, switchable at any time without re-fetching**, because they answer
+It draws in **two forms, switchable at any time without re-fetching**, because they answer
 different questions about one fetch. The **bar race** puts time on the horizontal axis, so a run of
 heavy days reads as a run, and closes with the mean line and the two extremes boxed. The **turnover
 calendar** gives one block per month with cells lighting up day by day, so a busy fortnight is a
-patch of colour you can point at — which a time axis spreads out. The **gain/loss calendar** is the
-same grid drawing the Shanghai composite's daily change instead, red for a rise and green for a
-fall, closing with the best and worst days and a count of each.
+patch of colour you can point at — which a time axis spreads out. The gain/loss calendar that once
+completed this trio is its own page now (below): two places producing the same video is a choice
+nobody needs, and the whole-market copy could only ever name one index.
 
 **Turnover and daily change are not summed the same way, and that asymmetry decides the design.**
 Turnover is a quantity, so Shanghai plus Shenzhen is a whole-market figure. A percentage change is a
 ratio, and adding two of them means nothing — so the return series is the *leading venue's alone*,
-which is why that form's subtitle names the index rather than the combination. One fetch carries
-both measures; a `Metric` object says which one a frame is drawing and supplies everything that
-follows from the choice: the values, their colours, how a figure reads, the closing cards, and which
-two days get boxed.
-
-Its colour depth goes as the **square root** of the move, not linearly. Most days are small against
-a period's largest one, so a linear ramp leaves nearly every cell at the same near-black and the
-picture says only "there was one big day". The square root lifts small moves into visible territory
-while keeping the extremes distinct.
+which is why the return calendar's subtitle names the index rather than the combination. One fetch
+carries both measures; a `Metric` object says which one a frame is drawing and supplies everything
+that follows from the choice: the values, their colours, how a figure reads, the closing cards, and
+which two days get boxed.
 
 The calendar has two layout decisions that exist because the frame is portrait. It draws
 **Monday to Friday only**: A-shares do not trade at weekends, so two of seven columns would always
@@ -77,22 +103,67 @@ columns of two, a year on four columns of four, and nobody has to choose.
 either of two modes. Across trading days the two series are proportional and the panels have
 nearly the same shape; within one day, per-minute volume and cumulative turnover look
 genuinely different, which is the better picture. The intraday source only keeps the last few
-trading days, so that mode offers those rather than an arbitrary date.
+trading days, so that mode offers those rather than an arbitrary date. The stock is found by
+code, Chinese name or pinyin through the same quote vendor's suggestion box, and a favourites
+row keeps the codes worth coming back to — both stored locally, nothing sent anywhere.
 
-**The title is yours on both pages.** Type one, or leave the box empty to get the default —
+**Sector Race** — a dozen horizontal bars overtaking one another, their order changing to the
+last frame: the form where the suspense survives to the end, which a single growing series
+cannot hold. Four rosters — the ten CSI Level-1 industries (mutually exclusive, collectively
+exhaustive), fifteen hot themes, a custom pick from their union, or a watchlist of stocks — on
+two metrics: cumulative return (zero axis centred, red up green down) or cumulative turnover
+(monotonic — the story of where the money went). The smoothness is the ranking itself being
+interpolated: each day's standings are precomputed, a row's position eases between its two
+neighbouring days' ranks, and the axis range interpolates with them, so two racers trading
+places cross instead of swapping. Rosters and metrics are bounded — three to sixteen racers,
+or a vertical frame is a barcode — and the bounds are stated where the choice is made.
+
+**Monthly Matrix** — months as cells lighting up in time order, on a clock the daily pages
+cannot share: one request of monthly bars holds about eleven years, so a range selector built
+for daily bars would say things the matrix cannot honour, which is why this is its own page
+rather than a fourth form. Two kinds from one renderer — the kinds differ in what the rows and
+columns *are*, resolved when the spec is built. Year × month reads one instrument's
+seasonality, with every calendar month averaged across the years for the closing cards;
+targets × months reads rotation, folding into horizontal bands of twelve when the months
+exceed one row's width, each band carrying its own heads and a sub-total, so cells stay big
+enough to read. Both compound the range by multiplying — a +20% month and a −20% month are
+−4% together, and adding them to zero overstates exactly the volatile ranges a matrix is read
+for. Cell colour is red up green down with depth as the square root of magnitude over the
+frame's largest: linear puts nearly every month at the same dark tone, because most months
+are far smaller than the extreme.
+
+**Gain-loss Calendar** — the whole-market page's return calendar as its own page, on **any
+A-share stock or index** rather than one fixed composite — which is why that copy was removed
+from the whole-market page: its only instrument was one preset here. No renderer of its own: the calendar
+grid is metric-driven, so this page is a different *loader* — one instrument's daily bars
+shaped into the series record the whole-market page builds from three indices' — behind the
+same grid, colour ramp and closing cards. The stock is found the way the per-stock page finds
+one (code, Chinese name or pinyin, filtered to A-shares because the bars endpoint speaks
+nothing else), with one-tap presets for the broad indices and **the same watchlist** as the
+per-stock page — a favourite is a fact about the instrument, not about the page it was added
+on. Cell colour depth goes as the **square root** of the move, not linearly: most days are
+small against a period's largest one, and a linear ramp leaves nearly every cell at the same
+near-black while the picture says only "there was one big day". Verified live both ways:
+上证指数 by preset, 贵州茅台 by typed code, each fetched, covered and encoded to MP4 with the
+last frame matching its cover.
+
+**The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
 A title too long for the frame is scaled down to fit rather than clipped or wrapped, to half
 size at most: clipping loses words silently and wrapping pushes the layout down into the chart,
 while type that is legibly too small reads as "shorten this". The preview redraws as you type,
 which is what makes that legible.
 
-The per-stock page can also **hide the title altogether**, which the whole-market page cannot
-because its title names a market rather than an instrument. Hiding it gives the title's row back
-to the chart: everything below shifts up into the freed row while the bottom margin holds the
-lower edge still, so the two panels grow by about half a title row each, and unchecking the box
+**Both pages can hide the title altogether.** It started per-stock only — the whole-market
+title names a market rather than an instrument, so there was nothing to keep out of frame —
+but a frame holding just the number is a legitimate look, and the switch was already free:
+the panel, the persistence and the stage renderer all implemented it. Hiding gives the title's
+row back to the chart: everything below shifts up into the freed row while the bottom margin
+holds the lower edge still, so the chart area grows by one title row, and unchecking the box
 restores the previous layout exactly rather than approximately. That exactness is why the shift
-is expressed as "the title row is present or absent" (`FrameContext.ContentTop`) rather than as
-an offset applied to everything underneath.
+is expressed as "the title row is present or absent" (`FrameContext.ContentTop` on the per-stock
+stage, `TurnoverRenderer.Row` on the whole-market indicators) rather than as an offset applied
+to everything underneath.
 
 ## Design rules
 
@@ -113,7 +184,7 @@ at 1080p is the same margin at 1440p. A font size assigned directly is the one b
 exists to prevent, and its symptom — correct at 1080p, wrong at 1440p — reads as a layout
 fault rather than a missing multiplication.
 
-**All three margins mean the same thing: how far the nearest content is from that edge.**
+**All four margins mean the same thing: how far the nearest content is from that edge.**
 The bottom margin measures to the *lowest thing drawn* — the data-source credit — not to the
 chart's baseline. The credit, the statistic cards and the baseline above it are spaced by fixed
 amounts, so the margin moves that whole stack as a unit without changing the gaps inside it.
@@ -123,10 +194,19 @@ design something: while the bottom margin measured to the baseline, "250" meant 
 thing on the bottom than on the left, the two indicators needed *different* bottom margins to
 look alike, and the credit's distance from the frame edge moved with the margin — so the one
 element that guarantees a video says where its numbers came from could be pushed off the bottom.
-With the unified meaning, `ChartMargins.Default` is a single 150/150/250 for both pages.
+With the unified meaning, `ChartMargins.Default` is a single 150/150/250 plus the top's
+safe-area floor of 230 for both pages.
 `FrameContext` follows suit: `CreditLine` is the anchor, and the baseline is derived from it by
 `BaselineAbove(gap)` — a method, not a property, because the gap is a property of the indicator
 and not of the margins.
+
+**The top margin is the same idea with a floor the others do not have.** It measures from the
+top of the frame to the title block, but a phone covers the first 0.12 of the frame with its
+own interface, so below that floor the only thing a top margin could do is slide the title
+under the status bar. Its range therefore starts at 230 baseline pixels — the floor, which
+reproduces the pre-margin layout exactly — and every top-anchored row moves through
+`FrameContext.TopRow(fraction)`, so the header block and the plot shift together as one unit
+and the spacing inside the stack cannot change.
 
 **The safe-area guides are drawn by the preview, not by the renderer.** The encoder does not
 own a `PreviewSurface`, so the guides structurally cannot reach a file. The browser version
@@ -232,6 +312,12 @@ layout method and fails with `CS0119: 'UIElement.Measure(Size)' is a method, whi
 the given context` — an error that names layout and says nothing about the type that caused it. The
 same trap waits for `Arrange`, `Content` and `Resources`. It is now `Metric`.
 
+**Win2D hands back pixels top-down; Media Foundation's uncompressed RGB samples are bottom-up.** Feed one to the other and every frame comes out mirrored about the horizontal axis. Nothing else notices: the container is a valid MP4, `mvhd` carries the right duration, `stsz` holds exactly the frames that were drawn, and the export takes the time it should. **A video can be upside down while every property you can read out of its container is correct**, which is why this survived a verification pass that checked all of them. What found it was decoding the last frame and comparing it against a cover export of the same frame. Flipping the decoded frame vertically took the mean absolute difference against the cover from 26.99 to **2.29** — the residue is H.264 — against 29.21 for a horizontal flip and 12.85 for 180°. One axis, unambiguously. The fix is in `VideoExporter.FlipRows`, on the pixel buffer — not a transform on the drawing session, which would have made the file differ from the preview in a way nobody could see.
+
+**`MediaTranscoder.HardwareAccelerationEnabled = true` hangs `PrepareMediaStreamSourceTranscodeAsync` on this machine, silently.** This cost the better part of a day, because every observable symptom points somewhere else: the process stays alive and responsive, no exception is thrown, no `MediaStreamSource.Starting` is ever raised, no sample is ever requested, and the `.mp4` the code created just before the call is deleted by its own `catch`. From outside it is indistinguishable from a folder picker waiting for input — which is what it was taken for, twice. What found it was a `CrashLog.Note` before and after each `await` in the method: the trace stopped dead on the line between them. Setting the flag false, the same 2,700 frames encode in about 28 seconds. The lesson is not "do not use hardware acceleration" — it is that **a hung `await` reports nothing at all, and a trace is the only instrument that can see it**.
+
+**Reading an MP4 while it is still being written produces a confident wrong answer.** A container check run a few seconds after `TranscodeAsync` returned found `ftyp`, `uuid` and `mdat` and no `moov`, which reads as a corrupt or fragmented file. The `moov` was simply not flushed yet; the same file checked a minute later is complete and correct. Stat the file's size twice, or wait, before concluding anything about a container.
+
 **`System.Drawing` is enough to generate a complete MSIX logo set, including the `.ico`.**
 Writing PNG-compressed entries (the Vista `.ico` form) rather than BMP entries is what keeps
 the alpha correct; the 256-pixel entry records its size as `0`, because the field is one byte.
@@ -267,11 +353,12 @@ background, the title block with its running total, the closing statistic cards,
 the progress bar — with one abstract member for the plot area. That mirrors the source, which has
 a shared `drawHeader`/`drawStats`/`drawProgress` and branches only on the chosen view.
 
-`StageRenderer` draws an empty frame and is what the Stock Volume page still shows. It is *not* a
-shared base across indicators — the two source tools are separate implementations with different
-layout anchors, and an earlier assumption here that they could share a stage was wrong: the
-whole-market forms put their plot top at a fixed fraction of frame height, while the per-stock one
-stacks rows below a title that can be hidden.
+`StageRenderer` draws an empty frame — the background, a gridline, the credit — and is what the
+Stock Volume page shows *before* anything is fetched. It is *not* a shared base across indicators —
+the two source tools are separate implementations with different layout anchors, and an earlier
+assumption here that they could share a stage was wrong: the whole-market forms put their plot top
+at a fixed fraction of frame height, while the per-stock one stacks two panels whose tops and
+bottoms hang from different anchors entirely.
 
 ## Building
 
@@ -378,11 +465,6 @@ first export asks and then remembers.
 
 ## Not done yet
 
-- **Fetching quotes.** Both pages report this where the Get-data button is.
-- **Encoding.** The preview already runs the production render path; what is missing is the
-  loop that walks `Progress` from 0 to 1 into a `MediaStreamSource` and transcodes it.
-- **The two indicator renderers.** `StageRenderer` draws the stage they will share — grid,
-  baseline, title block, credit, progress bar — and the exact colour stops and easing curves
-  should be lifted from the two HTML files rather than re-invented.
-- Both of the above are sequenced and measured in NOTES.md, along with the data-rights
-  question that has to be settled before any submission.
+- **The per-stock export at 1440p60 has run once** (a 90-second 242-minute intraday file and a
+  daily one, both verified upright against their covers) — but not the full format matrix the
+  whole-market page has been through, nor the Beijing venue, nor a cancel mid-export. See NOTES.

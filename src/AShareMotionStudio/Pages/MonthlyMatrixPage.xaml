@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root element is the base class; see the note in MarketTurnoverPage.xaml. -->
+<local:StudioPage
+    x:Class="AShareMotionStudio.Pages.MonthlyMatrixPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:local="using:AShareMotionStudio.Pages"
+    xmlns:views="using:AShareMotionStudio.Views"
+    NavigationCacheMode="Required">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <StackPanel Grid.Row="0" Padding="24,20,24,12" Spacing="2">
+            <TextBlock x:Uid="MatrixPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock x:Uid="MatrixPageSubtitle"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+
+            <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto" Margin="24,0,12,24" RowSpacing="12">
+
+                <views:PreviewSurface x:Name="Preview" Grid.Row="0" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <Button x:Name="PlayButton" x:Uid="StudioPlay" Grid.Column="0" Click="OnPlay" />
+                    <Slider x:Name="Scrub"
+                            Grid.Column="1"
+                            Minimum="0" Maximum="1"
+                            StepFrequency="0.001"
+                            ValueChanged="OnScrub"
+                            VerticalAlignment="Center" />
+                    <TextBlock x:Name="ScrubText"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               MinWidth="72"
+                               TextAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <mux:InfoBar x:Name="Status" Grid.Row="2" IsOpen="False" IsClosable="True" />
+            </Grid>
+
+            <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
+                <StackPanel Spacing="14">
+
+                    <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <TextBlock x:Uid="MatrixModeLabel" Style="{StaticResource CaptionTextBlockStyle}" />
+                    <RadioButton x:Name="YearMode"
+                                 x:Uid="MatrixModeYear"
+                                 GroupName="MatrixMode"
+                                 IsChecked="True"
+                                 Checked="OnModeChanged" />
+                    <RadioButton x:Name="CompareMode"
+                                 x:Uid="MatrixModeCompare"
+                                 GroupName="MatrixMode"
+                                 Checked="OnModeChanged" />
+
+                    <!-- The year kind: one target, its years. -->
+                    <StackPanel x:Name="YearBox" Spacing="10">
+                        <AutoSuggestBox x:Name="TargetSearch"
+                                        x:Uid="MatrixTarget"
+                                        QueryIcon="Find"
+                                        TextChanged="OnSearchTextChanged"
+                                        QuerySubmitted="OnSearchSubmitted"
+                                        SuggestionChosen="OnSuggestionChosen" />
+
+                        <!-- One-tap presets; the six broad indices people actually ask about. -->
+                        <ItemsControl x:Name="Presets">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <mux:ItemsWrapGrid Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local:MatrixPreset">
+                                    <Button Content="{x:Bind Name}"
+                                            Tag="{x:Bind Code}"
+                                            Click="OnPresetClick"
+                                            Margin="0,0,8,6" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock x:Name="ChosenText"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource BodyTextBlockStyle}" />
+
+                        <TextBlock x:Uid="MatrixYearsLabel" Style="{StaticResource CaptionTextBlockStyle }" />
+                        <ComboBox x:Name="YearsCombo"
+                                  x:Uid="MatrixYears"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="OnYearsChanged" />
+                    </StackPanel>
+
+                    <!-- The compare kind: a roster, its months. -->
+                    <StackPanel x:Name="CompareBox" Spacing="10" Visibility="Collapsed">
+                        <ComboBox x:Name="RosterCombo"
+                                  x:Uid="SectorRoster"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="OnRosterChanged" />
+
+                        <!-- The custom roster's candidate grid. -->
+                        <ScrollViewer x:Name="SectorPicker" MaxHeight="220" Visibility="Collapsed"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="SectorGrid">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <mux:ItemsWrapGrid Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="local:SectorPick">
+                                        <CheckBox Content="{x:Bind Name}"
+                                                  IsChecked="{x:Bind Picked, Mode=TwoWay}"
+                                                  Tag="{x:Bind Code}"
+                                                  Checked="OnPickToggled"
+                                                  Unchecked="OnPickToggled"
+                                                  Margin="0,0,10,2" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- The stock roster's search-and-add row and its chips. -->
+                        <StackPanel x:Name="StockBox" Spacing="8" Visibility="Collapsed">
+                            <AutoSuggestBox x:Name="StockSearch"
+                                            x:Uid="StockSearch"
+                                            QueryIcon="Find"
+                                            TextChanged="OnStockSearchTextChanged"
+                                            QuerySubmitted="OnStockSearchSubmitted"
+                                            SuggestionChosen="OnStockSuggestionChosen" />
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          HorizontalScrollMode="Auto"
+                                          VerticalScrollMode="Disabled"
+                                          VerticalScrollBarVisibility="Hidden">
+                                <ItemsControl x:Name="PickedStocks">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="6" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="local:RacePick">
+                                            <StackPanel Orientation="Horizontal" Spacing="0">
+                                                <Button Click="OnStockRemove"
+                                                        Padding="10,5"
+                                                        CornerRadius="10"
+                                                        Tag="{x:Bind Code}">
+                                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                                        <TextBlock Text="{x:Bind Name}" />
+                                                        <TextBlock Text="×"
+                                                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+
+                        <TextBlock x:Name="CountText"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                        <TextBlock x:Uid="MatrixMonthsLabel" Style="{StaticResource CaptionTextBlockStyle }" />
+                        <ComboBox x:Name="MonthsCombo"
+                                  x:Uid="MatrixMonths"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="OnMonthsChanged" />
+                    </StackPanel>
+
+                    <Button x:Name="FetchButton"
+                            x:Uid="StudioFetch"
+                            HorizontalAlignment="Stretch"
+                            Click="OnFetch" />
+
+                    <views:VideoSettingsPanel x:Name="VideoSettings" />
+
+                    <Button x:Name="ExportButton"
+                            x:Uid="StudioExport"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="OnExport" />
+
+                    <Button x:Name="CoverButton"
+                            x:Uid="StudioCover"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnSaveCover" />
+
+                    <Button x:Name="CancelButton"
+                            x:Uid="StudioCancel"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnCancel" />
+
+                    <TextBlock x:Uid="StudioDisclaimer"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</local:StudioPage>

@@ -30,7 +30,7 @@ public sealed class BarRaceRenderer(TurnoverSeries series, AnimationPlan plan)
         var left = context.ChartLeft;
         var width = context.ChartWidth;
         var baseline = context.BaselineAbove(CreditGap);
-        var plotTop = context.Height * PlotTopFraction;
+        var plotTop = Row(context, PlotTopFraction);
         var plotHeight = Math.Max(1, baseline - plotTop);
 
         DrawAxes(session, context, t, left, width, baseline, plotHeight);

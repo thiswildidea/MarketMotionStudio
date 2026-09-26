@@ -95,7 +95,8 @@ foreach ($f in Get-ChildItem $dir -Filter *.md | Sort-Object Name) {
 ```
 
 That replays `HelpDocument.Render`: one child per heading, per bullet, per paragraph. All
-fourteen currently report 24.
+fourteen currently report 42 (raised from 24 when the sector-race, monthly-matrix and gain-loss
+calendar sections were added to every file).
 
 **The file name has one dot.** `help-en-US.md`, not `help.en-US.md`. MakePri reads dot-separated
 filename segments as resource qualifiers — that is how `Square44x44Logo.targetsize-16.png`

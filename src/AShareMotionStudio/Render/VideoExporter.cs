@@ -27,7 +27,8 @@ public static class VideoExporter
     /// <summary>
     /// Renders and encodes the whole animation.
     /// </summary>
-    /// <param name="progress">Fraction complete, for a page to show. Reported by the transcoder.</param>
+    /// <param name="progress">Fraction complete, 0–1, for a page to show. The transcoder reports a
+    /// percentage and this method converts, so callers never see its unit.</param>
     /// <returns>The file written.</returns>
     public static async Task<StorageFile> EncodeAsync(
         IFrameRenderer renderer,
@@ -127,6 +128,11 @@ public static class VideoExporter
 
                     var pixels = target.GetPixelBytes();
 
+                    // Rows go back out in the order Media Foundation expects, not the order Win2D
+                    // produced them. Without this every frame is mirrored about the horizontal axis —
+                    // see the note on FlipRows.
+                    FlipRows(pixels, format.Width, format.Height);
+
                     e.Request.Sample = MediaStreamSample.CreateFromBuffer(
                         CryptographicBuffer.CreateFromByteArray(pixels), timestamp);
 
@@ -175,7 +181,13 @@ public static class VideoExporter
         {
             using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
             {
-                var transcoder = new MediaTranscoder { HardwareAccelerationEnabled = true };
+                // **Software, deliberately, and the one setting here that decides whether this
+                // method ever returns.** With `HardwareAccelerationEnabled = true` the call below
+                // never completed: the process stayed alive, no `Starting` was raised, no sample
+                // was ever requested, and no MP4 was left behind — a hang with no error and no
+                // crash log, on this machine. Setting it false, 2,700 frames of 1080×1920 encode
+                // in about 28 seconds. See NOTES before changing it back.
+                var transcoder = new MediaTranscoder { HardwareAccelerationEnabled = false };
 
                 var prepared = await transcoder.PrepareMediaStreamSourceTranscodeAsync(source, stream, profile);
 
@@ -186,7 +198,16 @@ public static class VideoExporter
                     throw new InvalidOperationException($"The encoder refused this format: {prepared.FailureReason}.");
                 }
 
-                await prepared.TranscodeAsync().AsTask(cancellation, progress);
+                // The transcoder reports progress as a **percentage 0–100**, the parameter's contract
+                // is a fraction 0–1 — and the two differ by exactly the factor the page multiplies
+                // by, so passing it through raw read as 1211% done. Normalised at the only place
+                // that knows which unit is arriving, and clamped because the pipeline has been
+                // observed to overshoot at the end.
+                var scaled = progress is null
+                    ? null
+                    : new Progress<double>(p => progress.Report(Math.Clamp(p / 100.0, 0, 1)));
+
+                await prepared.TranscodeAsync().AsTask(cancellation, scaled);
 
                 Diagnostics.CrashLog.Note($"encode: transcode returned, samples served={next}");
             }
@@ -210,6 +231,54 @@ public static class VideoExporter
             }
 
             throw;
+        }
+    }
+
+    /// <summary>
+    /// Reverses the order of the rows in an uncompressed frame, in place.
+    /// </summary>
+    /// <remarks>
+    /// **The two halves of this app disagree about which end row zero is, and neither says so.**
+    /// Win2D hands back pixels with the first row at the *top*; Media Foundation's uncompressed RGB
+    /// video samples are *bottom*-up. Handed straight across, every frame comes out mirrored about
+    /// the horizontal axis — upside down.
+    ///
+    /// Worth knowing how this one was found, because nothing outside the pixels could have said it.
+    /// The container was a correct, non-fragmented MP4; `mvhd` read 90.00 s for a 90-second video;
+    /// `stsz` held exactly the 2,700 frames that were drawn; the export finished in 28 seconds
+    /// without an error. Every property that was checked was right, and the video was upside down.
+    /// What settled it was decoding the last frame and comparing it against a cover export of the
+    /// same progress — same renderer, no transform, and a preview that had always looked correct.
+    /// Flipping the decoded frame vertically took the mean absolute difference from 26.99 to 2.29
+    /// (the residue is H.264), against 29.21 for a horizontal flip and 12.85 for a 180° rotation.
+    /// One axis, unambiguously.
+    ///
+    /// Flipping here rather than with a transform on the drawing session: the encoder is supposed to
+    /// apply no transform, and a flip there would make the file differ from the preview in a way the
+    /// next person could not see. Row order is a property of the pixel buffer, not of the picture.
+    /// </remarks>
+    private static void FlipRows(byte[] pixels, int width, int height)
+    {
+        var stride = width * 4;
+
+        if (stride <= 0 || height < 2 || pixels.Length < (long)stride * height)
+        {
+            return;
+        }
+
+        // One row of scratch rather than a second full frame: at 1440×2560 a whole copy would be a
+        // 15 MB allocation per frame, 2,700 times over.
+        var scratch = new byte[stride];
+
+        for (var top = 0; top < height / 2; top++)
+        {
+            var bottom = height - 1 - top;
+            var upper = top * stride;
+            var lower = bottom * stride;
+
+            Buffer.BlockCopy(pixels, upper, scratch, 0, stride);
+            Buffer.BlockCopy(pixels, lower, pixels, upper, stride);
+            Buffer.BlockCopy(scratch, 0, pixels, lower, stride);
         }
     }
 

@@ -38,11 +38,37 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// it, and the two are not interchangeable: the title block ends with a 128-pixel running
     /// total positioned at 0.354, so the plot begins just under it at 0.377. Stacking row heights
     /// instead would make the gap drift whenever a row's font changed.
+    ///
+    /// Read through <see cref="Row"/>, never multiplied out directly — the user's top margin
+    /// shifts the header block and the plot together, and a hidden title lifts both by one row;
+    /// a renderer that multiplied here would leave the plot behind when either happened.
     /// </summary>
     protected const double PlotTopFraction = 0.377;
 
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Whether the title row is drawn at all.
+    ///
+    /// Off is a supported choice, not an error state: the whole point of the switch is a
+    /// frame with just the number on it. What hiding does is hand the title's row back —
+    /// every row below shifts <em>up</em> by exactly <see cref="FrameContext.TitleRowHeight"/>
+    /// through <see cref="Row"/>, the bottom margin holds the lower edge still, so the plot
+    /// grows by one row and unchecking restores the previous layout exactly.
+    /// </summary>
+    public bool ShowTitle { get; set; } = true;
+
+    /// <summary>
+    /// A header row of this indicator's layout, stated as a fraction of frame height the way the
+    /// source HTML stated it: the top margin's shift plus the title row's absence, in one place.
+    ///
+    /// Delegates to <see cref="FrameContext.HeaderRow"/> so both indicator pages apply the same
+    /// two adjustments by the same arithmetic — a renderer that multiplied the fraction itself
+    /// would leave the plot behind when the header moved.
+    /// </summary>
+    protected double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, ShowTitle);
 
     protected TurnoverSeries Series => series;
 
@@ -124,22 +150,27 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
         CanvasDrawingSession session, FrameContext context, double t, int movingIndex, double movingValue)
     {
         var a = Easing.Ramp(t, 0, 1000);
-        var h = context.Height;
         var cx = context.Width / 2;
 
-        // The whole block sits below the top twelfth of the frame, so a phone's status bar and
-        // the player's own controls cannot cover the line that says what this is.
+        // The whole block sits below the top safe area, plus whatever extra room the user's
+        // top margin asked for, minus the title row if the title is hidden — every row goes
+        // through Row, so the margin and the switch move the block as a unit and neither can
+        // change the spacing inside it.
         var title = Title.Length > 0 ? Title : metric.DefaultTitle();
-        var titleSize = Ink.FitSize(session, title, context.Px(62), context.Width - context.Px(120), bold: true);
 
-        using (var format = Ink.Format(titleSize, bold: true))
+        if (ShowTitle)
         {
-            Ink.Centred(session, title, cx, h * 0.155, format, Palette.Title, a);
+            var titleSize = Ink.FitSize(session, title, context.Px(62), context.Width - context.Px(120), bold: true);
+
+            using (var format = Ink.Format(titleSize, bold: true))
+            {
+                Ink.Centred(session, title, cx, Row(context, 0.155), format, Palette.Title, a);
+            }
         }
 
         using var small = Ink.Format(context.Px(25));
 
-        Ink.Centred(session, metric.Subtitle(series), cx, h * 0.187, small, Palette.Muted, a);
+        Ink.Centred(session, metric.Subtitle(series), cx, Row(context, 0.187), small, Palette.Muted, a);
 
         // The count of trading days is the one figure in this line anybody reads, so it is picked
         // out. Located inside the finished sentence rather than assembled from fragments — see
@@ -157,7 +188,7 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
                 count,
                 Palette.Muted, Palette.Emphasis,
                 small, strong,
-                cx, h * 0.214, a);
+                cx, Row(context, 0.214), a);
         }
 
         if (movingIndex < 0)
@@ -167,7 +198,7 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
 
         using (var dateFormat = Ink.Format(context.Px(34)))
         {
-            Ink.Centred(session, Iso(series.Dates[movingIndex]), cx, h * 0.258, dateFormat, Palette.Moving, a);
+            Ink.Centred(session, Iso(series.Dates[movingIndex]), cx, Row(context, 0.258), dateFormat, Palette.Moving, a);
         }
 
         // The running figure takes its colour from the value *being displayed* rather than from the
@@ -183,14 +214,14 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
             // largest thing on the frame and changes every frame, which is exactly where a
             // box-shaped approximation showed.
             Ink.Glow(session, context.Px(13), 0.5 * a,
-                ds => Ink.Centred(ds, text, cx, h * 0.327, bigFormat, colour));
+                ds => Ink.Centred(ds, text, cx, Row(context, 0.327), bigFormat, colour));
 
-            Ink.Centred(session, text, cx, h * 0.327, bigFormat, colour, a);
+            Ink.Centred(session, text, cx, Row(context, 0.327), bigFormat, colour, a);
         }
 
         using var unitFormat = Ink.Format(context.Px(26));
 
-        Ink.Centred(session, metric.Unit(), cx, h * 0.354, unitFormat, Palette.Muted, a);
+        Ink.Centred(session, metric.Unit(), cx, Row(context, 0.354), unitFormat, Palette.Muted, a);
     }
 
     /// <summary>

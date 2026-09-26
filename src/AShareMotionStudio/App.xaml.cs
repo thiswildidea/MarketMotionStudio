@@ -3,6 +3,7 @@ using AShareMotionStudio.Localization;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Windows.ApplicationModel.Activation;
 
 namespace AShareMotionStudio;
 
@@ -68,10 +69,40 @@ public partial class App : Application
         return true;
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    /// <summary>
+    /// Whether this launch came from the startup task rather than from someone
+    /// opening the app. Windows reports it as an activation kind, which is the
+    /// only way to tell the two apart.
+    /// </summary>
+    private static bool StartedByWindows()
+    {
+        try
+        {
+            return AppInstance.GetCurrent().GetActivatedEventArgs()?.Kind == ExtendedActivationKind.StartupTask;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         var shell = new MainWindow();
         Window = shell;
-        shell.Activate();
+
+        // Started by Windows at sign-in, the app stays out of the way: someone
+        // who asked for it to run from login did not ask for a window in front
+        // of them every morning. It waits in the notification area instead.
+        // Unless the tray icon is off, in which case staying hidden would leave
+        // it running with nothing to show for it.
+        if (StartedByWindows() && AppBehaviourSettings.ShowTrayIcon)
+        {
+            shell.AppWindow.Hide();
+        }
+        else
+        {
+            shell.Activate();
+        }
     }
 }

@@ -40,7 +40,7 @@
                      the frame the titles finish on — and a play button can only
                      take you past it. -->
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-                    <Button x:Name="PlayButton" x:Uid="StudioPlay" Grid.Column="0" Click="OnPlay" />
+                    <Button x:Name="PlayButton" x:Uid="StudioPlay" Grid.Column="0" IsEnabled="False" Click="OnPlay" />
                     <Slider x:Name="Scrub"
                             Grid.Column="1"
                             Minimum="0" Maximum="1"
@@ -112,9 +112,15 @@
 
                     <views:VideoSettingsPanel x:Name="VideoSettings" />
 
+                    <!-- Disabled until a series exists, like the cover button below it. The
+                         handler returns early when there is none, so leaving it enabled is not a
+                         crash — it is a click that does nothing and says nothing, which reads as
+                         a broken button rather than as a step that comes later. The source tool
+                         disables its play and export buttons for the same reason. -->
                     <Button x:Name="ExportButton"
                             x:Uid="StudioExport"
                             HorizontalAlignment="Stretch"
+                            IsEnabled="False"
                             Style="{StaticResource AccentButtonStyle}"
                             Click="OnExport" />
 

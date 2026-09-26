@@ -1,4 +1,4 @@
-# AShare Motion Studio
+﻿# AShare Motion Studio
 
 Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara dönüştürür. Bir dönem seçer, iyi okunana kadar ön izlemeye bakar ve MP4 olarak verirsiniz. Başka hiçbir şey kurmanız gerekmez.
 
@@ -16,6 +16,33 @@ Bir hissenin işlem miktarı ile devir hızı, üst üste iki panel halinde.
 
 - İşlem günleri boyunca işlem miktarı ile devir hızı oranlıdır, dolayısıyla iki panel neredeyse aynı biçimi alır. Tek bir gün içinde dakikalık miktar ile birikimli devir gerçekten farklı görünür ve daha ilgi çekici olan resim budur.
 - Gün içi kaynağı yalnızca son birkaç işlem gününü tutar; bu yüzden o kip rastgele bir tarih değil, o günleri sunar.
+
+## Sektör yarışı
+
+Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini geçer, sıralama son kareye kadar değişir.
+
+- İki ölçüt: dönemin yüzde değişimi ve yüz milyonlarca yuan cinsinden işlem hacmi. Ölçütü değiştirmek aynı veriyi yeniden renklendirir, tekrar veri çekmez.
+- Dört liste: Shenwan 1. seviye sektörler, popüler temalar, özel (kutucukları işaretle) ve tekil hisseler (arama ile ekle). Özel liste başlangıçta Shenwan 1. seviye sektörlerle dolar.
+- Dönem 1, 3, 6 veya 12 ay ya da özel başlangıç ve bitiş tarihi olabilir.
+- Bir listenin en az ve en fazla sayıda kalemi vardır — çok az çubuk yarış olmaz, çok fazlası yığılır.
+
+## Aylık matris
+
+Aylık çubuklar bir ızgaraya dizilir: yıl modu bir aracın on yıllık mevsimselliğini, karşılaştırma modu birkaç aracı yan yana dizerek rotasyonu gösterir.
+
+- Yıl modu: bir araç seçin (arama veya ön tanımlı geniş endeks); aralık 1–10 yıl veya tümü. Tek istek on yıllık aylık çubuğu getirir.
+- Karşılaştırma modu: bir listeden (1. seviye sektörler / temalar / geniş endeksler / özel / hisseler) 2–14 aracı yan yana, 6–48 ay aralıkla.
+- Izgara zaman sırasıyla hücre hücre yanar; sonda aralıktaki en güçlü ve en zayıf ay ile diğer istatistikler verilir.
+- Aylık veriler bir seferde on yılı kapsar, bu yüzden günlük gün sınırı yoktur — ama çok fazla araç çerçeveyi aşar.
+
+## Yükseliş-düşüş takvimi
+
+Herhangi bir Çin hissesi veya endeksi, günlük yükseliş veya düşüşü aylık takvim hücrelerine dizilir: yükselişte kırmızı, düşüşte yeşil.
+
+- Kod, ad veya pinyin ile arayın; ön tanımlılar geniş endekslerdir. Yalnızca Çin borsası hisseleri ve endeksleri desteklenir.
+- Favori listesi uygulamanın hisse sayfasıyla paylaşılır — iki yerden birinde eklenen favori her ikisinde görünür.
+- Dönem 1, 3, 6 veya 12 ay ya da özeldir; tek bir araç yine de yaklaşık 640 takvim günü sınırına tabidir.
+- Son istatistikler yükselen ve düşen işlem günü sayısını verir.
 
 ## Video
 

@@ -107,6 +107,42 @@ the README makes:
 - **Export is faster than real time.** Time a 90-second export. If it takes 90 seconds,
   something is pacing on a clock and `one-render-path.mdc` has been broken.
 
+### Inspect the picture, not the container
+
+**A video can be upside down while every property you can read out of its container is correct.**
+This happened. `ftyp`/`moov` were right, there was no `moof`, `mvhd` read 90.00 s for a 90-second
+video, `stsz` held exactly the 2,700 frames that had been drawn, and the export finished in 28
+seconds — every check passed, and every frame was mirrored about the horizontal axis, because
+Win2D hands back pixels top-down and Media Foundation's uncompressed RGB samples are bottom-up.
+
+So the container checks are necessary and **not sufficient**. At least once per encoder change,
+decode a frame and look at it.
+
+### Compare a decoded frame against a cover, not against your judgement
+
+The instrument is **Save cover PNG**: same renderer, same `FrameContext`, no transform, and a
+preview that matches it. The page parks on progress 1.0 after a fetch and exporting does not move
+the scrub, so the cover and the video's *last* decoded frame are the same frame.
+
+Compare them under all four orientations and take the lowest difference:
+
+| orientation | mean absolute difference |
+|---|---|
+| as decoded | 26.99 |
+| flipped vertically | **2.29** ← the frame was being flipped |
+| flipped horizontally | 29.21 |
+| rotated 180° | 12.85 |
+
+That table is the whole diagnosis: which axis, in one number each, with a residue of ~2 explained
+by H.264. A person looking at the video may say "rotated" or "mirrored" and be wrong about the
+axis — the arithmetic will not be.
+
+`tools/drive-studio.py` drives the app through fetch and export with `uiautomation`, so this is
+repeatable without touching the mouse. Two details it encodes: the parameter panel is a
+`ScrollViewer`, so a control below the fold has an empty `BoundingRectangle` and `Click()` throws —
+use `GetInvokePattern().Invoke()`. And UI Automation finds the window **by title**, so it only
+sees an instance running in Chinese.
+
 ## Screenshotting this app, which has three separate traps
 
 Layout has to be looked at, so capturing the window is part of checking a UI change. Each of

@@ -32,26 +32,21 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// <summary>
     /// The two forms the same series can be drawn as. Bars first, because it is the one that
     /// answers the ordinary question — how turnover moved — where the calendar answers when.
+    ///
+    /// The gain/loss calendar that once lived here as a third form is its own page now, on any
+    /// A-share stock or index rather than this page's fixed composite — the same renderer, a
+    /// wider choice behind it. Two places producing the same video is a choice nobody needs.
     /// </summary>
     private enum View
     {
         Bars,
         Calendar,
-
-        /// <summary>
-        /// The same calendar grid, drawing the index's daily change instead of turnover. A separate
-        /// view rather than a toggle beside the calendar, because it answers a different question —
-        /// when money was made, not when the market was busy — and the two are chosen for different
-        /// videos.
-        /// </summary>
-        Returns,
     }
 
     private static readonly (View View, string Key)[] Views =
     [
         (View.Bars, "TurnoverViewBars"),
         (View.Calendar, "TurnoverViewCalendar"),
-        (View.Returns, "TurnoverViewReturns"),
     ];
 
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
@@ -79,8 +74,11 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         FromDate.Date = today.AddMonths(-3);
         ToDate.Date = today;
 
-        // No hide-title switch here: this chart's title names a market or an index, not an
-        // instrument, so there is nothing anyone would want to keep out of frame.
+        // The hide-title switch is offered here as well. The original reason not to was that this
+        // title names a market, not an instrument, so there was nothing to keep out of frame — but
+        // a clean frame with just the number is a legitimate look, and the switch is free: the
+        // panel, the persistence and the stage renderer all already implement it.
+        VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
@@ -132,6 +130,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         // "nothing typed" means now depends on which form is showing: the turnover forms default to
         // naming the market, the return calendar to naming the index.
         var title = VideoSettings.TitleText;
+        var showTitle = VideoSettings.ShowTitle;
 
         if (_series is { } series)
         {
@@ -143,31 +142,36 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
             Preview.Renderer = Chosen switch
             {
-                View.Calendar => new CalendarHeatmapRenderer(series, plan, Metric.Turnover) { Title = title },
-                View.Returns => new CalendarHeatmapRenderer(series, plan, Metric.Return) { Title = title },
-                _ => new BarRaceRenderer(series, plan) { Title = title },
+                View.Calendar => new CalendarHeatmapRenderer(series, plan, Metric.Turnover)
+                    { Title = title, ShowTitle = showTitle },
+                _ => new BarRaceRenderer(series, plan) { Title = title, ShowTitle = showTitle },
             };
         }
         else
         {
             _stage.Title = title.Length > 0 ? title : Metric.Turnover.DefaultTitle();
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 
         // The placeholder follows the form, so an empty box always shows the title that would
         // actually be used rather than one of the two.
-        VideoSettings.TitlePlaceholder = ChosenMetric.DefaultTitle();
+        VideoSettings.TitlePlaceholder = Metric.Turnover.DefaultTitle();
 
-        CoverButton.IsEnabled = _series is not null;
+        // Everything that needs a series is enabled and disabled together, in the one place that
+        // knows whether there is one. Three buttons each deciding for themselves is three chances
+        // for one of them to be live over an empty frame.
+        var ready = _series is not null;
+
+        CoverButton.IsEnabled = ready;
+        ExportButton.IsEnabled = ready;
+        PlayButton.IsEnabled = ready;
 
         RefreshScrubText();
         Preview.Redraw();
     }
 
     private View Chosen => ViewCombo.SelectedItem is ComboBoxItem { Tag: View v } ? v : View.Bars;
-
-    /// <summary>Which metric the chosen form draws. Two of the three forms draw turnover.</summary>
-    private Metric ChosenMetric => Chosen == View.Returns ? Metric.Return : Metric.Turnover;
 
     /// <summary>
     /// The range the user asked for, as two dates.
@@ -329,7 +333,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
         // Read before the work starts. Everything the encoder needs is captured up front so that
         // touching a slider mid-export cannot change the format halfway through the file.
-        var label = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : ChosenMetric.DefaultTitle();
+        var label = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : Metric.Turnover.DefaultTitle();
 
         CancelButton.IsEnabled = true;
 
@@ -406,7 +410,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
             var label = VideoSettings.TitleText.Length > 0
                 ? VideoSettings.TitleText
-                : ChosenMetric.DefaultTitle();
+                : Metric.Turnover.DefaultTitle();
 
             var format = VideoSettings.Format;
 

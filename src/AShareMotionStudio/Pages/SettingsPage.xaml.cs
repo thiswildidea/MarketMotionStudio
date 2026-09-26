@@ -79,10 +79,69 @@ public sealed partial class SettingsPage : Page
         ThemeCombo.SelectedIndex = Math.Max(0, Array.FindIndex(Themes, t => t.Theme == ThemeSettings.Current));
 
         StoragePathText.Text = ApplicationData.Current.LocalFolder.Path;
+        TrayToggle.IsOn = AppBehaviourSettings.ShowTrayIcon;
 
         _loading = false;
 
+        // Asynchronous, and deliberately after _loading is cleared: reading the
+        // startup state is a call into Windows, and the switch must end up showing
+        // what Windows says rather than what was last asked for.
+        _ = LoadStartupStateAsync();
+
         RefreshOutputFolder();
+    }
+
+    private async Task LoadStartupStateAsync()
+    {
+        var state = await AppBehaviourSettings.ReadStartupAsync();
+
+        _loading = true;
+        StartupToggle.IsOn = state is StartupResult.Enabled;
+        _loading = false;
+
+        ExplainStartup(state);
+    }
+
+    private async void OnStartupToggled(object sender, RoutedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        var state = await AppBehaviourSettings.SetStartupAsync(StartupToggle.IsOn);
+
+        // Windows can refuse, and does so by returning a state rather than by
+        // failing. Putting the switch back is the honest response: leaving it on
+        // would claim something that is not true.
+        if (StartupToggle.IsOn && state is not StartupResult.Enabled)
+        {
+            _loading = true;
+            StartupToggle.IsOn = false;
+            _loading = false;
+        }
+
+        ExplainStartup(state);
+    }
+
+    private void ExplainStartup(StartupResult state)
+    {
+        var message = state switch
+        {
+            StartupResult.BlockedByUser => Strings.Get("SettingsStartupBlockedByUser"),
+            StartupResult.BlockedByPolicy => Strings.Get("SettingsStartupBlockedByPolicy"),
+            _ => null,
+        };
+
+        if (message is null)
+        {
+            return;
+        }
+
+        Status.Severity = InfoBarSeverity.Informational;
+        Status.Message = message;
+        RestartButton.Visibility = Visibility.Collapsed;
+        Status.IsOpen = true;
     }
 
     /// <summary>
@@ -144,6 +203,17 @@ public sealed partial class SettingsPage : Page
         // Applied on the spot. A theme is re-read by elements already on screen, so
         // unlike the language there is nothing to restart for.
         App.Window?.ApplyTheme();
+    }
+
+    private void OnTrayToggled(object sender, RoutedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        AppBehaviourSettings.ShowTrayIcon = TrayToggle.IsOn;
+        App.Window?.ApplyTrayVisibility();
     }
 
     private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)

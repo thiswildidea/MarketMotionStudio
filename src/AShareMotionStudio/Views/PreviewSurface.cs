@@ -55,8 +55,15 @@ public sealed class PreviewSurface : Grid
     /// <summary>The size and rate being previewed. Changing it re-letterboxes.</summary>
     public VideoFormat Format { get; set; } = VideoFormat.Default;
 
-    /// <summary>The margins the sliders control, in baseline pixels.</summary>
-    public ChartMargins Margins { get; set; } = new(108, 108, 480);
+    /// <summary>
+    /// The margins the sliders control, in baseline pixels.
+    ///
+    /// Starting from <see cref="ChartMargins.Default"/> rather than a number written here. This
+    /// is what the first frame is laid out with before the page has pushed its panel's values
+    /// in, so a figure of its own would be a third answer about where the baseline sits — and
+    /// the two it could disagree with are the shared default and the restored preference.
+    /// </summary>
+    public ChartMargins Margins { get; set; } = ChartMargins.Default;
 
     /// <summary>Whether to overlay the host app's occlusion zones.</summary>
     public bool ShowGuides { get; set; }

@@ -78,7 +78,7 @@
                    Margin="0,6,0,0"
                    Style="{StaticResource BodyStrongTextBlockStyle}" />
 
-        <!-- The three margins are stated in baseline pixels against 1080x1920 and
+        <!-- The four margins are stated in baseline pixels against 1080x1920 and
              scaled at draw time, so a value tuned here survives a resolution
              change. The note under them says so, because otherwise the numbers
              look like they belong to whichever resolution is selected. -->
@@ -86,10 +86,20 @@
              Value here. Both indicators share them, and a number written in markup is the
              copy that goes stale.
 
-             The bottom slider has a different range from the other two, and a coarser step.
+             The bottom slider has a different range from the side ones, and a coarser step.
              It is not symmetry with them: it has to keep a stack of content — date labels,
              four statistic cards, the credit — inside the frame, so its useful floor is far
-             above zero and its ceiling is lower than a side margin's. -->
+             above zero and its ceiling is lower than a side margin's.
+
+             The top slider starts at the phone's top safe area rather than at zero, for the
+             same kind of reason: below its floor the title would slide under the status
+             bar, which is the one direction a top margin must not go. -->
+        <StackPanel Spacing="4">
+            <TextBlock x:Name="MarginTopLabel" Style="{StaticResource CaptionTextBlockStyle}" />
+            <Slider x:Name="MarginTopSlider" Minimum="230" Maximum="450" StepFrequency="5"
+                    ValueChanged="OnMarginChanged" />
+        </StackPanel>
+
         <StackPanel Spacing="4">
             <TextBlock x:Name="MarginLeftLabel" Style="{StaticResource CaptionTextBlockStyle}" />
             <Slider x:Name="MarginLeftSlider" Minimum="40" Maximum="260" StepFrequency="2"

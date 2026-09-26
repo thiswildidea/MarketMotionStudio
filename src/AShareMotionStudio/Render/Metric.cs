@@ -105,10 +105,14 @@ public abstract class Metric
         public override string DefaultTitle() => Strings.Get("ReturnStageTitle");
 
         /// <summary>
-        /// Names the index rather than the market combination, because this metric comes from one
-        /// venue's close whatever the turnover chart was summing.
+        /// Names whatever the returns were computed from — one venue's composite index on the
+        /// whole-market page, the chosen instrument on the gain-loss calendar page. Empty falls
+        /// back to the composite, which is where the whole-market page's returns come from.
         /// </summary>
-        public override string Subtitle(TurnoverSeries series) => Strings.Get("ReturnSubtitle");
+        public override string Subtitle(TurnoverSeries series) =>
+            Strings.Format(
+                "ReturnSubtitle",
+                series.ReturnSource.Length > 0 ? series.ReturnSource : Strings.Get("IndexSSE"));
 
         public override string Unit() => "%";
 

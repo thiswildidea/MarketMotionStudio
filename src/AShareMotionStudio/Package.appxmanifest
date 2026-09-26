@@ -2,8 +2,9 @@
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  IgnorableNamespaces="uap uap5 rescap">
 
   <!-- Identity is replaced by the Store-assigned values at submission time.
        These placeholders are only valid for local sideload testing.
@@ -15,7 +16,7 @@
   <Identity
     Name="AShareMotionStudio.Dev"
     Publisher="CN=AShareMotionStudio-Dev"
-    Version="0.1.0.0" />
+    Version="0.2.0.0" />
 
   <Properties>
     <DisplayName>AShare Motion Studio</DisplayName>
@@ -58,6 +59,22 @@
           Square310x310Logo="Assets\Square310x310Logo.png" />
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+
+      <Extensions>
+        <!-- Declared disabled. Windows requires the declaration to exist before
+             the app may ask, but starting with Windows is the user's decision,
+             not something installing this app should settle on their behalf.
+             The DisplayName is what Task Manager's Startup tab shows, where the
+             user can override the choice permanently. -->
+        <!-- Spelled out rather than tokenised. The SDK rewrites
+             $targetnametoken$ on the Application element and nowhere else, so
+             inside Extensions it reached MakeAppx unchanged and failed manifest
+             validation. Registering a loose folder never validates this, so it
+             would only have surfaced the first time a real package was built. -->
+        <uap5:Extension Category="windows.startupTask" Executable="AShareMotionStudio.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap5:StartupTask TaskId="AShareMotionStudioStartup" Enabled="false" DisplayName="AShare Motion Studio" />
+        </uap5:Extension>
+      </Extensions>
     </Application>
   </Applications>
 

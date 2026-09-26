@@ -1,0 +1,733 @@
+using System.Collections.ObjectModel;
+using AShareMotionStudio.Localization;
+using AShareMotionStudio.Market;
+using AShareMotionStudio.Render;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+
+namespace AShareMotionStudio.Pages;
+
+/// <summary>One candidate in the custom-sector picker grid.</summary>
+public sealed record SectorPick(string Code, string Name)
+{
+    public bool Picked { get; set; }
+}
+
+/// <summary>One stock on the stock roster, as a chip.</summary>
+public sealed record RacePick(string Code, string Name);
+
+/// <summary>One search suggestion, as the box displays it.</summary>
+public sealed record RaceStockSuggestion(string Code, string Name)
+{
+    public string Display => $"{Name}  {Code}";
+
+    public override string ToString() => Display;
+}
+
+/// <summary>
+/// The sector race: horizontal bars overtaking one another, their order changing to the last
+/// frame — the port of `sector_race_studio.html` on the shared stage.
+///
+/// Four rosters, two metrics, one fetch: the roster and the metric are both redraws rather
+/// than re-fetches where the data allows (the metric always; the roster always, because a
+/// different roster is different data).
+/// </summary>
+public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
+{
+    private readonly StageRenderer _stage = new();
+    private readonly Playback _playback;
+
+    private readonly StudioPreferences _prefs = new("Sector.");
+
+    private SectorRaceSeries? _series;
+
+    private readonly ObservableCollection<SectorPick> _picker = [];
+    private readonly ObservableCollection<RacePick> _stocks = [];
+
+    private readonly DispatcherTimer _searchDebounce = new() { Interval = TimeSpan.FromMilliseconds(260) };
+
+    private string _lastQuery = string.Empty;
+
+    private RaceStockSuggestion? _pendingChoice;
+
+    private static readonly (int Months, string Key)[] Ranges =
+    [
+        (1, "StudioRange1M"),
+        (3, "StudioRange3M"),
+        (6, "StudioRange6M"),
+        (12, "StudioRange12M"),
+        (0, "StudioRangeCustom"),
+    ];
+
+    private static readonly (Roster Roster, string Key)[] Rosters =
+    [
+        (Roster.Level1, "SectorListLevel1"),
+        (Roster.Themes, "SectorListTheme"),
+        (Roster.Custom, "SectorListCustom"),
+        (Roster.Stocks, "SectorListStocks"),
+    ];
+
+    private static readonly (RaceMetric Metric, string Key)[] Metrics =
+    [
+        (RaceMetric.Return, "SectorMetricReturn"),
+        (RaceMetric.Amount, "SectorMetricAmount"),
+    ];
+
+    public SectorRacePage()
+    {
+        InitializeComponent();
+
+        foreach (var (months, key) in Ranges)
+        {
+            RangeCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = months });
+        }
+
+        RangeCombo.SelectedIndex = 1;
+
+        // The rosters and the metric are chosen from these; a combo with no items shows an
+        // empty box that reads as a broken page, which is exactly what shipping without this
+        // loop did.
+        foreach (var (roster, key) in Rosters)
+        {
+            RosterCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = roster });
+        }
+
+        foreach (var (metric, key) in Metrics)
+        {
+            MetricCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = metric });
+        }
+
+        RosterCombo.SelectedIndex = 0;
+        MetricCombo.SelectedIndex = 0;
+
+        var today = DateTimeOffset.Now;
+        FromDate.Date = today.AddMonths(-3);
+        ToDate.Date = today;
+
+        foreach (var entry in SectorLists.Union())
+        {
+            // The custom roster starts as the CSI Level-1 set, the source's own default.
+            _picker.Add(new SectorPick(entry.Code, entry.Name)
+            {
+                Picked = SectorLists.Level1.Any(l => l.Code == entry.Code),
+            });
+        }
+
+        SectorGrid.ItemsSource = _picker;
+        PickedStocks.ItemsSource = _stocks;
+
+        VideoSettings.AllowHideTitle = true;
+
+        VideoSettings.Changed += (_, _) =>
+        {
+            ApplyPreviewSettings();
+            VideoSettings.Save(_prefs);
+        };
+
+        _stage.Subtitle = Strings.Get("StudioStageNoData");
+        _stage.Credit = Strings.Get("StudioCredit");
+
+        Preview.Renderer = _stage;
+
+        _playback = new Playback(this);
+
+        _searchDebounce.Tick += async (_, _) =>
+        {
+            _searchDebounce.Stop();
+            await SearchSuggestionsAsync();
+        };
+
+        _prefs.Restoring = true;
+        VideoSettings.Restore(_prefs);
+        RestorePreferences();
+        _prefs.Restoring = false;
+
+        ApplyPreviewSettings();
+        RefreshCount();
+    }
+
+    protected override InfoBar StatusControl => Status;
+
+    protected override string JobName => Strings.Get("SectorRacePageTitle.Text");
+
+    // ---- the picture -------------------------------------------------------------------
+
+    private RaceMetric ChosenMetric => MetricCombo.SelectedItem is ComboBoxItem { Tag: RaceMetric metric }
+        ? metric
+        : RaceMetric.Return;
+
+    private string ChosenListLabel()
+    {
+        var key = ChosenRoster switch
+        {
+            Roster.Themes => "SectorListTheme",
+            Roster.Custom => "SectorListCustom",
+            Roster.Stocks => "SectorListStocks",
+            _ => "SectorListLevel1",
+        };
+
+        return Strings.Get(key);
+    }
+
+    private void ApplyPreviewSettings()
+    {
+        Preview.Format = VideoSettings.Format;
+        Preview.Margins = VideoSettings.Margins;
+        Preview.ShowGuides = VideoSettings.ShowGuides;
+
+        if (_series is { } series)
+        {
+            Preview.Renderer = new SectorRaceRenderer(
+                series, ChosenMetric, VideoSettings.Duration)
+            {
+                Title = VideoSettings.TitleText,
+                ShowTitle = VideoSettings.ShowTitle,
+                ListLabel = ChosenListLabel(),
+                UnitWord = Strings.Get(ChosenRoster is Roster.Stocks
+                    ? "SectorUnitStocks"
+                    : "SectorUnitSectors"),
+            };
+        }
+        else
+        {
+            _stage.Title = VideoSettings.TitleText.Length > 0
+                ? VideoSettings.TitleText
+                : Strings.Get("SectorRaceStageTitle");
+            _stage.ShowTitle = VideoSettings.ShowTitle;
+            Preview.Renderer = _stage;
+        }
+
+        var ready = _series is not null;
+
+        PlayButton.IsEnabled = ready;
+        ExportButton.IsEnabled = ready;
+        CoverButton.IsEnabled = ready;
+
+        RefreshScrubText();
+        Preview.Redraw();
+    }
+
+    // ---- rosters -----------------------------------------------------------------------
+
+    private enum Roster
+    {
+        Level1 = 0,
+        Themes = 1,
+        Custom = 2,
+        Stocks = 3,
+    }
+
+    private Roster ChosenRoster => RosterCombo.SelectedItem is ComboBoxItem { Tag: Roster roster }
+        ? roster
+        : Roster.Level1;
+
+    private IReadOnlyList<RaceEntry> CurrentRoster()
+    {
+        var picked = _picker.Where(p => p.Picked).Select(p => new RaceEntry(p.Code, p.Name)).ToArray();
+        var stocks = _stocks.Select(s => new RaceEntry(s.Code, s.Name)).ToArray();
+
+        return ChosenRoster switch
+        {
+            Roster.Level1 => SectorLists.Level1,
+            Roster.Themes => SectorLists.Themes,
+            Roster.Stocks => stocks,
+            _ => picked,
+        };
+    }
+
+    private void OnRosterChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (SectorPicker is null || StockBox is null)
+        {
+            return;
+        }
+
+        var roster = ChosenRoster;
+
+        SectorPicker.Visibility = roster is Roster.Custom ? Visibility.Visible : Visibility.Collapsed;
+        StockBox.Visibility = roster is Roster.Stocks ? Visibility.Visible : Visibility.Collapsed;
+
+        // A different roster is different data; keeping the old series would race the wrong
+        // bars under the new controls.
+        if (!_prefs.Restoring)
+        {
+            _series = null;
+            ApplyPreviewSettings();
+            RefreshCount();
+            SavePreferences();
+        }
+    }
+
+    private void OnPickToggled(object sender, RoutedEventArgs e)
+    {
+        if (_prefs.Restoring)
+        {
+            return;
+        }
+
+        _series = null;
+        ApplyPreviewSettings();
+        RefreshCount();
+        SavePreferences();
+    }
+
+    private void RefreshCount()
+    {
+        var n = CurrentRoster().Count;
+        var bad = n < SectorLists.Fewest || n > SectorLists.Most;
+
+        CountText.Text = Strings.Format(bad ? "SectorCountBounds" : "SectorCount", n, SectorLists.Fewest, SectorLists.Most);
+        CountText.Foreground = bad
+            ? (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"]
+            : (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"];
+    }
+
+    // ---- the metric ----------------------------------------------------------------------
+
+    /// <summary>
+    /// Switching the metric is a redraw of the same fetch — the two measures come out of the
+    /// same bars, and going back to the network would spend a round trip on data already here.
+    /// </summary>
+    private void OnMetricChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (VideoSettings is null || Preview is null)
+        {
+            return;
+        }
+
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
+    // ---- stock search ---------------------------------------------------------------------
+
+    private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (args.Reason is not AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            return;
+        }
+
+        _lastQuery = sender.Text;
+        _searchDebounce.Stop();
+        _searchDebounce.Start();
+    }
+
+    private async Task SearchSuggestionsAsync()
+    {
+        var query = _lastQuery.Trim();
+        if (query.Length == 0)
+        {
+            StockSearch.ItemsSource = null;
+            return;
+        }
+
+        try
+        {
+            var found = await Services.Stocks.SearchAsync(query, CancellationToken.None);
+
+            var ordered = found
+                .Take(8)
+                .Select(r => new RaceStockSuggestion(r.Code, r.Name))
+                .ToArray();
+
+            StockSearch.ItemsSource = ordered;
+        }
+        catch (Exception)
+        {
+            StockSearch.ItemsSource = null;
+        }
+    }
+
+    private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        if (args.SelectedItem is RaceStockSuggestion chosen)
+        {
+            _pendingChoice = chosen;
+            sender.Text = chosen.Display;
+        }
+    }
+
+    private void OnSearchSubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        var (code, name) = _pendingChoice is { } pick
+            ? (pick.Code, pick.Name)
+            : (StockDirectory.Normalize(sender.Text), string.Empty);
+
+        _pendingChoice = null;
+
+        if (code is null)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Get("StockBadCode"));
+            return;
+        }
+
+        AddStock(code, name);
+    }
+
+    private void AddStock(string code, string name)
+    {
+        // The vendor's names can carry spaces («五 粮 液») which stretch a row's label into its
+        // value — stripped, and the name from the bars fetch overwrites this one anyway.
+        name = new string([.. name.Where(c => !char.IsWhiteSpace(c))]);
+
+        if (_stocks.Any(s => s.Code == code))
+        {
+            StockSearch.Text = string.Empty;
+            return;
+        }
+
+        if (_stocks.Count >= SectorLists.Most)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooManyStocks", SectorLists.Most));
+            return;
+        }
+
+        _stocks.Add(new RacePick(code, name.Length > 0 ? name : code.ToUpperInvariant()));
+        StockSearch.Text = string.Empty;
+
+        _series = null;
+        ApplyPreviewSettings();
+        RefreshCount();
+        SavePreferences();
+    }
+
+    private void OnStockRemove(object sender, RoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.Tag is not string code)
+        {
+            return;
+        }
+
+        var at = _stocks.ToList().FindIndex(s => s.Code == code);
+
+        if (at >= 0)
+        {
+            _stocks.RemoveAt(at);
+            _series = null;
+            ApplyPreviewSettings();
+            RefreshCount();
+            SavePreferences();
+        }
+    }
+
+    // ---- range ---------------------------------------------------------------------------
+
+    private void OnRangeChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (CustomRange is null)
+        {
+            return;
+        }
+
+        var custom = RangeCombo.SelectedItem is ComboBoxItem { Tag: 0 };
+        CustomRange.Visibility = custom ? Visibility.Visible : Visibility.Collapsed;
+
+        SavePreferences();
+    }
+
+    private (DateOnly Start, DateOnly End) ChosenRange()
+    {
+        if (RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } && months > 0)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            return (today.AddMonths(-months), today);
+        }
+
+        return (
+            DateOnly.FromDateTime(FromDate.Date.DateTime),
+            DateOnly.FromDateTime(ToDate.Date.DateTime));
+    }
+
+    // ---- fetching ------------------------------------------------------------------------
+
+    private void OnFetch(object sender, RoutedEventArgs e)
+    {
+        var roster = CurrentRoster();
+        var unit = Strings.Get(ChosenRoster is Roster.Stocks ? "SectorUnitStocks" : "SectorUnitSectors");
+
+        if (roster.Count < SectorLists.Fewest)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooFew", SectorLists.Fewest, unit));
+            return;
+        }
+
+        if (roster.Count > SectorLists.Most)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooMany", SectorLists.Most, unit));
+            return;
+        }
+
+        var (start, end) = ChosenRange();
+
+        if (start >= end)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Get("TurnoverRangeReversed"));
+            return;
+        }
+
+        if (end.DayNumber - start.DayNumber > TencentKline.MostBarsPerRequest)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", TencentKline.MostBarsPerRequest));
+            return;
+        }
+
+        _ = RunAsync(FetchButton, async cancellation =>
+        {
+            var progress = new Progress<string>(message =>
+                ShowStatus(InfoBarSeverity.Informational, Strings.Format("SectorFetching", message)));
+
+            var series = await SectorSeries.LoadAsync(
+                Services.Quotes, roster, start, end, progress, cancellation);
+
+            _series = series;
+
+            // A typed stock's name is corrected to what the endpoint actually calls it.
+            if (ChosenRoster is Roster.Stocks)
+            {
+                for (var i = 0; i < _stocks.Count; i++)
+                {
+                    var match = series.Entries.FirstOrDefault(e => e.Code == _stocks[i].Code);
+
+                    if (match is { Name.Length: > 0 } && match.Name != _stocks[i].Name)
+                    {
+                        _stocks[i] = new RacePick(match.Code, match.Name);
+                    }
+                }
+
+                SavePreferences();
+            }
+
+            ApplyPreviewSettings();
+            ShowMoment(1);
+
+            var standings = series.Standings(ChosenMetric);
+            var top = standings[0];
+            var bottom = standings[^1];
+
+            ShowStatus(InfoBarSeverity.Success, Strings.Format(
+                "SectorFetched",
+                series.Racers,
+                unit,
+                series.Days,
+                series.Entries[top.Index].Name,
+                FormatValue(top.Value),
+                series.Entries[bottom.Index].Name,
+                FormatValue(bottom.Value)));
+        }, TimeSpan.FromMinutes(3));
+    }
+
+    private string FormatValue(double value) =>
+        (ChosenMetric is RaceMetric.Return && value > 0 ? "+" : string.Empty)
+        + value.ToString(
+            ChosenMetric is RaceMetric.Return ? "N2" : "N0",
+            System.Globalization.CultureInfo.InvariantCulture)
+        + (ChosenMetric is RaceMetric.Return ? "%" : Strings.Get("SectorUnitYi"));
+
+    // ---- preview transport -----------------------------------------------------------------
+
+    private void ShowMoment(double progress)
+    {
+        Preview.Progress = progress;
+
+        Scrub.ValueChanged -= OnScrub;
+        Scrub.Value = progress;
+        Scrub.ValueChanged += OnScrub;
+
+        RefreshScrubText();
+        Preview.Redraw();
+    }
+
+    private void OnScrub(object sender, RangeBaseValueChangedEventArgs e)
+    {
+        _playback?.Stop();
+
+        Preview.Progress = Scrub.Value;
+        RefreshScrubText();
+        Preview.Redraw();
+    }
+
+    private void RefreshScrubText()
+    {
+        var at = VideoSettings.Duration.TotalSeconds * Preview.Progress;
+        ScrubText.Text = Strings.Format("StudioScrubPosition", at.ToString("0.0"), (int)VideoSettings.Duration.TotalSeconds);
+    }
+
+    private void OnPlay(object sender, RoutedEventArgs e) => _playback.Toggle();
+
+    void IPlaybackHost.ShowMoment(double progress) => ShowMoment(progress);
+
+    void IPlaybackHost.ShowPlaybackState(bool playing) =>
+        PlayButton.Content = Strings.Get(playing ? "StudioPause.Content" : "StudioPlay.Content");
+
+    TimeSpan IPlaybackHost.PlaybackDuration => VideoSettings.Duration;
+
+    // ---- export -----------------------------------------------------------------------------
+
+    private string RaceFileName(VideoFormat format, string extension)
+    {
+        var label = VideoSettings.TitleText.Length > 0
+            ? VideoSettings.TitleText
+            : Strings.Format(
+                ChosenMetric is RaceMetric.Return ? "SectorAutoTitleReturn" : "SectorAutoTitleAmount",
+                ChosenListLabel());
+
+        var safe = new string([.. label.Where(c => !Path.GetInvalidFileNameChars().Contains(c))]).Trim();
+
+        if (safe.Length > 40)
+        {
+            safe = safe[..40];
+        }
+
+        var metric = Strings.Get(ChosenMetric is RaceMetric.Return ? "SectorMetricReturnShort" : "SectorMetricAmountShort");
+
+        return $"{safe}_{metric}_{_series!.Dates[0]:yyyy-MM-dd}_{_series.Dates[^1]:yyyy-MM-dd}_{format.NameSuffix}.{extension}";
+    }
+
+    private async void OnExport(object sender, RoutedEventArgs e)
+    {
+        if (Preview.Renderer is not { } renderer || _series is not { } series || App.Window is not { } window)
+        {
+            return;
+        }
+
+        var format = VideoSettings.Format;
+        var margins = VideoSettings.Margins;
+        var duration = VideoSettings.Duration;
+
+        CancelButton.IsEnabled = true;
+
+        var limit = TimeSpan.FromMinutes(5) + (duration * 4);
+
+        await RunAsync(ExportButton, async cancellation =>
+        {
+            var folder = await OutputFolder.TryGetAsync() ?? await OutputFolder.ChooseAsync(window);
+
+            if (folder is null)
+            {
+                ShowStatus(InfoBarSeverity.Informational, Strings.Get("StudioExportCancelled"));
+                return;
+            }
+
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+
+            var report = new Progress<double>(fraction =>
+                ShowStatus(InfoBarSeverity.Informational, Strings.Format("StudioExporting", (int)(fraction * 100))));
+
+            var file = await VideoExporter.EncodeAsync(
+                renderer, format, margins, duration, folder,
+                RaceFileName(format, "mp4"),
+                report, cancellation);
+
+            clock.Stop();
+
+            var properties = await file.GetBasicPropertiesAsync();
+
+            ShowStatus(InfoBarSeverity.Success, Strings.Format(
+                "StudioExported",
+                file.Name,
+                (properties.Size / 1048576.0).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture),
+                clock.Elapsed.TotalSeconds.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture),
+                ((int)duration.TotalSeconds).ToString(System.Globalization.CultureInfo.InvariantCulture),
+                folder.Path));
+        }, limit);
+
+        CancelButton.IsEnabled = false;
+    }
+
+    private async void OnSaveCover(object sender, RoutedEventArgs e)
+    {
+        if (Preview.Renderer is not { } renderer || _series is not { } series || App.Window is not { } window)
+        {
+            return;
+        }
+
+        await RunAsync(CoverButton, async cancellation =>
+        {
+            var folder = await OutputFolder.TryGetAsync() ?? await OutputFolder.ChooseAsync(window);
+
+            if (folder is null)
+            {
+                ShowStatus(InfoBarSeverity.Informational, Strings.Get("StudioCoverCancelled"));
+                return;
+            }
+
+            var format = VideoSettings.Format;
+
+            var file = await FrameExporter.SavePngAsync(
+                renderer, format, VideoSettings.Margins, Preview.Progress, folder,
+                RaceFileName(format, "png"),
+                cancellation);
+
+            ShowStatus(InfoBarSeverity.Success, Strings.Format(
+                "StudioCoverSaved", file.Name, format.Width, format.Height, folder.Path));
+        }, TimeSpan.FromSeconds(90));
+    }
+
+    private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();
+
+    // ---- persistence ---------------------------------------------------------------------------
+
+    private void SavePreferences()
+    {
+        if (_prefs.Restoring)
+        {
+            return;
+        }
+
+        _prefs.Save("Roster", (int)ChosenRoster);
+        _prefs.Save("Metric", (int)ChosenMetric);
+        _prefs.Save("Custom", string.Join(";", _picker.Where(p => p.Picked).Select(p => p.Code)));
+        _prefs.Save("Stocks", string.Join(";", _stocks.Select(s => $"{s.Code}|{s.Name}")));
+        _prefs.Save("Months", RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 3);
+        _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
+        _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
+    }
+
+    private void RestorePreferences()
+    {
+        RosterCombo.SelectedIndex = Math.Clamp(_prefs.GetInt("Roster", (int)Roster.Level1), 0, 3);
+        MetricCombo.SelectedIndex = Math.Clamp(_prefs.GetInt("Metric", (int)RaceMetric.Return), 0, 1);
+
+        var custom = _prefs.GetString("Custom", string.Empty);
+
+        if (custom.Length > 0)
+        {
+            var codes = custom.Split(';', StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+
+            foreach (var pick in _picker)
+            {
+                pick.Picked = codes.Contains(pick.Code);
+            }
+        }
+
+        foreach (var item in _prefs.GetString("Stocks", string.Empty).Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var parts = item.Split('|');
+
+            if (parts.Length == 2 && parts[0].Length > 0)
+            {
+                _stocks.Add(new RacePick(parts[0], parts[1]));
+            }
+        }
+
+        var months = _prefs.GetInt("Months", 3);
+        var match = RangeCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is int m && m == months);
+
+        if (match is not null)
+        {
+            RangeCombo.SelectedItem = match;
+        }
+
+        if (DateOnly.TryParse(_prefs.GetString("From", string.Empty), out var from))
+        {
+            FromDate.Date = new DateTimeOffset(from, TimeOnly.MinValue, TimeSpan.Zero);
+        }
+
+        if (DateOnly.TryParse(_prefs.GetString("To", string.Empty), out var to))
+        {
+            ToDate.Date = new DateTimeOffset(to, TimeOnly.MinValue, TimeSpan.Zero);
+        }
+    }
+}

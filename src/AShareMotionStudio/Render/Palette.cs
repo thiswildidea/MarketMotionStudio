@@ -102,16 +102,14 @@ public static class Palette
     /// <summary>
     /// Turnover rate: indigo through purple to pink, for the per-stock page's lower panel.
     ///
-    /// **Still inferred from prose, not lifted from source.** Unlike the volume ramp above,
-    /// these have not been checked against `stock_dual_studio.html`, which has not been
-    /// read. Treat the positions especially as placeholders — the volume ramp is the
-    /// warning that even stops look evenly spaced until you look.
+    /// Lifted from `stock_dual_studio.html` — `torColor = ramp([[0,[99,102,241]],[0.5,[168,85,247]],
+    /// [1,[236,72,153]]])` — with the midpoint at 0.5, unlike the volume ramp's compressed warm end.
     /// </summary>
     private static readonly (double At, Color Colour)[] RateRamp =
     [
-        (0.0, Rgb(0x4C, 0x4A, 0xD8)),
-        (0.5, Rgb(0x9B, 0x4D, 0xE0)),
-        (1.0, Rgb(0xE8, 0x5A, 0xB8)),
+        (0.0, Rgb(0x63, 0x66, 0xF1)),
+        (0.5, Rgb(0xA8, 0x55, 0xF7)),
+        (1.0, Rgb(0xEC, 0x48, 0x99)),
     ];
 
     /// <summary>
@@ -145,11 +143,59 @@ public static class Palette
         return Lerp(from, to, depth);
     }
 
-    /// <summary>A turnover's colour, given its position in the series from 0 to 1.</summary>
+    /// <summary>
+    /// A turnover's colour, given its position in the series from 0 to 1.</summary>
     public static Color Volume(double position) => Sample(VolumeRamp, position);
 
     /// <summary>A turnover rate's colour, given its position in the series.</summary>
     public static Color Rate(double position) => Sample(RateRamp, position);
+
+    // ---- The per-stock page's own entries, all lifted from stock_dual_studio.html. ----
+    // That tool has its own background, its own text tones and its own progress fill; they
+    // differ from the whole-market ones by a few units in some places and by a whole hue in
+    // others, and each app's look is the one its own audience tuned.
+
+    /// <summary>The per-stock frame's backdrop: the same shape, cooler and a touch lighter.</summary>
+    public static readonly (float Position, Color Colour)[] StockBackground =
+    [
+        (0f, Rgb(0x0D, 0x14, 0x30)),
+        (0.5f, Rgb(0x09, 0x0E, 0x1D)),
+        (1f, Rgb(0x07, 0x09, 0x14)),
+    ];
+
+    /// <summary>The per-stock header's dim runs: the code, the dates, the unit words.</summary>
+    public static readonly Color StockMuted = Rgb(0x82, 0x96, 0xB8);
+
+    /// <summary>A panel's title, and its unit, and its axis and date labels — one tone ladder.</summary>
+    public static readonly Color StockPanelTitle = Rgb(0x93, 0xA9, 0xCC);
+
+    public static readonly Color StockUnit = Rgb(0x5F, 0x73, 0x9A);
+
+    public static readonly Color StockAxisLabel = Rgb(0x62, 0x77, 0x9B);
+
+    public static readonly Color StockDateLabel = Rgb(0x5D, 0x71, 0x99);
+
+    /// <summary>The line joining the turnover-rate bars' tops, and the rate panel's closing dashes.</summary>
+    public static readonly Color StockRateLine = Argb(0xBF, 0xF4, 0xBE, 0xFF);
+
+    public static readonly Color StockFinalRateLine = Argb(0x99, 0xEC, 0x48, 0x99);
+
+    public static readonly Color StockFinalRateLabel = Rgb(0xFB, 0xCF, 0xE8);
+
+    /// <summary>The per-stock progress bar's fill, left to right.</summary>
+    public static readonly (float Position, Color Colour)[] StockProgressFill =
+    [
+        (0f, Rgb(0x63, 0x66, 0xF1)),
+        (0.6f, Rgb(0xA8, 0x55, 0xF7)),
+        (1f, Rgb(0xEC, 0x48, 0x99)),
+    ];
+
+    /// <summary>The sector race's progress bar: amber into red, its own accent pair.</summary>
+    public static readonly (float Position, Color Colour)[] RaceProgressFill =
+    [
+        (0f, Rgb(0xF5, 0x9E, 0x0B)),
+        (1f, Rgb(0xEF, 0x44, 0x44)),
+    ];
 
     /// <summary>
     /// Reads a ramp at a position, interpolating between the two stops it falls between.

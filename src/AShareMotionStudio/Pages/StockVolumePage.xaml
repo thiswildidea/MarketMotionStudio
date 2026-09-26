@@ -63,7 +63,53 @@
                                     x:Uid="StockSearch"
                                     QueryIcon="Find"
                                     TextChanged="OnSearchTextChanged"
-                                    QuerySubmitted="OnSearchSubmitted" />
+                                    QuerySubmitted="OnSearchSubmitted"
+                                    SuggestionChosen="OnSuggestionChosen" />
+
+                    <!-- Favourites as chips: one click loads, the × forgets. Stored
+                         locally with the other page state, never sent anywhere.
+                         A horizontally scrolling row rather than a wrapping grid —
+                         WinUI has no wrap panel without a toolkit package, and a
+                         dependency for a layout this small is not worth its
+                         certification weight. -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  HorizontalScrollMode="Auto"
+                                  VerticalScrollMode="Disabled"
+                                  VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl x:Name="Favourites">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="6" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local:StockFavourite">
+                                    <StackPanel Orientation="Horizontal" Spacing="0">
+                                        <Button Click="OnFavouriteClick"
+                                                Padding="10,5"
+                                                CornerRadius="10,0,0,10"
+                                                Tag="{x:Bind Code}">
+                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                <TextBlock Text="{x:Bind Name}" />
+                                                <TextBlock Text="{x:Bind CodeUpper}"
+                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="OnFavouriteRemove"
+                                                Padding="7,5"
+                                                CornerRadius="0,10,10,0"
+                                                Tag="{x:Bind Code}"
+                                                Content="×" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <Button x:Name="FavouriteButton"
+                            x:Uid="StockAddFavourite"
+                            HorizontalAlignment="Left"
+                            Click="OnAddFavourite" />
 
                     <!-- The chosen instrument, stated in full. A code alone does not
                          confirm that the right thing was picked; the name beside it
@@ -107,7 +153,15 @@
                     <ComboBox x:Name="TradingDayCombo"
                               x:Uid="StockTradingDay"
                               HorizontalAlignment="Stretch"
+                              SelectionChanged="OnTradingDayChanged"
                               Visibility="Collapsed" />
+
+                    <TextBlock x:Uid="StockTradingDayNote"
+                               TextWrapping="Wrap"
+                               Visibility="Collapsed"
+                               x:Name="TradingDayNote"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
@@ -119,8 +173,18 @@
                     <Button x:Name="ExportButton"
                             x:Uid="StudioExport"
                             HorizontalAlignment="Stretch"
+                            IsEnabled="False"
                             Style="{StaticResource AccentButtonStyle}"
                             Click="OnExport" />
+
+                    <!-- Saves whichever frame the preview is parked on — a post
+                         thumbnail, and the reference frame every render check
+                         compares an export against. -->
+                    <Button x:Name="CoverButton"
+                            x:Uid="StudioCover"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnSaveCover" />
 
                     <Button x:Name="CancelButton"
                             x:Uid="StudioCancel"

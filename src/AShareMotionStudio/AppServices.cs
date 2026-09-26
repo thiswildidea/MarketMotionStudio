@@ -38,6 +38,7 @@ public sealed class AppServices
         _http.DefaultRequestHeaders.UserAgent.ParseAdd("AShareMotionStudio/0.1");
 
         Quotes = new TencentKline(_http);
+        Stocks = new StockDirectory(_http);
     }
 
     private readonly HttpClient _http;
@@ -46,4 +47,14 @@ public sealed class AppServices
 
     /// <summary>The one route to a quote source.</summary>
     public TencentKline Quotes { get; }
+
+    /// <summary>Stock search, code normalisation and the real-time snapshot.</summary>
+    public StockDirectory Stocks { get; }
+
+    /// <summary>
+    /// The raw client, for the one endpoint neither of the two above owns: the minute-data query
+    /// belongs to the per-stock series, and wrapping it in a third service class would only move
+    /// the URL one file away from the code that parses its shape.
+    /// </summary>
+    public HttpClient Http => _http;
 }

@@ -56,10 +56,46 @@ public sealed record FrameContext(VideoFormat Format, ChartMargins BaselineMargi
     public double CreditLine => Height - Margins.Bottom;
 
     /// <summary>
-    /// The first row the title block may occupy. Not negotiable: above this the
-    /// phone's status bar and the player's chrome overlap the frame.
+    /// The first row the title block may occupy.
+    ///
+    /// The floor is <see cref="SafeArea.Top"/> — above it the phone's status bar and the
+    /// player's chrome overlap the frame, and no margin setting may cross that. The user's
+    /// top margin can only push the title further **down** from there, which is what keeps
+    /// the margin meaningful without being able to do damage: at the smallest value the
+    /// layout is exactly what it was before the top margin existed.
     /// </summary>
-    public double TitleTop => Height * SafeArea.Top;
+    public double TitleTop => Height * SafeArea.Top + TopShift;
+
+    /// <summary>
+    /// How far the top margin pushes the top stack down from where the safe area alone
+    /// would put it, in device pixels.
+    ///
+    /// Zero unless the margin is set past the safe-area floor. Every row anchored to the
+    /// top of the frame — the header block's rows and the plot's first row — shifts by
+    /// this same amount, so the spacing inside the stack never changes and the plot is
+    /// what absorbs the difference.
+    /// </summary>
+    public double TopShift => Math.Max(0, Margins.Top - Height * SafeArea.Top);
+
+    /// <summary>
+    /// A row anchored to the top of the frame, stated as a fraction of frame height as the
+    /// source HTML stated it, moved down by whatever the top margin added.
+    ///
+    /// Renderers use this instead of multiplying the fraction themselves so a top margin
+    /// cannot move the header and leave the plot where it was — the drift between two
+    /// ways of computing the same anchor is what <c>one-render-path.mdc</c> is about.
+    /// </summary>
+    public double TopRow(double fraction) => Height * fraction + TopShift;
+
+    /// <summary>
+    /// A header row as above, that also gives way when the title is hidden — the header-block
+    /// convention shared by both indicator pages.
+    ///
+    /// Hiding the title frees its row and everything below moves *up into* it, by exactly
+    /// <see cref="TitleRowHeight"/>, so the spacing between the rows that remain never changes.
+    /// </summary>
+    public double HeaderRow(double fraction, bool titleShown) =>
+        TopRow(fraction) - (titleShown ? 0 : Px(TitleRowHeight));
 
     /// <summary>
     /// How tall one title row is, in baseline pixels.

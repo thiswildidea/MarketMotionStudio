@@ -102,7 +102,7 @@ public sealed class CalendarHeatmapRenderer(TurnoverSeries series, AnimationPlan
 
         var left = context.ChartLeft;
         var width = context.ChartWidth;
-        var top = context.Height * PlotTopFraction;
+        var top = Row(context, PlotTopFraction);
         var gridHeight = Math.Max(1, context.BaselineAbove(CreditGap) - top);
 
         var best = (Cell: 0.0, Columns: 1, Rows: blocks.Count, BlockWidth: width, BlockHeight: gridHeight, TitleHeight: 0.0);

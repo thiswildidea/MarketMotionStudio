@@ -17,3 +17,6 @@ artifacts/
 # committing them is what makes a fresh clone build a package without first
 # running a script — which nobody discovers they needed until packaging fails on
 # a missing logo. The script stays for regenerating them after a palette change.
+
+# Session-local: agent working memory and UI-automation residue
+.workbuddy/

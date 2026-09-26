@@ -68,6 +68,7 @@ public sealed partial class VideoSettingsPanel : UserControl
         QualityCombo.SelectedIndex = 1;
 
         var margins = ChartMargins.Default;
+        MarginTopSlider.Value = margins.Top;
         MarginLeftSlider.Value = margins.Left;
         MarginRightSlider.Value = margins.Right;
         MarginBottomSlider.Value = margins.Bottom;
@@ -119,7 +120,8 @@ public sealed partial class VideoSettingsPanel : UserControl
     public bool ShowGuides => GuidesToggle.IsOn;
 
     public ChartMargins Margins =>
-        new(MarginLeftSlider.Value, MarginRightSlider.Value, MarginBottomSlider.Value);
+        new(MarginLeftSlider.Value, MarginRightSlider.Value, MarginBottomSlider.Value,
+            MarginTopSlider.Value);
 
     /// <summary>
     /// Puts back what this panel was last set to, for the page that owns it.
@@ -144,6 +146,7 @@ public sealed partial class VideoSettingsPanel : UserControl
         QualityCombo.SelectedIndex = quality >= 0 && quality < QualityCombo.Items.Count ? quality : 1;
 
         var margins = ChartMargins.Default;
+        MarginTopSlider.Value = prefs.GetDouble("MarginTop", margins.Top);
         MarginLeftSlider.Value = prefs.GetDouble("MarginLeft", margins.Left);
         MarginRightSlider.Value = prefs.GetDouble("MarginRight", margins.Right);
         MarginBottomSlider.Value = prefs.GetDouble("MarginBottom", margins.Bottom);
@@ -164,6 +167,7 @@ public sealed partial class VideoSettingsPanel : UserControl
         prefs.Save("Resolution", ResolutionCombo.SelectedIndex);
         prefs.Save("FrameRate", FrameRateCombo.SelectedIndex);
         prefs.Save("Quality", QualityCombo.SelectedIndex);
+        prefs.Save("MarginTop", MarginTopSlider.Value);
         prefs.Save("MarginLeft", MarginLeftSlider.Value);
         prefs.Save("MarginRight", MarginRightSlider.Value);
         prefs.Save("MarginBottom", MarginBottomSlider.Value);
@@ -229,6 +233,7 @@ public sealed partial class VideoSettingsPanel : UserControl
     private void RefreshLabels()
     {
         DurationLabel.Text = Strings.Format("StudioDuration", (int)DurationSlider.Value);
+        MarginTopLabel.Text = Strings.Format("StudioMarginTop", (int)MarginTopSlider.Value);
         MarginLeftLabel.Text = Strings.Format("StudioMarginLeft", (int)MarginLeftSlider.Value);
         MarginRightLabel.Text = Strings.Format("StudioMarginRight", (int)MarginRightSlider.Value);
         MarginBottomLabel.Text = Strings.Format("StudioMarginBottom", (int)MarginBottomSlider.Value);

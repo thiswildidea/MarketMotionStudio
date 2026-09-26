@@ -3,7 +3,8 @@
     x:Class="AShareMotionStudio.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mux="using:Microsoft.UI.Xaml.Controls">
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:tray="using:H.NotifyIcon">
 
     <!-- Mica tints the window from the desktop behind it, which is the Windows
          way of adapting to the wallpaper: the system does the sampling, it
@@ -17,6 +18,25 @@
     </Window.SystemBackdrop>
 
     <Grid x:Name="Root" RowDefinitions="Auto,*">
+
+        <!-- Lives in the window's tree because that is where the framework can build
+             it, but it outlives the window being hidden: closing the window puts it
+             away rather than ending the app, and this is what brings it back. -->
+        <tray:TaskbarIcon x:Name="Tray"
+                          IconSource="ms-appx:///Assets/AppIcon.ico"
+                          NoLeftClickDelay="True"
+                          LeftClickCommand="{x:Bind ShowWindowCommand}">
+            <tray:TaskbarIcon.ContextFlyout>
+                <!-- Commands, not Click. The flyout is hosted by the library in its
+                     own popup and a Click handler here is never reached; the item just
+                     highlights and dismisses, which looks like a broken action. -->
+                <MenuFlyout>
+                    <MenuFlyoutItem x:Uid="TrayOpen" Command="{x:Bind ShowWindowCommand}" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Uid="TrayExit" Command="{x:Bind ExitCommand}" />
+                </MenuFlyout>
+            </tray:TaskbarIcon.ContextFlyout>
+        </tray:TaskbarIcon>
 
         <!-- Draggable title bar. Drawn by hand because extending content into
              the title bar replaces the system one, which would otherwise carry
@@ -68,6 +88,15 @@
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Uid="NavStockVolume" Tag="StockVolume">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Uid="NavSectorRace" Tag="SectorRace">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9E9;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Uid="NavMatrix" Tag="Matrix">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Uid="NavGainCalendar" Tag="GainCalendar">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE787;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 

@@ -64,8 +64,12 @@ public sealed record AnimationPlan(
     /// Rounded to 1, 2, 2.5, 5 or 10 times a power of ten, because those are the
     /// intervals people read without doing arithmetic. An axis labelled in steps of
     /// 1,732 is accurate and useless.
+    ///
+    /// Public because the per-stock page scales each of its two panels independently —
+    /// one step for the whole frame would mean the two panels' grids disagreed with
+    /// their own data, which reads as one of them being wrong.
     /// </summary>
-    private static (double Step, double Top) NiceScale(double max, int ticks)
+    public static (double Step, double Top) NiceScale(double max, int ticks)
     {
         if (max <= 0)
         {

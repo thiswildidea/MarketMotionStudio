@@ -4,7 +4,49 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-09-24 (after the gain/loss calendar, settings persistence and cover export).
+Last reviewed: 2026-09-26 (after the fifth page — the gain-loss calendar on any A-share
+stock or index; see the end).
+
+## The whole-market page was audited line for line against the source HTML
+
+Every figure in the reference README's feature list was checked against the page and against
+`ashare_turnover_studio.html`: the four-stop colour ramp at 0.45 and 0.75, the three-stop
+background, `easeOutBack` at 1.1, the 278/192 credit and card spacing, the plot top at 0.377,
+the 2.5 s-or-4 % opening and the 3–8 s closing, the 640-day refusal, the unfinished-session
+drop, the intersect-to-common-days rule, the square-root colour depth, the five-column calendar
+and its searched block-column count. **All of them were already correct.** Nothing in the
+renderer or the data layer needed changing.
+
+Four things were wrong or missing, and all four are now fixed:
+
+- `PreviewSurface.Margins` started from `108/108/480`, a figure left over from before the bottom
+  margin was redefined as content-to-edge. It is what the first frame is laid out with, so it
+  was a third answer about where the baseline sits. Now `ChartMargins.Default`.
+- **Export and Play were live over an empty frame.** `OnExport` and `OnSaveCover` both return
+  early when there is no series, but only the cover button was disabled — so pressing Export
+  before fetching did nothing and said nothing, which reads as a broken button. The source tool
+  disables its play and export buttons for the same reason. All three now follow
+  `_series is not null` in the one place that knows.
+- A custom range set the wrong way round reached `TencentKline` and came back as an English
+  `ArgumentException` inside an otherwise translated status line. `MarketTurnover.LoadAsync`
+  now refuses it with `TurnoverRangeReversed`, in fourteen languages. It is the one rejection
+  the page cannot rule out by construction: the month ranges count backwards from today, but
+  the custom range is two pickers that can be set either way round.
+- README's "Not done yet" still claimed fetching and the two renderers were unbuilt. That was
+  true once and is true of Stock Volume only now.
+
+**Verified by building: 0 warnings, 0 errors; all fourteen resw carry 132 keys in the same
+order with `fffd=0` and `doubled=0`; the new key's fourteen values are all present in the
+compiled `resources.pri`.** Verified by running the app too, later the same day: the three buttons
+read `enabled=False` on a fresh window and `enabled=True` after a fetch of 65 trading days, which
+is the change itself rather than the build that contains it.
+
+Two things about checking that output are worth not rediscovering. `resources.pri` stores a
+value as **UTF-8 when it is ASCII and UTF-16 when it is not**, so an English string searched
+only as UTF-16 reads as missing; and string literals in the DLL sit at odd byte offsets often
+enough that decoding the whole file from byte zero misses them — search the raw UTF-16LE byte
+sequence instead. Both failures look exactly like the change not having been built, which is
+why the check above carries a negative control.
 
 ## Before the first Store submission
 
@@ -83,15 +125,19 @@ wrong in code written from the README alone:
   mistake to be sitting right now.
 - **The background is a three-stop vertical gradient**, not a flat fill.
 - **The margin sliders have different ranges per side**: 40–260 step 2 for left and right,
-  150–420 step 5 for the bottom. A single 40–700 range let the bottom margin be set to values
-  that push content out of frame.
+  150–420 step 5 for the bottom, 230–450 step 5 for the top. A single 40–700 range let the
+  bottom margin be set to values that push content out of frame; the top's floor is the
+  phone's safe area in baseline pixels (0.12 × 1920), because below it the only thing a top
+  margin could do is slide the title under the status bar.
 - **The default duration is 90 seconds**, not 45.
 - **`CreditGap` is 278 baseline pixels and the statistic cards sit 192 above the credit.** The
   values invented for `StageRenderer` were 150 and 60 — close enough to look plausible and wrong
   enough to misplace the whole lower stack.
 - **The plot top is a fixed fraction of frame height (0.377)**, not a measurement below the
   title rows. It has to clear a 128-pixel running total whose own position is also a fraction,
-  so deriving it from stacked row heights would drift whenever a font changed.
+  so deriving it from stacked row heights would drift whenever a font changed. Read through
+  `FrameContext.TopRow` so the user's top margin moves it with the header block — a renderer
+  that multiplied the fraction itself would leave the plot behind when the header moved.
 - **`easeOutBack` uses 1.1, not the textbook 1.70158.** With a hundred bars rising at once the
   standard overshoot reads as wobble.
 
@@ -117,11 +163,135 @@ there; the distinction has to survive the port.
   fingerprinting — but it also means this traffic is trivially identifiable, which is a
   consideration for the data-rights question above rather than a technical one.
 
-## The encoder is written and does not work yet
+## The encoder works now, and the cause was one property
 
-`Render/VideoExporter.cs` exists, compiles, and is wired to the export button. It **does not complete
-an export.** Do not believe the README on faster-than-real-time or container shape until this is
-finished; those claims are still unearned and the README now says so.
+`Render/VideoExporter.cs` completes an export. **Three consecutive 90-second 1080p30 runs** from the
+live app, driven through UI Automation against 65 fetched trading days:
+
+| run | `encode: enter` | `transcode returned` | wall time | samples |
+|---|---|---|---|---|
+| 1 | 10:40:33.996 | 10:41:02.905 | 28.9 s | 2700/2700 |
+| 2 | 10:43:37.709 | 10:44:05.047 | 27.3 s | 2700/2700 |
+| 3 | 10:46:46.893 | 10:47:21.613 | 34.7 s | 2700/2700 |
+
+**The fix was `MediaTranscoder.HardwareAccelerationEnabled = false`.** That is the only line that
+changed between the run that hung and the run that worked; same machine, same build otherwise, same
+data.
+
+**Where it was actually stuck, which was not any of the four candidates listed here before.**
+`CrashLog.Note` was added before and after each `await` in `EncodeAsync`. The trace ran
+
+```
+encode: file created ...      <- CreateFileAsync succeeded
+encode: opening file stream
+encode: file stream open
+encode: calling PrepareMediaStreamSourceTranscodeAsync
+```
+
+and then stopped. So: the folder resolves fine, the descriptor and `CanvasDevice` are built fine,
+`CreateFileAsync` succeeds — and **`PrepareMediaStreamSourceTranscodeAsync` never returns**. The
+process stays alive and responsive; `MediaStreamSource.Starting` is **never raised** and no sample is
+ever requested, so the failure is before the pipeline ever opens the source. The file created moments
+earlier is deleted by this method's own `catch`, which is why no `.mp4` was ever found — the earlier
+"no file is created" reading was the cleanup hiding the evidence.
+
+The four-way guess this replaces (`OutputFolder`, descriptor, `CanvasDevice`, `OnExport` never
+running) was wrong in all four. The trace is what settled it, and it is worth saying plainly: reading
+the UI distinguishes none of these, because a closed InfoBar looks the same whether the code never ran
+or ran and hung.
+
+**Verified about the output, by reading the boxes rather than by opening it in a player:**
+
+- `ftyp` → `uuid` → `mdat` → `moov`, and **no `moof` anywhere** — a plain, non-fragmented MP4, which
+  is the claim the whole design was built to make.
+- `mvhd` duration `2700000 / 30000` = **90.00 s**, exactly the duration asked for.
+- `stsz` sample count **2700**, one per frame drawn; one `vide` handler, no audio track.
+- 18.9 MB at High (10 Mbps).
+- The second and third runs wrote `...(2).mp4` beside the first, so
+  `CreationCollisionOption.GenerateUniqueName` is doing its job.
+
+Two measurement traps, both of which produced a wrong answer once:
+
+- **Reading the file too early.** A container check seconds after the transcode returned found no
+  `moov` and read as a broken file. The `moov` had not been flushed. Stat it twice.
+- **Misreading `stsz`.** Its fields are `sample_size` then `sample_count` at `+8` and `+12` after the
+  type, not at `+12`. Reading from the wrong offset reported 6553 samples, a number that looks
+  plausible and is about 2.4× too many.
+- **Misreading the progress unit.** `PrepareTranscodeResult.TranscodeAsync().AsTask(…, progress)`
+  reports a **percentage 0–100**, and the page multiplied it by 100 again, so the status read
+  "Encoding… 1211%". The conversion now lives in `VideoExporter`, which clamps as well — the
+  pipeline has been seen to overshoot at the end — and callers keep the fraction the parameter
+  documents. A live run sampled 1% → 13% → 25% → … → 96% → done, monotonically.
+
+**The format matrix has now been through the encoder**, driven over UI automation with the
+flip-check comparing each video's last frame against a cover exported in the same session:
+
+| format | frames | wall time | result |
+|---|---|---|---|
+| 1080×1920 · 30 fps | 2,700 | 28–35 s | complete, `moov` present, upright (MAD 2.25) |
+| 1080×1920 · 60 fps | 5,400 | 58 s | complete, `moov` present, 33.0 MB |
+| 1440×2560 · 30 fps | 2,700 | 53 s | complete, `moov` present, upright (MAD 1.87 same-session) |
+| 1440×2560 · 60 fps | 3,900 | 85 s | complete, `moov` present, upright (MAD 1.87 same-session) |
+
+**One 1440p60 run stalled** — at sample 3,200 of 5,400, app alive, file left truncated at
+`mdat` with no `moov`. It has not reproduced: a later 1440p60 run of 3,900 frames completed
+cleanly in a fresh session. The stall and the success differ in session age, frame count
+(5,400 vs 3,900) and export count in the session, so no single cause is established. If it
+comes back, the first suspicion is the long-lived session rather than the format, and the
+instrument is the same per-`await` trace that found the hardware-acceleration hang.
+
+**Still owed here.** The `bj899050` path has not been through the encoder; the diagnostic
+`CrashLog.Note` calls that found this have been removed again, per the note on `CrashLog.Note`
+itself. If export ever stops, put a trace back before reaching for anything else. The Stock
+Volume page has since had its own exports — daily and intraday, 1440p60, both verified upright —
+through the same `VideoExporter`, so the notes below about that method apply to it too.
+
+**Do not turn hardware acceleration back on without measuring.** Software encoding already beats real
+time by about 3×, so the case for the GPU is not obvious, and the failure mode is a silent hang.
+
+### The first export that completed was upside down
+
+Reported from watching the file: the whole frame was mirrored about the horizontal axis. The cause
+is a row-order disagreement — **Win2D hands back pixels top-down, Media Foundation's uncompressed RGB
+video samples are bottom-up** — and nothing outside the pixels could have revealed it. The container
+was a valid non-fragmented MP4, `mvhd` read 90.00 s, `stsz` held the 2,700 frames that were drawn,
+and the export finished in 28 seconds. Every property the previous pass checked was correct.
+
+**How it was diagnosed, which is the reusable part.** `Save cover PNG` renders the same frame through
+the same renderer at 1:1 with no transform, and the page parks on progress 1.0 after a fetch while
+exporting does not move the scrub — so the cover and the video's *last* decoded frame are the same
+frame. Decoding with PyAV and taking the mean absolute difference against the cover under each
+orientation:
+
+| orientation applied to the decoded frame | MAD before the fix | MAD after |
+|---|---|---|
+| none | 26.99 | **2.23** |
+| flipped vertically | **2.29** | 26.84 |
+| flipped horizontally | 29.21 | 13.98 |
+| rotated 180° | 12.85 | 28.95 |
+
+The two columns are the same table with the winner swapped, which is the whole diagnosis: one axis,
+with a residue of ~2 explained by H.264. Worth noting that the eye said "rotated 180°" at first, and
+the arithmetic says vertical only — 12.85 vs 2.29 is not close.
+
+The fix is `VideoExporter.FlipRows`, applied to the pixel buffer before the sample is built. It costs
+one row of scratch, not a second frame, and measures free: 29.8 s and 34.8 s for the same 2,700
+frames, against 28–35 s before it.
+
+**Owed:** the fix was verified at 1080p30, 1440p30 and 1440p60, each by comparing the *last*
+frame. Nobody has watched a corrected file play, and the middle of the animation has not been
+compared frame by frame — though the transform is per-frame and has no notion of where in the
+animation it is.
+
+**A measurement trap worth keeping, because it manufactured a bug that was not there.** The
+first 1440p comparison came out at MAD 11 against 2 at 1080p, and looked like a resolution bug:
+the plot area was shifted and the bars a different width, while the title block matched. The
+cause was the harness, twice over. `SetFocus` + `{Home}` on "the first slider in the tree" had
+moved a **margin** slider, not the duration one — margins move the plot area and are
+per-session state. And the two files being compared had been exported either side of an app
+restart, so they carried different margins. Re-exporting the cover and the video back to back
+in one session dropped the difference to 1.87. **A cover/video comparison is only evidence if
+both files come from the same session, untouched in between.**
 
 **One real bug was found and fixed, and it is worth knowing about beyond this class.** The first
 version drew frames on the media pipeline's `SampleRequested` thread using
@@ -132,27 +302,9 @@ log.** It is indistinguishable from somebody closing the window, which is exactl
 misdiagnosed for a while. Giving the exporter `new CanvasDevice()` stopped it dead. Anything that
 draws off the UI thread needs its own device.
 
-**Where it is stuck now.** After that fix the app survives, stays responsive, and spins up the media
-pipeline (thread count goes from ~30 to ~160). But for a 15-second, 450-frame export it reports no
-progress and — the decisive fact — **no `.mp4` is ever created**, even though `CreateFileAsync` runs
-*before* the transcode. So execution never reaches the file creation, which means it is blocked in
-one of:
-
-- `OutputFolder.TryGetAsync()` or `ChooseAsync` — a picker that opened without being found. The
-  earlier dialog scan only looked for window class `#32770`; a WinAppSDK picker may not use it.
-- the `MediaStreamSource` / descriptor construction,
-- `new CanvasDevice()`,
-- or `OnExport` never actually reaching `EncodeAsync`.
-
-**How to find out, cheaply.** Put a `ShowStatus` (or a `CrashLog.Write`) immediately before each of
-those four, run once, and read which one is the last to report. That distinguishes all four in a
-single run, where inspecting UI text distinguishes none of them — the InfoBar is simply closed, which
-is what "no `ShowStatus` has run" looks like and is why reading the status told us nothing for two
-attempts.
-
-Also worth checking once it runs: that `profile.Audio = null` is actually accepted alongside a
-video-only `MediaStreamSource`. If `CanTranscode` were false the code throws with the reason, and no
-such message appeared — but nor did any other, so that has not been *observed* to be fine.
+Also now observed rather than assumed: `profile.Audio = null` alongside a video-only
+`MediaStreamSource` is accepted — `prepared.CanTranscode` came back `True` with `FailureReason=None`
+on all three runs.
 
 ## What the encoder has to honour, and how to check it
 
@@ -161,14 +313,11 @@ The shape that follows: walk `0 → 1` in `Format.FrameCount(duration)` steps, d
 into a `CanvasRenderTarget`, feed the pixels to a `MediaStreamSource`, and transcode to
 H.264 MP4 with `MediaTranscoder` at `Format.BitsPerSecond`.
 
-Two things to verify rather than assume when it lands, because both are claims the README now
-makes:
-
-- **That the output is a non-fragmented MP4.** The whole point of leaving `MediaRecorder`
-  behind. Check the container by reading the boxes, not by whether an editor happens to open
-  it.
-- **That export is faster than real time.** Also the point. Time a 90-second export; if it
-  takes 90 seconds, something is still pacing on a clock.
+**Both of the things this section used to ask to be verified are now verified**, in the encoder
+section above: the container is a plain MP4 with no `moof`, and a 90-second export takes about 28
+seconds. They stay listed because they are the two properties a change to the encoder or to
+`IFrameRenderer` can still break, and the way to re-check them is unchanged — read the boxes, and
+time it.
 
 `Playback` deliberately *is* wall-clock, because a preview exists to answer "is this too fast
 to read". Do not let that leak into the encoder.
@@ -219,10 +368,13 @@ them are handled here yet.
   enough to judge pacing, and it does not tie preview smoothness to the compositor. If the
   preview stutters on large series, the redraw cost is the thing to measure first, not the
   timer.
-- **Margins are capped at 700 baseline pixels.** On a 1920-tall frame a bottom margin at the
-  maximum crosses the title block; `FrameContext.ChartHeight` clamps to at least 1 so it draws
-  as nothing rather than inverted. A real upper bound derived from the frame would be better
-  than a constant, but it needs the renderers to exist to know what they need.
+- **Margins are capped per side, not by one constant.** The side sliders run 40–260 in steps of
+  2 and the bottom runs 150–420 in steps of 5, which is the source tool's own range rather than
+  a guess — a single 40–700 range let the bottom margin be set to values that pushed content out
+  of frame. `FrameContext.PlotHeight` still clamps to at least 1, so a maximum bottom margin on
+  a short frame draws as nothing rather than as an inverted chart. The figures are constants
+  rather than bounds derived from the frame, which is defensible while both indicators want the
+  same stack below the baseline; if they ever differ, that is the thing to revisit.
 
 ## Not verified from a build
 
@@ -321,7 +473,15 @@ transparent corner and an opaque centre, and the `.ico` loads.
 - The output folder starts unset, and **Forget** is correctly disabled until one is chosen.
 - The help page renders all of the hand-written Markdown subset — headings, paragraphs and
   wrapped bullets — in Chinese.
-- The export button reports `StudioEncoderPending` through the page's status bar.
+- **A completed MP4 export, three times.** Driven end to end — launch, fetch 65 trading days,
+  press 导出 MP4 — three consecutive 90-second 1080p30 runs finished: 2700/2700 samples in 28.9 s,
+  27.3 s and 34.7 s, each leaving an 18.9 MB file whose boxes are `ftyp`/`uuid`/`mdat`/`moov`
+  with no `moof`, whose `mvhd` duration is 90.00 s, and whose `stsz` count is 2700. Details and the
+  two measurement traps behind those numbers are in the encoder section above.
+- Fetching reports honestly on live data: `共 65 个交易日（2026-06-26 ~ 2026-09-24）· 日均 23,481 ·
+  最高 36,600 · 最低 16,127`, with commas grouped the way the frame groups them.
+- **Play, export and cover are disabled on a fresh window and enabled after a fetch** — read off
+  the live UI Automation tree, not inferred from the code.
 - No `crash.log`, no Windows Error Reporting entry, and no fault in the Application log across
   roughly a dozen launches. The app also sat untouched for 25 seconds and then took a
   navigation to Stock Volume without incident, which is how "it keeps dying" was ruled out —
@@ -337,8 +497,10 @@ transparent corner and an opaque centre, and the `.ico` loads.
 - **Everything about the `bj899050` path.** Including the Beijing index has never been switched
   on against the live endpoint, so neither the third request nor the intersect-to-common-days
   rule has run with three venues. The two-venue case is what was verified.
-- **The refusal paths.** A range over 640 days, a range with fewer than three trading days, and
-  a network failure all have messages and none has been triggered.
+- **The refusal paths.** A range over 640 days, a range with fewer than three trading days, a
+  custom range whose start is not before its end, and a network failure all have messages and
+  none has been triggered. Setting the two date pickers the wrong way round is the easiest of
+  the four to reach and worth trying first.
 - **Playback still has not been started**, so the 60 Hz redraw cost of a 67-bar frame is unmeasured.
 - **The calendar's extreme markers at full resolution.** The peak and low cells get a boxed
   outline and a label at 20 baseline pixels, which in a preview scaled to about a quarter is
@@ -361,7 +523,16 @@ transparent corner and an opaque centre, and the `.ico` loads.
 - Whether the 360-pixel parameter column survives German and Russian, the two that overflow a
   column tuned in English. Chinese fits comfortably.
 - Whether any of the fourteen translations reads badly to a native speaker.
-- Everything about export, which is not written.
+- **Export at anything other than 1080p30.** Three runs all used the default resolution and frame
+  rate. 1440p and 60 fps have never been through `MediaTranscoder`, and neither has the cancel
+  button — every run was allowed to finish.
+- **Export from the Stock Volume page.** Its export button shares `VideoExporter`, but the page has
+  no renderer and no series, so it has never been clickable.
+- **Export with the `bj899050` venue included**, which changes the series rather than the encoder.
+- **That the exported video looks like the preview *throughout*.** This has moved a long way: the
+  last decoded frame now matches a cover export of the same frame at a mean difference of 2.23, and
+  that is what caught the vertical flip. But it is one frame out of 2,700. Nothing has compared a
+  mid-animation frame, and nobody has watched the corrected file play end to end.
 
 To run it again:
 
@@ -396,21 +567,17 @@ The checks that hold the set together are in `.cursor/rules/keep-translations-co
 All fourteen must report `ok`, `fffd=0`, `doubled=0`, and all fourteen help documents must
 report the same block count.
 
-## The help documents now under-describe the feature
+## Help documents: the three missing pages are now written (all fourteen)
 
-**Owed, in all fourteen.** `Assets\Help\help-<tag>.md` describes the whole-market chart as bars and
-says nothing about the two calendars, the gain/loss metric, the remembered settings or the cover
-export. Nothing in them is *false* — the bar form still exists and behaves as described — but a
-reader who opens Help to find out what the calendar is will not find out.
+The sector-race, monthly-matrix and gain-loss-calendar pages had no help sections in any of the
+fourteen files. Each now has a section inserted after "个股成交量 / Stock Volume" and before
+"视频 / Video", describing the two measures/rosters (race), the year-vs-compare modes (matrix) and
+the shared watchlist plus the ~640-day cap (calendar). All fourteen parse to 42 blocks, so the
+`keep-translations-complete.mdc` equality check still passes.
 
-This was left rather than half-done because the fourteen must keep an identical block count, so the
-edit is one careful pass across all of them, not a sentence added to the English one. The check is in
-`keep-translations-complete.mdc`; they currently report 24 blocks each.
-
-What needs adding, and roughly where: the "全市场成交额 / Market Turnover" section wants a sentence
-per form and the note that switching does not re-fetch; the "视频 / Video" section wants the title
-box and the cover button; and a line somewhere that parameters are remembered but data is not. That
-is about four blocks, so the target becomes 28 in all fourteen.
+Still owed, minor: the "视频 / Video" section could mention the title box and the cover-button
+export, and a line that parameters are remembered but data is not. Small, and not part of the
+cross-language block-count contract, so left rather than half-done.
 
 ## Scaffold markers to remove
 
@@ -426,3 +593,125 @@ They are deliberately shown through the pages' own status bar rather than as dis
 with no explanation, so the state is legible rather than looking like a fault. That also means
 they are easy to leave in by accident: fourteen languages each, and nothing in the build will
 mention them.
+
+## The fifth page, and what reusing a renderer actually cost
+
+**Gain-loss Calendar** is the whole-market page's return view freed from its fixed series. The
+claim worth writing down is that it has **no renderer of its own**: `CalendarHeatmapRenderer`
+takes whatever `TurnoverSeries` it is handed, so "any stock or index" is one loader
+(`InstrumentCalendar`) that shapes one instrument's bars into that record, behind
+`Metric.Return`. The same grid, colour ramp, closing cards and extremes as the whole-market
+form — because they are the same code, not because they were re-implemented.
+
+- **The subtitle had a name baked in.** `ReturnMetric.Subtitle` was a fixed string ("上证指数 ·…")
+  because the whole-market page's returns come from one venue. Naming an arbitrary instrument
+  meant a new `TurnoverSeries.ReturnSource` field and a `{0}` in the resource string — the
+  whole-market page passes the composite's name, the calendar page passes the fetched one, and
+  the rendered line is unchanged on the page it came from. The lesson generalises: a fixed
+  string is a field that was never asked for.
+- **`StockBarsAsync` is the universal loader.** Its guard accepts any sh/sz/bj-prefixed code and
+  the endpoint answers indices as happily as stocks — and it extracts the instrument's display
+  name from the response's `qt` block, which `DailyBarsAsync` throws away. One round trip, bars
+  and name together. The `qfqday`-preferred parse is also right for a price-change calendar.
+- **Day zero is 0%**, as on the whole-market page. The alternative — fetching one bar before the
+  range so the first day has a real change — makes the first cell depend on a day the calendar
+  does not show, and the two pages must agree on that or the same range draws different pictures.
+- **The watchlist is shared with the per-stock page** by writing the favourites key under that
+  page's preferences prefix. This is the one deliberate cross-page key: a favourite is a fact
+  about the instrument, not about the page it was added on, and two lists would drift apart the
+  moment either is edited.
+- **The suggestion list is filtered to A-shares** — the bars endpoint's guard is an 8-character
+  two-letter-plus-six-digit shape, and a Hong Kong row that refuses on click is a suggestion
+  that lied. Typing a raw code is normalised the same way and refused with the same message.
+- **Found by testing, not building:** the nav item showed the literal text "NavigationViewItem"
+  — the resource key was written as `NavGainCalendar` where the x:Uid mechanism reads
+  `NavGainCalendar.Content`. `Strings.Get` silently returns the key for unknown keys; the XAML
+  compiler does not check uid keys at all. **Both gaps are silent, so neither is caught by a
+  build** — a new x:Uid key's name must be checked against the control's property, not assumed.
+- **Verified live, both paths:** 上证指数 by preset click, 贵州茅台 by typed code — each
+  fetched (~4 s), covered, and the stock encoded to a 10 s 300-frame MP4: plain container, last
+  frame against the cover at MAD 1.76 as-is versus 17.65 flipped. Driving caveat for next time:
+  UIA's `SelectionItemPattern.Select` on an `AutoSuggestBox` suggestion does **not** fire
+  `QuerySubmitted`, so the "pick a suggestion" path cannot be driven that way — type the code
+  and press Enter instead.
+
+## The market page's gain/loss view was removed, not ported
+
+Once the gain-loss calendar had its own page on any stock or index, the whole-market page's
+copy of the view had nothing left to offer: the same renderer, the same metric, and one
+instrument that is a preset on the other page. Two places producing the same video is a choice
+nobody needs. The view is gone from the combo, `ChosenMetric` collapsed back to
+`Metric.Turnover`, and `TurnoverViewReturns` was deleted from all fourteen resw files (241 keys,
+same order everywhere). **The `Metric.Return` strings stay** — the gain-loss calendar page uses
+them through the same metric object; removing strings a live page still reads would be exactly
+the kind of "cleanup" that is actually a regression.
+
+What made the removal safe to verify: a saved preference of `View = 2` from the three-view era
+falls through the restore's range check to the first view rather than throwing — the check was
+written for a different reason, and this is the second time it has paid. Verified live: the
+combo lists two items, the calendar form fetches and covers, and the exported frame is the
+turnover heatmap, not the change calendar.
+
+Resolved: the help documents now describe all five pages — the sector-race, matrix and gain-loss
+calendar sections were added to all fourteen files (see "Help documents: the three missing pages").
+
+## The notification-area icon, ported from AgolAdminKit
+
+Closing the window used to end the app, because there was nothing to bring it back from.
+The tray is that something: `H.NotifyIcon.WinUI` 2.4.1 (the reference app ships the same
+version against the same net10 + WindowsAppSDK 2.5.1 stack), a `TaskbarIcon` in the
+window's tree that outlives the window being hidden, a menu of Open and Exit, and a
+Settings switch tied to the stored `ShowTrayIcon`. The two settings are one setting on
+purpose: with the icon off there is no way back to a hidden window, so close then means
+close — `CloseHidesToTray` is just `ShowTrayIcon`, and the app can never end up running
+and unreachable.
+
+Two findings worth keeping:
+
+- **`MenuFlyoutItem`'s uid suffix is `.Text`, not `.Content`.** Written as `.Content` the
+  app dies at launch with `XamlParseException: Unable to resolve property 'Content'` —
+  the third instance of this bug class (after `NavGainCalendar` and `StockAddFavourite`),
+  and again invisible to the compiler. When porting XAML from a reference, copy its resw
+  key names before writing the markup.
+- **`AppInstance.Activated` fires off the UI thread.** The second launch's
+  bring-to-front call went straight from that thread to `AppWindow.Show()` and silently
+  did nothing — no exception, no log, and a hidden window that stayed hidden. The fix is
+  one line: `BringToFront` marshals through the window's dispatcher. The tray menu
+  commands needed no such treatment; H.NotifyIcon dispatches those itself.
+
+Verified live, every branch: close hides with the process alive; a second launch recovers
+the window in about a second; the icon itself responds (Win+B, Enter reached and activated
+it twice, independently); with the switch off, close exits the process; the switch state
+survives a restart; and turning it back on restores close-to-tray. Driving note: real
+window closes from a harness go through `PostMessageW(hwnd, WM_CLOSE, 0, 0)` — neither
+`WindowControl.Close` nor `Alt+F4` is usable from `uiautomation`.
+
+## Start with Windows, the third AgolAdminKit port
+
+The startup task pairs with the tray: the declaration lives in the manifest as
+`uap5:StartupTask` with `Enabled="false"` — Windows requires the declaration to exist
+before the app may ask, but starting at logon is the user's decision, and Task Manager's
+Startup tab shows the DisplayName where the user can override the app permanently. The
+exe name inside the extension is spelled out; `$targetnametoken$` is rewritten on the
+Application element and nowhere else, so tokenised it survives MakeAppx and fails real
+package validation. When Windows launches the app through the task, the activation kind
+says so, and the window stays hidden in the notification area instead of landing in
+front of whoever just logged in — but only while the tray icon is on, since without it
+the hidden app would be unreachable.
+
+**The finding that cost an hour: changing the manifest requires a version bump.**
+`Add-AppxPackage -Register` of an already-installed development package succeeds
+silently when only code changed — every previous redeploy had done exactly that — and
+fails with `0x80073CFB` ("already installed, reinstall forbidden") once the manifest
+differs. Silently, in the first attempt, because the failure surfaced only as
+`StartupTask.GetAsync` throwing "Couldn't find a StartupTask in the appx manifest with
+the input taskId" at runtime — a message that reads like a manifest problem but is a
+registration one. The diagnosis path that worked: the app's own log said what was
+missing, the deployment log (`0x80073CFB`) said why re-registering had not taken, and
+the fix was `Version="0.1.0.0" → "0.2.0.0"` in `Package.appxmanifest`. Data survives the
+bump; removing the package first would not.
+
+Verified live: the switch reads its initial state from Windows, enabling reports Enabled
+and survives a full process restart (the state comes back from `StartupTask.GetAsync`,
+not from the app's own storage), disabling likewise persists. Left disabled — running at
+logon is the user's call, and the switch is where they make it.

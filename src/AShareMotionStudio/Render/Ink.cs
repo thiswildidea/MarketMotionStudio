@@ -86,6 +86,23 @@ public static class Ink
     }
 
     /// <summary>
+    /// Left edge at <paramref name="x"/>, vertically centred on <paramref name="middleY"/> —
+    /// a value label following the end of a bar, which sits on the bar's centre line.
+    /// </summary>
+    public static void LeftAt(
+        CanvasDrawingSession session, string text, double x, double middleY,
+        CanvasTextFormat format, Color colour, double opacity = 1)
+    {
+        using var layout = new CanvasTextLayout(session, text, format, 0, 0);
+
+        session.DrawTextLayout(
+            layout,
+            (float)x,
+            (float)(middleY - (layout.LayoutBounds.Height / 2)),
+            Fade(colour, opacity));
+    }
+
+    /// <summary>
     /// One line built from runs of different colour, size and weight, centred as a whole.
     ///
     /// Measured in full before anything is drawn. Centring each run on its own would

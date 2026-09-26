@@ -154,6 +154,136 @@ public sealed class TencentKline(HttpClient http)
         TimeOnly.FromDateTime(DateTime.Now) >= SettledAfter;
 
     /// <summary>
+    /// One daily bar of a single stock, in the units the endpoint hands them over.
+    ///
+    /// Raw rather than converted because the volume field's unit is not fixed: for most
+    /// listings it is lots (手) and for STAR-market ones it is shares, and deciding which
+    /// needs the close and the amount beside it. See <see cref="StockSeries"/> for where that
+    /// decision is made — it is a property of a whole series, not of one bar.
+    /// </summary>
+    public sealed record StockBar(DateOnly Date, double Close, double RawVolume, double TurnoverRate, double AmountWan);
+
+    /// <summary>
+    /// One stock's daily bars over a range, unconverted.
+    ///
+    /// Same endpoint and same envelope as <see cref="DailyBarsAsync"/> — the market page and the
+    /// stock page ask it different questions of the same rows — so the parsing here follows the
+    /// same rules: index-read fields, settled days only, exact range trim.
+    /// </summary>
+    public async Task<List<StockBar>> StockBarsAsync(
+        string code, DateOnly start, DateOnly end, CancellationToken cancellation)
+    {
+        if (!IsStockCode(code))
+        {
+            throw new ArgumentException($"Not a stock code: {code}", nameof(code));
+        }
+
+        if (start >= end)
+        {
+            throw new ArgumentException("The start date must fall before the end date.", nameof(start));
+        }
+
+        var span = end.DayNumber - start.DayNumber;
+        var count = Math.Clamp(span, 5, MostBarsPerRequest);
+
+        var iso = CultureInfo.InvariantCulture;
+        var parameter = $"{code},day,{start:yyyy-MM-dd},{end:yyyy-MM-dd},{count.ToString(iso)},qfq";
+        var uri = $"{Endpoint}?param={Uri.EscapeDataString(parameter)}";
+
+        using var response = await http.GetAsync(uri, cancellation);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
+        using var json = await JsonDocument.ParseAsync(stream, cancellationToken: cancellation);
+
+        var root = json.RootElement;
+
+        if (!root.TryGetProperty("code", out var status) || status.GetInt32() != 0)
+        {
+            var message = root.TryGetProperty("msg", out var msg) ? msg.GetString() : null;
+            throw new InvalidOperationException($"{code}: {message ?? "the quote source reported a failure"}");
+        }
+
+        if (!root.TryGetProperty("data", out var data) || !data.TryGetProperty(code, out var node))
+        {
+            throw new InvalidOperationException($"{code}: the response carried no data for this code.");
+        }
+
+        var bars = node.TryGetProperty("qfqday", out var adjusted) && adjusted.GetArrayLength() > 0
+            ? adjusted
+            : node.TryGetProperty("day", out var plain) ? plain : default;
+
+        if (bars.ValueKind != JsonValueKind.Array || bars.GetArrayLength() == 0)
+        {
+            throw new InvalidOperationException($"{code}: no daily bars in the response.");
+        }
+
+        // The stock's name rides along in the envelope's `qt` block, free of a second request.
+        var name = code.ToUpperInvariant();
+
+        if (node.TryGetProperty("qt", out var qt) && qt.TryGetProperty(code, out var meta) &&
+            meta.GetArrayLength() > 1 && meta[1].GetString() is { Length: > 0 } known)
+        {
+            name = known;
+        }
+
+        var series = new List<StockBar>();
+
+        foreach (var bar in bars.EnumerateArray())
+        {
+            if (bar.ValueKind != JsonValueKind.Array || bar.GetArrayLength() < 9)
+            {
+                continue;
+            }
+
+            if (!DateOnly.TryParseExact(bar[0].GetString(), "yyyy-MM-dd", out var day) ||
+                !double.TryParse(bar[2].GetString(), NumberStyles.Float, iso, out var close) ||
+                !double.TryParse(bar[5].GetString(), NumberStyles.Float, iso, out var volume) ||
+                !double.TryParse(bar[8].GetString(), NumberStyles.Float, iso, out var amount))
+            {
+                continue;
+            }
+
+            double.TryParse(bar[7].GetString(), NumberStyles.Float, iso, out var rate);
+
+            if (day < start || day > end || !IsSettled(day))
+            {
+                continue;
+            }
+
+            series.Add(new StockBar(day, close, volume, rate, amount));
+        }
+
+        if (series.Count == 0)
+        {
+            throw new InvalidOperationException($"{code}: no daily bars in that range.");
+        }
+
+        BarMeta[code] = name;
+
+        return series;
+    }
+
+    /// <summary>
+    /// The name seen on the last bars fetch for a code, for callers that never made a separate
+    /// lookup. Keyed rather than returned because the bars and the name come from one response —
+    /// threading both out of one method would mean a tuple whose second half every caller passes on.
+    /// </summary>
+    private readonly Dictionary<string, string> BarMeta = [];
+
+    public string LastName(string code) => BarMeta.TryGetValue(code, out var name) ? name : code.ToUpperInvariant();
+
+    /// <summary>
+    /// A stock code is looser than a market code: five digits for Hong Kong, letters for a US
+    /// ticker. The prefix still has to be one this app knows how to quote.
+    /// </summary>
+    private static bool IsStockCode(string code) =>
+        code.Length >= 4 &&
+        (code.StartsWith("sh") || code.StartsWith("sz") || code.StartsWith("bj") ||
+         code.StartsWith("hk") || code.StartsWith("us")) &&
+        code[2..].Length > 0;
+
+    /// <summary>
     /// A two-letter venue prefix and six digits, which is every code this app sends.
     /// </summary>
     private static bool IsMarketCode(string code) =>

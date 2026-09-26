@@ -1,4 +1,4 @@
-# AShare Motion Studio
+﻿# AShare Motion Studio
 
 Diese App macht aus Kennzahlen des A-Aktien-Markts hochformatige Videos für das Telefon. Sie wählen einen Zeitraum, betrachten die Vorschau, bis sie sich gut liest, und exportieren eine MP4-Datei. Mehr muss nicht installiert werden.
 
@@ -16,6 +16,33 @@ Volumen und Umschlagsrate eines Titels, in zwei übereinanderliegenden Feldern.
 
 - Über Handelstage hinweg sind Volumen und Umschlagsrate proportional, die beiden Felder haben also fast dieselbe Form. Innerhalb eines Tages sehen Minutenvolumen und kumulierte Umschlagsrate wirklich unterschiedlich aus, und das ist das interessantere Bild.
 - Die Intraday-Quelle hält nur die letzten Handelstage, daher bietet dieser Modus diese Tage an und kein beliebiges Datum.
+
+## Sektor-Rennen
+
+Eine Gruppe von Sektoren oder Aktien als waagerechte Balken, die einander überholen, die Reihenfolge ändert sich bis zum letzten Bild.
+
+- Zwei Maße: die Prozentveränderung des Zeitraums und sein Umsatz in Hunderten Millionen Yuan. Das Maß zu wechseln färbt nur dieselben Daten neu ein, es wird nicht neu geladen.
+- Vier Listen: Shenwan-Ebene-1-Branchen, beliebte Themen, benutzerdefiniert (ankreuzen) und Einzelaktien (per Suche hinzufügen). Die benutzerdefinierte Liste beginnt mit den Shenwan-Ebene-1-Branchen gefüllt.
+- Der Zeitraum kann 1, 3, 6 oder 12 Monate betragen oder frei mit Start- und Enddatum gewählt werden.
+- Eine Liste hat eine Mindest- und Höchstzahl an Einträgen — zu wenige Balken sind kein Rennen, zu viele ein Wirrwarr.
+
+## Monatsmatrix
+
+Monatsbalken als Raster gelegt: der Jahresmodus zeigt die Saisonalität eines Instruments über ein Jahrzehnt, der Vergleichsmodus stellt mehrere Instrumente nebeneinander, um die Rotation zu zeigen.
+
+- Jahresmodus: ein Instrument wählen (Suche oder ein voreingestellter Breitbandindex); der Bereich ist 1–10 Jahre oder alle. Eine Anfrage liefert ein Jahrzehnt Monatsbalken.
+- Vergleichsmodus: 2–14 Instrumente einer Liste (Ebene-1-Branchen / Themen / Breitbandindizes / benutzerdefiniert / Aktien) nebeneinander, über 6 bis 48 Monate.
+- Das Raster leuchtet Zelle für Zelle in Zeitfolge auf; am Ende werden der stärkste und schwächste Monat des Bereichs und weitere Kennzahlen gezeigt.
+- Monatsdaten decken ein Jahrzehnt auf einmal ab, es gibt also keine tägliche Tagesspanne — doch zu viele Instrumente laufen über das Bild hinaus.
+
+## Gewinn-Verlust-Kalender
+
+Jede chinesische Aktie oder jeder Index, sein täglicher Anstieg oder Rückgang als Kalenderzellen pro Monat: Rot bei Plus, Grün bei Minus.
+
+- Suche nach Code, Name oder Pinyin; Voreinstellungen sind Breitbandindizes. Nur chinesische Aktien und Indizes.
+- Die Favoritenliste wird mit der Aktienseite der App geteilt — ein Favorit, der auf einer Seite hinzugefügt wird, erscheint auf beiden.
+- Der Zeitraum ist 1, 3, 6 oder 12 Monate oder frei; ein einzelnes Instrument unterliegt weiter der Grenze von etwa 640 Kalendertagen.
+- Die Abschlusswerte nennen die Zahl der Handelstage im Plus und im Minus.
 
 ## Video
 

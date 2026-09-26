@@ -1,4 +1,4 @@
-# AShare Motion Studio
+﻿# AShare Motion Studio
 
 This app turns A-share market indicators into vertical videos for phones. You pick a period, look at the preview until it reads well, and export an MP4. Nothing else has to be installed.
 
@@ -16,6 +16,33 @@ One stock's volume against its turnover rate, as two stacked panels.
 
 - Across trading days, volume and turnover rate are proportional, so the two panels have nearly the same shape. Within one day, per-minute volume and cumulative turnover look genuinely different, which is the more interesting picture.
 - The intraday source only keeps the last few trading days, so that mode offers those rather than an arbitrary date.
+
+## Sector Race
+
+A set of sectors or stocks, drawn as horizontal bars that overtake one another, the order changing right up to the last frame.
+
+- Two measures: the interval's gain/loss percentage, and its turnover in hundreds of millions of yuan. Switching is just a re-colour of the same data; it does not fetch again.
+- Four rosters: SW Level-1 industries, hot themes, custom (tick the boxes), and individual stocks (search to add). The custom roster starts filled with the SW Level-1 set.
+- The interval can be 1, 3, 6 or 12 months, or a custom start and end date.
+- A roster has a minimum and a maximum size — too few bars is no race, too many crowd into a blur.
+
+## Monthly Matrix
+
+Monthly bars laid into a grid: year mode shows one instrument's decade of seasonality, compare mode puts several side by side to show rotation.
+
+- Year mode: pick one instrument (search, or a preset broad index); the span is 1-10 years or all. One request returns a decade of monthly bars.
+- Compare mode: 2-14 instruments from a roster (Level-1 industries / themes / broad indices / custom / stocks) side by side, across 6 to 48 months.
+- The grid lights cell by cell in time order; the close-out shows the strongest and weakest months in the span, among other stats.
+- Monthly data covers a decade in one go, so there is no daily-style day cap here - but too many instruments run past the frame.
+
+## Gain-loss calendar
+
+Any A-share stock or index, its daily rise or fall laid into calendar cells by month: red for up, green for down.
+
+- Search by code, name or pinyin; presets are broad indices. A-share instruments only.
+- The watchlist is shared with this app's stock page - a favourite added in either place shows in both.
+- The interval is 1, 3, 6 or 12 months, or custom; a single instrument is still bound by the ~640-calendar-day fetch limit.
+- The close-out stats give the count of up and down trading days.
 
 ## Video
 

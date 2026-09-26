@@ -74,6 +74,34 @@
                 </StackPanel>
             </Border>
 
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="SettingsTrayIcon" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ToggleSwitch x:Name="TrayToggle" Toggled="OnTrayToggled" />
+                    <TextBlock x:Uid="SettingsTrayIconNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="SettingsStartup" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ToggleSwitch x:Name="StartupToggle" Toggled="OnStartupToggled" />
+                    <TextBlock x:Uid="SettingsStartupNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
             <!-- The disclaimer is in the Store listing, at the end of the help
                  document and on both indicator pages. Repeated on purpose: this is
                  the one sentence whose absence is a problem, and the places it
