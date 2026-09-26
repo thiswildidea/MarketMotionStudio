@@ -121,9 +121,13 @@ public sealed class DcaRenderer : IFrameRenderer
             }
         }
 
-        // Which points have arrived, and how far the arriving one has grown. The lines
+        // Which points have arrived, and how far the arriving one has come. The lines
         // are cumulative, so growth eases without overshoot — a total that exceeds its
         // own final value and retreats reads as the data being corrected.
+        //
+        // The arriving point eases in *from the previous point's level*, not from the
+        // baseline — see PositionRenderer for why: a line whose newest segment dives to
+        // the floor and back reads as a crash, not as an arrival.
         var points = _series.Points;
         var visible = new List<(double X, double YValue, double YInvested)>(n);
 
@@ -139,7 +143,21 @@ public sealed class DcaRenderer : IFrameRenderer
             var mark = points[i];
             var x = mx + (n > 1 ? plotW * i / (n - 1) : 0);
 
-            visible.Add((x, bottom - (mark.Value * p / _scale.Top * span), bottom - (mark.Invested * p / _scale.Top * span)));
+            double value, invested;
+
+            if (i == 0)
+            {
+                value = mark.Value * p;
+                invested = mark.Invested * p;
+            }
+            else
+            {
+                var previous = points[i - 1];
+                value = previous.Value + ((mark.Value - previous.Value) * p);
+                invested = previous.Invested + ((mark.Invested - previous.Invested) * p);
+            }
+
+            visible.Add((x, bottom - (value / _scale.Top * span), bottom - (invested / _scale.Top * span)));
         }
 
         var movingIndex = visible.Count - 1;

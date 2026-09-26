@@ -123,9 +123,15 @@ public sealed class PositionRenderer : IFrameRenderer
             }
         }
 
-        // Which points have arrived, and how far the arriving one has grown. The value
+        // Which points have arrived, and how far the arriving one has come. The value
         // line eases without overshoot — a total that exceeds its own final value and
         // retreats reads as the data being corrected.
+        //
+        // The arriving point eases in *from the previous point's level*, not from the
+        // baseline. Bars grow from zero because a bar is a column standing on the axis;
+        // a line's newest segment would otherwise plunge from the previous close to the
+        // floor and climb back, a crack that reads as a crash — glaring in a paused
+        // frame, a permanent dent at the leading edge in playback.
         var points = _series.Points;
         var visible = new List<(double X, double YValue, double YCapital)>(n);
 
@@ -141,7 +147,23 @@ public sealed class PositionRenderer : IFrameRenderer
             var mark = points[i];
             var x = mx + (n > 1 ? plotW * i / (n - 1) : 0);
 
-            visible.Add((x, bottom - (mark.Value * p / _scale.Top * span), bottom - (mark.Capital * p / _scale.Top * span)));
+            double value, capital;
+
+            if (i == 0)
+            {
+                // The first point has no level to come from, so it rises from the axis —
+                // there is no segment yet, so nothing can crack.
+                value = mark.Value * p;
+                capital = mark.Capital * p;
+            }
+            else
+            {
+                var previous = points[i - 1];
+                value = previous.Value + ((mark.Value - previous.Value) * p);
+                capital = previous.Capital + ((mark.Capital - previous.Capital) * p);
+            }
+
+            visible.Add((x, bottom - (value / _scale.Top * span), bottom - (capital / _scale.Top * span)));
         }
 
         var movingIndex = visible.Count - 1;
