@@ -39,14 +39,14 @@
   <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
-  <data name="NavMarketTurnover.Content"><value>Оборот всего рынка</value></data>
-  <data name="NavStockVolume.Content"><value>Объём акций · Оборачиваемость</value></data>
+  <data name="NavMarketTurnover.Content"><value>Оборот рынка</value></data>
+  <data name="NavStockVolume.Content"><value>Объём и оборачиваемость</value></data>
   <data name="NavHelp.Content"><value>Справка</value></data>
   <data name="NavSettings.Content"><value>Параметры</value></data>
 
-  <data name="MarketTurnoverPageTitle.Text"><value>Оборот всего рынка</value></data>
+  <data name="MarketTurnoverPageTitle.Text"><value>Оборот рынка</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Дневной оборот всего рынка или одного сегмента. Две формы одной картинки; переключение ничего не загружает заново.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Объём акций · Оборачиваемость</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Объём и оборачиваемость</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Объём одной бумаги против её оборачиваемости — за период или внутри одного дня.</value></data>
   <data name="SettingsPageTitle.Text"><value>Параметры</value></data>
   <data name="HelpPageTitle.Text"><value>Справка</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} с</value></data>
   <data name="StudioStageNoData"><value>Данных пока нет</value></data>
   <data name="StudioCredit"><value>Источник: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Месячная матрица</value></data>
-  <data name="MatrixPageTitle.Text"><value>Месячная матрица</value></data>
+  <data name="NavMatrix.Content"><value>Матрица доходности</value></data>
+  <data name="MatrixPageTitle.Text"><value>Матрица доходности</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Десятилетие месячных баров за один запрос; ячейки загораются в порядке времени.</value></data>
   <data name="MatrixModeLabel.Text"><value>Тип матрицы</value></data>
   <data name="MatrixModeYear.Content"><value>Одна цель · годы × месяцы</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>Не больше {0}; больше в вертикаль не поместится.</value></data>
   <data name="MatrixFetching"><value>Загрузка месячных баров {0} …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} ячеек · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Месячная матрица</value></data>
+  <data name="MatrixStageTitle"><value>Матрица доходности</value></data>
   <data name="NavSectorRace.Content"><value>Гонка секторов</value></data>
   <data name="SectorRacePageTitle.Text"><value>Гонка секторов</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Дюжина полос обгоняет друг друга; порядок меняется до последнего кадра.</value></data>
@@ -169,7 +169,7 @@
   <data name="StudioDisclaimer.Text"><value>Только для справки. Не является инвестиционной рекомендацией.</value></data>
   <data name="StudioDataLayerPending"><value>Получение котировок пока не сделано. Настройки видео и компоновки и предпросмотр уже работают; слой данных — следующий шаг.</value></data>
   <data name="StudioEncoderPending"><value>Экспорт пока не сделан. Предпросмотр уже идёт по настоящему пути отрисовки; кодировщик — следующий шаг.</value></data>
-  <data name="MarketTurnoverStageTitle"><value>Оборот всего рынка</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Оборот рынка</value></data>
   <data name="StockVolumeStageTitle"><value>Объём и оборачиваемость</value></data>
   <data name="StockBadCode"><value>Такой код здесь получить нельзя. Введите код, название или пиньинь и выберите из списка.</value></data>
   <data name="StockChosen"><value>Выбрано: {0} ({1}).</value></data>

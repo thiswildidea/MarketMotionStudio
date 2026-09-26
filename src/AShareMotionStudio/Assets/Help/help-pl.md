@@ -2,7 +2,7 @@
 
 Ta aplikacja zamienia wskaźniki rynku akcji A w pionowe filmy na telefon. Wybierasz okres, patrzysz na podgląd, aż da się go dobrze odczytać, i eksportujesz plik MP4. Nic więcej nie trzeba instalować.
 
-## Obroty całego rynku
+## Obroty rynku
 
 Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen zsumowane, jeden słupek na sesję.
 
@@ -10,7 +10,7 @@ Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen 
 - Sesja wciąż trwająca jest pomijana. Niedokończony dzień zawiera tylko swój fixing otwarcia i narysowałby się jako słupek przyklejony do osi.
 - Albo patrzeć na jeden segment: każdą giełdę, każdy rynek główny, STAR, ChiNext. Rynki główne wyliczono jako sumę giełdową minus rynek wzrostu; BSE 50 pozostaje miarą składników.
 
-## Wolumen spółki
+## Wolumen i obrót
 
 Wolumen jednej spółki na tle jej wskaźnika obrotu, w dwóch panelach jeden nad drugim.
 
@@ -26,7 +26,7 @@ Zbiór sektorów lub akcji jako poziome paski, które wyprzedzają się nawzajem
 - Zakres to 1, 3, 6 lub 12 miesięcy albo dowolna data początkowa i końcowa.
 - Lista ma minimalną i maksymalną liczbę pozycji — za mało pasków to nie wyścig, za dużo się zleje.
 
-## Macierz miesięczna
+## Macierz stóp zwrotu
 
 Miesięczne słupki ułożone w siatkę: tryb roku pokazuje sezonowość instrumentu przez dekadę, tryb porównania stawia kilka instrumentów obok siebie, by pokazać rotację.
 

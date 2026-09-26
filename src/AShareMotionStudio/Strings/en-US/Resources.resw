@@ -44,7 +44,7 @@
 
   <!-- Navigation -->
   <data name="NavMarketTurnover.Content"><value>Market Turnover</value></data>
-  <data name="NavStockVolume.Content"><value>Stock Volume · Turnover</value></data>
+  <data name="NavStockVolume.Content"><value>Volume and Turnover</value></data>
   <data name="NavHelp.Content"><value>Help</value></data>
   <data name="NavSettings.Content"><value>Settings</value></data>
 
@@ -52,7 +52,7 @@
        way everywhere rather than translated a second time. -->
   <data name="MarketTurnoverPageTitle.Text"><value>Market Turnover</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Daily turnover of the whole market or one board. Two forms of the same picture; switching re-fetches nothing.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Stock Volume · Turnover</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volume and Turnover</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>One stock's volume against its turnover rate, over a range of days or within a single one.</value></data>
   <data name="SettingsPageTitle.Text"><value>Settings</value></data>
   <data name="HelpPageTitle.Text"><value>Help</value></data>
@@ -101,8 +101,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
   <data name="StudioStageNoData"><value>No data yet</value></data>
   <data name="StudioCredit"><value>Source: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Monthly Matrix</value></data>
-  <data name="MatrixPageTitle.Text"><value>Monthly Matrix</value></data>
+  <data name="NavMatrix.Content"><value>Return Matrix</value></data>
+  <data name="MatrixPageTitle.Text"><value>Return Matrix</value></data>
   <data name="MatrixPageSubtitle.Text"><value>A decade of monthly bars per request; cells light up in time order — one target's seasonality, or a roster's rotation.</value></data>
   <data name="MatrixModeLabel.Text"><value>Matrix kind</value></data>
   <data name="MatrixModeYear.Content"><value>One target · years × months</value></data>
@@ -143,7 +143,7 @@
   <data name="MatrixTooManyTargets"><value>At most {0}; beyond that a vertical frame cannot hold the rows.</value></data>
   <data name="MatrixFetching"><value>Fetching {0} monthly bars …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} cells · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Monthly Matrix</value></data>
+  <data name="MatrixStageTitle"><value>Return Matrix</value></data>
   <data name="NavSectorRace.Content"><value>Sector Race</value></data>
   <data name="SectorRacePageTitle.Text"><value>Sector Race</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>A dozen horizontal bars overtaking one another, the order changing to the last frame.</value></data>
@@ -176,8 +176,8 @@
   <data name="StudioDisclaimer.Text"><value>For reference only. Not investment advice.</value></data>
   <data name="StudioDataLayerPending"><value>Fetching quotes is not built yet. The video and layout controls and the preview work now; the data layer is the next step.</value></data>
   <data name="StudioEncoderPending"><value>Exporting is not built yet. The preview already runs the real render path; the encoder is the next step.</value></data>
-  <data name="MarketTurnoverStageTitle"><value>Whole-market turnover</value></data>
-  <data name="StockVolumeStageTitle"><value>Volume and turnover rate</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Market turnover</value></data>
+  <data name="StockVolumeStageTitle"><value>Volume and turnover</value></data>
   <data name="StockBadCode"><value>That code cannot be quoted here. Type a code, a name or pinyin and pick from the list.</value></data>
   <data name="StockChosen"><value>{0} ({1}) chosen.</value></data>
   <data name="StockFetching"><value>Fetching {0} …</value></data>

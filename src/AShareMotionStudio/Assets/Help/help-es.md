@@ -10,7 +10,7 @@ El importe negociado cada día en todo el mercado: los importes de los índices 
 - Una sesión aún en curso se descarta. Un día sin terminar contiene solo su subasta de apertura y se dibujaría como una barra pegada al eje.
 - O mirar solo un segmento: cada bolsa, cada board principal, STAR, ChiNext. Los boards principales se derivan del total de la bolsa menos su board de crecimiento; el BSE 50 sigue siendo una medida de componentes.
 
-## Volumen de un valor
+## Volumen y rotación
 
 El volumen de un valor frente a su tasa de rotación, en dos paneles superpuestos.
 
@@ -26,7 +26,7 @@ Un conjunto de sectores o acciones dibujado como barras horizontales que se adel
 - El periodo puede ser de 1, 3, 6 o 12 meses, o fechas de inicio y fin personalizadas.
 - Una lista tiene un mínimo y un máximo de elementos — pocas barras no es una carrera, demasiadas se amontonan.
 
-## Matriz mensual
+## Matriz de rentabilidad
 
 Barras mensuales dispuestas en una cuadrícula: el modo año muestra la estacionalidad de un instrumento a lo largo de una década; el modo comparación pone varios instrumentos en paralelo para mostrar la rotación.
 

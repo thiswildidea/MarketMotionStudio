@@ -40,13 +40,13 @@
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <data name="NavMarketTurnover.Content"><value>Marktumsatz</value></data>
-  <data name="NavStockVolume.Content"><value>Aktienvolumen · Umschlag</value></data>
+  <data name="NavStockVolume.Content"><value>Volumen und Umschlag</value></data>
   <data name="NavHelp.Content"><value>Hilfe</value></data>
   <data name="NavSettings.Content"><value>Einstellungen</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Marktumsatz</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Der tägliche Umsatz des Gesamtmarkts oder eines Segments. Zwei Formen desselben Bilds; das Umschalten lädt nichts neu.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Aktienvolumen · Umschlag</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volumen und Umschlag</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Volumen und Umschlagsrate eines Titels – über einen Zeitraum oder innerhalb eines einzelnen Tages.</value></data>
   <data name="SettingsPageTitle.Text"><value>Einstellungen</value></data>
   <data name="HelpPageTitle.Text"><value>Hilfe</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
   <data name="StudioStageNoData"><value>Noch keine Daten</value></data>
   <data name="StudioCredit"><value>Quelle: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Monatsmatrix</value></data>
-  <data name="MatrixPageTitle.Text"><value>Monatsmatrix</value></data>
+  <data name="NavMatrix.Content"><value>Renditematrix</value></data>
+  <data name="MatrixPageTitle.Text"><value>Renditematrix</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Ein Jahrzehnt Monatsbalken pro Anfrage; Zellen leuchten zeitlich nacheinander auf.</value></data>
   <data name="MatrixModeLabel.Text"><value>Matrixart</value></data>
   <data name="MatrixModeYear.Content"><value>Ein Ziel · Jahre × Monate</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>Höchstens {0}; mehr passt ins Hochformat nicht.</value></data>
   <data name="MatrixFetching"><value>Monatsbalken für {0} werden geladen …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} Zellen · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Monatsmatrix</value></data>
+  <data name="MatrixStageTitle"><value>Renditematrix</value></data>
   <data name="NavSectorRace.Content"><value>Sektor-Rennen</value></data>
   <data name="SectorRacePageTitle.Text"><value>Sektor-Rennen</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Ein Dutzend Balken überholt einander; die Reihenfolge wechselt bis zum letzten Bild.</value></data>
@@ -169,8 +169,8 @@
   <data name="StudioDisclaimer.Text"><value>Nur als Anhaltspunkt. Keine Anlageberatung.</value></data>
   <data name="StudioDataLayerPending"><value>Das Abrufen von Kursen ist noch nicht gebaut. Die Video- und Layout-Regler und die Vorschau funktionieren bereits; die Datenschicht ist der nächste Schritt.</value></data>
   <data name="StudioEncoderPending"><value>Der Export ist noch nicht gebaut. Die Vorschau läuft schon über den echten Renderpfad; der Encoder ist der nächste Schritt.</value></data>
-  <data name="MarketTurnoverStageTitle"><value>Umsatz des Gesamtmarkts</value></data>
-  <data name="StockVolumeStageTitle"><value>Volumen und Umschlagsrate</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Marktumsatz</value></data>
+  <data name="StockVolumeStageTitle"><value>Volumen und Umschlag</value></data>
   <data name="StockBadCode"><value>Dieser Code ist hier nicht abfragbar. Code, Namen oder Pinyin eingeben und aus der Liste wählen.</value></data>
   <data name="StockChosen"><value>{0} ({1}) ausgewählt.</value></data>
   <data name="StockFetching"><value>{0} wird geladen …</value></data>

@@ -10,7 +10,7 @@ Le montant échangé chaque jour sur tout le marché : les montants des indices 
 - Une séance encore en cours est écartée. Une journée inachevée ne contient que sa fixation d'ouverture et se dessinerait comme une barre collée à l'axe.
 - Ou regarder un seul segment : chaque bourse, chaque marché principal, STAR, ChiNext. Les marchés principaux sont déduits du total de la bourse moins son marché de croissance ; le BSE 50 reste une mesure de composantes.
 
-## Volume d'un titre
+## Volume et rotation
 
 Le volume d'un titre face à son taux de rotation, en deux panneaux superposés.
 
@@ -26,7 +26,7 @@ Un ensemble de secteurs ou d'actions, dessiné en barres horizontales qui se dé
 - La période peut être de 1, 3, 6 ou 12 mois, ou des dates de début et de fin personnalisées.
 - Une liste a un nombre minimum et maximum d'entrées — trop peu, ce n'est pas une course ; trop, c'est un fouillis.
 
-## Matrice mensuelle
+## Matrice des rendements
 
 Des barres mensuelles disposées en grille : le mode année montre la saisonnalité d'un instrument sur dix ans, le mode comparaison met plusieurs instruments côte à côte pour montrer la rotation.
 

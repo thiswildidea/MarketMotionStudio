@@ -40,13 +40,13 @@
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <data name="NavMarketTurnover.Content"><value>Piyasa işlem hacmi</value></data>
-  <data name="NavStockVolume.Content"><value>Hisse hacmi · Devir</value></data>
+  <data name="NavStockVolume.Content"><value>Hacim ve devir</value></data>
   <data name="NavHelp.Content"><value>Yardım</value></data>
   <data name="NavSettings.Content"><value>Ayarlar</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Piyasa işlem hacmi</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Tüm piyasaların veya tek bir pazarın günlük işlem hacmi. Aynı verinin iki görünümü; geçişte yeniden indirme yapılmaz.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Hisse hacmi · Devir</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Hacim ve devir</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Bir hissenin işlem miktarı ile devir hızı — bir dönem boyunca ya da tek bir gün içinde.</value></data>
   <data name="SettingsPageTitle.Text"><value>Ayarlar</value></data>
   <data name="HelpPageTitle.Text"><value>Yardım</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} sn</value></data>
   <data name="StudioStageNoData"><value>Henüz veri yok</value></data>
   <data name="StudioCredit"><value>Kaynak: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Aylık matris</value></data>
-  <data name="MatrixPageTitle.Text"><value>Aylık matris</value></data>
+  <data name="NavMatrix.Content"><value>Getiri matrisi</value></data>
+  <data name="MatrixPageTitle.Text"><value>Getiri matrisi</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Tek istekte on yıllık aylık veri; hücreler zaman sırasıyla yanar.</value></data>
   <data name="MatrixModeLabel.Text"><value>Matris türü</value></data>
   <data name="MatrixModeYear.Content"><value>Tek hedef · yıl × ay</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>En fazla {0}; fazlası dikeyde sığmaz.</value></data>
   <data name="MatrixFetching"><value>{0} aylık verileri alınıyor …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} hücre · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Aylık matris</value></data>
+  <data name="MatrixStageTitle"><value>Getiri matrisi</value></data>
   <data name="NavSectorRace.Content"><value>Sektör yarışı</value></data>
   <data name="SectorRacePageTitle.Text"><value>Sektör yarışı</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Bir düzine çubuk birbirini geçiyor; sıralama son kareye kadar değişiyor.</value></data>
@@ -169,8 +169,8 @@
   <data name="StudioDisclaimer.Text"><value>Yalnızca bilgi amaçlıdır. Yatırım tavsiyesi değildir.</value></data>
   <data name="StudioDataLayerPending"><value>Fiyat verisi çekme henüz yazılmadı. Video ve yerleşim denetimleri ile ön izleme şimdiden çalışıyor; veri katmanı bir sonraki adım.</value></data>
   <data name="StudioEncoderPending"><value>Dışa verme henüz yazılmadı. Ön izleme zaten gerçek çizim yolundan geçiyor; kodlayıcı bir sonraki adım.</value></data>
-  <data name="MarketTurnoverStageTitle"><value>Tüm piyasanın işlem hacmi</value></data>
-  <data name="StockVolumeStageTitle"><value>İşlem miktarı ve devir hızı</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Piyasa işlem hacmi</value></data>
+  <data name="StockVolumeStageTitle"><value>Hacim ve devir</value></data>
   <data name="StockBadCode"><value>Bu kod burada sorgulanamıyor. Kod, ad veya pinyin yazın ve listeden seçin.</value></data>
   <data name="StockChosen"><value>{0} ({1}) seçildi.</value></data>
   <data name="StockFetching"><value>{0} alınıyor …</value></data>

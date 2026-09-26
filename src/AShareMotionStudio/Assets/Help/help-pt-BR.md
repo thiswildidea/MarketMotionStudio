@@ -10,7 +10,7 @@ O volume financeiro de cada dia em todo o mercado: os valores dos índices compo
 - Um pregão ainda em andamento é deixado de fora. Um dia inacabado contém apenas seu leilão de abertura e seria desenhado como uma barra colada ao eixo.
 - Ou olhar só um segmento: cada bolsa, cada quadro principal, STAR, ChiNext. Os quadros principais são derivados do total da bolsa menos o seu quadro de crescimento; o BSE 50 continua sendo uma medida de componentes.
 
-## Volume de uma ação
+## Volume e giro
 
 O volume de uma ação diante da sua taxa de giro, em dois painéis sobrepostos.
 
@@ -26,7 +26,7 @@ Um conjunto de setores ou ações desenhado como barras horizontais que se ultra
 - O intervalo pode ser de 1, 3, 6 ou 12 meses, ou datas de início e fim personalizadas.
 - Uma lista tem um mínimo e um máximo de itens — poucas barras não é uma corrida, muitas se amontoam.
 
-## Matriz mensal
+## Matriz de retorno
 
 Barras mensais dispostas em uma grade: o modo ano mostra a sazonalidade de um instrumento ao longo de uma década; o modo comparação coloca vários instrumentos lado a lado para mostrar a rotação.
 

@@ -40,13 +40,13 @@
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <data name="NavMarketTurnover.Content"><value>Volume financeiro do mercado</value></data>
-  <data name="NavStockVolume.Content"><value>Volume de ações · Giro</value></data>
+  <data name="NavStockVolume.Content"><value>Volume e giro</value></data>
   <data name="NavHelp.Content"><value>Ajuda</value></data>
   <data name="NavSettings.Content"><value>Configurações</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Volume financeiro do mercado</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>O volume diário do mercado inteiro ou de um segmento. Duas formas da mesma imagem; trocar não baixa nada de novo.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Volume de ações · Giro</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volume e giro</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>O volume de uma ação diante da sua taxa de giro, ao longo de um período ou dentro de um único pregão.</value></data>
   <data name="SettingsPageTitle.Text"><value>Configurações</value></data>
   <data name="HelpPageTitle.Text"><value>Ajuda</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
   <data name="StudioStageNoData"><value>Ainda sem dados</value></data>
   <data name="StudioCredit"><value>Fonte: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Matriz mensal</value></data>
-  <data name="MatrixPageTitle.Text"><value>Matriz mensal</value></data>
+  <data name="NavMatrix.Content"><value>Matriz de retorno</value></data>
+  <data name="MatrixPageTitle.Text"><value>Matriz de retorno</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Uma década de barras mensais por requisição; as células acendem em ordem temporal.</value></data>
   <data name="MatrixModeLabel.Text"><value>Tipo de matriz</value></data>
   <data name="MatrixModeYear.Content"><value>Um alvo · anos × meses</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>No máximo {0}; mais não cabe na vertical.</value></data>
   <data name="MatrixFetching"><value>Obtendo barras mensais de {0} …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} células · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Matriz mensal</value></data>
+  <data name="MatrixStageTitle"><value>Matriz de retorno</value></data>
   <data name="NavSectorRace.Content"><value>Corrida de setores</value></data>
   <data name="SectorRacePageTitle.Text"><value>Corrida de setores</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Uma dúzia de barras ultrapassando umas às outras; a ordem muda até o último quadro.</value></data>
@@ -170,7 +170,7 @@
   <data name="StudioDataLayerPending"><value>A busca de cotações ainda não foi feita. Os controles de vídeo e layout e a prévia já funcionam; a camada de dados é o próximo passo.</value></data>
   <data name="StudioEncoderPending"><value>A exportação ainda não foi feita. A prévia já percorre o caminho real de renderização; o codificador é o próximo passo.</value></data>
   <data name="MarketTurnoverStageTitle"><value>Volume financeiro do mercado</value></data>
-  <data name="StockVolumeStageTitle"><value>Volume e taxa de giro</value></data>
+  <data name="StockVolumeStageTitle"><value>Volume e giro</value></data>
   <data name="StockBadCode"><value>Esse código não pode ser cotado aqui. Digite um código, nome ou pinyin e escolha na lista.</value></data>
   <data name="StockChosen"><value>{0} ({1}) selecionado.</value></data>
   <data name="StockFetching"><value>Obtendo {0} …</value></data>

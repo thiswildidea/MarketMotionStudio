@@ -10,7 +10,7 @@ Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerini
 - Hâlâ süren bir seans dışarıda bırakılır. Bitmemiş bir gün yalnızca açılış seansını içerir ve eksene yapışık bir çubuk olarak çizilirdi.
 - Ya da yalnızca bir pazara bakın: her iki borsa, her ana pazar, STAR, ChiNext. Ana pazarlar borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50 hâlâ bileşen bazlı bir ölçüdür.
 
-## Hisse işlem miktarı
+## Hacim ve devir
 
 Bir hissenin işlem miktarı ile devir hızı, üst üste iki panel halinde.
 
@@ -26,7 +26,7 @@ Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini ge
 - Dönem 1, 3, 6 veya 12 ay ya da özel başlangıç ve bitiş tarihi olabilir.
 - Bir listenin en az ve en fazla sayıda kalemi vardır — çok az çubuk yarış olmaz, çok fazlası yığılır.
 
-## Aylık matris
+## Getiri matrisi
 
 Aylık çubuklar bir ızgaraya dizilir: yıl modu bir aracın on yıllık mevsimselliğini, karşılaştırma modu birkaç aracı yan yana dizerek rotasyonu gösterir.
 

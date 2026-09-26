@@ -10,7 +10,7 @@ Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli ind
 - Una seduta ancora in corso viene esclusa. Un giorno non finito contiene solo la sua asta di apertura e si disegnerebbe come una barra appiccicata all'asse.
 - Oppure guardare un solo segmento: ciascuna borsa, ciascun mercato principale, STAR, ChiNext. I mercati principali sono ricavati dal totale della borsa meno il suo mercato di crescita; il BSE 50 resta una misura a componenti.
 
-## Volumi di un titolo
+## Volume e rotazione
 
 I volumi di un titolo a confronto con il suo tasso di rotazione, in due pannelli sovrapposti.
 
@@ -26,7 +26,7 @@ Un insieme di settori o azioni disegnati come barre orizzontali che si sorpassan
 - Il periodo può essere di 1, 3, 6 o 12 mesi, oppure date di inizio e fine personalizzate.
 - Un elenco ha un numero minimo e massimo di voci — poche barre non fanno una gara, troppe si accalcano.
 
-## Matrice mensile
+## Matrice dei rendimenti
 
 Barre mensili disposte in una griglia: la modalità anno mostra la stagionalità di uno strumento su un decennio, quella confronto mette diversi strumenti affiancati per mostrarne la rotazione.
 

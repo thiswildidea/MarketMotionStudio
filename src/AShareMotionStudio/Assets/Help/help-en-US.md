@@ -10,7 +10,7 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
 - A session still in progress is left out. An unfinished day holds only its opening auction, which would draw as a bar flat against the axis.
 - Or look at one slice alone: either exchange, either main board, STAR, ChiNext. Main boards are derived as the exchange total less its growth board; the BSE 50 remains a constituent measure.
 
-## Stock Volume
+## Volume and Turnover
 
 One stock's volume against its turnover rate, as two stacked panels.
 
@@ -26,7 +26,7 @@ A set of sectors or stocks, drawn as horizontal bars that overtake one another, 
 - The interval can be 1, 3, 6 or 12 months, or a custom start and end date.
 - A roster has a minimum and a maximum size — too few bars is no race, too many crowd into a blur.
 
-## Monthly Matrix
+## Return Matrix
 
 Monthly bars laid into a grid: year mode shows one instrument's decade of seasonality, compare mode puts several side by side to show rotation.
 

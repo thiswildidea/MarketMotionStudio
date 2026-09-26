@@ -39,14 +39,14 @@
   <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
-  <data name="NavMarketTurnover.Content"><value>市場全体の売買代金</value></data>
-  <data name="NavStockVolume.Content"><value>個株出来高 · 回転率</value></data>
+  <data name="NavMarketTurnover.Content"><value>市場の売買代金</value></data>
+  <data name="NavStockVolume.Content"><value>出来高と回転率</value></data>
   <data name="NavHelp.Content"><value>ヘルプ</value></data>
   <data name="NavSettings.Content"><value>設定</value></data>
 
-  <data name="MarketTurnoverPageTitle.Text"><value>市場全体の売買代金</value></data>
+  <data name="MarketTurnoverPageTitle.Text"><value>市場の売買代金</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>全市場または単一ボードの日次売買代金。同じデータの2つの表示形態で、切替時に再取得は不要です。</value></data>
-  <data name="StockVolumePageTitle.Text"><value>個株出来高 · 回転率</value></data>
+  <data name="StockVolumePageTitle.Text"><value>出来高と回転率</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>1 銘柄の出来高と売買回転率。期間で見ることも、1 日の中で見ることもできます。</value></data>
   <data name="SettingsPageTitle.Text"><value>設定</value></data>
   <data name="HelpPageTitle.Text"><value>ヘルプ</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
   <data name="StudioStageNoData"><value>データがありません</value></data>
   <data name="StudioCredit"><value>出典: 騰訊財経</value></data>
-  <data name="NavMatrix.Content"><value>月次マトリクス</value></data>
-  <data name="MatrixPageTitle.Text"><value>月次マトリクス</value></data>
+  <data name="NavMatrix.Content"><value>リターンマトリクス</value></data>
+  <data name="MatrixPageTitle.Text"><value>リターンマトリクス</value></data>
   <data name="MatrixPageSubtitle.Text"><value>月足は1リクエストで10年分。セルが時系列に灯っていきます。</value></data>
   <data name="MatrixModeLabel.Text"><value>マトリクスの種類</value></data>
   <data name="MatrixModeYear.Content"><value>単一銘柄 · 年×月</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>最大 {0}。それ以上は縦画面に収まりません。</value></data>
   <data name="MatrixFetching"><value>{0} の月足を取得中 …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} セル · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>月次マトリクス</value></data>
+  <data name="MatrixStageTitle"><value>リターンマトリクス</value></data>
   <data name="NavSectorRace.Content"><value>業界セクター競争</value></data>
   <data name="SectorRacePageTitle.Text"><value>業界セクター競争</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>十数本のバーが追い抜きを繰り返し、順位は最終フレームまで変わります。</value></data>
@@ -169,8 +169,8 @@
   <data name="StudioDisclaimer.Text"><value>参考情報です。投資助言ではありません。</value></data>
   <data name="StudioDataLayerPending"><value>相場データの取得はまだ実装されていません。動画とレイアウトの設定、プレビューは今も動きます。データ層が次の段階です。</value></data>
   <data name="StudioEncoderPending"><value>書き出しはまだ実装されていません。プレビューは既に本番の描画経路を通っています。エンコーダーが次の段階です。</value></data>
-  <data name="MarketTurnoverStageTitle"><value>市場全体の売買代金</value></data>
-  <data name="StockVolumeStageTitle"><value>出来高と売買回転率</value></data>
+  <data name="MarketTurnoverStageTitle"><value>市場の売買代金</value></data>
+  <data name="StockVolumeStageTitle"><value>出来高と回転率</value></data>
   <data name="StockBadCode"><value>このコードは取得できません。コード・名称・ピンインを入力し、一覧から選んでください。</value></data>
   <data name="StockChosen"><value>{0}（{1}）を選択しました。</value></data>
   <data name="StockFetching"><value>{0} を取得中 …</value></data>

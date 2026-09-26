@@ -2,7 +2,7 @@
 
 Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyberete období, prohlédnete si náhled, dokud se dobře nečte, a exportujete MP4. Nic dalšího instalovat netřeba.
 
-## Obrat celého trhu
+## Obrat trhu
 
 Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu sečtené, jeden sloupec na obchodní den.
 
@@ -10,7 +10,7 @@ Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu s
 - Den, který se ještě obchoduje, se vynechává. Nedokončený den obsahuje jen svou otevírací aukci a nakreslil by se jako sloupec přilepený k ose.
 - Nebo se dívat jen na jeden segment: každou burzu, každý hlavní trh, STAR, ChiNext. Hlavní trhy se počítají jako součet burzy minus růstový trh; BSE 50 zůstává měrou podle složek.
 
-## Objem jedné akcie
+## Objem a obrat
 
 Objem jedné akcie proti její míře obratu, ve dvou panelech nad sebou.
 
@@ -26,7 +26,7 @@ Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhán
 - Období může být 1, 3, 6 nebo 12 měsíců, nebo vlastní počáteční a koncové datum.
 - Seznam má minimální a maximální počet položek — málo pruhů není závod, příliš mnoho se slije.
 
-## Měsíční matice
+## Matice výnosů
 
 Měsíční pruhy rozložené do mřížky: režim roku ukazuje sezónnost nástroje za desetiletí, režim porovnání staví několik nástrojů vedle sebe, aby ukázal rotaci.
 

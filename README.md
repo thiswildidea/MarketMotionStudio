@@ -127,7 +127,7 @@ neighbouring days' ranks, and the axis range interpolates with them, so two race
 places cross instead of swapping. Rosters and metrics are bounded — three to sixteen racers,
 or a vertical frame is a barcode — and the bounds are stated where the choice is made.
 
-**Monthly Matrix** — months as cells lighting up in time order, on a clock the daily pages
+**Return Matrix** — months as cells lighting up in time order, on a clock the daily pages
 cannot share: one request of monthly bars holds about eleven years, so a range selector built
 for daily bars would say things the matrix cannot honour, which is why this is its own page
 rather than a fourth form. Two kinds from one renderer — the kinds differ in what the rows and

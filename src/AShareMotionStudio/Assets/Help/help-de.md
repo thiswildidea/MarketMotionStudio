@@ -10,7 +10,7 @@ Der tägliche Umsatz des gesamten Markts: die Beträge der Composite-Indizes von
 - Ein noch laufender Handelstag wird ausgelassen. Ein unfertiger Tag enthält nur seine Eröffnungsauktion und würde als Balken direkt auf der Achse erscheinen.
 - Oder ein Segment allein betrachten: jede der Börsen, jeden Hauptmarkt, STAR, ChiNext. Hauptmärkte werden als Börsenwert minus Wachstumssegment hergeleitet; der BSE 50 bleibt eine Kennzahl der Indexmitglieder.
 
-## Einzelwert-Volumen
+## Volumen und Umschlag
 
 Volumen und Umschlagsrate eines Titels, in zwei übereinanderliegenden Feldern.
 
@@ -26,7 +26,7 @@ Eine Gruppe von Sektoren oder Aktien als waagerechte Balken, die einander überh
 - Der Zeitraum kann 1, 3, 6 oder 12 Monate betragen oder frei mit Start- und Enddatum gewählt werden.
 - Eine Liste hat eine Mindest- und Höchstzahl an Einträgen — zu wenige Balken sind kein Rennen, zu viele ein Wirrwarr.
 
-## Monatsmatrix
+## Renditematrix
 
 Monatsbalken als Raster gelegt: der Jahresmodus zeigt die Saisonalität eines Instruments über ein Jahrzehnt, der Vergleichsmodus stellt mehrere Instrumente nebeneinander, um die Rotation zu zeigen.
 

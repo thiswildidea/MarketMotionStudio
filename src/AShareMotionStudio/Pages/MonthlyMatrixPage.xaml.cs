@@ -645,7 +645,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
             safe = safe[..40];
         }
 
-        return $"月度矩阵_{safe}_{format.NameSuffix}.{extension}";
+        return $"收益矩阵_{safe}_{format.NameSuffix}.{extension}";
     }
 
     private async void OnExport(object sender, RoutedEventArgs e)

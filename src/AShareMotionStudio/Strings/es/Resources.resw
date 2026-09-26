@@ -40,13 +40,13 @@
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <data name="NavMarketTurnover.Content"><value>Volumen negociado del mercado</value></data>
-  <data name="NavStockVolume.Content"><value>Volumen de acciones · Rotación</value></data>
+  <data name="NavStockVolume.Content"><value>Volumen y rotación</value></data>
   <data name="NavHelp.Content"><value>Ayuda</value></data>
   <data name="NavSettings.Content"><value>Configuración</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Volumen negociado del mercado</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>El volumen diario del mercado completo o de un segmento. Dos formas de la misma imagen; cambiar no vuelve a descargar nada.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Volumen de acciones · Rotación</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Volumen y rotación</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>El volumen de un valor frente a su tasa de rotación, a lo largo de un periodo o dentro de una sola sesión.</value></data>
   <data name="SettingsPageTitle.Text"><value>Configuración</value></data>
   <data name="HelpPageTitle.Text"><value>Ayuda</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
   <data name="StudioStageNoData"><value>Todavía sin datos</value></data>
   <data name="StudioCredit"><value>Fuente: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Matriz mensual</value></data>
-  <data name="MatrixPageTitle.Text"><value>Matriz mensual</value></data>
+  <data name="NavMatrix.Content"><value>Matriz de rentabilidad</value></data>
+  <data name="MatrixPageTitle.Text"><value>Matriz de rentabilidad</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Una década de barras mensuales por petición; las celdas se encienden en orden temporal.</value></data>
   <data name="MatrixModeLabel.Text"><value>Tipo de matriz</value></data>
   <data name="MatrixModeYear.Content"><value>Un objetivo · años × meses</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>Como máximo {0}; más no cabe en vertical.</value></data>
   <data name="MatrixFetching"><value>Obteniendo barras mensuales de {0} …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} celdas · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Matriz mensual</value></data>
+  <data name="MatrixStageTitle"><value>Matriz de rentabilidad</value></data>
   <data name="NavSectorRace.Content"><value>Carrera de sectores</value></data>
   <data name="SectorRacePageTitle.Text"><value>Carrera de sectores</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Una docena de barras se adelantan unas a otras; el orden cambia hasta el último fotograma.</value></data>
@@ -170,7 +170,7 @@
   <data name="StudioDataLayerPending"><value>La obtención de cotizaciones aún no está hecha. Los controles de vídeo y composición y la vista previa ya funcionan; la capa de datos es el siguiente paso.</value></data>
   <data name="StudioEncoderPending"><value>La exportación aún no está hecha. La vista previa ya recorre la ruta de render real; el codificador es el siguiente paso.</value></data>
   <data name="MarketTurnoverStageTitle"><value>Importe negociado del mercado</value></data>
-  <data name="StockVolumeStageTitle"><value>Volumen y tasa de rotación</value></data>
+  <data name="StockVolumeStageTitle"><value>Volumen y rotación</value></data>
   <data name="StockBadCode"><value>Ese código no se puede consultar aquí. Escribe un código, un nombre o pinyin y elige de la lista.</value></data>
   <data name="StockChosen"><value>{0} ({1}) seleccionado.</value></data>
   <data name="StockFetching"><value>Obteniendo {0} …</value></data>

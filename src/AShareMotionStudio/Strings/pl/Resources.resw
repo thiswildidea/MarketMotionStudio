@@ -39,14 +39,14 @@
   <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
-  <data name="NavMarketTurnover.Content"><value>Obroty całego rynku</value></data>
-  <data name="NavStockVolume.Content"><value>Wolumen akcji · Obrót</value></data>
+  <data name="NavMarketTurnover.Content"><value>Obroty rynku</value></data>
+  <data name="NavStockVolume.Content"><value>Wolumen i obrót</value></data>
   <data name="NavHelp.Content"><value>Pomoc</value></data>
   <data name="NavSettings.Content"><value>Ustawienia</value></data>
 
-  <data name="MarketTurnoverPageTitle.Text"><value>Obroty całego rynku</value></data>
+  <data name="MarketTurnoverPageTitle.Text"><value>Obroty rynku</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Dzienny obrót całego rynku lub jednego segmentu. Dwie formy tego samego obrazu; przełączenie niczego nie pobiera od nowa.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Wolumen akcji · Obrót</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Wolumen i obrót</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Wolumen jednej spółki na tle jej wskaźnika obrotu — w wybranym okresie albo w ciągu jednej sesji.</value></data>
   <data name="SettingsPageTitle.Text"><value>Ustawienia</value></data>
   <data name="HelpPageTitle.Text"><value>Pomoc</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
   <data name="StudioStageNoData"><value>Brak danych</value></data>
   <data name="StudioCredit"><value>Źródło: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Macierz miesięczna</value></data>
-  <data name="MatrixPageTitle.Text"><value>Macierz miesięczna</value></data>
+  <data name="NavMatrix.Content"><value>Macierz stóp zwrotu</value></data>
+  <data name="MatrixPageTitle.Text"><value>Macierz stóp zwrotu</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Dekada słupków miesięcznych na jedno zapytanie; komórki zapalają się w kolejności czasowej.</value></data>
   <data name="MatrixModeLabel.Text"><value>Rodzaj macierzy</value></data>
   <data name="MatrixModeYear.Content"><value>Jeden instrument · lata × miesiące</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>Najwyżej {0}; więcej się pionowo nie zmieści.</value></data>
   <data name="MatrixFetching"><value>Pobieranie słupków miesięcznych {0} …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} komórek · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Macierz miesięczna</value></data>
+  <data name="MatrixStageTitle"><value>Macierz stóp zwrotu</value></data>
   <data name="NavSectorRace.Content"><value>Wyścig sektorów</value></data>
   <data name="SectorRacePageTitle.Text"><value>Wyścig sektorów</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Kilkanaście pasków wyprzedza się wzajemnie, a kolejność zmienia się do ostatniej klatki.</value></data>
@@ -169,8 +169,8 @@
   <data name="StudioDisclaimer.Text"><value>Tylko informacyjnie. To nie porada inwestycyjna.</value></data>
   <data name="StudioDataLayerPending"><value>Pobieranie notowań nie jest jeszcze zrobione. Ustawienia filmu i układu oraz podgląd już działają; warstwa danych to następny krok.</value></data>
   <data name="StudioEncoderPending"><value>Eksport nie jest jeszcze zrobiony. Podgląd już przechodzi prawdziwą ścieżką renderowania; koder to następny krok.</value></data>
-  <data name="MarketTurnoverStageTitle"><value>Obroty całego rynku</value></data>
-  <data name="StockVolumeStageTitle"><value>Wolumen i wskaźnik obrotu</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Obroty rynku</value></data>
+  <data name="StockVolumeStageTitle"><value>Wolumen i obrót</value></data>
   <data name="StockBadCode"><value>Tego kodu nie da się tu pobrać. Wpisz kod, nazwę lub pinyin i wybierz z listy.</value></data>
   <data name="StockChosen"><value>Wybrano {0} ({1}).</value></data>
   <data name="StockFetching"><value>Pobieranie {0} …</value></data>

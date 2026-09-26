@@ -39,14 +39,14 @@
   <data name="AppTitle.Text"><value>AShare Motion Studio</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
-  <data name="NavMarketTurnover.Content"><value>Obrat celého trhu</value></data>
-  <data name="NavStockVolume.Content"><value>Objem akcií · Obrat</value></data>
+  <data name="NavMarketTurnover.Content"><value>Obrat trhu</value></data>
+  <data name="NavStockVolume.Content"><value>Objem a obrat</value></data>
   <data name="NavHelp.Content"><value>Nápověda</value></data>
   <data name="NavSettings.Content"><value>Nastavení</value></data>
 
-  <data name="MarketTurnoverPageTitle.Text"><value>Obrat celého trhu</value></data>
+  <data name="MarketTurnoverPageTitle.Text"><value>Obrat trhu</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Denní obrat celého trhu nebo jednoho segmentu. Dvě podoby téhož obrazu; přepnutí nic znovu nestahuje.</value></data>
-  <data name="StockVolumePageTitle.Text"><value>Objem akcií · Obrat</value></data>
+  <data name="StockVolumePageTitle.Text"><value>Objem a obrat</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>Objem jedné akcie proti její míře obratu — za období, nebo v průběhu jediného dne.</value></data>
   <data name="SettingsPageTitle.Text"><value>Nastavení</value></data>
   <data name="HelpPageTitle.Text"><value>Nápověda</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
   <data name="StudioStageNoData"><value>Zatím žádná data</value></data>
   <data name="StudioCredit"><value>Zdroj: Tencent Finance</value></data>
-  <data name="NavMatrix.Content"><value>Měsíční matice</value></data>
-  <data name="MatrixPageTitle.Text"><value>Měsíční matice</value></data>
+  <data name="NavMatrix.Content"><value>Matice výnosů</value></data>
+  <data name="MatrixPageTitle.Text"><value>Matice výnosů</value></data>
   <data name="MatrixPageSubtitle.Text"><value>Dekáda měsíčních svíček na jeden požadavek; buňky se rozsvěcují v časovém pořadí.</value></data>
   <data name="MatrixModeLabel.Text"><value>Typ matice</value></data>
   <data name="MatrixModeYear.Content"><value>Jeden cíl · roky × měsíce</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>Nejvýše {0}; víc se na výšku nevejde.</value></data>
   <data name="MatrixFetching"><value>Načítání měsíčních svíček {0} …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} buněk · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>Měsíční matice</value></data>
+  <data name="MatrixStageTitle"><value>Matice výnosů</value></data>
   <data name="NavSectorRace.Content"><value>Závod sektorů</value></data>
   <data name="SectorRacePageTitle.Text"><value>Závod sektorů</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>Tucet pruhů se předhání a pořadí se mění až do posledního snímku.</value></data>
@@ -169,8 +169,8 @@
   <data name="StudioDisclaimer.Text"><value>Pouze pro orientaci. Není to investiční doporučení.</value></data>
   <data name="StudioDataLayerPending"><value>Načítání kurzů ještě není hotové. Ovládání videa a rozvržení i náhled už fungují; datová vrstva je další krok.</value></data>
   <data name="StudioEncoderPending"><value>Export ještě není hotový. Náhled už prochází skutečnou cestou vykreslování; kodér je další krok.</value></data>
-  <data name="MarketTurnoverStageTitle"><value>Obrat celého trhu</value></data>
-  <data name="StockVolumeStageTitle"><value>Objem a míra obratu</value></data>
+  <data name="MarketTurnoverStageTitle"><value>Obrat trhu</value></data>
+  <data name="StockVolumeStageTitle"><value>Objem a obrat</value></data>
   <data name="StockBadCode"><value>Tento kód zde nelze načíst. Zadejte kód, název nebo pinyin a vyberte ze seznamu.</value></data>
   <data name="StockChosen"><value>Vybráno {0} ({1}).</value></data>
   <data name="StockFetching"><value>Načítá se {0} …</value></data>

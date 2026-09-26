@@ -39,14 +39,14 @@
   <data name="AppTitle.Text"><value>A股指標動畫工作室</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
-  <data name="NavMarketTurnover.Content"><value>全市場成交額</value></data>
-  <data name="NavStockVolume.Content"><value>個股成交量 · 換手率</value></data>
+  <data name="NavMarketTurnover.Content"><value>市場成交額</value></data>
+  <data name="NavStockVolume.Content"><value>成交量換手率</value></data>
   <data name="NavHelp.Content"><value>說明</value></data>
   <data name="NavSettings.Content"><value>設定</value></data>
 
-  <data name="MarketTurnoverPageTitle.Text"><value>全市場成交額</value></data>
+  <data name="MarketTurnoverPageTitle.Text"><value>市場成交額</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>全市場或單一板塊的每日成交額。兩種畫面形態，切換不用重新取數。</value></data>
-  <data name="StockVolumePageTitle.Text"><value>個股成交量 · 換手率</value></data>
+  <data name="StockVolumePageTitle.Text"><value>成交量換手率</value></data>
   <data name="StockVolumePageSubtitle.Text"><value>單一股票的成交量與週轉率，可看一段區間，也可看某一天之內。</value></data>
   <data name="SettingsPageTitle.Text"><value>設定</value></data>
   <data name="HelpPageTitle.Text"><value>說明</value></data>
@@ -94,8 +94,8 @@
   <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
   <data name="StudioStageNoData"><value>尚無資料</value></data>
   <data name="StudioCredit"><value>資料來源：騰訊財經</value></data>
-  <data name="NavMatrix.Content"><value>月度矩陣</value></data>
-  <data name="MatrixPageTitle.Text"><value>月度矩陣</value></data>
+  <data name="NavMatrix.Content"><value>收益矩陣</value></data>
+  <data name="MatrixPageTitle.Text"><value>收益矩陣</value></data>
   <data name="MatrixPageSubtitle.Text"><value>月K一次十年，格子逐個點亮；看單標的的季節性，或一籃子標的的輪動。</value></data>
   <data name="MatrixModeLabel.Text"><value>矩陣類型</value></data>
   <data name="MatrixModeYear.Content"><value>單標的 年×月</value></data>
@@ -136,7 +136,7 @@
   <data name="MatrixTooManyTargets"><value>最多 {0} 個，再多豎屏放不下。</value></data>
   <data name="MatrixFetching"><value>正在取得 {0} 的月K …</value></data>
   <data name="MatrixFetched"><value>{0} · {1} · {2} 個格子 · {3} {4} · {5} {6}</value></data>
-  <data name="MatrixStageTitle"><value>月度矩陣</value></data>
+  <data name="MatrixStageTitle"><value>收益矩陣</value></data>
   <data name="NavSectorRace.Content"><value>行業板塊競速</value></data>
   <data name="SectorRacePageTitle.Text"><value>行業板塊競速</value></data>
   <data name="SectorRacePageSubtitle.Text"><value>十幾條橫向條形互相超車，名次一路變到最後一幀。</value></data>
@@ -169,8 +169,8 @@
   <data name="StudioDisclaimer.Text"><value>僅供參考，不構成投資建議。</value></data>
   <data name="StudioDataLayerPending"><value>取數還沒做。影片與版面參數、預覽現在都可用；資料層是下一步。</value></data>
   <data name="StudioEncoderPending"><value>匯出還沒做。預覽走的已經是真正的算繪路徑；編碼器是下一步。</value></data>
-  <data name="MarketTurnoverStageTitle"><value>全市場成交額</value></data>
-  <data name="StockVolumeStageTitle"><value>成交量與週轉率</value></data>
+  <data name="MarketTurnoverStageTitle"><value>市場成交額</value></data>
+  <data name="StockVolumeStageTitle"><value>成交量換手率</value></data>
   <data name="StockBadCode"><value>無法識別這個代碼。請輸入代碼、中文名或拼音，並從清單中選擇。</value></data>
   <data name="StockChosen"><value>已選擇 {0}（{1}）。</value></data>
   <data name="StockFetching"><value>正在取得 {0} …</value></data>
