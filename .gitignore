@@ -20,3 +20,4 @@ artifacts/
 
 # Session-local: agent working memory and UI-automation residue
 .workbuddy/
+@AutomationLog.txt
