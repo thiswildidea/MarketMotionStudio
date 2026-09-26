@@ -45,6 +45,23 @@ public sealed class PreviewSurface : Grid
 
         Children.Add(_canvas);
 
+        // Every page sets NavigationCacheMode="Required", so navigating away keeps the page
+        // instance alive and raises Unloaded on it; the cleanup below then strips the canvas
+        // from the tree. Coming back raises Loaded on the same instance, which has to put the
+        // canvas back — otherwise the page shows its title, its transport and a hole where the
+        // frame should be. Invalidating here too: the parked frame is still the right picture
+        // (progress was never reset), the canvas just needs to paint it again on fresh
+        // device resources.
+        Loaded += (_, _) =>
+        {
+            if (_canvas.Parent is null)
+            {
+                Children.Add(_canvas);
+            }
+
+            _canvas.Invalidate();
+        };
+
         // Win2D holds device resources that the XAML tree does not release for it.
         // A page that is navigated away from and collected takes its controls with
         // it, but the swap chain is not part of that, and the leak shows up as
