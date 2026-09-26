@@ -90,7 +90,7 @@ public static class StockSeries
     /// endpoint reports it.
     /// </summary>
     public static async Task<StockPanelSeries> LoadDailyAsync(
-        TencentKline kline, StockDirectory directory, string code,
+        TencentKline kline, StockDirectory directory, MarketProfile market, string code,
         DateOnly start, DateOnly end, IProgress<string> progress, CancellationToken cancellation)
     {
         progress.Report(Strings.Format("StockFetching", code.ToUpperInvariant()));
@@ -102,7 +102,7 @@ public static class StockSeries
             throw new InvalidOperationException(Strings.Get("TurnoverTooFewDays"));
         }
 
-        var volumes = NormaliseVolume(bars, out var perShare);
+        var volumes = NormaliseVolume(bars, market, out var perShare);
 
         // A listing may report no turnover rate at all — an index masquerading as a stock in the
         // search list is the usual case. The chart still draws; the lower panel states its absence.
@@ -137,7 +137,7 @@ public static class StockSeries
     /// absent panel when the snapshot cannot be had.
     /// </remarks>
     public static async Task<StockPanelSeries> LoadIntradayAsync(
-        HttpClient http, StockDirectory directory, string code, string? wantedDay,
+        HttpClient http, StockDirectory directory, MarketProfile market, string code, string? wantedDay,
         IProgress<string> progress, CancellationToken cancellation)
     {
         progress.Report(Strings.Format("StockFetchingIntraday", code.ToUpperInvariant()));
@@ -235,7 +235,8 @@ public static class StockSeries
             .OrderBy(r => r)
             .ToArray();
 
-        var perShare = ratios.Length > 0 && ratios[ratios.Length / 2] > 10;
+        var perShare = market.Volume is VolumeBasis.Shares
+            || (ratios.Length > 0 && ratios[ratios.Length / 2] > 10);
 
         var cumulative = valid.Select(r => Parse(r[2]) / (perShare ? 100 : 1)).ToArray();
         var perMinute = new double[cumulative.Length];
@@ -291,7 +292,7 @@ public static class StockSeries
     /// STAR market, lots elsewhere — and is told apart by "volume × price ≈ amount" rather than by
     /// a board prefix, which stays right when a prefix guess would not.
     /// </summary>
-    private static double[] NormaliseVolume(List<TencentKline.StockBar> bars, out bool perShare)
+    private static double[] NormaliseVolume(List<TencentKline.StockBar> bars, MarketProfile market, out bool perShare)
     {
         var ratios = bars
             .Where(b => b.RawVolume > 0 && b.Close > 0 && b.AmountWan > 0)
@@ -299,10 +300,15 @@ public static class StockSeries
             .OrderBy(r => r)
             .ToArray();
 
+        // The ratio above asks "does volume × price come to the amount?" and it can only
+        // be asked where the amount is quoted in 万元, as it is in Shanghai, Shenzhen and
+        // Hong Kong. In New York it is plain dollars, the ratio collapses to a hundredth
+        // of what it should be, and the answer has to come from the market instead.
         // Copied out of the parameter before the lambda below: an out parameter cannot be
         // captured, and this is the one place in the app that wants both the answer and the
         // series it came from in one expression.
-        var byShare = perShare = ratios.Length > 0 && ratios[ratios.Length / 2] > 10;
+        var byShare = perShare = market.Volume is VolumeBasis.Shares
+            || (ratios.Length > 0 && ratios[ratios.Length / 2] > 10);
 
         return bars.Select(b => byShare ? b.RawVolume / 100 : b.RawVolume).ToArray();
     }

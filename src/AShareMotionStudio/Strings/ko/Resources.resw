@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>로그인할 때 알림 영역에서 시작하므로, 열면 바로 사용할 수 있습니다.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>작업 관리자에서 사용 안 함으로 설정되어 Windows가 이를 막고 있습니다. [시작 앱] 탭에서 다시 사용하도록 설정하세요.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>조직 정책에 따라 결정되며 여기서는 변경할 수 없습니다.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>시장</value></data>
+  <data name="SettingsMarketNote.Text"><value>각 페이지가 어떤 시장의 시세를 가져올지, 어떤 페이지를 제공할지 결정합니다. 다시 시작하면 적용됩니다.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>시장은 앱을 다시 시작하면 바뀝니다.</value></data>
+  <data name="MarketAShare"><value>A주</value></data>
+  <data name="MarketHongKong"><value>홍콩 주식</value></data>
+  <data name="MarketUnitedStates"><value>미국 주식</value></data>
+  <data name="SectorListHangSeng"><value>항셍 분류 지수</value></data>
+  <data name="SectorListSpdr"><value>미국 섹터 ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>누적 거래대금 억 달러</value></data>
+  <data name="WrongMarket"><value>이 코드는 현재 시장({0})에 속하지 않습니다.</value></data>
 </root>

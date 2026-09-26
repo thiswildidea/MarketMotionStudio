@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Oturum açıldığında bildirim alanında başlar; böylece açtığınızda hazır olur.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Görev Yöneticisi'nde kapatıldığı için Windows buna izin vermiyor. Başlangıç uygulamaları sekmesinden yeniden etkinleştirin.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Buna kuruluşunuzun ilkesi karar verir ve burada değiştirilemez.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Piyasa</value></data>
+  <data name="SettingsMarketNote.Text"><value>Her sayfanın verileri nereden aldığını ve hangi sayfaların sunulacağını belirler. Yeniden başlattıktan sonra geçerli olur.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Piyasa, uygulama yeniden başlatıldığında değişecek.</value></data>
+  <data name="MarketAShare"><value>A hisseleri</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>ABD</value></data>
+  <data name="SectorListHangSeng"><value>Hang Seng alt endeksleri</value></data>
+  <data name="SectorListSpdr"><value>ABD sektör ETF'leri</value></data>
+  <data name="SectorMetricAmountUsd"><value>Kümülatif hacim, 100 M$</value></data>
+  <data name="WrongMarket"><value>Bu kod geçerli piyasaya ({0}) ait değil.</value></data>
 </root>

@@ -79,9 +79,11 @@ public sealed class StockDirectory(HttpClient http)
             return "hk" + s;
         }
 
-        if (s.Length is >= 1 and <= 6 && s.All(c => char.IsAsciiLetterLower(c) || c == '.'))
+        // A US ticker with its exchange suffix, `aapl.oq`, is longer than a bare
+        // one, so the bound leaves room for the four characters a suffix adds.
+        if (s.Length is >= 1 and <= 10 && s.All(c => char.IsAsciiLetterLower(c) || c == '.'))
         {
-            return "us" + s.ToUpperInvariant();
+            return Markets.Canonize("us" + s);
         }
 
         return null;
@@ -91,13 +93,17 @@ public sealed class StockDirectory(HttpClient http)
     /// Suggestions while a person types: a code, a Chinese name or pinyin all resolve to the same
     /// instrument list.
     /// </summary>
+    /// <param name="market">The market to keep. The endpoint answers every venue at once, so
+    /// without it a Hong Kong search lists Shanghai listings and the page lets a person pick an
+    /// instrument the market in force cannot draw.</param>
     /// <remarks>
     /// The response is GBK text shaped like `v_hint="sh~600000~浦发银行~pufa~GP-A^…"`, so it is
     /// decoded by hand rather than parsed as anything structured. The query itself must be sent
     /// UTF-8-escaped — a GBK-escaped Chinese query returns nothing, which is the one combination
     /// that fails silently.
     /// </remarks>
-    public async Task<IReadOnlyList<StockRef>> SearchAsync(string query, CancellationToken cancellation)
+    public async Task<IReadOnlyList<StockRef>> SearchAsync(
+        string query, MarketProfile market, CancellationToken cancellation)
     {
         var uri = $"{SearchEndpoint}?v=2&t=all&q={Uri.EscapeDataString(query)}";
 
@@ -133,7 +139,17 @@ public sealed class StockDirectory(HttpClient http)
                 continue;
             }
 
-            found.Add(new StockRef(fields[0] + fields[1], fields[2]));
+            // The search answers in lower case — `usaapl.oq` — and the chart endpoint
+            // will only read `usAAPL.OQ`, so the code is put into that shape here,
+            // where it is first known. See Markets.Canonize.
+            var code = Markets.Canonize(fields[0] + fields[1]);
+
+            if (!market.Accepts(code))
+            {
+                continue;
+            }
+
+            found.Add(new StockRef(code, fields[2]));
         }
 
         return found;

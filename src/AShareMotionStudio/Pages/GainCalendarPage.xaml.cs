@@ -54,6 +54,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
     private InstrumentCalendarSeries? _fetched;
 
     /// <summary>What the search last settled on, so a fetch without a suggestion still knows its name.</summary>
+    /// <summary>Replaced at construction by the market's own first one-tap instrument.</summary>
     private string _instrumentCode = "sh000001";
 
     private string _instrumentName = string.Empty;
@@ -65,6 +66,12 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
     private readonly ObservableCollection<StockFavourite> _favourites = [];
 
     private readonly DispatcherTimer _searchDebounce = new() { Interval = TimeSpan.FromMilliseconds(260) };
+
+    /// <summary>
+    /// The market in force: it names the presets, it is what the search is filtered
+    /// to, and it is the one thing that can say whether a typed code belongs here.
+    /// </summary>
+    private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
 
     public GainCalendarPage()
     {
@@ -81,7 +88,10 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
         FromDate.Date = today.AddMonths(-3);
         ToDate.Date = today;
 
-        foreach (var index in MonthlySeries.BroadIndices)
+        // The presets are the market's own one-tap instruments: an A-share index on a
+        // page set to Hong Kong would be a button that fetches from a venue the rest of
+        // the page has stopped naming.
+        foreach (var index in _market.BroadIndices)
         {
             Presets.Items.Add(new MatrixPreset(index.Code, index.Name));
         }
@@ -94,10 +104,10 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
             await SearchSuggestionsAsync();
         };
 
-        // The default the frame will actually use, before anything is fetched: the composite
-        // index is what the whole-market page's return calendar draws, so it is the natural
-        // first page here too.
-        _instrumentName = Strings.Get("IndexSSE");
+        // The default the frame will actually use, before anything is fetched: the
+        // market's own first one-tap instrument, which is the one its presets lead with.
+        _instrumentCode = _market.BroadIndices[0].Code;
+        _instrumentName = _market.BroadIndices[0].Name;
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -216,10 +226,10 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
 
         try
         {
-            var found = await Services.Stocks.SearchAsync(query, CancellationToken.None);
+            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
 
             var ordered = found
-                .Where(r => InstrumentCalendar.IsAShareCode(r.Code))
+                .Where(r => _market.Accepts(r.Code))
                 .Take(12)
                 .Select(r => new StockSuggestion(r.Code, r.Name, r.Code[..2].ToUpperInvariant()))
                 .ToArray();
@@ -256,11 +266,17 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
 
         var code = StockDirectory.Normalize(sender.Text);
 
-        if (code is null || !InstrumentCalendar.IsAShareCode(code))
+        if (code is null)
         {
-            // One message covers both a code the normalizer cannot read and one it can but the
-            // endpoint cannot serve — the reader's next step is the same: type an A-share code.
-            ShowStatus(InfoBarSeverity.Error, Strings.Get("GainCalendarAShareOnly"));
+            ShowStatus(InfoBarSeverity.Error, Strings.Get("StockBadCode"));
+            return;
+        }
+
+        // A code the normalizer can read but the market in force does not quote: the
+        // reader's next step is different from the one above, so it says which market.
+        if (!_market.Accepts(code))
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("WrongMarket", _market.Name));
             return;
         }
 
@@ -370,7 +386,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
             var fetched = await InstrumentCalendar.LoadAsync(
-                Services.Quotes, _instrumentCode, display, start, end, progress, cancellation);
+                Services.Quotes, _market, _instrumentCode, display, start, end, progress, cancellation);
 
             _fetched = fetched;
             _instrumentName = fetched.Name;
@@ -559,9 +575,11 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
             ToDate.Date = to;
         }
 
-        var code = _prefs.GetString("Code", "sh000001");
+        var code = _prefs.GetString("Code", _market.BroadIndices[0].Code);
 
-        if (InstrumentCalendar.IsAShareCode(code))
+        // A code saved under another market is not carried over: it would fetch from a
+        // venue whose presets and search results this page no longer shows.
+        if (_market.Accepts(code))
         {
             _instrumentCode = code;
 
@@ -569,7 +587,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
             // fetch; carrying it costs one key and keeps the placeholder honest meanwhile.
             var name = _prefs.GetString("Name", string.Empty);
 
-            _instrumentName = name.Length > 0 ? name : Strings.Get("IndexSSE");
+            _instrumentName = name.Length > 0 ? name : _market.BroadIndices[0].Name;
         }
 
         VideoSettings.Restore(_prefs);

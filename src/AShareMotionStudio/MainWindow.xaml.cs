@@ -1,5 +1,6 @@
 using AShareMotionStudio.Diagnostics;
 using AShareMotionStudio.Localization;
+using AShareMotionStudio.Market;
 using AShareMotionStudio.Pages;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Dispatching;
@@ -95,7 +96,40 @@ public sealed partial class MainWindow : Window
         // carries what is running rather than just the app's name.
         _services.Work.Changed += (_, _) => _dispatcher.TryEnqueue(RefreshTrayTooltip);
 
+        // Before the first navigation: the menu is pared back to what the market can
+        // supply, and the page the window opens on is read from what is left. Done the
+        // other way round the shell would land on a page the market has no data for
+        // and then have nowhere to put it.
+        ApplyMarket();
         Nav.SelectedItem = Nav.MenuItems[0];
+    }
+
+    /// <summary>
+    /// Pares the menu back to the pages the chosen market can supply.
+    ///
+    /// A page is hidden rather than left to draw nothing, because what it would show
+    /// is not a smaller answer but a different one: the turnover of an index's own
+    /// constituents sits on the same axis as the turnover of a whole market and is
+    /// not the figure the page is about.
+    ///
+    /// The market is fixed for the life of the window — changing it asks for a
+    /// restart, for the reason <see cref="MarketSettings"/> gives — so this runs once
+    /// rather than being wired to a change notification.
+    /// </summary>
+    private void ApplyMarket()
+    {
+        var profile = Markets.Of(MarketSettings.Current);
+
+        // Taken out of the menu rather than hidden in it. A collapsed item is still an
+        // item: keyboard navigation and the framework's own selection bookkeeping both
+        // keep a place for it, and this app's first item is the one it selects at
+        // startup — which would land on a page with nothing to draw. Removal is the
+        // only way to be sure the page is unreachable, and nothing puts it back,
+        // because the market does not change while the window is open.
+        if (!profile.WholeMarketTurnover)
+        {
+            Nav.MenuItems.Remove(NavMarketTurnover);
+        }
     }
 
     /// <summary>
@@ -316,6 +350,14 @@ public sealed partial class MainWindow : Window
         };
 
         if (page is null || ContentFrame.CurrentSourcePageType == page)
+        {
+            return;
+        }
+
+        // A hidden item keeps its tag, so the tag alone is not proof that the page is
+        // on offer: a stale selection, a restored one, or any future caller with a tag
+        // in hand would otherwise land on a page the market cannot feed.
+        if (page == typeof(MarketTurnoverPage) && !Markets.WholeMarket(MarketSettings.Current))
         {
             return;
         }

@@ -1,4 +1,5 @@
 using AShareMotionStudio.Localization;
+using AShareMotionStudio.Market;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppLifecycle;
@@ -77,6 +78,16 @@ public sealed partial class SettingsPage : Page
         }
 
         ThemeCombo.SelectedIndex = Math.Max(0, Array.FindIndex(Themes, t => t.Theme == ThemeSettings.Current));
+
+        // Listed in the order they are offered rather than in the enum's, because the
+        // order a reader meets them in is the order they are likely to want: the
+        // market this app was built for first.
+        foreach (var id in Markets.All)
+        {
+            MarketCombo.Items.Add(new ComboBoxItem { Content = Markets.Of(id).Name, Tag = id });
+        }
+
+        MarketCombo.SelectedIndex = Math.Max(0, Array.IndexOf(Markets.All, MarketSettings.Current));
 
         StoragePathText.Text = ApplicationData.Current.LocalFolder.Path;
         TrayToggle.IsOn = AppBehaviourSettings.ShowTrayIcon;
@@ -214,6 +225,24 @@ public sealed partial class SettingsPage : Page
 
         AppBehaviourSettings.ShowTrayIcon = TrayToggle.IsOn;
         App.Window?.ApplyTrayVisibility();
+    }
+
+    private void OnMarketChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading || MarketCombo.SelectedItem is not ComboBoxItem { Tag: MarketId market })
+        {
+            return;
+        }
+
+        MarketSettings.Current = market;
+
+        // Stored but not applied, for the reason MarketSettings gives: the pages
+        // build their lists as they are constructed and the shell keeps them alive,
+        // so changing one list here would leave the rest pointing at the old market.
+        Status.Severity = InfoBarSeverity.Informational;
+        Status.Message = Strings.Get("SettingsMarketRestart.Text");
+        RestartButton.Visibility = Visibility.Visible;
+        Status.IsOpen = true;
     }
 
     private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)

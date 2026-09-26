@@ -38,9 +38,16 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
     private readonly StudioPreferences _prefs = new("Matrix.");
 
+    /// <summary>
+    /// The market in force. It names the one-tap instruments and the built-in lists,
+    /// and every code on this page — the presets, the pool, the search — is drawn from
+    /// it rather than from the A-share lists the page was first written against.
+    /// </summary>
+    private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
+
     private MatrixSpec? _spec;
 
-    /// <summary>The year kind's chosen instrument.</summary>
+    /// <summary>The year kind's chosen instrument. Replaced at construction by the market's own first.</summary>
     private RaceEntry _target = new("sh000001", "上证指数");
 
     private readonly ObservableCollection<MatrixPreset> _presets = [];
@@ -89,9 +96,10 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
         MonthsCombo.SelectedIndex = Array.IndexOf(MonthChoices, 12);
 
-        // The compare kind's roster, sharing the race page's rosters — the candidate pool is
-        // the union the race page already defines, plus the broad indices this page adds.
-        foreach (var entry in MonthlySeries.BroadIndices.Concat(SectorLists.Union()))
+        // The candidate pool is every instrument the market names between its built-in
+        // lists and its one-tap instruments, so nothing in it is a code the source will
+        // refuse. It replaces a fixed A-share union for the same reason the presets do.
+        foreach (var entry in Markets.Union(_market.Id))
         {
             _picker.Add(new SectorPick(entry.Code, entry.Name));
         }
@@ -99,14 +107,27 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
         SectorGrid.ItemsSource = _picker;
         PickedStocks.ItemsSource = _stocks;
 
-        foreach (var index in MonthlySeries.BroadIndices.Take(6))
+        foreach (var index in _market.BroadIndices.Take(6))
         {
             _presets.Add(new MatrixPreset(index.Code, index.Name));
         }
 
         Presets.ItemsSource = _presets;
 
-        foreach (var (roster, key) in Rosters)
+        _target = new RaceEntry(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name);
+
+        // Only the built-in slots the market fills are listed; the rest of the rosters
+        // are the same everywhere.
+        foreach (var slot in BuiltInRosters.Take(_market.Rosters.Length))
+        {
+            RosterCombo.Items.Add(new ComboBoxItem
+            {
+                Content = Strings.Get(_market.Rosters[(int)slot].LabelKey),
+                Tag = slot,
+            });
+        }
+
+        foreach (var (roster, key) in AlwaysRosters)
         {
             RosterCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = roster });
         }
@@ -230,7 +251,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
         try
         {
-            var found = await Services.Stocks.SearchAsync(query, CancellationToken.None);
+            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
 
             var ordered = found
                 .Take(8)
@@ -300,17 +321,18 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
     private enum Roster
     {
-        Level1 = 0,
-        Themes = 1,
+        BuiltIn0 = 0,
+        BuiltIn1 = 1,
         BroadIndices = 2,
         Custom = 3,
         Stocks = 4,
     }
 
-    private static readonly (Roster Roster, string Key)[] Rosters =
+    /// <summary>The built-in slots, in the order the menu lists them.</summary>
+    private static readonly Roster[] BuiltInRosters = [Roster.BuiltIn0, Roster.BuiltIn1];
+
+    private static readonly (Roster Roster, string Key)[] AlwaysRosters =
     [
-        (Roster.Level1, "SectorListLevel1"),
-        (Roster.Themes, "SectorListTheme"),
         (Roster.BroadIndices, "MatrixListIndices"),
         (Roster.Custom, "SectorListCustom"),
         (Roster.Stocks, "SectorListStocks"),
@@ -318,7 +340,11 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
     private Roster ChosenRoster => RosterCombo.SelectedItem is ComboBoxItem { Tag: Roster roster }
         ? roster
-        : Roster.Level1;
+        : Roster.BuiltIn0;
+
+    /// <summary>The entries behind a built-in slot, or null if the market has none in it.</summary>
+    private RaceEntry[]? BuiltIn(Roster roster) =>
+        (int)roster < _market.Rosters.Length ? _market.Rosters[(int)roster].Entries : null;
 
     private IReadOnlyList<RaceEntry> CurrentRoster()
     {
@@ -327,11 +353,12 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
         return ChosenRoster switch
         {
-            Roster.Level1 => SectorLists.Level1,
-            Roster.Themes => SectorLists.Themes,
-            Roster.BroadIndices => MonthlySeries.BroadIndices,
+            Roster.BroadIndices => _market.BroadIndices,
             Roster.Stocks => stocks,
-            _ => picked,
+            Roster.Custom => picked,
+            // See the race page: a slot the market leaves empty falls back rather than
+            // racing nothing, because a restored preference can still name it.
+            _ => BuiltIn(ChosenRoster) ?? BuiltIn(Roster.BuiltIn0) ?? [],
         };
     }
 
@@ -756,11 +783,17 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
             CompareMode.IsChecked = true;
         }
 
-        var code = _prefs.GetString("TargetCode", "sh000001");
-        var name = _prefs.GetString("TargetName", "上证指数");
+        var code = _prefs.GetString("TargetCode", _market.BroadIndices[0].Code);
+        var name = _prefs.GetString("TargetName", _market.BroadIndices[0].Name);
 
-        _target = new RaceEntry(code, name);
-        ChosenText.Text = Strings.Format("MatrixChosen", _target.Name, _target.Code.ToUpperInvariant());
+        // A target saved under another market is not carried over: it would be an
+        // A-share index quoted on a page whose presets, pool and search are all Hong
+        // Kong or American, and nothing on the page could name it back.
+        if (_market.Accepts(code))
+        {
+            _target = new RaceEntry(code, name);
+            ChosenText.Text = Strings.Format("MatrixChosen", _target.Name, _target.Code.ToUpperInvariant());
+        }
 
         var years = _prefs.GetInt("Years", 10);
         var yearIndex = Array.IndexOf(YearChoices, years);

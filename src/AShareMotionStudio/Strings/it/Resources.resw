@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Si avvia nell'area di notifica all'accesso, così è pronto quando lo apri.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Windows lo blocca perché è stato disattivato in Gestione attività. Riattivalo lì, nella scheda App di avvio.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Lo decide il criterio della tua organizzazione e non è modificabile qui.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Mercato</value></data>
+  <data name="SettingsMarketNote.Text"><value>Determina da dove ogni pagina prende le quotazioni e quali pagine sono offerte. Ha effetto dopo un riavvio.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Il mercato cambierà al riavvio dell'app.</value></data>
+  <data name="MarketAShare"><value>Azioni A</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>Stati Uniti</value></data>
+  <data name="SectorListHangSeng"><value>Subindici Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>ETF settoriali USA</value></data>
+  <data name="SectorMetricAmountUsd"><value>Controvalore cumulato, 100 M$</value></data>
+  <data name="WrongMarket"><value>Questo codice non appartiene al mercato corrente ({0}).</value></data>
 </root>

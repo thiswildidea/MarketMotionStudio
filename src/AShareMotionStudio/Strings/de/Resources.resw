@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Startet bei der Anmeldung im Infobereich, damit es beim Öffnen bereit ist.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Windows blockiert dies, weil es im Task-Manager deaktiviert wurde. Aktivieren Sie es dort auf der Registerkarte „Autostart-Apps“ wieder.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Darüber entscheidet die Richtlinie Ihrer Organisation; hier ist es nicht änderbar.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Markt</value></data>
+  <data name="SettingsMarketNote.Text"><value>Legt fest, woher jede Seite ihre Kurse bezieht und welche Seiten angeboten werden. Wirkt nach einem Neustart.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Der Markt wechselt, wenn die App neu gestartet wird.</value></data>
+  <data name="MarketAShare"><value>A-Aktien</value></data>
+  <data name="MarketHongKong"><value>Hongkong</value></data>
+  <data name="MarketUnitedStates"><value>USA</value></data>
+  <data name="SectorListHangSeng"><value>Hang-Seng-Subindizes</value></data>
+  <data name="SectorListSpdr"><value>US-Sektor-ETFs</value></data>
+  <data name="SectorMetricAmountUsd"><value>Kumulierter Umsatz, 100 Mio. $</value></data>
+  <data name="WrongMarket"><value>Dieser Code gehört nicht zum aktuellen Markt ({0}).</value></data>
 </root>

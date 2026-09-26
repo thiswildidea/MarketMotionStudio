@@ -40,6 +40,14 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
     private readonly StudioPreferences _prefs = new("Sector.");
 
+    /// <summary>
+    /// The market in force. It names the built-in lists — two for the A-shares, one
+    /// for each of the others — and it is the only thing that knows what the source's
+    /// amount field is measured in, which is the difference between a figure and a
+    /// figure out by ten thousand.
+    /// </summary>
+    private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
+
     private SectorRaceSeries? _series;
 
     private readonly ObservableCollection<SectorPick> _picker = [];
@@ -60,12 +68,18 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         (0, "StudioRangeCustom"),
     ];
 
-    private static readonly (Roster Roster, string Key)[] Rosters =
+    /// <summary>
+    /// The two built-in slots. Which list fills each is the market's to say: Shanghai
+    /// offers industries and themes, Hong Kong offers the four Hang Seng sub-indices,
+    /// New York the sector SPDRs. The slot is what the preference is saved against, so
+    /// a person's choice of "the first list" survives a change of market.
+    /// </summary>
+    private static readonly Roster[] BuiltInRosters = [Roster.BuiltIn0, Roster.BuiltIn1];
+
+    private static readonly Roster[] AlwaysRosters =
     [
-        (Roster.Level1, "SectorListLevel1"),
-        (Roster.Themes, "SectorListTheme"),
-        (Roster.Custom, "SectorListCustom"),
-        (Roster.Stocks, "SectorListStocks"),
+        Roster.Custom,
+        Roster.Stocks,
     ];
 
     private static readonly (RaceMetric Metric, string Key)[] Metrics =
@@ -88,9 +102,37 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         // The rosters and the metric are chosen from these; a combo with no items shows an
         // empty box that reads as a broken page, which is exactly what shipping without this
         // loop did.
-        foreach (var (roster, key) in Rosters)
+        //
+        // Only the built-in slots the market fills are offered. A second slot listing the
+        // same four Hang Seng sub-indices twice would be a bug dressed as a choice.
+        foreach (var slot in BuiltInRosters.Take(_market.Rosters.Length))
         {
-            RosterCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = roster });
+            RosterCombo.Items.Add(new ComboBoxItem
+            {
+                Content = Strings.Get(_market.Rosters[(int)slot].LabelKey),
+                Tag = slot,
+            });
+        }
+
+        foreach (var roster in AlwaysRosters)
+        {
+            RosterCombo.Items.Add(new ComboBoxItem
+            {
+                Content = Strings.Get(roster is Roster.Custom ? "SectorListCustom" : "SectorListStocks"),
+                Tag = roster,
+            });
+        }
+
+        // The amount is 亿 of whatever the venue quotes in: 元 on the mainland and in
+        // Hong Kong, dollars in New York. The label says which, because a bar labelled
+        // with the wrong currency is a bar nobody can check.
+        foreach (var (metric, key) in Metrics)
+        {
+            var label = metric is RaceMetric.Amount && !_market.AmountInWan
+                ? "SectorMetricAmountUsd"
+                : key;
+
+            MetricCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(label), Tag = metric });
         }
 
         foreach (var (metric, key) in Metrics)
@@ -105,12 +147,18 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         FromDate.Date = today.AddMonths(-3);
         ToDate.Date = today;
 
-        foreach (var entry in SectorLists.Union())
+        // The pool is what the market's lists and one-tap instruments name between them,
+        // so every candidate in it is quotable — the reason the A-share lists were
+        // checked against the endpoint before being written down.
+        var pool = Markets.Union(_market.Id);
+
+        foreach (var entry in pool)
         {
-            // The custom roster starts as the CSI Level-1 set, the source's own default.
+            // The custom roster starts as the market's first built-in list, which is the
+            // source's own default and the one a person is most likely to pare back from.
             _picker.Add(new SectorPick(entry.Code, entry.Name)
             {
-                Picked = SectorLists.Level1.Any(l => l.Code == entry.Code),
+                Picked = _market.Rosters[0].Entries.Any(l => l.Code == entry.Code),
             });
         }
 
@@ -161,10 +209,13 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
     {
         var key = ChosenRoster switch
         {
-            Roster.Themes => "SectorListTheme",
             Roster.Custom => "SectorListCustom",
             Roster.Stocks => "SectorListStocks",
-            _ => "SectorListLevel1",
+            // Named by the market rather than by the page: the label on the chart has to
+            // be the name of the list the bars came from, and only the profile knows it.
+            _ => BuiltIn(ChosenRoster) is null
+                ? "SectorListCustom"
+                : _market.Rosters[(int)ChosenRoster].LabelKey,
         };
 
         return Strings.Get(key);
@@ -212,15 +263,21 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
     private enum Roster
     {
-        Level1 = 0,
-        Themes = 1,
+        BuiltIn0 = 0,
+        BuiltIn1 = 1,
         Custom = 2,
         Stocks = 3,
     }
 
     private Roster ChosenRoster => RosterCombo.SelectedItem is ComboBoxItem { Tag: Roster roster }
         ? roster
-        : Roster.Level1;
+        : Roster.BuiltIn0;
+
+    /// <summary>
+    /// The entries behind a built-in slot, or null if the market has no list in it.
+    /// </summary>
+    private RaceEntry[]? BuiltIn(Roster roster) =>
+        (int)roster < _market.Rosters.Length ? _market.Rosters[(int)roster].Entries : null;
 
     private IReadOnlyList<RaceEntry> CurrentRoster()
     {
@@ -229,10 +286,12 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
         return ChosenRoster switch
         {
-            Roster.Level1 => SectorLists.Level1,
-            Roster.Themes => SectorLists.Themes,
             Roster.Stocks => stocks,
-            _ => picked,
+            Roster.Custom => picked,
+            // A market with one list answers the second slot with the first rather than
+            // with nothing: the slot is unreachable from the menu, but a restored
+            // preference can still name it.
+            _ => BuiltIn(ChosenRoster) ?? BuiltIn(Roster.BuiltIn0) ?? [],
         };
     }
 
@@ -325,7 +384,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
         try
         {
-            var found = await Services.Stocks.SearchAsync(query, CancellationToken.None);
+            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
 
             var ordered = found
                 .Take(8)
@@ -479,7 +538,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
                 ShowStatus(InfoBarSeverity.Informational, Strings.Format("SectorFetching", message)));
 
             var series = await SectorSeries.LoadAsync(
-                Services.Quotes, roster, start, end, progress, cancellation);
+                Services.Quotes, _market, roster, start, end, progress, cancellation);
 
             _series = series;
 
@@ -687,7 +746,11 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
     private void RestorePreferences()
     {
-        RosterCombo.SelectedIndex = Math.Clamp(_prefs.GetInt("Roster", (int)Roster.Level1), 0, 3);
+        // Clamped to what the menu actually lists, not to the enum's own end: a market
+        // with one built-in list has three items, and an index of 3 read off a two-item
+        // combo is a selection the page cannot show.
+        RosterCombo.SelectedIndex = Math.Clamp(
+            _prefs.GetInt("Roster", (int)Roster.BuiltIn0), 0, RosterCombo.Items.Count - 1);
         MetricCombo.SelectedIndex = Math.Clamp(_prefs.GetInt("Metric", (int)RaceMetric.Return), 0, 1);
 
         var custom = _prefs.GetString("Custom", string.Empty);

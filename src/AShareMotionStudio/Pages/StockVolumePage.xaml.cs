@@ -44,6 +44,13 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
     /// </summary>
     private readonly StudioPreferences _prefs = new("Stock.");
 
+    /// <summary>
+    /// The market in force, fixed for the life of the page. It decides whether the
+    /// intraday mode exists at all and how the source's volume field is read, so it
+    /// is taken once rather than asked for at each use.
+    /// </summary>
+    private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
+
     /// <summary>The fetched series, or null before anything has been fetched.</summary>
     private StockPanelSeries? _series;
 
@@ -81,6 +88,14 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
         }
 
         RangeCombo.SelectedIndex = 1;
+
+        // The minute endpoint answers a US code with an empty body, so on that market
+        // there is no intraday mode to offer and no reason to show a choice of one:
+        // the whole group goes, not just the radio that would have no data behind it.
+        if (!_market.Intraday)
+        {
+            ModeGroup.Visibility = Visibility.Collapsed;
+        }
 
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddMonths(-3);
@@ -197,11 +212,13 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
 
         try
         {
-            var found = await Services.Stocks.SearchAsync(query, CancellationToken.None);
+            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
 
-            // A-share listings first: the tool's audience types a code expecting it near the top.
+            // Codes before names: what a person types first is usually a code, and the
+            // venue prefix sorts the market's own venues to the top of the list.
             var ordered = found
-                .OrderBy(r => r.Code.Length is >= 4 and <= 8 && (r.Code.StartsWith("sh") || r.Code.StartsWith("sz")) ? 0 : 1)
+                .OrderBy(r => r.Code.Length)
+                .ThenBy(r => r.Code, StringComparer.Ordinal)
                 .Take(12)
                 .Select(r => new StockSuggestion(r.Code, r.Name, r.Code[..2].ToUpperInvariant()))
                 .ToArray();
@@ -425,6 +442,15 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
             return;
         }
 
+        // A favourite saved under another market, or a code typed with another venue's
+        // prefix. The bars endpoint would answer either, which is the problem: the page
+        // would quietly draw a market the setting says it is not on.
+        if (!_market.Accepts(code))
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("WrongMarket", _market.Name));
+            return;
+        }
+
         var intraday = Intraday;
         var (start, end) = ChosenRange();
 
@@ -449,9 +475,9 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
 
             var series = intraday
                 ? await StockSeries.LoadIntradayAsync(
-                    Services.Http, Services.Stocks, code, day, progress, cancellation)
+                    Services.Http, Services.Stocks, _market, code, day, progress, cancellation)
                 : await StockSeries.LoadDailyAsync(
-                    Services.Quotes, Services.Stocks, code, start, end, progress, cancellation);
+                    Services.Quotes, Services.Stocks, _market, code, start, end, progress, cancellation);
 
             _series = series;
 
@@ -668,7 +694,10 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
             StockSearch.Text = code;
         }
 
-        if (_prefs.GetBool("Intraday", false))
+        // A saved preference for the intraday mode is honoured only where the minute
+        // data exists: on a market without it the radio is not on screen and checking
+        // it here would restore a mode the page has stopped offering.
+        if (_market.Intraday && _prefs.GetBool("Intraday", false))
         {
             IntradayMode.IsChecked = true;
         }

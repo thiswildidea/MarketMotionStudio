@@ -183,6 +183,58 @@ public sealed class TencentKline(HttpClient http)
             throw new ArgumentException("The start date must fall before the end date.", nameof(start));
         }
 
+        // A US ticker typed without its exchange suffix is not quotable as it stands
+        // — see UsSuffixCandidates — so the venues are tried in turn and the first
+        // that answers with a real history wins. Everything else is one request.
+        if (Markets.IsBareUsTicker(code))
+        {
+            Exception? last = null;
+
+            foreach (var candidate in UsSuffixCandidates(code))
+            {
+                try
+                {
+                    var bars = await FetchStockBarsAsync(candidate, start, end, cancellation);
+
+                    if (bars.Count >= FewestBars)
+                    {
+                        return bars;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    last = ex;
+                }
+            }
+
+            throw last ?? new InvalidOperationException($"{code}: no daily bars in that range.");
+        }
+
+        return await FetchStockBarsAsync(code, start, end, cancellation);
+    }
+
+    /// <summary>
+    /// A bare US ticker followed by each exchange suffix it might carry, its bare
+    /// form last.
+    ///
+    /// The endpoint answers <c>usAAPL</c> with one bar from 2011 rather than with an
+    /// error, which is the worst possible reply: it looks like a listing that hardly
+    /// ever trades. Trying the venues is the only way to tell which one the ticker
+    /// is on, and the bare form is kept as a last resort so a failure says what was
+    /// asked for.
+    /// </summary>
+    private static IEnumerable<string> UsSuffixCandidates(string code) =>
+        Markets.UsSuffixes.Select(s => code + s).Append(code);
+
+    /// <summary>
+    /// Fewer bars than this means the response did not really have the instrument.
+    /// Used only to tell a resolved US ticker from an unresolved one.
+    /// </summary>
+    private const int FewestBars = 2;
+
+    private async Task<List<StockBar>> FetchStockBarsAsync(
+        string code, DateOnly start, DateOnly end, CancellationToken cancellation)
+    {
         var span = end.DayNumber - start.DayNumber;
         var count = Math.Clamp(span, 5, MostBarsPerRequest);
 

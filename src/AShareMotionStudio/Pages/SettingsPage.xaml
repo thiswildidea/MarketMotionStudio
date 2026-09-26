@@ -33,6 +33,24 @@
                 </StackPanel>
             </Border>
 
+            <!-- The market is asked before the appearance settings rather than after,
+                 because it decides which pages exist at all: a page the chosen market
+                 has no data for is not offered, so it is the choice that changes most
+                 about what the app is. -->
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsMarketLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ComboBox x:Name="MarketCombo" MinWidth="240" SelectionChanged="OnMarketChanged" />
+                    <TextBlock x:Uid="SettingsMarketNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+
             <Border Padding="16" CornerRadius="4"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderThickness="1"

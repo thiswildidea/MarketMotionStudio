@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Uruchamia się w obszarze powiadomień przy logowaniu, więc jest gotowy po otwarciu.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>System Windows to blokuje, ponieważ wyłączono to w Menedżerze zadań. Włącz ponownie tam, na karcie Aplikacje startowe.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Decyduje o tym zasada Twojej organizacji i nie można tego tutaj zmienić.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Rynek</value></data>
+  <data name="SettingsMarketNote.Text"><value>Określa, skąd każda strona pobiera notowania i które strony są dostępne. Zacznie działać po ponownym uruchomieniu.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Rynek zmieni się po ponownym uruchomieniu aplikacji.</value></data>
+  <data name="MarketAShare"><value>Akcje A</value></data>
+  <data name="MarketHongKong"><value>Hongkong</value></data>
+  <data name="MarketUnitedStates"><value>USA</value></data>
+  <data name="SectorListHangSeng"><value>Subindeksy Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>Amerykańskie ETF sektorowe</value></data>
+  <data name="SectorMetricAmountUsd"><value>Skumulowane obroty, 100 mln $</value></data>
+  <data name="WrongMarket"><value>Ten kod nie należy do bieżącego rynku ({0}).</value></data>
 </root>

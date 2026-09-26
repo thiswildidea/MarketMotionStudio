@@ -715,3 +715,50 @@ Verified live: the switch reads its initial state from Windows, enabling reports
 and survives a full process restart (the state comes back from `StartupTask.GetAsync`,
 not from the app's own storage), disabling likewise persists. Left disabled — running at
 logon is the user's call, and the switch is where they make it.
+
+## A market setting, and what the source can actually quote
+
+Settings now picks **A-shares / Hong Kong / the United States**, default A-shares, stored like
+the language and needing a restart for the same reason. Before writing a line of it, each page
+was measured against the endpoint on each market — the point being that "the page could work on
+Hong Kong" is a claim about the *source*, not about the market's existence, and only one of the
+five turned out to be answerable either way by reasoning.
+
+**Whole-market turnover is the one thing neither market can supply.** Hong Kong's codes are the
+Hang Seng indices, each carrying the turnover of its own constituents; adding them
+double-counts everything in more than one. The US index "amount" is its volume multiplied by
+the index level — the level of the Dow is not a price anyone paid, so the product is a number
+with no meaning. Both are worse than absent, because they sit on the same axis and look like
+the real figure. That page is therefore **removed from the navigation** on those markets, not
+left to draw nothing.
+
+**The US minute endpoint answers with an empty body and code −1.** So Stock Volume keeps its
+daily mode there and the mode radio group is hidden entirely rather than disabled — a control
+that leads to an empty fetch is worse than no control.
+
+**Hong Kong's sector breakdown is four coarse sub-indices** (finance, property, utilities, and
+commerce & industry, which is the remainder once the other three are taken out and so carries
+about seven tenths of the index). Coarse is what the source has; inventing a fifth list would
+be worse than saying so. The US has no sector index at all, so the race runs on the ten SPDR
+sector ETFs, which are mutually exclusive and exhaustive over the S&P 500 the way the CSI
+Level-1 industries are over the A-shares.
+
+**The amount field's unit belongs to the venue, not to the endpoint.** Ten thousand of it is
+one 亿 in Shanghai, Shenzhen and Hong Kong; in New York the field is plain dollars, so a
+hundred million of it is. One divisor for all three is a figure out by ten thousand, and
+nothing on an axis label would make the difference visible — this was the single change most
+likely to have shipped silently wrong.
+
+Two more that were found because a wrong answer was indistinguishable from a right one:
+
+- The search endpoint answers `usaapl.oq` while the chart endpoint will only read `usAAPL.OQ`,
+  and answers a lowercase code with **no bars rather than an error** — which reads as an
+  instrument with no history. Canonicalised where the code is first known.
+- A US ticker with no exchange suffix (`usAAPL`) comes back as **one bar from 2011**. An error
+  would have been better. The venues are tried in turn and the first that answers with a real
+  history wins.
+
+**Owed:** the US calendar/matrix totals column carries the index's synthetic amount, because
+that figure only feeds the animation plan's axis maths and is never drawn — but it is not a real
+number and would be wrong the moment anything displays it. And Hong Kong's four sub-indices have
+never been watched through a full race; the data is there, the picture has not been looked at.

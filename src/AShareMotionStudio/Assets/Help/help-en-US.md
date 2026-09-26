@@ -2,6 +2,14 @@
 
 This app turns A-share market indicators into vertical videos for phones. You pick a period, look at the preview until it reads well, and export an MP4. Nothing else has to be installed.
 
+## Choosing a market
+
+Settings picks which market the app takes its quotes from; A-shares by default. A change takes effect after the app is restarted.
+
+- **A-shares**: all five pages are available.
+- **Hong Kong**: the return matrix and the gain-loss calendar work; the sector race runs on the four Hang Seng sub-indices; **there is no whole-market turnover figure, so that page is hidden**.
+- **United States**: the return matrix and the gain-loss calendar work; the sector race runs on ten SPDR sector ETFs; the volume page keeps its daily mode only, because the minute endpoint serves no US data; **amounts are quoted in dollars, and the whole-market turnover page is hidden**.
+
 ## Market Turnover
 
 The whole market's daily turnover: the Shanghai and Shenzhen composite amounts added together, one bar per trading day.
@@ -9,6 +17,7 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
 - Only days on which every included market traded are kept, so a single market's holiday cannot make the total appear to collapse.
 - A session still in progress is left out. An unfinished day holds only its opening auction, which would draw as a bar flat against the axis.
 - Or look at one slice alone: either exchange, either main board, STAR, ChiNext. Main boards are derived as the exchange total less its growth board; the BSE 50 remains a constituent measure.
+- Only the A-share market yields a whole-market total. On Hong Kong or the United States the page is taken out of the navigation.
 
 ## Volume and Turnover
 
@@ -16,6 +25,7 @@ One stock's volume against its turnover rate, as two stacked panels.
 
 - Across trading days, volume and turnover rate are proportional, so the two panels have nearly the same shape. Within one day, per-minute volume and cumulative turnover look genuinely different, which is the more interesting picture.
 - The intraday source only keeps the last few trading days, so that mode offers those rather than an arbitrary date.
+- Minute data is served for A-shares and Hong Kong only; on the United States that mode is not offered.
 
 ## Sector Race
 
@@ -23,6 +33,7 @@ A set of sectors or stocks, drawn as horizontal bars that overtake one another, 
 
 - Two measures: the interval's gain/loss percentage, and its turnover in hundreds of millions of yuan. Switching is just a re-colour of the same data; it does not fetch again.
 - Four rosters: SW Level-1 industries, hot themes, custom (tick the boxes), and individual stocks (search to add). The custom roster starts filled with the SW Level-1 set.
+- The built-in rosters follow the market: SW Level-1 industries and hot themes for A-shares, the four Hang Seng sub-indices for Hong Kong, ten SPDR sector ETFs for the US. The custom and stock rosters exist on every market.
 - The interval can be 1, 3, 6 or 12 months, or a custom start and end date.
 - A roster has a minimum and a maximum size — too few bars is no race, too many crowd into a blur.
 
@@ -39,7 +50,7 @@ Monthly bars laid into a grid: year mode shows one instrument's decade of season
 
 Any A-share stock or index, its daily rise or fall laid into calendar cells by month: red for up, green for down.
 
-- Search by code, name or pinyin; presets are broad indices. A-share instruments only.
+- Search by code, name or pinyin; presets are broad indices. Only instruments on the market you have selected.
 - The watchlist is shared with this app's stock page - a favourite added in either place shows in both.
 - The interval is 1, 3, 6 or 12 months, or custom; a single instrument is still bound by the ~640-calendar-day fetch limit.
 - The close-out stats give the count of up and down trading days.
@@ -61,6 +72,7 @@ Exports are written to a folder you choose through a picker. Until one is chosen
 Quotes come from Tencent Finance's public endpoints, and the frame always says so. These videos describe what has already traded. They are for reference only and are not investment advice.
 
 - Turnover is converted to hundreds of millions of yuan, and volume switches to a larger unit once the numbers warrant it, so the axis stays readable.
+- Turnover is converted to hundreds of millions — of yuan on the mainland and in Hong Kong, of dollars in the United States. Each market keeps its own currency.
 - A range longer than about 640 calendar days is refused rather than quietly truncated, because that is as much as one request to the source returns.
 
 ## Something wrong?

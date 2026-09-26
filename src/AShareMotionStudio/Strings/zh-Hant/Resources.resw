@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>登入時在通知區域啟動，開啟即可使用。</value></data>
   <data name="SettingsStartupBlockedByUser"><value>此項已在工作管理員中停用，Windows 不允許應用程式自行開啟。請到工作管理員的「開機應用程式」索引標籤重新啟用。</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>此項由你所屬組織的原則決定，無法在這裡變更。</value></data>
+  <data name="SettingsMarketLabel.Text"><value>市場</value></data>
+  <data name="SettingsMarketNote.Text"><value>決定各頁面取哪裡的行情，以及哪些頁面可用。更改後需要重新啟動應用程式。</value></data>
+  <data name="SettingsMarketRestart.Text"><value>市場會在應用程式重新啟動後生效。</value></data>
+  <data name="MarketAShare"><value>A股</value></data>
+  <data name="MarketHongKong"><value>港股</value></data>
+  <data name="MarketUnitedStates"><value>美股</value></data>
+  <data name="SectorListHangSeng"><value>恆生分類指數</value></data>
+  <data name="SectorListSpdr"><value>美股行業ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>累計成交額 億美元</value></data>
+  <data name="WrongMarket"><value>此代碼不屬於目前的市場（{0}）。</value></data>
 </root>

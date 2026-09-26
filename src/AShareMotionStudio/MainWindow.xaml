@@ -82,20 +82,23 @@
                             ExpandedModeThresholdWidth="1008"
                             SelectionChanged="OnNavigationSelectionChanged">
 
+            <!-- Named because the market decides which of them are offered: a page
+                 the chosen market has no data for is not listed, so the menu is
+                 built once and then pared back rather than assembled per market. -->
             <mux:NavigationView.MenuItems>
-                <mux:NavigationViewItem x:Uid="NavMarketTurnover" Tag="MarketTurnover">
+                <mux:NavigationViewItem x:Name="NavMarketTurnover" x:Uid="NavMarketTurnover" Tag="MarketTurnover">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
-                <mux:NavigationViewItem x:Uid="NavStockVolume" Tag="StockVolume">
+                <mux:NavigationViewItem x:Name="NavStockVolume" x:Uid="NavStockVolume" Tag="StockVolume">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
-                <mux:NavigationViewItem x:Uid="NavSectorRace" Tag="SectorRace">
+                <mux:NavigationViewItem x:Name="NavSectorRace" x:Uid="NavSectorRace" Tag="SectorRace">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9E9;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
-                <mux:NavigationViewItem x:Uid="NavMatrix" Tag="Matrix">
+                <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
-                <mux:NavigationViewItem x:Uid="NavGainCalendar" Tag="GainCalendar">
+                <mux:NavigationViewItem x:Name="NavGainCalendar" x:Uid="NavGainCalendar" Tag="GainCalendar">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE787;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>

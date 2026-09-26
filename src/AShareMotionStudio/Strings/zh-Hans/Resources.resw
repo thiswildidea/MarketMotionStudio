@@ -309,4 +309,14 @@
   <data name="SettingsStartupNote.Text"><value>登录时在通知区域启动，打开即可使用。</value></data>
   <data name="SettingsStartupBlockedByUser"><value>此项已在任务管理器中被禁用，Windows 不允许应用自行开启。请到任务管理器的「启动应用」选项卡重新启用。</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>此项由你所在组织的策略决定，无法在这里更改。</value></data>
+  <data name="SettingsMarketLabel.Text"><value>市场</value></data>
+  <data name="SettingsMarketNote.Text"><value>决定各页面取哪里的行情，以及哪些页面可用。更改后需要重启应用。</value></data>
+  <data name="SettingsMarketRestart.Text"><value>市场会在应用重启后生效。</value></data>
+  <data name="MarketAShare"><value>A股</value></data>
+  <data name="MarketHongKong"><value>港股</value></data>
+  <data name="MarketUnitedStates"><value>美股</value></data>
+  <data name="SectorListHangSeng"><value>恒生分类指数</value></data>
+  <data name="SectorListSpdr"><value>美股行业ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>累计成交额 亿美元</value></data>
+  <data name="WrongMarket"><value>该代码不属于当前市场（{0}）。</value></data>
 </root>

@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>サインイン時に通知領域で起動するので、開いたときにすぐ使えます。</value></data>
   <data name="SettingsStartupBlockedByUser"><value>タスク マネージャーで無効にされているため、Windows がこれを妨げています。[スタートアップ アプリ] タブで再度有効にしてください。</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>これは組織のポリシーで決まっており、ここでは変更できません。</value></data>
+  <data name="SettingsMarketLabel.Text"><value>市場</value></data>
+  <data name="SettingsMarketNote.Text"><value>各ページがどの市場の株価を取得するか、どのページを表示するかを決めます。再起動後に有効になります。</value></data>
+  <data name="SettingsMarketRestart.Text"><value>市場はアプリの再起動後に切り替わります。</value></data>
+  <data name="MarketAShare"><value>A株</value></data>
+  <data name="MarketHongKong"><value>香港株</value></data>
+  <data name="MarketUnitedStates"><value>米国株</value></data>
+  <data name="SectorListHangSeng"><value>ハンセン分類指数</value></data>
+  <data name="SectorListSpdr"><value>米国セクターETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>累計売買代金 億ドル</value></data>
+  <data name="WrongMarket"><value>このコードは現在の市場（{0}）の銘柄ではありません。</value></data>
 </root>

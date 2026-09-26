@@ -1,13 +1,14 @@
 # AShare Motion Studio
 
-**A股指标动画工作室** — a Windows desktop tool that turns A-share market indicators into
-vertical data-visualisation videos and exports them as H.264 MP4.
+**A股指标动画工作室** — a Windows desktop tool that turns stock-market indicators into
+vertical data-visualisation videos and exports them as H.264 MP4. It points at one market at
+a time, chosen in Settings: A-shares by default, or Hong Kong, or the United States.
 
 The product has two names on purpose. Chinese markets get 「A股指标动画工作室」; everywhere
 else, and in the Store listing and the package identity, it is AShare Motion Studio. See
 "Languages" below.
 
-Status: **five pages working, and export working on all of them.** Market Turnover fetches
+Status: **five pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -66,7 +67,50 @@ Drawing with Win2D and encoding through Media Foundation removes all three: the 
 the clock, the container is an ordinary MP4, and nothing outside the package is required.
 Fetching over `HttpClient` also disposes of CORS and the JSONP workaround entirely.
 
-## The three indicators
+## Markets
+
+Settings picks which market the app reads: **A-shares** (the default, and the market the app
+is named for), **Hong Kong**, or **the United States**. The choice is stored like the language
+and the theme, and for the same reason it takes effect at the next start: the pages build their
+rosters and preset lists as they are constructed, and the shell keeps the page instances alive
+afterwards, so rebuilding one list on the spot would leave the rest pointing at the old market.
+
+What each market can actually supply was measured against the endpoint, page by page, rather
+than assumed from the market's existence:
+
+| page | Hong Kong | United States |
+|---|---|---|
+| **Market Turnover** | no whole-market figure — the source's HK codes carry the turnover of an index's own constituents | the index "amount" is volume × index level, a number nobody paid |
+| **Stock Volume** | daily and intraday, as the A-shares | daily only — the minute endpoint answers a US code with an empty body |
+| **Sector Race** | the four Hang Seng sub-indices (finance, property, utilities, commerce & industry) | ten SPDR sector ETFs |
+| **Return Matrix** | monthly bars for indices and listings | monthly bars for indices and listings |
+| **Gain-loss Calendar** | daily bars for indices and listings | daily bars for indices and listings |
+
+**A page the market cannot feed is not offered.** Market Turnover is taken *out of the
+navigation* on Hong Kong and the United States rather than left to draw nothing, because what
+it would draw is not a smaller answer but a different one — the turnover of an index's
+constituents sits on the same axis as the turnover of a whole market and is not the figure the
+page is about. Stock Volume keeps its daily mode and loses the mode radio entirely on the US,
+so there is no control that leads to an empty fetch.
+
+Everything that differs between the markets is data, not branches through the pages:
+`MarketProfile` carries the amount's divisor, how the volume field is read, whether the minute
+endpoint serves the market, the rosters on offer and the one-tap instruments. A page asks the
+profile instead of knowing any of it.
+
+Three facts about the source that a market switch would otherwise hide:
+
+- **A US bar's amount is in dollars, not 万元.** Everywhere else ten thousand of the field is
+  one 亿; in New York a hundred million of it is. One divisor for all three markets is a figure
+  out by ten thousand — and an axis label would not make the difference visible.
+- **The search endpoint answers in lower case** (`usaapl.oq`) while the chart endpoint refuses
+  anything but `usAAPL.OQ`, and answers with *no bars* rather than with an error, so a code
+  taken from search and passed straight through reads as an instrument with no history.
+- **A US ticker typed without its exchange suffix is worse than refused**: `usAAPL` comes back
+  as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
+  turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
+
+## The five pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -147,10 +191,11 @@ from the whole-market page: its only instrument was one preset here. No renderer
 grid is metric-driven, so this page is a different *loader* — one instrument's daily bars
 shaped into the series record the whole-market page builds from three indices' — behind the
 same grid, colour ramp and closing cards. The stock is found the way the per-stock page finds
-one (code, Chinese name or pinyin, filtered to A-shares because the bars endpoint speaks
-nothing else), with one-tap presets for the broad indices and **the same watchlist** as the
-per-stock page — a favourite is a fact about the instrument, not about the page it was added
-on. Cell colour depth goes as the **square root** of the move, not linearly: most days are
+one (code, Chinese name or pinyin, filtered to the market in force, whose codes are the ones
+the bars endpoint speaks), with one-tap presets for that market's broad indices and **the same
+watchlist** as the per-stock page — a favourite is a fact about the instrument, not about the
+page it was added on. A favourite saved under another market is not carried over: the page
+says which market the code belongs to instead of fetching from a venue it no longer names. Cell colour depth goes as the **square root** of the move, not linearly: most days are
 small against a period's largest one, and a linear ramp leaves nearly every cell at the same
 near-black while the picture says only "there was one big day". Verified live both ways:
 上证指数 by preset, 贵州茅台 by typed code, each fetched, covered and encoded to MP4 with the
@@ -258,6 +303,19 @@ above, but because MakePri genuinely does read dot-separated filename segments a
 that is how `Square44x44Logo.targetsize-16.png` works. A name like `help.en-US.md` puts a
 language tag in qualifier position and survives only on the fallback; `help-en-US.md` puts
 nothing there.
+
+**A `x:Uid` resource key has to carry the property it sets.** `x:Uid="SettingsMarketLabel"`
+on a `TextBlock` resolves nothing — the loader looks for `SettingsMarketLabel/Text`, the
+dotted key being a subtree and the property a value inside it. A bare key is only ever right
+for a string read in code through `Strings.Get`. The symptom is a blank label where the
+surrounding controls, written with the `.Text` suffix, are fine — which reads as a missing
+translation rather than as a wrong key.
+
+**Hiding a `NavigationViewItem` with `Visibility.Collapsed` is not the same as removing it.**
+The framework keeps a place for it: keyboard navigation still reaches it and
+`MenuItems[0]` — which is what this shell selects at startup — is still the hidden one. Where
+a page must be unreachable, `MenuItems.Remove(item)` is the only thing that is; the market
+never changes while the window is open, so nothing has to put it back.
 
 **A WinUI 3 package carries a machine-learning runtime whether or not the app uses one.**
 `onnxruntime.dll` and `DirectML.dll` account for roughly 80 MB across the architectures in
@@ -427,8 +485,9 @@ commissioned with a Chinese name and an English one, so `AppTitle.Text` carries
 name everywhere else. The package identity and the Store listing name stay English in every
 market.
 
-Every language carries the same keys in the same order. All fourteen currently report 90 keys
-with no encoding damage, and all fourteen help documents parse to 24 blocks.
+Every language carries the same keys in the same order. All fourteen currently report 265 keys
+with no encoding damage, and all fourteen help documents carry the same ten sections in the
+same order — the equality the cross-language check rests on.
 
 ## Appearance
 
@@ -443,6 +502,10 @@ Range, duration, resolution, frame rate, quality, margins, the typed title, the 
 guides — all persisted, because re-entering them every session is the friction that makes a feature
 go unused. A fetched series is deliberately not: it belongs to one moment, so keeping it would mean
 deciding how long it stays true, and a stale chart is worse than an empty one.
+
+The market is persisted too, and like the language it needs a restart — see "Markets" above.
+A code saved under one market is not silently fetched under another: the per-stock page and the
+calendar both refuse it and name the market they are on.
 
 Two details that are not incidental. Keys are **prefixed per page**, because the video and layout
 controls are one shared control used by both indicators — without the prefix, tuning the margins for

@@ -119,7 +119,10 @@
                                TextWrapping="Wrap"
                                Style="{StaticResource BodyTextBlockStyle}" />
 
-                    <StackPanel Spacing="6">
+                    <!-- Named because a market with no minute data has no choice to
+                         offer: the whole group is hidden rather than leaving one
+                         radio selected out of a choice of one. -->
+                    <StackPanel x:Name="ModeGroup" Spacing="6">
                         <TextBlock x:Uid="StockModeLabel" Style="{StaticResource CaptionTextBlockStyle}" />
                         <!-- Two modes that are not two views of one thing. On a
                              daily chart turnover rate and volume are proportional

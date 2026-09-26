@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Se inicia en el área de notificación al iniciar sesión, de modo que esté listo al abrirlo.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Windows lo está bloqueando porque se desactivó en el Administrador de tareas. Vuelva a activarlo allí, en la pestaña Aplicaciones de inicio.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Esto lo decide la directiva de su organización y no se puede cambiar aquí.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Mercado</value></data>
+  <data name="SettingsMarketNote.Text"><value>Determina de dónde toma sus cotizaciones cada página y qué páginas se ofrecen. Surte efecto tras reiniciar.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>El mercado cambiará al reiniciar la aplicación.</value></data>
+  <data name="MarketAShare"><value>Acciones A</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>Estados Unidos</value></data>
+  <data name="SectorListHangSeng"><value>Subíndices Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>ETF sectoriales de EE. UU.</value></data>
+  <data name="SectorMetricAmountUsd"><value>Volumen acumulado, 100 M$</value></data>
+  <data name="WrongMarket"><value>Ese código no pertenece al mercado actual ({0}).</value></data>
 </root>

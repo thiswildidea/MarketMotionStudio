@@ -309,4 +309,14 @@
   <data name="SettingsStartupNote.Text"><value>Starts in the notification area at sign-in, so it is ready when you open it.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Windows is blocking this because it was turned off in Task Manager. Re-enable it there, on the Startup apps tab.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Your organization's policy decides this, and it cannot be changed here.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Market</value></data>
+  <data name="SettingsMarketNote.Text"><value>Decides where each page takes its quotes from, and which pages are offered. Takes effect after a restart.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>The market will change when the app is restarted.</value></data>
+  <data name="MarketAShare"><value>A-shares</value></data>
+  <data name="MarketHongKong"><value>Hong Kong</value></data>
+  <data name="MarketUnitedStates"><value>United States</value></data>
+  <data name="SectorListHangSeng"><value>Hang Seng sub-indices</value></data>
+  <data name="SectorListSpdr"><value>US sector ETFs</value></data>
+  <data name="SectorMetricAmountUsd"><value>Cumulative turnover, $100M</value></data>
+  <data name="WrongMarket"><value>That code is not on the current market ({0}).</value></data>
 </root>

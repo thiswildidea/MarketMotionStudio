@@ -2,6 +2,14 @@
 
 Esta aplicación convierte indicadores del mercado de acciones A en vídeos verticales para el móvil. Elija un periodo, mire la vista previa hasta que se lea bien y exporte un MP4. No hace falta instalar nada más.
 
+## Elegir un mercado
+
+En Ajustes se elige de qué mercado toma sus cotizaciones la aplicación; las acciones A por defecto. El cambio surte efecto tras reiniciar la aplicación.
+
+- **Acciones A**: las cinco páginas están disponibles.
+- **Hong Kong**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa los cuatro subíndices Hang Seng; **no hay cifra para todo el mercado, así que esa página se oculta**.
+- **Estados Unidos**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa diez ETF sectoriales SPDR; la página de volumen conserva solo el modo diario, porque el endpoint de minutos no sirve datos estadounidenses; **los importes están en dólares y la página de volumen del mercado se oculta**.
+
 ## Volumen negociado del mercado
 
 El importe negociado cada día en todo el mercado: los importes de los índices compuestos de Shanghái y Shenzhen sumados, una barra por sesión.
@@ -9,6 +17,7 @@ El importe negociado cada día en todo el mercado: los importes de los índices 
 - Solo se conservan los días en que negociaron todos los mercados incluidos, para que el festivo de uno de ellos no haga parecer que el total se desploma.
 - Una sesión aún en curso se descarta. Un día sin terminar contiene solo su subasta de apertura y se dibujaría como una barra pegada al eje.
 - O mirar solo un segmento: cada bolsa, cada board principal, STAR, ChiNext. Los boards principales se derivan del total de la bolsa menos su board de crecimiento; el BSE 50 sigue siendo una medida de componentes.
+- Solo el mercado de acciones A da un total de todo el mercado. Con Hong Kong o Estados Unidos la página se retira de la navegación.
 
 ## Volumen y rotación
 
@@ -16,6 +25,7 @@ El volumen de un valor frente a su tasa de rotación, en dos paneles superpuesto
 
 - De una sesión a otra, volumen y tasa de rotación son proporcionales, así que los dos paneles tienen casi la misma forma. Dentro de una jornada, el volumen por minuto y la rotación acumulada se ven de verdad distintos, y esa es la imagen más interesante.
 - La fuente intradía solo guarda las últimas sesiones, así que ese modo ofrece esas en lugar de una fecha cualquiera.
+- Los datos por minuto solo se sirven para acciones A y Hong Kong; en Estados Unidos ese modo no se ofrece.
 
 ## Carrera de sectores
 
@@ -23,6 +33,7 @@ Un conjunto de sectores o acciones dibujado como barras horizontales que se adel
 
 - Dos medidas: la variación del periodo en % y su volumen en centenas de millones de yuanes. Cambiar de medida solo re-tiñe los mismos datos; no vuelve a consultar.
 - Cuatro listas: sectores Shenwan de nivel 1, temas de actualidad, personalizada (marcar casillas) y acciones individuales (añadir por búsqueda). La lista personalizada empieza rellena con los sectores Shenwan de nivel 1.
+- Las listas integradas siguen al mercado: sectores Shenwan de nivel 1 y temas de actualidad para acciones A, los cuatro subíndices Hang Seng para Hong Kong, diez ETF sectoriales SPDR para Estados Unidos. Las listas personalizada y de acciones existen en todos los mercados.
 - El periodo puede ser de 1, 3, 6 o 12 meses, o fechas de inicio y fin personalizadas.
 - Una lista tiene un mínimo y un máximo de elementos — pocas barras no es una carrera, demasiadas se amontonan.
 
@@ -39,7 +50,7 @@ Barras mensuales dispuestas en una cuadrícula: el modo año muestra la estacion
 
 Cualquier acción o índice chino, su subida o bajada diaria dispuesta en celdas de calendario por mes: rojo al alza, verde a la baja.
 
-- Busque por código, nombre o pinyin; los preestablecidos son índices amplios. Solo acciones e índices de la bolsa china.
+- Busque por código, nombre o pinyin; los preestablecidos son índices amplios. Solo instrumentos del mercado seleccionado.
 - La lista de favoritos se comparte con la página de acciones de la app: un favorito añadido en cualquiera de las dos aparece en ambas.
 - El periodo es de 1, 3, 6 o 12 meses, o personalizado; un instrumento solo sigue sujeto al límite de unos 640 días calendario.
 - Las estadísticas finales dan el recuento de sesiones al alza y a la baja.
@@ -61,6 +72,7 @@ Las exportaciones se escriben en una carpeta que usted elige con un selector. Mi
 Las cotizaciones vienen de los puntos de acceso públicos de Tencent Finance, y el encuadre siempre cita la fuente. Estos vídeos describen lo que ya se ha negociado. Son solo a título informativo y no constituyen asesoramiento de inversión.
 
 - Los importes se convierten a cientos de millones de yuanes, y el volumen pasa a una unidad mayor cuando las cifras lo piden, para que el eje siga siendo legible.
+- Los importes se convierten a cientos de millones — de yuanes en el continente y Hong Kong, de dólares en Estados Unidos. Cada mercado mantiene su propia divisa.
 - Un periodo de más de unos 640 días naturales se rechaza en lugar de recortarse en silencio, porque eso es todo lo que devuelve una petición a la fuente.
 
 ## ¿Algo va mal?

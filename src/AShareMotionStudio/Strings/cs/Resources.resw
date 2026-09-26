@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Spustí se po přihlášení v oznamovací oblasti, takže je připravený, až ho otevřete.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Windows to blokuje, protože to bylo vypnuto ve Správci úloh. Znovu to zapněte tam, na kartě Aplikace po spuštění.</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Rozhoduje o tom zásada vaší organizace a zde to nelze změnit.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Trh</value></data>
+  <data name="SettingsMarketNote.Text"><value>Určuje, odkud každá stránka bere své kurzy a které stránky jsou nabízeny. Projeví se po restartu.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Trh se změní po restartu aplikace.</value></data>
+  <data name="MarketAShare"><value>Akcie A</value></data>
+  <data name="MarketHongKong"><value>Hongkong</value></data>
+  <data name="MarketUnitedStates"><value>USA</value></data>
+  <data name="SectorListHangSeng"><value>Subindexy Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>Americké sektorové ETF</value></data>
+  <data name="SectorMetricAmountUsd"><value>Kumulovaný obrat, 100 mil. $</value></data>
+  <data name="WrongMarket"><value>Tento kód nepatří na aktuální trh ({0}).</value></data>
 </root>

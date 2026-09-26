@@ -132,10 +132,17 @@ public static class SectorSeries
     /// </summary>
     public static async Task<SectorRaceSeries> LoadAsync(
         TencentKline kline,
+        MarketProfile market,
         IReadOnlyList<RaceEntry> entries,
         DateOnly start, DateOnly end,
         IProgress<string> progress, CancellationToken cancellation)
     {
+        // The amount field's unit belongs to the venue, not to the endpoint: ten
+        // thousand of it is one 亿 in Shanghai, Shenzhen and Hong Kong, and a hundred
+        // million of it is one 亿 in New York, where the field is plain dollars.
+        // Dividing by the wrong one is a figure out by a factor no axis label would
+        // make visible.
+        var toYi = market.AmountToYi;
         var perEntry = new List<(RaceEntry Entry, Dictionary<DateOnly, (double Close, double AmountYi)> Bars)>();
 
         for (var i = 0; i < entries.Count; i++)
@@ -148,7 +155,7 @@ public static class SectorSeries
 
             perEntry.Add((entry, bars.ToDictionary(
                 b => b.Date,
-                b => (b.Close, b.AmountWan / 10_000))));
+                b => (b.Close, b.AmountWan / toYi))));
         }
 
         // The days every entrant has. One missing day is one jump in the standings.

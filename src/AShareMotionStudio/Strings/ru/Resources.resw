@@ -298,4 +298,14 @@
   <data name="SettingsStartupNote.Text"><value>Запускается при входе в область уведомлений, чтобы приложение было готово к моменту открытия.</value></data>
   <data name="SettingsStartupBlockedByUser"><value>Windows блокирует это, поскольку функция отключена в диспетчере задач. Включите её там, на вкладке «Автозагрузка приложений».</value></data>
   <data name="SettingsStartupBlockedByPolicy"><value>Это определяется политикой вашей организации и не может быть изменено здесь.</value></data>
+  <data name="SettingsMarketLabel.Text"><value>Рынок</value></data>
+  <data name="SettingsMarketNote.Text"><value>Определяет, откуда каждая страница берёт котировки и какие страницы доступны. Вступает в силу после перезапуска.</value></data>
+  <data name="SettingsMarketRestart.Text"><value>Рынок изменится после перезапуска приложения.</value></data>
+  <data name="MarketAShare"><value>А-акции</value></data>
+  <data name="MarketHongKong"><value>Гонконг</value></data>
+  <data name="MarketUnitedStates"><value>США</value></data>
+  <data name="SectorListHangSeng"><value>Субиндексы Hang Seng</value></data>
+  <data name="SectorListSpdr"><value>Секторальные ETF США</value></data>
+  <data name="SectorMetricAmountUsd"><value>Накопленный оборот, 100 млн $</value></data>
+  <data name="WrongMarket"><value>Этот код не относится к текущему рынку ({0}).</value></data>
 </root>
