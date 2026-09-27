@@ -18,6 +18,18 @@
     <!-- Our own entry point, so a second launch can be folded into the running
          instance before the XAML application object exists. -->
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <!-- Keep every language in the main package. The default autoResourcePackage
+         split removes non-default languages from the main package's manifest and
+         expects them in per-language resource packages — which this single-project
+         toolchain never produces, so the Store would list English only. The
+         resources are small enough to stay in one package; Scale still splits. -->
+    <!-- Keep every language in the main package. The default auto resource-package
+         split (Language|Scale|DXFeatureLevel) strips non-default languages out of
+         the main package's manifest and expects them in per-language resource
+         packages — which this single-project toolchain never produces, so the
+         Store would list English only. Resources are small enough to stay in one
+         package; Scale still splits. -->
+    <AppxBundleAutoResourcePackageQualifiers>Scale|DXFeatureLevel</AppxBundleAutoResourcePackageQualifiers>
   </PropertyGroup>
 
   <ItemGroup>
