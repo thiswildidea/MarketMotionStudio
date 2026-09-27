@@ -24,8 +24,8 @@ import io, os, time, subprocess
 import uiautomation as auto
 
 LOG = r"D:\software\MarketMotionStudio\artifacts\drive4.txt"
-CRASH = r"C:\Users\user\AppData\Local\Packages\MarketMotionStudio.Dev_cdwthxytk4q78\LocalState\crash.log"
-APPID = "MarketMotionStudio.Dev_cdwthxytk4q78!App"
+CRASH = r"C:\Users\user\AppData\Local\Packages\8166Yxw.MarketMotionStudio_fzc58jprbah1t\LocalState\crash.log"
+APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
 
 def say(s):
     with open(LOG, "a", encoding="utf-8") as f:

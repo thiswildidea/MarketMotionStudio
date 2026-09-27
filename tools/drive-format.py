@@ -17,8 +17,8 @@ import uiautomation as auto
 
 LOG = r"D:\software\MarketMotionStudio\artifacts\final.txt"
 CRASH = (r"C:\Users\user\AppData\Local\Packages"
-         r"\MarketMotionStudio.Dev_cdwthxytk4q78\LocalState\crash.log")
-APPID = "MarketMotionStudio.Dev_cdwthxytk4q78!App"
+         r"\8166Yxw.MarketMotionStudio_fzc58jprbah1t\LocalState\crash.log")
+APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
 OUTDIR = os.path.join(os.path.expanduser("~"), "Desktop", "新建文件夹")
 lines = []
 
