@@ -55,6 +55,17 @@ if SMOKE:
     LANGS = LANGS[:1]
     PAGES = PAGES[:1]
 
+# --pages=01-market-turnover,06-position ：只重截指定页（语言仍全跑）
+# --langs=zh-Hans,en-US ：只跑指定语言
+_pages_arg = next((a.split("=", 1)[1].split(",")
+                   for a in sys.argv[1:] if a.startswith("--pages=")), None)
+if _pages_arg:
+    PAGES = [p for p in PAGES if p[1] in _pages_arg]
+_langs_arg = next((a.split("=", 1)[1].split(",")
+                   for a in sys.argv[1:] if a.startswith("--langs=")), None)
+if _langs_arg:
+    LANGS = [l for l in LANGS if l[0] in _langs_arg]
+
 LINES = []
 
 

@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: kupione {1} {2} na {3} · ceny skorygowane wstecz · dywidendy reinwestowane</value></data>
   <data name="PositionRangeLine"><value>{0} do {1} · trzymane {2} dni</value></data>
   <data name="PositionLegendCapital"><value>Kapitał</value></data>
+  <data name="PositionCardValue"><value>Wartość końcowa</value></data>
   <data name="PositionCardCapital"><value>Włożony kapitał</value></data>
   <data name="PositionCardDrawdown"><value>Maks. obsunięcie</value></data>
   <data name="PositionFetched"><value>{0} dni sesyjnych ({1} do {2}), trzymane {3} dni</value></data>

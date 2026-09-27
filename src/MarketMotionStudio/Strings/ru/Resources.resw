@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: куплено {1} {2} в {3} · цены с обратной корректировкой · дивиденды реинвестированы</value></data>
   <data name="PositionRangeLine"><value>{0} — {1} · в владении {2} дн.</value></data>
   <data name="PositionLegendCapital"><value>Капитал</value></data>
+  <data name="PositionCardValue"><value>Итоговая стоимость</value></data>
   <data name="PositionCardCapital"><value>Вложенный капитал</value></data>
   <data name="PositionCardDrawdown"><value>Максимальная просадка</value></data>
   <data name="PositionFetched"><value>{0} торговых дней ({1} — {2}), период владения {3} дн.</value></data>

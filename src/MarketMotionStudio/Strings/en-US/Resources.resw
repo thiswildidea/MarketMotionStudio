@@ -358,6 +358,7 @@
   <data name="PositionSubtitleLine"><value>{0}: bought {1} {2} of {3} · backward-adjusted closes · dividends reinvested</value></data>
   <data name="PositionRangeLine"><value>{0} to {1} · held {2} days</value></data>
   <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardValue"><value>Final value</value></data>
   <data name="PositionCardCapital"><value>Capital in</value></data>
   <data name="PositionCardDrawdown"><value>Max drawdown</value></data>
   <data name="PositionFetched"><value>{0} trading days ({1} to {2}), held {3} days</value></data>

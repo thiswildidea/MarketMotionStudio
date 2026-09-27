@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}に{1}{2}で{3}を購入 · 後復権終値 · 配当は再投資として含む</value></data>
   <data name="PositionRangeLine"><value>{0} 〜 {1} · {2}日保有</value></data>
   <data name="PositionLegendCapital"><value>投入資本</value></data>
+  <data name="PositionCardValue"><value>最終評価額</value></data>
   <data name="PositionCardCapital"><value>投入資本</value></data>
   <data name="PositionCardDrawdown"><value>最大ドローダウン</value></data>
   <data name="PositionFetched"><value>{0} 営業日（{1} 〜 {2}）、{3}日保有</value></data>

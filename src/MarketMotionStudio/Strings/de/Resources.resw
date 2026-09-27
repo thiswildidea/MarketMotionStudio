@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: {1} {2} in {3} gekauft · rückwärts adjustierte Kurse · Dividenden reinvestiert</value></data>
   <data name="PositionRangeLine"><value>{0} bis {1} · {2} Tage gehalten</value></data>
   <data name="PositionLegendCapital"><value>Kapital</value></data>
+  <data name="PositionCardValue"><value>Endwert</value></data>
   <data name="PositionCardCapital"><value>Eingesetztes Kapital</value></data>
   <data name="PositionCardDrawdown"><value>Max. Drawdown</value></data>
   <data name="PositionFetched"><value>{0} Handelstage ({1} bis {2}), {3} Tage gehalten</value></data>

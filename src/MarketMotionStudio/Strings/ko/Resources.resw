@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}에 {1} {2}로 {3} 매수 · 후복원 종가 · 배당 재투자 포함</value></data>
   <data name="PositionRangeLine"><value>{0} ~ {1} · {2}일 보유</value></data>
   <data name="PositionLegendCapital"><value>투입 자본</value></data>
+  <data name="PositionCardValue"><value>최종 평가액</value></data>
   <data name="PositionCardCapital"><value>투입 자본</value></data>
   <data name="PositionCardDrawdown"><value>최대 낙폭</value></data>
   <data name="PositionFetched"><value>{0}거래일({1} ~ {2}), {3}일 보유</value></data>

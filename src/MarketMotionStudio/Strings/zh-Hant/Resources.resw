@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}買入{1}{2}的{3} · 後復權收盤價 · 分紅按再投計入</value></data>
   <data name="PositionRangeLine"><value>{0} 至 {1} · 持有 {2} 天</value></data>
   <data name="PositionLegendCapital"><value>投入本金</value></data>
+  <data name="PositionCardValue"><value>期末市值</value></data>
   <data name="PositionCardCapital"><value>投入本金</value></data>
   <data name="PositionCardDrawdown"><value>最大回撤</value></data>
   <data name="PositionFetched"><value>已取 {0} 個交易日（{1} 至 {2}），持有 {3} 天</value></data>

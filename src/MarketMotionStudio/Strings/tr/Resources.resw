@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: {3} için {1} {2} alındı · geriye düzeltilmiş kapanışlar · temettüler yeniden yatırıldı</value></data>
   <data name="PositionRangeLine"><value>{0} - {1} · {2} gün tutuldu</value></data>
   <data name="PositionLegendCapital"><value>Sermaye</value></data>
+  <data name="PositionCardValue"><value>Son değer</value></data>
   <data name="PositionCardCapital"><value>Yatırılan sermaye</value></data>
   <data name="PositionCardDrawdown"><value>Maks. düşüş</value></data>
   <data name="PositionFetched"><value>{0} işlem günü ({1} - {2}), {3} gün tutuldu</value></data>

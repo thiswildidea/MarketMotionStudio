@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0} : {1} {2} de {3} achetés · cours rétro-ajustés · dividendes réinvestis</value></data>
   <data name="PositionRangeLine"><value>{0} au {1} · conservé {2} jours</value></data>
   <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardValue"><value>Valeur finale</value></data>
   <data name="PositionCardCapital"><value>Capital investi</value></data>
   <data name="PositionCardDrawdown"><value>Recul maximal</value></data>
   <data name="PositionFetched"><value>{0} jours de bourse ({1} au {2}), {3} jours de détention</value></data>

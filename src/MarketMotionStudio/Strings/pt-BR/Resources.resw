@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: comprados {1} {2} de {3} · fechamentos ajustados retroativamente · dividendos reinvestidos</value></data>
   <data name="PositionRangeLine"><value>{0} a {1} · mantido por {2} dias</value></data>
   <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardValue"><value>Valor final</value></data>
   <data name="PositionCardCapital"><value>Capital investido</value></data>
   <data name="PositionCardDrawdown"><value>Queda máxima</value></data>
   <data name="PositionFetched"><value>{0} dias de pregão ({1} a {2}), {3} dias de posição</value></data>

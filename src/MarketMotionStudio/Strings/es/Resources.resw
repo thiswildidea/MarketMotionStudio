@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: comprados {1} {2} de {3} · cierres ajustados hacia atrás · dividendos reinvertidos</value></data>
   <data name="PositionRangeLine"><value>{0} a {1} · {2} días en cartera</value></data>
   <data name="PositionLegendCapital"><value>Capital</value></data>
+  <data name="PositionCardValue"><value>Valor final</value></data>
   <data name="PositionCardCapital"><value>Capital invertido</value></data>
   <data name="PositionCardDrawdown"><value>Máxima caída</value></data>
   <data name="PositionFetched"><value>{0} días de negociación ({1} a {2}), {3} días en cartera</value></data>

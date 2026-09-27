@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: koupeno {1} {2} do {3} · zpětně upravené ceny · dividendy reinvestovány</value></data>
   <data name="PositionRangeLine"><value>{0} až {1} · drženo {2} dní</value></data>
   <data name="PositionLegendCapital"><value>Kapitál</value></data>
+  <data name="PositionCardValue"><value>Konečná hodnota</value></data>
   <data name="PositionCardCapital"><value>Vložený kapitál</value></data>
   <data name="PositionCardDrawdown"><value>Max. pokles</value></data>
   <data name="PositionFetched"><value>{0} obchodních dnů ({1} až {2}), drženo {3} dní</value></data>

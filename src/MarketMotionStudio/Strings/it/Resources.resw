@@ -347,6 +347,7 @@
   <data name="PositionSubtitleLine"><value>{0}: acquistati {1} {2} di {3} · chiusure rettificate all'indietro · dividendi reinvestiti</value></data>
   <data name="PositionRangeLine"><value>{0} al {1} · detenuto {2} giorni</value></data>
   <data name="PositionLegendCapital"><value>Capitale</value></data>
+  <data name="PositionCardValue"><value>Valore finale</value></data>
   <data name="PositionCardCapital"><value>Capitale investito</value></data>
   <data name="PositionCardDrawdown"><value>Massimo drawdown</value></data>
   <data name="PositionFetched"><value>{0} giornate di borsa ({1} al {2}), {3} giorni di detenzione</value></data>
