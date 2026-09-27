@@ -16,11 +16,11 @@
   <Identity
     Name="8166Yxw.MarketMotionStudio"
     Publisher="CN=7092F3CD-CF1F-417D-80F4-113423DC42B8"
-    Version="0.2.0.1" />
+    Version="0.0.0.0" />
 
   <Properties>
     <DisplayName>Market Motion Studio</DisplayName>
-    <PublisherDisplayName>MarketMotionStudio-Dev</PublisherDisplayName>
+    <PublisherDisplayName>YiwenYang</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
