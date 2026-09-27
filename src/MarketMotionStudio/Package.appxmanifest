@@ -14,8 +14,8 @@
        this file carries a development placeholder until the reservation is
        made, and the reservation is the point of no return. -->
   <Identity
-    Name="MarketMotionStudio.Dev"
-    Publisher="CN=MarketMotionStudio-Dev"
+    Name="8166Yxw.MarketMotionStudio"
+    Publisher="CN=7092F3CD-CF1F-417D-80F4-113423DC42B8"
     Version="0.2.0.1" />
 
   <Properties>
