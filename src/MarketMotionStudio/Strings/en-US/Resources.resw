@@ -46,7 +46,7 @@
   <data name="NavMarketTurnover.Content"><value>Market Turnover</value></data>
   <data name="NavStockVolume.Content"><value>Volume and Turnover</value></data>
   <data name="NavHelp.Content"><value>Help</value></data>
-  <data name="NavSettings.Content"><value>Settings</value></data>
+  <data name="NavSettingsLabel.Text"><value>Settings</value></data>
 
   <!-- Page titles. Also used as job names, so a page's work is named the same
        way everywhere rather than translated a second time. -->
@@ -453,4 +453,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows picture {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Your own pictures come first, then the ones Windows keeps on this computer. Windows' pictures are used where they are, not copied.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>That picture could not be used: {0}</value></data>
+  <data name="NavUpdate"><value>Update</value></data>
+  <data name="NavUpdating"><value>Updating {0}%</value></data>
+  <data name="NavUpdateTip"><value>Version {0} is available in the Microsoft Store. The app closes while it installs and starts again on the new version.</value></data>
+  <data name="UpdateBusyTitle"><value>Update now?</value></data>
+  <data name="UpdateBusyBody"><value>Still running: {0}. Installing the update closes the app, which stops it.</value></data>
+  <data name="UpdateBusyGo"><value>Update anyway</value></data>
+  <data name="UpdateCancelled"><value>The update was not installed.</value></data>
+  <data name="UpdateNeedsWiFi"><value>The Store will only download this update over Wi-Fi.</value></data>
+  <data name="UpdateLowBattery"><value>The battery is too low to install the update. Plug in and try again.</value></data>
+  <data name="UpdateFailed"><value>The update could not be installed. It can also be installed from the Microsoft Store.</value></data>
 </root>

@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Obrat trhu</value></data>
   <data name="NavStockVolume.Content"><value>Objem a obrat</value></data>
   <data name="NavHelp.Content"><value>Nápověda</value></data>
-  <data name="NavSettings.Content"><value>Nastavení</value></data>
+  <data name="NavSettingsLabel.Text"><value>Nastavení</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Obrat trhu</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Denní obrat celého trhu nebo jednoho segmentu. Dvě podoby téhož obrazu; přepnutí nic znovu nestahuje.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Obrázek Windows {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Nejprve vaše vlastní obrázky, potom ty, které má Windows na tomto počítači. Obrázky Windows se používají tam, kde jsou, nekopírují se.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Tento obrázek nelze použít: {0}</value></data>
+  <data name="NavUpdate"><value>Aktualizovat</value></data>
+  <data name="NavUpdating"><value>Aktualizace {0} %</value></data>
+  <data name="NavUpdateTip"><value>Verze {0} je k dispozici v Microsoft Storu. Během instalace se aplikace zavře a poté se spustí v nové verzi.</value></data>
+  <data name="UpdateBusyTitle"><value>Aktualizovat nyní?</value></data>
+  <data name="UpdateBusyBody"><value>Stále běží: {0}. Instalace aktualizace aplikaci zavře, a tím to zastaví.</value></data>
+  <data name="UpdateBusyGo"><value>Přesto aktualizovat</value></data>
+  <data name="UpdateCancelled"><value>Aktualizace nebyla nainstalována.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Store tuto aktualizaci stáhne jen přes Wi-Fi.</value></data>
+  <data name="UpdateLowBattery"><value>Baterie je příliš slabá na instalaci aktualizace. Připojte napájení a zkuste to znovu.</value></data>
+  <data name="UpdateFailed"><value>Aktualizaci se nepodařilo nainstalovat. Můžete ji nainstalovat také z Microsoft Storu.</value></data>
 </root>

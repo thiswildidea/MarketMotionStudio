@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Controvalore del mercato</value></data>
   <data name="NavStockVolume.Content"><value>Volume e rotazione</value></data>
   <data name="NavHelp.Content"><value>Guida</value></data>
-  <data name="NavSettings.Content"><value>Impostazioni</value></data>
+  <data name="NavSettingsLabel.Text"><value>Impostazioni</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Controvalore del mercato</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Il controvalore giornaliero dell'intero mercato o di un segmento. Due forme della stessa immagine; cambiare non scarica nulla.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Immagine di Windows {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Prima le tue immagini, poi quelle che Windows ha su questo computer. Le immagini di Windows vengono usate dove si trovano, senza copiarle.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Impossibile usare quell'immagine: {0}</value></data>
+  <data name="NavUpdate"><value>Aggiorna</value></data>
+  <data name="NavUpdating"><value>Aggiornamento {0}%</value></data>
+  <data name="NavUpdateTip"><value>La versione {0} è disponibile nel Microsoft Store. L'app si chiude durante l'installazione e si riavvia con la nuova versione.</value></data>
+  <data name="UpdateBusyTitle"><value>Aggiornare ora?</value></data>
+  <data name="UpdateBusyBody"><value>Ancora in corso: {0}. Installare l'aggiornamento chiude l'app e lo interrompe.</value></data>
+  <data name="UpdateBusyGo"><value>Aggiorna comunque</value></data>
+  <data name="UpdateCancelled"><value>L'aggiornamento non è stato installato.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Lo Store scaricherà questo aggiornamento solo tramite Wi-Fi.</value></data>
+  <data name="UpdateLowBattery"><value>La batteria è troppo scarica per installare l'aggiornamento. Collega l'alimentazione e riprova.</value></data>
+  <data name="UpdateFailed"><value>Impossibile installare l'aggiornamento. Puoi installarlo anche dal Microsoft Store.</value></data>
 </root>

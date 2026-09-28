@@ -134,12 +134,66 @@
                 <mux:NavigationViewItem x:Uid="NavHelp" Tag="Help">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE897;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
-                <mux:NavigationViewItem x:Uid="NavSettings" Tag="Settings">
+                <!-- Content is a grid rather than the plain string the other
+                     items carry, so that an update, when the Store has one,
+                     can be offered on the same row. The label therefore sits on
+                     a TextBlock (NavSettingsLabel.Text); a Content key here
+                     would replace the grid with a string. The accessible name
+                     and the compact-mode tooltip a string would have given for
+                     free are set in code. -->
+                <mux:NavigationViewItem x:Name="NavSettingsItem" Tag="Settings" HorizontalContentAlignment="Stretch">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE713;" /></mux:NavigationViewItem.Icon>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <TextBlock x:Name="NavSettingsLabel" x:Uid="NavSettingsLabel"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                        <Button x:Name="UpdateButton"
+                                Grid.Column="1"
+                                Visibility="Collapsed"
+                                Click="OnUpdate"
+                                Style="{StaticResource AccentButtonStyle}"
+                                Padding="8,2"
+                                MinHeight="0"
+                                Margin="0,0,4,0"
+                                VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE896;" FontSize="12" />
+                                <TextBlock x:Name="UpdateCaption" FontSize="12" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
                 </mux:NavigationViewItem>
             </mux:NavigationView.FooterMenuItems>
 
             <Frame x:Name="ContentFrame" />
         </mux:NavigationView>
+
+        <!-- Declared after the navigation view so it draws above it, and in the
+             content row so it drops from under the title bar rather than over
+             the draggable chrome. Parked off-screen with IsHitTestVisible off:
+             a notice that cannot be interacted with must not sit invisibly in
+             front of the controls it just described. -->
+        <Border x:Name="Toast"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Padding="16,10"
+                CornerRadius="6"
+                Opacity="0"
+                IsHitTestVisible="False"
+                MaxWidth="560"
+                Background="{ThemeResource SystemFillColorCautionBackgroundBrush}"
+                BorderThickness="1"
+                BorderBrush="{ThemeResource SystemFillColorCautionBrush}">
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="ToastSlide" Y="-96" />
+            </Border.RenderTransform>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <FontIcon Glyph="&#xE7BA;" FontSize="16"
+                          VerticalAlignment="Top"
+                          Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+                <TextBlock x:Name="ToastText" TextWrapping="Wrap" MaxWidth="480" />
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

@@ -45,6 +45,14 @@ public sealed class AppServices
 
     public BackgroundWork Work { get; } = new();
 
+    /// <summary>
+    /// Whether the Store has a newer version. Process-wide rather than the
+    /// window's, for the same reason as <see cref="Work"/>: the app spends most
+    /// of its life in the notification area, and the answer is worth having
+    /// there too, not only while the window is open.
+    /// </summary>
+    public StoreUpdates Updates { get; } = new();
+
     /// <summary>The one route to a quote source.</summary>
     public TencentKline Quotes { get; }
 

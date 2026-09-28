@@ -99,6 +99,14 @@ Quotes come from Tencent Finance's public endpoints, and the frame always says s
 - Turnover is converted to hundreds of millions — of yuan on the mainland and in Hong Kong, of dollars in the United States. Each market keeps its own currency.
 - A range longer than about 640 calendar days is refused rather than quietly truncated, because that is as much as one request to the source returns.
 
+## Updating
+
+When the Microsoft Store has a newer version, an **Update** button appears beside Settings in the navigation pane; one click installs it.
+
+- It only appears when the Store really has a newer version. A development or sideloaded build never sees it, and that is expected.
+- The app closes while the update installs and starts again on the new version, and the button is gone. If an export is running, it asks first.
+- If it cannot install, it says why — Wi-Fi only, battery too low — and the update can also be installed from the Microsoft Store.
+
 ## Something wrong?
 
 Write to gaqo@outlook.com and say what you were doing and what you expected instead. The version number is on the Settings page.

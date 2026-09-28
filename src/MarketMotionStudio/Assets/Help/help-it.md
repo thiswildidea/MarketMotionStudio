@@ -99,6 +99,14 @@ Le quotazioni vengono dagli endpoint pubblici di Tencent Finance, e l'inquadratu
 - I controvalori sono convertiti in centinaia di milioni — di yuan sulla terraferma e a Hong Kong, di dollari negli Stati Uniti. Ogni mercato mantiene la propria valuta.
 - Un periodo più lungo di circa 640 giorni di calendario viene rifiutato invece di essere troncato in silenzio, perché è tutto quello che una richiesta alla fonte restituisce.
 
+## Aggiornamento
+
+Quando il Microsoft Store ha una versione più recente, accanto a Impostazioni nel riquadro di navigazione compare un pulsante **Aggiorna**; un clic la installa.
+
+- Compare solo quando lo Store ha davvero una versione più recente. Una build di sviluppo o installata a parte non lo vede mai, ed è normale.
+- L'app si chiude durante l'installazione e si riavvia con la nuova versione, e il pulsante scompare. Se è in corso un'esportazione, chiede prima.
+- Se non si installa, dice perché — solo Wi-Fi, batteria troppo scarica — e l'aggiornamento si può installare anche dal Microsoft Store.
+
 ## Qualcosa non va?
 
 Scrivi a gaqo@outlook.com dicendo cosa stavi facendo e cosa ti aspettavi invece. Il numero di versione è nella pagina delle impostazioni.

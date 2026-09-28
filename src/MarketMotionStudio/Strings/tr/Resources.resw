@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Piyasa işlem hacmi</value></data>
   <data name="NavStockVolume.Content"><value>Hacim ve devir</value></data>
   <data name="NavHelp.Content"><value>Yardım</value></data>
-  <data name="NavSettings.Content"><value>Ayarlar</value></data>
+  <data name="NavSettingsLabel.Text"><value>Ayarlar</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Piyasa işlem hacmi</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Tüm piyasaların veya tek bir pazarın günlük işlem hacmi. Aynı verinin iki görünümü; geçişte yeniden indirme yapılmaz.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows resmi {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Önce kendi resimleriniz, ardından Windows'un bu bilgisayarda bulunan resimleri gelir. Windows resimleri kopyalanmaz, bulundukları yerden kullanılır.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Bu resim kullanılamadı: {0}</value></data>
+  <data name="NavUpdate"><value>Güncelle</value></data>
+  <data name="NavUpdating"><value>Güncelleniyor %{0}</value></data>
+  <data name="NavUpdateTip"><value>Microsoft Store'da {0} sürümü var. Uygulama yükleme sırasında kapanır ve yeni sürümle yeniden başlar.</value></data>
+  <data name="UpdateBusyTitle"><value>Şimdi güncellensin mi?</value></data>
+  <data name="UpdateBusyBody"><value>Hâlâ çalışıyor: {0}. Güncellemeyi yüklemek uygulamayı kapatır ve bunu durdurur.</value></data>
+  <data name="UpdateBusyGo"><value>Yine de güncelle</value></data>
+  <data name="UpdateCancelled"><value>Güncelleme yüklenmedi.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Store bu güncellemeyi yalnızca Wi-Fi üzerinden indirir.</value></data>
+  <data name="UpdateLowBattery"><value>Güncellemeyi yüklemek için pil çok düşük. Cihazı prize takıp yeniden deneyin.</value></data>
+  <data name="UpdateFailed"><value>Güncelleme yüklenemedi. Microsoft Store'dan da yükleyebilirsiniz.</value></data>
 </root>

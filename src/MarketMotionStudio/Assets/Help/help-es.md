@@ -99,6 +99,14 @@ Las cotizaciones vienen de los puntos de acceso públicos de Tencent Finance, y 
 - Los importes se convierten a cientos de millones — de yuanes en el continente y Hong Kong, de dólares en Estados Unidos. Cada mercado mantiene su propia divisa.
 - Un periodo de más de unos 640 días naturales se rechaza en lugar de recortarse en silencio, porque eso es todo lo que devuelve una petición a la fuente.
 
+## Actualizar
+
+Cuando Microsoft Store tiene una versión más reciente, aparece un botón **Actualizar** junto a Configuración en el panel de navegación; con un clic se instala.
+
+- Solo aparece cuando la Store tiene de verdad una versión más reciente. Una compilación de desarrollo o instalada aparte nunca lo ve, y eso es lo esperado.
+- La aplicación se cierra mientras se instala y vuelve a abrirse con la nueva versión, y el botón desaparece. Si hay una exportación en curso, pregunta antes.
+- Si no se puede instalar, dice por qué —solo por Wi-Fi, batería demasiado baja— y también se puede instalar desde Microsoft Store.
+
 ## ¿Algo va mal?
 
 Escriba a gaqo@outlook.com contando qué estaba haciendo y qué esperaba en su lugar. El número de versión está en la página de configuración.

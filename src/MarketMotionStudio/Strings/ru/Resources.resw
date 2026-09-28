@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Оборот рынка</value></data>
   <data name="NavStockVolume.Content"><value>Объём и оборачиваемость</value></data>
   <data name="NavHelp.Content"><value>Справка</value></data>
-  <data name="NavSettings.Content"><value>Параметры</value></data>
+  <data name="NavSettingsLabel.Text"><value>Параметры</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Оборот рынка</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Дневной оборот всего рынка или одного сегмента. Две формы одной картинки; переключение ничего не загружает заново.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Изображение Windows {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Сначала ваши собственные изображения, затем те, что есть в Windows на этом компьютере. Изображения Windows используются на месте, без копирования.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Не удалось использовать это изображение: {0}</value></data>
+  <data name="NavUpdate"><value>Обновить</value></data>
+  <data name="NavUpdating"><value>Обновление {0}%</value></data>
+  <data name="NavUpdateTip"><value>В Microsoft Store доступна версия {0}. На время установки приложение закроется и затем запустится в новой версии.</value></data>
+  <data name="UpdateBusyTitle"><value>Обновить сейчас?</value></data>
+  <data name="UpdateBusyBody"><value>Ещё выполняется: {0}. Установка обновления закроет приложение и прервёт это.</value></data>
+  <data name="UpdateBusyGo"><value>Всё равно обновить</value></data>
+  <data name="UpdateCancelled"><value>Обновление не установлено.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Store скачает это обновление только по Wi-Fi.</value></data>
+  <data name="UpdateLowBattery"><value>Слишком низкий заряд батареи для установки обновления. Подключите питание и повторите попытку.</value></data>
+  <data name="UpdateFailed"><value>Не удалось установить обновление. Его также можно установить из Microsoft Store.</value></data>
 </root>

@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Volume d'échanges du marché</value></data>
   <data name="NavStockVolume.Content"><value>Volume et rotation</value></data>
   <data name="NavHelp.Content"><value>Aide</value></data>
-  <data name="NavSettings.Content"><value>Paramètres</value></data>
+  <data name="NavSettingsLabel.Text"><value>Paramètres</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Volume d'échanges du marché</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Le volume quotidien du marché entier ou d'un segment. Deux formes de la même image ; changer ne recharge rien.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Image Windows {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Vos propres images d'abord, puis celles que Windows fournit sur cet ordinateur. Les images de Windows sont utilisées là où elles sont, sans être copiées.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Impossible d'utiliser cette image : {0}</value></data>
+  <data name="NavUpdate"><value>Mettre à jour</value></data>
+  <data name="NavUpdating"><value>Mise à jour {0} %</value></data>
+  <data name="NavUpdateTip"><value>La version {0} est disponible dans le Microsoft Store. L'application se ferme pendant l'installation et redémarre sur la nouvelle version.</value></data>
+  <data name="UpdateBusyTitle"><value>Mettre à jour maintenant ?</value></data>
+  <data name="UpdateBusyBody"><value>Toujours en cours : {0}. Installer la mise à jour ferme l'application, ce qui l'interrompt.</value></data>
+  <data name="UpdateBusyGo"><value>Mettre à jour quand même</value></data>
+  <data name="UpdateCancelled"><value>La mise à jour n'a pas été installée.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Le Store ne téléchargera cette mise à jour qu'en Wi-Fi.</value></data>
+  <data name="UpdateLowBattery"><value>La batterie est trop faible pour installer la mise à jour. Branchez l'appareil et réessayez.</value></data>
+  <data name="UpdateFailed"><value>Impossible d'installer la mise à jour. Vous pouvez aussi l'installer depuis le Microsoft Store.</value></data>
 </root>

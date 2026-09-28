@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Marktumsatz</value></data>
   <data name="NavStockVolume.Content"><value>Volumen und Umschlag</value></data>
   <data name="NavHelp.Content"><value>Hilfe</value></data>
-  <data name="NavSettings.Content"><value>Einstellungen</value></data>
+  <data name="NavSettingsLabel.Text"><value>Einstellungen</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Marktumsatz</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>Der tägliche Umsatz des Gesamtmarkts oder eines Segments. Zwei Formen desselben Bilds; das Umschalten lädt nichts neu.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows-Bild {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Zuerst Ihre eigenen Bilder, dann die, die Windows auf diesem Computer mitbringt. Die Bilder von Windows werden an ihrem Ort verwendet, nicht kopiert.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Dieses Bild konnte nicht verwendet werden: {0}</value></data>
+  <data name="NavUpdate"><value>Aktualisieren</value></data>
+  <data name="NavUpdating"><value>Wird aktualisiert {0} %</value></data>
+  <data name="NavUpdateTip"><value>Version {0} ist im Microsoft Store verfügbar. Die App wird während der Installation geschlossen und startet danach mit der neuen Version.</value></data>
+  <data name="UpdateBusyTitle"><value>Jetzt aktualisieren?</value></data>
+  <data name="UpdateBusyBody"><value>Läuft noch: {0}. Die Installation des Updates schließt die App und bricht das ab.</value></data>
+  <data name="UpdateBusyGo"><value>Trotzdem aktualisieren</value></data>
+  <data name="UpdateCancelled"><value>Das Update wurde nicht installiert.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Der Store lädt dieses Update nur über WLAN herunter.</value></data>
+  <data name="UpdateLowBattery"><value>Der Akkustand ist zu niedrig, um das Update zu installieren. Schließen Sie das Gerät an und versuchen Sie es erneut.</value></data>
+  <data name="UpdateFailed"><value>Das Update konnte nicht installiert werden. Sie können es auch über den Microsoft Store installieren.</value></data>
 </root>

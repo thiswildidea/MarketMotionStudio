@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>市場成交額</value></data>
   <data name="NavStockVolume.Content"><value>成交量換手率</value></data>
   <data name="NavHelp.Content"><value>說明</value></data>
-  <data name="NavSettings.Content"><value>設定</value></data>
+  <data name="NavSettingsLabel.Text"><value>設定</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>市場成交額</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>全市場或單一板塊的每日成交額。兩種畫面形態，切換不用重新取數。</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows 圖片 {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>先列出你自己的圖片，再列出這台電腦上 Windows 內建的圖片。Windows 的圖片直接使用原檔，不會複製。</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>無法使用這張圖片：{0}</value></data>
+  <data name="NavUpdate"><value>更新</value></data>
+  <data name="NavUpdating"><value>正在更新 {0}%</value></data>
+  <data name="NavUpdateTip"><value>Microsoft Store 中有新版本 {0}。安裝期間應用程式會關閉，完成後以新版本重新啟動。</value></data>
+  <data name="UpdateBusyTitle"><value>現在更新？</value></data>
+  <data name="UpdateBusyBody"><value>仍在執行：{0}。安裝更新會關閉應用程式，這些工作也會隨之中止。</value></data>
+  <data name="UpdateBusyGo"><value>仍要更新</value></data>
+  <data name="UpdateCancelled"><value>更新未安裝。</value></data>
+  <data name="UpdateNeedsWiFi"><value>Microsoft Store 只會透過 Wi-Fi 下載此更新。</value></data>
+  <data name="UpdateLowBattery"><value>電量過低，無法安裝更新。請接上電源後重試。</value></data>
+  <data name="UpdateFailed"><value>無法安裝更新。也可以在 Microsoft Store 中安裝。</value></data>
 </root>

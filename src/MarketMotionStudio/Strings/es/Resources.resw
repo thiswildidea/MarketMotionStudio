@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>Volumen negociado del mercado</value></data>
   <data name="NavStockVolume.Content"><value>Volumen y rotación</value></data>
   <data name="NavHelp.Content"><value>Ayuda</value></data>
-  <data name="NavSettings.Content"><value>Configuración</value></data>
+  <data name="NavSettingsLabel.Text"><value>Configuración</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>Volumen negociado del mercado</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>El volumen diario del mercado completo o de un segmento. Dos formas de la misma imagen; cambiar no vuelve a descargar nada.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Imagen de Windows {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Primero sus propias imágenes y después las que Windows tiene en este equipo. Las imágenes de Windows se usan donde están, sin copiarlas.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>No se pudo usar esa imagen: {0}</value></data>
+  <data name="NavUpdate"><value>Actualizar</value></data>
+  <data name="NavUpdating"><value>Actualizando {0} %</value></data>
+  <data name="NavUpdateTip"><value>La versión {0} está disponible en Microsoft Store. La aplicación se cierra mientras se instala y vuelve a abrirse con la nueva versión.</value></data>
+  <data name="UpdateBusyTitle"><value>¿Actualizar ahora?</value></data>
+  <data name="UpdateBusyBody"><value>Todavía en curso: {0}. Instalar la actualización cierra la aplicación y lo detiene.</value></data>
+  <data name="UpdateBusyGo"><value>Actualizar de todos modos</value></data>
+  <data name="UpdateCancelled"><value>La actualización no se instaló.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Microsoft Store solo descargará esta actualización por Wi-Fi.</value></data>
+  <data name="UpdateLowBattery"><value>La batería está demasiado baja para instalar la actualización. Conecte el equipo y vuelva a intentarlo.</value></data>
+  <data name="UpdateFailed"><value>No se pudo instalar la actualización. También puede instalarla desde Microsoft Store.</value></data>
 </root>

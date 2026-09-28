@@ -108,6 +108,134 @@ public sealed partial class MainWindow : Window
         // and then have nowhere to put it.
         ApplyMarket();
         Nav.SelectedItem = Nav.MenuItems[0];
+
+        // The label is a TextBlock inside the item now, so the item no longer
+        // names itself; screen readers get the same word the label shows.
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(NavSettingsItem, NavSettingsLabel.Text);
+
+        _services.Updates.Changed += (_, _) => _dispatcher.TryEnqueue(RefreshUpdateButton);
+        Nav.DisplayModeChanged += (_, _) => RefreshSettingsItem();
+        Nav.PaneOpened += (_, _) => RefreshSettingsItem();
+        Nav.PaneClosed += (_, _) => RefreshSettingsItem();
+        RefreshSettingsItem();
+
+        _updateCheck.Tick += async (_, _) => await CheckForUpdatesAsync();
+        _updateCheck.Start();
+        _ = CheckForUpdatesAsync();
+    }
+
+    /// <summary>
+    /// How often to ask the Store again. The app can sit in the notification
+    /// area for weeks, so asking only at startup would mean a release goes
+    /// unnoticed until the next reboot; asking often would be a Store call for
+    /// nothing, since releases here are weeks apart.
+    /// </summary>
+    private readonly DispatcherTimer _updateCheck = new() { Interval = TimeSpan.FromHours(6) };
+
+    private nint WindowHandle => WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+    private Task CheckForUpdatesAsync() => _services.Updates.CheckAsync(WindowHandle);
+
+    /// <summary>
+    /// Shows the update button while there is something to install, counts up
+    /// while it installs, and takes it away once there is nothing left —
+    /// which after a real install is the next start, on the new version.
+    /// </summary>
+    private void RefreshUpdateButton()
+    {
+        var updates = _services.Updates;
+
+        UpdateButton.Visibility = updates.Available ? Visibility.Visible : Visibility.Collapsed;
+        UpdateButton.IsEnabled = !updates.Installing;
+
+        if (!updates.Installing)
+        {
+            UpdateCaption.Text = Strings.Get("NavUpdate");
+        }
+
+        var tip = updates.NewVersion is { } version ? Strings.Format("NavUpdateTip", version) : null;
+        ToolTipService.SetToolTip(UpdateButton, tip);
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(UpdateButton, tip ?? string.Empty);
+
+        RefreshSettingsItem();
+    }
+
+    /// <summary>
+    /// What the Settings item shows when its label cannot be seen.
+    ///
+    /// With icons only, the grid inside the item is off-screen, and with it
+    /// the update button; a dot on the icon is what says there is something
+    /// there. The tooltip is what a plain string label would have given the
+    /// item automatically in that mode, and a grid does not.
+    /// </summary>
+    private void RefreshSettingsItem()
+    {
+        var labelShown = Nav.DisplayMode == NavigationViewDisplayMode.Expanded && Nav.IsPaneOpen;
+
+        NavSettingsItem.InfoBadge = _services.Updates.Available && !labelShown ? new InfoBadge() : null;
+        ToolTipService.SetToolTip(NavSettingsItem, labelShown ? null : NavSettingsLabel.Text);
+    }
+
+    /// <summary>
+    /// Installs the update the button is offering.
+    ///
+    /// Installing replaces the running app, so anything in progress is ended
+    /// with it — here that is an export, which runs for minutes and is the one
+    /// long job this app starts. That is worth one question before it happens,
+    /// and only then: with nothing running there is nothing to lose, and the
+    /// button was the request.
+    /// </summary>
+    private async void OnUpdate(object sender, RoutedEventArgs e)
+    {
+        var updates = _services.Updates;
+
+        if (!updates.Available || updates.Installing)
+        {
+            return;
+        }
+
+        if (_services.Work.IsBusy)
+        {
+            var confirm = new ContentDialog
+            {
+                XamlRoot = Root.XamlRoot,
+                Title = Strings.Get("UpdateBusyTitle"),
+                Content = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = Strings.Format("UpdateBusyBody", string.Join(", ", _services.Work.Running)),
+                },
+                PrimaryButtonText = Strings.Get("UpdateBusyGo"),
+                CloseButtonText = Strings.Get("StudioCancel.Content"),
+                DefaultButton = ContentDialogButton.Close,
+            };
+
+            if (await Views.Dialogs.ShowAsync(confirm) != ContentDialogResult.Primary)
+            {
+                return;
+            }
+        }
+
+        var progress = new Progress<double>(fraction =>
+            UpdateCaption.Text = Strings.Format("NavUpdating", (int)Math.Round(Math.Clamp(fraction, 0, 1) * 100)));
+
+        UpdateCaption.Text = Strings.Format("NavUpdating", 0);
+
+        var outcome = await updates.InstallAsync(WindowHandle, progress);
+
+        var said = outcome switch
+        {
+            UpdateOutcome.Installed => null,
+            UpdateOutcome.Cancelled => Strings.Get("UpdateCancelled"),
+            UpdateOutcome.NeedsWiFi => Strings.Get("UpdateNeedsWiFi"),
+            UpdateOutcome.LowBattery => Strings.Get("UpdateLowBattery"),
+            _ => Strings.Get("UpdateFailed"),
+        };
+
+        if (said is not null)
+        {
+            ShowToast(said);
+        }
     }
 
     /// <summary>
@@ -293,6 +421,79 @@ public sealed partial class MainWindow : Window
             ? Strings.Get("AppTitle.Text")
             : Strings.Format("TrayBusy", string.Join(", ", running));
     }
+
+    /// <summary>
+    /// Says something about an action the user just attempted, where the
+    /// window's own surfaces are too far from the click to connect with it.
+    ///
+    /// It carries no button and takes no input: anything needing a decision
+    /// belongs in a dialog, which waits, rather than in a notice that leaves
+    /// after three seconds.
+    /// </summary>
+    public void ShowToast(string message)
+    {
+        ToastText.Text = message;
+
+        // Restarted rather than queued. A second refusal while the first is
+        // still showing is the same conversation, and stacking notices would
+        // put the newest one where it is read last.
+        _toast?.Stop();
+        _toast = BuildToastAnimation();
+        _toast.Begin();
+    }
+
+    private Storyboard? _toast;
+
+    /// <summary>
+    /// One storyboard for the whole life of the notice: in, hold, out. A timer
+    /// between two animations would leave the hold running after the window
+    /// closed or the animation was cut short.
+    /// </summary>
+    private Storyboard BuildToastAnimation()
+    {
+        const double Hidden = -96;
+        const double Resting = 12;
+
+        var slide = new DoubleAnimationUsingKeyFrames();
+        var fade = new DoubleAnimationUsingKeyFrames();
+
+        void At(DoubleAnimationUsingKeyFrames track, double seconds, double value, EasingModeExt easing)
+        {
+            track.KeyFrames.Add(new EasingDoubleKeyFrame
+            {
+                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(seconds)),
+                Value = value,
+                EasingFunction = easing switch
+                {
+                    EasingModeExt.Out => new CubicEase { EasingMode = EasingMode.EaseOut },
+                    EasingModeExt.In => new CubicEase { EasingMode = EasingMode.EaseIn },
+                    _ => null,
+                },
+            });
+        }
+
+        At(slide, 0, Hidden, EasingModeExt.None);
+        At(slide, 0.28, Resting, EasingModeExt.Out);
+        At(slide, 3.28, Resting, EasingModeExt.None);
+        At(slide, 3.56, Hidden, EasingModeExt.In);
+
+        At(fade, 0, 0, EasingModeExt.None);
+        At(fade, 0.28, 1, EasingModeExt.Out);
+        At(fade, 3.28, 1, EasingModeExt.None);
+        At(fade, 3.56, 0, EasingModeExt.In);
+
+        Storyboard.SetTarget(slide, ToastSlide);
+        Storyboard.SetTargetProperty(slide, "Y");
+        Storyboard.SetTarget(fade, Toast);
+        Storyboard.SetTargetProperty(fade, "Opacity");
+
+        var board = new Storyboard();
+        board.Children.Add(slide);
+        board.Children.Add(fade);
+        return board;
+    }
+
+    private enum EasingModeExt { None, In, Out }
 
     /// <summary>
     /// Applies the stored theme. Called again when the Settings page changes it;

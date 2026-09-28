@@ -99,6 +99,14 @@ Kurse kommen von den öffentlichen Endpunkten von Tencent Finance, und das Bild 
 - Umsätze werden in Hunderte Millionen umgerechnet — Yuan auf dem Festland und in Hongkong, Dollar in den USA. Jeder Markt behält seine eigene Währung.
 - Ein Zeitraum von mehr als etwa 640 Kalendertagen wird abgelehnt und nicht stillschweigend gekürzt, denn mehr gibt eine Anfrage an die Quelle nicht zurück.
 
+## Aktualisieren
+
+Hat der Microsoft Store eine neuere Version, erscheint im Navigationsbereich neben Einstellungen eine Schaltfläche **Aktualisieren**; ein Klick installiert sie.
+
+- Sie erscheint nur, wenn der Store wirklich eine neuere Version hat. Ein Entwicklungs- oder quergeladenes Build sieht sie nie — das ist so gewollt.
+- Die App schließt sich während der Installation und startet mit der neuen Version neu, die Schaltfläche ist dann verschwunden. Läuft gerade ein Export, wird vorher gefragt.
+- Klappt es nicht, wird der Grund genannt — nur über WLAN, Akku zu schwach — und das Update lässt sich auch über den Microsoft Store installieren.
+
 ## Etwas nicht in Ordnung?
 
 Schreiben Sie an gaqo@outlook.com, was Sie getan und was Sie stattdessen erwartet haben. Die Versionsnummer steht auf der Einstellungsseite.

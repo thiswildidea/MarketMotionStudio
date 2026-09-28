@@ -99,6 +99,14 @@ Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir ve kare kayn
 - Tutarlar yüz milyonlara çevrilir — anakara ve Hong Kong’da yuan, ABD’de dolar. Her piyasa kendi para birimini korur.
 - Yaklaşık 640 takvim gününden uzun bir dönem, sessizce kısaltılmak yerine reddedilir; çünkü kaynağa yapılan tek bir istek ancak bu kadarını döndürür.
 
+## Güncelleme
+
+Microsoft Store'da daha yeni bir sürüm olduğunda gezinti bölmesinde Ayarlar'ın yanında bir **Güncelle** düğmesi görünür; tek tıkla kurulur.
+
+- Yalnızca Store'da gerçekten daha yeni bir sürüm varsa görünür. Geliştirme veya yandan yüklenmiş bir derlemede hiç görünmez, bu normaldir.
+- Yükleme sırasında uygulama kapanır ve yeni sürümle yeniden başlar, düğme kaybolur. Dışa aktarma sürüyorsa önce sorar.
+- Kurulamazsa nedenini söyler — yalnızca Wi-Fi, pil çok düşük — ve güncelleme Microsoft Store'dan da kurulabilir.
+
 ## Bir sorun mu var?
 
 gaqo@outlook.com adresine yazın ve ne yaptığınızı, bunun yerine ne beklediğinizi belirtin. Sürüm numarası ayarlar sayfasındadır.

@@ -42,7 +42,7 @@
   <data name="NavMarketTurnover.Content"><value>시장 거래대금</value></data>
   <data name="NavStockVolume.Content"><value>거래량과 회전율</value></data>
   <data name="NavHelp.Content"><value>도움말</value></data>
-  <data name="NavSettings.Content"><value>설정</value></data>
+  <data name="NavSettingsLabel.Text"><value>설정</value></data>
 
   <data name="MarketTurnoverPageTitle.Text"><value>시장 거래대금</value></data>
   <data name="MarketTurnoverPageSubtitle.Text"><value>전체 시장 또는 개별 시장 구분의 일별 거래대금. 같은 데이터의 두 가지 화면 형태이며 전환 시 재요청이 없습니다.</value></data>
@@ -442,4 +442,14 @@
   <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows 그림 {0}</value></data>
   <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>먼저 직접 추가한 그림이, 그다음 이 컴퓨터의 Windows에 포함된 그림이 나옵니다. Windows 그림은 복사하지 않고 원래 위치에서 사용합니다.</value></data>
   <data name="SettingsBackgroundFailed" xml:space="preserve"><value>그 그림을 사용할 수 없습니다: {0}</value></data>
+  <data name="NavUpdate"><value>업데이트</value></data>
+  <data name="NavUpdating"><value>업데이트 중 {0}%</value></data>
+  <data name="NavUpdateTip"><value>Microsoft Store에서 버전 {0}을(를) 사용할 수 있습니다. 설치하는 동안 앱이 닫히고 새 버전으로 다시 시작됩니다.</value></data>
+  <data name="UpdateBusyTitle"><value>지금 업데이트할까요?</value></data>
+  <data name="UpdateBusyBody"><value>아직 실행 중: {0}. 업데이트를 설치하면 앱이 닫히고 이 작업이 중단됩니다.</value></data>
+  <data name="UpdateBusyGo"><value>그래도 업데이트</value></data>
+  <data name="UpdateCancelled"><value>업데이트가 설치되지 않았습니다.</value></data>
+  <data name="UpdateNeedsWiFi"><value>Store는 이 업데이트를 Wi-Fi로만 다운로드합니다.</value></data>
+  <data name="UpdateLowBattery"><value>배터리가 부족해 업데이트를 설치할 수 없습니다. 전원을 연결하고 다시 시도하세요.</value></data>
+  <data name="UpdateFailed"><value>업데이트를 설치하지 못했습니다. Microsoft Store에서도 설치할 수 있습니다.</value></data>
 </root>
