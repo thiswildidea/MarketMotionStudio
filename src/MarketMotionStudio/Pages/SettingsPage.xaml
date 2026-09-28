@@ -6,7 +6,10 @@
     xmlns:mux="using:Microsoft.UI.Xaml.Controls">
 
     <ScrollViewer>
-        <StackPanel Padding="24" Spacing="16" MaxWidth="720" HorizontalAlignment="Left">
+        <!-- Centred rather than pinned left. The page is a column of cards that
+             never grows past this width, and on a wide window a column sitting
+             against the navigation pane reads as a dialog that lost its parent. -->
+        <StackPanel Padding="24" Spacing="16" MaxWidth="720" HorizontalAlignment="Center">
 
             <TextBlock x:Uid="SettingsPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
 
@@ -82,6 +85,110 @@
                             HorizontalAlignment="Left"
                             StepFrequency="5"
                             ValueChanged="OnDimChanged" />
+                </StackPanel>
+            </Border>
+
+            <!-- The backdrop every animation frame is drawn on. A card of its own
+                 next to the window's picture: they are the same kind of choice
+                 about how the app looks, but one is behind the window and the
+                 other ends up in the file, so they are not one list. It reaches
+                 the preview, the video and the cover image alike, because all
+                 three are drawn by the same renderer. -->
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsFrameBackdropLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsFrameBackdropNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <TextBlock x:Uid="SettingsFrameBackdropKind"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <ComboBox x:Name="FrameBackdropCombo"
+                              MinWidth="240"
+                              SelectionChanged="OnFrameBackdropKindChanged" />
+
+                    <!-- Only the two colour stops, in dropdowns rather than
+                         standing on the page: a colour picker is a large control
+                         and this card sits above three more. -->
+                    <StackPanel x:Name="FrameColourGroup" Spacing="8" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <DropDownButton x:Name="TopColourButton">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Rectangle x:Name="TopSwatch" Width="18" Height="18" RadiusX="3" RadiusY="3" />
+                                    <TextBlock x:Uid="SettingsFrameBackdropTop" />
+                                </StackPanel>
+                                <DropDownButton.Flyout>
+                                    <Flyout>
+                                        <mux:ColorPicker x:Name="TopColour"
+                                                         IsAlphaEnabled="False"
+                                                         ColorChanged="OnFrameColourChanged" />
+                                    </Flyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+
+                            <DropDownButton x:Name="BottomColourButton">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Rectangle x:Name="BottomSwatch" Width="18" Height="18" RadiusX="3" RadiusY="3" />
+                                    <TextBlock x:Uid="SettingsFrameBackdropBottom" />
+                                </StackPanel>
+                                <DropDownButton.Flyout>
+                                    <Flyout>
+                                        <mux:ColorPicker x:Name="BottomColour"
+                                                         IsAlphaEnabled="False"
+                                                         ColorChanged="OnFrameColourChanged" />
+                                    </Flyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </StackPanel>
+
+                        <TextBlock x:Uid="SettingsFrameBackdropColourNote"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+
+                    <!-- The same way of choosing a picture as the window's: pick
+                         one, it is copied into this app's folder, and it stays on
+                         the list below. -->
+                    <StackPanel x:Name="FramePictureGroup" Spacing="10" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button x:Name="PickFramePictureButton" Click="OnPickFramePicture">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <FontIcon Glyph="&#xE8B9;" FontSize="14" />
+                                    <TextBlock x:Uid="SettingsBackgroundPick" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="ClearFramePictureButton" x:Uid="SettingsBackgroundClear" Click="OnClearFramePicture" />
+                        </StackPanel>
+
+                        <GridView x:Name="FramePictureGallery"
+                                  Height="252"
+                                  SelectionMode="Single"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="OnFramePictureChosen"
+                                  ScrollViewer.VerticalScrollMode="Enabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  Visibility="Collapsed" />
+                        <TextBlock x:Name="FramePictureGalleryNote"
+                                   x:Uid="SettingsBackgroundGalleryNote"
+                                   Visibility="Collapsed"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                        <TextBlock x:Uid="SettingsBackgroundDimLabel"
+                                   Style="{StaticResource CaptionTextBlockStyle}" />
+                        <Slider x:Name="FrameDimSlider"
+                                Width="320"
+                                HorizontalAlignment="Left"
+                                StepFrequency="5"
+                                ValueChanged="OnFrameDimChanged" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

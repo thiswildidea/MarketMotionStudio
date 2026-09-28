@@ -66,7 +66,7 @@ public sealed class StockDualRenderer : IFrameRenderer
     {
         var t = context.Progress * _plan.TotalMs;
 
-        Ink.FillVertical(session, new Rect(0, 0, context.Width, context.Height), Palette.StockBackground);
+        context.Backdrop.Fill(session, context, Palette.StockBackground);
 
         var moving = DrawPanel(session, context, t, isRate: false);
         DrawPanel(session, context, t, isRate: true);

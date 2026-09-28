@@ -101,6 +101,18 @@ Auf der Einstellungsseite lässt sich ein Bild hinter das Fenster legen, abgedun
 - Ein gewähltes Bild wird in den eigenen Ordner der App kopiert; Verschieben oder Löschen des Originals berührt den Hintergrund nicht.
 - Der Abdeckungsregler legt fest, wie stark das Bild zurücktritt — von 30 % bis 95 %.
 - Bei aktiviertem hohem Kontrast wird kein Hintergrundbild angezeigt.
+## Animationshintergrund
+
+Auf der Einstellungsseite lässt sich ändern, worauf die Animation gezeichnet wird: der eingebaute Farbverlauf, zwei eigene Farben oder ein Bild. Es gilt für die Vorschau, das exportierte Video und das Titelbild gleichermaßen – alle drei zeichnet derselbe Renderer, es gibt also kein „in der Vorschau schön, in der Datei anders“.
+
+- Bei Farben geben Sie oben und unten je einen Farbton an; das Bild blendet dazwischen über. Dunkel passt: Jede Schriftfarbe darin ist hell, auf hellem Grund sind die Zahlen schwer zu lesen.
+
+- Ein Bild wählen funktioniert wie beim Fensterhintergrund: eines vom Rechner oder ein mitgeliefertes Windows-Hintergrundbild. Ein eigenes wird in den App-Ordner kopiert.
+
+- Das Bild füllt das Format und der Überstand wird beschnitten; die Proportionen werden nicht verzerrt.
+
+- Der Regler für die Abdunklung bestimmt, wie weit das Bild zum eigenen Hintergrund der Seite zurückgenommen wird: 20 % bis 95 %.
+
 ## Die Daten, und was sie nicht sagen
 
 Kurse kommen von den öffentlichen Endpunkten von Tencent Finance, und das Bild nennt die Quelle immer. Diese Videos beschreiben, was schon gehandelt wurde. Sie dienen nur als Anhaltspunkt und sind keine Anlageberatung.

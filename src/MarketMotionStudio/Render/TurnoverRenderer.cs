@@ -81,7 +81,7 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     {
         var t = context.Progress * plan.TotalMs;
 
-        Ink.FillVertical(session, new Rect(0, 0, context.Width, context.Height), Palette.Background);
+        context.Backdrop.Fill(session, context, Palette.Background);
 
         // The plot owns everything between the background and the statistics, including its own
         // closing annotations — the two forms mark their extremes differently, one boxing a bar

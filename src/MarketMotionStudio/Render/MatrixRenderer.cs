@@ -75,13 +75,8 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         var t = context.Progress * TotalMs;
 
-        // The source's own backdrop: the same shape, lifted green at the top.
-        Ink.FillVertical(session, new Rect(0, 0, context.Width, context.Height),
-        [
-            (0f, Rgb(0x0C, 0x1A, 0x14)),
-            (0.5f, Rgb(0x09, 0x0E, 0x1D)),
-            (1f, Rgb(0x07, 0x09, 0x14)),
-        ]);
+        // This page's own backdrop: the same shape, lifted green at the top.
+        context.Backdrop.Fill(session, context, Palette.MatrixBackground);
 
         var current = DrawGrid(session, context, t);
         DrawStats(session, context, t);

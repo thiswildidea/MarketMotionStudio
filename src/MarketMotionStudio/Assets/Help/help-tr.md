@@ -101,6 +101,18 @@ Ayarlar sayfası, pencerenin arkasına karartılmış bir resim koyabilir. Kartl
 - Seçilen resim uygulamanın kendi klasörüne kopyalanır; özgün dosyayı taşımak veya silmek arka planı etkilemez.
 - Maske yoğunluğu kaydırıcısı, resmin ne kadar karartılacağını %30–95 arasında belirler.
 - Yüksek karşıtlık açıkken arka plan resmi gösterilmez.
+## Animasyon arka planı
+
+Ayarlar sayfasında animasyonun neyin üzerine çizileceğini değiştirebilirsiniz: yerleşik geçiş, kendi seçtiğiniz iki renk veya bir resim. Önizleme, dışa aktarılan video ve kapak görseli için geçerlidir — üçünü de aynı oluşturucu çizer, yani "önizlemede güzel, dosyada farklı" diye bir şey yoktur.
+
+- Renk seçtiğinizde üst ve alt için birer ton verirsiniz ve kare ikisi arasında geçer. Koyu renkler daha uygundur: tüm metin tonları açıktır ve açık arka plan sayıları okumayı zorlaştırır.
+
+- Resim seçmek pencere arka planındaki gibi işler: bilgisayarınızdan bir resim ya da Windows ile gelen bir duvar kağıdı. Seçtiğiniz resim uygulamanın klasörüne kopyalanır.
+
+- Resim kareyi doldurur, artan kısım kırpılır; oranları asla bozulmaz.
+
+- Karartma sürgüsü, resmin sayfanın kendi arka planına ne kadar geri çekileceğini belirler: %20 ile %95 arası.
+
 ## Veri ve söylemeyecekleri
 
 Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir ve kare kaynağı her zaman belirtir. Bu videolar zaten gerçekleşmiş işlemleri anlatır. Yalnızca bilgi amaçlıdır ve yatırım tavsiyesi değildir.

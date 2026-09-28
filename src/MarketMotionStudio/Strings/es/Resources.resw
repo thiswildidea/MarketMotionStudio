@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Microsoft Store solo descargará esta actualización por Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>La batería está demasiado baja para instalar la actualización. Conecte el equipo y vuelva a intentarlo.</value></data>
   <data name="UpdateFailed"><value>No se pudo instalar la actualización. También puede instalarla desde Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Fondo de la animación</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>Aquello sobre lo que se dibuja cada fotograma. Afecta al vídeo exportado y a la imagen de portada además de a la vista previa: los tres los dibuja el mismo motor de dibujo.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Fondo</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Predeterminado</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Color</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Imagen</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Arriba</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Abajo</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Los colores oscuros convienen a estos fotogramas: todos los tonos de texto son claros. Sobre un fondo claro, las cifras se leen mal en el vídeo.</value></data>
 </root>

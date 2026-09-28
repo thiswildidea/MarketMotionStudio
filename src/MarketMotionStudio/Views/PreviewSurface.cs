@@ -62,6 +62,12 @@ public sealed class PreviewSurface : Grid
             _canvas.Invalidate();
         };
 
+        // The frame's backdrop is chosen on the Settings page, which is another
+        // page entirely and holds no reference to this one — so the surface
+        // listens for it itself. Without this, picking a colour or a picture
+        // would change nothing until something else happened to redraw.
+        AnimationBackdrop.Changed += (_, _) => Redraw();
+
         // Win2D holds device resources that the XAML tree does not release for it.
         // A page that is navigated away from and collected takes its controls with
         // it, but the swap chain is not part of that, and the leak shows up as
@@ -123,7 +129,7 @@ public sealed class PreviewSurface : Grid
         // not itself be scaled, or the frame drifts off centre as the window grows.
         session.Transform = Matrix3x2.CreateScale((float)fit) * Matrix3x2.CreateTranslation(offset);
 
-        var context = new FrameContext(Format, Margins, Progress);
+        var context = new FrameContext(Format, Margins, Progress, AnimationBackdrop.Current);
 
         if (Renderer is { } renderer)
         {
@@ -131,10 +137,10 @@ public sealed class PreviewSurface : Grid
         }
         else
         {
-            Ink.FillVertical(
-                session,
-                new Windows.Foundation.Rect(0, 0, Format.Width, Format.Height),
-                Palette.Background);
+            // The empty frame is drawn on the chosen backdrop too, so a page with
+            // nothing fetched yet shows what the video will be sitting on rather
+            // than a default it will not use.
+            context.Backdrop.Fill(session, context, Palette.Background);
         }
 
         if (ShowGuides)

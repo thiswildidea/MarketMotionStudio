@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Der Store lädt dieses Update nur über WLAN herunter.</value></data>
   <data name="UpdateLowBattery"><value>Der Akkustand ist zu niedrig, um das Update zu installieren. Schließen Sie das Gerät an und versuchen Sie es erneut.</value></data>
   <data name="UpdateFailed"><value>Das Update konnte nicht installiert werden. Sie können es auch über den Microsoft Store installieren.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Animationshintergrund</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>Worauf jedes Animationsbild gezeichnet wird. Er gilt für das exportierte Video und das Titelbild ebenso wie für die Vorschau – alle drei zeichnet derselbe Renderer.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Hintergrund</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Standard</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Farbe</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Bild</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Oben</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Unten</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Dunkle Farben passen zu diesen Bildern: Jede Schriftfarbe darin ist hell. Auf hellem Grund sind die Zahlen im Video schwer zu lesen.</value></data>
 </root>

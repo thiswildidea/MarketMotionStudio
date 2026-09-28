@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Store pobierze tę aktualizację tylko przez Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>Bateria jest zbyt słaba, aby zainstalować aktualizację. Podłącz zasilanie i spróbuj ponownie.</value></data>
   <data name="UpdateFailed"><value>Nie udało się zainstalować aktualizacji. Możesz ją też zainstalować z Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Tło animacji</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>To, na czym rysowana jest każda klatka animacji. Dotyczy eksportowanego wideo i obrazu okładki tak samo jak podglądu — wszystkie trzy rysuje ten sam renderer.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Tło</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Domyślne</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Kolor</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Obraz</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Góra</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Dół</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Tym klatkom pasują ciemne kolory: wszystkie odcienie tekstu są jasne. Na jasnym tle liczby są w wideo trudne do odczytania.</value></data>
 </root>

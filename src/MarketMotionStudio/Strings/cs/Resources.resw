@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Store tuto aktualizaci stáhne jen přes Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>Baterie je příliš slabá na instalaci aktualizace. Připojte napájení a zkuste to znovu.</value></data>
   <data name="UpdateFailed"><value>Aktualizaci se nepodařilo nainstalovat. Můžete ji nainstalovat také z Microsoft Storu.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Pozadí animace</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>To, na co se kreslí každý snímek animace. Platí pro exportované video a titulní obrázek stejně jako pro náhled – všechny tři kreslí stejný renderer.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Pozadí</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Výchozí</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Barva</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Obrázek</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Nahoře</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Dole</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Těmto snímkům sluší tmavé barvy: všechny odstíny textu jsou světlé. Na světlém pozadí se čísla ve videu špatně čtou.</value></data>
 </root>

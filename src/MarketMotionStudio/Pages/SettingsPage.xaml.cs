@@ -1,5 +1,6 @@
 ﻿using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
+using MarketMotionStudio.Render;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppLifecycle;
@@ -41,6 +42,19 @@ public sealed partial class SettingsPage : Page
         (ElementTheme.Default, "SettingsThemeSystem"),
         (ElementTheme.Light, "SettingsThemeLight"),
         (ElementTheme.Dark, "SettingsThemeDark"),
+    ];
+
+    /// <summary>
+    /// What the animation frames can be drawn on, in the order they are offered.
+    ///
+    /// The default first, because it is what the frames were designed with and
+    /// what someone who changed it will want to come back to.
+    /// </summary>
+    private static readonly (BackdropKind Kind, string Key)[] FrameBackdropKinds =
+    [
+        (BackdropKind.Default, "SettingsFrameBackdropDefault"),
+        (BackdropKind.Colour, "SettingsFrameBackdropColour"),
+        (BackdropKind.Picture, "SettingsFrameBackdropPicture"),
     ];
 
     private bool _loading = true;
@@ -96,9 +110,31 @@ public sealed partial class SettingsPage : Page
         DimSlider.Maximum = AppBackground.MaxDim;
         DimSlider.Value = AppBackground.Dim;
 
+        foreach (var (kind, key) in FrameBackdropKinds)
+        {
+            FrameBackdropCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = kind });
+        }
+
+        FrameBackdropCombo.SelectedIndex =
+            Math.Max(0, Array.FindIndex(FrameBackdropKinds, k => k.Kind == AnimationBackdrop.Kind));
+
+        // Given their values before the handlers are live. Assigning a colour
+        // picker's colour raises its change event, and a change handled here
+        // would write the stored colour back over the one being restored.
+        TopColour.Color = AnimationBackdrop.Top;
+        BottomColour.Color = AnimationBackdrop.Bottom;
+        PaintSwatches();
+
+        FrameDimSlider.Minimum = AnimationBackdrop.MinDim;
+        FrameDimSlider.Maximum = AnimationBackdrop.MaxDim;
+        FrameDimSlider.Value = AnimationBackdrop.Dim;
+
         _loading = false;
 
+        SettleFrameBackdropGroups();
+
         _ = RefreshBackgroundUiAsync();
+        _ = RefreshFramePictureUiAsync();
 
         // Asynchronous, and deliberately after _loading is cleared: reading the
         // startup state is a call into Windows, and the switch must end up showing
@@ -223,14 +259,20 @@ public sealed partial class SettingsPage : Page
     }
 
     /// <summary>
-    /// Picks a picture, copies it in, and shows it at once. The copy is what makes
-    /// it survive the original being moved; see <see cref="AppBackground"/>.
+    /// Picks a picture, copies it in and makes it the one in use. The copy is what
+    /// makes it survive the original being moved; see <see cref="PictureLibrary"/>.
+    ///
+    /// The same route for the window's picture and the frames', which is why it
+    /// takes the set rather than knowing which one it is: "choose a picture" means
+    /// the same thing for both, and a second copy of this would be two places for
+    /// the decode check below to be left out of one.
     /// </summary>
-    private async void OnPickBackground(object sender, RoutedEventArgs e)
+    /// <returns>Whether a picture was taken into use.</returns>
+    private async Task<bool> PickPictureAsync(PictureLibrary library)
     {
         if (App.Window is not { } window)
         {
-            return;
+            return false;
         }
 
         var picker = new Windows.Storage.Pickers.FileOpenPicker
@@ -239,7 +281,7 @@ public sealed partial class SettingsPage : Page
             ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail,
         };
 
-        foreach (var type in AppBackground.FileTypes)
+        foreach (var type in PictureLibrary.FileTypes)
         {
             picker.FileTypeFilter.Add(type);
         }
@@ -248,7 +290,7 @@ public sealed partial class SettingsPage : Page
 
         if (await picker.PickSingleFileAsync() is not { } file)
         {
-            return;
+            return false;
         }
 
         try
@@ -262,7 +304,7 @@ public sealed partial class SettingsPage : Page
                     .SetSourceAsync(stream.AsRandomAccessStream());
             }
 
-            await AppBackground.UseNewAsync(file);
+            await library.UseNewAsync(file);
         }
         catch (Exception ex)
         {
@@ -270,16 +312,126 @@ public sealed partial class SettingsPage : Page
             Status.Message = Strings.Format("SettingsBackgroundFailed", Strings.Reason(ex));
             RestartButton.Visibility = Visibility.Collapsed;
             Status.IsOpen = true;
-            return;
+            return false;
         }
 
-        await RefreshBackgroundUiAsync();
+        return true;
+    }
+
+    private async void OnPickBackground(object sender, RoutedEventArgs e)
+    {
+        if (await PickPictureAsync(AppBackground.Library))
+        {
+            await RefreshBackgroundUiAsync();
+        }
+    }
+
+    private async void OnPickFramePicture(object sender, RoutedEventArgs e)
+    {
+        if (await PickPictureAsync(AnimationBackdrop.Pictures))
+        {
+            await RefreshFramePictureUiAsync();
+        }
     }
 
     private void OnClearBackground(object sender, RoutedEventArgs e)
     {
         AppBackground.Clear();
         SettleBackgroundControls();
+    }
+
+    private void OnClearFramePicture(object sender, RoutedEventArgs e)
+    {
+        AnimationBackdrop.ClearPicture();
+        SettleFramePictureControls();
+    }
+
+    // ---- The frames' backdrop --------------------------------------------
+
+    /// <summary>The kind chosen, and what that shows and hides.</summary>
+    private void SettleFrameBackdropGroups()
+    {
+        var kind = AnimationBackdrop.Kind;
+
+        FrameColourGroup.Visibility = kind == BackdropKind.Colour ? Visibility.Visible : Visibility.Collapsed;
+        FramePictureGroup.Visibility = kind == BackdropKind.Picture ? Visibility.Visible : Visibility.Collapsed;
+
+        SettleFramePictureControls();
+    }
+
+    private void SettleFramePictureControls()
+    {
+        var picture = AnimationBackdrop.Picture;
+
+        ClearFramePictureButton.IsEnabled = picture is not null;
+        FrameDimSlider.IsEnabled = picture is not null;
+
+        if (picture is null)
+        {
+            FramePictureGallery.SelectedItem = null;
+        }
+    }
+
+    /// <summary>The two swatches, so the dropdowns show the colour they carry.</summary>
+    private void PaintSwatches()
+    {
+        TopSwatch.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(AnimationBackdrop.Top);
+        BottomSwatch.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(AnimationBackdrop.Bottom);
+    }
+
+    private void OnFrameBackdropKindChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading || FrameBackdropCombo.SelectedItem is not ComboBoxItem { Tag: BackdropKind kind })
+        {
+            return;
+        }
+
+        AnimationBackdrop.Kind = kind;
+        SettleFrameBackdropGroups();
+    }
+
+    /// <summary>
+    /// Either stop of the gradient. Both pickers share the handler and are told
+    /// apart by which one raised it, rather than by two handlers that would each
+    /// have to be wired to the right control.
+    /// </summary>
+    private void OnFrameColourChanged(ColorPicker sender, ColorChangedEventArgs args)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        if (sender == TopColour)
+        {
+            AnimationBackdrop.Top = args.NewColor;
+        }
+        else
+        {
+            AnimationBackdrop.Bottom = args.NewColor;
+        }
+
+        PaintSwatches();
+    }
+
+    private void OnFramePictureChosen(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is FrameworkElement { Tag: string path } tile)
+        {
+            AnimationBackdrop.UsePicture(path);
+            FramePictureGallery.SelectedItem = tile;
+            SettleFramePictureControls();
+        }
+    }
+
+    private void OnFrameDimChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        AnimationBackdrop.Dim = (int)Math.Round(e.NewValue);
     }
 
     /// <summary>
@@ -332,16 +484,47 @@ public sealed partial class SettingsPage : Page
     /// through a stream that is closed straight after, so a thumbnail never holds
     /// open a copy that may be taken off the list.
     /// </summary>
-    private int _galleryGeneration;
+    /// <summary>
+    /// Which refresh of each gallery is the latest. Per gallery rather than one
+    /// counter for the page: the two are filled at the same time when this page
+    /// opens, and a single counter would let the second one cancel the first.
+    /// </summary>
+    private readonly Dictionary<GridView, int> _galleryGenerations = [];
 
     private async Task RefreshBackgroundUiAsync()
     {
-        var generation = ++_galleryGeneration;
-        var current = AppBackground.Current;
-        var recent = AppBackground.Recent;
-        var system = AppBackground.SystemPictures;
+        SettleBackgroundControls();
+
+        await RefreshGalleryAsync(
+            AppBackground.Library, BackgroundGallery, BackgroundGalleryNote, RefreshBackgroundUiAsync);
 
         SettleBackgroundControls();
+    }
+
+    private async Task RefreshFramePictureUiAsync() =>
+        await RefreshGalleryAsync(
+            AnimationBackdrop.Pictures, FramePictureGallery, FramePictureGalleryNote, RefreshFramePictureUiAsync);
+
+    /// <summary>
+    /// Rebuilds one gallery's thumbnails — the user's own pictures, then Windows'
+    /// — and says which one is in use by selecting it.
+    ///
+    /// Thumbnails come from the shell's thumbnail cache rather than from decoding
+    /// each file: Windows' own pictures are 4K and 6K originals, and decoding
+    /// thirty of those takes long enough to watch. Either way the file is read
+    /// through a stream that is closed straight after, so a thumbnail never holds
+    /// open a copy that may be taken off the list.
+    /// </summary>
+    /// <param name="again">How to rebuild this same gallery, for the forget item.</param>
+    private async Task RefreshGalleryAsync(
+        PictureLibrary library, GridView gallery, TextBlock note, Func<Task> again)
+    {
+        var generation = _galleryGenerations.GetValueOrDefault(gallery) + 1;
+        _galleryGenerations[gallery] = generation;
+
+        var current = library.Current;
+        var recent = library.Recent;
+        var system = PictureLibrary.SystemPictures;
 
         var tiles = new List<Image>();
 
@@ -367,8 +550,8 @@ public sealed partial class SettingsPage : Page
                 var forget = new MenuFlyoutItem { Text = Strings.Get("SettingsBackgroundForget") };
                 forget.Click += async (_, _) =>
                 {
-                    AppBackground.Forget(path);
-                    await RefreshBackgroundUiAsync();
+                    library.Forget(path);
+                    await again();
                 };
 
                 tile.ContextFlyout = new MenuFlyout { Items = { forget } };
@@ -376,7 +559,7 @@ public sealed partial class SettingsPage : Page
 
             tiles.Add(tile);
 
-            if (generation != _galleryGeneration)
+            if (_galleryGenerations.GetValueOrDefault(gallery) != generation)
             {
                 return;
             }
@@ -385,29 +568,29 @@ public sealed partial class SettingsPage : Page
         // Only the latest refresh fills the list. Two in flight — a click while
         // thumbnails are still decoding — would otherwise both add theirs and
         // show every picture twice.
-        if (generation != _galleryGeneration)
+        if (_galleryGenerations.GetValueOrDefault(gallery) != generation)
         {
             return;
         }
 
-        BackgroundGallery.Items.Clear();
+        gallery.Items.Clear();
 
         foreach (var tile in tiles)
         {
-            BackgroundGallery.Items.Add(tile);
+            gallery.Items.Add(tile);
 
             if (string.Equals(tile.Tag as string, current, StringComparison.OrdinalIgnoreCase))
             {
-                BackgroundGallery.SelectedItem = tile;
+                gallery.SelectedItem = tile;
             }
         }
 
-        BackgroundGallery.Visibility = tiles.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-        BackgroundGalleryNote.Visibility = BackgroundGallery.Visibility;
+        gallery.Visibility = tiles.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        note.Visibility = gallery.Visibility;
 
-        if (BackgroundGallery.SelectedItem is { } selected)
+        if (gallery.SelectedItem is { } selected)
         {
-            BackgroundGallery.ScrollIntoView(selected);
+            gallery.ScrollIntoView(selected);
         }
     }
 

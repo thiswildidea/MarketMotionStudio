@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Store bu güncellemeyi yalnızca Wi-Fi üzerinden indirir.</value></data>
   <data name="UpdateLowBattery"><value>Güncellemeyi yüklemek için pil çok düşük. Cihazı prize takıp yeniden deneyin.</value></data>
   <data name="UpdateFailed"><value>Güncelleme yüklenemedi. Microsoft Store'dan da yükleyebilirsiniz.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Animasyon arka planı</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>Her animasyon karesinin üzerine çizildiği şey. Önizlemenin yanı sıra dışa aktarılan videoya ve kapak görseline de uygulanır — üçünü de aynı oluşturucu çizer.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Arka plan</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Varsayılan</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Renk</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Resim</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Üst</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Alt</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Bu karelere koyu renkler yakışır: içlerindeki her metin tonu açıktır. Açık bir arka planda sayılar videoda zor okunur.</value></data>
 </root>

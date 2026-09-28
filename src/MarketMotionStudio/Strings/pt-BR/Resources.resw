@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>A Store só vai baixar esta atualização por Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>A bateria está fraca demais para instalar a atualização. Conecte à tomada e tente novamente.</value></data>
   <data name="UpdateFailed"><value>Não foi possível instalar a atualização. Você também pode instalá-la pela Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Fundo da animação</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>Aquilo sobre o que cada quadro é desenhado. Vale para o vídeo exportado e para a imagem de capa, além da pré-visualização — os três são desenhados pelo mesmo renderizador.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Fundo</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Padrão</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Cor</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Imagem</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Topo</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Base</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Cores escuras combinam com estes quadros: todos os tons de texto são claros. Sobre um fundo claro, os números ficam difíceis de ler no vídeo.</value></data>
 </root>

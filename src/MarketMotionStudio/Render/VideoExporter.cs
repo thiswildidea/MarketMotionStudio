@@ -89,6 +89,11 @@ public static class VideoExporter
         // consequence of being wrong about it is the silent process death described above.
         var drawing = new Lock();
 
+        // Resolved once for the whole run. Every frame of one file is drawn on the
+        // same backdrop, whatever is chosen while it is encoding — the same reason
+        // the format and the margins are read before the work starts.
+        var backdrop = AnimationBackdrop.Current;
+
         var next = 0;
         Exception? failure = null;
 
@@ -123,7 +128,7 @@ public static class VideoExporter
                     {
                         // No transform, exactly as the cover export does it. Same renderer, same context
                         // type, no preview-specific path.
-                        renderer.Draw(session, new FrameContext(format, margins, fraction));
+                        renderer.Draw(session, new FrameContext(format, margins, fraction, backdrop));
                     }
 
                     var pixels = target.GetPixelBytes();

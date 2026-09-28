@@ -79,7 +79,7 @@ public sealed class PositionRenderer : IFrameRenderer
     {
         var t = context.Progress * _plan.TotalMs;
 
-        Ink.FillVertical(session, new Rect(0, 0, context.Width, context.Height), Palette.Background);
+        context.Backdrop.Fill(session, context, Palette.Background);
 
         var (index, point) = DrawPlot(session, context, t);
 

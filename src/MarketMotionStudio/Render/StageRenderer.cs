@@ -62,7 +62,7 @@ public sealed class StageRenderer : IFrameRenderer
 
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
-        Ink.FillVertical(session, new Rect(0, 0, context.Width, context.Height), Palette.Background);
+        context.Backdrop.Fill(session, context, Palette.Background);
 
         DrawGrid(session, context);
         DrawTitleBlock(session, context);

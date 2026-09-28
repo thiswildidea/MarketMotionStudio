@@ -101,6 +101,18 @@ Na stronie ustawień można umieścić obraz za oknem, przyciemniony. Karty i pa
 - Wybrany obraz jest kopiowany do folderu aplikacji — przeniesienie lub usunięcie oryginału nie wpływa na tło.
 - Suwak intensywności maski określa, jak bardzo obraz zostaje przygaszony, w zakresie od 30% do 95%.
 - Gdy włączony jest wysoki kontrast, obraz w tle nie jest pokazywany.
+## Tło animacji
+
+Na stronie ustawień możesz zmienić to, na czym rysowana jest animacja: wbudowany gradient, dwa własne kolory albo obraz. Dotyczy to podglądu, eksportowanego wideo i obrazu okładki — wszystkie trzy rysuje ten sam renderer, więc nie ma „ładnie w podglądzie, inaczej w pliku”.
+
+- Przy kolorach podajesz ton górny i dolny, a klatka przechodzi między nimi. Lepiej ciemne: każdy odcień tekstu jest jasny, a jasne tło utrudnia odczyt liczb.
+
+- Wybór obrazu działa tak samo jak dla tła okna: obraz z komputera albo tapeta dołączona do Windows. Wybrany jest kopiowany do folderu aplikacji.
+
+- Obraz wypełnia klatkę, a nadmiar jest przycinany, więc proporcje nigdy się nie rozciągają.
+
+- Suwak przyciemnienia decyduje, jak mocno obraz jest cofany do własnego tła strony: od 20% do 95%.
+
 ## Dane i to, czego nie powiedzą
 
 Notowania pochodzą z publicznych punktów końcowych Tencent Finance, a kadr zawsze podaje źródło. Te filmy opisują to, co już zostało zawarte. Są wyłącznie informacyjne i nie stanowią porady inwestycyjnej.

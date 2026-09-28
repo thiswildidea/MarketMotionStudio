@@ -41,10 +41,14 @@ public static class FrameExporter
         // on a scaled monitor than on an unscaled one.
         using var target = new CanvasRenderTarget(device, format.Width, format.Height, 96);
 
+        // Read once, before drawing: the frame's backdrop is the one chosen when
+        // the cover was asked for, not one that may have been changed since.
+        var backdrop = AnimationBackdrop.Current;
+
         using (var session = target.CreateDrawingSession())
         {
             // No transform. This is the encoder's path, not the preview's.
-            renderer.Draw(session, new FrameContext(format, margins, progress));
+            renderer.Draw(session, new FrameContext(format, margins, progress, backdrop));
         }
 
         cancellation.ThrowIfCancellationRequested();

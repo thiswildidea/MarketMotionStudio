@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Le Store ne téléchargera cette mise à jour qu'en Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>La batterie est trop faible pour installer la mise à jour. Branchez l'appareil et réessayez.</value></data>
   <data name="UpdateFailed"><value>Impossible d'installer la mise à jour. Vous pouvez aussi l'installer depuis le Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Fond de l'animation</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>Sur quoi chaque image de l'animation est dessinée. Il s'applique à la vidéo exportée et à l'image de couverture aussi bien qu'à l'aperçu : les trois sont dessinés par le même moteur de rendu.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Fond</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Par défaut</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Couleur</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Image</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Haut</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Bas</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Les couleurs sombres conviennent à ces images : toutes leurs teintes de texte sont claires. Sur un fond clair, les chiffres sont difficiles à lire dans la vidéo.</value></data>
 </root>

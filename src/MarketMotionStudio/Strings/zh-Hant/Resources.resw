@@ -457,4 +457,13 @@
   <data name="UpdateNeedsWiFi"><value>Microsoft Store 只會透過 Wi-Fi 下載此更新。</value></data>
   <data name="UpdateLowBattery"><value>電量過低，無法安裝更新。請接上電源後重試。</value></data>
   <data name="UpdateFailed"><value>無法安裝更新。也可以在 Microsoft Store 中安裝。</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>動畫背景</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>每一格動畫畫在什麼上面。它同時作用於預覽、匯出的影片和封面圖——三者由同一個繪製器繪製。</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>背景</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>預設</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>顏色</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>圖片</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>頂部</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>底部</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>深色更適合這些畫面：畫格內所有文字都是淺色。淺色背景會讓影片裡的數字難以辨認。</value></data>
 </root>

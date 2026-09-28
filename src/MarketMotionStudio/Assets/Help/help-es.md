@@ -101,6 +101,18 @@ La página de configuración puede colocar una imagen detrás de la ventana, ate
 - La imagen elegida se copia a la carpeta de la aplicación; mover o eliminar el original no afecta al fondo.
 - El control de intensidad de máscara define cuánto se oscurece la imagen, del 30 % al 95 %.
 - No se muestra ninguna imagen mientras el alto contraste esté activado.
+## Fondo de la animación
+
+En la página de configuración puedes cambiar sobre qué se dibuja la animación: el degradado integrado, dos colores tuyos o una imagen. Se aplica por igual a la vista previa, al vídeo exportado y a la imagen de portada: los tres los dibuja el mismo motor, así que no hay un «se ve bien en la vista previa y distinto en el archivo».
+
+- Al elegir colores indicas un tono superior y otro inferior, y el fotograma pasa de uno a otro. Mejor oscuros: todos los tonos de texto son claros y un fondo claro dificulta leer las cifras.
+
+- Elegir una imagen funciona igual que en el fondo de la ventana: una de tu equipo o un fondo que Windows ya incluye. La que elijas se copia a la carpeta de la aplicación.
+
+- La imagen rellena el fotograma y lo que sobra se recorta, así que nunca se deforma.
+
+- El control de atenuación decide cuánto se retira la imagen hacia el fondo propio de la página, del 20 % al 95 %.
+
 ## Los datos, y lo que no le dirán
 
 Las cotizaciones vienen de los puntos de acceso públicos de Tencent Finance, y el encuadre siempre cita la fuente. Estos vídeos describen lo que ya se ha negociado. Son solo a título informativo y no constituyen asesoramiento de inversión.

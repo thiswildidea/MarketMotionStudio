@@ -101,6 +101,18 @@ The Settings page can put a picture behind the window, dimmed. Cards and panels 
 - A picture you pick is copied into the app's own folder, so moving or deleting the original does not affect the background.
 - The dimming slider sets how far the picture is pushed back, from 30% to 95%.
 - No picture is shown while high contrast is on.
+## Animation background
+
+The Settings page can change what the animation is drawn on: the built-in gradient, two colours of your own, or a picture. It applies to the preview, the exported video and the cover image alike — all three are drawn by the same renderer, so there is no "looks good in the preview, different in the file".
+
+- Choosing colours gives you a top and a bottom stop, and the frame fades from one to the other. Dark suits these frames: every tone of text in them is light, and a light background makes the numbers hard to read.
+
+- Choosing a picture works the same way as the window's: pick one from your computer, or use a wallpaper Windows already ships. One you pick is copied into the app's own folder.
+
+- The picture fills the frame and the surplus is cropped, so its proportions are never stretched.
+
+- The dimming slider sets how far the picture is pushed back towards the frame's own backdrop, from 20% to 95%.
+
 ## Data, and what it will not tell you
 
 Quotes come from Tencent Finance's public endpoints, and the frame always says so. These videos describe what has already traded. They are for reference only and are not investment advice.

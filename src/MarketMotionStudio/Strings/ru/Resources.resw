@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Store скачает это обновление только по Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>Слишком низкий заряд батареи для установки обновления. Подключите питание и повторите попытку.</value></data>
   <data name="UpdateFailed"><value>Не удалось установить обновление. Его также можно установить из Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Фон анимации</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>То, на чём рисуется каждый кадр анимации. Относится и к экспортированному видео, и к обложке, и к предпросмотру — все три рисует один и тот же отрисовщик.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Фон</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>По умолчанию</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Цвет</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Изображение</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Сверху</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Снизу</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Этим кадрам идут тёмные цвета: все оттенки текста в них светлые. На светлом фоне числа в видео читаются плохо.</value></data>
 </root>

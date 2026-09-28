@@ -101,6 +101,18 @@ Na stránce nastavení lze za okno umístit ztmavený obrázek. Karty a panely z
 - Vybraný obrázek se zkopíruje do složky aplikace — přesunutí nebo smazání originálu pozadí neovlivní.
 - Posuvník intenzity masky určuje, jak moc se obrázek ztmaví, v rozsahu 30–95 %.
 - Když je zapnutý vysoký kontrast, obrázek na pozadí se nezobrazuje.
+## Pozadí animace
+
+Na stránce nastavení můžete změnit, na co se animace kreslí: vestavěný přechod, dvě vlastní barvy nebo obrázek. Platí to pro náhled, exportované video i titulní obrázek – všechny tři kreslí stejný renderer, takže neexistuje „v náhledu hezké, v souboru jinak“.
+
+- U barev zadáte horní a dolní odstín a snímek mezi nimi přechází. Tmavé jsou lepší: každý odstín textu je světlý a na světlém pozadí se čísla špatně čtou.
+
+- Výběr obrázku funguje stejně jako u pozadí okna: obrázek z počítače nebo tapeta, kterou Windows už mají. Vybraný se zkopíruje do složky aplikace.
+
+- Obrázek vyplní formát a přebytek se ořízne, takže se proporce nikdy neroztáhnou.
+
+- Posuvník ztmavení určuje, jak silně se obrázek vrací k vlastnímu pozadí stránky: 20 % až 95 %.
+
 ## Data a co neřeknou
 
 Kurzy přicházejí z veřejných rozhraní Tencent Finance a záběr zdroj vždy uvádí. Tato videa popisují to, co už bylo zobchodováno. Slouží pouze pro orientaci a nejsou investičním doporučením.

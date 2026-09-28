@@ -469,4 +469,13 @@
   <data name="UpdateNeedsWiFi"><value>The Store will only download this update over Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>The battery is too low to install the update. Plug in and try again.</value></data>
   <data name="UpdateFailed"><value>The update could not be installed. It can also be installed from the Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Animation background</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>What every animation frame is drawn on. It reaches the exported video and the cover image as well as the preview — all three are drawn by the same renderer.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Background</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Default</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Colour</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Picture</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Top</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Bottom</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Dark colours suit these frames: every tone of text in them is light. On a light background the numbers are hard to read in the video.</value></data>
 </root>

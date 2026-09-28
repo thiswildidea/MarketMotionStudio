@@ -135,7 +135,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     {
         var t = context.Progress * TotalMs;
 
-        Ink.FillVertical(session, new Rect(0, 0, context.Width, context.Height), Palette.Background);
+        context.Backdrop.Fill(session, context, Palette.Background);
 
         var state = StateAt(t);
         DrawAxis(session, context, t, state);

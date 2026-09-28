@@ -44,6 +44,14 @@ below for the full feature set — that version is already published and is not 
 - **标的显示名本地化 / instrument names follow the interface language** — 80 个常用标的的
   显示名随界面语言走（请求仍用代码，不变）。
   Eighty common instruments are named in the interface language; requests still go by code.
+- **动画背景可自定义 / the animation's backdrop is yours to set** — 设置页新增「动画背景」：
+  默认渐变、自选两色渐变、或一张图片（可从电脑选，也可直接用 Windows 自带壁纸，最近 6 张
+  留档）。图片按「填满」铺开并裁掉多余部分，压暗浓度 20–95% 可调。它同时作用于预览、导出的
+  视频和封面图——三者由同一个渲染器绘制，所以文件里看到的就是预览里看到的。
+  A new Settings card decides what every frame is drawn on: the built-in gradient, a two-colour
+  gradient of your own, or a picture — from your computer or Windows' own wallpapers, the last six
+  kept. Pictures fill the frame and are cropped rather than stretched, dimmed 20–95%. It reaches the
+  exported video and the cover image as well as the preview, because one renderer draws all three.
 
 ### 改进 / Changed
 
@@ -54,6 +62,13 @@ below for the full feature set — that version is already published and is not 
   Start menu, Apps list and Settings now show the **product name** in the OS display language;
   all three previously carried the package identity, which is an identifier rather than a
   product name and reads the same in every language. Unlisted languages fall back to English.
+- **设置页内容居中 / the Settings page is centred** — 那列固定宽度的卡片改为在窗口里居中，
+  宽窗口下不再贴着左侧导航栏。
+  The column of cards now sits centred in the window instead of against the navigation pane.
+- **帮助手册新增「动画背景」一节 / the manual documents the new backdrop** — 14 份手册各加
+  一章（现为 15 章），讲清三种背景、图片的铺法与浓度范围。
+  All fourteen manuals gained a chapter on it (now fifteen); the chapter count is checked by the
+  injection script, the way the resource keys are.
 
 ### 已知限制 / Known limits（沿用 0.0.0.0，本版未变 / unchanged from 0.0.0.0）
 

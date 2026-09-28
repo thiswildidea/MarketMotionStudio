@@ -101,6 +101,18 @@ A página de configurações pode colocar uma imagem atrás da janela, escurecid
 - A imagem escolhida é copiada para a pasta do aplicativo; mover ou excluir o original não afeta o fundo.
 - O controle de intensidade da máscara define o quanto a imagem é escurecida, de 30% a 95%.
 - Nenhuma imagem é mostrada enquanto o alto contraste estiver ativado.
+## Fundo da animação
+
+Na página de configurações você pode mudar sobre o que a animação é desenhada: o gradiente padrão, duas cores suas ou uma imagem. Vale para a pré-visualização, o vídeo exportado e a imagem de capa: os três são desenhados pelo mesmo renderizador, então não existe "bonito na pré-visualização e diferente no arquivo".
+
+- Ao escolher cores, você indica um tom superior e um inferior, e o quadro passa de um para o outro. Prefira escuros: todos os tons de texto são claros, e um fundo claro dificulta a leitura dos números.
+
+- Escolher uma imagem funciona como no fundo da janela: uma do computador ou um papel de parede que já vem com o Windows. A escolhida é copiada para a pasta do aplicativo.
+
+- A imagem preenche o quadro e o excesso é cortado, então as proporções nunca são esticadas.
+
+- O controle de escurecimento define o quanto a imagem volta para o fundo próprio da página, de 20% a 95%.
+
 ## Os dados, e o que eles não vão dizer
 
 As cotações vêm dos endpoints públicos da Tencent Finance, e o quadro sempre cita a fonte. Estes vídeos descrevem o que já foi negociado. Servem apenas para referência e não são recomendação de investimento.

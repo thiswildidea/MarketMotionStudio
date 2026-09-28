@@ -101,6 +101,18 @@ La pagina delle impostazioni può mettere un'immagine dietro la finestra, attenu
 - L'immagine scelta viene copiata nella cartella dell'app: spostare o eliminare l'originale non influisce sullo sfondo.
 - Il dispositivo di intensità maschera regola quanto l'immagine viene attenuata, dal 30% al 95%.
 - Nessuna immagine viene mostrata quando il contrasto elevato è attivo.
+## Sfondo dell'animazione
+
+Nella pagina Impostazioni puoi cambiare ciò su cui viene disegnata l'animazione: il gradiente predefinito, due colori tuoi oppure un'immagine. Vale per l'anteprima, per il video esportato e per l'immagine di copertina: tutti e tre li disegna lo stesso renderer, quindi non esiste un «bello nell'anteprima, diverso nel file».
+
+- Con i colori indichi un tono in alto e uno in basso e il fotogramma passa dall'uno all'altro. Meglio scuri: ogni tono di testo è chiaro e uno sfondo chiaro rende i numeri difficili da leggere.
+
+- Scegliere un'immagine funziona come per lo sfondo della finestra: una dal computer o uno sfondo già incluso in Windows. Quella scelta viene copiata nella cartella dell'app.
+
+- L'immagine riempie il formato e l'eccedenza viene ritagliata: le proporzioni non vengono mai deformate.
+
+- Il cursore di attenuazione decide quanto l'immagine viene riportata verso lo sfondo proprio della pagina, dal 20% al 95%.
+
 ## I dati, e ciò che non diranno
 
 Le quotazioni vengono dagli endpoint pubblici di Tencent Finance, e l'inquadratura cita sempre la fonte. Questi video descrivono ciò che è già stato scambiato. Sono solo a titolo informativo e non costituiscono una consulenza di investimento.

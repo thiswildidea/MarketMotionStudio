@@ -25,7 +25,15 @@
 /// on the frame rate: the same fraction must produce the same picture at 30 and at
 /// 60 fps, or an export at one rate is not the video previewed at the other.
 /// </param>
-public sealed record FrameContext(VideoFormat Format, ChartMargins BaselineMargins, double Progress)
+/// <param name="Backdrop">
+/// What this frame is drawn on, already resolved.
+///
+/// Carried here rather than read by the renderer that fills the frame, so that a
+/// backdrop chosen after an export has started cannot change the frames part-way
+/// through the file: the encoder builds one of these for the whole run.
+/// </param>
+public sealed record FrameContext(
+    VideoFormat Format, ChartMargins BaselineMargins, double Progress, Backdrop Backdrop)
 {
     public double Width => Format.Width;
 

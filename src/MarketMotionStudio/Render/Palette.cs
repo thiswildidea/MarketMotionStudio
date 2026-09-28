@@ -31,6 +31,19 @@ public static class Palette
         (1f, Rgb(0x06, 0x09, 0x11)),
     ];
 
+    /// <summary>
+    /// The return matrix's backdrop: the same shape as <see cref="Background"/>,
+    /// lifted green at the top. Its own entry rather than a gradient written out
+    /// inside that one renderer, because a backdrop the user has chosen needs one
+    /// named default per page to fall back to.
+    /// </summary>
+    public static readonly (float Position, Color Colour)[] MatrixBackground =
+    [
+        (0f, Rgb(0x0C, 0x1A, 0x14)),
+        (0.5f, Rgb(0x09, 0x0E, 0x1D)),
+        (1f, Rgb(0x07, 0x09, 0x14)),
+    ];
+
     /// <summary>The title.</summary>
     public static readonly Color Title = Rgb(0xF0, 0xF5, 0xFF);
 

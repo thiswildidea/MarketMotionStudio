@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Store はこの更新を Wi-Fi 経由でのみダウンロードします。</value></data>
   <data name="UpdateLowBattery"><value>バッテリー残量が少ないため更新をインストールできません。電源に接続してもう一度お試しください。</value></data>
   <data name="UpdateFailed"><value>更新をインストールできませんでした。Microsoft Store からもインストールできます。</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>アニメーションの背景</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>アニメーションの各フレームが描かれる土台です。プレビューだけでなく、書き出した動画とカバー画像にも同じものが使われます。三者は同じレンダラーが描いているためです。</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>背景</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>既定</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>色</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>画像</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>上部</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>下部</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>これらのフレームには暗い色が向いています。文字の色はすべて明るい色だからです。明るい背景では動画内の数字が読みにくくなります。</value></data>
 </root>

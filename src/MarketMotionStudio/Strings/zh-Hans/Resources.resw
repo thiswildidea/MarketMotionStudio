@@ -467,4 +467,13 @@
   <data name="UpdateNeedsWiFi"><value>Microsoft Store 只会通过 Wi-Fi 下载此更新。</value></data>
   <data name="UpdateLowBattery"><value>电量过低，无法安装更新。请接通电源后重试。</value></data>
   <data name="UpdateFailed"><value>无法安装更新。也可以在 Microsoft Store 中安装。</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>动画背景</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>每一帧动画画在什么上面。它同时作用于预览、导出的视频和封面图——三者由同一个渲染器绘制。</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>背景</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>默认</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>颜色</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>图片</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>顶部</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>底部</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>深色更适合这些画面：帧内所有文字都是浅色。浅色背景会让视频里的数字难以辨认。</value></data>
 </root>

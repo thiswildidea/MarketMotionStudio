@@ -458,4 +458,13 @@
   <data name="UpdateNeedsWiFi"><value>Lo Store scaricherà questo aggiornamento solo tramite Wi-Fi.</value></data>
   <data name="UpdateLowBattery"><value>La batteria è troppo scarica per installare l'aggiornamento. Collega l'alimentazione e riprova.</value></data>
   <data name="UpdateFailed"><value>Impossibile installare l'aggiornamento. Puoi installarlo anche dal Microsoft Store.</value></data>
+  <data name="SettingsFrameBackdropLabel.Text" xml:space="preserve"><value>Sfondo dell'animazione</value></data>
+  <data name="SettingsFrameBackdropNote.Text" xml:space="preserve"><value>Ciò su cui viene disegnato ogni fotogramma. Vale per il video esportato e per l'immagine di copertina oltre che per l'anteprima: tutti e tre li disegna lo stesso renderer.</value></data>
+  <data name="SettingsFrameBackdropKind.Text" xml:space="preserve"><value>Sfondo</value></data>
+  <data name="SettingsFrameBackdropDefault" xml:space="preserve"><value>Predefinito</value></data>
+  <data name="SettingsFrameBackdropColour" xml:space="preserve"><value>Colore</value></data>
+  <data name="SettingsFrameBackdropPicture" xml:space="preserve"><value>Immagine</value></data>
+  <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Sopra</value></data>
+  <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Sotto</value></data>
+  <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>I colori scuri si adattano a questi fotogrammi: ogni tono di testo è chiaro. Su uno sfondo chiaro i numeri si leggono male nel video.</value></data>
 </root>

@@ -101,6 +101,18 @@ La page des paramètres peut placer une image derrière la fenêtre, assombrie. 
 - L'image choisie est copiée dans le dossier propre à l'application : déplacer ou supprimer l'original ne touche pas l'arrière-plan.
 - Le curseur d'intensité du voile détermine à quel point l'image est atténuée, de 30 % à 95 %.
 - Aucune image n'est affichée tant que le contraste élevé est activé.
+## Fond de l'animation
+
+La page Paramètres permet de changer ce sur quoi l'animation est dessinée : le dégradé intégré, deux couleurs de votre choix, ou une image. Cela vaut pour l'aperçu, pour la vidéo exportée et pour l'image de couverture : les trois sont dessinés par le même moteur, il n'y a donc pas de « joli dans l'aperçu, différent dans le fichier ».
+
+- Pour les couleurs, vous donnez un ton du haut et un ton du bas, et l'image passe de l'un à l'autre. Les tons sombres conviennent : chaque teinte de texte est claire et un fond clair rend les chiffres difficiles à lire.
+
+- Choisir une image fonctionne comme pour le fond de la fenêtre : une image de votre ordinateur, ou un fond d'écran fourni par Windows. Celle que vous choisissez est copiée dans le dossier de l'application.
+
+- L'image remplit le cadre et le surplus est rogné : ses proportions ne sont jamais étirées.
+
+- Le curseur d'assombrissement règle à quel point l'image est ramenée vers le fond propre à la page, de 20 % à 95 %.
+
 ## Les données, et ce qu'elles ne diront pas
 
 Les cours viennent des points d'accès publics de Tencent Finance, et l'image cite toujours la source. Ces vidéos décrivent ce qui s'est déjà échangé. Elles sont fournies à titre indicatif et ne constituent pas un conseil en investissement.
