@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
-r"""生成 Microsoft Store 商品页截图：简体中文 / 繁體中文 / English 三语言。
+r"""生成 Microsoft Store 商品页截图：全部 14 种语言。
 
-思路：应用内置语言设置（设置页 LanguageCombo，重启生效）。脚本对每种语言
-「切语言 → 杀进程重启 → 逐页导航 → 选标的 → 获取数据 → 拖到中途帧 → 截图」，
-全部用 AutomationId 定位（x:Name 即 AutomationId），因此不依赖当前界面语言。
+思路：应用内置语言设置（设置页 LanguageCombo，重启生效）+ 市场设置
+（MarketCombo，同样重启生效）。脚本对每种语言「切语言 + 切市场 → 杀进程
+重启 → 逐页导航 → 选标的 → 获取数据 → 拖到终帧 → 截图」，全部用
+AutomationId 定位（x:Name 即 AutomationId），因此不依赖当前界面语言。
+
+各语言的市场与标的规定（2026-09-27）：
+  简体中文   A股  预置标的（第一项=中国平安）
+  繁體中文   港股  预置标的（第一项=腾讯控股）
+  其余 12 种  美股  搜索 AAPL 选建议（展示搜索能力）
+
+截图停在动画的**最后一帧**（进度条拖到最大），收尾卡/终态画面即商店图。
 
 运行前提（缺一不可）：
   1. 应用已注册（Release 或 Debug 松散布局均可）：
@@ -12,8 +20,10 @@ r"""生成 Microsoft Store 商品页截图：简体中文 / 繁體中文 / Engli
   3. python 环境装有 uiautomation（2.0.x，用 GetPattern(PatternId.X)）。
 
 用法：
-  python tools\store-screenshots.py            # 三语言全量
+  python tools\store-screenshots.py            # 14 语言全量
   python tools\store-screenshots.py --smoke    # 只跑 zh-Hans + 市场成交额一页
+  python tools\store-screenshots.py --langs=en-US --pages=06-position
+                                                # 只跑指定语言/页面（验证用）
 
 产出：artifacts\store-screens\<语言>\<序号>-<页面>.png，逐行写 runlog.txt。
 截图尺寸要求 ≥1366×768，脚本会先把窗口 MoveWindow 到安全大小再抓。
@@ -32,23 +42,47 @@ OUTROOT = r"D:\software\MarketMotionStudio\artifacts\store-screens"
 LOG = os.path.join(OUTROOT, "runlog.txt")
 SMOKE = "--smoke" in sys.argv
 
-# (语言 tag, 重启后的窗口标题, 语言下拉条目文本, 设置导航项的本地化名称)
-# 注：页脚导航项（帮助/设置）的 AutomationId 为空，只能按本地化名称找，
-# 且找的时候要用「当前界面语言」的名称（上一轮的语言），不是目标语言的。
+# 搜索模式下往 InstrumentSearch 里输入的查询串（美股，标普500 ETF）。
+# 注意：腾讯美股数据未做拆股调整（AAPL 2014 年 7拆1 前后 645.57→102.25 断崖），
+# 长区间截图必须挑无拆股的标的——SPY 近 13 年无拆股，收益曲线干净。
+SEARCH_QUERY = "SPY"
+
+# (语言 tag, 重启后的窗口标题, 语言下拉条目文本, 设置导航项名称(仅日志用),
+#  市场索引 0=A股 1=港股 2=美股, 标的模式 preset=点预置 / search=搜索)
 LANGS = [
-    ("zh-Hans", "行情指标动画工作室", "简体中文", "设置"),
-    ("zh-Hant", "行情指標動畫工作室", "繁體中文", "設定"),
-    ("en-US", "Market Motion Studio", "English", "Settings"),
+    ("zh-Hans", "行情指标动画工作室", "简体中文", "设置", 0, "preset"),
+    ("zh-Hant", "行情指標動畫工作室", "繁體中文", "設定", 1, "preset"),
+    ("en-US", "Market Motion Studio", "English", "Settings", 2, "search"),
+    ("ja", "Market Motion Studio", "日本語", "設定", 2, "search"),
+    ("ko", "Market Motion Studio", "한국어", "설정", 2, "search"),
+    ("de", "Market Motion Studio", "Deutsch", "Einstellungen", 2, "search"),
+    ("es", "Market Motion Studio", "Español", "Configuración", 2, "search"),
+    ("fr", "Market Motion Studio", "Français", "Paramètres", 2, "search"),
+    ("it", "Market Motion Studio", "Italiano", "Impostazioni", 2, "search"),
+    ("pl", "Market Motion Studio", "Polski", "Ustawienia", 2, "search"),
+    ("pt-BR", "Market Motion Studio", "Português (Brasil)", "Configurações", 2, "search"),
+    ("cs", "Market Motion Studio", "Čeština", "Nastavení", 2, "search"),
+    ("tr", "Market Motion Studio", "Türkçe", "Ayarlar", 2, "search"),
+    ("ru", "Market Motion Studio", "Русский", "Параметры", 2, "search"),
 ]
 
-# (导航项 AutomationId, 输出文件名, 预置标的按钮名；None=直接获取，FIRST=点第一个预置)
+# 设置导航项的全部本地化名称。页脚项 AutomationId 为空只能按名称找，而找的
+# 时刻界面还停留在上一轮语言，所以把 14 种全部列为兜底（set 去重）。
+SETTINGS_NAMES = list(dict.fromkeys([
+    "设置", "設定", "Settings", "Nastavení", "Einstellungen", "Configuración",
+    "Paramètres", "Impostazioni", "Ustawienia", "Configurações", "Ayarlar",
+    "Параметры", "설정",
+]))
+
+# (导航项 AutomationId, 输出文件名, 预置标的按钮名；FIRST=点第一个预置。
+# 港股/美股市场下 NavMarketTurnover 不存在，脚本按「未找到」自然跳过。)
 PAGES = [
     ("NavMarketTurnover", "01-market-turnover", None),
     ("NavSectorRace", "02-sector-race", None),
     ("NavGainCalendar", "03-gain-calendar", "FIRST"),
     ("NavMatrix", "04-monthly-matrix", None),
     ("NavDcaPlan", "05-dca-plan", "FIRST"),
-    ("NavPosition", "06-position", "中国平安"),
+    ("NavPosition", "06-position", "FIRST"),
 ]
 
 if SMOKE:
@@ -169,8 +203,8 @@ def invoke_click(ctrl):
 def find_settings_nav(win, settings_name):
     """设置项在页脚，AutomationId 为空，按名称找。
 
-    先试 AutomationId（万一将来补上），再试当前语言的名称，最后兜底
-    尝试全部语言的设置项名称——初始语言未知时也能找到入口。
+    先试 AutomationId（万一将来补上），再试给定的名称，最后兜底尝试全部
+    语言的设置项名称——启动语言未知时也能找到入口。
     """
     nav = byid(win, "NavSettings")
     if nav is not None:
@@ -179,7 +213,7 @@ def find_settings_nav(win, settings_name):
                and c.Name == settings_name, win)
     if nav is not None:
         return nav
-    for fallback in ("设置", "設定", "Settings"):
+    for fallback in SETTINGS_NAMES:
         nav = find(lambda c: c.ControlTypeName == "ListItemControl"
                    and c.Name == fallback, win)
         if nav is not None:
@@ -218,6 +252,41 @@ def combo_select(combo, item_name, timeout=8):
     return False
 
 
+def combo_select_index(combo, index, timeout=8):
+    """展开下拉，按序号选择第 index 项。
+
+    市场下拉的条目文本是本地化的，但顺序固定等于 Markets.All
+    （0=A股 1=港股 2=美股），按序号选就不依赖当前界面语言。
+    """
+    p = pat(combo, auto.PatternId.ExpandCollapsePattern)
+    if p is None:
+        return False
+    try:
+        p.Expand()
+    except Exception:
+        return False
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        items = [c for c in combo.GetChildren()
+                 if c.ControlTypeName == "ListItemControl"]
+        if len(items) > index:
+            sp = pat(items[index], auto.PatternId.SelectionItemPattern)
+            if sp is not None:
+                sp.Select()
+                time.sleep(0.5)
+                try:
+                    p.Collapse()
+                except Exception:
+                    pass
+                return True
+        time.sleep(0.5)
+    try:
+        p.Collapse()
+    except Exception:
+        pass
+    return False
+
+
 def click_preset(win, name):
     """点 Presets（ItemsControl）里的标的按钮。name=FIRST 表示第一个。"""
     presets = byid(win, "Presets")
@@ -233,6 +302,67 @@ def click_preset(win, name):
     return invoke_click(b)
 
 
+def collect_items(win):
+    """窗口里全部 ListItemControl（导航项 + 可能出现的建议列表项）。"""
+    items = []
+
+    def walk(c, depth=0):
+        if depth > 30:
+            return
+        try:
+            if c.ControlTypeName == "ListItemControl":
+                items.append(c)
+        except Exception:
+            pass
+        try:
+            for ch in c.GetChildren():
+                walk(ch, depth + 1)
+        except Exception:
+            pass
+
+    walk(win)
+    return items
+
+
+def item_key(c):
+    r = c.BoundingRectangle
+    return (c.Name, r.left, r.top)
+
+
+def search_instrument(win, query, timeout=12):
+    """往 InstrumentSearch 键入查询串，从弹出的建议列表里点第一项。
+
+    程序化 SetValue 不触发 UserInput 的 TextChanged（建议列表不弹），必须
+    真键盘输入。建议项通过「输入前后 ListItemControl 快照的差集」识别——
+    导航项在两侧都在，新增的就是建议列表。
+    """
+    box = byid(win, "InstrumentSearch")
+    if box is None:
+        say("    InstrumentSearch 未找到")
+        return False
+    before = {item_key(c) for c in collect_items(win)}
+
+    # 焦点落到 AutoSuggestBox 内部的 Edit 上再敲键盘
+    edit = find(lambda c: c.ControlTypeName == "EditControl", box) or box
+    try:
+        edit.SetFocus()
+        time.sleep(0.4)
+        auto.SendKeys(query, interval=0.06)
+    except Exception as e:
+        say("    SendKeys 失败: %r" % e)
+        return False
+
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        time.sleep(1.0)
+        new = [c for c in collect_items(win) if item_key(c) not in before]
+        if new:
+            say("    建议列表出现（%d 项），首项 %r" % (len(new), new[0].Name))
+            return invoke_click(new[0])
+    say("    等待建议列表超时（%ds）" % timeout)
+    return False
+
+
 def wait_play_enabled(win, timeout=240):
     """获取数据的完成信号：播放按钮从禁用变可用（语言无关）。"""
     deadline = time.time() + timeout
@@ -244,8 +374,8 @@ def wait_play_enabled(win, timeout=240):
     return False
 
 
-def scrub_mid(win, ratio=0.55):
-    """把进度条拖到中途，让截图停在动画中段而不是终帧。"""
+def scrub(win, ratio=1.0):
+    """把进度条拖到指定比例；默认 1.0 = 动画最后一帧（含收尾卡）。"""
     sc = byid(win, "Scrub")
     if sc is None:
         return False
@@ -255,7 +385,7 @@ def scrub_mid(win, ratio=0.55):
     try:
         lo, hi = p.Minimum, p.Maximum
         p.SetValue(lo + (hi - lo) * ratio)
-        time.sleep(0.8)
+        time.sleep(1.0)
         return True
     except Exception:
         return False
@@ -301,8 +431,8 @@ except Exception:
     except Exception:
         pass
 
-for tag, title, combo_label, settings_name in LANGS:
-    say("===== %s =====" % tag)
+for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
+    say("===== %s（市场=%d 模式=%s）=====" % (tag, market_idx, mode))
     kill_app()
     launch()
     win = wait_window()
@@ -312,7 +442,7 @@ for tag, title, combo_label, settings_name in LANGS:
     time.sleep(2)
     ensure_window_size(win)
 
-    # --- 切语言：设置页选语言 → 重启生效 ---
+    # --- 切语言 + 切市场：设置页两项都选好 → 一次重启同时生效 ---
     nav = find_settings_nav(win, settings_name)
     if nav is None:
         say("  设置导航项未找到（%r），跳过该语言" % settings_name)
@@ -326,7 +456,14 @@ for tag, title, combo_label, settings_name in LANGS:
     if not combo_select(combo, combo_label):
         say("  未能选中语言条目 %r" % combo_label)
         continue
-    say("  已选语言 %r，重启生效" % combo_label)
+    say("  已选语言 %r" % combo_label)
+    mcombo = byid(win, "MarketCombo")
+    if mcombo is None:
+        say("  MarketCombo 未找到（市场维持原值）")
+    elif combo_select_index(mcombo, market_idx):
+        say("  已选市场索引 %d" % market_idx)
+    else:
+        say("  未能选中市场索引 %d（市场维持原值）" % market_idx)
 
     kill_app()
     launch()
@@ -342,12 +479,12 @@ for tag, title, combo_label, settings_name in LANGS:
     outdir = os.path.join(OUTROOT, tag)
     os.makedirs(outdir, exist_ok=True)
 
-    # --- 逐页：导航 → 选标的 → 获取 → 拖进度 → 截图 ---
+    # --- 逐页：导航 → 选标的 → 获取 → 拖到终帧 → 截图 ---
     for nav_id, fname, preset in PAGES:
         say("  --- %s ---" % fname)
         nav = byid(win, nav_id)
         if nav is None:
-            say("    %s 未找到" % nav_id)
+            say("    %s 未找到（该市场无此页），跳过" % nav_id)
             continue
         invoke_click(nav)
         time.sleep(2)
@@ -357,7 +494,17 @@ for tag, title, combo_label, settings_name in LANGS:
             say("    FetchButton 未找到")
             continue
 
-        if preset and not fb.IsEnabled:
+        # search 模式：有搜索框的页面一律搜索选定（FetchButton 即使因默认
+        # 标的可用也照样搜，截图要展示的是搜索动作的结果）。
+        if mode == "search" and byid(win, "InstrumentSearch") is not None:
+            if search_instrument(win, SEARCH_QUERY):
+                say("    已搜索选定 %r" % SEARCH_QUERY)
+                time.sleep(1.0)
+                fb = byid(win, "FetchButton")
+            else:
+                say("    搜索失败，退回默认标的")
+
+        if fb is not None and not fb.IsEnabled and mode == "preset" and preset:
             if click_preset(win, preset):
                 say("    已点预置标的 %r" % preset)
                 time.sleep(1.5)
@@ -375,11 +522,29 @@ for tag, title, combo_label, settings_name in LANGS:
         else:
             say("    等待数据超时（240s），仍尝试截图")
 
-        scrub_mid(win)
+        scrub(win, 1.0)
         path = os.path.join(outdir, fname + ".png")
         if capture(win, path):
-            say("    截图: %s" % path)
+            say("    截图(终帧): %s" % path)
         else:
             say("    截图失败: %s" % path)
+
+# ---- 收尾：恢复简体中文 + A股，别把机器留在俄语/美股状态 --------------------------
+say("===== 收尾：恢复 zh-Hans + A股 =====")
+kill_app()
+launch()
+win = wait_window()
+if win is not None:
+    nav = find_settings_nav(win, "设置")
+    if nav is not None:
+        invoke_click(nav)
+        time.sleep(2)
+        combo = byid(win, "LanguageCombo")
+        if combo is not None:
+            combo_select(combo, "简体中文")
+        mcombo = byid(win, "MarketCombo")
+        if mcombo is not None:
+            combo_select_index(mcombo, 0)
+kill_app()
 
 say("ALL DONE")

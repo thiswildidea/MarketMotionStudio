@@ -83,6 +83,14 @@ L'inquadratura è sempre 9:16. Tutto il resto lo decidi tu.
 
 Le esportazioni vengono scritte in una cartella che scegli con un selettore. Finché non ne è stata scelta una, la prima esportazione la chiede e poi la ricorda; le impostazioni permettono di cambiarla o dimenticarla.
 
+## Immagine di sfondo
+
+La pagina delle impostazioni può mettere un'immagine dietro la finestra, attenuata. Le schede e i pannelli restano opachi e il riquadro di navigazione lascia filtrare solo un poco, quindi l'immagine si vede soprattutto intorno a essi. L'anteprima video ha il proprio fondo opaco e non ne è influenzata.
+
+- Scegli un'immagine dal computer oppure usa direttamente uno degli sfondi e delle immagini della schermata di blocco inclusi in Windows.
+- L'immagine scelta viene copiata nella cartella dell'app: spostare o eliminare l'originale non influisce sullo sfondo.
+- Il dispositivo di intensità maschera regola quanto l'immagine viene attenuata, dal 30% al 95%.
+- Nessuna immagine viene mostrata quando il contrasto elevato è attivo.
 ## I dati, e ciò che non diranno
 
 Le quotazioni vengono dagli endpoint pubblici di Tencent Finance, e l'inquadratura cita sempre la fonte. Questi video descrivono ciò che è già stato scambiato. Sono solo a titolo informativo e non costituiscono una consulenza di investimento.

@@ -352,4 +352,94 @@
   <data name="PositionCardDrawdown"><value>最大回撤</value></data>
   <data name="PositionFetched"><value>已取 {0} 個交易日（{1} 至 {2}），持有 {3} 天</value></data>
   <data name="PositionCapitalInvalid"><value>初始本金需是大於零的數字</value></data>
+  <data name="INSTSH000928"><value>能源</value></data>
+  <data name="INSTSH000929"><value>材料</value></data>
+  <data name="INSTSH000930"><value>工業</value></data>
+  <data name="INSTSH000931"><value>可選消費</value></data>
+  <data name="INSTSH000932"><value>主要消費</value></data>
+  <data name="INSTSH000933"><value>醫藥衛生</value></data>
+  <data name="INSTSH000934"><value>金融</value></data>
+  <data name="INSTSH000935"><value>資訊科技</value></data>
+  <data name="INSTSH000936"><value>通信</value></data>
+  <data name="INSTSH000937"><value>公用事業</value></data>
+  <data name="INSTSZ399997"><value>白酒</value></data>
+  <data name="INSTSZ399975"><value>證券</value></data>
+  <data name="INSTSZ399986"><value>銀行</value></data>
+  <data name="INSTSZ399989"><value>醫療</value></data>
+  <data name="INSTSZ399967"><value>國防</value></data>
+  <data name="INSTSZ399971"><value>媒體</value></data>
+  <data name="INSTSZ399808"><value>新能源</value></data>
+  <data name="INSTSZ399976"><value>新能源車</value></data>
+  <data name="INSTSH000827"><value>環保</value></data>
+  <data name="INSTSH000922"><value>紅利</value></data>
+  <data name="INSTSZ399998"><value>煤炭</value></data>
+  <data name="INSTSH000819"><value>有色金屬</value></data>
+  <data name="INSTSZ399995"><value>基建</value></data>
+  <data name="INSTSH000949"><value>農業</value></data>
+  <data name="INSTSZ399996"><value>智慧家庭</value></data>
+  <data name="INSTHKHSF"><value>金融</value></data>
+  <data name="INSTHKHSP"><value>地產</value></data>
+  <data name="INSTHKHSU"><value>公用事業</value></data>
+  <data name="INSTHKHSC"><value>工商</value></data>
+  <data name="INSTUSXLKAM"><value>科技</value></data>
+  <data name="INSTUSXLFAM"><value>金融</value></data>
+  <data name="INSTUSXLVAM"><value>醫療</value></data>
+  <data name="INSTUSXLYAM"><value>可選消費</value></data>
+  <data name="INSTUSXLPAM"><value>必需消費</value></data>
+  <data name="INSTUSXLIAM"><value>工業</value></data>
+  <data name="INSTUSXLEAM"><value>能源</value></data>
+  <data name="INSTUSXLBAM"><value>材料</value></data>
+  <data name="INSTUSXLUAM"><value>公用事業</value></data>
+  <data name="INSTUSXLREAM"><value>房地產</value></data>
+  <data name="INSTHKHSI"><value>恆生指數</value></data>
+  <data name="INSTHKHSCEI"><value>國企指數</value></data>
+  <data name="INSTHKHSTECH"><value>恆生科技</value></data>
+  <data name="INSTHK00700"><value>騰訊控股</value></data>
+  <data name="INSTHK09988"><value>阿里巴巴</value></data>
+  <data name="INSTHK03690"><value>美團</value></data>
+  <data name="INSTHK00005"><value>滙豐控股</value></data>
+  <data name="INSTHK01299"><value>友邦保險</value></data>
+  <data name="INSTSH510300"><value>滬深300ETF</value></data>
+  <data name="INSTSH510500"><value>中證500ETF</value></data>
+  <data name="INSTSZ159915"><value>創業板ETF</value></data>
+  <data name="INSTSH518880"><value>黃金ETF</value></data>
+  <data name="INSTSH513100"><value>那指ETF</value></data>
+  <data name="INSTSH000001"><value>上證指數</value></data>
+  <data name="INSTSZ399006"><value>創業板指</value></data>
+  <data name="INSTHK02800"><value>盈富基金</value></data>
+  <data name="INSTHK02828"><value>恆生中國企業</value></data>
+  <data name="INSTHK03067"><value>安碩恆生科技</value></data>
+  <data name="INSTUSSPYAM"><value>標普500ETF</value></data>
+  <data name="INSTUSQQQOQ"><value>那指100ETF</value></data>
+  <data name="INSTUSDIAAM"><value>道瓊ETF</value></data>
+  <data name="INSTUSIWMAM"><value>羅素2000ETF</value></data>
+  <data name="INSTUSGLDAM"><value>黃金ETF</value></data>
+  <data name="INSTSH601318"><value>中國平安</value></data>
+  <data name="INSTSH600519"><value>貴州茅台</value></data>
+  <data name="INSTSH600036"><value>招商銀行</value></data>
+  <data name="INSTSH600900"><value>長江電力</value></data>
+  <data name="INSTSZ000858"><value>五糧液</value></data>
+  <data name="INSTUSAAPLOQ"><value>蘋果</value></data>
+  <data name="INSTUSBRKBN"><value>波克夏B</value></data>
+  <data name="INSTUSNVDAOQ"><value>輝達</value></data>
+  <data name="INSTUSMSFTOQ"><value>微軟</value></data>
+  <data name="INSTUSDJI"><value>道瓊斯</value></data>
+  <data name="INSTUSIXIC"><value>那斯達克</value></data>
+  <data name="INSTUSINX"><value>標普500</value></data>
+  <data name="INSTSZ399001"><value>深證成指</value></data>
+  <data name="INSTSH000300"><value>滬深300</value></data>
+  <data name="INSTSH000905"><value>中證500</value></data>
+  <data name="INSTSH000688"><value>科創50</value></data>
+  <data name="INSTSZ399005"><value>中小100</value></data>
+  <data name="INSTSH000016"><value>上證50</value></data>
+  <data name="SettingsBackgroundLabel.Text" xml:space="preserve"><value>背景圖片</value></data>
+  <data name="SettingsBackgroundNote.Text" xml:space="preserve"><value>以調暗的方式顯示在視窗後方。開啟時，卡片和表格仍保持不透明，導覽列只透出一點，所以圖片主要在它們周圍露出來。圖片會複製一份保存在本應用程式的資料夾中，移動原始檔案也不會讓它消失。</value></data>
+  <data name="SettingsBackgroundPick.Text" xml:space="preserve"><value>選擇圖片…</value></data>
+  <data name="SettingsBackgroundClear.Content" xml:space="preserve"><value>移除</value></data>
+  <data name="SettingsBackgroundDimLabel.Text" xml:space="preserve"><value>遮罩強度</value></data>
+  <data name="SettingsBackgroundForget" xml:space="preserve"><value>從此清單移除</value></data>
+  <data name="SettingsBackgroundThumb" xml:space="preserve"><value>背景圖片 {0}</value></data>
+  <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows 圖片 {0}</value></data>
+  <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>先列出你自己的圖片，再列出這台電腦上 Windows 內建的圖片。Windows 的圖片直接使用原檔，不會複製。</value></data>
+  <data name="SettingsBackgroundFailed" xml:space="preserve"><value>無法使用這張圖片：{0}</value></data>
 </root>

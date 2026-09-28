@@ -94,7 +94,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
         foreach (var entry in _market.DcaInstruments)
         {
-            Presets.Items.Add(new MatrixPreset(entry.Code, entry.Name));
+            Presets.Items.Add(new MatrixPreset(entry.Code, InstrumentNames.Display(entry.Code, entry.Name)));
         }
 
         Favourites.ItemsSource = _favourites;
@@ -108,7 +108,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         // The default the frame will actually use, before anything is fetched: the
         // market's own first one-tap plan.
         _instrumentCode = _market.DcaInstruments[0].Code;
-        _instrumentName = _market.DcaInstruments[0].Name;
+        _instrumentName = InstrumentNames.Display(_market.DcaInstruments[0].Code, _market.DcaInstruments[0].Name);
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -381,7 +381,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
     private void ChooseInstrument(string code, string name)
     {
         _instrumentCode = code;
-        _instrumentName = name;
+        _instrumentName = InstrumentNames.Display(code, name);
 
         Fetch();
     }
@@ -410,7 +410,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
                 Services.Quotes, _instrumentCode, display, frequency, amount, start, end, progress, cancellation);
 
             _fetched = fetched;
-            _instrumentName = fetched.Name;
+            _instrumentName = InstrumentNames.Display(fetched.Code, fetched.Name);
             ApplyPreviewSettings();
 
             // Parked on the last frame: the closing statistics are what someone wants to
@@ -592,7 +592,9 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
             var name = _prefs.GetString("Name", string.Empty);
 
-            _instrumentName = name.Length > 0 ? name : _market.DcaInstruments[0].Name;
+            _instrumentName = name.Length > 0
+                ? InstrumentNames.Display(code, name)
+                : InstrumentNames.Display(_market.DcaInstruments[0].Code, _market.DcaInstruments[0].Name);
         }
 
         VideoSettings.Restore(_prefs);

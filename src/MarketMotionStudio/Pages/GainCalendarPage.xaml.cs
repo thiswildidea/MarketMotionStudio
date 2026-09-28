@@ -93,7 +93,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
         // the page has stopped naming.
         foreach (var index in _market.BroadIndices)
         {
-            Presets.Items.Add(new MatrixPreset(index.Code, index.Name));
+            Presets.Items.Add(new MatrixPreset(index.Code, InstrumentNames.Display(index.Code, index.Name)));
         }
 
         Favourites.ItemsSource = _favourites;
@@ -107,7 +107,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
         // The default the frame will actually use, before anything is fetched: the
         // market's own first one-tap instrument, which is the one its presets lead with.
         _instrumentCode = _market.BroadIndices[0].Code;
-        _instrumentName = _market.BroadIndices[0].Name;
+        _instrumentName = InstrumentNames.Display(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name);
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -371,7 +371,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
     private void ChooseInstrument(string code, string name)
     {
         _instrumentCode = code;
-        _instrumentName = name;
+        _instrumentName = InstrumentNames.Display(code, name);
 
         Fetch();
     }
@@ -389,7 +389,7 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
                 Services.Quotes, _market, _instrumentCode, display, start, end, progress, cancellation);
 
             _fetched = fetched;
-            _instrumentName = fetched.Name;
+            _instrumentName = InstrumentNames.Display(fetched.Code, fetched.Name);
             ApplyPreviewSettings();
 
             // Parked on the last frame: the closing statistics are what someone wants to look at
@@ -587,7 +587,9 @@ public sealed partial class GainCalendarPage : StudioPage, IPlaybackHost
             // fetch; carrying it costs one key and keeps the placeholder honest meanwhile.
             var name = _prefs.GetString("Name", string.Empty);
 
-            _instrumentName = name.Length > 0 ? name : _market.BroadIndices[0].Name;
+            _instrumentName = name.Length > 0
+                ? InstrumentNames.Display(code, name)
+                : InstrumentNames.Display(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name);
         }
 
         VideoSettings.Restore(_prefs);

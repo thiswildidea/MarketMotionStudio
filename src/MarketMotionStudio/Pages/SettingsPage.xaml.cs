@@ -92,7 +92,13 @@ public sealed partial class SettingsPage : Page
         StoragePathText.Text = ApplicationData.Current.LocalFolder.Path;
         TrayToggle.IsOn = AppBehaviourSettings.ShowTrayIcon;
 
+        DimSlider.Minimum = AppBackground.MinDim;
+        DimSlider.Maximum = AppBackground.MaxDim;
+        DimSlider.Value = AppBackground.Dim;
+
         _loading = false;
+
+        _ = RefreshBackgroundUiAsync();
 
         // Asynchronous, and deliberately after _loading is cleared: reading the
         // startup state is a call into Windows, and the switch must end up showing
@@ -214,6 +220,228 @@ public sealed partial class SettingsPage : Page
         // Applied on the spot. A theme is re-read by elements already on screen, so
         // unlike the language there is nothing to restart for.
         App.Window?.ApplyTheme();
+    }
+
+    /// <summary>
+    /// Picks a picture, copies it in, and shows it at once. The copy is what makes
+    /// it survive the original being moved; see <see cref="AppBackground"/>.
+    /// </summary>
+    private async void OnPickBackground(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var picker = new Windows.Storage.Pickers.FileOpenPicker
+        {
+            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary,
+            ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail,
+        };
+
+        foreach (var type in AppBackground.FileTypes)
+        {
+            picker.FileTypeFilter.Add(type);
+        }
+
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        if (await picker.PickSingleFileAsync() is not { } file)
+        {
+            return;
+        }
+
+        try
+        {
+            // Decoded before it is adopted: a file that is not really a picture
+            // would otherwise become the setting, show nothing, and stay on the
+            // list looking like a blank thumbnail.
+            await using (var stream = await file.OpenStreamForReadAsync())
+            {
+                await new Microsoft.UI.Xaml.Media.Imaging.BitmapImage { DecodePixelWidth = 64 }
+                    .SetSourceAsync(stream.AsRandomAccessStream());
+            }
+
+            await AppBackground.UseNewAsync(file);
+        }
+        catch (Exception ex)
+        {
+            Status.Severity = InfoBarSeverity.Warning;
+            Status.Message = Strings.Format("SettingsBackgroundFailed", Strings.Reason(ex));
+            RestartButton.Visibility = Visibility.Collapsed;
+            Status.IsOpen = true;
+            return;
+        }
+
+        await RefreshBackgroundUiAsync();
+    }
+
+    private void OnClearBackground(object sender, RoutedEventArgs e)
+    {
+        AppBackground.Clear();
+        SettleBackgroundControls();
+    }
+
+    /// <summary>
+    /// Shows the picture clicked. Only the selection moves: rebuilding thirty
+    /// thumbnails to change which one is highlighted would redraw the list under
+    /// the pointer. A picture of the user's own moves to the front of their list,
+    /// which shows the next time the page is opened.
+    /// </summary>
+    private void OnBackgroundChosen(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is FrameworkElement { Tag: string path } tile)
+        {
+            AppBackground.Use(path);
+            BackgroundGallery.SelectedItem = tile;
+            SettleBackgroundControls();
+        }
+    }
+
+    /// <summary>The controls that depend on whether a picture is showing.</summary>
+    private void SettleBackgroundControls()
+    {
+        var current = AppBackground.Current;
+
+        ClearBackgroundButton.IsEnabled = current is not null;
+        DimSlider.IsEnabled = current is not null;
+
+        if (current is null)
+        {
+            BackgroundGallery.SelectedItem = null;
+        }
+    }
+
+    private void OnDimChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        AppBackground.Dim = (int)Math.Round(e.NewValue);
+    }
+
+    /// <summary>
+    /// Rebuilds the thumbnails — the user's own pictures, then Windows' — and says
+    /// which one is in use by selecting it.
+    ///
+    /// Thumbnails come from the shell's thumbnail cache rather than from decoding
+    /// each file: Windows' own pictures are 4K and 6K originals, and decoding
+    /// thirty of those takes long enough to watch. Either way the file is read
+    /// through a stream that is closed straight after, so a thumbnail never holds
+    /// open a copy that may be taken off the list.
+    /// </summary>
+    private int _galleryGeneration;
+
+    private async Task RefreshBackgroundUiAsync()
+    {
+        var generation = ++_galleryGeneration;
+        var current = AppBackground.Current;
+        var recent = AppBackground.Recent;
+        var system = AppBackground.SystemPictures;
+
+        SettleBackgroundControls();
+
+        var tiles = new List<Image>();
+
+        foreach (var (path, index, own) in recent.Select((p, i) => (p, i, true))
+                     .Concat(system.Select((p, i) => (p, i, false))))
+        {
+            var tile = new Image
+            {
+                Source = await ThumbnailAsync(path),
+                Width = 128,
+                Height = 72,
+                Stretch = Microsoft.UI.Xaml.Media.Stretch.UniformToFill,
+                Tag = path,
+            };
+
+            Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(
+                tile, Strings.Format(own ? "SettingsBackgroundThumb" : "SettingsBackgroundWindowsThumb", index + 1));
+
+            // Only the user's own pictures can be taken off. Windows' are not the
+            // app's to delete, and are offered whatever happens.
+            if (own)
+            {
+                var forget = new MenuFlyoutItem { Text = Strings.Get("SettingsBackgroundForget") };
+                forget.Click += async (_, _) =>
+                {
+                    AppBackground.Forget(path);
+                    await RefreshBackgroundUiAsync();
+                };
+
+                tile.ContextFlyout = new MenuFlyout { Items = { forget } };
+            }
+
+            tiles.Add(tile);
+
+            if (generation != _galleryGeneration)
+            {
+                return;
+            }
+        }
+
+        // Only the latest refresh fills the list. Two in flight — a click while
+        // thumbnails are still decoding — would otherwise both add theirs and
+        // show every picture twice.
+        if (generation != _galleryGeneration)
+        {
+            return;
+        }
+
+        BackgroundGallery.Items.Clear();
+
+        foreach (var tile in tiles)
+        {
+            BackgroundGallery.Items.Add(tile);
+
+            if (string.Equals(tile.Tag as string, current, StringComparison.OrdinalIgnoreCase))
+            {
+                BackgroundGallery.SelectedItem = tile;
+            }
+        }
+
+        BackgroundGallery.Visibility = tiles.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        BackgroundGalleryNote.Visibility = BackgroundGallery.Visibility;
+
+        if (BackgroundGallery.SelectedItem is { } selected)
+        {
+            BackgroundGallery.ScrollIntoView(selected);
+        }
+    }
+
+    private static async Task<Microsoft.UI.Xaml.Media.Imaging.BitmapImage> ThumbnailAsync(string path)
+    {
+        var bitmap = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage { DecodePixelWidth = 256 };
+
+        try
+        {
+            var file = await StorageFile.GetFileFromPathAsync(path);
+            using var thumbnail = await file.GetThumbnailAsync(
+                Windows.Storage.FileProperties.ThumbnailMode.SingleItem, 256,
+                Windows.Storage.FileProperties.ThumbnailOptions.ResizeThumbnail);
+
+            await bitmap.SetSourceAsync(thumbnail);
+            return bitmap;
+        }
+        catch (Exception)
+        {
+            // No thumbnail from the shell; decode the file itself.
+        }
+
+        try
+        {
+            await using var stream = File.OpenRead(path);
+            await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
+        }
+        catch (Exception)
+        {
+            // A picture that no longer decodes is still listed, so one of the
+            // user's own can be taken off; it simply shows nothing.
+        }
+
+        return bitmap;
     }
 
     private void OnTrayToggled(object sender, RoutedEventArgs e)

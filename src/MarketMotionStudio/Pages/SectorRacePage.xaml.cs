@@ -156,7 +156,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         {
             // The custom roster starts as the market's first built-in list, which is the
             // source's own default and the one a person is most likely to pare back from.
-            _picker.Add(new SectorPick(entry.Code, entry.Name)
+            _picker.Add(new SectorPick(entry.Code, InstrumentNames.Display(entry.Code, entry.Name))
             {
                 Picked = _market.Rosters[0].Entries.Any(l => l.Code == entry.Code),
             });
@@ -388,7 +388,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
             var ordered = found
                 .Take(8)
-                .Select(r => new RaceStockSuggestion(r.Code, r.Name))
+                .Select(r => new RaceStockSuggestion(r.Code, InstrumentNames.Display(r.Code, r.Name)))
                 .ToArray();
 
             StockSearch.ItemsSource = ordered;
@@ -430,6 +430,10 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         // The vendor's names can carry spaces («五 粮 液») which stretch a row's label into its
         // value — stripped, and the name from the bars fetch overwrites this one anyway.
         name = new string([.. name.Where(c => !char.IsWhiteSpace(c))]);
+
+        // A built-in code answers in the interface's language; anything else keeps
+        // the name the search result carried.
+        name = InstrumentNames.Display(code, name);
 
         if (_stocks.Any(s => s.Code == code))
         {
@@ -551,7 +555,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
                     if (match is { Name.Length: > 0 } && match.Name != _stocks[i].Name)
                     {
-                        _stocks[i] = new RacePick(match.Code, match.Name);
+                        _stocks[i] = new RacePick(match.Code, InstrumentNames.Display(match.Code, match.Name));
                     }
                 }
 

@@ -19,6 +19,27 @@
 
     <Grid x:Name="Root" RowDefinitions="Auto,*">
 
+        <!-- The optional background picture and the layer that dims it, first
+             so they draw beneath everything, spanning the title bar as well as
+             the content. Collapsed unless a picture is chosen, so Mica shows as
+             it always has. The dimming layer is the page's own base colour, so
+             in either theme stronger dimming means closer to the plain window
+             and never to a tint the theme does not have. The 9:16 preview draws
+             an opaque frame of its own regardless — what the video will look
+             like must not depend on what is behind the app. -->
+        <Image x:Name="BackgroundPicture"
+               Grid.RowSpan="2"
+               Stretch="UniformToFill"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Visibility="Collapsed"
+               IsHitTestVisible="False" />
+        <Rectangle x:Name="BackgroundDimmer"
+                   Grid.RowSpan="2"
+                   Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                   Visibility="Collapsed"
+                   IsHitTestVisible="False" />
+
         <!-- Lives in the window's tree because that is where the framework can build
              it, but it outlives the window being hidden: closing the window puts it
              away rather than ending the app, and this is what brings it back. -->

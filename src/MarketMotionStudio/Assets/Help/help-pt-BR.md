@@ -83,6 +83,14 @@ O quadro é sempre 9:16. Todo o resto é você que decide.
 
 As exportações são gravadas em uma pasta que você escolhe por um seletor. Enquanto nenhuma tiver sido escolhida, a primeira exportação pergunta e depois lembra; as configurações permitem trocar ou esquecer.
 
+## Imagem de fundo
+
+A página de configurações pode colocar uma imagem atrás da janela, escurecida. Os cartões e painéis permanecem opacos e o painel de navegação deixa passar só um pouco — a imagem aparece principalmente ao redor deles. A prévia do vídeo tem seu próprio fundo sólido e não é afetada.
+
+- Escolha uma imagem do computador ou use diretamente um dos planos de fundo e imagens da tela de bloqueio que acompanham o Windows.
+- A imagem escolhida é copiada para a pasta do aplicativo; mover ou excluir o original não afeta o fundo.
+- O controle de intensidade da máscara define o quanto a imagem é escurecida, de 30% a 95%.
+- Nenhuma imagem é mostrada enquanto o alto contraste estiver ativado.
 ## Os dados, e o que eles não vão dizer
 
 As cotações vêm dos endpoints públicos da Tencent Finance, e o quadro sempre cita a fonte. Estes vídeos descrevem o que já foi negociado. Servem apenas para referência e não são recomendação de investimento.

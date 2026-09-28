@@ -76,6 +76,32 @@ public static class Strings
     }
 
     /// <summary>
+    /// A lookup that is allowed to miss.
+    ///
+    /// Built-in instrument names are keyed by code and translated per language, and a
+    /// code that reaches the app before its resw entries do must fall back to the
+    /// source's own name rather than show the bracketed key <see cref="Get"/> paints
+    /// for a gap.
+    /// </summary>
+    public static bool TryGet(string key, out string value)
+    {
+        var path = key.Replace('.', '/');
+
+        try
+        {
+            value = Loader.GetString(path);
+
+            return value.Length > 0;
+        }
+        catch (Exception)
+        {
+            value = string.Empty;
+
+            return false;
+        }
+    }
+
+    /// <summary>
     /// An exception in one line, never empty.
     ///
     /// Some exceptions carry no message at all, and "Could not save the file:"

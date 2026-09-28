@@ -83,6 +83,14 @@ El encuadre es siempre 9:16. Todo lo demás lo decide usted.
 
 Las exportaciones se escriben en una carpeta que usted elige con un selector. Mientras no haya ninguna, la primera exportación la pide y luego la recuerda; la configuración permite cambiarla u olvidarla.
 
+## Imagen de fondo
+
+La página de configuración puede colocar una imagen detrás de la ventana, atenuada. Las tarjetas y paneles siguen siendo opacos y el panel de navegación deja pasar solo un poco, de modo que la imagen se ve sobre todo a su alrededor. La vista previa del vídeo tiene su propio fondo sólido y no se ve afectada.
+
+- Elija una imagen del equipo o use directamente uno de los fondos y las imágenes de pantalla de bloque que incluye Windows.
+- La imagen elegida se copia a la carpeta de la aplicación; mover o eliminar el original no afecta al fondo.
+- El control de intensidad de máscara define cuánto se oscurece la imagen, del 30 % al 95 %.
+- No se muestra ninguna imagen mientras el alto contraste esté activado.
 ## Los datos, y lo que no le dirán
 
 Las cotizaciones vienen de los puntos de acceso públicos de Tencent Finance, y el encuadre siempre cita la fuente. Estos vídeos describen lo que ya se ha negociado. Son solo a título informativo y no constituyen asesoramiento de inversión.

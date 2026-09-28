@@ -352,4 +352,94 @@
   <data name="PositionCardDrawdown"><value>Max. Drawdown</value></data>
   <data name="PositionFetched"><value>{0} Handelstage ({1} bis {2}), {3} Tage gehalten</value></data>
   <data name="PositionCapitalInvalid"><value>Das Anfangskapital muss eine positive Zahl sein</value></data>
+  <data name="INSTSH000928"><value>Energie</value></data>
+  <data name="INSTSH000929"><value>Materialien</value></data>
+  <data name="INSTSH000930"><value>Industrie</value></data>
+  <data name="INSTSH000931"><value>Zyklischer Konsum</value></data>
+  <data name="INSTSH000932"><value>Basiskonsum</value></data>
+  <data name="INSTSH000933"><value>Gesundheit</value></data>
+  <data name="INSTSH000934"><value>Finanzen</value></data>
+  <data name="INSTSH000935"><value>Informationstechnologie</value></data>
+  <data name="INSTSH000936"><value>Telekommunikation</value></data>
+  <data name="INSTSH000937"><value>Versorger</value></data>
+  <data name="INSTSZ399997"><value>Baijiu</value></data>
+  <data name="INSTSZ399975"><value>Brokerage</value></data>
+  <data name="INSTSZ399986"><value>Banken</value></data>
+  <data name="INSTSZ399989"><value>Gesundheit</value></data>
+  <data name="INSTSZ399967"><value>Verteidigung</value></data>
+  <data name="INSTSZ399971"><value>Medien</value></data>
+  <data name="INSTSZ399808"><value>Neue Energien</value></data>
+  <data name="INSTSZ399976"><value>Elektroautos</value></data>
+  <data name="INSTSH000827"><value>Umwelt</value></data>
+  <data name="INSTSH000922"><value>Dividende</value></data>
+  <data name="INSTSZ399998"><value>Kohle</value></data>
+  <data name="INSTSH000819"><value>Nichteisenmetalle</value></data>
+  <data name="INSTSZ399995"><value>Infrastruktur</value></data>
+  <data name="INSTSH000949"><value>Agrar</value></data>
+  <data name="INSTSZ399996"><value>Smart Home</value></data>
+  <data name="INSTHKHSF"><value>Finanzen</value></data>
+  <data name="INSTHKHSP"><value>Immobilien</value></data>
+  <data name="INSTHKHSU"><value>Versorger</value></data>
+  <data name="INSTHKHSC"><value>Handel und Industrie</value></data>
+  <data name="INSTUSXLKAM"><value>Technologie</value></data>
+  <data name="INSTUSXLFAM"><value>Finanzen</value></data>
+  <data name="INSTUSXLVAM"><value>Gesundheit</value></data>
+  <data name="INSTUSXLYAM"><value>Zyklischer Konsum</value></data>
+  <data name="INSTUSXLPAM"><value>Basiskonsum</value></data>
+  <data name="INSTUSXLIAM"><value>Industrie</value></data>
+  <data name="INSTUSXLEAM"><value>Energie</value></data>
+  <data name="INSTUSXLBAM"><value>Materialien</value></data>
+  <data name="INSTUSXLUAM"><value>Versorger</value></data>
+  <data name="INSTUSXLREAM"><value>Immobilien</value></data>
+  <data name="INSTHKHSI"><value>Hang-Seng-Index</value></data>
+  <data name="INSTHKHSCEI"><value>China Enterprises</value></data>
+  <data name="INSTHKHSTECH"><value>Hang Seng TECH</value></data>
+  <data name="INSTHK00700"><value>Tencent</value></data>
+  <data name="INSTHK09988"><value>Alibaba</value></data>
+  <data name="INSTHK03690"><value>Meituan</value></data>
+  <data name="INSTHK00005"><value>HSBC</value></data>
+  <data name="INSTHK01299"><value>AIA</value></data>
+  <data name="INSTSH510300"><value>CSI-300-ETF</value></data>
+  <data name="INSTSH510500"><value>CSI-500-ETF</value></data>
+  <data name="INSTSZ159915"><value>ChiNext-ETF</value></data>
+  <data name="INSTSH518880"><value>Gold-ETF</value></data>
+  <data name="INSTSH513100"><value>Nasdaq-ETF</value></data>
+  <data name="INSTSH000001"><value>Shanghai Composite</value></data>
+  <data name="INSTSZ399006"><value>ChiNext</value></data>
+  <data name="INSTHK02800"><value>Tracker Fund</value></data>
+  <data name="INSTHK02828"><value>China-Enterprises-ETF</value></data>
+  <data name="INSTHK03067"><value>iShares HS TECH</value></data>
+  <data name="INSTUSSPYAM"><value>S&amp;P-500-ETF</value></data>
+  <data name="INSTUSQQQOQ"><value>Nasdaq-100-ETF</value></data>
+  <data name="INSTUSDIAAM"><value>Dow-ETF</value></data>
+  <data name="INSTUSIWMAM"><value>Russell-2000-ETF</value></data>
+  <data name="INSTUSGLDAM"><value>Gold-ETF</value></data>
+  <data name="INSTSH601318"><value>Ping An</value></data>
+  <data name="INSTSH600519"><value>Kweichow Moutai</value></data>
+  <data name="INSTSH600036"><value>China Merchants Bank</value></data>
+  <data name="INSTSH600900"><value>Yangtze Power</value></data>
+  <data name="INSTSZ000858"><value>Wuliangye</value></data>
+  <data name="INSTUSAAPLOQ"><value>Apple</value></data>
+  <data name="INSTUSBRKBN"><value>Berkshire B</value></data>
+  <data name="INSTUSNVDAOQ"><value>NVIDIA</value></data>
+  <data name="INSTUSMSFTOQ"><value>Microsoft</value></data>
+  <data name="INSTUSDJI"><value>Dow Jones</value></data>
+  <data name="INSTUSIXIC"><value>Nasdaq</value></data>
+  <data name="INSTUSINX"><value>S&amp;P 500</value></data>
+  <data name="INSTSZ399001"><value>Shenzhen Component</value></data>
+  <data name="INSTSH000300"><value>CSI 300</value></data>
+  <data name="INSTSH000905"><value>CSI 500</value></data>
+  <data name="INSTSH000688"><value>STAR 50</value></data>
+  <data name="INSTSZ399005"><value>SME 100</value></data>
+  <data name="INSTSH000016"><value>SSE 50</value></data>
+  <data name="SettingsBackgroundLabel.Text" xml:space="preserve"><value>Hintergrundbild</value></data>
+  <data name="SettingsBackgroundNote.Text" xml:space="preserve"><value>Wird abgedunkelt hinter dem Fenster angezeigt. Karten und Tabellen bleiben dabei deckend, der Navigationsbereich lässt nur wenig davon durch, das Bild ist also vor allem um sie herum zu sehen. Eine Kopie wird im Ordner dieser App aufbewahrt, sodass das Verschieben des Originals es nicht entfernt.</value></data>
+  <data name="SettingsBackgroundPick.Text" xml:space="preserve"><value>Bild auswählen…</value></data>
+  <data name="SettingsBackgroundClear.Content" xml:space="preserve"><value>Entfernen</value></data>
+  <data name="SettingsBackgroundDimLabel.Text" xml:space="preserve"><value>Abdunkelung</value></data>
+  <data name="SettingsBackgroundForget" xml:space="preserve"><value>Aus dieser Liste entfernen</value></data>
+  <data name="SettingsBackgroundThumb" xml:space="preserve"><value>Hintergrundbild {0}</value></data>
+  <data name="SettingsBackgroundWindowsThumb" xml:space="preserve"><value>Windows-Bild {0}</value></data>
+  <data name="SettingsBackgroundGalleryNote.Text" xml:space="preserve"><value>Zuerst Ihre eigenen Bilder, dann die, die Windows auf diesem Computer mitbringt. Die Bilder von Windows werden an ihrem Ort verwendet, nicht kopiert.</value></data>
+  <data name="SettingsBackgroundFailed" xml:space="preserve"><value>Dieses Bild konnte nicht verwendet werden: {0}</value></data>
 </root>

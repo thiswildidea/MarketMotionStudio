@@ -19,7 +19,7 @@ public sealed record StockFavourite(string Code, string Name)
 /// <summary>One search suggestion, as the box itself displays it.</summary>
 public sealed record StockSuggestion(string Code, string Name, string Kind)
 {
-    public string Display => $"{Name}  {Code}  {Kind}";
+    public string Display => $"{Market.InstrumentNames.Display(Code, Name)}  {Code}  {Kind}";
 
     public override string ToString() => Display;
 }
@@ -482,7 +482,8 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
             _series = series;
 
             StockSearch.Text = series.Code;
-            ChosenText.Text = Strings.Format("StockChosen", series.Name, series.Code.ToUpperInvariant());
+            ChosenText.Text = Strings.Format("StockChosen",
+                Market.InstrumentNames.Display(series.Code, series.Name), series.Code.ToUpperInvariant());
 
             // The day list is filled from what the source actually holds, and the chosen day is
             // marked — without the guard this assignment would ask for the data just received.
@@ -514,10 +515,10 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
 
             ShowStatus(InfoBarSeverity.Success, series.RateIsCumulative
                 ? Strings.Format("StockFetchedIntraday",
-                    series.Name, series.Code.ToUpperInvariant(), series.Count,
+                    Market.InstrumentNames.Display(series.Code, series.Name), series.Code.ToUpperInvariant(), series.Count,
                     StockPanelSeries.Round(series.FinalRate, 2)) + suffix
                 : Strings.Format("StockFetchedDaily",
-                    series.Name, series.Code.ToUpperInvariant(), series.Count,
+                    Market.InstrumentNames.Display(series.Code, series.Name), series.Code.ToUpperInvariant(), series.Count,
                     StockPanelSeries.Round(series.VolumeAverage, series.VolumeDecimals),
                     series.VolumeUnit,
                     StockPanelSeries.Round(series.VolumePeak, series.VolumeDecimals),

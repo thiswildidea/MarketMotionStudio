@@ -101,7 +101,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
         // refuse. It replaces a fixed A-share union for the same reason the presets do.
         foreach (var entry in Markets.Union(_market.Id))
         {
-            _picker.Add(new SectorPick(entry.Code, entry.Name));
+            _picker.Add(new SectorPick(entry.Code, InstrumentNames.Display(entry.Code, entry.Name)));
         }
 
         SectorGrid.ItemsSource = _picker;
@@ -109,12 +109,14 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
         foreach (var index in _market.BroadIndices.Take(6))
         {
-            _presets.Add(new MatrixPreset(index.Code, index.Name));
+            _presets.Add(new MatrixPreset(index.Code, InstrumentNames.Display(index.Code, index.Name)));
         }
 
         Presets.ItemsSource = _presets;
 
-        _target = new RaceEntry(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name);
+        _target = new RaceEntry(
+            _market.BroadIndices[0].Code,
+            InstrumentNames.Display(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name));
 
         // Only the built-in slots the market fills are listed; the rest of the rosters
         // are the same everywhere.
@@ -255,7 +257,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
             var ordered = found
                 .Take(8)
-                .Select(r => new MatrixSuggestion(r.Code, r.Name))
+                .Select(r => new MatrixSuggestion(r.Code, InstrumentNames.Display(r.Code, r.Name)))
                 .ToArray();
 
             box.ItemsSource = ordered;
@@ -294,6 +296,10 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
     private void SetTarget(string code, string name)
     {
+        // The saved name was spelled in the language of the session that saved it;
+        // a code is a code, so the display name is re-resolved on the way in.
+        name = InstrumentNames.Display(code, name);
+
         _target = new RaceEntry(code, name.Length > 0 ? name : code.ToUpperInvariant());
         ChosenText.Text = Strings.Format("MatrixChosen", _target.Name, _target.Code.ToUpperInvariant());
         SavePreferences();
@@ -531,7 +537,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
             if (name.Length > 0 && name != _target.Name)
             {
-                _target = _target with { Name = name };
+                _target = _target with { Name = InstrumentNames.Display(_target.Code, name) };
                 ChosenText.Text = Strings.Format("MatrixChosen", _target.Name, _target.Code.ToUpperInvariant());
             }
 
@@ -585,7 +591,9 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
                 var (name, series) = await MonthlySeries.FetchAsync(Services.Http, roster[i].Code, cancellation);
 
-                fetched.Add((roster[i].Code, roster[i].Name.Length > 0 ? roster[i].Name : name, series));
+                fetched.Add((roster[i].Code, roster[i].Name.Length > 0
+                    ? roster[i].Name
+                    : InstrumentNames.Display(roster[i].Code, name), series));
             }
 
             // A typed stock's name is corrected to what the endpoint calls it.
@@ -597,7 +605,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
                     if (match.Name.Length > 0 && match.Name != _stocks[i].Name)
                     {
-                        _stocks[i] = new RacePick(match.Code, match.Name);
+                        _stocks[i] = new RacePick(match.Code, InstrumentNames.Display(match.Code, match.Name));
                     }
                 }
 

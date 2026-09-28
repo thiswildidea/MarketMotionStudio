@@ -30,6 +30,58 @@
                                TextWrapping="Wrap"
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- In the same card as the theme: both are how the window
+                         looks, and both apply as they are chosen. -->
+                    <TextBlock x:Uid="SettingsBackgroundLabel"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsBackgroundNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="PickBackgroundButton" Click="OnPickBackground">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE8B9;" FontSize="14" />
+                                <TextBlock x:Uid="SettingsBackgroundPick" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ClearBackgroundButton" x:Uid="SettingsBackgroundClear" Click="OnClearBackground" />
+                    </StackPanel>
+
+                    <!-- The user's own pictures first, then the ones this Windows
+                         keeps in its Web folder. A fixed height with its own
+                         vertical scrolling, so thirty pictures do not push the
+                         rest of the page a screen further down. Filled in code:
+                         each is a thumbnail decoded small, and a right-click
+                         takes one of the user's own off the list. -->
+                    <GridView x:Name="BackgroundGallery"
+                              Height="252"
+                              SelectionMode="Single"
+                              IsItemClickEnabled="True"
+                              ItemClick="OnBackgroundChosen"
+                              ScrollViewer.VerticalScrollMode="Enabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              Visibility="Collapsed" />
+                    <TextBlock x:Name="BackgroundGalleryNote"
+                               x:Uid="SettingsBackgroundGalleryNote"
+                               Visibility="Collapsed"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <TextBlock x:Uid="SettingsBackgroundDimLabel"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <!-- A fixed width, not MaxWidth: left-aligned with no width
+                         of its own, a Slider measures to nothing and draws as a
+                         lone thumb. -->
+                    <Slider x:Name="DimSlider"
+                            Width="320"
+                            HorizontalAlignment="Left"
+                            StepFrequency="5"
+                            ValueChanged="OnDimChanged" />
                 </StackPanel>
             </Border>
 

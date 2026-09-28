@@ -83,6 +83,14 @@ Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.
 
 Dışa verilenler, seçiciyle belirlediğiniz bir klasöre yazılır. Belirlenmediği sürece ilk dışa verme sorar ve sonra hatırlar; ayarlardan değiştirilebilir ya da unutturulabilir.
 
+## Arka plan resmi
+
+Ayarlar sayfası, pencerenin arkasına karartılmış bir resim koyabilir. Kartlar ve paneller opak kalır, gezinti bölmesi yalnızca biraz geçirir — resim asıl olarak çevrelerinde görünür. Video önizlemesinin kendi opak arka planı vardır ve etkilenmez.
+
+- Bilgisayarınızdan bir resim seçin ya da Windows ile gelen duvar kağıtlarını ve kilit ekranı resimlerini doğrudan kullanın.
+- Seçilen resim uygulamanın kendi klasörüne kopyalanır; özgün dosyayı taşımak veya silmek arka planı etkilemez.
+- Maske yoğunluğu kaydırıcısı, resmin ne kadar karartılacağını %30–95 arasında belirler.
+- Yüksek karşıtlık açıkken arka plan resmi gösterilmez.
 ## Veri ve söylemeyecekleri
 
 Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir ve kare kaynağı her zaman belirtir. Bu videolar zaten gerçekleşmiş işlemleri anlatır. Yalnızca bilgi amaçlıdır ve yatırım tavsiyesi değildir.

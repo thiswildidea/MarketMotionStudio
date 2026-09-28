@@ -83,6 +83,14 @@ The frame is always 9:16. Everything else is yours to set.
 
 Exports are written to a folder you choose through a picker. Until one is chosen the first export asks, then remembers; Settings can change it or forget it.
 
+## Background picture
+
+The Settings page can put a picture behind the window, dimmed. Cards and panels stay opaque and the navigation pane lets only a little through, so the picture shows mainly around them; the video preview has its own solid backdrop and is unaffected.
+
+- Pick one from your computer, or use one of the wallpapers and lock-screen pictures Windows already ships.
+- A picture you pick is copied into the app's own folder, so moving or deleting the original does not affect the background.
+- The dimming slider sets how far the picture is pushed back, from 30% to 95%.
+- No picture is shown while high contrast is on.
 ## Data, and what it will not tell you
 
 Quotes come from Tencent Finance's public endpoints, and the frame always says so. These videos describe what has already traded. They are for reference only and are not investment advice.

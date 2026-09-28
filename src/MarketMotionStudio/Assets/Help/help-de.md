@@ -83,6 +83,14 @@ Das Bild ist immer 9:16. Alles andere bestimmen Sie.
 
 Exporte werden in einen Ordner geschrieben, den Sie über einen Dialog wählen. Solange keiner gewählt ist, fragt der erste Export und merkt sich die Antwort; in den Einstellungen lässt sie sich ändern oder vergessen.
 
+## Hintergrundbild
+
+Auf der Einstellungsseite lässt sich ein Bild hinter das Fenster legen, abgedunkelt. Karten und Flächen bleiben deckend, nur die Navigationsspalte lässt ein wenig durch — das Bild zeigt sich also hauptsächlich um sie herum. Die Videovorschau hat ihren eigenen, deckenden Hintergrund und bleibt unberührt.
+
+- Wählen Sie ein Bild vom Computer oder verwenden Sie direkt einen der mitgelieferten Windows-Hintergründe bzw. Sperrbildschirm-Bilder.
+- Ein gewähltes Bild wird in den eigenen Ordner der App kopiert; Verschieben oder Löschen des Originals berührt den Hintergrund nicht.
+- Der Abdeckungsregler legt fest, wie stark das Bild zurücktritt — von 30 % bis 95 %.
+- Bei aktiviertem hohem Kontrast wird kein Hintergrundbild angezeigt.
 ## Die Daten, und was sie nicht sagen
 
 Kurse kommen von den öffentlichen Endpunkten von Tencent Finance, und das Bild nennt die Quelle immer. Diese Videos beschreiben, was schon gehandelt wurde. Sie dienen nur als Anhaltspunkt und sind keine Anlageberatung.

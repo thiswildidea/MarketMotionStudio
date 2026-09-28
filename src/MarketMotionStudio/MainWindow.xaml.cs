@@ -84,6 +84,12 @@ public sealed partial class MainWindow : Window
         // buttons are drawn by the system and do not follow either on their own.
         Root.ActualThemeChanged += (_, _) => PaintCaptionButtons();
 
+        // The optional picture behind the window. Applied once at startup and
+        // again whenever Settings changes the picture or the dimming, so the
+        // Settings page does not need to reach into this window.
+        AppBackground.Changed += (_, _) => _ = ApplyBackgroundAsync();
+        _ = ApplyBackgroundAsync();
+
         // An export outlives the moment it is started and the window is often
         // behind something else while it runs. The title is the only thing a
         // window that is not on top can still say, so it says it — this is the
@@ -296,6 +302,62 @@ public sealed partial class MainWindow : Window
     {
         ThemeSettings.Apply(Root);
         PaintCaptionButtons();
+    }
+
+    /// <summary>The picture now on screen, so a dimming change does not decode it again.</summary>
+    private string? _backgroundShown;
+
+    /// <summary>
+    /// Shows the chosen background picture, or none, and sets the surfaces to
+    /// match.
+    ///
+    /// Decoded from a stream closed straight after, never from its path, so
+    /// the copy on disk is not held open and can be deleted when it is taken
+    /// off the list. Decoded no wider than a large screen, because a phone
+    /// photo is 12 megapixels and at full size would be tens of megabytes held
+    /// for as long as the app runs.
+    ///
+    /// Nothing in high contrast: the picture is decoration, and high contrast
+    /// is a statement that decoration is in the way.
+    /// </summary>
+    private async Task ApplyBackgroundAsync()
+    {
+        var path = new Windows.UI.ViewManagement.AccessibilitySettings().HighContrast ? null : AppBackground.Current;
+
+        if (path is not null && path != _backgroundShown)
+        {
+            try
+            {
+                var picture = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage { DecodePixelWidth = 2560 };
+
+                await using (var stream = File.OpenRead(path))
+                {
+                    await picture.SetSourceAsync(stream.AsRandomAccessStream());
+                }
+
+                BackgroundPicture.Source = picture;
+                _backgroundShown = path;
+            }
+            catch (Exception ex)
+            {
+                CrashLog.Note($"background: picture could not be shown, {ex.GetType().Name}");
+                path = null;
+            }
+        }
+
+        if (path is null)
+        {
+            BackgroundPicture.Source = null;
+            _backgroundShown = null;
+        }
+
+        var showing = path is not null;
+
+        BackgroundPicture.Visibility = showing ? Visibility.Visible : Visibility.Collapsed;
+        BackgroundDimmer.Visibility = showing ? Visibility.Visible : Visibility.Collapsed;
+        BackgroundDimmer.Opacity = AppBackground.Dim / 100.0;
+
+        AppBackground.ApplySurfaces(showing);
     }
 
     /// <summary>

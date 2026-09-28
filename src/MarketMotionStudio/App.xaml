@@ -7,6 +7,35 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+
+                <!-- The surfaces an optional background picture has to be kept off.
+                     Each is a Fluent key overridden with a brush of this app's own,
+                     starting at exactly the Fluent value, so nothing looks different
+                     until a picture is chosen.
+
+                     A merged dictionary after XamlControlsResources, not this
+                     dictionary's own ThemeDictionaries. Merged dictionaries are
+                     searched last-first, so this one wins; theme entries of the
+                     application dictionary itself lost to Fluent's. AppBackground.
+                     ApplySurfaces finds it by the keys it holds. No HighContrast
+                     entry: there the system's own values stand and no picture is
+                     shown. -->
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Default">
+                            <SolidColorBrush x:Key="CardBackgroundFillColorDefaultBrush" Color="#0DFFFFFF" />
+                            <SolidColorBrush x:Key="LayerFillColorDefaultBrush" Color="#4C3A3A3A" />
+                            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#4C3A3A3A" />
+                            <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="#00000000" />
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="CardBackgroundFillColorDefaultBrush" Color="#B3FFFFFF" />
+                            <SolidColorBrush x:Key="LayerFillColorDefaultBrush" Color="#80FFFFFF" />
+                            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#80FFFFFF" />
+                            <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="#00FFFFFF" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
