@@ -18,11 +18,6 @@
     <!-- Our own entry point, so a second launch can be folded into the running
          instance before the XAML application object exists. -->
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-    <!-- Keep every language in the main package. The default autoResourcePackage
-         split removes non-default languages from the main package's manifest and
-         expects them in per-language resource packages — which this single-project
-         toolchain never produces, so the Store would list English only. The
-         resources are small enough to stay in one package; Scale still splits. -->
     <!-- Keep every language in the main package. The default auto resource-package
          split (Language|Scale|DXFeatureLevel) strips non-default languages out of
          the main package's manifest and expects them in per-language resource
@@ -30,6 +25,12 @@
          Store would list English only. Resources are small enough to stay in one
          package; Scale still splits. -->
     <AppxBundleAutoResourcePackageQualifiers>Scale|DXFeatureLevel</AppxBundleAutoResourcePackageQualifiers>
+    <!-- The fallback language: a display language we do not ship resolves to this
+         one. It is what the shell shows for the app name (ms-resource:AppDisplayName)
+         on e.g. a Dutch system, so "not translated" reads as English rather than as
+         whichever language happened to sort first. The targets already default to
+         en-US; naming it here keeps that an explicit decision. -->
+    <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 
   <ItemGroup>

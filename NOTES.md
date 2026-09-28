@@ -63,13 +63,41 @@ Worth pricing the alternatives while that is open: a licensed vendor feed, or sh
 the fetch and letting the user supply a CSV. The second is unattractive but it is a product
 that can ship.
 
-**Package identity is decided once.** `Identity Name` and `Publisher` come from the name
-reserved in Partner Center and cannot be changed for that product afterwards; the display name
-can. The manifest still carries the development placeholder `MarketMotionStudio.Dev` with a
-self-signed publisher, so the identity is still open — but only until the first submission.
-The name to reserve is **Market Motion Studio**. (The package identity `MarketMotionStudio`
-is frozen and never changes — only the display name and Store listing name were renamed when
-the app grew beyond A-shares to Hong Kong and US markets.)
+**Package identity is decided once, and it is already decided.** `Identity Name` and `Publisher`
+come from the name reserved in Partner Center and cannot be changed for that product afterwards;
+the display name can. The manifest now carries the reserved identity `8166Yxw.MarketMotionStudio`
+with the Partner Center publisher `CN=7092F3CD-…`, so the identity is frozen — changing either
+one stops already-installed copies from ever receiving an update. (The package identity
+`MarketMotionStudio` is frozen too and never changes — only the display name and Store listing
+name were renamed when the app grew beyond A-shares to Hong Kong and US markets.)
+
+**The shell name is a resource reference, not a literal.** `DisplayName` in its three manifest
+places — `Properties`, `uap:VisualElements`, `uap5:StartupTask` — reads
+`ms-resource:AppDisplayName`, so the Start menu, the Apps list and Settings show the product
+name in the OS display language instead of the identity. It cannot reuse `AppTitle.Text` for
+this: that is a *property* identifier owned by `x:Uid`, and one resource file may not hold both
+`X` and `X.Text`. A display language the app does not ship falls back to English, which is
+`DefaultLanguage` — pinned to `en-US` in the csproj rather than left to the toolchain default.
+
+**Version numbering: two hard rules and one that follows from them.** The version is four
+sections, `Major.Minor.Build.Revision`.
+
+- **Revision must be 0.** It is reserved for the Store, which may change it after certification.
+  This is what the 2026-09-26 upload rejection was really about: the package said `0.2.0.1`, and
+  the error reads *"Apps are not allowed to have a Version with a revision number other than
+  zero specified in the app manifest"* — not, as it was first read, a demand for all zeros.
+  `0.0.0.0` satisfied the rule by accident and got through, which is how a wrong rule got written
+  down.
+- **Major cannot be 0.** Each part is 0–65535, the first excepted. So the first submission is
+  `1.0.0.0`, not `0.x`.
+- **An update must be higher than what customers already have** on the same device family, or
+  they are simply never offered it. That alone rules out staying on `0.0.0.0`.
+
+So: `1.0.0.0` first, then `1.0.1.0` for fixes and `1.1.0.0` for features, fourth section always
+0. Settings and the contact mail read the version straight from the package, so a version a user
+reports may show a non-zero fourth section — that is the Store's own edit, not a build mistake.
+Locally, a loose layout will not re-register at a version lower than or equal to the one already
+registered, so bump before `Add-AppxPackage -Register`.
 
 **The disclaimer is in four places and should stay in all four.** Store description, both
 indicator pages, Settings, and the end of the help document. A financial app that draws market

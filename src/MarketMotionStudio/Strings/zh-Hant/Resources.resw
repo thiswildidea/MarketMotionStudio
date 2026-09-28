@@ -37,6 +37,11 @@
   <data name="CultureName"><value>zh-Hant</value></data>
 
   <data name="AppTitle.Text"><value>行情指標動畫工作室</value></data>
+  <!-- 外殼顯示名稱（開始功能表、應用程式清單、系統設定）。資訊清單以
+       ms-resource:AppDisplayName 讀取此鍵，因此隨系統顯示語言變化；
+       沒有對應語言時回退英文。與 AppTitle.Text 是同一個產品名，
+       但那個鍵歸 x:Uid 所有，不能兼作識別碼。 -->
+  <data name="AppDisplayName"><value>行情指標動畫工作室</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <data name="NavMarketTurnover.Content"><value>市場成交額</value></data>

@@ -41,6 +41,10 @@
   <!-- 这个产品有两个显示名，不是一处翻译：中文市场用「行情指标动画工作室」，
        其余市场用 Market Motion Studio。商店列表名是 Market Motion Studio，包标识 MarketMotionStudio 始终不变。 -->
   <data name="AppTitle.Text"><value>行情指标动画工作室</value></data>
+  <!-- 外壳显示名（开始菜单、应用列表、系统设置）。清单以 ms-resource:AppDisplayName
+       读取此键，因此随系统显示语言变化；没有对应语言时回退英文。
+       与 AppTitle.Text 是同一个产品名，但那个键归 x:Uid 所有，不能兼作标识符。 -->
+  <data name="AppDisplayName"><value>行情指标动画工作室</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <!-- 导航 -->

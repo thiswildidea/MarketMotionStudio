@@ -8,6 +8,13 @@ The product has two display names on purpose. Chinese markets get 「行情指�
 else, and in the Store listing, it is Market Motion Studio. The package identity MarketMotionStudio
 stays fixed in every market and is never shown to users. See "Languages" below.
 
+**Version history is `CHANGELOG.md`** — one entry per Store submission, newest first: the number,
+the date, what is new, and what is still known to be limited. Releasing is three actions that
+belong together: bump `Version` in the manifest, add the entry, and update the fourteen
+"What's new in this version" lines in `docs/store-listing.md`. That last file is the Store
+listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
+ignored `artifacts/`, where a cleared directory would have taken it for good.
+
 Status: **seven pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
@@ -471,7 +478,17 @@ src/MarketMotionStudio/
   Strings/<bcp47>/ Fourteen Resources.resw
   Assets/Help/     Fourteen help-<tag>.md and media/<tag>/, their pictures
   Diagnostics/     Crash log
-tools/new-icons.ps1  Generates every image the manifest declares
+tools/
+  new-icons.ps1          Generates every image the manifest declares
+  store-screenshots.py   Drives the running app; captures the Store screenshots, one set per language
+  help-media.py          Crops those captures into the help document's page pictures
+  port-help-images.py    Inserts the pictures into all fourteen help documents, by chapter number
+  localize-instruments.py, localize-appname.py
+                         Add one key to all fourteen resw at once — idempotent, key-order checked
+  port-*-resw.py, port-*-help.py
+                         Port one feature's strings and help section from the sibling project
+  verify-*.py            Drive the UI and assert the feature behaves as documented
+  drive-*.py             Drive the app end to end for a smoke run
 ```
 
 `Render/` has no dependency on XAML and `Views/PreviewSurface` is the only thing that knows a
@@ -551,8 +568,19 @@ commissioned with a Chinese name and an English one, so `AppTitle.Text` carries
 name `Market Motion Studio` everywhere else. The package identity stays `MarketMotionStudio`
 in every market and is never shown to users.
 
-Every language carries the same keys in the same order. All fourteen currently report 307 keys
-with no encoding damage, and all fourteen help documents carry the same twelve sections in the
+The same name is published a second time as `AppDisplayName`, because the two are read by
+different machinery. `AppTitle.Text` is a *property* identifier — `x:Uid` owns it, the window
+title uses it — and a file cannot hold both `X` and `X.Text`, so the manifest cannot point at
+it. `AppDisplayName` is a plain identifier, and the manifest reads it as
+`ms-resource:AppDisplayName` for the Start menu, the Apps list and Settings, which is what
+makes the shell name follow the OS display language. Before that, all three carried the
+literal `MarketMotionStudio` — the identity, which is not a product name and reads the same
+everywhere. A display language the app does not ship falls back to English: `DefaultLanguage`
+in the csproj is pinned to `en-US` for exactly that, and the resource index records
+`Language-EN-US` as the default candidate.
+
+Every language carries the same keys in the same order. All fourteen currently report 409 keys
+with no encoding damage, and all fourteen help documents carry the same fourteen sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance

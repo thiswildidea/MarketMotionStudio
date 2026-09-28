@@ -37,6 +37,12 @@
   <data name="CultureName"><value>fr</value></data>
 
   <data name="AppTitle.Text"><value>Market Motion Studio</value></data>
+  <!-- The shell display name (Start menu, Apps list, Settings). The package
+       manifest reads this key as ms-resource:AppDisplayName, so it follows the
+       OS display language; a language we do not ship falls back to English.
+       Same product name as AppTitle.Text, but that key belongs to x:Uid and a
+       file cannot hold both "X" and "X.Text". -->
+  <data name="AppDisplayName"><value>Market Motion Studio</value></data>
   <data name="TitleBusy"><value>{0} — {1}</value></data>
 
   <data name="NavMarketTurnover.Content"><value>Volume d'échanges du marché</value></data>
