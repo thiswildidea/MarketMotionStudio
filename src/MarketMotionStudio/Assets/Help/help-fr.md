@@ -29,6 +29,8 @@ Le volume d'un titre face à son taux de rotation, en deux panneaux superposés.
 
 ## Course de secteurs
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/sector-race.png)
+
 Un ensemble de secteurs ou d'actions, dessiné en barres horizontales qui se dépassent, l'ordre changeant jusqu'à la dernière image.
 
 - Deux mesures : la variation de la période en % et son volume en centaines de millions de yuans. Changer de mesure ne fait que re-teinter les mêmes données ; cela ne relance pas la requête.
@@ -39,6 +41,8 @@ Un ensemble de secteurs ou d'actions, dessiné en barres horizontales qui se dé
 
 ## Matrice des rendements
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)
+
 Des barres mensuelles disposées en grille : le mode année montre la saisonnalité d'un instrument sur dix ans, le mode comparaison met plusieurs instruments côte à côte pour montrer la rotation.
 
 - Mode année : choisissez un instrument (recherche ou un indice large prédefini) ; la plage va de 1 à 10 ans ou tous. Une requête renvoie dix ans de barres mensuelles.
@@ -47,6 +51,8 @@ Des barres mensuelles disposées en grille : le mode année montre la saisonnali
 - Les données mensuelles couvrent une décennie d'un coup, il n'y a donc pas de limite quotidienne ici — mais trop d'instruments débordent du cadre.
 
 ## Calendrier des hausses et baisses
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/gain-calendar.png)
 
 Toute action ou tout indice chinois, sa hausse ou baisse quotidienne disposée en cellules de calendrier par mois : rouge à la hausse, vert à la baisse.
 
@@ -57,6 +63,8 @@ Toute action ou tout indice chinois, sa hausse ou baisse quotidienne disposée e
 
 ## Plan DCA
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/dca-plan.png)
+
 Acheter un titre à montant et cadence fixes — chaque jour de bourse, chaque semaine ou chaque mois — et voir en animation ce que la discipline a produit.
 
 - Les instruments en un clic suivent le marché : ETF larges et or sur les actions A, fonds indiciels de Hong Kong, SPY, QQQ et GLD aux États-Unis.
@@ -64,6 +72,8 @@ Acheter un titre à montant et cadence fixes — chaque jour de bourse, chaque s
 - Le rendement est calculé sur des clôtures rétro-ajustées, sans frais. Le résultat décrit la série de prix, pas une facture que qui que ce soit aurait pu exécuter.
 
 ## Rendement de position
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/position.png)
 
 Un seul achat, conservé des années — un million dans 中国平安 en 2015, par exemple — animé comme ce que la valeur et le rendement ont fait.
 

@@ -469,7 +469,7 @@ src/MarketMotionStudio/
                    Settings, Help, Playback
   Localization/    Strings lookup and the language override
   Strings/<bcp47>/ Fourteen Resources.resw
-  Assets/Help/     Fourteen help-<tag>.md
+  Assets/Help/     Fourteen help-<tag>.md and media/<tag>/, their pictures
   Diagnostics/     Crash log
 tools/new-icons.ps1  Generates every image the manifest declares
 ```

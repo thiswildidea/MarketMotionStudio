@@ -4,7 +4,7 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-09-26 (after the seventh page — Position Return; see the end).
+Last reviewed: 2026-09-28 (after the help pictures; see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -387,7 +387,8 @@ nineteen logo and splash assets, `resources.pri` and Win2D's native
 `Microsoft.Graphics.Canvas.dll` for x64 and arm64; all fourteen resw files carry 90 keys in
 the same order with no `U+FFFD` and no double-encoded sequences; every `x:Uid` names a
 property its element actually has; all 90 defined keys are reached from either C# or XAML;
-all fourteen help documents parse to 24 blocks; every generated PNG is 32-bit with a
+all fourteen help documents parse to the same number of blocks (77 as of the pictures; the count
+is not the contract, all fourteen agreeing is); every generated PNG is 32-bit with a
 transparent corner and an opaque centre, and the `.ico` loads.
 
 **Verified by running it**, registered from the debug output and driven through UI Automation:
@@ -845,3 +846,37 @@ temp) is what found it, and the log is removed now.
 against an independent fetch: hfq buy 38.76, last 155.43, +301.0% — the frame and the
 spreadsheet agree. The qfq pathology was reproduced in the log before the fix and is absent
 after it.
+
+## The help documents carry pictures
+
+Five of the fourteen chapters — sector race, return matrix, gain-loss calendar, DCA plan and
+holdings return — now open with a screenshot of the page they describe, so the words have
+something to point at. The other chapters have none: there is no screenshot of the settings page
+yet, and the whole-market chapter's page does not exist in every market.
+
+`HelpDocument` learned one line shape, `![caption](media/sector-race.png)` on a line of its own,
+and draws it as a bordered card with the caption in small grey text under it. Everything else
+about the renderer is unchanged, including what it does with lines it cannot lay out.
+
+**The pictures are per language and the documents are not.** A reference names one file;
+`media/x.png` resolves to `media/<tag>/x.png` first and to `media/x.png` second, with `<tag>` read
+off the document's own file name — the same decision that chose the manual. Fourteen folders, five
+pictures each, taken from that language's own store screenshots so a Japanese manual shows a
+Japanese window. The reference inside the prose stays identical in all fourteen files, and the
+captions are the five-per-language sentences in `tools/port-help-images.py`.
+
+They are built by `tools/help-media.py`, which crops the title bar, the navigation rail and the
+window border off the store captures — at the manual's column width a whole window prints as a
+smudge, and the controls are the reason the picture is there. **70 files, 7.6 MB.** The package
+was 63.4 MB before this; expect roughly 71 MB for the next one, and measure rather than assume.
+
+Insertion is `tools/port-help-images.py`, by chapter *number* rather than heading text — the
+headings are translated, so matching on them would need a table of fourteen titles. It is
+idempotent and verified: all fourteen documents went from 72 blocks to 77, all fourteen the same.
+
+**Verified by running it**: the help page renders five bordered cards with legible screenshots at
+the manual's column width, each with its caption; `crash.log` carries no `Help picture missing`
+line, so all seventy resolutions found their file. **Not verified**: that the fourteen `media`
+folders survive the Store package intact — the release build has not been run since they went in.
+Grid them out of the inner package when the next `.msixupload` is built, alongside the usual
+language and manifest checks.

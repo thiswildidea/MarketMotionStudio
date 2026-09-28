@@ -29,6 +29,8 @@ Volumen und Umschlagsrate eines Titels, in zwei übereinanderliegenden Feldern.
 
 ## Sektor-Rennen
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/sector-race.png)
+
 Eine Gruppe von Sektoren oder Aktien als waagerechte Balken, die einander überholen, die Reihenfolge ändert sich bis zum letzten Bild.
 
 - Zwei Maße: die Prozentveränderung des Zeitraums und sein Umsatz in Hunderten Millionen Yuan. Das Maß zu wechseln färbt nur dieselben Daten neu ein, es wird nicht neu geladen.
@@ -39,6 +41,8 @@ Eine Gruppe von Sektoren oder Aktien als waagerechte Balken, die einander überh
 
 ## Renditematrix
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)
+
 Monatsbalken als Raster gelegt: der Jahresmodus zeigt die Saisonalität eines Instruments über ein Jahrzehnt, der Vergleichsmodus stellt mehrere Instrumente nebeneinander, um die Rotation zu zeigen.
 
 - Jahresmodus: ein Instrument wählen (Suche oder ein voreingestellter Breitbandindex); der Bereich ist 1–10 Jahre oder alle. Eine Anfrage liefert ein Jahrzehnt Monatsbalken.
@@ -47,6 +51,8 @@ Monatsbalken als Raster gelegt: der Jahresmodus zeigt die Saisonalität eines In
 - Monatsdaten decken ein Jahrzehnt auf einmal ab, es gibt also keine tägliche Tagesspanne — doch zu viele Instrumente laufen über das Bild hinaus.
 
 ## Gewinn-Verlust-Kalender
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/gain-calendar.png)
 
 Jede chinesische Aktie oder jeder Index, sein täglicher Anstieg oder Rückgang als Kalenderzellen pro Monat: Rot bei Plus, Grün bei Minus.
 
@@ -57,6 +63,8 @@ Jede chinesische Aktie oder jeder Index, sein täglicher Anstieg oder Rückgang 
 
 ## Sparplan
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/dca-plan.png)
+
 Ein Wertpapier zum festen Betrag in festen Abständen gekauft — an jedem Handelstag, wöchentlich oder monatlich — und als Animation verfolgt, was aus der Disziplin geworden ist.
 
 - Die Ein-Tipp-Instrumente folgen dem Markt: Breite und Gold-ETFs auf dem A-Aktien-Markt, die Hongkonger Tracker-Fonds, in den USA SPY, QQQ und GLD.
@@ -64,6 +72,8 @@ Ein Wertpapier zum festen Betrag in festen Abständen gekauft — an jedem Hande
 - Die Rendite wird auf rückwärts bereinigten Schlusskursen gerechnet, ohne Gebühren. Das Ergebnis beschreibt die Kursreihe, nicht eine Rechnung, die so jemand hätte ausführen können.
 
 ## Depotrendite
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/position.png)
 
 Ein einziger Kauf, über Jahre gehalten — etwa eine Million in 中国平安 im Jahr 2015 — als Animation dessen, was Wert und Rendite taten.
 

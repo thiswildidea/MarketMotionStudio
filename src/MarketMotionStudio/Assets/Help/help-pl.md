@@ -29,6 +29,8 @@ Wolumen jednej spółki na tle jej wskaźnika obrotu, w dwóch panelach jeden na
 
 ## Wyścig sektorów
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/sector-race.png)
+
 Zbiór sektorów lub akcji jako poziome paski, które wyprzedzają się nawzajem, a kolejność zmienia się aż do ostatniej klatki.
 
 - Dwa wskaźniki: zmiana z okresu w % oraz obrót w setkach milionów juanów. Przełączenie wskaźnika tylko przekolorowuje te same dane; nie pobiera ich ponownie.
@@ -39,6 +41,8 @@ Zbiór sektorów lub akcji jako poziome paski, które wyprzedzają się nawzajem
 
 ## Macierz stóp zwrotu
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)
+
 Miesięczne słupki ułożone w siatkę: tryb roku pokazuje sezonowość instrumentu przez dekadę, tryb porównania stawia kilka instrumentów obok siebie, by pokazać rotację.
 
 - Tryb roku: wybierz instrument (wyszukiwanie lub predefiniowany szeroki indeks); zakres to 1–10 lat lub wszystkie. Jedno zapytanie zwraca dekadę miesięcznych słupków.
@@ -47,6 +51,8 @@ Miesięczne słupki ułożone w siatkę: tryb roku pokazuje sezonowość instrum
 - Dane miesięczne obejmują dekadę za jednym razem, więc nie ma tu dziennego limitu dni — ale zbyt wiele instrumentów wykracza poza kadr.
 
 ## Kalendarz zysków i strat
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/gain-calendar.png)
 
 Dowolna chińska akcja lub indeks, jego dzienny wzrost lub spadek ułożony w komórki kalendarza według miesięcy: czerwony przy wzroście, zielony przy spadku.
 
@@ -57,6 +63,8 @@ Dowolna chińska akcja lub indeks, jego dzienny wzrost lub spadek ułożony w ko
 
 ## Plan DCA
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/dca-plan.png)
+
 Kupowanie jednego instrumentu na stałą kwotę w stałych odstępach — w każdy dzień sesji, co tydzień lub co miesiąc — i animacja tego, czym stała się dyscyplina.
 
 - Instrumenty jednym dotknięciem podążają za rynkiem: szerokie i złote ETF na akcjach A, hongkongskie fundusze śledzące, w USA SPY, QQQ i GLD.
@@ -64,6 +72,8 @@ Kupowanie jednego instrumentu na stałą kwotę w stałych odstępach — w każ
 - Stopa zwrotu liczona jest na cenach skorygowanych wstecz, bez opłat. Wynik opisuje szereg cen, a nie rachunek, który ktokolwiek mógłby zrealizować.
 
 ## Zwrot z pozycji
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/position.png)
 
 Jeden zakup, trzymany latami — na przykład milion w 中国平安 w 2015 roku — animowany jako to, co zrobiły wartość i stopa zwrotu.
 

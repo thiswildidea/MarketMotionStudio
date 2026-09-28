@@ -29,6 +29,8 @@ O volume de uma ação diante da sua taxa de giro, em dois painéis sobrepostos.
 
 ## Corrida de setores
 
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/sector-race.png)
+
 Um conjunto de setores ou ações desenhado como barras horizontais que se ultrapassam, e a ordem muda até o último quadro.
 
 - Duas medidas: a variação do período em % e seu volume em centenas de milhões de yuans. Trocar a medida só recoloriu os mesmos dados; não busca de novo.
@@ -39,6 +41,8 @@ Um conjunto de setores ou ações desenhado como barras horizontais que se ultra
 
 ## Matriz de retorno
 
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)
+
 Barras mensais dispostas em uma grade: o modo ano mostra a sazonalidade de um instrumento ao longo de uma década; o modo comparação coloca vários instrumentos lado a lado para mostrar a rotação.
 
 - Modo ano: escolha um instrumento (busca ou um índice amplo predefinido); o intervalo é de 1 a 10 anos ou todos. Uma requisição devolve uma década de barras mensais.
@@ -47,6 +51,8 @@ Barras mensais dispostas em uma grade: o modo ano mostra a sazonalidade de um in
 - Os dados mensais cobrem uma década de uma vez, então não há o limite diário de dias — mas muitos instrumentos saem do enquadramento.
 
 ## Calendário de altas e baixas
+
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/gain-calendar.png)
 
 Qualquer ação ou índice da bolsa chinesa, seu alta ou baixa diária disposta em células de calendário por mês: vermelho na alta, verde na baixa.
 
@@ -57,6 +63,8 @@ Qualquer ação ou índice da bolsa chinesa, seu alta ou baixa diária disposta 
 
 ## Plano DCA
 
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/dca-plan.png)
+
 Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda semana ou todo mês — e ver em animação o que a disciplina virou.
 
 - Os ativos de um toque seguem o mercado: ETFs amplos e de ouro nas ações A, os fundos índice de Hong Kong, SPY, QQQ e GLD nos Estados Unidos.
@@ -64,6 +72,8 @@ Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda sem
 - O retorno é calculado sobre fechamentos ajustados retroativamente, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
 
 ## Retorno de posição
+
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/position.png)
 
 Uma única compra, mantida por anos — um milhão em 中国平安 em 2015, por exemplo — animada como o que o valor e o retorno fizeram.
 

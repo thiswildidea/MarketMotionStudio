@@ -29,6 +29,8 @@ El volumen de un valor frente a su tasa de rotación, en dos paneles superpuesto
 
 ## Carrera de sectores
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/sector-race.png)
+
 Un conjunto de sectores o acciones dibujado como barras horizontales que se adelantan unas a otras, y el orden cambia hasta el último fotograma.
 
 - Dos medidas: la variación del periodo en % y su volumen en centenas de millones de yuanes. Cambiar de medida solo re-tiñe los mismos datos; no vuelve a consultar.
@@ -39,6 +41,8 @@ Un conjunto de sectores o acciones dibujado como barras horizontales que se adel
 
 ## Matriz de rentabilidad
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)
+
 Barras mensuales dispuestas en una cuadrícula: el modo año muestra la estacionalidad de un instrumento a lo largo de una década; el modo comparación pone varios instrumentos en paralelo para mostrar la rotación.
 
 - Modo año: elija un instrumento (búsqueda o un índice amplio preestablecido); el rango es de 1 a 10 años o todo. Una petición devuelve una década de barras mensuales.
@@ -47,6 +51,8 @@ Barras mensuales dispuestas en una cuadrícula: el modo año muestra la estacion
 - Los datos mensuales cubren una década de una vez, así que aquí no hay tope diario de días — pero demasiados instrumentos se salen del encuadre.
 
 ## Calendario de subidas y bajadas
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/gain-calendar.png)
 
 Cualquier acción o índice chino, su subida o bajada diaria dispuesta en celdas de calendario por mes: rojo al alza, verde a la baja.
 
@@ -57,6 +63,8 @@ Cualquier acción o índice chino, su subida o bajada diaria dispuesta en celdas
 
 ## Plan DCA
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/dca-plan.png)
+
 Comprar un valor con importe y cadencia fijos — cada día de bolsa, cada semana o cada mes — y ver en animación lo que la disciplina llegó a ser.
 
 - Los instrumentos de un toque siguen al mercado: ETF amplios y de oro en las acciones A, los fondos rastreados de Hong Kong, SPY, QQQ y GLD en Estados Unidos.
@@ -64,6 +72,8 @@ Comprar un valor con importe y cadencia fijos — cada día de bolsa, cada seman
 - La rentabilidad se calcula sobre cierres ajustados hacia atrás, sin comisiones. El resultado describe la serie de precios, no una factura que alguien pudiera haber ejecutado.
 
 ## Rentabilidad de cartera
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/position.png)
 
 Una sola compra, mantenida durante años — un millón en 中国平安 en 2015, por ejemplo — animada como lo que hicieron el valor y la rentabilidad.
 

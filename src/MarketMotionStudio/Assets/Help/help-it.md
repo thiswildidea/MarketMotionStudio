@@ -29,6 +29,8 @@ I volumi di un titolo a confronto con il suo tasso di rotazione, in due pannelli
 
 ## Gara di settori
 
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/sector-race.png)
+
 Un insieme di settori o azioni disegnati come barre orizzontali che si sorpassano, e l'ordine cambia fino all'ultimo fotogramma.
 
 - Due misure: la variazione del periodo in % e il suo volume in centinaia di milioni di yuan. Cambiare misura ricolora solo gli stessi dati; non viene rifatta la richiesta.
@@ -39,6 +41,8 @@ Un insieme di settori o azioni disegnati come barre orizzontali che si sorpassan
 
 ## Matrice dei rendimenti
 
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)
+
 Barre mensili disposte in una griglia: la modalità anno mostra la stagionalità di uno strumento su un decennio, quella confronto mette diversi strumenti affiancati per mostrarne la rotazione.
 
 - Modalità anno: scegli uno strumento (ricerca o un indice ampio predefinito); l'arco è di 1–10 anni o tutti. Una richiesta restituisce un decennio di barre mensili.
@@ -47,6 +51,8 @@ Barre mensili disposte in una griglia: la modalità anno mostra la stagionalità
 - I dati mensili coprono un decennio in un colpo solo, quindi qui non c'è il limite giornaliero di giorni — ma troppi strumenti escono dall'inquadratura.
 
 ## Calendario di rialzi e ribassi
+
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/gain-calendar.png)
 
 Qualsiasi titolo o indice cinese, il suo rialzo o ribasso giornaliero disposto in celle di calendario per mese: rosso in rialzo, verde in ribasso.
 
@@ -57,6 +63,8 @@ Qualsiasi titolo o indice cinese, il suo rialzo o ribasso giornaliero disposto i
 
 ## Piano DCA
 
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/dca-plan.png)
+
 Comprare uno strumento a importe e cadenza fissi — ogni giorno di borsa, ogni settimana o ogni mese — e vedere in animazione cosa la disciplina è diventata.
 
 - Gli strumenti a un tocco seguono il mercato: ETF ampi e oro sulle azioni A, i fondi indicizzati di Hong Kong, SPY, QQQ e GLD negli Stati Uniti.
@@ -64,6 +72,8 @@ Comprare uno strumento a importe e cadenza fissi — ogni giorno di borsa, ogni 
 - Il rendimento è calcolato su chiusure rettificate all'indietro, senza commissioni. Il risultato descrive la serie di prezzi, non una fattura che qualcuno avrebbe potuto eseguire.
 
 ## Rendimento di posizione
+
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/position.png)
 
 Un solo acquisto, mantenuto per anni — un milione in 中国平安 nel 2015, ad esempio — animato come ciò che valore e rendimento hanno fatto.
 

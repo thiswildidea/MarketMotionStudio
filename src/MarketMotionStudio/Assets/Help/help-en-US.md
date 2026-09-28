@@ -29,6 +29,8 @@ One stock's volume against its turnover rate, as two stacked panels.
 
 ## Sector Race
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/sector-race.png)
+
 A set of sectors or stocks, drawn as horizontal bars that overtake one another, the order changing right up to the last frame.
 
 - Two measures: the interval's gain/loss percentage, and its turnover in hundreds of millions of yuan. Switching is just a re-colour of the same data; it does not fetch again.
@@ -39,6 +41,8 @@ A set of sectors or stocks, drawn as horizontal bars that overtake one another, 
 
 ## Return Matrix
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)
+
 Monthly bars laid into a grid: year mode shows one instrument's decade of seasonality, compare mode puts several side by side to show rotation.
 
 - Year mode: pick one instrument (search, or a preset broad index); the span is 1-10 years or all. One request returns a decade of monthly bars.
@@ -47,6 +51,8 @@ Monthly bars laid into a grid: year mode shows one instrument's decade of season
 - Monthly data covers a decade in one go, so there is no daily-style day cap here - but too many instruments run past the frame.
 
 ## Gain-loss calendar
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/gain-calendar.png)
 
 Any A-share stock or index, its daily rise or fall laid into calendar cells by month: red for up, green for down.
 
@@ -57,6 +63,8 @@ Any A-share stock or index, its daily rise or fall laid into calendar cells by m
 
 ## DCA Plan
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/dca-plan.png)
+
 Buying one instrument for a fixed amount on a fixed cadence — every trading day, every week or every month — and watching what the discipline turned into.
 
 - The one-tap instruments follow the market: broad and gold ETFs on the A-share market, the Hong Kong tracker funds, SPY, QQQ and GLD in the United States.
@@ -64,6 +72,8 @@ Buying one instrument for a fixed amount on a fixed cadence — every trading da
 - Returns are computed on backward-adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
 
 ## Holdings Return
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/position.png)
 
 One purchase, held for years — a million into 中国平安 in 2015, say — animated as what the value and the return did.
 

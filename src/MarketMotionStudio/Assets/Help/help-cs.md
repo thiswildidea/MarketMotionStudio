@@ -29,6 +29,8 @@ Objem jedné akcie proti její míře obratu, ve dvou panelech nad sebou.
 
 ## Závod sektorů
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/sector-race.png)
+
 Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhánějí, a pořadí se mění až do posledního snímku.
 
 - Dvě míry: procentní změna období a jeho objem v stovkách milionů juanů. Přepnutí míry jen přebarví stejná data; znovu se nenačítají.
@@ -39,6 +41,8 @@ Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhán
 
 ## Matice výnosů
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)
+
 Měsíční pruhy rozložené do mřížky: režim roku ukazuje sezónnost nástroje za desetiletí, režim porovnání staví několik nástrojů vedle sebe, aby ukázal rotaci.
 
 - Režim roku: vyberte nástroj (hledání nebo předvolený široký index); rozsah je 1–10 let nebo vše. Jeden požadavek vrátí desetiletí měsíčních pruhů.
@@ -47,6 +51,8 @@ Měsíční pruhy rozložené do mřížky: režim roku ukazuje sezónnost nást
 - Měsíční data pokrývají desetiletí najednou, takže zde není denní limit dní — ale příliš mnoho nástrojů vyjde z rámečku.
 
 ## Kalendář zisků a ztrát
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/gain-calendar.png)
 
 Libovolná čínská akce nebo index, jeho denní růst nebo pokles rozložený do kalendářních buněk podle měsíců: červená při růstu, zelená při poklesu.
 
@@ -57,6 +63,8 @@ Libovolná čínská akce nebo index, jeho denní růst nebo pokles rozložený 
 
 ## DCA plán
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/dca-plan.png)
+
 Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý obchodní den, každý týden nebo každý měsíc — a animace toho, čeho disciplína dosáhla.
 
 - Nástroje na jedno klepnutí sledují trh: široké a zlaté ETF u A-akcí, hongkongské trackerové fondy, ve USA SPY, QQQ a GLD.
@@ -64,6 +72,8 @@ Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý o
 - Výnos se počítá na zpětně upravených cenách, bez poplatků. Výsledek popisuje řadu cen, nikoli účtenku, kterou by někdo mohl realizovat.
 
 ## Výnos pozice
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/position.png)
 
 Jediný nákup, držený roky — třeba milion do 中国平安 v roce 2015 — animovaný jako to, co udělaly hodnota a výnos.
 

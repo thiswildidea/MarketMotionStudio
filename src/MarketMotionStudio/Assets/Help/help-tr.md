@@ -29,6 +29,8 @@ Bir hissenin işlem miktarı ile devir hızı, üst üste iki panel halinde.
 
 ## Sektör yarışı
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/sector-race.png)
+
 Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini geçer, sıralama son kareye kadar değişir.
 
 - İki ölçüt: dönemin yüzde değişimi ve yüz milyonlarca yuan cinsinden işlem hacmi. Ölçütü değiştirmek aynı veriyi yeniden renklendirir, tekrar veri çekmez.
@@ -39,6 +41,8 @@ Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini ge
 
 ## Getiri matrisi
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)
+
 Aylık çubuklar bir ızgaraya dizilir: yıl modu bir aracın on yıllık mevsimselliğini, karşılaştırma modu birkaç aracı yan yana dizerek rotasyonu gösterir.
 
 - Yıl modu: bir araç seçin (arama veya ön tanımlı geniş endeks); aralık 1–10 yıl veya tümü. Tek istek on yıllık aylık çubuğu getirir.
@@ -47,6 +51,8 @@ Aylık çubuklar bir ızgaraya dizilir: yıl modu bir aracın on yıllık mevsim
 - Aylık veriler bir seferde on yılı kapsar, bu yüzden günlük gün sınırı yoktur — ama çok fazla araç çerçeveyi aşar.
 
 ## Yükseliş-düşüş takvimi
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/gain-calendar.png)
 
 Herhangi bir Çin hissesi veya endeksi, günlük yükseliş veya düşüşü aylık takvim hücrelerine dizilir: yükselişte kırmızı, düşüşte yeşil.
 
@@ -57,6 +63,8 @@ Herhangi bir Çin hissesi veya endeksi, günlük yükseliş veya düşüşü ayl
 
 ## DCA Planı
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/dca-plan.png)
+
 Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her hafta veya her ay — ve disiplinin neye dönüştüğünü animasyonla görmek.
 
 - Tek dokunuşla seçilen varlıklar piyasayı izler: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD.
@@ -64,6 +72,8 @@ Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her ha
 - Getiri geriye düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
 
 ## Pozisyon Getirisi
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/position.png)
 
 Tek bir alım, yıllarca tutulan — örneğin 2015'te 中国平安'a bir milyon — değer ve getirinin ne yaptığının animasyonu.
 

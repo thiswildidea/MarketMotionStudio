@@ -94,9 +94,31 @@ foreach ($f in Get-ChildItem $dir -Filter *.md | Sort-Object Name) {
 }
 ```
 
-That replays `HelpDocument.Render`: one child per heading, per bullet, per paragraph. All
-fourteen currently report 42 (raised from 24 when the sector-race, monthly-matrix and gain-loss
-calendar sections were added to every file).
+That replays `HelpDocument.Render`: one child per heading, per bullet, per paragraph, per
+picture. All fourteen currently report **77** — and the number is not the point. It moves
+whenever a section or a picture is added (24 → 42 when the sector-race, monthly-matrix and
+gain-loss calendar sections were written; 72 → 77 when the pictures went in); what has to hold
+is that all fourteen report the *same* number.
+
+## Pictures in the help documents
+
+A picture is one line of its own, `![caption](media/sector-race.png)`, and renders as a card
+with the caption in small grey text under it. A reference written mid-sentence is left as the
+characters that were typed, like anything else this renderer cannot lay out.
+
+The reference names one file; the language comes from the document. `media/x.png` resolves to
+`media/<tag>/x.png` first and to `media/x.png` second, where `<tag>` is read off the document's
+own file name — the same decision that picked the manual, so a Japanese page cannot end up
+showing English screenshots. Pictures live in `Assets\Help\media\<tag>\`, one folder per
+language, built by `tools\help-media.py` from that language's store screenshots.
+
+- **A picture file name carries no dot but its extension.** Same MakePri rule as the documents
+  above: `sector-race.png`, never `sector.race.png` or `sector-race.zh-Hans.png`.
+- **A chapter that has a picture has it in all fourteen languages.** `tools\port-help-images.py`
+  inserts them by chapter number rather than by heading text, because the headings are
+  translated and matching on them would need a table of fourteen titles.
+- A missing file is logged (`Help picture missing: …`) and the caption is still drawn. Nothing
+  in the build catches a file that failed to copy.
 
 **The file name has one dot.** `help-en-US.md`, not `help.en-US.md`. MakePri reads dot-separated
 filename segments as resource qualifiers — that is how `Square44x44Logo.targetsize-16.png`
