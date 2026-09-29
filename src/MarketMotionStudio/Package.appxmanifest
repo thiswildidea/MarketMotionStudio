@@ -16,7 +16,7 @@
   <Identity
     Name="8166Yxw.MarketMotionStudio"
     Publisher="CN=7092F3CD-CF1F-417D-80F4-113423DC42B8"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
     <!-- A resource reference rather than a string literal, so the shell name

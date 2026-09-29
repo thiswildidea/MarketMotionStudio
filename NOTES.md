@@ -904,7 +904,8 @@ idempotent and verified: all fourteen documents went from 72 blocks to 77, all f
 
 **Verified by running it**: the help page renders five bordered cards with legible screenshots at
 the manual's column width, each with its caption; `crash.log` carries no `Help picture missing`
-line, so all seventy resolutions found their file. **Not verified**: that the fourteen `media`
-folders survive the Store package intact — the release build has not been run since they went in.
-Grid them out of the inner package when the next `.msixupload` is built, alongside the usual
-language and manifest checks.
+line, so all seventy resolutions found their file. **Verified in the 1.0.1.0 Store package (2026-09-29)**: all seventy files survive, across all
+fourteen `media/<tag>/` folders, alongside the fourteen help documents, `resources.pri` and
+Win2D's native `Microsoft.Graphics.Canvas.dll` for x64, x86 and arm64. The inner x64 and arm64
+packages are ~74 MB each, so the bundle — 148.8 MB as a `.msixupload` — is not what a device
+downloads; the Store serves one architecture.

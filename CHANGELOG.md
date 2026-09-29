@@ -20,6 +20,55 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.1.0 — 2026-09-29（更新版 / update）
+
+**1.0.0.0 之后的第一版更新，下面只列本次改动。** 应用的完整能力见下面的 0.0.0.0 条目——
+那一版已发布，这里不重复。
+The first update after 1.0.0.0; only the changes are listed. See the 0.0.0.0 entry below for the
+full feature set — that version is published and is not repeated here.
+
+### 新增 / Added
+
+- **动画背景可自定义 / the animation's backdrop is yours to set** — 设置页新增「动画背景」：
+  默认渐变、自选两色渐变、或一张图片（可从电脑选，也可直接用 Windows 自带壁纸，最近 6 张
+  留档）。图片按「填满」铺开并裁掉多余部分，压暗浓度 20–95% 可调。它同时作用于预览、导出的
+  视频和封面图——三者由同一个渲染器绘制，所以文件里看到的就是预览里看到的。
+  A new Settings card decides what every frame is drawn on: the built-in gradient, a two-colour
+  gradient of your own, or a picture — from your computer or Windows' own wallpapers, the last six
+  kept. Pictures fill the frame and are cropped rather than stretched, dimmed 20–95%. It reaches the
+  exported video and the cover image as well as the preview, because one renderer draws all three.
+
+### 改进 / Changed
+
+- **设置页内容居中 / the Settings page is centred** — 那列固定宽度的卡片改为在窗口里居中，
+  宽窗口下不再贴着左侧导航栏。
+  The column of cards now sits centred in the window instead of against the navigation pane.
+- **帮助手册新增「动画背景」一节 / the manual documents the new backdrop** — 14 份手册各加
+  一章（现为 15 章），讲清三种背景、图片的铺法与浓度范围。
+  All fourteen manuals gained a chapter on it (now fifteen); the chapter count is checked by the
+  injection script, the way the resource keys are.
+
+### 已知限制 / Known limits（沿用，本版未变 / unchanged）
+
+- 导出规格为 720×1280 / 1080×1920 / 1440×2560 三种尺寸 × 30 / 60 fps。1440p60 长片有过一次
+  卡在第 3,200 帧、文件被截断的情况，未复现也未定位原因。
+  Export offers three sizes × 30/60 fps; one 1440p60 run stalled at frame 3,200 and left a
+  truncated file — not reproduced, cause unknown.
+- 美股日线未做拆股调整，长区间曲线在拆股处会出现断崖。
+  US daily bars are not split-adjusted; a long range shows a cliff at a split.
+- 动画背景是全局一份，不能按页面分别设置；也没有纯单色模式与多图轮播。
+  The frame backdrop is one global setting, not per page; there is no single-colour mode and no
+  slideshow of several pictures.
+
+### 商店文案同步 / Store listing
+
+`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份已改为**只写
+本次改动**：动画背景可自定义。
+The fourteen "What's new in this version" lines now describe only this change: the custom
+animation backdrop.
+
+---
+
 ## 1.0.0.0 — 2026-09-28（更新版 / update）
 
 **这是商店中 0.0.0.0 之后的第一版更新，下面只列本次改动。** 应用的完整能力见下面的
@@ -44,14 +93,6 @@ below for the full feature set — that version is already published and is not 
 - **标的显示名本地化 / instrument names follow the interface language** — 80 个常用标的的
   显示名随界面语言走（请求仍用代码，不变）。
   Eighty common instruments are named in the interface language; requests still go by code.
-- **动画背景可自定义 / the animation's backdrop is yours to set** — 设置页新增「动画背景」：
-  默认渐变、自选两色渐变、或一张图片（可从电脑选，也可直接用 Windows 自带壁纸，最近 6 张
-  留档）。图片按「填满」铺开并裁掉多余部分，压暗浓度 20–95% 可调。它同时作用于预览、导出的
-  视频和封面图——三者由同一个渲染器绘制，所以文件里看到的就是预览里看到的。
-  A new Settings card decides what every frame is drawn on: the built-in gradient, a two-colour
-  gradient of your own, or a picture — from your computer or Windows' own wallpapers, the last six
-  kept. Pictures fill the frame and are cropped rather than stretched, dimmed 20–95%. It reaches the
-  exported video and the cover image as well as the preview, because one renderer draws all three.
 
 ### 改进 / Changed
 
@@ -62,13 +103,6 @@ below for the full feature set — that version is already published and is not 
   Start menu, Apps list and Settings now show the **product name** in the OS display language;
   all three previously carried the package identity, which is an identifier rather than a
   product name and reads the same in every language. Unlisted languages fall back to English.
-- **设置页内容居中 / the Settings page is centred** — 那列固定宽度的卡片改为在窗口里居中，
-  宽窗口下不再贴着左侧导航栏。
-  The column of cards now sits centred in the window instead of against the navigation pane.
-- **帮助手册新增「动画背景」一节 / the manual documents the new backdrop** — 14 份手册各加
-  一章（现为 15 章），讲清三种背景、图片的铺法与浓度范围。
-  All fourteen manuals gained a chapter on it (now fifteen); the chapter count is checked by the
-  injection script, the way the resource keys are.
 
 ### 已知限制 / Known limits（沿用 0.0.0.0，本版未变 / unchanged from 0.0.0.0）
 

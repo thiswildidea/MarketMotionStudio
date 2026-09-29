@@ -27,7 +27,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增：可自定义的窗口背景图片、设置旁的商店更新检查、帮助文档的逐页配图、跟随界面语言显示的标的名称，以及随系统显示语言变化的应用名称。
+本版新增：动画帧的背景可以自己定了——默认渐变、自选两色渐变，或一张图片（可从电脑选，也能直接用 Windows 自带壁纸，最近 6 张留档）。图片按「填满」铺开并裁掉多余部分，压暗 20–95% 可调；预览、导出的视频和封面图都会跟着变。
 
 ### 产品功能
 
@@ -63,7 +63,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增：可自訂的視窗背景圖片、設定旁的商店更新檢查、說明文件的逐頁配圖、隨介面語言顯示的標的名稱，以及隨系統顯示語言變化的應用名稱。
+本版新增：動畫影格的背景可以自己決定了——預設漸層、自選雙色漸層，或一張圖片（可從電腦選，也能直接用 Windows 內建桌布，最近 6 張留檔）。圖片以「填滿」方式鋪開並裁掉多餘部分，壓暗 20–95% 可調；預覽、匯出的影片與封面圖都會跟著變。
 
 ### 產品功能
 
@@ -99,7 +99,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-New in this version: a custom window background image, a Store update check beside Settings, page-by-page pictures in the help document, instrument names shown in the interface language, and an app name that follows the OS display language.
+New in this version: the animation's backdrop is yours to set — the built-in gradient, a two-colour gradient of your own, or a picture from your computer or from Windows' own wallpapers, the last six kept. Pictures fill the frame and are cropped rather than stretched, dimmed 20–95%, and the change reaches the preview, the exported video and the cover image alike.
 
 ### Product features
 
@@ -135,7 +135,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンの新機能：カスタマイズできるウィンドウ背景画像、設定の横にあるストア更新チェック、ヘルプの各ページの図版、インターフェース言語で表示される銘柄名、OS の表示言語に合わせたアプリ名。
+このバージョンの新機能：アニメーションの背景を自分で決められます。既定のグラデーション、2 色のグラデーション、または 1 枚の画像（パソコンから選ぶほか、Windows 標準の壁紙も使えます。最近 6 枚を保存）。画像は「満たす」ように配置され、はみ出した分は切り取られ、20〜95% の範囲で暗くできます。プレビューだけでなく、書き出す動画とカバー画像にも反映されます。
 
 ### 製品の機能
 
@@ -171,7 +171,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전의 새 기능: 직접 지정하는 창 배경 이미지, 설정 옆의 스토어 업데이트 확인, 도움말의 페이지별 그림, 인터페이스 언어로 표시되는 종목 이름, 운영 체제 표시 언어에 맞춘 앱 이름.
+이 버전의 새 기능: 애니메이션 배경을 직접 정할 수 있습니다. 기본 그라데이션, 원하는 두 색의 그라데이션, 또는 이미지 한 장(컴퓨터에서 고르거나 Windows 기본 배경화면을 그대로 사용, 최근 6장 보관). 이미지는 채우기로 배치되고 넘치는 부분은 잘리며 20~95%로 어둡게 할 수 있습니다. 미리보기뿐 아니라 내보낸 동영상과 커버 이미지에도 적용됩니다.
 
 ### 제품 기능
 
@@ -207,7 +207,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Neu in dieser Version: ein eigenes Hintergrundbild für das Fenster, eine Update-Prüfung über den Store neben den Einstellungen, Bilder zu jeder Seite der Hilfe, Wertnamen in der Sprache der Oberfläche und ein App-Name, der der Anzeigesprache des Systems folgt.
+Neu in dieser Version: der Hintergrund der Animation lässt sich selbst bestimmen — die eingebaute Farbabstufung, eine eigene Zwei-Farben-Abstufung oder ein Bild vom Rechner oder aus Windows' eigenen Hintergrundbildern, die letzten sechs werden aufgehoben. Bilder füllen das Bildfeld und werden beschnitten statt gestreckt, auf 20–95 % abdunkelbar. Das gilt für die Vorschau ebenso wie für das exportierte Video und das Titelbild.
 
 ### Produktfunktionen
 
@@ -243,7 +243,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Nouveautés de cette version : une image d'arrière-plan personnalisée pour la fenêtre, une vérification des mises à jour du Store à côté des paramètres, des illustrations page par page dans l'aide, des noms d'instruments affichés dans la langue de l'interface, et un nom d'application qui suit la langue d'affichage du système.
+Nouveautés de cette version : le fond de l'animation est désormais à vous — le dégradé intégré, un dégradé de deux couleurs de votre choix, ou une image de votre ordinateur ou parmi les fonds d'écran de Windows, les six dernières conservées. L'image remplit le cadre et est recadrée plutôt qu'étirée, assombrie de 20 à 95 %. Le changement s'applique à l'aperçu comme à la vidéo exportée et à l'image de couverture.
 
 ### Fonctionnalités
 
@@ -279,7 +279,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Novità di questa versione: immagine di sfondo personalizzata per la finestra, controllo aggiornamenti dello Store accanto alle impostazioni, immagini pagina per pagina nella guida, nomi degli strumenti mostrati nella lingua dell'interfaccia e un nome dell'app che segue la lingua di visualizzazione del sistema.
+Novità di questa versione: lo sfondo dell'animazione lo scegliete voi — la sfumatura predefinita, una sfumatura di due colori a piacere, oppure un'immagine dal computer o fra gli sfondi di Windows, con le ultime sei conservate. L'immagine riempie il fotogramma e viene ritagliata invece che allungata, con oscuramento dal 20 al 95 %. Vale per l'anteprima come per il video esportato e l'immagine di copertina.
 
 ### Funzionalità del prodotto
 
@@ -315,7 +315,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Novedades de esta versión: imagen de fondo personalizada para la ventana, comprobación de actualizaciones de la Store junto a la configuración, imágenes página por página en la ayuda, nombres de instrumentos en el idioma de la interfaz y un nombre de aplicación que sigue el idioma de visualización del sistema.
+Novedades de esta versión: el fondo de la animación lo eliges tú — el degradado incorporado, un degradado de dos colores a tu gusto o una imagen de tu equipo o de los fondos de pantalla de Windows, guardando las seis últimas. La imagen rellena el fotograma y se recorta en lugar de estirarse, con atenuación del 20 al 95 %. Afecta a la vista previa, al vídeo exportado y a la imagen de portada.
 
 ### Funciones del producto
 
@@ -350,7 +350,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Novidades desta versão: imagem de fundo personalizada para a janela, verificação de atualizações da Store ao lado das configurações, imagens página por página na ajuda, nomes dos instrumentos no idioma da interface e um nome do aplicativo que segue o idioma de exibição do sistema.
+Novidades desta versão: o fundo da animação agora é você quem escolhe — o gradiente incorporado, um gradiente de duas cores à sua escolha ou uma imagem do computador ou dos papéis de parede do Windows, guardando as seis últimas. A imagem preenche o quadro e é cortada em vez de esticada, com escurecimento de 20 a 95 %. Vale para a pré-visualização, para o vídeo exportado e para a imagem de capa.
 
 ### Funcionalidades do produto
 
@@ -386,7 +386,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Co nowego w tej wersji: własny obraz tła okna, sprawdzanie aktualizacji ze Store obok ustawień, ilustracje do każdej strony pomocy, nazwy instrumentów w języku interfejsu oraz nazwa aplikacji zgodna z językiem wyświetlania systemu.
+Co nowego w tej wersji: tło animacji wybierasz sam — wbudowany gradient, własny gradient z dwóch kolorów albo obraz z komputera lub spośród tapet Windows, z pamiętaniem sześciu ostatnich. Obraz wypełnia kadr i jest przycinany zamiast rozciągany, z przyciemnieniem od 20 do 95 %. Dotyczy to podglądu, eksportowanego wideo i obrazu okładki.
 
 ### Funkcje produktu
 
@@ -422,7 +422,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Co je nového v této verzi: vlastní obrázek na pozadí okna, kontrola aktualizace ze Storu vedle nastavení, obrázky ke každé stránce nápovědy, názvy instrumentů v jazyce rozhraní a název aplikace podle jazyka zobrazení systému.
+Co je nového v této verzi: pozadí animace si určíte sami — vestavěný přechod, vlastní přechod ze dvou barev, nebo obrázek z počítače či z tapet Windows, posledních šest zůstane uloženo. Obrázek snímek vyplní a ořízne se místo roztahování, ztlumení 20–95 %. Platí pro náhled i pro exportované video a titulní obrázek.
 
 ### Funkce produktu
 
@@ -458,7 +458,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Что нового в этой версии: собственное фоновое изображение окна, проверка обновлений из Store рядом с настройками, иллюстрации к каждой странице справки, названия инструментов на языке интерфейса и название приложения на языке интерфейса системы.
+Что нового в этой версии: фон анимации теперь выбираете вы — встроенный градиент, свой градиент из двух цветов или изображение с компьютера либо из обоев Windows, последние шесть сохраняются. Изображение заполняет кадр и обрезается, а не растягивается, с затемнением от 20 до 95 %. Это касается предпросмотра, экспортируемого видео и обложки.
 
 ### Функции продукта
 
@@ -494,7 +494,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümdeki yenilikler: özelleştirilebilir pencere arka planı görseli, Ayarlar'ın yanında Store güncelleme denetimi, yardım belgesinde sayfa sayfa görseller, arayüz dilinde gösterilen enstrüman adları ve sistem görüntüleme diline uyan uygulama adı.
+Bu sürümdeki yenilikler: animasyonun arka planını artık siz seçiyorsunuz — yerleşik gradyan, kendi iki renkli gradyanınız ya da bilgisayarınızdan veya Windows duvar kağıtlarından bir görsel, son altısı saklanır. Görsel kareyi doldurur ve uzatılmak yerine kırpılır, %20–95 arasında karartılabilir. Önizlemenin yanı sıra dışa aktarılan video ve kapak görseline de yansır.
 
 ### Ürün özellikleri
 
