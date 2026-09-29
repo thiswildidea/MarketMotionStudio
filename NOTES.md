@@ -71,10 +71,19 @@ one stops already-installed copies from ever receiving an update. (The package i
 `MarketMotionStudio` is frozen too and never changes — only the display name and Store listing
 name were renamed when the app grew beyond A-shares to Hong Kong and US markets.)
 
-**The shell name is a resource reference, not a literal.** `DisplayName` in its three manifest
-places — `Properties`, `uap:VisualElements`, `uap5:StartupTask` — reads
-`ms-resource:AppDisplayName`, so the Start menu, the Apps list and Settings show the product
-name in the OS display language instead of the identity. It cannot reuse `AppTitle.Text` for
+**The shell name is a resource reference, but the package name is not.** `DisplayName` appears in
+three manifest places — `Properties`, `uap:VisualElements`, `uap5:StartupTask`.
+
+`Properties/DisplayName` is the one Partner Center checks against the reservation, and it has to
+carry the reserved name literally: `MarketMotionStudio`. It was `ms-resource:AppDisplayName`
+until the 1.0.1.0 upload came back with three errors, one per language the resource resolves to
+(*"使用了你未保留的显示名称"* — Market Motion Studio, 行情指标动画工作室, 行情指標動畫工作室).
+None of those is reserved; only `MarketMotionStudio` is.
+
+The other two stay `ms-resource:AppDisplayName`, so the Start menu, the Apps list and Settings
+show the product name in the OS display language instead of the identity. Localising
+`uap:VisualElements` is the supported way to get a translated shell name — the reservation check
+does not apply to it. It cannot reuse `AppTitle.Text` for
 this: that is a *property* identifier owned by `x:Uid`, and one resource file may not hold both
 `X` and `X.Text`. A display language the app does not ship falls back to English, which is
 `DefaultLanguage` — pinned to `en-US` in the csproj rather than left to the toolchain default.

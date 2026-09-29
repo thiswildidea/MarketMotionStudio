@@ -19,12 +19,14 @@
     Version="1.0.1.0" />
 
   <Properties>
-    <!-- A resource reference rather than a string literal, so the shell name
-         follows the OS display language. What used to sit here was
-         "MarketMotionStudio", which is the package identity: not a product name,
-         and the same in every language. A language we do not ship falls back to
-         English, which is the package's default language. -->
-    <DisplayName>ms-resource:AppDisplayName</DisplayName>
+    <!-- The literal name reserved in Partner Center, not a resource reference.
+         The Store validates *this* element against the reservation and rejected
+         "ms-resource:AppDisplayName" — it resolves the reference and finds three
+         candidates (Market Motion Studio / 行情指标动画工作室 / 行情指標動畫工作室),
+         none of which is reserved. Only the reserved name passes.
+         The name users actually see is uap:VisualElements' DisplayName, which
+         stays a resource reference: localising that one is supported. -->
+    <DisplayName>MarketMotionStudio</DisplayName>
     <PublisherDisplayName>YiwenYang</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
