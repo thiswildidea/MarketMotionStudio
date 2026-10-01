@@ -73,6 +73,15 @@ internal static class HistoryWalk
         {
             progress.Report($"{display}: {closes.Count} …");
 
+            // The walk stops when the earliest bar held is at or before the range's
+            // own start, so the cursor never precedes it — but a start landing one
+            // day before the first bar leaves a window of exactly one day, and that
+            // is a window like any other: it holds that day or it holds nothing.
+            if (cursor < start)
+            {
+                break;
+            }
+
             var bars = await kline.StockBarsAsync(code, start, cursor, cancellation, adjustment: "hfq");
 
             if (bars.Count == 0)

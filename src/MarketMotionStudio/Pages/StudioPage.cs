@@ -83,6 +83,11 @@ public abstract partial class StudioPage : Page
         }
         catch (Exception ex)
         {
+            // Kept as well as shown: a page that fails sits on its progress line until
+            // someone closes the message, and the log is the only place the reason
+            // outlives the window.
+            Diagnostics.CrashLog.Note($"[page] {JobName} failed: {ex}");
+
             job.Failed(Strings.Reason(ex));
             ShowStatus(InfoBarSeverity.Error, Strings.Format("PageWorkFailed", JobName, Strings.Reason(ex)));
         }

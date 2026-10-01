@@ -197,9 +197,17 @@ public sealed class TencentKline(HttpClient http)
             throw new ArgumentException($"Not a stock code: {code}", nameof(code));
         }
 
-        if (start >= end)
+        // A single day is a range. Refusing `start == end` looks harmless and is not:
+        // <see cref="HistoryWalk"/> walks backwards and its last window is the one
+        // between the range's own start and the earliest bar it holds, which is
+        // exactly one day wide when the range starts the day before the first bar —
+        // which is what "the last thirteen years" is on a market whose first trading
+        // day after the range's start falls one day later. Thrown there, it killed a
+        // walk that had already gathered three thousand bars, and the page sat on
+        // its progress line for ever.
+        if (start > end)
         {
-            throw new ArgumentException("The start date must fall before the end date.", nameof(start));
+            throw new ArgumentException("The start date must fall on or before the end date.", nameof(start));
         }
 
         // A US ticker typed without its exchange suffix is not quotable as it stands
@@ -273,7 +281,9 @@ public sealed class TencentKline(HttpClient http)
         string code, DateOnly start, DateOnly end, CancellationToken cancellation,
         string adjustment = "qfq")
     {
-        var (endpoint, wanted) = adjustment == "hfq" ? TotalReturn(code) : (Endpoint, adjustment);
+        var (endpoint, wanted) = adjustment == "hfq" && !Degraded.ContainsKey(code)
+            ? TotalReturn(code)
+            : (Endpoint, adjustment);
 
         try
         {
@@ -281,6 +291,12 @@ public sealed class TencentKline(HttpClient http)
         }
         catch (Exception ex) when (endpoint != Endpoint)
         {
+            // The fallback has to stick, or a walk would mix bases: the general
+            // endpoint answers these venues with unadjusted rows, so a series whose
+            // early pages came from the adjusted endpoint and whose later ones fell
+            // back would draw a cliff where the basis changed. One code, one basis.
+            Degraded[code] = 1;
+
             // Only the unadjusted rows are guaranteed to be on the general
             // endpoint, and a plan refused outright is worse than one drawn from
             // them: a code the source knows under a path it does not serve would
@@ -400,6 +416,16 @@ public sealed class TencentKline(HttpClient http)
     /// threading both out of one method would mean a tuple whose second half every caller passes on.
     /// </summary>
     private readonly Dictionary<string, string> BarMeta = [];
+
+    /// <summary>
+    /// Codes whose own adjusted endpoint has already failed here. Once a code has
+    /// fallen back to the general endpoint it stays there for the rest of the
+    /// session — see <see cref="FetchStockBarsAsync"/> for why a fallback that
+    /// lasted one page would be worse than none.
+    ///
+    /// Concurrent because the sector page asks for its entrants side by side.
+    /// </summary>
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> Degraded = [];
 
     public string LastName(string code) => BarMeta.TryGetValue(code, out var name) ? name : code.ToUpperInvariant();
 
