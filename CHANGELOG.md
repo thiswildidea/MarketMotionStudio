@@ -20,6 +20,48 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.2.0 — 2026-10-01（更新版 / update）
+
+**1.0.1.0 之后的第一版更新，下面只列本次改动。** 应用的完整能力见下面的 0.0.0.0 条目——
+那一版已发布，这里不重复。
+The first update after 1.0.1.0; only the changes are listed. See the 0.0.0.0 entry below for the
+full feature set — that version is published and is not repeated here.
+
+### 新增 / Added
+
+- **页面导航：标题栏加了后退与前进 / Back and Forward in the title bar** — 两个按钮按浏览器
+  的方式来走访问过的页面：一条后退栈、一条前进栈，打开新页面会清掉前进栈，最多记 50 条。
+  Alt+← / Alt+→ 与鼠标侧键同样有效；后退时页面从左滑入，前进时从右。导航窗格收起时它们
+  照样可用——9:16 的预览要和参数面板抢宽度，窗格折叠起来的时候，这是回到刚才那一页最快
+  的路。
+  Two buttons in the title bar walk the pages you have visited the way a browser does: a back
+  stack and a forward stack, a new visit clearing the forward stack, fifty entries at most.
+  Alt+Left, Alt+Right and the side buttons on a mouse do the same, and the transition knows the
+  direction — a step back slides the page in from the left, a step forward from the right. They
+  are there with the navigation pane collapsed too: the 9:16 preview competes with the parameter
+  panel for width, and once the pane is folded away this is the quickest way back to the page
+  you were on.
+
+### 已知限制 / Known limits（沿用 1.0.1.0，本版未变 / unchanged from 1.0.1.0）
+
+- 导出规格为 720×1280 / 1080×1920 / 1440×2560 三种尺寸 × 30 / 60 fps。1440p60 长片有过一次
+  卡在第 3,200 帧、文件被截断的情况，未复现也未定位原因。
+  Export offers three sizes × 30/60 fps; one 1440p60 run stalled at frame 3,200 and left a
+  truncated file — not reproduced, cause unknown.
+- 美股日线未做拆股调整，长区间曲线在拆股处会出现断崖。
+  US daily bars are not split-adjusted; a long range shows a cliff at a split.
+- 动画背景是全局一份，不能按页面分别设置；也没有纯单色模式与多图轮播。
+  The frame backdrop is one global setting, not per page; there is no single-colour mode and no
+  slideshow of several pictures.
+
+### 商店文案同步 / Store listing
+
+`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份已改为**只写
+本次改动**：页面导航。
+The fourteen "What's new in this version" lines now describe only this change: page navigation.
+
+---
+
 ## 1.0.1.0 — 2026-09-29（更新版 / update）
 
 **1.0.0.0 之后的第一版更新，下面只列本次改动。** 应用的完整能力见下面的 0.0.0.0 条目——

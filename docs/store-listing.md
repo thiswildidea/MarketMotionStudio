@@ -27,7 +27,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增：动画帧的背景可以自己定了——默认渐变、自选两色渐变，或一张图片（可从电脑选，也能直接用 Windows 自带壁纸，最近 6 张留档）。图片按「填满」铺开并裁掉多余部分，压暗 20–95% 可调；预览、导出的视频和封面图都会跟着变。
+本版新增：标题栏左侧多了「后退 / 前进」两个按钮，像浏览器一样在访问过的页面之间来回走。Alt+← / Alt+→ 和鼠标侧键同样有效。切换有方向——后退时新页面从左边滑进来，前进时从右边。导航窗格收起时它们照样可用，而那正是 9:16 预览最需要宽度的时候。
 
 ### 产品功能
 
@@ -63,7 +63,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增：動畫影格的背景可以自己決定了——預設漸層、自選雙色漸層，或一張圖片（可從電腦選，也能直接用 Windows 內建桌布，最近 6 張留檔）。圖片以「填滿」方式鋪開並裁掉多餘部分，壓暗 20–95% 可調；預覽、匯出的影片與封面圖都會跟著變。
+本版新增：標題列左側多了「上一頁 / 下一頁」兩個按鈕，像瀏覽器一樣在造訪過的頁面之間來回走。Alt+← / Alt+→ 和滑鼠側鍵同樣有效。切換有方向——上一頁時新頁面從左邊滑進來，下一頁時從右邊。導覽窗格收起時它們照樣可用，而那正是 9:16 預覽最需要寬度的時候。
 
 ### 產品功能
 
@@ -99,7 +99,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-New in this version: the animation's backdrop is yours to set — the built-in gradient, a two-colour gradient of your own, or a picture from your computer or from Windows' own wallpapers, the last six kept. Pictures fill the frame and are cropped rather than stretched, dimmed 20–95%, and the change reaches the preview, the exported video and the cover image alike.
+New in this version: Back and Forward buttons in the title bar, so you can move between the pages you have visited the way a browser does. Alt+Left and Alt+Right do the same, as do the side buttons on a mouse. The transition knows which way you are going — a step back slides the page in from the left, a step forward from the right. Both work with the navigation pane collapsed, which is when the 9:16 preview needs the width most.
 
 ### Product features
 
@@ -135,7 +135,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンの新機能：アニメーションの背景を自分で決められます。既定のグラデーション、2 色のグラデーション、または 1 枚の画像（パソコンから選ぶほか、Windows 標準の壁紙も使えます。最近 6 枚を保存）。画像は「満たす」ように配置され、はみ出した分は切り取られ、20〜95% の範囲で暗くできます。プレビューだけでなく、書き出す動画とカバー画像にも反映されます。
+このバージョンの新機能：タイトルバーに「戻る / 進む」ボタンが付き、ブラウザのように訪れたページを行き来できます。Alt+← / Alt+→ でもマウスのサイドボタンでも同じ操作ができます。切り替えには向きがあり、戻るときは左から、進むときは右からページがスライドしてきます。ナビゲーションウィンドウを折りたたんでいても使えます。9:16 のプレビューが幅を最も必要とする場面です。
 
 ### 製品の機能
 
@@ -171,7 +171,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전의 새 기능: 애니메이션 배경을 직접 정할 수 있습니다. 기본 그라데이션, 원하는 두 색의 그라데이션, 또는 이미지 한 장(컴퓨터에서 고르거나 Windows 기본 배경화면을 그대로 사용, 최근 6장 보관). 이미지는 채우기로 배치되고 넘치는 부분은 잘리며 20~95%로 어둡게 할 수 있습니다. 미리보기뿐 아니라 내보낸 동영상과 커버 이미지에도 적용됩니다.
+이 버전의 새 기능: 제목 표시줄에 뒤로 / 앞으로 버튼이 생겨, 브라우저처럼 방문한 페이지 사이를 오갈 수 있습니다. Alt+← / Alt+→ 로도, 마우스 측면 버튼으로도 같은 동작을 합니다. 전환에는 방향이 있어 뒤로 갈 때는 왼쪽에서, 앞으로 갈 때는 오른쪽에서 페이지가 밀려 들어옵니다. 탐색 창이 접혀 있어도 동작합니다. 9:16 미리보기가 너비를 가장 필요로 할 때입니다.
 
 ### 제품 기능
 
@@ -207,7 +207,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Neu in dieser Version: der Hintergrund der Animation lässt sich selbst bestimmen — die eingebaute Farbabstufung, eine eigene Zwei-Farben-Abstufung oder ein Bild vom Rechner oder aus Windows' eigenen Hintergrundbildern, die letzten sechs werden aufgehoben. Bilder füllen das Bildfeld und werden beschnitten statt gestreckt, auf 20–95 % abdunkelbar. Das gilt für die Vorschau ebenso wie für das exportierte Video und das Titelbild.
+Neu in dieser Version: Schaltflächen für Zurück und Vorwärts in der Titelleiste, mit denen Sie wie im Browser zwischen den besuchten Seiten wechseln. Alt+Pfeil-links und Alt+Pfeil-rechts tun dasselbe, ebenso die Seitentasten einer Maus. Der Übergang kennt die Richtung: Ein Schritt zurück lässt die Seite von links hereingleiten, ein Schritt nach vorn von rechts. Beide funktionieren auch bei eingeklapptem Navigationsbereich — genau dann, wenn die 9:16-Vorschau die Breite am meisten braucht.
 
 ### Produktfunktionen
 
@@ -243,7 +243,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Nouveautés de cette version : le fond de l'animation est désormais à vous — le dégradé intégré, un dégradé de deux couleurs de votre choix, ou une image de votre ordinateur ou parmi les fonds d'écran de Windows, les six dernières conservées. L'image remplit le cadre et est recadrée plutôt qu'étirée, assombrie de 20 à 95 %. Le changement s'applique à l'aperçu comme à la vidéo exportée et à l'image de couverture.
+Nouveautés de cette version : des boutons Précédent et Suivant dans la barre de titre, pour circuler entre les pages déjà visitées comme dans un navigateur. Alt+Flèche gauche et Alt+Flèche droite font de même, tout comme les boutons latéraux de la souris. La transition connaît le sens : un retour fait glisser la page depuis la gauche, une avancée depuis la droite. Les deux restent utilisables lorsque le volet de navigation est replié, c'est-à-dire au moment où l'aperçu 9:16 a le plus besoin de largeur.
 
 ### Fonctionnalités
 
@@ -279,7 +279,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Novità di questa versione: lo sfondo dell'animazione lo scegliete voi — la sfumatura predefinita, una sfumatura di due colori a piacere, oppure un'immagine dal computer o fra gli sfondi di Windows, con le ultime sei conservate. L'immagine riempie il fotogramma e viene ritagliata invece che allungata, con oscuramento dal 20 al 95 %. Vale per l'anteprima come per il video esportato e l'immagine di copertina.
+Novità di questa versione: i pulsanti Indietro e Avanti nella barra del titolo, per spostarsi fra le pagine visitate come in un browser. Alt+Freccia sinistra e Alt+Freccia destra fanno lo stesso, così come i pulsanti laterali del mouse. La transizione conosce la direzione: un passo indietro fa entrare la pagina da sinistra, un passo avanti da destra. Funzionano anche con il riquadro di navigazione compresso, proprio quando l'anteprima 9:16 ha più bisogno di larghezza.
 
 ### Funzionalità del prodotto
 
@@ -315,7 +315,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Novedades de esta versión: el fondo de la animación lo eliges tú — el degradado incorporado, un degradado de dos colores a tu gusto o una imagen de tu equipo o de los fondos de pantalla de Windows, guardando las seis últimas. La imagen rellena el fotograma y se recorta en lugar de estirarse, con atenuación del 20 al 95 %. Afecta a la vista previa, al vídeo exportado y a la imagen de portada.
+Novedades de esta versión: botones Atrás y Adelante en la barra de título, para moverte entre las páginas que has visitado como en un navegador. Alt+Flecha izquierda y Alt+Flecha derecha hacen lo mismo, igual que los botones laterales del ratón. La transición conoce el sentido: un paso atrás entra la página desde la izquierda, un paso adelante desde la derecha. Funcionan también con el panel de navegación plegado, justo cuando la vista previa 9:16 más necesita el ancho.
 
 ### Funciones del producto
 
@@ -350,7 +350,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Novidades desta versão: o fundo da animação agora é você quem escolhe — o gradiente incorporado, um gradiente de duas cores à sua escolha ou uma imagem do computador ou dos papéis de parede do Windows, guardando as seis últimas. A imagem preenche o quadro e é cortada em vez de esticada, com escurecimento de 20 a 95 %. Vale para a pré-visualização, para o vídeo exportado e para a imagem de capa.
+Novidades desta versão: botões Voltar e Avançar na barra de título, para navegar entre as páginas visitadas como num navegador. Alt+Seta para a esquerda e Alt+Seta para a direita fazem o mesmo, assim como os botões laterais do mouse. A transição conhece o sentido: um passo atrás entra pela esquerda, um passo à frente pela direita. Funcionam também com o painel de navegação recolhido, que é quando a prévia 9:16 mais precisa de largura.
 
 ### Funcionalidades do produto
 
@@ -386,7 +386,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Co nowego w tej wersji: tło animacji wybierasz sam — wbudowany gradient, własny gradient z dwóch kolorów albo obraz z komputera lub spośród tapet Windows, z pamiętaniem sześciu ostatnich. Obraz wypełnia kadr i jest przycinany zamiast rozciągany, z przyciemnieniem od 20 do 95 %. Dotyczy to podglądu, eksportowanego wideo i obrazu okładki.
+Co nowego w tej wersji: przyciski Wstecz i Dalej w pasku tytułu, dzięki którym przechodzisz między odwiedzonymi stronami jak w przeglądarce. To samo robią Alt+Strzałka w lewo i Alt+Strzałka w prawo oraz boczne przyciski myszy. Przejście zna kierunek: krok wstecz wsuwa stronę z lewej, krok w przód z prawej. Działają także przy zwiniętym panelu nawigacji, czyli wtedy, gdy podgląd 9:16 najbardziej potrzebuje szerokości.
 
 ### Funkcje produktu
 
@@ -422,7 +422,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Co je nového v této verzi: pozadí animace si určíte sami — vestavěný přechod, vlastní přechod ze dvou barev, nebo obrázek z počítače či z tapet Windows, posledních šest zůstane uloženo. Obrázek snímek vyplní a ořízne se místo roztahování, ztlumení 20–95 %. Platí pro náhled i pro exportované video a titulní obrázek.
+Co je nového v této verzi: tlačítka Zpět a Vpřed v záhlaví, která vám umožní pohybovat se mezi navštívenými stránkami jako v prohlížeči. Totéž udělá Alt+Šipka vlevo a Alt+Šipka vpravo i boční tlačítka myši. Přechod zná směr: krok zpět přisune stránku zleva, krok vpřed zprava. Fungují i se sbaleným navigačním panelem, tedy právě tehdy, kdy náhled 9:16 potřebuje šířku nejvíce.
 
 ### Funkce produktu
 
@@ -458,7 +458,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Что нового в этой версии: фон анимации теперь выбираете вы — встроенный градиент, свой градиент из двух цветов или изображение с компьютера либо из обоев Windows, последние шесть сохраняются. Изображение заполняет кадр и обрезается, а не растягивается, с затемнением от 20 до 95 %. Это касается предпросмотра, экспортируемого видео и обложки.
+Что нового в этой версии: кнопки «Назад» и «Вперёд» в заголовке окна — можно ходить по посещённым страницам как в браузере. То же делают Alt+Стрелка влево и Alt+Стрелка вправо, а также боковые кнопки мыши. Переход знает направление: шаг назад вводит страницу слева, шаг вперёд — справа. Обе работают и со свёрнутой панелью навигации — именно тогда, когда предпросмотру 9:16 больше всего нужна ширина.
 
 ### Функции продукта
 
@@ -494,7 +494,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümdeki yenilikler: animasyonun arka planını artık siz seçiyorsunuz — yerleşik gradyan, kendi iki renkli gradyanınız ya da bilgisayarınızdan veya Windows duvar kağıtlarından bir görsel, son altısı saklanır. Görsel kareyi doldurur ve uzatılmak yerine kırpılır, %20–95 arasında karartılabilir. Önizlemenin yanı sıra dışa aktarılan video ve kapak görseline de yansır.
+Bu sürümdeki yenilikler: başlık çubuğunda Geri ve İleri düğmeleri — ziyaret ettiğiniz sayfalar arasında tarayıcıdaki gibi gezinebilirsiniz. Aynı işi Alt+Sol ok ve Alt+Sağ ok ile farenin yan düğmeleri de yapar. Geçiş yönü biliyor: geri adımda sayfa soldan, ileri adımda sağdan kayarak gelir. Gezinme bölmesi katlanmışken de çalışırlar; 9:16 önizlemenin genişliğe en çok ihtiyaç duyduğu an da budur.
 
 ### Ürün özellikleri
 
