@@ -159,60 +159,120 @@ def popup_items(win):
     return found
 
 
-def combo_items(win, combo, name=None, seconds=5):
-    """Opens a combo and waits for its rows to exist.
+def combo_items(win, combo, name=None, seconds=5, baseline=None):
+    """Opens a combo and returns the rows that appeared.
 
     Waited for, because `Expand` returns before the pop-up's rows do — and an answer
-    of "none" is then indistinguishable from a combo with nothing in it. A page that
+    of "none" is then indistinguishable from a comma with nothing in it. A page that
     was working was reported as missing the very entry being looked for.
 
     `name` narrows it to one entry.
+
+    `baseline`, when given, is the set of names the process was already showing with
+    the box shut. It is what the wait is measured against, and that matters: the walk
+    returns the navigation pane's rows whether or not the menu opened, so "any rows at
+    all" is true the instant it starts. An expand that did nothing (see the retry note
+    on `combo_pick`) then answered with eleven navigation items, and a caller comparing
+    the menu's contents against a written-out list reported a working menu as having
+    no 区间 entry and all eleven nav entries instead. Retried, for the same reason.
     """
-    combo.GetExpandCollapsePattern().Expand()
+    baseline = baseline or set()
 
-    deadline = time.time() + seconds
+    for attempt in range(3):
+        try:
+            combo.GetExpandCollapsePattern().Expand()
+        except Exception:  # noqa: BLE001 - the box can go stale between pages
+            time.sleep(1.0)
+            continue
 
-    while True:
-        items = popup_items(win)
+        deadline = time.time() + seconds
 
-        if name is not None:
-            items = [i for i in items if i.Name == name]
+        while True:
+            items = popup_items(win)
 
-        if items or time.time() >= deadline:
-            return items
+            if name is not None:
+                items = [i for i in items if i.Name == name]
 
-        time.sleep(0.4)
+            if any(i.Name not in baseline for i in items) or time.time() >= deadline:
+                return items
+
+            time.sleep(0.4)
+
+    return []
 
 
 def combo_pick(win, combo, name):
-    """Opens a combo and selects the entry called `name`. Returns its name, or None."""
-    items = combo_items(win, combo, name=name)
+    """Opens a combo and selects the entry called `name`. Returns its name, or None.
 
-    if not items:
+    Retried, because an expand issued while the previous collapse is still animating
+    does nothing at all — the menu then looks empty, and the caller reads that as "this
+    option does not exist" rather than as "the box was not open yet". Picking a second
+    entry straight after listing the first is exactly that sequence: `combo_labels`
+    ends by collapsing, and the expand that follows arrives too early. It cost a
+    verification run that reported a working menu as a missing option.
+    """
+    for attempt in range(3):
+        items = combo_items(win, combo, name=name)
+
+        if items:
+            try:
+                items[0].GetSelectionItemPattern().Select()
+            except Exception:  # noqa: BLE001 - the row can go stale mid-select
+                time.sleep(1.2)
+                continue
+
+            time.sleep(1.2)
+
+            return items[0].Name
+
         try:
             combo.GetExpandCollapsePattern().Collapse()
         except Exception:  # noqa: BLE001 - the popup may already be gone
             pass
 
-        return None
+        if attempt == 2:
+            return None
 
-    items[0].GetSelectionItemPattern().Select()
-    time.sleep(1.2)
-
-    return items[0].Name
+        time.sleep(1.2)
 
 
 def combo_labels(win, combo):
-    """What a combo offers, without the navigation pane that the walk also sees."""
-    before = {i.Name for i in popup_items(win)}
-    items = combo_items(win, combo)
+    """What a combo offers, without the navigation pane that the walk also sees.
 
-    labels = [i.Name for i in items if i.Name not in before]
+    Deduplicated by name, in order. An open combo exposes the same rows twice — once
+    inside the box's own tree and once in the popup — so a five-entry menu walks back
+    as ten and an assertion like "three spans" fails on a combo that is perfectly
+    correct. The list of *what it offers* is the same either way; this is the shape a
+    caller can compare against.
 
-    combo.GetExpandCollapsePattern().Collapse()
-    time.sleep(0.8)
+    Empty means the menu never opened, and that is the honest answer: the walk sees the
+    navigation pane's rows either way, so an "everything it found" fallback would hand
+    the caller the navigation pane and it would report the option missing. There is no
+    fallback here for that reason.
+    """
+    for attempt in range(3):
+        before = {i.Name for i in popup_items(win)}
+        items = combo_items(win, combo, baseline=before)
 
-    return labels if labels else [i.Name for i in items]
+        labels = []
+        seen = set()
+
+        for item in items:
+            if item.Name and item.Name not in before and item.Name not in seen:
+                seen.add(item.Name)
+                labels.append(item.Name)
+
+        try:
+            combo.GetExpandCollapsePattern().Collapse()
+        except Exception:  # noqa: BLE001 - the popup may already be gone
+            pass
+
+        time.sleep(0.8)
+
+        if labels:
+            return labels
+
+    return []
 
 
 def value(combo):

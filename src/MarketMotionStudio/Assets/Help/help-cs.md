@@ -60,6 +60,32 @@ Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhán
 - Období může být 1, 3, 6 nebo 12 měsíců, nebo vlastní počáteční a koncové datum.
 - Seznam má minimální a maximální počet položek — málo pruhů není závod, příliš mnoho se slije.
 
+
+
+
+## Závod tržních kapitalizací
+
+Patnáct největších společností daného trhu jako vodorovné pruhy seřazené podle tržní
+kapitalizace; pořadí se mění až do posledního snímku. Vzorkování po měsících.
+
+- **Žebříček se v každém období počítá znovu.** Načtení se nejprve zeptá zdroje na dnešní žebříček
+  podle kapitalizace, vezme prvních dvě stě jako sestavu a přidá velké tituly, které v žebříčku
+  bývaly a vypadly z něj; každé období pak ukáže patnáct největších z této sestavy. Členové tedy
+  skutečně přibývají a ubývají — v roce 2016 to byla ropa a banky, v roce 2026 přibyly 茅台,
+  宁德时代 a 工业富联. Sestava zapsaná v programu minula společnost, která vstoupila na burzu a
+  rovnou se dostala na špičku; sestava se teď ptá, místo aby si pamatovala.
+- **Dřívější kapitalizace se počítá**: dnešní kapitalizace krát upravený poměr cen za období.
+  Emise a štěpení se v upravené řadě vyruší; dividendy ne — reinvestují se, takže dřívější hodnota
+  štědrého plátce vychází nízko. Přímo ze zdroje je jen číslo posledního snímku.
+- **Společnost, která ještě nebyla na burze, roste od nuly**: tituly uvedené v roce 2018 stoupají
+  ze základní linie v den vstupu, místo aby držely místo předem.
+- **Interval je měsíc, ne den** — sto dvacet období za deset let, dvanáct za rok, a záhlaví snímku
+  počítá měsíce. Žebříček podle kapitalizace je pomalá veličina a měsíční vzorek získá celou
+  historii jedním dotazem.
+- **Každý trh má svých patnáct.** Ty tři se nikdy nemíchají: jejich peníze nejsou tytéž peníze.
+  Hongkong a New York mají pevnou sestavu, protože jim žádný žebříček dostupný této aplikaci
+  neposlouží.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

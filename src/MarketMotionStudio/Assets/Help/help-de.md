@@ -60,6 +60,34 @@ Eine Gruppe von Sektoren oder Aktien als waagerechte Balken, die einander überh
 - Der Zeitraum kann 1, 3, 6 oder 12 Monate betragen oder frei mit Start- und Enddatum gewählt werden.
 - Eine Liste hat eine Mindest- und Höchstzahl an Einträgen — zu wenige Balken sind kein Rennen, zu viele ein Wirrwarr.
 
+
+
+
+## Marktkapitalisierungs-Rennen
+
+Die fünfzehn größten Unternehmen eines Marktes als waagerechte Balken nach Marktkapitalisierung —
+die Reihenfolge ändert sich bis zum letzten Bild. Monatlich abgetastet.
+
+- **Die Rangfolge wird jede Periode neu berechnet.** Beim Abruf wird zuerst die aktuelle Rangliste
+  nach Marktkapitalisierung erfragt, die besten zweihundert dienen als Feld, dazu kommen die
+  Schwergewichte, die früher oben standen und herausgefallen sind; jede Periode zeigt daraus die
+  fünfzehn größten. Mitglieder kommen und gehen also wirklich — 2016 waren es Öl und Banken, 2026
+  sind 茅台, 宁德时代 und 工业富联 dazugekommen. Ein fest ins Programm geschriebenes Feld hat ein
+  Unternehmen verpasst, das neu an die Börse ging und sofort an die Spitze sprang; das Feld wird
+  jetzt erfragt statt erinnert.
+- **Ein früherer Marktwert ist abgeleitet**: heutige Marktkapitalisierung mal das bereinigte
+  Kursverhältnis über den Zeitraum. Kapitalerhöhungen und Splits heben sich in der bereinigten
+  Reihe auf; Dividenden nicht — sie werden reinvestiert, weshalb der frühere Wert eines starken
+  Ausschütters zu niedrig ausfällt. Nur die Zahl des letzten Bildes stammt direkt von der Quelle.
+- **Ein Unternehmen, das noch nicht notiert war, wächst aus dem Nichts**: 2018 notierte Werte
+  steigen an ihrem ersten Tag aus der Grundlinie, statt vorher einen Platz zu halten.
+- **Das Intervall ist ein Monat, kein Tag** — hundertzwanzig Perioden in zehn Jahren, zwölf in
+  einem, und der Kopf des Bildes zählt Monate. Eine Rangfolge nach Marktkapitalisierung ist eine
+  langsame Größe, und eine monatliche Abtastung bekommt mit einer Anfrage die ganze Historie.
+- **Jeder Markt hat seine eigenen fünfzehn.** Die drei werden nie gemischt: ihr Geld ist nicht
+  dasselbe Geld. Hongkong und New York behalten ein festes Feld, weil keine für diese App
+  erreichbare Rangliste sie bedient.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

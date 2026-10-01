@@ -55,14 +55,29 @@ def main():
         except Exception:  # noqa: BLE001
             pass
 
-    item = winui.find(window, lambda c: c.ControlTypeName == "ListItemControl" and c.Name == page)
+    # Selected, then confirmed to have stayed. The app is still settling when the window
+    # first answers — it comes up on the page it was last left on, and that restore lands
+    # after this selection often enough to matter: the run then fetched and photographed
+    # the *previous* page while reporting success. Selecting the same item again after the
+    # restore is harmless, and `IsSelected` is what tells the two apart.
+    for attempt in range(4):
+        item = winui.find(window, lambda c: c.ControlTypeName == "ListItemControl" and c.Name == page)
 
-    if item is None:
-        print(f"no {page} nav item — the window is not where the page list is")
+        if item is None:
+            print(f"no {page} nav item — the window is not where the page list is")
+            return 1
+
+        item.GetSelectionItemPattern().Select()
+        time.sleep(3.0)
+
+        try:
+            if item.GetSelectionItemPattern().IsSelected:
+                break
+        except Exception:  # noqa: BLE001 - a re-laid-out item goes stale; try again
+            pass
+    else:
+        print(f"{page}: the nav item would not stay selected")
         return 1
-
-    item.GetSelectionItemPattern().Select()
-    time.sleep(2.5)
 
     fetch = winui.find(window, lambda c: c.AutomationId == "FetchButton")
 

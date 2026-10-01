@@ -60,6 +60,33 @@ Un insieme di settori o azioni disegnati come barre orizzontali che si sorpassan
 - Il periodo può essere di 1, 3, 6 o 12 mesi, oppure date di inizio e fine personalizzate.
 - Un elenco ha un numero minimo e massimo di voci — poche barre non fanno una gara, troppe si accalcano.
 
+
+
+
+## Corsa delle capitalizzazioni
+
+Le quindici maggiori società di un mercato come barre orizzontali ordinate per
+capitalizzazione; l'ordine cambia fino all'ultimo fotogramma. Campionamento mensile.
+
+- **La classifica si rifà a ogni periodo.** Il recupero chiede prima alla fonte la classifica
+  odierna per capitalizzazione, ne prende le prime duecento come campo e vi aggiunge i titoli
+  pesanti che erano in classifica e ne sono usciti; ogni periodo mostra poi i quindici maggiori di
+  quel campo. I membri quindi entrano ed escono davvero — il 2016 era petrolio e banche, il 2026 ha
+  aggiunto 茅台, 宁德时代 e 工业富联. Un campo scritto nel programma aveva mancato una società
+  quotatasi e subito balzata in testa; ora il campo si chiede invece di ricordarlo.
+- **Una capitalizzazione passata è derivata**: la capitalizzazione di oggi per il rapporto di
+  prezzo rettificato del periodo. Aumenti di capitale e frazionamenti si annullano nella serie
+  rettificata; i dividendi no — vengono reinvestiti, quindi il valore passato di un forte
+  distributore risulta basso. Solo la cifra dell'ultimo fotogramma viene dalla fonte.
+- **Una società non ancora quotata cresce dal nulla**: i titoli quotati nel 2018 salgono dalla
+  linea di base il giorno dell'ingresso, senza occupare un posto in anticipo.
+- **L'intervallo è il mese, non il giorno** — centoventi periodi in dieci anni, dodici in uno, e
+  l'intestazione del fotogramma conta i mesi. Una classifica per capitalizzazione è una grandezza
+  lenta, e un campione mensile ottiene tutta la storia in una richiesta.
+- **Ogni mercato ha i suoi quindici.** I tre non si mescolano mai: la loro moneta non è la stessa.
+  Hong Kong e New York tengono un campo fisso, perché nessuna classifica raggiungibile da questa
+  applicazione li serve.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

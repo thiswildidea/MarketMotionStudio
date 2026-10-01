@@ -60,6 +60,33 @@ Um conjunto de setores ou ações desenhado como barras horizontais que se ultra
 - O intervalo pode ser de 1, 3, 6 ou 12 meses, ou datas de início e fim personalizadas.
 - Uma lista tem um mínimo e um máximo de itens — poucas barras não é uma corrida, muitas se amontoam.
 
+
+
+
+## Corrida de valor de mercado
+
+As quinze maiores companhias de um mercado como barras horizontais ordenadas por valor de
+mercado, com a ordem mudando até o último quadro. Amostragem mensal.
+
+- **A classificação é refeita a cada período.** A busca pergunta primeiro à fonte a classificação
+  atual por valor de mercado, toma as duzentas primeiras como grupo e acrescenta os pesos-pesados
+  que estavam nela e saíram; cada período mostra então as quinze maiores desse grupo. Os membros
+  entram e saem de verdade — 2016 era petróleo e bancos, 2026 somou 茅台, 宁德时代 e 工业富联. Um
+  grupo escrito no programa deixou passar uma companhia que abriu capital e foi direto ao topo;
+  agora o grupo é perguntado em vez de lembrado.
+- **Um valor de mercado passado é calculado**: o valor de hoje vezes a razão de preços ajustada do
+  período. Bonificações e desdobramentos se cancelam na série ajustada; os dividendos não — são
+  reinvestidos, então o valor passado de quem paga muito sai baixo. Só o número do último quadro
+  vem direto da fonte.
+- **Uma companhia que ainda não tinha aberto capital cresce do zero**: os papéis que estrearam em
+  2018 sobem da linha de base no dia em que entraram, sem ocupar lugar antes.
+- **O intervalo é o mês, não o dia**: cento e vinte períodos em dez anos, doze em um, e o cabeçalho
+  do quadro conta meses. Uma classificação por valor de mercado é uma grandeza lenta, e uma amostra
+  mensal obtém todo o histórico em uma requisição.
+- **Cada mercado tem os seus quinze.** Os três nunca se misturam: o dinheiro deles não é o mesmo.
+  Hong Kong e Nova York mantêm um grupo fixo, porque nenhuma classificação acessível a este
+  aplicativo os atende.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

@@ -60,6 +60,33 @@ Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini ge
 - Dönem 1, 3, 6 veya 12 ay ya da özel başlangıç ve bitiş tarihi olabilir.
 - Bir listenin en az ve en fazla sayıda kalemi vardır — çok az çubuk yarış olmaz, çok fazlası yığılır.
 
+
+
+
+## Piyasa değeri yarışı
+
+Bir piyasanın en büyük on beş şirketi, piyasa değerine göre sıralanmış yatay çubuklar olarak;
+sıralama son kareye kadar değişir. Örnekleme aylıktır.
+
+- **Sıralama her dönemde yeniden hesaplanır.** Veri çekilirken önce kaynaktan güncel piyasa değeri
+  sıralaması istenir, ilk iki yüz aday olarak alınır ve bir zamanlar listede olup düşen ağır
+  hisseler eklenir; her dönem bu kadro içinden en büyük on beşi gösterir. Üyeler gerçekten girer ve
+  çıkar — 2016'da petrol ve bankalardı, 2026'da 茅台, 宁德时代 ve 工业富联 eklendi. Programa
+  yazılmış bir kadro, halka açılıp hemen zirveye oturan bir şirketi kaçırdı; artık kadro
+  hatırlanmıyor, soruluyor.
+- **Geçmiş piyasa değeri hesaplanır**: bugünkü piyasa değeri çarpı dönemin düzeltilmiş fiyat oranı.
+  Bedelsiz sermaye artırımları ve bölünmeler düzeltilmiş seride birbirini götürür; temettüler
+  götürmez — yeniden yatırılır, bu yüzden çok temettü veren bir şirketin geçmiş değeri düşük çıkar.
+  Doğrudan kaynaktan gelen tek sayı son kareninkidir.
+- **Henüz halka açılmamış şirket sıfırdan büyür**: 2018'de işlem görmeye başlayan hisseler, önceden
+  yer tutmak yerine girdikleri gün taban çizgisinden yükselir.
+- **Aralık gün değil ay**: on yılda yüz yirmi dönem, bir yılda on iki ve karenin başlığı ay sayısını
+  yazar. Piyasa değeri sıralaması yavaş bir değişkendir ve aylık örnekleme tüm geçmişi tek istekte
+  alır.
+- **Her piyasanın kendi on beşi var.** Üçü asla karıştırılmaz: paraları aynı para değildir.
+  Hong Kong ve New York sabit kadro kullanır, çünkü bu uygulamanın erişebildiği bir sıralama
+  onlara hizmet etmiyor.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

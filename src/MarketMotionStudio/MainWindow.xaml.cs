@@ -679,6 +679,7 @@ public sealed partial class MainWindow : Window
             "MarketTurnover" => typeof(MarketTurnoverPage),
             "StockVolume" => typeof(StockVolumePage),
             "SectorRace" => typeof(SectorRacePage),
+            "MarketCap" => typeof(MarketCapPage),
             "Matrix" => typeof(MonthlyMatrixPage),
             "GainCalendar" => typeof(GainCalendarPage),
             "DcaPlan" => typeof(DcaPlanPage),

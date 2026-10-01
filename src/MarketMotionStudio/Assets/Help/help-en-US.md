@@ -60,6 +60,34 @@ A set of sectors or stocks, drawn as horizontal bars that overtake one another, 
 - The interval can be 1, 3, 6 or 12 months, or a custom start and end date.
 - A roster has a minimum and a maximum size — too few bars is no race, too many crowd into a blur.
 
+
+
+
+## Market Cap Race
+
+One market's fifteen largest companies as horizontal bars ranked by total market value, the
+order changing to the last frame. Sampled monthly.
+
+- **The board is re-ranked every period.** A fetch first asks the source for the current ranking
+  by market value, takes the top two hundred as its field, and adds the large caps that used to be
+  on the board and have dropped out of that ranking; each period then shows the fifteen largest in
+  that field. So members really do come and go — 2016 was oil and banks, 2026 has added 茅台,
+  宁德时代 and 工业富联. A field written into the program missed a company that listed and went
+  straight to the top, so the field is asked for rather than remembered.
+- **A past market value is derived**: today's total market value times the adjusted price ratio
+  over the range. A bonus issue or a split cancels in the adjusted series, so a ten-for-ten does
+  not read as the company halving; a dividend does not cancel — it is reinvested, so a heavy
+  payer's past value reads low and it looks like it grew faster than it did. Only the last frame's
+  figure comes straight from the source.
+- **A company that had not listed yet grows out of nothing**: 宁德时代 and 工业富联 listed in 2018,
+  and they rise from the baseline on the day they joined rather than holding a place in advance.
+- **The interval is a month, not a day** — a hundred and twenty periods over ten years, twelve over
+  one, and the frame's own header counts months. A market-cap ranking is a slow variable, and a
+  monthly sample gets a whole history in one request.
+- **Each market has its own fifteen.** The three are never mixed: their money is not one money,
+  and a board of mixed currencies means nothing. Hong Kong and New York keep a fixed field, because
+  no ranking this app can reach serves them.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

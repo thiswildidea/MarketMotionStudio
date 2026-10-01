@@ -60,6 +60,34 @@ Un ensemble de secteurs ou d'actions, dessiné en barres horizontales qui se dé
 - La période peut être de 1, 3, 6 ou 12 mois, ou des dates de début et de fin personnalisées.
 - Une liste a un nombre minimum et maximum d'entrées — trop peu, ce n'est pas une course ; trop, c'est un fouillis.
 
+
+
+
+## Course des capitalisations
+
+Les quinze plus grandes sociétés d'un marché en barres horizontales classées par capitalisation,
+l'ordre changeant jusqu'à la dernière image. Échantillonnage mensuel.
+
+- **Le classement est refait à chaque période.** La récupération demande d'abord à la source le
+  classement du jour par capitalisation, en retient les deux cents premières comme plateau, et y
+  ajoute les valeurs lourdes qui y figuraient et en sont sorties ; chaque période affiche ensuite
+  les quinze plus grandes de ce plateau. Les membres entrent et sortent donc réellement — 2016,
+  c'était le pétrole et les banques ; 2026 y a ajouté 茅台, 宁德时代 et 工业富联. Un plateau écrit
+  dans le programme avait manqué une société entrée en bourse et aussitôt propulsée en tête ; le
+  plateau est désormais demandé, non mémorisé.
+- **Une capitalisation passée est calculée** : la capitalisation du jour multipliée par le rapport
+  de prix ajusté de la période. Une augmentation de capital ou un fractionnement s'annule dans la
+  série ajustée ; un dividende non — il est réinvesti, donc la valeur passée d'un gros
+  distributeur ressort basse. Seul le chiffre de la dernière image vient directement de la source.
+- **Une société pas encore cotée grandit à partir de rien** : les valeurs cotées en 2018 montent
+  depuis la ligne de base le jour de leur entrée, sans occuper de place à l'avance.
+- **L'intervalle est le mois, pas le jour** — cent vingt périodes sur dix ans, douze sur un an, et
+  l'en-tête de l'image compte des mois. Un classement par capitalisation est une grandeur lente, et
+  un échantillon mensuel obtient tout l'historique en une requête.
+- **Chaque marché a ses propres quinze.** Les trois ne sont jamais mélangés : leur monnaie n'est
+  pas la même. Hong Kong et New York gardent un plateau fixe, faute de classement accessible à
+  cette application.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

@@ -60,6 +60,33 @@ Zbiór sektorów lub akcji jako poziome paski, które wyprzedzają się nawzajem
 - Zakres to 1, 3, 6 lub 12 miesięcy albo dowolna data początkowa i końcowa.
 - Lista ma minimalną i maksymalną liczbę pozycji — za mało pasków to nie wyścig, za dużo się zleje.
 
+
+
+
+## Wyścig kapitalizacji
+
+Piętnaście największych spółek danego rynku jako poziome słupki uszeregowane według
+kapitalizacji; kolejność zmienia się do ostatniej klatki. Próbkowanie miesięczne.
+
+- **Ranking jest liczony od nowa w każdym okresie.** Pobranie najpierw pyta źródło o bieżący
+  ranking według kapitalizacji, bierze pierwsze dwieście jako grono i dodaje duże spółki, które
+  kiedyś były w rankingu, a z niego wypadły; każdy okres pokazuje potem piętnaście największych z
+  tego grona. Skład naprawdę się zmienia — w 2016 roku to była ropa i banki, w 2026 doszły 茅台,
+  宁德时代 i 工业富联. Grono zapisane w programie pominęło spółkę, która zadebiutowała i od razu
+  wskoczyła na szczyt; teraz grono jest pytane, a nie pamiętane.
+- **Dawna kapitalizacja jest wyliczana**: dzisiejsza kapitalizacja razy skorygowany stosunek cen
+  z okresu. Emisje i splity znoszą się w skorygowanej serii; dywidendy nie — są reinwestowane,
+  więc dawna wartość hojnego płatnika wypada nisko. Tylko liczba z ostatniej klatki pochodzi
+  wprost ze źródła.
+- **Spółka jeszcze nienotowana rośnie od zera**: debiuty z 2018 roku wyrastają z linii bazowej
+  w dniu wejścia, zamiast zajmować miejsce zawczasu.
+- **Odstęp to miesiąc, nie dzień** — sto dwadzieścia okresów na dziesięć lat, dwanaście na rok,
+  a nagłówek klatki liczy miesiące. Ranking kapitalizacji zmienia się powoli, a próbka miesięczna
+  dostaje całą historię w jednym zapytaniu.
+- **Każdy rynek ma swoje piętnaście.** Trzech nigdy się nie miesza: ich pieniądz to nie ten sam
+  pieniądz. Hongkong i Nowy Jork mają stałe grono, bo żaden dostępny tej aplikacji ranking ich nie
+  obsługuje.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

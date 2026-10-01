@@ -60,6 +60,33 @@ Un conjunto de sectores o acciones dibujado como barras horizontales que se adel
 - El periodo puede ser de 1, 3, 6 o 12 meses, o fechas de inicio y fin personalizadas.
 - Una lista tiene un mínimo y un máximo de elementos — pocas barras no es una carrera, demasiadas se amontonan.
 
+
+
+
+## Carrera de capitalización
+
+Las quince mayores compañías de un mercado como barras horizontales ordenadas por
+capitalización, con el orden cambiando hasta el último fotograma. Muestreo mensual.
+
+- **La clasificación se rehace en cada periodo.** La descarga pregunta primero a la fuente la
+  clasificación actual por capitalización, toma las doscientas primeras como grupo y añade los
+  valores pesados que estaban en ella y han salido; cada periodo muestra después los quince mayores
+  de ese grupo. Así los miembros entran y salen de verdad — 2016 era petróleo y bancos, 2026 ha
+  sumado 茅台, 宁德时代 e 工业富联. Un grupo escrito en el programa se dejó una compañía que salió
+  a bolsa y se puso primera de inmediato; ahora el grupo se pregunta en vez de recordarse.
+- **Una capitalización pasada se calcula**: la capitalización de hoy por el cociente de precios
+  ajustado del periodo. Las ampliaciones y los desdoblamientos se anulan en la serie ajustada; los
+  dividendos no — se reinvierten, así que el valor pasado de un pagador fuerte queda bajo. Solo la
+  cifra del último fotograma viene directamente de la fuente.
+- **Una compañía que aún no cotizaba crece desde cero**: los valores que salieron a bolsa en 2018
+  suben desde la línea base el día de su entrada, sin ocupar un sitio de antemano.
+- **El intervalo es el mes, no el día**: ciento veinte periodos en diez años, doce en uno, y el
+  encabezado del fotograma cuenta meses. Una clasificación por capitalización es una magnitud
+  lenta, y una muestra mensual obtiene toda la historia en una petición.
+- **Cada mercado tiene sus propios quince.** Los tres nunca se mezclan: su dinero no es el mismo.
+  Hong Kong y Nueva York mantienen un grupo fijo, porque ninguna clasificación accesible a esta
+  aplicación les sirve.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

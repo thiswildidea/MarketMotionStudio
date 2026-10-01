@@ -169,41 +169,141 @@ public sealed class StockDirectory(HttpClient http)
     }
 
     /// <summary>
-    /// The one number the minute-data endpoint does not carry: free-float market value, from which
-    /// the share count — and so a turnover rate — is derived.
+    /// The numbers the minute-data endpoint does not carry: free-float market value, from which
+    /// the share count — and so a turnover rate — is derived, and the total market value, which is
+    /// where a market-cap race gets its scale.
     /// </summary>
     public async Task<StockSnapshot> SnapshotAsync(string code, CancellationToken cancellation)
     {
-        using var response = await http.GetAsync(SnapshotEndpoint + code, cancellation);
-        response.EnsureSuccessStatusCode();
+        var found = await SnapshotsAsync([code], cancellation);
 
-        var raw = await DecodeGbk(response, cancellation);
-
-        var open = raw.IndexOf('"');
-        var close = raw.LastIndexOf('"');
-
-        if (open < 0 || close <= open)
+        if (!found.TryGetValue(code, out var snapshot))
         {
             throw new InvalidOperationException($"{code}: the snapshot carried no data.");
         }
 
-        var fields = raw[(open + 1)..close].Split('~');
+        return snapshot;
+    }
 
-        if (fields.Length < 46)
+    /// <summary>
+    /// Several instruments' snapshots in one request, keyed by the code that was asked for.
+    ///
+    /// The endpoint takes a comma-separated list — a hundred codes went through in one call when
+    /// this was measured — so a race's whole field costs one round trip instead of fifteen, which
+    /// is the difference between a page that feels instant and one that counts up.
+    ///
+    /// A code the endpoint does not serve is simply absent from the answer rather than an error:
+    /// a roster is assembled by hand, and one wrong code in it must not take the fetch down with
+    /// it. The caller decides whether a missing entry matters.
+    /// </summary>
+    public async Task<IReadOnlyDictionary<string, StockSnapshot>> SnapshotsAsync(
+        IReadOnlyList<string> codes, CancellationToken cancellation)
+    {
+        var found = new Dictionary<string, StockSnapshot>(StringComparer.OrdinalIgnoreCase);
+
+        // Batched rather than one long URL: a roster is fifteen codes today, but the endpoint's
+        // own limit is not documented and a URL that is too long fails as a whole.
+        const int PerRequest = 60;
+
+        for (var at = 0; at < codes.Count; at += PerRequest)
         {
-            throw new InvalidOperationException($"{code}: the snapshot was too short to read.");
+            var batch = codes.Skip(at).Take(PerRequest).ToArray();
+
+            // The chart code and the snapshot code are not the same string: the chart endpoint
+            // wants `usAAPL.OQ` and this one answers only to `usAAPL`. See SnapshotCode.
+            var asked = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var code in batch)
+            {
+                asked[SnapshotCode(code)] = code;
+            }
+
+            using var response = await http.GetAsync(
+                SnapshotEndpoint + string.Join(",", asked.Keys), cancellation);
+            response.EnsureSuccessStatusCode();
+
+            var raw = await DecodeGbk(response, cancellation);
+
+            foreach (var chunk in raw.Split(';', StringSplitOptions.RemoveEmptyEntries))
+            {
+                var text = chunk.Trim();
+
+                if (!text.StartsWith("v_", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                var equals = text.IndexOf('=');
+
+                if (equals < 0)
+                {
+                    continue;
+                }
+
+                if (!asked.TryGetValue(text[2..equals], out var code))
+                {
+                    continue;
+                }
+
+                var body = text[(equals + 1)..].Trim('"');
+
+                if (Parse(body) is { } snapshot)
+                {
+                    found[code] = snapshot;
+                }
+            }
         }
 
-        var iso = CultureInfo.InvariantCulture;
+        return found;
+    }
 
-        double Parse(string s) =>
+    /// <summary>
+    /// The code this endpoint answers to, given the one the chart endpoint wants.
+    ///
+    /// The two disagree in opposite directions and neither says so. The chart endpoint takes the
+    /// venue suffix and rejects a bare `usAAPL`; this one rejects the suffix and answers only
+    /// `usAAPL` — and, worse, it does not reject a suffixed code either, it silently returns
+    /// nothing for it. A race built on the chart codes would come back with a full set of prices
+    /// and no market values at all, which reads as "this endpoint has no data" rather than as
+    /// "you asked it wrong". `usBRK.B.N` keeps its own dot and loses only the venue.
+    /// </summary>
+    public static string SnapshotCode(string code)
+    {
+        if (!code.StartsWith("us", StringComparison.OrdinalIgnoreCase))
+        {
+            return code;
+        }
+
+        foreach (var venue in (string[])[".OQ", ".N", ".AM"])
+        {
+            if (code.EndsWith(venue, StringComparison.OrdinalIgnoreCase))
+            {
+                return code[..^venue.Length];
+            }
+        }
+
+        return code;
+    }
+
+    private static StockSnapshot? Parse(string body)
+    {
+        var fields = body.Split('~');
+
+        // Forty-six is the total market value's own index, and the minimum this reader needs.
+        if (fields.Length < 46)
+        {
+            return null;
+        }
+
+        double Number(string s) =>
             double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) ? v : 0;
 
         return new StockSnapshot(
             fields[1],
-            Parse(fields[3]),
-            Parse(fields[38]),
-            Parse(fields[44]));
+            Number(fields[3]),
+            Number(fields[38]),
+            Number(fields[44]),
+            Number(fields[45]));
     }
 
     /// <summary>
@@ -246,5 +346,11 @@ public sealed class StockDirectory(HttpClient http)
 /// <param name="Name">The instrument's name.</param>
 /// <param name="Price">The last price, whatever the session state.</param>
 /// <param name="TurnoverToday">Today's turnover rate so far, in per cent.</param>
-/// <param name="FloatCapYi">Free-float market value in 亿元.</param>
-public sealed record StockSnapshot(string Name, double Price, double TurnoverToday, double FloatCapYi);
+/// <param name="FloatCapYi">Free-float market value, in 亿 of the venue's currency.</param>
+/// <param name="TotalCapYi">
+/// Total market value, in 亿 of the venue's currency. The field is the same one on all three
+/// venues — the divisor is not, and neither is the currency, so the figure is only ever
+/// meaningful next to the market it came from.
+/// </param>
+public sealed record StockSnapshot(
+    string Name, double Price, double TurnoverToday, double FloatCapYi, double TotalCapYi);

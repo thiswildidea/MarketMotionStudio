@@ -181,6 +181,13 @@
                 <mux:NavigationViewItem x:Name="NavSectorRace" x:Uid="NavSectorRace" Tag="SectorRace">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9E9;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- The race's twin, and next to it for the same reason the candle page sits
+                     under the turnover page: two pages that answer one question by two measures
+                     belong together. This one ranks the same way, on scale rather than on
+                     return. -->
+                <mux:NavigationViewItem x:Name="NavMarketCap" x:Uid="NavMarketCap" Tag="MarketCap">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8CB;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

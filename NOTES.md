@@ -4,7 +4,8 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-10-01 (after the eighth page, the custom spans and 1.0.3.0; see the end).
+Last reviewed: 2026-10-01 (after the ninth page, the market-cap board's month wording, and 1.0.3.0;
+see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -926,10 +927,14 @@ never sent to Partner Center, so its entry in the CHANGELOG — page navigation,
 basis across all three markets — describes something no user has. 1.0.3.0 carries it. If a
 1.0.2.0 upload ever happens, the next number has to clear 1.0.3.0.
 
-**The Store gallery is one page short.** `tools/store-screenshots.py` walks the seven pages that
-existed when it was written, and the listing copy now says eight in all fourteen languages. The
-copy and the gallery disagree until the candle page is captured, and a listing that says eight
-with seven pictures looks like a mistake rather than like one missing shot.
+**The Store gallery is two pages short, and the listing copy is one.** `tools/store-screenshots.py`
+walks the seven pages that existed when it was written. The listing copy says eight, because that is
+what 1.0.3.0 carries — **that package was built before the market-cap board existed, and the copy
+describes the package, not the working tree.** So there are two separate disagreements: copy against
+gallery (one page, fixed by capturing the candle page), and package against source (the market-cap
+board, which is unreleased work and belongs to the next version's entry in both the CHANGELOG and the
+listing). A listing that says eight with seven pictures looks like a mistake rather than like one
+missing shot.
 
 **Owed on the candle page:** the Hong Kong market has not been fetched through it at all (the
 A-share and US paths are 18 checks each); the weekly and monthly periods have not been driven
@@ -947,9 +952,121 @@ driven, that is the wall and it has not been climbed.
 pictures — the candle chapter has none, so the manual describes the newest page with no picture
 while four older ones have one.
 
-**Two reusable findings from this round**, both already recorded where they belong — in the
+**Three reusable findings from this round**, all already recorded where they belong — in the
 skills, not here: a WinUI 3 combo's popup items live in the *main window's* own UIA tree, so
 excluding the window finds nothing and including it finds the navigation pane too, and the popup
-has to be told apart by what opening the combo added; and the settings page's scroller is a
+has to be told apart by what opening the combo added; the settings page's scroller is a
 `PaneControl` in UIA, not a `ScrollViewer`, which is why every earlier attempt to scroll it did
-nothing.
+nothing; and — the one that cost a run — **"the popup added nothing" has to be the wait condition,
+not "a row exists"**, because the walk returns the navigation pane's eleven rows whether or not the
+menu opened, so a poll that stops on "any rows at all" returns the navigation pane the instant it
+starts and the caller compares that against a written-out list. `combo_labels` answered with the nav
+items and the page was reported as having no range options at all.
+
+## The market-cap board: what it was built on, and what it owes
+
+**Why the board is a field rather than a fixed fifteen.** The first version fixed fifteen listings
+and ranked those against each other. It was built that way on a cost estimate — a daily series is
+about 640 calendar days to a request, so a wide field over ten years is thousands of requests — and
+the estimate was wrong: **the monthly endpoint returns three hundred bars in one reply**, on all
+three venues, so the field costs one request per listing and the board is rebuilt month by month.
+The board now shows the fifteen largest at each moment, and its membership changes: December 2016 is
+ICBC, CCB, PetroChina, Bank of China, ABC, China Life, Sinopec, Merchants Bank; September 2026 has
+replaced several of them with 茅台, 宁德时代, 工业富联, 紫金矿业 and 比亚迪.
+
+**The month-to-date bug that the first run of it found.** The axis was the plain union of every
+date in the field, and a monthly row is dated on the month's last *trading* day — which for a
+listing suspended mid-month is mid-month. Sixty-two listings' dates then come to 139 for a hundred
+and twenty months, and in each of those nineteen extra "periods" one listing advanced while the
+other sixty-one carried a stale value. Grouped by `(year, month)` and dated on the group's latest,
+it is 120. The same class of mistake is available to any page that builds a date axis from more than
+one instrument.
+
+**The ranking source, and why there is one.** The field started as a hand-written list of
+sixty-two names and that was a mistake with a date on it: 长鑫科技 listed, became the largest
+company on the mainland — **37,194 亿, ahead of 工商银行** — and the board did not carry it. Nothing
+about writing the list more carefully would have helped; the list was written before the company
+existed. The field is now today's top two hundred, asked of a ranking endpoint at fetch time.
+
+Tencent has no ranking. Three paths were tried and three came back empty or refused:
+`stock.gtimg.cn/data/index.php?appn=rank&t=ranka/...` → `data:''`; `cgi-bin/rank/pt/getRank` →
+`{"rank_list":[],"total":0}`; `cgi-bin/rank/hs/getBoardRankList` → HTTP 400. Sina's
+`vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData` works:
+`?page=1&num=100&sort=mktcap&asc=0&node=hs_a` returns the mainland sorted by market value, **capped
+at a hundred rows per page** (asking for 150 returns 100), `mktcap` in 万元, and `symbol` in the same
+shape the quote source uses. Its `node=hk_stock` and `node=us_stock` both answer `[]`, which is why
+Hong Kong and New York keep a fixed field.
+
+**Eastmoney was tried first and refused to answer** (`push2.eastmoney.com/api/qt/clist/get?fid=f20`
+worked once and then closed the connection on every subsequent attempt). It is the ranking endpoint
+most projects reach for, and this one being rate-limited out of the running on the first day is
+worth knowing before reaching for it again.
+
+**The archive, with the values it was built on** (snapshot endpoint, 2026-10-01).
+Kept because these are literals in `MarketCaps.cs` and a literal nobody can re-check is a literal
+that rots. **The mainland's entries are an archive now, not the field**: the field is asked for at
+fetch time (today's top two hundred), and what stays in the file is the companies that used to be up
+there and are not any more — the ones a ten-year board needs and a ranking cannot supply. Hong Kong
+and New York have no ranking to ask, so there the table *is* the field. The A-share rows below are
+the state when the page was built, then grown to sixty-two; the 93 additions were each read back
+from the snapshot endpoint in the same session (all valid, venues included) before being written
+down. Total market value in 亿 of the venue's currency:
+
+| A-share | | Hong Kong | | United States | |
+|---|---|---|---|---|---|
+| sh601398 工商银行 | 29,510 | hk00700 腾讯控股 | 39,189 | usNVDA 英伟达 | 55,147 |
+| sh601939 建设银行 | 28,933 | hk00005 汇丰控股 | 27,084 | usAAPL 苹果 | 48,602 |
+| sh601288 农业银行 | 24,394 | hk01398 工商银行 | 27,479 | usGOOGL 谷歌 | 42,081 |
+| sh601988 中国银行 | 21,685 | hk00939 建设银行 | 25,689 | usMSFT 微软 | 38,086 |
+| sh600941 中国移动 | 20,780 | hk09988 阿里巴巴 | 21,215 | usAMZN 亚马逊 | 26,874 |
+| sh601857 中国石油 | 20,517 | hk03988 中国银行 | 19,607 | usMETA Meta | 18,474 |
+| sh600519 贵州茅台 | 15,734 | hk00857 中国石油 | 17,689 | usAVGO 博通 | 16,765 |
+| sz300750 宁德时代 | 13,470 | hk00941 中国移动 | 17,233 | usTSLA 特斯拉 | 14,013 |
+| sh601138 工业富联 | 11,549 | hk01299 友邦保险 | 7,615 | usBRK.B 伯克希尔B | 10,660 |
+| sh600036 招商银行 | 10,406 | hk01810 小米集团 | 6,511 | usLLY 礼来 | 10,314 |
+| sh601628 中国人寿 | 10,373 | hk09999 网易 | 6,166 | usJPM 摩根大通 | 8,794 |
+| sh601088 中国神华 | 10,368 | hk00386 中国石化 | 5,336 | usWMT 沃尔玛 | 8,245 |
+| sh601318 中国平安 | 9,650 | hk00388 香港交易所 | 4,917 | usV Visa | 6,746 |
+| sh601899 紫金矿业 | 7,921 | hk03690 美团 | 4,428 | usXOM 埃克森美孚 | 6,692 |
+| sh600028 中国石化 | 6,374 | hk09618 京东集团 | 2,804 | usORCL 甲骨文 | 4,162 |
+
+**The snapshot endpoint and the chart endpoint want the code in opposite shapes.** `usAAPL.OQ`
+is the only thing the chart endpoint reads and the only thing this one *silently ignores* —
+`usAAPL` is the only thing it answers. Not an error on either side: the wrong shape comes back
+as no data, so a board built on chart codes fetches fifteen sets of prices and no market values
+at all, which reads as "this endpoint is empty". `StockDirectory.SnapshotCode` strips the venue
+and `usBRK.B.N` keeps its own dot.
+
+**A fix the tenth page of history forced.** `FetchStockBarsAsync` threw on a response with no
+bars, so the first window the walk asked for that lay entirely before a listing existed ended a
+fetch that had already gathered nine years. 中国移动 listed on the mainland in 2022; a ten-year
+window reaches past that by construction. The bare-US-ticker path had already settled the rule —
+"nothing in this window is not the same as nothing under this name" — and the main path now
+follows it: an empty window is an empty window, which is what `HistoryWalk`'s stop condition
+reads it as. **Anything else that walks backwards past a listing date would have hit this.**
+
+**A shared renderer speaking for data it cannot see.** The market-cap board draws through the sector
+race's renderer, and that renderer ended its header line with `Strings.Get("StockTradingDaysUnit")`
+— the word 个交易日, written into the drawing code. It was true for the page it was written for and
+false for the page that inherited it: twelve months of market-cap data were announced as "12 个交易日"
+in every frame, and the frame is the artefact that outlives the app. The count word was already
+supplied by the page (`UnitWord`) for exactly this reason; the span word is now too (`SpanWord`), and
+the renderer keeps only a fallback for the daily case it was built for. **The test of a shared
+renderer is not "does it draw the same shape" but "does every word it draws belong to the caller"** —
+`verify-marketcap.py` now asserts the renderer no longer carries the day word at all.
+
+**And a string table will not catch it either.** The unit is not a translation problem: the 14
+languages all read correctly, and the resw file's own copy of the page never mentions trading days
+because it counts 期. The wrong word came out of the *drawing* code, so a translation sweep passes
+and the frame is still wrong. `MarketCapUnitMonths` / `MarketCapUnitCandidates` are checked for
+content as well as for presence now — a key that is the right shape and the wrong word is what this
+costs.
+
+**Owed on this page:** Hong Kong and New York have not been driven through it (the lists were
+read back from the snapshot endpoint, which is how they were chosen, but no page fetch has run
+against either); the custom span has not been exercised; no export has been run at any format;
+and the sector race's own regression after the renderer's name-gutter change was checked only by
+eye — the marketplace board's screenshot, not a re-run of `verify-*` for the race. The header's own
+wording is now checked on the market-cap side only, and by source rather than by pixels: the line is
+drawn into the preview surface, so there is no UIA node to read and no text in a screenshot to
+assert on.

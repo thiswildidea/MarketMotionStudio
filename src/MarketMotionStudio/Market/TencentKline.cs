@@ -754,7 +754,18 @@ public sealed class TencentKline(HttpClient http)
 
         if (bars.ValueKind != JsonValueKind.Array || bars.GetArrayLength() == 0)
         {
-            throw new InvalidOperationException($"{code}: no daily bars in the response.");
+            // An empty reply is a reply, not a failure — the same rule the bare-US-ticker path
+            // above already follows, for the same reason.
+            //
+            // A window can legitimately hold no trading days: one that starts before the listing
+            // existed, or one that falls entirely inside a holiday week. The caller has to be able
+            // to tell that from a failure, because a walk backwards asks for exactly such a window
+            // as its last step and reads an empty answer as "the range is covered" — which is what
+            // HistoryWalk's stop condition does. Throwing here is what turned a ten-year
+            // market-cap board into a hard failure the moment the walk reached 中国移动, which
+            // only listed on the mainland in 2022 and therefore has no rows at all for the window
+            // the walk asked for next.
+            return [];
         }
 
         // The stock's name rides along in the envelope's `qt` block, free of a second request.

@@ -64,12 +64,20 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
     private readonly double[] _axisMax;
 
-    public SectorRaceRenderer(SectorRaceSeries series, RaceMetric metric, TimeSpan duration)
+    /// <param name="showTop">
+    /// How many of the field's places the frame shows. The sector race passes nothing — every
+    /// entrant is a row — while a market-cap board passes fifteen: it is handed a field of sixty
+    /// listings and asks for the fifteen that were largest at each moment, which is what makes its
+    /// membership change over time.
+    /// </param>
+    public SectorRaceRenderer(
+        SectorRaceSeries series, RaceMetric metric, TimeSpan duration, int showTop = int.MaxValue)
     {
         _series = series;
         _metric = metric;
         Duration = duration;
         TotalMs = duration.TotalMilliseconds;
+        _showTop = Math.Clamp(showTop, 1, Math.Max(1, series.Racers));
 
         var values = series.ReturnsOrAmounts(metric);
 
@@ -99,6 +107,11 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
         // The axis range per day, with the headroom the labels need. Both ends: the labels sit
         // outside the bar's end, so without room the longest bar pushes its label into the names.
+        //
+        // Measured over the **rows the frame shows**, not over the whole field. A market-cap board
+        // is handed sixty listings and draws fifteen; scaling to all sixty would leave the bars in
+        // the top of the frame at a fifth of their width, because whoever is sixtieth is included
+        // in a range only that row needs.
         _axisMin = new double[series.Days];
         _axisMax = new double[series.Days];
 
@@ -109,8 +122,18 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
             for (var k = 0; k < series.Racers; k++)
             {
+                if (_rank[k][i] >= _showTop)
+                {
+                    continue;
+                }
+
                 low = Math.Min(low, values[k][i]);
                 high = Math.Max(high, values[k][i]);
+            }
+
+            if (low > high)
+            {
+                low = high = 0;
             }
 
             var lo = Math.Min(low, 0);
@@ -122,12 +145,23 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         }
     }
 
+    /// <summary>Rows the frame shows, at most.</summary>
+    private readonly int _showTop;
+
     public string Title { get; set; } = string.Empty;
 
     public bool ShowTitle { get; set; } = true;
 
+    /// <summary>
+    /// The resource key for the amount metric's unit word. Overridable because the metric is
+    /// 亿 *of something* and only the page knows what: the sector race's turnover is 亿元, a
+    /// market-cap race's is 亿元, 亿港元 or 亿美元 depending on the market in force, and a label
+    /// naming the wrong currency is a label nobody can check.
+    /// </summary>
+    public string UnitKey { get; set; } = "SectorUnitYi";
+
     /// <summary>The metric's own unit word, on every value label.</summary>
-    private string Unit => _metric is RaceMetric.Return ? "%" : Strings.Get("SectorUnitYi");
+    private string Unit => _metric is RaceMetric.Return ? "%" : Strings.Get(UnitKey);
 
     private int Decimals => _metric is RaceMetric.Return ? 2 : 0;
 
@@ -219,7 +253,11 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         var (top, bottom) = PlotArea(context);
         var (x0, x1) = PlotColumns(context);
         var plotW = x1 - x0;
-        var rowH = (bottom - top) / Math.Max(1, _series.Racers);
+
+        // The rows the frame shows, which is not the number of racers on a board: sixty listings
+        // race for fifteen places, and the row height is set by the places.
+        var rows = Math.Min(_showTop, Math.Max(1, _series.Racers));
+        var rowH = (bottom - top) / rows;
         var barH = Math.Min(rowH * 0.64, context.Px(96));
         var nameSize = Math.Min(30, (rowH / context.Scale) * 0.34);
 
@@ -229,19 +267,40 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         // Trailing rows first, so a leader overlaps whoever it is passing.
         var order = Enumerable.Range(0, _series.Racers).OrderByDescending(k => state.Slots[k]).ToArray();
 
-        using var nameFormat = Ink.Format(context.Px(nameSize), bold: true);
+        // Not `using`: the name format is cached across frames. See NameFormat.
+        var nameFormat = NameFormat(session, context, nameSize);
+
         using var strongFormat = Ink.Format(context.Px(nameSize), bold: true);
         using var valueFormat = Ink.Format(context.Px(nameSize), bold: true);
 
+        var lastRow = rows - 1;
+
         foreach (var k in order)
         {
+            // A field is wider than the board, so a row can be off the bottom of it. Rather than
+            // have a listing pop in at the moment it takes fifteenth place, it fades over the
+            // place below — which is also what makes "who is falling out" legible.
+            var overflow = state.Slots[k] - lastRow;
+            var fade = overflow <= 0 ? 1 : Math.Max(0, 1 - overflow);
+
+            if (fade <= 0)
+            {
+                continue;
+            }
+
             var intro = Easing.Ramp(t, 300 + (k * 60), 700);
             if (intro <= 0)
             {
                 continue;
             }
 
-            var colour = Palette16[k % Palette16.Length];
+            intro = Math.Min(intro, fade);
+
+            // By the code, not by the index: the field is sixty listings and the palette has
+            // sixteen colours, so index-based colours would repeat between rows that can stand
+            // next to each other. Hashed, two listings that happen to share a colour are two
+            // listings that are unlikely to be adjacent.
+            var colour = Palette16[ColourIndex(_series.Entries[k].Code)];
             var yc = top + ((state.Slots[k] + 0.5) * rowH);
             var vx = x0 + ((state.Values[k] - state.AxisMin) / span) * plotW;
 
@@ -324,6 +383,72 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         }
     }
 
+    private CanvasTextFormat? _names;
+
+    private double _namesFor = -1;
+
+    /// <summary>
+    /// The left gutter's format, sized down until the longest name fits it.
+    ///
+    /// The gutter is 150 baseline pixels, which was plenty while the rows said 能源 and 材料 —
+    /// and is not, now that a roster can be fifteen companies: "Agricultural Bank of China" at
+    /// the row's own size runs off the left edge of the frame, and the renderer draws it there
+    /// without complaint, so the first frame that names a company is the first frame that is
+    /// visibly wrong.
+    ///
+    /// **One size for the whole column**, not one per row: rows scaled individually read as a
+    /// ransom note rather than as a list. And computed **once**, not per frame — a 2,700-frame
+    /// export would otherwise measure every name 2,700 times for an answer that cannot change.
+    /// </summary>
+    private CanvasTextFormat NameFormat(CanvasDrawingSession session, FrameContext context, double wanted)
+    {
+        if (_names is not null && Math.Abs(_namesFor - wanted) < 0.01)
+        {
+            return _names;
+        }
+
+        var (x0, _) = PlotColumns(context);
+        var room = x0 - context.Margins.Left - context.Px(GutterTextInset);
+        var size = wanted;
+
+        foreach (var entry in _series.Entries)
+        {
+            if (entry.Name.Length > 0)
+            {
+                size = Math.Min(size, Ink.FitSize(session, entry.Name, context.Px(wanted), room, bold: true));
+            }
+        }
+
+        _names?.Dispose();
+
+        _namesFor = wanted;
+        _names = Ink.Format(context.Px(Math.Max(wanted * 0.5, size)), bold: true);
+
+        return _names;
+    }
+
+    /// <summary>Room the name column leaves between the text and the plot.</summary>
+    private const double GutterTextInset = 24;
+
+    /// <summary>
+    /// The palette slot for a listing, from its code.
+    ///
+    /// By hand rather than with `string.GetHashCode`, which .NET randomises per process: the same
+    /// video would come out in different colours on two runs, and a colour that differs between
+    /// the preview and the export is the one thing the single-render-path rule exists to prevent.
+    /// </summary>
+    private static int ColourIndex(string code)
+    {
+        var hash = 17;
+
+        foreach (var ch in code)
+        {
+            hash = ((hash * 31) + ch) & 0x7FFFFFFF;
+        }
+
+        return hash % Palette16.Length;
+    }
+
     private string ValueText(double value) =>
         (_metric is RaceMetric.Return && value > 0 ? "+" : string.Empty)
         + value.ToString("N" + Decimals.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture)
@@ -372,7 +497,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                     (Iso(_series.Dates[0]) + " " + Strings.Get("StockRangeJoiner") + " " + Iso(_series.Dates[^1]) + " · ",
                         Palette.StockMuted, plain),
                     (_series.Days.ToString(CultureInfo.InvariantCulture), Palette.Emphasis, strong),
-                    (" " + Strings.Get("StockTradingDaysUnit") + " · " + _series.Racers.ToString(CultureInfo.InvariantCulture) + " " + unit,
+                    (" " + Span + " · " + _series.Racers.ToString(CultureInfo.InvariantCulture) + " " + unit,
                         Palette.StockMuted, plain),
                 ],
                 cx, context.HeaderRow(0.188, ShowTitle), a);
@@ -431,7 +556,22 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     public string ListLabel { get; set; } = string.Empty;
 
     /// <summary>
-    /// The count word for the header line — 个板块 or 只个股. Supplied by the page because it
+    /// The word after the count of them — 个交易日 for a daily series, 个月 for a monthly one.
+    ///
+    /// Supplied by the page, and this one used to be read straight off the string table here.
+    /// That was a claim about the data, made by a renderer that cannot see the data: when the
+    /// market-cap board inherited this renderer and became monthly, every frame it drew announced
+    /// "12 个交易日" for twelve months. The page knows what interval it asked the source for; the
+    /// renderer only knows how many rows came back.
+    ///
+    /// Empty means a daily race, which is what this renderer was written for.
+    /// </summary>
+    public string SpanWord { get; set; } = string.Empty;
+
+    private string Span => SpanWord.Length > 0 ? SpanWord : Strings.Get("StockTradingDaysUnit");
+
+    /// <summary>
+    /// The count word for the header line — 个板块, 只个股, 只候选. Supplied by the page because it
     /// belongs to the roster, not to the metric: a key keyed on the metric here is how
     /// `[SectorUnitPercent]` ended up rendered literally in a shipped frame.
     /// </summary>

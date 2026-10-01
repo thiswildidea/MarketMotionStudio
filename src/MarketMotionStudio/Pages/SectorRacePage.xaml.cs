@@ -135,11 +135,9 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
             MetricCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(label), Tag = metric });
         }
 
-        foreach (var (metric, key) in Metrics)
-        {
-            MetricCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = metric });
-        }
-
+        // One loop, not two. There used to be a second pass here that added both metrics again
+        // with the currency-blind labels, so the menu read 涨幅 / 成交额 / 涨幅 / 成交额 and the
+        // dollar markets' own label sat in the first slot of a pair.
         RosterCombo.SelectedIndex = 0;
         MetricCombo.SelectedIndex = 0;
 

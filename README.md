@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **eight pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **nine pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -104,6 +104,7 @@ than assumed from the market's existence:
 | **DCA Plan** | the Tracker Fund, the Hang Seng China Enterprises and tech trackers, and the two indices themselves | SPY, QQQ, DIA, IWM and the gold trust |
 | **Position Return** | same preset families as the plan, plus the blue-chip singles | same, plus the broad singles |
 | **Candles** | daily, weekly and monthly bars for indices and listings | same, with the venue tried in turn (`.OQ`, `.N`, `.AM`) |
+| **Market Cap Race** | today's top 200 by market value, plus an archive of companies that used to be up there | thirty-five, and forty-two — a fixed field, because neither venue has a ranking this app can reach |
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what
@@ -129,7 +130,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The eight pages
+## The nine pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -294,6 +295,70 @@ A US code typed in the wrong case fetches **nothing**, because the search endpoi
 error — which reads as an instrument with no history. A code is canonicalised for its market the
 moment it is known, and the frame's name is the one the endpoint returns with the series rather
 than the code the user typed.
+
+**Market Cap Race** — the sector race's twin: fifteen horizontal bars, ranked by total market
+value, their order changing to the last frame. Same renderer, same interpolated ranking, same two
+gutters — a different question. The race asks how a sector performed; this asks which company *is*,
+which the last decade of this market answers with a clear upset in it.
+
+**The field is asked for, not remembered.** A hand-written field is wrong the moment somebody
+lists, and it was: 长鑫科技 listed, became the largest company on the mainland at 3.7 trillion, and
+the board did not know it existed — a defect no amount of care in writing the list could have
+prevented, because the list was written before the company listed. So the field is **today's top two
+hundred by market value**, asked of a ranking endpoint at fetch time, plus an archive of companies
+that used to be up there and are not any more (万科, 中国重工, 上汽) — the archive is what a ten-year
+board needs and a ranking cannot supply. The board is then whichever fifteen of those were largest at
+each moment. Watching it run, December 2016 is ICBC, CCB, PetroChina, Bank of China, ABC, China Life,
+Sinopec, Merchants Bank — and September 2026 has added 长鑫科技, 茅台, 宁德时代, 工业富联 and
+紫金矿业 in their places.
+
+**This page is the one place the app reads a second source, and the reason is in the first
+sentence.** Tencent serves quotes and bars and no ranking at all: three candidate paths
+(`stock.gtimg.cn`'s `rank`, `cgi-bin/rank/pt`, `cgi-bin/rank/hs`) answer with an empty list or a
+400. Sina's `Market_Center.getHQNodeData` answers with the whole market sorted by market value, in
+pages of a hundred, in the same code shape this app already speaks — `sh688825`, not a vendor
+identifier — so nothing is translated and one request per fetch is the whole of the traffic. The
+snapshot endpoint is still Tencent's, the bars are still Tencent's, and a failure of the ranking
+falls back to the archive rather than to nothing: a board with a stale field is still a board.
+
+**The month is the resolution, and it is where the subject lives.** A market-cap ranking is a slow
+variable; what a daily series would buy is three hundred and seventy requests for a board that
+moves a few times a year. The renderer interpolates between the periods it is given, so the motion
+is continuous even though the data is monthly.
+
+**Which means the frame's header line counts months, and it did not always say so.** That renderer
+is shared with the sector race, which is daily, and the word after the count was read off the string
+table inside the renderer — so a monthly board announced "12 个交易日" for twelve months, in every
+frame of every export, and it took a reader asking why twelve months were being called trading days.
+The count word and the span word are both supplied by the page now (`UnitWord`, `SpanWord`): the page
+is the thing that knows what interval it asked the source for, and the renderer only knows how many
+rows came back.
+
+**One entry per calendar month, dated on the month's last bar.** Not the plain union of every date
+in the field: a monthly row is dated on the month's last *trading* day, and a listing suspended for
+a fortnight has its last trading day mid-month, so the union of two hundred listings' dates came to
+**139 dates for 120 months** — nineteen "periods" in which one listing advanced and sixty-one
+carried a stale value, which the frame showed as a stutter. Grouped by year and month, it is 120.
+
+**A past market value is derived, and the derivation is worth stating.** The source serves today's
+total market value and nothing else: a share count's own history is not served at all, so each past
+value is `today's value × the adjusted price ratio`. That is exact as far as the adjusted series is
+exact — a bonus issue or a split moves the price and the share count by the same factor and the
+adjusted series cancels it, so a ten-for-ten does not read as the company halving. **A dividend is
+not cancelled**, because the adjusted series reinvests it, so a heavy payer's past value reads low
+and it looks like it grew faster than it did. The manual says so, the settings panel says so, and
+the last frame's figure is the only one that came straight from the source.
+
+**The axis is a union, not an intersection.** A listing that listed three years ago has no rows
+before that, and intersecting would quietly start the whole video on the day the youngest entrant
+listed — a ten-year board turned into a three-year one. With a union, and no value before the first
+bar, it grows out of nothing on the day it joined, which is what a bar chart can say and a silent
+truncation cannot.
+
+**The name column now holds company names**, and that is why the renderer's left gutter sizes its
+text before drawing: `Agricultural Bank of China` at the row's own size runs off the left edge of
+the frame, and nothing complains — the first frame that names a company is the first frame that is
+visibly wrong. One shared size for the whole column, computed once rather than per frame.
 
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
@@ -488,19 +553,22 @@ the alpha correct; the 256-pixel entry records its size as `0`, because the fiel
 
 ```
 src/MarketMotionStudio/
-  Market/          TencentKline (the only HTTP to a quote source), TurnoverSeries,
+  Market/          TencentKline (the only HTTP to a quote source), RankingSource (the one
+                   ranking call, to a second source, and why it is a second source), TurnoverSeries,
                    InstrumentCalendar (one instrument's bars as that record),
                    HistoryWalk (years of closes, walked backwards a page at a time),
                    DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding),
-                   CandleSeries (daily/weekly/monthly bars, and the two animations' shapes)
+                   CandleSeries (daily/weekly/monthly bars, and the two animations' shapes),
+                   MarketCaps (the fifteen-per-market field, and today's value turned into a history)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
+                   SectorRaceRenderer (ranked bars, shared by the race and the market-cap board),
                    FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
-  Pages/           StudioPage base, the five indicator pages, the two buy-at-a-price pages,
+  Pages/           StudioPage base, the indicator pages, the two buy-at-a-price pages,
                    Settings, Help, Playback
   Localization/    Strings lookup and the language override
   Strings/<bcp47>/ Fourteen Resources.resw
@@ -517,6 +585,8 @@ tools/
                          Port one feature's strings and help section from the sibling project
   port-store-listing.py  Rewrites the three paragraphs the Store listing repeats in fourteen
                          languages — the page list, what's new, the feature bullets
+  port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
+                         (the pool script carries the 93 candidates that only need zh + en)
   verify-*.py            Drive the UI and assert the feature behaves as documented
   drive-*.py             Drive the app end to end for a smoke run
 ```
@@ -609,8 +679,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 454 keys
-with no encoding damage, and all fourteen help documents carry the same seventeen sections in the
+Every language carries the same keys in the same order. All fourteen currently report 598 keys
+with no encoding damage, and all fourteen help documents carry the same eighteen sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -624,7 +694,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all eight pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all nine pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -695,9 +765,18 @@ first export asks and then remembers.
   past three years — 726 buys; a ten-year plan of 2,429 buys fetched by hand the same day),
   one cover, one 1080p30 export with its boxes verified. Not the Hong Kong or US preset
   lists, not the weekly or monthly cadences, not another format. See NOTES.
-- **The Store screenshots show seven pages, not eight.** `tools/store-screenshots.py` predates
-  the candle page, so the listing's gallery has no picture of it. The listing copy now says
-  eight charts in all fourteen languages; the gallery still says seven.
+- **The Store screenshots show seven pages, not nine.** `tools/store-screenshots.py` predates
+  both the candle page and the market-cap board, so the listing's gallery has neither. The
+  listing copy still says eight charts in all fourteen languages — it has not been bumped for
+  the ninth yet — and the gallery says seven.
+- **The market-cap board has been fetched and read on one market, at two spans** (A-shares, one
+  year and ten years, seventeen checks), and three moments of the ten-year run were captured to
+  confirm membership changes. Hong Kong and New York have not been driven through the page; neither
+  has the custom span, nor an export at any format. The English interface was checked for the name
+  column's width, which is the thing a company name could break.
+- **The console shows a log line per request and the walk logs one per page**, which for a
+  ten-year fifteen-listing board is about ninety lines. It is not a problem, but it is the
+  loudest thing this app does and worth knowing before reading a log.
 - **Only the A-share and US candle pages have been fetched end to end**, each 18 checks. The
   Hong Kong one has not; neither has weekly or monthly through the page, nor an export at any
   format other than the default.
