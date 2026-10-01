@@ -56,7 +56,7 @@ public static class InstrumentCalendar
 
         // StockBarsAsync, not DailyBarsAsync: the same rows for an index as for a stock, plus the
         // instrument's display name riding along in the envelope — one round trip instead of two.
-        var bars = await kline.StockBarsAsync(code, start, end, cancellation);
+        var bars = await kline.StockBarsAsync(code, start, end, cancellation, turnover: true);
 
         if (bars.Count < FewestDays)
         {

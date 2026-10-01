@@ -27,7 +27,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增：标题栏左侧多了「后退 / 前进」两个按钮，像浏览器一样在访问过的页面之间来回走。Alt+← / Alt+→ 和鼠标侧键同样有效。切换有方向——后退时新页面从左边滑进来，前进时从右边。导航窗格收起时它们照样可用，而那正是 9:16 预览最需要宽度的时候。 另外，行业板块竞速里的板块名现在也跟着界面语言走了。 本版还修好了「定投计划」和「持仓收益」的取数——区间起点落在周末或假期时，取数会失败；换标的时画面上的标题也曾经停在旧标的上。 另外，港股与美股的价格此前没有复权——拆股那天在图上是一次凭空的暴跌，分红也没有算进收益；现在这两个市场各走自己的复权序列。
+本版新增：标题栏左侧多了「后退 / 前进」两个按钮，像浏览器一样在访问过的页面之间来回走。Alt+← / Alt+→ 和鼠标侧键同样有效。切换有方向——后退时新页面从左边滑进来，前进时从右边。导航窗格收起时它们照样可用，而那正是 9:16 预览最需要宽度的时候。 另外，行业板块竞速里的板块名现在也跟着界面语言走了。 本版还修好了「定投计划」和「持仓收益」的取数——区间起点落在周末或假期时，取数会失败；换标的时画面上的标题也曾经停在旧标的上。 另外，价格此前没有复权——拆股那天在图上是一次凭空的暴跌，高分红股的历史收盘价甚至是负数；收益矩阵、行业板块竞速、涨跌日历读的都是同一批价格。现在三个市场、所有画收益的页面都走各自的复权序列。
 
 ### 产品功能
 
@@ -63,7 +63,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增：標題列左側多了「上一頁 / 下一頁」兩個按鈕，像瀏覽器一樣在造訪過的頁面之間來回走。Alt+← / Alt+→ 和滑鼠側鍵同樣有效。切換有方向——上一頁時新頁面從左邊滑進來，下一頁時從右邊。導覽窗格收起時它們照樣可用，而那正是 9:16 預覽最需要寬度的時候。 另外，行業板塊競速裡的板塊名現在也跟著介面語言走了。 本版也修好了「定期定額計畫」與「持倉收益」的取數——區間起點落在週末或假日時會失敗；換標的時畫面上的標題也曾經停在舊標的上。 另外，港股與美股的價格此前沒有復權——拆股那天在圖上是一次憑空的暴跌，分紅也沒有算進收益；現在這兩個市場各走自己的復權序列。
+本版新增：標題列左側多了「上一頁 / 下一頁」兩個按鈕，像瀏覽器一樣在造訪過的頁面之間來回走。Alt+← / Alt+→ 和滑鼠側鍵同樣有效。切換有方向——上一頁時新頁面從左邊滑進來，下一頁時從右邊。導覽窗格收起時它們照樣可用，而那正是 9:16 預覽最需要寬度的時候。 另外，行業板塊競速裡的板塊名現在也跟著介面語言走了。 本版也修好了「定期定額計畫」與「持倉收益」的取數——區間起點落在週末或假日時會失敗；換標的時畫面上的標題也曾經停在舊標的上。 另外，價格此前沒有復權——拆股那天在圖上是一次憑空的暴跌，高分紅股的歷史收盤價甚至是負數；收益矩陣、行業板塊競速、漲跌日曆讀的都是同一批價格。現在三個市場、所有畫收益的頁面都走各自的復權序列。
 
 ### 產品功能
 
@@ -99,7 +99,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-New in this version: Back and Forward buttons in the title bar, so you can move between the pages you have visited the way a browser does. Alt+Left and Alt+Right do the same, as do the side buttons on a mouse. The transition knows which way you are going — a step back slides the page in from the left, a step forward from the right. Both work with the navigation pane collapsed, which is when the 9:16 preview needs the width most. Also, the sector names in the race now follow the interface language. This version also fixes the fetch on the plan and position pages, which failed whenever the range started on a weekend or a public holiday, and the frame title that stayed on the previous instrument after a new pick. Hong Kong and US prices were unadjusted too: a split arrived as a collapse out of nowhere, and dividends never came back to the holder. Both venues now read their adjusted series.
+New in this version: Back and Forward buttons in the title bar, so you can move between the pages you have visited the way a browser does. Alt+Left and Alt+Right do the same, as do the side buttons on a mouse. The transition knows which way you are going — a step back slides the page in from the left, a step forward from the right. Both work with the navigation pane collapsed, which is when the 9:16 preview needs the width most. Also, the sector names in the race now follow the interface language. This version also fixes the fetch on the plan and position pages, which failed whenever the range started on a weekend or a public holiday, and the frame title that stayed on the previous instrument after a new pick. Prices were unadjusted too: a split arrived as a collapse out of nowhere, and on a heavy dividend payer the historical closes were negative — the return matrix, the sector race and the calendar all read them. Now all three markets and every page that draws a return read their own adjusted series.
 
 ### Product features
 
@@ -135,7 +135,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンの新機能：タイトルバーに「戻る / 進む」ボタンが付き、ブラウザのように訪れたページを行き来できます。Alt+← / Alt+→ でもマウスのサイドボタンでも同じ操作ができます。切り替えには向きがあり、戻るときは左から、進むときは右からページがスライドしてきます。ナビゲーションウィンドウを折りたたんでいても使えます。9:16 のプレビューが幅を最も必要とする場面です。 また、業種レースのセクター名もインターフェースの言語に従うようになりました。 同じく、「積立プラン」と「保有リターン」の取得も修正しました。期間の開始日が週末や祝日にあたると失敗していたものです。標的を変えたときに画面のタイトルが前のままになる点も直しました。 また、香港株と米国株の価格は調整されていませんでした——分割の日が根拠のない暴落として描かれ、配当も収益に含まれていませんでした。両市場は現在、調整済みの系列を読みます。
+このバージョンの新機能：タイトルバーに「戻る / 進む」ボタンが付き、ブラウザのように訪れたページを行き来できます。Alt+← / Alt+→ でもマウスのサイドボタンでも同じ操作ができます。切り替えには向きがあり、戻るときは左から、進むときは右からページがスライドしてきます。ナビゲーションウィンドウを折りたたんでいても使えます。9:16 のプレビューが幅を最も必要とする場面です。 また、業種レースのセクター名もインターフェースの言語に従うようになりました。 同じく、「積立プラン」と「保有リターン」の取得も修正しました。期間の開始日が週末や祝日にあたると失敗していたものです。標的を変えたときに画面のタイトルが前のままになる点も直しました。 また、価格は調整されていませんでした——分割の日が根拠のない暴落として描かれ、高配当銘柄では過去の終値が負になることさえありました。収益マトリックス、業種レース、カレンダーも同じ価格を読んでいました。現在は3つの市場すべてと、収益を描くすべてのページがそれぞれの調整済み系列を読みます。
 
 ### 製品の機能
 
@@ -171,7 +171,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전의 새 기능: 제목 표시줄에 뒤로 / 앞으로 버튼이 생겨, 브라우저처럼 방문한 페이지 사이를 오갈 수 있습니다. Alt+← / Alt+→ 로도, 마우스 측면 버튼으로도 같은 동작을 합니다. 전환에는 방향이 있어 뒤로 갈 때는 왼쪽에서, 앞으로 갈 때는 오른쪽에서 페이지가 밀려 들어옵니다. 탐색 창이 접혀 있어도 동작합니다. 9:16 미리보기가 너비를 가장 필요로 할 때입니다. 또한 업종 레이스의 섹터 이름도 이제 인터페이스 언어를 따릅니다. 이 버전에서는 적립식 플랜과 보유 수익의 데이터 조회도 고쳤습니다. 기간 시작일이 주말이나 공휴일에 걸리면 실패하던 문제입니다. 종목을 바꿔도 화면 제목이 그대로 남던 점도 고쳤습니다. 또한 홍콩과 미국 가격은 조정되지 않았습니다. 분할이 근거 없는 폭락으로 나타나고 배당도 수익에 반영되지 않았습니다. 두 시장은 이제 조정된 시계열을 읽습니다.
+이 버전의 새 기능: 제목 표시줄에 뒤로 / 앞으로 버튼이 생겨, 브라우저처럼 방문한 페이지 사이를 오갈 수 있습니다. Alt+← / Alt+→ 로도, 마우스 측면 버튼으로도 같은 동작을 합니다. 전환에는 방향이 있어 뒤로 갈 때는 왼쪽에서, 앞으로 갈 때는 오른쪽에서 페이지가 밀려 들어옵니다. 탐색 창이 접혀 있어도 동작합니다. 9:16 미리보기가 너비를 가장 필요로 할 때입니다. 또한 업종 레이스의 섹터 이름도 이제 인터페이스 언어를 따릅니다. 이 버전에서는 적립식 플랜과 보유 수익의 데이터 조회도 고쳤습니다. 기간 시작일이 주말이나 공휴일에 걸리면 실패하던 문제입니다. 종목을 바꿔도 화면 제목이 그대로 남던 점도 고쳤습니다. 가격도 조정되지 않았습니다. 분할이 근거 없는 폭락으로 나타나고, 고배당 종목은 과거 종가가 음수가 되기까지 했습니다. 수익 매트릭스, 업종 레이스, 캘린더도 같은 가격을 읽었습니다. 이제 세 시장 모두와 수익을 그리는 모든 페이지가 각자의 조정 시계열을 읽습니다.
 
 ### 제품 기능
 
@@ -207,7 +207,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Neu in dieser Version: Schaltflächen für Zurück und Vorwärts in der Titelleiste, mit denen Sie wie im Browser zwischen den besuchten Seiten wechseln. Alt+Pfeil-links und Alt+Pfeil-rechts tun dasselbe, ebenso die Seitentasten einer Maus. Der Übergang kennt die Richtung: Ein Schritt zurück lässt die Seite von links hereingleiten, ein Schritt nach vorn von rechts. Beide funktionieren auch bei eingeklapptem Navigationsbereich — genau dann, wenn die 9:16-Vorschau die Breite am meisten braucht. Außerdem folgen die Sektornamen im Branchenrennen jetzt der Sprache der Oberfläche. Außerdem wurde das Laden im Sparplan und in der Positionsrendite korrigiert: Es schlug fehl, sobald der Zeitraum an einem Wochenende oder Feiertag begann. Auch der Titel im Bild bleibt nach einem Wechsel des Instruments nicht mehr beim alten. Außerdem waren die Kurse aus Hongkong und den USA unbereinigt: Ein Split erschien als Absturz aus dem Nichts, und Dividenden fehlten im Ertrag. Beide Märkte lesen nun ihre bereinigten Reihen.
+Neu in dieser Version: Schaltflächen für Zurück und Vorwärts in der Titelleiste, mit denen Sie wie im Browser zwischen den besuchten Seiten wechseln. Alt+Pfeil-links und Alt+Pfeil-rechts tun dasselbe, ebenso die Seitentasten einer Maus. Der Übergang kennt die Richtung: Ein Schritt zurück lässt die Seite von links hereingleiten, ein Schritt nach vorn von rechts. Beide funktionieren auch bei eingeklapptem Navigationsbereich — genau dann, wenn die 9:16-Vorschau die Breite am meisten braucht. Außerdem folgen die Sektornamen im Branchenrennen jetzt der Sprache der Oberfläche. Außerdem wurde das Laden im Sparplan und in der Positionsrendite korrigiert: Es schlug fehl, sobald der Zeitraum an einem Wochenende oder Feiertag begann. Auch der Titel im Bild bleibt nach einem Wechsel des Instruments nicht mehr beim alten. Außerdem waren die Kurse unbereinigt: Ein Split erschien als Absturz aus dem Nichts, und bei stark ausschüttenden Werten waren die historischen Schlusskurse sogar negativ — Renditematrix, Sektorrennen und Kalender lasen dieselben Werte. Nun lesen alle drei Märkte und jede Seite, die eine Rendite zeichnet, ihre eigene bereinigte Reihe.
 
 ### Produktfunktionen
 
@@ -243,7 +243,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Nouveautés de cette version : des boutons Précédent et Suivant dans la barre de titre, pour circuler entre les pages déjà visitées comme dans un navigateur. Alt+Flèche gauche et Alt+Flèche droite font de même, tout comme les boutons latéraux de la souris. La transition connaît le sens : un retour fait glisser la page depuis la gauche, une avancée depuis la droite. Les deux restent utilisables lorsque le volet de navigation est replié, c'est-à-dire au moment où l'aperçu 9:16 a le plus besoin de largeur. Par ailleurs, les noms de secteurs de la course suivent désormais la langue de l'interface. Cette version corrige également le chargement du plan d'épargne et du rendement de position, qui échouait lorsque la période commençait un week-end ou un jour férié ; le titre à l'image ne reste plus non plus sur l'instrument précédent. En outre, les cours de Hong Kong et des États-Unis n'étaient pas ajustés : un fractionnement apparaissait comme un effondrement sans cause et les dividendes manquaient. Les deux places lisent désormais leurs séries ajustées.
+Nouveautés de cette version : des boutons Précédent et Suivant dans la barre de titre, pour circuler entre les pages déjà visitées comme dans un navigateur. Alt+Flèche gauche et Alt+Flèche droite font de même, tout comme les boutons latéraux de la souris. La transition connaît le sens : un retour fait glisser la page depuis la gauche, une avancée depuis la droite. Les deux restent utilisables lorsque le volet de navigation est replié, c'est-à-dire au moment où l'aperçu 9:16 a le plus besoin de largeur. Par ailleurs, les noms de secteurs de la course suivent désormais la langue de l'interface. Cette version corrige également le chargement du plan d'épargne et du rendement de position, qui échouait lorsque la période commençait un week-end ou un jour férié ; le titre à l'image ne reste plus non plus sur l'instrument précédent. En outre, les cours n'étaient pas ajustés : un fractionnement apparaissait comme un effondrement sans cause, et pour les gros distributeurs de dividendes les clôtures historiques étaient même négatives — la matrice de rendement, la course sectorielle et le calendrier lisaient les mêmes valeurs. Désormais les trois marchés et toutes les pages qui tracent un rendement lisent leur propre série ajustée.
 
 ### Fonctionnalités
 
@@ -279,7 +279,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Novità di questa versione: i pulsanti Indietro e Avanti nella barra del titolo, per spostarsi fra le pagine visitate come in un browser. Alt+Freccia sinistra e Alt+Freccia destra fanno lo stesso, così come i pulsanti laterali del mouse. La transizione conosce la direzione: un passo indietro fa entrare la pagina da sinistra, un passo avanti da destra. Funzionano anche con il riquadro di navigazione compresso, proprio quando l'anteprima 9:16 ha più bisogno di larghezza. Inoltre, i nomi dei settori nella corsa ora seguono la lingua dell'interfaccia. Questa versione corregge anche il caricamento del piano di accumulo e del rendimento della posizione, che falliva quando il periodo iniziava di sabato, domenica o in un giorno festivo; il titolo nell'immagine non resta più sullo strumento precedente. Inoltre i prezzi di Hong Kong e degli Stati Uniti non erano rettificati: un frazionamento appariva come un crollo immotivato e i dividendi mancavano. Ora entrambe le piazze leggono le loro serie rettificate.
+Novità di questa versione: i pulsanti Indietro e Avanti nella barra del titolo, per spostarsi fra le pagine visitate come in un browser. Alt+Freccia sinistra e Alt+Freccia destra fanno lo stesso, così come i pulsanti laterali del mouse. La transizione conosce la direzione: un passo indietro fa entrare la pagina da sinistra, un passo avanti da destra. Funzionano anche con il riquadro di navigazione compresso, proprio quando l'anteprima 9:16 ha più bisogno di larghezza. Inoltre, i nomi dei settori nella corsa ora seguono la lingua dell'interfaccia. Questa versione corregge anche il caricamento del piano di accumulo e del rendimento della posizione, che falliva quando il periodo iniziava di sabato, domenica o in un giorno festivo; il titolo nell'immagine non resta più sullo strumento precedente. Inoltre i prezzi non erano rettificati: un frazionamento appariva come un crollo immotivato e per i titoli ad alto dividendo le chiusure storiche erano persino negative — la matrice dei rendimenti, la corsa settoriale e il calendario leggevano gli stessi valori. Ora tutti e tre i mercati e ogni pagina che disegna un rendimento leggono la propria serie rettificata.
 
 ### Funzionalità del prodotto
 
@@ -315,7 +315,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Novedades de esta versión: botones Atrás y Adelante en la barra de título, para moverte entre las páginas que has visitado como en un navegador. Alt+Flecha izquierda y Alt+Flecha derecha hacen lo mismo, igual que los botones laterales del ratón. La transición conoce el sentido: un paso atrás entra la página desde la izquierda, un paso adelante desde la derecha. Funcionan también con el panel de navegación plegado, justo cuando la vista previa 9:16 más necesita el ancho. Además, los nombres de los sectores de la carrera ahora siguen el idioma de la interfaz. Esta versión corrige también la carga del plan de aportaciones y del rendimiento de la posición, que fallaba si el periodo empezaba en fin de semana o festivo; el título de la imagen ya no se queda en el instrumento anterior. Además, los precios de Hong Kong y Estados Unidos no estaban ajustados: un desdoblamiento aparecía como un desplome sin causa y los dividendos faltaban. Ahora ambas plazas leen sus series ajustadas.
+Novedades de esta versión: botones Atrás y Adelante en la barra de título, para moverte entre las páginas que has visitado como en un navegador. Alt+Flecha izquierda y Alt+Flecha derecha hacen lo mismo, igual que los botones laterales del ratón. La transición conoce el sentido: un paso atrás entra la página desde la izquierda, un paso adelante desde la derecha. Funcionan también con el panel de navegación plegado, justo cuando la vista previa 9:16 más necesita el ancho. Además, los nombres de los sectores de la carrera ahora siguen el idioma de la interfaz. Esta versión corrige también la carga del plan de aportaciones y del rendimiento de la posición, que fallaba si el periodo empezaba en fin de semana o festivo; el título de la imagen ya no se queda en el instrumento anterior. Además, los precios no estaban ajustados: un desdoblamiento aparecía como un desplome sin causa y en los valores de alto dividendo los cierres históricos eran incluso negativos — la matriz de rentabilidad, la carrera sectorial y el calendario leían los mismos valores. Ahora los tres mercados y todas las páginas que dibujan una rentabilidad leen su propia serie ajustada.
 
 ### Funciones del producto
 
@@ -350,7 +350,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Novidades desta versão: botões Voltar e Avançar na barra de título, para navegar entre as páginas visitadas como num navegador. Alt+Seta para a esquerda e Alt+Seta para a direita fazem o mesmo, assim como os botões laterais do mouse. A transição conhece o sentido: um passo atrás entra pela esquerda, um passo à frente pela direita. Funcionam também com o painel de navegação recolhido, que é quando a prévia 9:16 mais precisa de largura. Além disso, os nomes dos setores na corrida agora seguem o idioma da interface. Esta versão também corrige o carregamento do plano de aportes e do rendimento da posição, que falhava quando o período começava num fim de semana ou feriado; o título na imagem já não fica no instrumento anterior. Além disso, os preços de Hong Kong e dos Estados Unidos não eram ajustados: um desdobramento aparecia como uma queda sem causa e os dividendos faltavam. Agora ambas as praças leem suas séries ajustadas.
+Novidades desta versão: botões Voltar e Avançar na barra de título, para navegar entre as páginas visitadas como num navegador. Alt+Seta para a esquerda e Alt+Seta para a direita fazem o mesmo, assim como os botões laterais do mouse. A transição conhece o sentido: um passo atrás entra pela esquerda, um passo à frente pela direita. Funcionam também com o painel de navegação recolhido, que é quando a prévia 9:16 mais precisa de largura. Além disso, os nomes dos setores na corrida agora seguem o idioma da interface. Esta versão também corrige o carregamento do plano de aportes e do rendimento da posição, que falhava quando o período começava num fim de semana ou feriado; o título na imagem já não fica no instrumento anterior. Além disso, os preços não eram ajustados: um desdobramento aparecia como uma queda sem causa e, nos papéis de alto dividendo, os fechamentos históricos eram até negativos — a matriz de retorno, a corrida setorial e o calendário liam os mesmos valores. Agora os três mercados e todas as páginas que desenham um retorno leem sua própria série ajustada.
 
 ### Funcionalidades do produto
 
@@ -386,7 +386,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Co nowego w tej wersji: przyciski Wstecz i Dalej w pasku tytułu, dzięki którym przechodzisz między odwiedzonymi stronami jak w przeglądarce. To samo robią Alt+Strzałka w lewo i Alt+Strzałka w prawo oraz boczne przyciski myszy. Przejście zna kierunek: krok wstecz wsuwa stronę z lewej, krok w przód z prawej. Działają także przy zwiniętym panelu nawigacji, czyli wtedy, gdy podgląd 9:16 najbardziej potrzebuje szerokości. Ponadto nazwy sektorów w wyścigu podążają teraz za językiem interfejsu. Ta wersja poprawia także wczytywanie planu wpłat i wyniku pozycji, które zawodziło, gdy okres zaczynał się w weekend lub święto; tytuł na obrazie nie zostaje już przy poprzednim instrumencie. Ponadto ceny z Hongkongu i USA nie były korygowane: split pojawiał się jako nagły krach, a dywidendy nie wracały do właściciela. Oba rynki czytają teraz skorygowane serie.
+Co nowego w tej wersji: przyciski Wstecz i Dalej w pasku tytułu, dzięki którym przechodzisz między odwiedzonymi stronami jak w przeglądarce. To samo robią Alt+Strzałka w lewo i Alt+Strzałka w prawo oraz boczne przyciski myszy. Przejście zna kierunek: krok wstecz wsuwa stronę z lewej, krok w przód z prawej. Działają także przy zwiniętym panelu nawigacji, czyli wtedy, gdy podgląd 9:16 najbardziej potrzebuje szerokości. Ponadto nazwy sektorów w wyścigu podążają teraz za językiem interfejsu. Ta wersja poprawia także wczytywanie planu wpłat i wyniku pozycji, które zawodziło, gdy okres zaczynał się w weekend lub święto; tytuł na obrazie nie zostaje już przy poprzednim instrumencie. Ponadto ceny nie były korygowane: split pojawiał się jako nagły krach, a przy spółkach o wysokiej dywidendzie historyczne zamknięcia były wręcz ujemne — macierz stóp zwrotu, wyścig sektorów i kalendarz czytały te same wartości. Teraz wszystkie trzy rynki i każda strona rysująca stopę zwrotu czytają własną skorygowaną serię.
 
 ### Funkcje produktu
 
@@ -422,7 +422,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Co je nového v této verzi: tlačítka Zpět a Vpřed v záhlaví, která vám umožní pohybovat se mezi navštívenými stránkami jako v prohlížeči. Totéž udělá Alt+Šipka vlevo a Alt+Šipka vpravo i boční tlačítka myši. Přechod zná směr: krok zpět přisune stránku zleva, krok vpřed zprava. Fungují i se sbaleným navigačním panelem, tedy právě tehdy, kdy náhled 9:16 potřebuje šířku nejvíce. Kromě toho názvy sektorů v závodě nyní sledují jazyk rozhraní. Tato verze opravuje také načítání plánu investování a výnosu pozice, které selhávalo, když období začínalo o víkendu nebo ve svátek; titulek v obraze už nezůstává u předchozího nástroje. Kromě toho nebyly ceny z Hongkongu a USA upraveny: štěpení se jevilo jako pád bez příčiny a dividendy chyběly. Obě burzy nyní čtou upravené řady.
+Co je nového v této verzi: tlačítka Zpět a Vpřed v záhlaví, která vám umožní pohybovat se mezi navštívenými stránkami jako v prohlížeči. Totéž udělá Alt+Šipka vlevo a Alt+Šipka vpravo i boční tlačítka myši. Přechod zná směr: krok zpět přisune stránku zleva, krok vpřed zprava. Fungují i se sbaleným navigačním panelem, tedy právě tehdy, kdy náhled 9:16 potřebuje šířku nejvíce. Kromě toho názvy sektorů v závodě nyní sledují jazyk rozhraní. Tato verze opravuje také načítání plánu investování a výnosu pozice, které selhávalo, když období začínalo o víkendu nebo ve svátek; titulek v obraze už nezůstává u předchozího nástroje. Kromě toho nebyly ceny upraveny: štěpení se jevilo jako pád bez příčiny a u akcií s vysokou dividendou byla historická zavírací cena dokonce záporná — matice výnosů, sektorový závod a kalendář čtou tatáž data. Nyní všechny tři trhy i každá stránka kreslící výnos čtou vlastní upravenou řadu.
 
 ### Funkce produktu
 
@@ -458,7 +458,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Что нового в этой версии: кнопки «Назад» и «Вперёд» в заголовке окна — можно ходить по посещённым страницам как в браузере. То же делают Alt+Стрелка влево и Alt+Стрелка вправо, а также боковые кнопки мыши. Переход знает направление: шаг назад вводит страницу слева, шаг вперёд — справа. Обе работают и со свёрнутой панелью навигации — именно тогда, когда предпросмотру 9:16 больше всего нужна ширина. Кроме того, названия секторов в гонке теперь следуют языку интерфейса. В этой версии также исправлена загрузка данных в «Плане пополнений» и «Доходности позиции»: она не удавалась, если период начинался в выходной или праздничный день; заголовок на кадре больше не остаётся от прежнего инструмента. Кроме того, цены Гонконга и США не были скорректированы: дробление выглядело как обвал без причины, а дивиденды не учитывались. Теперь оба рынка читают скорректированные ряды.
+Что нового в этой версии: кнопки «Назад» и «Вперёд» в заголовке окна — можно ходить по посещённым страницам как в браузере. То же делают Alt+Стрелка влево и Alt+Стрелка вправо, а также боковые кнопки мыши. Переход знает направление: шаг назад вводит страницу слева, шаг вперёд — справа. Обе работают и со свёрнутой панелью навигации — именно тогда, когда предпросмотру 9:16 больше всего нужна ширина. Кроме того, названия секторов в гонке теперь следуют языку интерфейса. В этой версии также исправлена загрузка данных в «Плане пополнений» и «Доходности позиции»: она не удавалась, если период начинался в выходной или праздничный день; заголовок на кадре больше не остаётся от прежнего инструмента. Кроме того, цены не были скорректированы: дробление выглядело как обвал без причины, а у акций с высокими дивидендами исторические закрытия были даже отрицательными — матрица доходности, гонка секторов и календарь читали те же значения. Теперь все три рынка и все страницы, рисующие доходность, читают собственный скорректированный ряд.
 
 ### Функции продукта
 
@@ -494,7 +494,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümdeki yenilikler: başlık çubuğunda Geri ve İleri düğmeleri — ziyaret ettiğiniz sayfalar arasında tarayıcıdaki gibi gezinebilirsiniz. Aynı işi Alt+Sol ok ve Alt+Sağ ok ile farenin yan düğmeleri de yapar. Geçiş yönü biliyor: geri adımda sayfa soldan, ileri adımda sağdan kayarak gelir. Gezinme bölmesi katlanmışken de çalışırlar; 9:16 önizlemenin genişliğe en çok ihtiyaç duyduğu an da budur. Ayrıca yarıştaki sektör adları artık arayüz dilini izliyor. Bu sürüm ayrıca birikim planı ve pozisyon getirisi sayfalarındaki veri yüklemeyi düzeltti: dönem hafta sonuna veya resmî tatile denk geldiğinde başarısız oluyordu. Yeni bir enstrüman seçildiğinde görüntüdeki başlık da artık eskisinde kalmıyor. Ayrıca Hong Kong ve ABD fiyatları düzeltilmemişti: bir bölünme nedensiz bir çöküş gibi görünüyor, temettüler de hesaba katılmıyordu. Artık iki piyasa da düzeltilmiş serilerini okuyor.
+Bu sürümdeki yenilikler: başlık çubuğunda Geri ve İleri düğmeleri — ziyaret ettiğiniz sayfalar arasında tarayıcıdaki gibi gezinebilirsiniz. Aynı işi Alt+Sol ok ve Alt+Sağ ok ile farenin yan düğmeleri de yapar. Geçiş yönü biliyor: geri adımda sayfa soldan, ileri adımda sağdan kayarak gelir. Gezinme bölmesi katlanmışken de çalışırlar; 9:16 önizlemenin genişliğe en çok ihtiyaç duyduğu an da budur. Ayrıca yarıştaki sektör adları artık arayüz dilini izliyor. Bu sürüm ayrıca birikim planı ve pozisyon getirisi sayfalarındaki veri yüklemeyi düzeltti: dönem hafta sonuna veya resmî tatile denk geldiğinde başarısız oluyordu. Yeni bir enstrüman seçildiğinde görüntüdeki başlık da artık eskisinde kalmıyor. Ayrıca fiyatlar düzeltilmemişti: bir bölünme nedensiz bir çöküş gibi görünüyor, yüksek temettülü hisselerde geçmiş kapanışlar eksiye bile düşüyordu — getiri matrisi, sektör yarışı ve takvim de aynı fiyatları okuyordu. Artık üç pazar da ve getiri çizen her sayfa kendi düzeltilmiş serisini okuyor.
 
 ### Ürün özellikleri
 

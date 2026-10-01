@@ -69,6 +69,67 @@ full feature set — that version is published and is not repeated here.
   to +82.3%. Indices and trusts that have never distributed still read their unadjusted rows,
   having nothing to adjust for.
 
+- **其余页面的价格也没有复权 / every other page was unadjusted too** — 上一轮只把定投与
+  持仓这两个「按价买入」的页面换到了各市场自己的复权端点，其余页面仍留在通用端点的前复权
+  上。而通用端点对港股和美股根本不给复权序列，对 A 股的高分红股给的是**负数**收盘价——
+  贵州茅台 2010-09 至 2015-12 的月线，1280 根里有 1280 根是负的。于是：
+  - 收益矩阵：收盘价非正数被当作无效值丢掉，茅台静默少了 7 个月、五粮液少 6 个月，剩下的
+    两个月被当成相邻月算收益；港股与美股则完全没有复权，腾讯 2014-05-15 一拆五在月线上是
+    −78.83%，苹果 2020-08-31 一拆四是 −74.15%。
+  - 行业板块竞速：美股十只行业 ETF 里 XLK / XLY / XLE / XLB / XLU 在 2025-12-05 各自凭空
+    跌掉约一半；自选股里放进高分红股，读到的同样是负价。
+  - 涨跌日历：自定义区间拉回几年前时，日涨幅由负价算出。
+  现在凡是要画收益的页面一律走总回报序列：A 股 `newfqkline` 的后复权、港股 `hkfqkline`
+  的后复权、美股 `usfqkline` 的前复权，月线同样按市场选端点。复权后最差月：茅台从
+  −65.99% 回到 −26.23%，苹果从 −69.64% 回到 −18.11%，XLK 从 −49.70% 回到 −11.95%；
+  丢月数全部归零。**成交量与换手率那一页刻意留在前复权**——它靠「量 × 价 ≈ 额」判成交量
+  的单位是手还是股，换成后复权会把价乘上整个复权因子（伊利股份是 84.5），判成「股」就差
+  一百倍。
+  The last round moved only the two pages that buy at a price — the plan and the
+  position — onto each venue's own adjusted endpoint. Every other page stayed on the
+  general endpoint's forward-adjusted series, which for a Hong Kong or US code is not
+  adjusted at all and for an A-share heavy payer is *negative*: every one of 贵州茅台's
+  1280 monthly closes between 2010-09 and 2015-12 is below zero. So the gain matrix
+  dropped those months as invalid — seven of them for 茅台, six for 五粮液 — and read
+  the two months either side of the hole as adjacent; Hong Kong and US months were
+  wholly unadjusted, 腾讯控股's one-for-five of 2014-05-15 arriving as minus 78.83 per
+  cent and Apple's four-for-one as minus 74.15. The sector race showed five of the ten
+  US sector ETFs losing roughly half their value on 2025-12-05, and a watchlist holding
+  a heavy payer reading negative prices. The gain calendar's daily returns came from
+  those same closes once a custom range reached back a few years. Every page that draws
+  a return now reads the total-return series: `newfqkline` backward-adjusted for an
+  A-share, `hkfqkline` backward-adjusted for Hong Kong, `usfqkline` forward-adjusted for
+  the United States, and the monthly request choosing its endpoint the same way. The
+  worst month after: 茅台 −65.99% to −26.23%, Apple −69.64% to −18.11%, XLK −49.70% to
+  −11.95%; no month dropped anywhere. **The volume page stays forward-adjusted on
+  purpose** — it tells a listing's volume unit, lots or shares, from "volume × price ≈
+  amount", and the backward-adjusted price is that price times the listing's whole
+  adjustment factor, which for 伊利股份 is eighty-four: reading "shares" would put every
+  bar a hundredth of what it is.
+
+- **美股复权序列里没有成交额 / the US adjusted series carries no turnover** — 美股的前复权
+  每行只有六个字段，到成交量为止，没有成交额也没有换手率。竞速页的成交额榜和涨跌日历的
+  合计列会因此全部变成零。这两页现在拿到复权价之后，再向通用端点要一次成交额按日期合并：
+  拆股改变的是价格与股数，不改变当天换手的钱，所以未复权那一行里的成交额本来就是对的。
+  A US row on the adjusted series carries six fields and stops at the volume: no amount
+  and no change rate behind it, which left the race's turnover board and the calendar's
+  totals column at zero. Those two pages now ask the general endpoint for the window's
+  turnover as well and merge it in by date. A split divides the price and multiplies the
+  share count; it does not change the money that changed hands, so the unadjusted row's
+  figure was the right one all along.
+
+- **一次网络抖动就把这只票永久降级成不复权 / one dropped request degraded a code for
+  good** — 复权端点只要失败一次，这个代码在本轮会话里就改用通用端点的未复权行，而一次
+  定投要翻二十页，中间抖一下的概率并不小。现在把两种失败分开：请求压根没到源端（超时、
+  连接中断、网关返回一段 HTML 而不是 JSON）最多重试两次再降级；源端明确回答「没有这个
+  代码」则立刻降级，问第二遍也不会变。
+  One failure on the venue's own endpoint was enough to move a code onto the general
+  endpoint's unadjusted rows for the rest of the session, and a plan walks twenty pages,
+  so a single blip was not unlikely. Two kinds of failure are told apart now: a request
+  that never reached the source — a timeout, a broken connection, a gateway answering
+  with HTML instead of JSON — is worth two more attempts, while an answer that says the
+  source does not serve this code here is not, and degrades at once.
+
 - **定投计划与持仓收益取不到数 / the plan and position pages failed to fetch** — 这两个页面
   要把十几年的日线一段一段往回翻，最后一段是「区间起点到已拿到的最早一根之前」；区间起点
   如果落在周末或假期（例如「近 5 年」从 2021-10-01 起，紧跟着就是国庆长假），这一小段里
@@ -122,8 +183,6 @@ full feature set — that version is published and is not repeated here.
   卡在第 3,200 帧、文件被截断的情况，未复现也未定位原因。
   Export offers three sizes × 30/60 fps; one 1440p60 run stalled at frame 3,200 and left a
   truncated file — not reproduced, cause unknown.
-- 美股日线未做拆股调整，长区间曲线在拆股处会出现断崖。
-  US daily bars are not split-adjusted; a long range shows a cliff at a split.
 - 动画背景是全局一份，不能按页面分别设置；也没有纯单色模式与多图轮播。
   The frame backdrop is one global setting, not per page; there is no single-colour mode and no
   slideshow of several pictures.
@@ -131,9 +190,11 @@ full feature set — that version is published and is not repeated here.
 ### 商店文案同步 / Store listing
 
 `docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份已改为**只写
-本次改动**：页面导航、板块名跟随语言、以及取数失败与标题两处修复各一句。
+本次改动**：页面导航、板块名跟随语言、取数失败与标题两处修复，以及复权口径（三个市场、全部
+画收益的页面）。
 The fourteen "What's new in this version" lines now describe only this release: page navigation,
-sector names following the language, and one sentence each for the fetch failure and the title.
+sector names following the language, the fetch failure and the title, and the adjustment basis —
+all three markets, every page that draws a return.
 
 ---
 

@@ -18,8 +18,6 @@ public sealed record MonthlyPoint(string YearMonth, double Return);
 /// </summary>
 public static class MonthlySeries
 {
-    private const string Endpoint = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get";
-
     /// <summary>How many monthly bars one request returns — a decade and a bit.</summary>
     public const int MostBarsPerRequest = 130;
 
@@ -50,8 +48,18 @@ public static class MonthlySeries
         HttpClient http, string code, CancellationToken cancellation)
     {
         var iso = CultureInfo.InvariantCulture;
-        var parameter = $"{code},month,,,130,qfq";
-        var uri = $"{Endpoint}?param={Uri.EscapeDataString(parameter)}";
+
+        // The venue's own endpoint, the same choice the daily path makes in
+        // TencentKline.TotalReturn, and for the same reason: the general one answers
+        // a Hong Kong or US code with unadjusted months whatever adjustment is asked
+        // for. Unadjusted, 腾讯控股's one-for-five of 2014-05-15 is a month of minus
+        // seventy-nine per cent, and a matrix built on it is a matrix of split days.
+        // The adjustment named here is the one whose block the endpoint carries:
+        // `hfqmonth` for Shanghai, Shenzhen and Hong Kong, `qfqmonth` for New York,
+        // where no backward-adjusted series exists at all.
+        var (endpoint, adjustment) = TencentKline.TotalReturn(code);
+        var parameter = $"{code},month,,,130,{adjustment}";
+        var uri = $"{endpoint}?param={Uri.EscapeDataString(parameter)}";
 
         using var response = await http.GetAsync(uri, cancellation);
         response.EnsureSuccessStatusCode();
@@ -71,7 +79,16 @@ public static class MonthlySeries
             throw new InvalidOperationException(Strings.Get("MatrixMonthlyUnavailable"));
         }
 
-        var bars = node.TryGetProperty("qfqmonth", out var adjusted) && adjusted.GetArrayLength() > 0
+        // The adjusted months named after the adjustment asked for, falling back to
+        // the plain ones. The fallback is about the instrument rather than the venue
+        // now: an index has no dividend and no split to adjust for, and neither has
+        // a listing that has never had one, so those rows legitimately carry `month`
+        // alone. A close at or below zero is dropped further down, which is the
+        // reason this cannot stay on the forward-adjusted series: on `qfq` a heavy
+        // payer's whole early history arrives negative, and those months would
+        // vanish silently, leaving the matrix to read a two-month gap as one month's
+        // move.
+        var bars = node.TryGetProperty(adjustment + "month", out var adjusted) && adjusted.GetArrayLength() > 0
             ? adjusted
             : node.TryGetProperty("month", out var plain) ? plain : default;
 

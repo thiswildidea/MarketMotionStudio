@@ -95,7 +95,16 @@ public static class StockSeries
     {
         progress.Report(Strings.Format("StockFetching", code.ToUpperInvariant()));
 
-        var bars = await kline.StockBarsAsync(code, start, end, cancellation);
+        // Forward-adjusted on purpose, and the one page that says so out loud.
+        // This page draws volume and turnover rate, never a return, and it tells the
+        // volume's unit from "volume × price ≈ amount" — a ratio that only reads
+        // right against the price the amount was actually struck at. On the
+        // backward-adjusted series that price is multiplied by the listing's whole
+        // adjustment factor, which for 伊利股份 is eighty-four: the ratio would say
+        // "shares" of a listing quoted in lots, and every bar would be a hundredth
+        // of what it is. The forward-adjusted series is pinned to today's price, so
+        // the ratio stays near one and the detection keeps working.
+        var bars = await kline.StockBarsAsync(code, start, end, cancellation, adjustment: "qfq");
 
         if (bars.Count < 3)
         {

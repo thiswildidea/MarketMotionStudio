@@ -151,7 +151,12 @@ public static class SectorSeries
             progress.Report(string.Format(
                 CultureInfo.InvariantCulture, "{0} ({1}/{2})", entry.Name, i + 1, entries.Count));
 
-            var bars = await kline.StockBarsAsync(entry.Code, start, end, cancellation);
+            // The race draws a return and a turnover off the same rows, so it wants
+            // both measures: the adjusted series for the price, and the general
+            // endpoint's amount where the adjusted one carries none — a US code's
+            // forward-adjusted rows stop at the volume. See
+            // TencentKline.FillTurnoverAsync.
+            var bars = await kline.StockBarsAsync(entry.Code, start, end, cancellation, turnover: true);
 
             perEntry.Add((entry, bars.ToDictionary(
                 b => b.Date,

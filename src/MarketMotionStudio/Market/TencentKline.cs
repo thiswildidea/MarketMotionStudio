@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -183,14 +184,26 @@ public sealed class TencentKline(HttpClient http)
     ///
     /// Same endpoint and same envelope as <see cref="DailyBarsAsync"/> — the market page and the
     /// stock page ask it different questions of the same rows — so the parsing here follows the
-    /// same rules: index-read fields, settled days only, exact range trim. The adjustment is a
-    /// parameter because the two pages that buy at a price want <c>hfq</c> (see
-    /// <see cref="HistoryWalk"/> for why the forward-adjusted series will not do), while the
-    /// pages that only read ratios stay on the default <c>qfq</c>.
+    /// same rules: index-read fields, settled days only, exact range trim.
+    ///
+    /// The default adjustment is <c>hfq</c>, the total-return series, and it is the
+    /// default rather than an option because there is no page that is better off
+    /// without it. The forward-adjusted series rebases itself to today, which for a
+    /// heavy payer lands the historical closes below zero — 贵州茅台's whole
+    /// 2010-2015 stretch arrives negative on <c>qfq</c>, and a ratio between two
+    /// negative numbers is not a return. Where <c>qfq</c> stays positive the two
+    /// differ by one constant factor and every ratio drawn from them is identical,
+    /// so nothing that was right before is made wrong.
     /// </summary>
+    /// <param name="turnover">
+    /// Whether the caller draws turnover as well as price. The US forward-adjusted
+    /// series stops after the volume and carries no amount, so with this set the
+    /// amount is read from the general endpoint and merged in — see
+    /// <see cref="FillTurnoverAsync"/>.
+    /// </param>
     public async Task<List<StockBar>> StockBarsAsync(
         string code, DateOnly start, DateOnly end, CancellationToken cancellation,
-        string adjustment = "qfq")
+        string adjustment = "hfq", bool turnover = false)
     {
         if (!IsStockCode(code))
         {
@@ -221,7 +234,7 @@ public sealed class TencentKline(HttpClient http)
             {
                 try
                 {
-                    var bars = await FetchStockBarsAsync(candidate, start, end, cancellation, adjustment);
+                    var bars = await FetchStockBarsAsync(candidate, start, end, cancellation, adjustment, turnover);
 
                     if (bars.Count >= FewestBars)
                     {
@@ -237,7 +250,7 @@ public sealed class TencentKline(HttpClient http)
             throw last ?? new InvalidOperationException($"{code}: no daily bars in that range.");
         }
 
-        return await FetchStockBarsAsync(code, start, end, cancellation, adjustment);
+        return await FetchStockBarsAsync(code, start, end, cancellation, adjustment, turnover);
     }
 
     /// <summary>
@@ -272,40 +285,130 @@ public sealed class TencentKline(HttpClient http)
     /// <c>amount / price</c> and a marking is <c>shares × price</c>, so the same
     /// constant sits above and below.
     /// </summary>
-    private static (string Endpoint, string Adjustment) TotalReturn(string code) =>
+    public static (string Endpoint, string Adjustment) TotalReturn(string code) =>
         code.StartsWith("hk") ? (HongKongFqEndpoint, "hfq") :
         code.StartsWith("us") ? (UnitedStatesFqEndpoint, "qfq") :
         (Endpoint, "hfq");
 
+    /// <summary>
+    /// How many times the venue's own endpoint is asked before this app gives up on
+    /// it and takes the unadjusted rows instead.
+    ///
+    /// Giving up is expensive and permanent — see <see cref="Degraded"/> — so it has
+    /// to be an answer, not a mood. A dropped connection or a gateway's busy page is
+    /// neither: the endpoint serves the adjusted rows every other time, and losing
+    /// them for the rest of the session over one bad round trip is the worse trade,
+    /// because what comes back instead is a series whose split days are cliffs.
+    /// </summary>
+    private const int AdjustedAttempts = 3;
+
+    /// <summary>How long the next attempt waits. Doubling, because a busy server
+    /// wants a moment, not a second request in the same millisecond.</summary>
+    private static readonly TimeSpan TransientPause = TimeSpan.FromMilliseconds(300);
+
+    /// <summary>
+    /// Whether a failure is worth answering with another attempt.
+    ///
+    /// The distinction is between a request that did not get through and an endpoint
+    /// that did answer. The first is a <see cref="HttpRequestException"/> (which
+    /// covers a non-success status, since that is what
+    /// <c>EnsureSuccessStatusCode</c> throws), a timeout, a broken stream, or a body
+    /// that is not JSON at all — a gateway's HTML error page, say. The second is an
+    /// <see cref="InvalidOperationException"/>: the source answered with a code that
+    /// is not zero, or with no block for the instrument, which is it telling us it
+    /// does not serve this code here, and asking again would not change that.
+    /// </summary>
+    private static bool IsTransient(Exception ex) =>
+        ex is HttpRequestException or TaskCanceledException or IOException or JsonException;
+
     private async Task<List<StockBar>> FetchStockBarsAsync(
         string code, DateOnly start, DateOnly end, CancellationToken cancellation,
-        string adjustment = "qfq")
+        string adjustment, bool turnover)
     {
         var (endpoint, wanted) = adjustment == "hfq" && !Degraded.ContainsKey(code)
             ? TotalReturn(code)
             : (Endpoint, adjustment);
 
-        try
+        if (endpoint == Endpoint)
         {
             return await FetchFromAsync(endpoint, wanted, code, start, end, cancellation);
         }
-        catch (Exception ex) when (endpoint != Endpoint)
+
+        for (var attempt = 1; ; attempt++)
         {
-            // The fallback has to stick, or a walk would mix bases: the general
-            // endpoint answers these venues with unadjusted rows, so a series whose
-            // early pages came from the adjusted endpoint and whose later ones fell
-            // back would draw a cliff where the basis changed. One code, one basis.
-            Degraded[code] = 1;
+            try
+            {
+                var bars = await FetchFromAsync(endpoint, wanted, code, start, end, cancellation);
 
-            // Only the unadjusted rows are guaranteed to be on the general
-            // endpoint, and a plan refused outright is worse than one drawn from
-            // them: a code the source knows under a path it does not serve would
-            // otherwise fail with a message about the range, which is nowhere near
-            // what went wrong.
-            Diagnostics.CrashLog.Note(
-                $"[kline] {endpoint} failed for {code} ({ex.Message}); falling back to {Endpoint}.");
+                return turnover ? await FillTurnoverAsync(bars, code, start, end, cancellation) : bars;
+            }
+            catch (Exception ex) when (attempt < AdjustedAttempts && IsTransient(ex))
+            {
+                await Task.Delay(TransientPause * attempt, cancellation);
+            }
+            catch (Exception ex)
+            {
+                // The fallback has to stick, or a walk would mix bases: the general
+                // endpoint answers these venues with unadjusted rows, so a series whose
+                // early pages came from the adjusted endpoint and whose later ones fell
+                // back would draw a cliff where the basis changed. One code, one basis.
+                Degraded[code] = 1;
 
-            return await FetchFromAsync(Endpoint, adjustment, code, start, end, cancellation);
+                // Only the unadjusted rows are guaranteed to be on the general
+                // endpoint, and a plan refused outright is worse than one drawn from
+                // them: a code the source knows under a path it does not serve would
+                // otherwise fail with a message about the range, which is nowhere near
+                // what went wrong.
+                Diagnostics.CrashLog.Note(
+                    $"[kline] {endpoint} failed for {code} ({ex.Message}); falling back to {Endpoint}.");
+
+                return await FetchFromAsync(Endpoint, adjustment, code, start, end, cancellation);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Puts turnover back into a series the adjusted endpoint returned without it.
+    ///
+    /// The US forward-adjusted series is six fields long and stops at the volume: it
+    /// carries no amount and no change rate. Turnover is the one measure an
+    /// adjustment does not move — a split divides the price and multiplies the share
+    /// count, and the money that changed hands is the same money — so the general
+    /// endpoint's figure is the right one, and this is the only way to hold both
+    /// measures for a US code in one series. The closes stay where they came from.
+    /// </summary>
+    private async Task<List<StockBar>> FillTurnoverAsync(
+        List<StockBar> bars, string code, DateOnly start, DateOnly end, CancellationToken cancellation)
+    {
+        if (bars.Count == 0 || bars.Exists(b => b.AmountWan > 0))
+        {
+            return bars;
+        }
+
+        try
+        {
+            var plain = await FetchFromAsync(Endpoint, "qfq", code, start, end, cancellation);
+            var amounts = new Dictionary<DateOnly, double>();
+
+            foreach (var bar in plain)
+            {
+                if (bar.AmountWan > 0)
+                {
+                    amounts[bar.Date] = bar.AmountWan;
+                }
+            }
+
+            return [.. bars.Select(b =>
+                amounts.TryGetValue(b.Date, out var amount) ? b with { AmountWan = amount } : b)];
+        }
+        catch (Exception ex)
+        {
+            // A price series without turnover still answers the question the page
+            // was asked. Refusing to draw it because a second figure is missing is
+            // not.
+            Diagnostics.CrashLog.Note($"[kline] no turnover for {code} ({ex.Message}); amounts left at zero.");
+
+            return bars;
         }
     }
 
