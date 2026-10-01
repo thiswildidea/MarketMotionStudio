@@ -767,8 +767,9 @@ first export asks and then remembers.
   lists, not the weekly or monthly cadences, not another format. See NOTES.
 - **The Store screenshots show seven pages, not nine.** `tools/store-screenshots.py` predates
   both the candle page and the market-cap board, so the listing's gallery has neither. The
-  listing copy still says eight charts in all fourteen languages — it has not been bumped for
-  the ninth yet — and the gallery says seven.
+  listing copy says nine charts in all fourteen languages, so the copy and the gallery disagree
+  until the two captures are taken. The copy deliberately runs ahead of the package: it is
+  written for the version being prepared, and it must not be uploaded before that package is.
 - **The market-cap board has been fetched and read on one market, at two spans** (A-shares, one
   year and ten years, seventeen checks), and three moments of the ten-year run were captured to
   confirm membership changes. Hong Kong and New York have not been driven through the page; neither

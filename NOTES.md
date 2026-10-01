@@ -927,14 +927,18 @@ never sent to Partner Center, so its entry in the CHANGELOG — page navigation,
 basis across all three markets — describes something no user has. 1.0.3.0 carries it. If a
 1.0.2.0 upload ever happens, the next number has to clear 1.0.3.0.
 
-**The Store gallery is two pages short, and the listing copy is one.** `tools/store-screenshots.py`
-walks the seven pages that existed when it was written. The listing copy says eight, because that is
-what 1.0.3.0 carries — **that package was built before the market-cap board existed, and the copy
-describes the package, not the working tree.** So there are two separate disagreements: copy against
-gallery (one page, fixed by capturing the candle page), and package against source (the market-cap
-board, which is unreleased work and belongs to the next version's entry in both the CHANGELOG and the
-listing). A listing that says eight with seven pictures looks like a mistake rather than like one
-missing shot.
+**The Store gallery is two pages short.** `tools/store-screenshots.py` walks the seven pages that
+existed when it was written, and the listing copy — bumped to nine at the user's instruction, ahead
+of the release that carries them — names all nine in all fourteen languages. Capturing the candle
+page and the market-cap board is what closes it; nothing else about the listing is owed.
+
+**And the copy now describes a build nobody has.** The market-cap board is unreleased: the
+`artifacts/` package is 1.0.3.0 and carries eight pages, so the listing and the newest package
+disagree until the next version is cut. That is a deliberate state, not an oversight — the copy is
+written for the version being prepared — but it does mean **the listing must not be uploaded before
+the package that matches it.** The alternative (leave the copy at eight until the package exists) was
+rejected: the copy is the thing that gets forgotten at the end of a release, and a listing that
+already names the page is one less thing to remember.
 
 **Owed on the candle page:** the Hong Kong market has not been fetched through it at all (the
 A-share and US paths are 18 checks each); the weekly and monthly periods have not been driven
