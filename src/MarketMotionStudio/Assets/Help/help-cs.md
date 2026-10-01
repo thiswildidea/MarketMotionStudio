@@ -6,7 +6,7 @@ Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyber
 
 V nastavení se volí, z kterého trhu aplikace bere kurzy; výchozí jsou A-akcie. Změna se projeví po restartu aplikace.
 
-- **A-akcie**: všech sedm stránek je k dispozici.
+- **A-akcie**: všech osm stránek je k dispozici.
 - **Hongkong**: matice výnosů a kalendář fungují; závod sektorů běží na čtyřech subindexech Hang Seng; **údaj za celý trh neexistuje, proto je tato stránka skrytá**.
 - **USA**: matice výnosů a kalendář fungují; závod sektorů běží na deseti sektorových ETF SPDR; stránka objemu má jen denní režim, protože minutový endpoint data pro USA nevrací; **částky jsou v dolarech a stránka obratu celého trhu je skrytá**.
 
@@ -28,6 +28,17 @@ Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu s
 - Den, který se ještě obchoduje, se vynechává. Nedokončený den obsahuje jen svou otevírací aukci a nakreslil by se jako sloupec přilepený k ose.
 - Nebo se dívat jen na jeden segment: každou burzu, každý hlavní trh, STAR, ChiNext. Hlavní trhy se počítají jako součet burzy minus růstový trh; BSE 50 zůstává měrou podle složek.
 - Součet za celý trh dává jen trh A-akcií. Při volbě Hongkongu nebo USA se stránka z navigace odstraní.
+
+## Svíčkový graf
+
+Svíčky jednoho nástroje: denní, týdenní nebo měsíční, kreslené čtyřmi způsoby, s průměry a objemem pod nimi.
+
+- **Interval** určuje, jaké tržní období jedna svíčka pokrývá: den, týden nebo měsíc. Jeho změna načte data znovu, protože na zdroji jde o tři samostatné řady.
+- **Způsob zobrazení** určuje, jak jsou tytéž čtyři ceny nakresleny: svíčky, OHLC sloupce, čára závěru nebo plocha závěru. Přepínání nic nenačítá.
+- **Animace** je buď přicházení svíček jedna po druhé, dokud není celé období rozkreslené, nebo pevné okno, které se posouvá vpřed. Druhá z nich udrží svíčku na dlouhém období dostatečně širokou ke čtení a její šířka je nastavení **Okno**.
+- Klouzavé průměry MA5, MA10 a MA20 lze položit přes svíčky; panel objemu dole lze vypnout a panel ceny místo získá zpět.
+- Probíhající týden nebo měsíc je vynechán. Svíčka ze tří dnů není týden.
+- Každý trh se čte na své upravené řadě, takže den štěpení akcií není nakreslen jako pokles, a dividenda také ne.
 
 ## Objem a obrat
 
@@ -80,6 +91,7 @@ Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý o
 - Nástroje na jedno klepnutí sledují trh: široké a zlaté ETF u A-akcí, hongkongské trackerové fondy, ve USA SPY, QQQ a GLD.
 - Částku a frekvenci si nastavíte sami; období je tři, pět nebo deset let, nebo tak daleko zpět, jak jsou data k dispozici (zhruba třináct let).
 - Výnos se počítá na zpětně upravených cenách, bez poplatků. Výsledek popisuje řadu cen, nikoli účtenku, kterou by někdo mohl realizovat.
+- Kromě 3, 5 a 10 let a nejdelšího období lze zvolit i **Vlastní**: zadejte počáteční a koncové datum a stiskněte načtení dat. Dostupných je asi 35 let zpět — zdroj vrací zhruba 640 kalendářních dnů na jeden požadavek a průchod jich provede nejvýše dvacet.
 
 ## Výnos pozice
 
@@ -90,6 +102,7 @@ Jediný nákup, držený roky — třeba milion do 中国平安 v roce 2015 — 
 - Nabízená jména odpovídají trhu: v Číně akcie, které lidé skutečně říkají, že drželi (Ping An, Moutai, CMB…), v Hongkongu Tencent, HSBC a Tracker Fund, v USA Apple, Berkshire a SPY.
 - Počáteční kapitál a doba držení jsou na vás; doba může být tři, pět nebo deset let, nebo až tam, kam data sahají (zhruba třináct let).
 - Výnos se počítá ze zpětně upravených cen — dividendy reinvestovány, bez poplatků. Zpětná úprava kotví u prvního dne emise a hromadí dividendy dopředu, takže rané roky štědrého plátce nikdy nejsou nekladné, jak se může stát u dopředné úpravy.
+- Stejné **Vlastní** období platí i pro držbu: zadejte dvě data a stiskněte načtení dat. Pokud byl nástroj uveden na trh později, než je zadané datum, držba začíná jeho prvním obchodním dnem.
 
 ## Video
 
@@ -116,6 +129,8 @@ Na stránce nastavení lze za okno umístit ztmavený obrázek. Karty a panely z
 Na stránce nastavení můžete změnit, na co se animace kreslí: vestavěný přechod, dvě vlastní barvy nebo obrázek. Platí to pro náhled, exportované video i titulní obrázek – všechny tři kreslí stejný renderer, takže neexistuje „v náhledu hezké, v souboru jinak“.
 
 - U barev zadáte horní a dolní odstín a snímek mezi nimi přechází. Tmavé jsou lepší: každý odstín textu je světlý a na světlém pozadí se čísla špatně čtou.
+
+- Posuvník krytí určuje, kolik z obou barev se použije: při 100 % je snímek vybranou dvojicí a níže zespodu prosvítá vlastní tmavý přechod stránky. Právě to udrží světlou dvojici čitelnou.
 
 - Výběr obrázku funguje stejně jako u pozadí okna: obrázek z počítače nebo tapeta, kterou Windows už mají. Vybraný se zkopíruje do složky aplikace.
 

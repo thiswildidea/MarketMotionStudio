@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **seven pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **eight pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -31,7 +31,10 @@ cadence — daily, weekly or monthly — over years of closes, and animates what
 the shares became worth, in whichever currency that market quotes. **Position Return** is the
 seventh and the mirror image of the plan: one purchase, once — 2015, a million, 中国平安 —
 and nothing but the mark-to-market after that, with the drawdown promoted to a headline figure
-because a holding's worst moment is the price of its whole story.
+because a holding's worst moment is the price of its whole story. **Candles** is the eighth: one
+instrument's prices as candles — daily, weekly or monthly — drawn four ways (candles, OHLC bars, a
+closing line, a closing area) with MA5/10/20 and a volume panel, arriving one candle at a time
+across the whole range or walking forward inside a window of it.
 
 **Export is now measured rather than designed.** Three consecutive 90-second 1080p30 exports, driven
 through the live app against 65 trading days of fetched data:
@@ -100,6 +103,7 @@ than assumed from the market's existence:
 | **Gain-loss Calendar** | daily bars for indices and listings | daily bars for indices and listings |
 | **DCA Plan** | the Tracker Fund, the Hang Seng China Enterprises and tech trackers, and the two indices themselves | SPY, QQQ, DIA, IWM and the gold trust |
 | **Position Return** | same preset families as the plan, plus the blue-chip singles | same, plus the broad singles |
+| **Candles** | daily, weekly and monthly bars for indices and listings | same, with the venue tried in turn (`.OQ`, `.N`, `.AM`) |
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what
@@ -125,7 +129,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The seven pages
+## The eight pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -270,6 +274,27 @@ adjusted closes, no fees, and the frame says what it is not.
 Its range selector defaults to **as far back as the source goes**, because a holding's story
 starts where the holder says it did, and "since 2015" is a span no fixed choice covers.
 
+**Candles** — one instrument's prices as candles, and the only page where the period is a choice
+of its own: **daily, weekly or monthly**, each served by the endpoint rather than aggregated from
+the finer one, because a weekly bar the source did not compute is a bar nobody quoted. Four ways
+to draw the same series — candles, OHLC bars, a closing line, a closing area — since the series is
+one thing and what a viewer reads off it is another: bodies answer "where did it open and close",
+a closing line answers "where has it been". MA5/10/20 ride over the plot and a volume panel sits
+under it, and the range's return with its high and low is marked on the frame.
+
+It is also the first page with **two animations**, because a candle series raises a question the
+others do not. **Growing** draws one more candle per step until the whole range is on screen —
+right for a range whose end is the point. **Scrolling** holds a fixed-width window and walks it
+forward — right for a long range, where growing would end with several hundred candles squeezed
+into one frame width. Both are drawn from the same progress fraction, so the choice is about what
+the frame shows at a given moment and not about how the picture is produced.
+
+A US code typed in the wrong case fetches **nothing**, because the search endpoint answers
+`usaapl.oq` while the chart endpoint will only read `usAAPL.OQ` and returns no bars rather than an
+error — which reads as an instrument with no history. A code is canonicalised for its market the
+moment it is known, and the frame's name is the one the endpoint returns with the series rather
+than the code the user typed.
+
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
 A title too long for the frame is scaled down to fit rather than clipped or wrapped, to half
@@ -323,13 +348,14 @@ safe-area floor of 230 for both pages.
 `BaselineAbove(gap)` — a method, not a property, because the gap is a property of the indicator
 and not of the margins.
 
-**The top margin is the same idea with a floor the others do not have.** It measures from the
-top of the frame to the title block, but a phone covers the first 0.12 of the frame with its
-own interface, so below that floor the only thing a top margin could do is slide the title
-under the status bar. Its range therefore starts at 230 baseline pixels — the floor, which
-reproduces the pre-margin layout exactly — and every top-anchored row moves through
-`FrameContext.TopRow(fraction)`, so the header block and the plot shift together as one unit
-and the spacing inside the stack cannot change.
+**The top margin is the same idea, and its safe-area figure is the default rather than the
+floor.** It measures from the top of the frame to the title block, and 230 baseline pixels is
+where a phone's own interface stops covering the frame. That is what the margin *defaults* to,
+because it reproduces the pre-margin layout exactly — but it was also the minimum, which made
+the slider one-directional: a frame wanting less air could only ever get more. The range now
+runs 40 to 450, crossing the safe-area line on the way down rather than starting on it.
+Every top-anchored row moves through `FrameContext.TopRow(fraction)`, so the header block and
+the plot shift together as one unit and the spacing inside the stack cannot change.
 
 **The safe-area guides are drawn by the preview, not by the renderer.** The encoder does not
 own a `PreviewSurface`, so the guides structurally cannot reach a file. The browser version
@@ -465,12 +491,14 @@ src/MarketMotionStudio/
   Market/          TencentKline (the only HTTP to a quote source), TurnoverSeries,
                    InstrumentCalendar (one instrument's bars as that record),
                    HistoryWalk (years of closes, walked backwards a page at a time),
-                   DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding)
+                   DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding),
+                   CandleSeries (daily/weekly/monthly bars, and the two animations' shapes)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
-                   DcaRenderer, PositionRenderer, FrameExporter (one frame to PNG)
+                   DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
+                   FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
   Pages/           StudioPage base, the five indicator pages, the two buy-at-a-price pages,
                    Settings, Help, Playback
@@ -487,6 +515,8 @@ tools/
                          Add one key to all fourteen resw at once — idempotent, key-order checked
   port-*-resw.py, port-*-help.py
                          Port one feature's strings and help section from the sibling project
+  port-store-listing.py  Rewrites the three paragraphs the Store listing repeats in fourteen
+                         languages — the page list, what's new, the feature bullets
   verify-*.py            Drive the UI and assert the feature behaves as documented
   drive-*.py             Drive the app end to end for a smoke run
 ```
@@ -579,8 +609,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 409 keys
-with no encoding damage, and all fourteen help documents carry the same fourteen sections in the
+Every language carries the same keys in the same order. All fourteen currently report 454 keys
+with no encoding damage, and all fourteen help documents carry the same seventeen sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -589,6 +619,30 @@ Light, dark, or whatever Windows is set to, from Settings. It changes as you pic
 is re-read by elements already on screen, which the language is not. The window uses Mica; the
 preview draws an opaque frame of its own inside it, because what the video will look like must
 not depend on the colour of the wallpaper behind the app.
+
+## The frame's backdrop
+
+What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
+user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
+setting for all eight pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+is the single-render-path rule restated: one renderer draws all three.
+
+**It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
+the backdrop it is to fill with, and an export takes one snapshot at the start, so changing the
+setting while an encode is running cannot produce a video that changes face partway through. A
+renderer reading a global would have made that possible, and it would have looked like a corrupt
+file.
+
+**The two sliders run in opposite directions, on purpose.** A picture is faded *towards* the
+page's own gradient, so a higher number is more of the default: a picture arrives carrying its
+own colouring and has to be pushed back. A colour is drawn *over* that gradient at an opacity,
+so 100 is the two colours as chosen and lower lets the page through. Each appears only under its
+own kind, so only one is ever on screen.
+
+Two details a second implementation would get wrong. A picture is cached **per device**, because
+a `CanvasBitmap` belongs to the device that created it and the preview and the encoder do not
+share one — a single cache would hand each the other's bitmap. And a picture that fails to load
+has its path remembered anyway, or a 2,700-frame export retries it 2,700 times.
 
 ## Settings are remembered, results are not
 
@@ -641,3 +695,9 @@ first export asks and then remembers.
   past three years — 726 buys; a ten-year plan of 2,429 buys fetched by hand the same day),
   one cover, one 1080p30 export with its boxes verified. Not the Hong Kong or US preset
   lists, not the weekly or monthly cadences, not another format. See NOTES.
+- **The Store screenshots show seven pages, not eight.** `tools/store-screenshots.py` predates
+  the candle page, so the listing's gallery has no picture of it. The listing copy now says
+  eight charts in all fourteen languages; the gallery still says seven.
+- **Only the A-share and US candle pages have been fetched end to end**, each 18 checks. The
+  Hong Kong one has not; neither has weekly or monthly through the page, nor an export at any
+  format other than the default.

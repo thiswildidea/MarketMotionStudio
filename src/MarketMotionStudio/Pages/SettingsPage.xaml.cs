@@ -123,11 +123,16 @@ public sealed partial class SettingsPage : Page
         // would write the stored colour back over the one being restored.
         TopColour.Color = AnimationBackdrop.Top;
         BottomColour.Color = AnimationBackdrop.Bottom;
+        PaintFrameGradientBase();
         PaintSwatches();
 
         FrameDimSlider.Minimum = AnimationBackdrop.MinDim;
         FrameDimSlider.Maximum = AnimationBackdrop.MaxDim;
         FrameDimSlider.Value = AnimationBackdrop.Dim;
+
+        FrameStrengthSlider.Minimum = AnimationBackdrop.MinStrength;
+        FrameStrengthSlider.Maximum = AnimationBackdrop.MaxStrength;
+        FrameStrengthSlider.Value = AnimationBackdrop.Strength;
 
         _loading = false;
 
@@ -372,11 +377,59 @@ public sealed partial class SettingsPage : Page
         }
     }
 
-    /// <summary>The two swatches, so the dropdowns show the colour they carry.</summary>
+    /// <summary>
+    /// The lowest layer of the preview bar: the gradient the frames use when no
+    /// colour has been chosen.
+    ///
+    /// Painted once and left alone, because it does not depend on anything the
+    /// user changes. It is under the bar's second layer so that the opacity
+    /// slider has something to show through: a bar of one layer would have to
+    /// answer "what is 40% of this colour" with a guess, and the answer the
+    /// renderer gives is the frame's own gradient showing through it.
+    /// </summary>
+    private void PaintFrameGradientBase()
+    {
+        var gradient = new Microsoft.UI.Xaml.Media.LinearGradientBrush
+        {
+            StartPoint = new Windows.Foundation.Point(0.5, 0),
+            EndPoint = new Windows.Foundation.Point(0.5, 1),
+        };
+
+        foreach (var (position, colour) in Palette.Background)
+        {
+            gradient.GradientStops.Add(
+                new Microsoft.UI.Xaml.Media.GradientStop { Offset = position, Color = colour });
+        }
+
+        FrameGradientPreview.Background = gradient;
+    }
+
+    /// <summary>
+    /// The two swatches, so the dropdowns show the colour they carry, and the bar
+    /// under them, so the pair is visible as the gradient it will be.
+    ///
+    /// The bar is what makes a colour change answerable without leaving the page.
+    /// It is drawn from the same two colours the frame is filled with, in the same
+    /// order, at the opacity they will be drawn at, so what it shows is what the
+    /// video shows rather than a second opinion about it.
+    /// </summary>
     private void PaintSwatches()
     {
         TopSwatch.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(AnimationBackdrop.Top);
         BottomSwatch.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(AnimationBackdrop.Bottom);
+
+        FrameGradientOverlay.Background = new Microsoft.UI.Xaml.Media.LinearGradientBrush
+        {
+            StartPoint = new Windows.Foundation.Point(0.5, 0),
+            EndPoint = new Windows.Foundation.Point(0.5, 1),
+            GradientStops =
+            {
+                new Microsoft.UI.Xaml.Media.GradientStop { Offset = 0, Color = AnimationBackdrop.Top },
+                new Microsoft.UI.Xaml.Media.GradientStop { Offset = 1, Color = AnimationBackdrop.Bottom },
+            },
+        };
+
+        FrameGradientOverlay.Opacity = AnimationBackdrop.Strength / 100.0;
     }
 
     private void OnFrameBackdropKindChanged(object sender, SelectionChangedEventArgs e)
@@ -432,6 +485,18 @@ public sealed partial class SettingsPage : Page
         }
 
         AnimationBackdrop.Dim = (int)Math.Round(e.NewValue);
+    }
+
+    /// <summary>How opaque the two chosen colours are.</summary>
+    private void OnFrameStrengthChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        AnimationBackdrop.Strength = (int)Math.Round(e.NewValue);
+        PaintSwatches();
     }
 
     /// <summary>

@@ -91,12 +91,16 @@
              four statistic cards, the credit — inside the frame, so its useful floor is far
              above zero and its ceiling is lower than a side margin's.
 
-             The top slider starts at the phone's top safe area rather than at zero, for the
-             same kind of reason: below its floor the title would slide under the status
-             bar, which is the one direction a top margin must not go. -->
+            The top slider runs the same way down but has a wider reach than the sides: its
+            default sits on the phone's top safe area, and below that default the title is
+            inside the band a status bar covers — which is a margin someone may want on a
+            player that shows no chrome over the picture, and one the preview draws the band
+            for. It was clamped at the safe area once, and the lower half of its range did
+            nothing, which is worse than a range that is wrong: the number moved and the
+            picture did not. -->
         <StackPanel Spacing="4">
             <TextBlock x:Name="MarginTopLabel" Style="{StaticResource CaptionTextBlockStyle}" />
-            <Slider x:Name="MarginTopSlider" Minimum="230" Maximum="450" StepFrequency="5"
+            <Slider x:Name="MarginTopSlider" Minimum="40" Maximum="450" StepFrequency="5"
                     ValueChanged="OnMarginChanged" />
         </StackPanel>
 

@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>Sağ kenar boşluğu: {0}</value></data>
   <data name="StudioMarginBottom"><value>Alt kenar boşluğu: {0}</value></data>
   <data name="StudioMarginTop"><value>Üst kenar boşluğu: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>1080×1920 tabanına göre ölçülür ve seçilen çözünürlüğe oranlanır; burada ayarlanan bir değer her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler. Üst kenar boşluğu, telefonun kendi arayüzü için ayırdığı banttan başlar; böylece başlık asla altına girmez.</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 tabanına göre ölçülür ve seçilen çözünürlüğe oranlanır; burada ayarlanan bir değer her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler. Üst kenar boşluğu 230'dan başlar; telefonun kendi arayüzü için ayırdığı bant budur. Altına inildiğinde başlık durum çubuğunun kapattığı şeride girer.</value></data>
   <data name="StudioSafeArea.Header"><value>Güvenli alan kılavuzları</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Bir telefon uygulamasının kendi arayüzüyle kapattığı bölgeleri gösterir. Yalnızca ön izlemede çizilir, dosyaya hiç girmez.</value></data>
   <data name="StudioPlay.Content"><value>Oynat</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Üst</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Alt</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Bu karelere koyu renkler yakışır: içlerindeki her metin tonu açıktır. Açık bir arka planda sayılar videoda zor okunur.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>%100'de kare seçilen iki rengin kendisidir. Daha düşüğü karenin kendi koyu gradyanını alttan gösterir: açık bir seçim böylece okunur kalır, çünkü her sayı açık bir tonla çizilir.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Opaklık</value></data>
   <data name="NavHistoryBack"><value>Geri</value></data>
   <data name="NavHistoryBackTip"><value>Geri (Alt+Sol ok)</value></data>
   <data name="NavHistoryForward"><value>İleri</value></data>
   <data name="NavHistoryForwardTip"><value>İleri (Alt+Sağ ok)</value></data>
+  <data name="NavCandle.Content"><value>Mumlar</value></data>
+  <data name="CandlePageTitle.Text"><value>Mum grafiği</value></data>
+  <data name="CandlePageSubtitle.Text"><value>Bir enstrümanın mumları: günlük, haftalık veya aylık, dört farklı şekilde çizilir; altında ortalamaları ve hacmi.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Aralık</value></data>
+  <data name="CandlePeriodDaily"><value>Günlük</value></data>
+  <data name="CandlePeriodWeekly"><value>Haftalık</value></data>
+  <data name="CandlePeriodMonthly"><value>Aylık</value></data>
+  <data name="CandleStyleLabel.Header"><value>Çizim türü</value></data>
+  <data name="CandleStyleCandles"><value>Mumlar</value></data>
+  <data name="CandleStyleBars"><value>OHLC çubukları</value></data>
+  <data name="CandleStyleLine"><value>Kapanış çizgisi</value></data>
+  <data name="CandleStyleArea"><value>Kapanış alanı</value></data>
+  <data name="CandleMotionLabel.Header"><value>Animasyon</value></data>
+  <data name="CandleMotionGrow"><value>Aralığın tamamı</value></data>
+  <data name="CandleMotionScroll"><value>Kayan pencere</value></data>
+  <data name="CandleWindowLabel.Header"><value>Pencere (mum)</value></data>
+  <data name="CandleShowAverages.Content"><value>Hareketli ortalamalar MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Hacim</value></data>
+  <data name="CandleOpen"><value>Açılış</value></data>
+  <data name="CandleClose"><value>Kapanış</value></data>
+  <data name="CandleMoveLabel"><value>Değişim</value></data>
+  <data name="CandleCardRange"><value>Dönem getirisi</value></data>
+  <data name="CandleCardAmplitude"><value>Genlik</value></data>
+  <data name="CandleLegendClose"><value>Kapanış</value></data>
+  <data name="CandleFetched"><value>{0} {1} ({2} - {3})</value></data>
+  <data name="CandleRangeTooLong"><value>Aralık çok uzun — {0} en fazla yaklaşık {1} mum alır. Başlangıç tarihini ileri alın.</value></data>
 </root>

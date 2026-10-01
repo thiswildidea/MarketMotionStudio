@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>Prawy margines: {0}</value></data>
   <data name="StudioMarginBottom"><value>Dolny margines: {0}</value></data>
   <data name="StudioMarginTop"><value>Górny margines: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>Mierzone względem 1080×1920 i skalowane do wybranej rozdzielczości, więc wartość dobrana tutaj obowiązuje w każdym rozmiarze. Lewy margines decyduje też, gdzie trafiają opisy osi. Górny margines zaczyna się od obszaru, który telefon rezerwuje na własny interfejs, więc tytuł nigdy nie wsunie się pod niego.</value></data>
+  <data name="StudioMarginNote.Text"><value>Mierzone względem 1080×1920 i skalowane do wybranej rozdzielczości, więc wartość dobrana tutaj obowiązuje w każdym rozmiarze. Lewy margines decyduje też, gdzie trafiają opisy osi. Górny margines startuje od 230 — tyle telefon rezerwuje na własny interfejs; poniżej tytuł wchodzi w pas zasłaniany przez pasek stanu.</value></data>
   <data name="StudioSafeArea.Header"><value>Linie bezpiecznego obszaru</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Obrysowuje obszary, które aplikacja na telefonie zakrywa własnym interfejsem. Rysowane tylko w podglądzie, nigdy w pliku.</value></data>
   <data name="StudioPlay.Content"><value>Odtwórz</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Góra</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Dół</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Tym klatkom pasują ciemne kolory: wszystkie odcienie tekstu są jasne. Na jasnym tle liczby są w wideo trudne do odczytania.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>Przy 100% klatka to po prostu dwa wybrane kolory. Niżej przeziera własny ciemny gradient klatki — w ten sposób jasny wybór pozostaje czytelny, bo każda liczba jest rysowana jasnym tonem.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Krycie</value></data>
   <data name="NavHistoryBack"><value>Wstecz</value></data>
   <data name="NavHistoryBackTip"><value>Wstecz (Alt+Strzałka w lewo)</value></data>
   <data name="NavHistoryForward"><value>Dalej</value></data>
   <data name="NavHistoryForwardTip"><value>Dalej (Alt+Strzałka w prawo)</value></data>
+  <data name="NavCandle.Content"><value>Świece</value></data>
+  <data name="CandlePageTitle.Text"><value>Wykres świecowy</value></data>
+  <data name="CandlePageSubtitle.Text"><value>Świece jednego instrumentu: dzienne, tygodniowe lub miesięczne, rysowane na cztery sposoby, ze średnimi i wolumenem poniżej.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Interwał</value></data>
+  <data name="CandlePeriodDaily"><value>Dzienne</value></data>
+  <data name="CandlePeriodWeekly"><value>Tygodniowe</value></data>
+  <data name="CandlePeriodMonthly"><value>Miesięczne</value></data>
+  <data name="CandleStyleLabel.Header"><value>Rodzaj wykresu</value></data>
+  <data name="CandleStyleCandles"><value>Świece</value></data>
+  <data name="CandleStyleBars"><value>Słupki OHLC</value></data>
+  <data name="CandleStyleLine"><value>Linia zamknięcia</value></data>
+  <data name="CandleStyleArea"><value>Obszar zamknięcia</value></data>
+  <data name="CandleMotionLabel.Header"><value>Animacja</value></data>
+  <data name="CandleMotionGrow"><value>Cały zakres naraz</value></data>
+  <data name="CandleMotionScroll"><value>Przesuwne okno</value></data>
+  <data name="CandleWindowLabel.Header"><value>Okno (świece)</value></data>
+  <data name="CandleShowAverages.Content"><value>Średnie kroczące MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Wolumen</value></data>
+  <data name="CandleOpen"><value>Otwarcie</value></data>
+  <data name="CandleClose"><value>Zamknięcie</value></data>
+  <data name="CandleMoveLabel"><value>Zmiana</value></data>
+  <data name="CandleCardRange"><value>Zwrot w okresie</value></data>
+  <data name="CandleCardAmplitude"><value>Amplituda</value></data>
+  <data name="CandleLegendClose"><value>Zamknięcie</value></data>
+  <data name="CandleFetched"><value>{0} {1} ({2} – {3})</value></data>
+  <data name="CandleRangeTooLong"><value>Zakres jest zbyt długi — {0} sięga najwyżej około {1} świec. Przesuń datę początkową do przodu.</value></data>
 </root>

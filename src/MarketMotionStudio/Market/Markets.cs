@@ -68,6 +68,11 @@ public sealed record RosterList(string LabelKey, RaceEntry[] Entries);
 /// plausibly a story about — household stocks people actually say they have held,
 /// plus an index or tracker for asking what the market itself did.
 /// </param>
+/// <param name="CandleInstruments">
+/// One-tap instruments for the candle page: an index, a stock and a fund from this
+/// market, because "what did it do" is asked about all three and the source quotes
+/// all three out of the same endpoint.
+/// </param>
 /// <param name="CurrencyKey">
 /// Resource key for the venue's currency unit, which the plan's and the position's
 /// subtitles name — an amount invested is an amount *of something*, and the three
@@ -84,6 +89,7 @@ public sealed record MarketProfile(
     RaceEntry[] BroadIndices,
     RaceEntry[] DcaInstruments,
     RaceEntry[] PositionInstruments,
+    RaceEntry[] CandleInstruments,
     string CurrencyKey)
 {
     public string Name => Strings.Get(NameKey);
@@ -240,6 +246,43 @@ public static class Markets
         new("usGLD.AM", "黄金ETF"),
     ];
 
+    /// <summary>
+    /// The A-share candles: an index, the names people look up, and the funds — one
+    /// of each kind the page is asked about, all already carried by
+    /// <see cref="InstrumentNames"/> in every language.
+    /// </summary>
+    public static readonly RaceEntry[] AShareCandles =
+    [
+        new("sh000001", "上证指数"),
+        new("sz399006", "创业板指"),
+        new("sh600519", "贵州茅台"),
+        new("sh601318", "中国平安"),
+        new("sh510300", "沪深300ETF"),
+        new("sz159915", "创业板ETF"),
+    ];
+
+    /// <summary>Hong Kong's candles: the index, the names, and the tracker funds.</summary>
+    public static readonly RaceEntry[] HongKongCandles =
+    [
+        new("hkHSI", "恒生指数"),
+        new("hkHSTECH", "恒生科技"),
+        new("hk00700", "腾讯控股"),
+        new("hk00005", "汇丰控股"),
+        new("hk02800", "盈富基金"),
+        new("hk03067", "安硕恒生科技"),
+    ];
+
+    /// <summary>The US candles: the indices, the names, and the funds.</summary>
+    public static readonly RaceEntry[] UnitedStatesCandles =
+    [
+        new("usDJI", "道琼斯"),
+        new("usIXIC", "纳斯达克"),
+        new("usAAPL.OQ", "苹果"),
+        new("usNVDA.OQ", "英伟达"),
+        new("usSPY.AM", "标普500ETF"),
+        new("usQQQ.OQ", "纳指100ETF"),
+    ];
+
     /// <summary>The US indices and the listings people look up by name.</summary>
     public static readonly RaceEntry[] UnitedStatesIndices =
     [
@@ -272,6 +315,7 @@ public static class Markets
             BroadIndices: MonthlySeries.BroadIndices,
             DcaInstruments: ASharePlans,
             PositionInstruments: AShareHoldings,
+            CandleInstruments: AShareCandles,
             CurrencyKey: "DcaCurrencyCny"),
 
         new(
@@ -291,6 +335,7 @@ public static class Markets
             BroadIndices: HongKongIndices,
             DcaInstruments: HongKongPlans,
             PositionInstruments: HongKongHoldings,
+            CandleInstruments: HongKongCandles,
             CurrencyKey: "DcaCurrencyHkd"),
 
         new(
@@ -310,6 +355,7 @@ public static class Markets
             BroadIndices: UnitedStatesIndices,
             DcaInstruments: UnitedStatesPlans,
             PositionInstruments: UnitedStatesHoldings,
+            CandleInstruments: UnitedStatesCandles,
             CurrencyKey: "DcaCurrencyUsd"),
     ];
 

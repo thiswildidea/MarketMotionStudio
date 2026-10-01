@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>Pravý okraj: {0}</value></data>
   <data name="StudioMarginBottom"><value>Dolní okraj: {0}</value></data>
   <data name="StudioMarginTop"><value>Horní okraj: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>Měřeno proti 1080×1920 a přepočítáno na zvolené rozlišení, takže hodnota vyladěná tady platí v každé velikosti. Levý okraj také rozhoduje, kam dopadnou popisky osy. Horní okraj začíná na pásu, který si telefon rezervuje pro vlastní rozhraní, takže titulek se pod něj nikdy nedostane.</value></data>
+  <data name="StudioMarginNote.Text"><value>Měřeno proti 1080×1920 a přepočítáno na zvolené rozlišení, takže hodnota vyladěná tady platí v každé velikosti. Levý okraj také rozhoduje, kam dopadnou popisky osy. Horní okraj začíná na 230 — tolik si telefon rezervuje pro vlastní rozhraní; pod touto hodnotou se titulek posune do pásu, který překrývá stavový řádek.</value></data>
   <data name="StudioSafeArea.Header"><value>Vodítka bezpečné oblasti</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Vyznačuje oblasti, které aplikace v telefonu zakryje vlastním rozhraním. Kreslí se jen v náhledu, nikdy do souboru.</value></data>
   <data name="StudioPlay.Content"><value>Přehrát</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Nahoře</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Dole</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Těmto snímkům sluší tmavé barvy: všechny odstíny textu jsou světlé. Na světlém pozadí se čísla ve videu špatně čtou.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>Při 100 % je snímek prostě dvojicí zvolených barev. Níže prosvítá vlastní tmavý přechod snímku — tím zůstane i světlá volba čitelná, protože každé číslo je kresleno světlým tónem.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Krytí</value></data>
   <data name="NavHistoryBack"><value>Zpět</value></data>
   <data name="NavHistoryBackTip"><value>Zpět (Alt+šipka vlevo)</value></data>
   <data name="NavHistoryForward"><value>Vpřed</value></data>
   <data name="NavHistoryForwardTip"><value>Vpřed (Alt+šipka vpravo)</value></data>
+  <data name="NavCandle.Content"><value>Svíčky</value></data>
+  <data name="CandlePageTitle.Text"><value>Svíčkový graf</value></data>
+  <data name="CandlePageSubtitle.Text"><value>Svíčky jednoho nástroje: denní, týdenní nebo měsíční, kreslené čtyřmi způsoby, s průměry a objemem pod nimi.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Interval</value></data>
+  <data name="CandlePeriodDaily"><value>Denní</value></data>
+  <data name="CandlePeriodWeekly"><value>Týdenní</value></data>
+  <data name="CandlePeriodMonthly"><value>Měsíční</value></data>
+  <data name="CandleStyleLabel.Header"><value>Způsob zobrazení</value></data>
+  <data name="CandleStyleCandles"><value>Svíčky</value></data>
+  <data name="CandleStyleBars"><value>OHLC sloupce</value></data>
+  <data name="CandleStyleLine"><value>Čára závěru</value></data>
+  <data name="CandleStyleArea"><value>Plocha závěru</value></data>
+  <data name="CandleMotionLabel.Header"><value>Animace</value></data>
+  <data name="CandleMotionGrow"><value>Celé období</value></data>
+  <data name="CandleMotionScroll"><value>Posuvné okno</value></data>
+  <data name="CandleWindowLabel.Header"><value>Okno (svíčky)</value></data>
+  <data name="CandleShowAverages.Content"><value>Klouzavé průměry MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Objem</value></data>
+  <data name="CandleOpen"><value>Otevření</value></data>
+  <data name="CandleClose"><value>Závěr</value></data>
+  <data name="CandleMoveLabel"><value>Změna</value></data>
+  <data name="CandleCardRange"><value>Výnos za období</value></data>
+  <data name="CandleCardAmplitude"><value>Rozpětí</value></data>
+  <data name="CandleLegendClose"><value>Závěr</value></data>
+  <data name="CandleFetched"><value>{0} {1} ({2} – {3})</value></data>
+  <data name="CandleRangeTooLong"><value>Rozsah je příliš dlouhý — {0} pojme nejvýše přibližně {1} svíček. Posuňte datum začátku dopředu.</value></data>
 </root>

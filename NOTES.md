@@ -4,7 +4,7 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-09-28 (after the help pictures; see the end).
+Last reviewed: 2026-10-01 (after the eighth page, the custom spans and 1.0.3.0; see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -918,3 +918,38 @@ fourteen `media/<tag>/` folders, alongside the fourteen help documents, `resourc
 Win2D's native `Microsoft.Graphics.Canvas.dll` for x64, x86 and arm64. The inner x64 and arm64
 packages are ~74 MB each, so the bundle — 148.8 MB as a `.msixupload` — is not what a device
 downloads; the Store serves one architecture.
+
+## 1.0.3.0, and what the eighth page left owed
+
+**1.0.2.0 was built and never uploaded.** Its `.msixupload` (`artifacts/`, 2026-10-01 11:34) was
+never sent to Partner Center, so its entry in the CHANGELOG — page navigation, the adjustment
+basis across all three markets — describes something no user has. 1.0.3.0 carries it. If a
+1.0.2.0 upload ever happens, the next number has to clear 1.0.3.0.
+
+**The Store gallery is one page short.** `tools/store-screenshots.py` walks the seven pages that
+existed when it was written, and the listing copy now says eight in all fourteen languages. The
+copy and the gallery disagree until the candle page is captured, and a listing that says eight
+with seven pictures looks like a mistake rather than like one missing shot.
+
+**Owed on the candle page:** the Hong Kong market has not been fetched through it at all (the
+A-share and US paths are 18 checks each); the weekly and monthly periods have not been driven
+through the page; and no export has been run at any format other than the default. Scrolling
+animation has been watched, growing has been watched; neither has been *encoded*.
+
+**Owed on the custom spans:** the two date boxes cannot be driven through UI Automation — a
+WinUI `DatePicker` exposes a `FlyoutButton` and no scrollable ancestor, so `verify-custom-range.py`
+asserts the panel appears and that a fetch returns the custom span, rather than setting the dates
+themselves. The reversal and over-length refusals are therefore asserted through the loader
+(`CandleLoader.WalkAsync`, `HistoryWalk`) rather than through the UI. If a picker ever needs to be
+driven, that is the wall and it has not been climbed.
+
+**Owed on the help documents:** they carry seventeen chapters now, and five of them still have
+pictures — the candle chapter has none, so the manual describes the newest page with no picture
+while four older ones have one.
+
+**Two reusable findings from this round**, both already recorded where they belong — in the
+skills, not here: a WinUI 3 combo's popup items live in the *main window's* own UIA tree, so
+excluding the window finds nothing and including it finds the navigation pane too, and the popup
+has to be told apart by what opening the combo added; and the settings page's scroller is a
+`PaneControl` in UIA, not a `ScrollViewer`, which is why every earlier attempt to scroll it did
+nothing.

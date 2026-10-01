@@ -141,6 +141,20 @@
                               HorizontalAlignment="Stretch"
                               SelectionChanged="OnHoldingChanged" />
 
+                    <!-- The holding's own span, two dates rather than one of the list's
+                         counts. Shown by the list's choice: "since 2015" is a span no
+                         count covers, and it is the question this page is asked with. -->
+                    <StackPanel x:Name="CustomRange" Spacing="8" Visibility="Collapsed">
+                        <DatePicker x:Name="FromDate"
+                                    x:Uid="StudioRangeFrom"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnCustomRangeChanged" />
+                        <DatePicker x:Name="ToDate"
+                                    x:Uid="StudioRangeTo"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnCustomRangeChanged" />
+                    </StackPanel>
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

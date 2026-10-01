@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>Marge droite : {0}</value></data>
   <data name="StudioMarginBottom"><value>Marge basse : {0}</value></data>
   <data name="StudioMarginTop"><value>Marge haute : {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>Exprimées par rapport à 1080×1920 puis mises à l'échelle de la résolution choisie ; une valeur réglée ici reste valable à toutes les tailles. La marge gauche détermine aussi où se posent les graduations de l'axe. La marge haute démarre à la bande que le téléphone réserve à sa propre interface, si bien que le titre ne peut jamais glisser dessous.</value></data>
+  <data name="StudioMarginNote.Text"><value>Exprimées par rapport à 1080×1920 puis mises à l'échelle de la résolution choisie ; une valeur réglée ici reste valable à toutes les tailles. La marge gauche détermine aussi où se posent les graduations de l'axe. La marge haute part de 230, la bande que le téléphone réserve à sa propre interface ; en dessous, le titre entre dans la zone couverte par la barre d'état.</value></data>
   <data name="StudioSafeArea.Header"><value>Repères de zone sûre</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Délimite les zones qu'une application mobile recouvre de sa propre interface. Tracés dans l'aperçu seulement, jamais dans un fichier.</value></data>
   <data name="StudioPlay.Content"><value>Lire</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Haut</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Bas</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Les couleurs sombres conviennent à ces images : toutes leurs teintes de texte sont claires. Sur un fond clair, les chiffres sont difficiles à lire dans la vidéo.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>À 100 %, l'image est les deux couleurs choisies. En dessous, son propre dégradé sombre transparaît : ainsi un choix clair reste lisible, car tous les chiffres y sont dessinés dans des teintes claires.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Opacité</value></data>
   <data name="NavHistoryBack"><value>Précédent</value></data>
   <data name="NavHistoryBackTip"><value>Précédent (Alt+Gauche)</value></data>
   <data name="NavHistoryForward"><value>Suivant</value></data>
   <data name="NavHistoryForwardTip"><value>Suivant (Alt+Droite)</value></data>
+  <data name="NavCandle.Content"><value>Chandeliers</value></data>
+  <data name="CandlePageTitle.Text"><value>Chandeliers</value></data>
+  <data name="CandlePageSubtitle.Text"><value>Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels, dessinés de quatre façons, avec ses moyennes et son volume en dessous.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Granularité</value></data>
+  <data name="CandlePeriodDaily"><value>Quotidien</value></data>
+  <data name="CandlePeriodWeekly"><value>Hebdomadaire</value></data>
+  <data name="CandlePeriodMonthly"><value>Mensuel</value></data>
+  <data name="CandleStyleLabel.Header"><value>Type de tracé</value></data>
+  <data name="CandleStyleCandles"><value>Chandeliers</value></data>
+  <data name="CandleStyleBars"><value>Barres OHLC</value></data>
+  <data name="CandleStyleLine"><value>Ligne de clôture</value></data>
+  <data name="CandleStyleArea"><value>Aire de clôture</value></data>
+  <data name="CandleMotionLabel.Header"><value>Animation</value></data>
+  <data name="CandleMotionGrow"><value>Tracer tout l'intervalle</value></data>
+  <data name="CandleMotionScroll"><value>Fenêtre glissante</value></data>
+  <data name="CandleWindowLabel.Header"><value>Fenêtre (chandeliers)</value></data>
+  <data name="CandleShowAverages.Content"><value>Moyennes mobiles MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Volume</value></data>
+  <data name="CandleOpen"><value>Ouverture</value></data>
+  <data name="CandleClose"><value>Clôture</value></data>
+  <data name="CandleMoveLabel"><value>Variation</value></data>
+  <data name="CandleCardRange"><value>Rendement de la période</value></data>
+  <data name="CandleCardAmplitude"><value>Amplitude</value></data>
+  <data name="CandleLegendClose"><value>Clôture</value></data>
+  <data name="CandleFetched"><value>{0} {1} ({2} à {3})</value></data>
+  <data name="CandleRangeTooLong"><value>La période est trop longue : {0} atteint environ {1} bougies au maximum. Avancez la date de début.</value></data>
 </root>

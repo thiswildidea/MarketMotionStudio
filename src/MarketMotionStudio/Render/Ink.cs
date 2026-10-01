@@ -48,6 +48,40 @@ public static class Ink
         return layout.LayoutBounds.Width;
     }
 
+    /// <summary>
+    /// How far the next run of a line starts after this one — the width of the text
+    /// *including* the spaces it ends with.
+    ///
+    /// <see cref="Measure"/> cannot answer this, because a text layout's bounds
+    /// exclude trailing whitespace: a run written as <c>"开 "</c> measures as
+    /// <c>"开"</c>. Runs were separated by putting a space at the end of the one
+    /// before, so every separator was measured as absent — and the line came out with
+    /// no gaps at all, which on a run of CJK labels and figures reads as each label
+    /// printed over the number before it rather than as a spacing that was never
+    /// tuned. Nothing catches it: the wide pages that use this carry Latin text and a
+    /// middle dot, and there a missing gap just looks tight.
+    ///
+    /// The width is taken against a sentinel, which gives the spaces something to sit
+    /// in front of, and the sentinel's own width comes back off. Kerning between a
+    /// space and a box-drawing character is nothing to correct for.
+    /// </summary>
+    private static double Advance(ICanvasResourceCreator target, string text, CanvasTextFormat format)
+    {
+        if (text.Length == 0)
+        {
+            return 0;
+        }
+
+        if (!char.IsWhiteSpace(text[^1]))
+        {
+            return Measure(target, text, format);
+        }
+
+        const string Sentinel = "\u2502";
+
+        return Measure(target, text + Sentinel, format) - Measure(target, Sentinel, format);
+    }
+
     /// <summary>Centred horizontally on <paramref name="cx"/>, baseline at <paramref name="baselineY"/>.</summary>
     public static void Centred(
         CanvasDrawingSession session, string text, double cx, double baselineY,
@@ -109,12 +143,17 @@ public static class Ink
     /// stack them; laying them out left to right from an assumed centre would shift the
     /// line whenever one run's width changed — and the run that changes here is a count
     /// of trading days, which changes with every fetch.
+    ///
+    /// Each run is advanced by its width with trailing spaces counted — see
+    /// <see cref="Advance"/>. Runs are separated by writing the space into the run
+    /// before, so measuring without it lays the line out with no gaps at all.
     /// </summary>
     public static void Runs(
         CanvasDrawingSession session, IReadOnlyList<(string Text, Color Colour, CanvasTextFormat Format)> runs,
         double cx, double baselineY, double opacity = 1)
     {
         var layouts = new CanvasTextLayout[runs.Count];
+        var advances = new double[runs.Count];
         var total = 0.0;
 
         try
@@ -122,7 +161,8 @@ public static class Ink
             for (var i = 0; i < runs.Count; i++)
             {
                 layouts[i] = new CanvasTextLayout(session, runs[i].Text, runs[i].Format, 0, 0);
-                total += layouts[i].LayoutBounds.Width;
+                advances[i] = Advance(session, runs[i].Text, runs[i].Format);
+                total += advances[i];
             }
 
             var x = cx - (total / 2);
@@ -130,7 +170,7 @@ public static class Ink
             for (var i = 0; i < runs.Count; i++)
             {
                 Draw(session, layouts[i], x, baselineY, runs[i].Colour, opacity);
-                x += layouts[i].LayoutBounds.Width;
+                x += advances[i];
             }
         }
         finally

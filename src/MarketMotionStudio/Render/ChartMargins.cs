@@ -26,10 +26,11 @@
 /// <item><description><b>Right</b> is symmetry with the left in the ordinary
 /// case, and headroom for the last bar's value label.</description></item>
 /// <item><description><b>Top</b> is the distance from the top of the frame to the
-/// title block. It has a floor the other three do not: <see cref="SafeArea.Top"/>,
-/// the band a phone covers with its own status bar, which the render honours
-/// whether the margin likes it or not. So the useful range starts at that floor
-/// rather than at zero — the one direction a top margin cannot go is up.</description></item>
+/// title block. It opens on <see cref="SafeArea.Top"/>, the band a phone covers with
+/// its own status bar, and can be drawn in from there or pushed up through it. Going
+/// up is allowed and is not the default: a frame exported for a player that shows no
+/// chrome over the picture has that room to spend, and the preview draws the band so
+/// the crossing is visible rather than a surprise in the file.</description></item>
 /// </list>
 /// </summary>
 public sealed record ChartMargins(double Left, double Right, double Bottom, double Top)
@@ -45,7 +46,15 @@ public sealed record ChartMargins(double Left, double Right, double Bottom, doub
     /// per-page override would be a mechanism implying a difference that is no
     /// longer there.
     /// </summary>
-    public static ChartMargins Default { get; } = new(150, 150, 250, TopSmallest);
+    public static ChartMargins Default { get; } = new(150, 150, 250, TopDefault);
+
+    /// <summary>
+    /// What the top margin opens on: <see cref="SafeArea.Top"/> multiplied out for
+    /// the 1080×1920 baseline. The floor and the default are no longer the same
+    /// number — the default is where the title is safe on a phone, the floor is
+    /// where the slider stops.
+    /// </summary>
+    public const double TopDefault = 230;
 
     /// <summary>
     /// The side-margin range. The floor is not zero: a left margin of zero puts the axis
@@ -66,13 +75,13 @@ public sealed record ChartMargins(double Left, double Right, double Bottom, doub
     public const double BottomLargest = 420;
 
     /// <summary>
-    /// The top margin's range. The floor *is* <see cref="SafeArea.Top"/> expressed in
-    /// baseline pixels (0.12 of 1920): below it the title would slide under a phone's
-    /// status bar, which is the one thing a margin must never do. The ceiling is where
-    /// the plot starts being eaten rather than repositioned — the same reasoning as the
+    /// The top margin's range. The floor matches the side margins' — a title set forty
+    /// baseline pixels from the top edge is a decision someone may make, and the preview
+    /// draws the safe-area band so that crossing into it is visible. The ceiling is where the
+    /// plot starts being eaten rather than repositioned — the same reasoning as the
     /// bottom's, from the other end.
     /// </summary>
-    public const double TopSmallest = 230;
+    public const double TopSmallest = 40;
 
     public const double TopLargest = 450;
 

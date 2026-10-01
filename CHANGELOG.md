@@ -20,7 +20,134 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.3.0 — 2026-10-01（更新版 / update）
+
+**1.0.2.0 那一版只构建成包、从未上传商店**，所以它写下的内容（页面导航、三个市场的复权口径等）
+是随本版一起到达用户的。下面只列本版在 1.0.2.0 之上新增的改动。应用的完整能力仍见下面的
+0.0.0.0 条目。
+Version 1.0.2.0 was built but never uploaded, so what its entry describes — page navigation, the
+adjustment basis across the three markets — reaches users as part of this one. What follows is only
+what this version adds on top of it. The full feature set is still in the 0.0.0.0 entry below.
+
+### 新增 / Added
+
+- **第八页：K线走势 / an eighth page: Candles** — 一只标的的价格画成 K 线，日线 / 周线 / 月线
+  任选，四种画法（蜡烛、美国线、收盘线、面积），带 MA5/10/20 均线与成交量副图；区间的涨跌幅和
+  最高、最低点标在画面上。动画有两种且可切换：**逐根生长**——从区间第一根长到最后一根；
+  **固定窗口滚动**——窗口宽度固定，画面带着一段行情向前走。指数、个股、ETF 都能画，三个市场
+  都支持。它在导航里排在「市场成交额」正下方，与帮助手册里的顺序一致。
+  One instrument's prices as candles, daily, weekly or monthly, drawn four ways — candles, OHLC
+  bars, a closing line, a closing area — with MA5/10/20 averages and a volume panel beneath, the
+  range's return and its high and low marked on the frame. Two animations, switchable: **growing**,
+  one candle at a time from the range's first to its last, and **scrolling**, a fixed-width window
+  walking forward through the range. Indices, stocks and ETFs all draw, on all three markets. It
+  sits directly under Market Turnover in the navigation, which is where the manual puts it.
+- **自定义数据区间 / a custom span, on three pages** — K线走势、定投计划、持仓收益的区间下拉
+  都多了一档「自定义」：选它就露出起始日期与结束日期两个框，取回来的就是这两个日期之间的行情。
+  此前定投与持仓只能选区间长度（3 / 5 / 10 年 / 最长），K线页则完全没有这一档。两个日期的可选
+  范围不是随手定的：这三个页面都要把日线一段一段往回翻，一页约 640 个自然日，能翻多少次是定
+  死的，所以日期框的上限就钉在那条线上（K线页约 10 年，定投与持仓约 35 年）。超出上限会在发
+  请求之前就拒绝——再往前，回溯会在走到你要的起点之前先用完请求次数，序列会悄悄从更晚的一天
+  开始，而填两个日期的全部意义就是那天是那天。起始日期晚于结束日期同样在发请求前拒绝：否则源
+  端只会含糊地说「天数太少」，而画面里上一次那条曲线还站在两个它从没走过的日期底下。
+  Candles, the DCA plan and the position replay each gained a **Custom** entry in their range
+  dropdown: pick it and two date boxes appear, a start and an end, and the fetch returns exactly
+  what lies between them. The plan and the position could only take a length before — three, five
+  or ten years, or as far back as there is — and the candle page had no such entry at all. The
+  range the boxes offer is not arbitrary: all three pages walk daily bars backwards a page at a
+  time, about 640 calendar days to a page, with a fixed ceiling on requests, so the boxes stop
+  where the walk stops (roughly ten years on the candle page, thirty-five on the other two). Asking
+  for more is refused before any request goes out — past that line the walk runs out of requests
+  before it reaches the day you asked for, and the series quietly starts later, while the whole
+  point of typing two dates is that the day is the day. A start later than the end is refused for
+  the same reason: otherwise the source answers something vague about too few days, and the
+  previous curve is left standing under two dates it never visited.
+
+### 改进 / Changed
+
+- **动画背景的颜色档有了不透明度 / an opacity for a colour backdrop** — 选「颜色」时两个色标
+  下面多一条滑条（20–100，默认 100）：100% 就是所选的两个颜色本身，往低调会从底下透出这一页
+  原本的深色渐变。方向故意与图片档那条相反：图片带着自己的配色来，需要被压回去（浓度越高越接近
+  默认底）；颜色是你选的，要决定的是用多少。两条各自只在自己的类型下出现。
+  A colour backdrop gained a slider under its two swatches, 20–100 with 100 the default: at 100 the
+  frame is the two colours you picked, and turning it down lets the page's own dark gradient show
+  through from beneath. Deliberately the opposite direction from the picture's slider — a picture
+  arrives with its own colouring and has to be pushed back, while a colour is yours and the question
+  is how much of it to use. Each appears only under its own kind.
+- **颜色改动在设置页就有回应 / a colour change answers on the page it was made** — 两个取色器下面
+  多了一条 40 像素的渐变条，画的就是这一页会被填成的样子（底＝默认渐变，上＝所选色按不透明度），
+  改颜色或拖滑条时它跟着变。此前唯一的反馈是下拉里那个 18 像素的色块，而画面在另一个页面上，
+  于是「刚才那一下有没有生效」在选颜色的那一页上没有答案。
+  A forty-pixel bar under the two pickers draws what the frame will be filled with — the page's
+  default gradient beneath, the chosen colours over it at their opacity — and follows both the
+  colours and the slider. The only feedback before was an eighteen-pixel swatch in each dropdown,
+  with the frame itself on another page, so "did that do anything" had no answer where the colour
+  was chosen.
+- **上边距的最小值从 230 放宽到 40 / the top margin's floor is 40 now** — 默认仍是 230（手机
+  状态栏遮住的那 0.12 帧高就是 230 基线像素，低于它标题会被压到状态栏底下），但最小值此前也是
+  230，等于这个滑块只能往上、不能往下。现在可以收到 40。
+  The default is still 230 — the 0.12 of the frame a phone's own interface covers, below which a
+  top margin can only slide the title under the status bar — but the minimum was 230 too, so the
+  slider could only ever go up. It now goes down to 40.
+
+### 修复 / Fixed
+
+- **K线表头的四价行压住了日期行 / the candle header's quote row sat on its date** — 表头四行
+  （标题、副标题、日期、开高低收）里，四价那一行还硬写着上一版留下来的一个裸数字，加上大数字的
+  发光会向外糊约 25 像素，压到了下面一行。四行现在是命名常量，按发光半径重排。
+  Of the header's four rows — title, subtitle, date, open/high/low/close — the quote row still
+  carried a bare number left over from an earlier pass, and the glow behind the large figures
+  blurs about twenty-five pixels outward, so it sat on the row beneath. The four rows are named
+  constants now, spaced with the glow's radius in mind.
+- **日期行没有落在两行中间 / the date was not centred between its neighbours** — 按基线取中点仍
+  差 4 像素：中文副标题挂在基线下方 4 像素，四价行的中文标签又有 22 像素高。居中现在按**墨迹**
+  算而不是按基线，实测上下间隙各 42.2 像素。成交额、定投、持仓三页的同一行同此改法。
+  Taking the midpoint of the two baselines was still four pixels out: a CJK subtitle hangs four
+  pixels below its baseline and the quote row's CJK labels are twenty-two tall. Centring is
+  measured on the ink now rather than on the baseline — 42.2 pixels of clear space above and below.
+  The same row on the turnover, plan and position pages was corrected the same way.
+- **美股代码大小写导致取不到数据，标题还写错 / a US code in the wrong case fetched nothing, and
+  the title was wrong** — 搜索端点返回小写 `usaapl.oq`，而 K 线端点只认 `usAAPL.OQ`，对小写返回
+  **空数据而不是报错**，看起来像一只没有历史的标的；标题则直接把代码大写印成 `USAAPL`。代码现在
+  在第一次拿到时就按市场规范化，画面上的名字用端点随行情一起返回的那个。
+  The search endpoint answers in lower case (`usaapl.oq`) while the candle endpoint will only read
+  `usAAPL.OQ` — and answers a lower-case code with *no data* rather than an error, which reads as an
+  instrument with no history. The title printed the code upper-cased as `USAAPL`. A code is
+  canonicalised for its market as soon as it is known, and the name the frame shows is the one the
+  endpoint returns alongside the series.
+
+### 已知限制 / Known limits（沿用 1.0.2.0，本版未变 / unchanged from 1.0.2.0）
+
+- 导出规格为 720×1280 / 1080×1920 / 1440×2560 三种尺寸 × 30 / 60 fps。1440p60 长片有过一次
+  卡在第 3,200 帧、文件被截断的情况，未复现也未定位原因。
+  Export offers three sizes × 30/60 fps; one 1440p60 run stalled at frame 3,200 and left a
+  truncated file — not reproduced, cause unknown.
+- 动画背景是全局一份，不能按页面分别设置；也没有纯单色模式与多图轮播。
+  The frame backdrop is one global setting, not per page; there is no single-colour mode and no
+  slideshow of several pictures.
+- 商店截图仍是七个页面，K线走势页的截图尚未拍摄。
+  The Store screenshots still show seven pages; the candle page has not been captured yet.
+
+### 商店文案同步 / Store listing
+
+`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份已改为**只写
+本次改动**：K线走势页、三页的自定义区间、颜色档的不透明度、上边距放宽，以及两处修复。同一份文件
+里「说明」的图表页数与「产品功能」的图表条数也跟着从七改成八。
+之前这些改动是手写到 14 份里的，本版起由一个脚本（`tools/port-store-listing.py`）按语言改，
+幂等，且每处都按整行精确匹配——某语言的措辞与脚本里的不一致时会报错而不是留下一个旧数字。
+The fourteen "What's new in this version" lines now describe only this release: the candle page,
+the custom span on three pages, opacity for a colour backdrop, the relaxed top margin, and two
+fixes. The description's page count and the features bullet in the same file moved from seven to
+eight. These edits used to be made by hand in fourteen places; from this version a script does it
+(`tools/port-store-listing.py`), idempotent and matching whole lines, so a language whose wording
+differs fails loudly instead of keeping a stale number.
+
+---
+
 ## 1.0.2.0 — 2026-10-01（更新版 / update）
+
+**本版只构建成包、未上传商店；内容随 1.0.3.0 一起发布。**
+Built but never uploaded; its contents shipped with 1.0.3.0.
 
 **1.0.1.0 之后的第一版更新，下面只列本次改动。** 应用的完整能力见下面的 0.0.0.0 条目——
 那一版已发布，这里不重复。

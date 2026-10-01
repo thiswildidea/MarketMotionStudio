@@ -6,7 +6,7 @@ Este aplicativo transforma indicadores do mercado de ações A em vídeos vertic
 
 Em Configurações escolhe-se de qual mercado o app obtém suas cotações; ações A por padrão. A mudança vale após reiniciar o app.
 
-- **Ações A**: as sete páginas estão disponíveis.
+- **Ações A**: as oito páginas estão disponíveis.
 - **Hong Kong**: a matriz de retorno e o calendário funcionam; a corrida de setores usa os quatro subíndices Hang Seng; **não há número para o mercado inteiro, então essa página fica oculta**.
 - **Estados Unidos**: a matriz de retorno e o calendário funcionam; a corrida de setores usa dez ETFs setoriais SPDR; a página de volume mantém só o modo diário, porque o endpoint de minutos não serve dados americanos; **os valores estão em dólares e a página de volume do mercado fica oculta**.
 
@@ -28,6 +28,17 @@ O volume financeiro de cada dia em todo o mercado: os valores dos índices compo
 - Um pregão ainda em andamento é deixado de fora. Um dia inacabado contém apenas seu leilão de abertura e seria desenhado como uma barra colada ao eixo.
 - Ou olhar só um segmento: cada bolsa, cada quadro principal, STAR, ChiNext. Os quadros principais são derivados do total da bolsa menos o seu quadro de crescimento; o BSE 50 continua sendo uma medida de componentes.
 - Só o mercado de ações A dá um total do mercado inteiro. Com Hong Kong ou Estados Unidos a página é removida da navegação.
+
+## Candlestick
+
+Os candles de um instrumento: diários, semanais ou mensais, desenhados de quatro formas, com médias e volume abaixo.
+
+- **Intervalo** decide quanto tempo de mercado um candle cobre: um dia, uma semana ou um mês. Mudá-lo busca os dados de novo, porque na fonte as três são séries distintas.
+- **Tipo de desenho** decide como os mesmos quatro preços são desenhados: candles, barras OHLC, linha de fechamento ou área de fechamento. Trocar de um para outro não busca nada.
+- **Animação** é a chegada dos candles um após o outro até traçar todo o período, ou uma janela fixa que avança. A segunda é o que mantém o candle largo o bastante para ser lido num período longo, e essa largura é o ajuste **Janela**.
+- As médias móveis MA5, MA10 e MA20 podem ser sobrepostas aos candles; o painel de volume abaixo pode ser desligado, e o painel de preço recupera o espaço.
+- Uma semana ou um mês ainda em curso fica de fora. Um candle feito de três dias não é uma semana.
+- Todo mercado é lido na sua série ajustada, então um dia de desdobramento não é desenhado como queda, e um dividendo tampouco.
 
 ## Volume e giro
 
@@ -80,6 +91,7 @@ Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda sem
 - Os ativos de um toque seguem o mercado: ETFs amplos e de ouro nas ações A, os fundos índice de Hong Kong, SPY, QQQ e GLD nos Estados Unidos.
 - Valor e frequência você define; o período é de três, cinco ou dez anos, ou até onde os dados alcançam (uns treze anos).
 - O retorno é calculado sobre fechamentos ajustados retroativamente, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
+- Além de 3, 5 e 10 anos e do período mais longo, o intervalo pode ser **Personalizado**: informe a data inicial e a final e pressione o botão de buscar dados. Dá para voltar cerca de 35 anos — a fonte entrega cerca de 640 dias corridos por requisição e a varredura faz no máximo vinte.
 
 ## Retorno de posição
 
@@ -90,6 +102,7 @@ Uma única compra, mantida por anos — um milhão em 中国平安 em 2015, por 
 - Os nomes sugeridos seguem o mercado: na China, as ações que as pessoas de fato dizem ter mantido (Ping An, Moutai, CMB…); em Hong Kong, Tencent, HSBC e o Tracker Fund; nos Estados Unidos, Apple, Berkshire e SPY.
 - O capital inicial e o período de posição são seus; o período pode ser de três, cinco ou dez anos, ou até onde os dados alcançam (cerca de treze anos).
 - O retorno é calculado sobre fechamentos ajustados retroativamente — dividendos reinvestidos, sem taxas. O ajuste retroativo se ancora na abertura de capital e acumula os dividendos para frente, então os primeiros anos de um bom pagador nunca ficam negativos, como pode ocorrer no ajuste para frente.
+- O mesmo intervalo **Personalizado** vale para a posição: informe duas datas e pressione buscar dados. Se o ativo passou a ser negociado depois da data informada, a posição começa no seu primeiro dia de negociação.
 
 ## Vídeo
 
@@ -116,6 +129,8 @@ A página de configurações pode colocar uma imagem atrás da janela, escurecid
 Na página de configurações você pode mudar sobre o que a animação é desenhada: o gradiente padrão, duas cores suas ou uma imagem. Vale para a pré-visualização, o vídeo exportado e a imagem de capa: os três são desenhados pelo mesmo renderizador, então não existe "bonito na pré-visualização e diferente no arquivo".
 
 - Ao escolher cores, você indica um tom superior e um inferior, e o quadro passa de um para o outro. Prefira escuros: todos os tons de texto são claros, e um fundo claro dificulta a leitura dos números.
+
+- O controle de opacidade define quanto das duas cores é usado: em 100% o quadro é o par escolhido e abaixo disso o degradê escuro da própria página aparece por baixo. É isso que mantém um par claro legível.
 
 - Escolher uma imagem funciona como no fundo da janela: uma do computador ou um papel de parede que já vem com o Windows. A escolhida é copiada para a pasta do aplicativo.
 

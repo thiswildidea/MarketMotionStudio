@@ -6,7 +6,7 @@ Esta aplicación convierte indicadores del mercado de acciones A en vídeos vert
 
 En Ajustes se elige de qué mercado toma sus cotizaciones la aplicación; las acciones A por defecto. El cambio surte efecto tras reiniciar la aplicación.
 
-- **Acciones A**: las siete páginas están disponibles.
+- **Acciones A**: las ocho páginas están disponibles.
 - **Hong Kong**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa los cuatro subíndices Hang Seng; **no hay cifra para todo el mercado, así que esa página se oculta**.
 - **Estados Unidos**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa diez ETF sectoriales SPDR; la página de volumen conserva solo el modo diario, porque el endpoint de minutos no sirve datos estadounidenses; **los importes están en dólares y la página de volumen del mercado se oculta**.
 
@@ -28,6 +28,17 @@ El importe negociado cada día en todo el mercado: los importes de los índices 
 - Una sesión aún en curso se descarta. Un día sin terminar contiene solo su subasta de apertura y se dibujaría como una barra pegada al eje.
 - O mirar solo un segmento: cada bolsa, cada board principal, STAR, ChiNext. Los boards principales se derivan del total de la bolsa menos su board de crecimiento; el BSE 50 sigue siendo una medida de componentes.
 - Solo el mercado de acciones A da un total de todo el mercado. Con Hong Kong o Estados Unidos la página se retira de la navegación.
+
+## Velas
+
+Las velas de un instrumento: diarias, semanales o mensuales, dibujadas de cuatro formas, con sus medias y su volumen debajo.
+
+- **Intervalo** decide cuánto tiempo de mercado cubre una vela: un día, una semana o un mes. Cambiarlo vuelve a consultar la fuente, porque en ella las tres son series distintas.
+- **Tipo de dibujo** decide cómo se dibujan los mismos cuatro precios: velas, barras OHLC, línea de cierre o área de cierre. Pasar de uno a otro no vuelve a consultar nada.
+- **Animación** es o bien la llegada de las velas una tras otra hasta trazar todo el periodo, o bien una ventana fija que avanza. La segunda es lo que mantiene la vela lo bastante ancha para leerse en un periodo largo, y esa anchura es el ajuste **Ventana**.
+- Las medias móviles MA5, MA10 y MA20 pueden superponerse a las velas; el panel de volumen de abajo se puede apagar, y el panel de precio recupera ese espacio.
+- Una semana o un mes aún en curso queda fuera. Una vela hecha de tres días no es una semana.
+- Todos los mercados se leen en su serie ajustada, así que un día de split no se dibuja como una caída, ni un dividendo tampoco.
 
 ## Volumen y rotación
 
@@ -80,6 +91,7 @@ Comprar un valor con importe y cadencia fijos — cada día de bolsa, cada seman
 - Los instrumentos de un toque siguen al mercado: ETF amplios y de oro en las acciones A, los fondos rastreados de Hong Kong, SPY, QQQ y GLD en Estados Unidos.
 - El importe y la frecuencia se ajustan a gusto; el período es de tres, cinco o diez años, o hasta donde lleguen los datos (unos trece años).
 - La rentabilidad se calcula sobre cierres ajustados hacia atrás, sin comisiones. El resultado describe la serie de precios, no una factura que alguien pudiera haber ejecutado.
+- Además de 3, 5 y 10 años y del tramo más largo, el rango puede ser **Personalizado**: indica una fecha inicial y una final y pulsa el botón de obtener datos. Se puede retroceder unos 35 años: la fuente entrega unos 640 días naturales por petición y el recorrido hace veinte como máximo.
 
 ## Rentabilidad de cartera
 
@@ -90,6 +102,7 @@ Una sola compra, mantenida durante años — un millón en 中国平安 en 2015,
 - Los nombres sugeridos siguen al mercado: en China, las acciones que la gente de verdad dice haber mantenido (Ping An, Moutai, CMB…); en Hong Kong, Tencent, HSBC y el Tracker Fund; en Estados Unidos, Apple, Berkshire y SPY.
 - El capital inicial y el periodo de tenencia son tuyos; el periodo puede ser de tres, cinco o diez años, o hasta donde lleguen los datos (unos trece años).
 - La rentabilidad se calcula sobre cierres ajustados hacia atrás — dividendos reinvertidos, sin comisiones. El ajuste hacia atrás se ancla en la salida a bolsa y acumula los dividendos hacia delante, así que los primeros años de un gran pagador nunca se vuelven negativos, como puede pasar con el ajuste hacia delante.
+- El mismo rango **Personalizado** vale para la tenencia: indica dos fechas y pulsa obtener datos. Si el instrumento empezó a cotizar después de la fecha indicada, la tenencia comienza su primer día de negociación.
 
 ## Vídeo
 
@@ -116,6 +129,8 @@ La página de configuración puede colocar una imagen detrás de la ventana, ate
 En la página de configuración puedes cambiar sobre qué se dibuja la animación: el degradado integrado, dos colores tuyos o una imagen. Se aplica por igual a la vista previa, al vídeo exportado y a la imagen de portada: los tres los dibuja el mismo motor, así que no hay un «se ve bien en la vista previa y distinto en el archivo».
 
 - Al elegir colores indicas un tono superior y otro inferior, y el fotograma pasa de uno a otro. Mejor oscuros: todos los tonos de texto son claros y un fondo claro dificulta leer las cifras.
+
+- El control de opacidad decide cuánto se usan los dos colores: al 100 % el fotograma es la pareja elegida y por debajo deja ver el degradado oscuro propio de la página. Es lo que mantiene legible una combinación clara.
 
 - Elegir una imagen funciona igual que en el fondo de la ventana: una de tu equipo o un fondo que Windows ya incluye. La que elijas se copia a la carpeta de la aplicación.
 

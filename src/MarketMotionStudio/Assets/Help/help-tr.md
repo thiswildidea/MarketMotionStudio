@@ -6,7 +6,7 @@ Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara 
 
 Ayarlarda uygulamanın hangi piyasadan fiyat aldığı seçilir; varsayılan A hisseleri. Değişiklik uygulama yeniden başlatıldıktan sonra geçerli olur.
 
-- **A hisseleri**: yedi sayfanın tümü kullanılabilir.
+- **A hisseleri**: sekiz sayfanın tümü kullanılabilir.
 - **Hong Kong**: getiri matrisi ve takvim çalışır; sektör yarışı dört Hang Seng alt endeksiyle koşulur; **tüm piyasa için veri yok, bu yüzden o sayfa gizlenir**.
 - **ABD**: getiri matrisi ve takvim çalışır; sektör yarışı on SPDR sektör ETF'i ile koşulur; hacim sayfasında yalnızca günlük mod kalır, çünkü dakikalık uç nokta ABD verisi sunmaz; **tutarlar dolar cinsindendir ve tüm piyasa hacmi sayfası gizlenir**.
 
@@ -28,6 +28,17 @@ Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerini
 - Hâlâ süren bir seans dışarıda bırakılır. Bitmemiş bir gün yalnızca açılış seansını içerir ve eksene yapışık bir çubuk olarak çizilirdi.
 - Ya da yalnızca bir pazara bakın: her iki borsa, her ana pazar, STAR, ChiNext. Ana pazarlar borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50 hâlâ bileşen bazlı bir ölçüdür.
 - Tüm piyasa için toplamı yalnızca A hisseleri verir. Hong Kong veya ABD seçildiğinde sayfa gezinmeden çıkarılır.
+
+## Mum grafiği
+
+Bir enstrümanın mumları: günlük, haftalık veya aylık, dört farklı şekilde çizilir; altında ortalamaları ve hacmi.
+
+- **Aralık**, bir mumun ne kadar piyasa zamanını kapsadığını belirler: bir gün, bir hafta veya bir ay. Bunu değiştirmek yeniden veri çeker, çünkü kaynakta üçü ayrı serilerdir.
+- **Çizim türü**, aynı dört fiyatın nasıl çizileceğini belirler: mumlar, OHLC çubukları, kapanış çizgisi veya kapanış alanı. Aralarında geçiş yapmak hiçbir şey yeniden çekmez.
+- **Animasyon**, mumların tek tek gelip tüm aralığı çizmesi ya da ilerleyen sabit bir penceredir. İkincisi, mumu uzun bir aralıkta okunacak kadar geniş tutan şeydir ve bu genişlik **Pencere** ayarıdır.
+- MA5, MA10 ve MA20 hareketli ortalamaları mumların üzerine bindirilebilir; alttaki hacim paneli kapatılabilir ve fiyat paneli o alanı geri alır.
+- Henüz bitmemiş bir hafta veya ay dışarıda bırakılır. Üç günden oluşan bir mum bir hafta değildir.
+- Her piyasa düzeltilmiş serisinden okunur, bu yüzden bir bölünme günü düşüş olarak çizilmez; temettü de çizilmez.
 
 ## Hacim ve devir
 
@@ -80,6 +91,7 @@ Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her ha
 - Tek dokunuşla seçilen varlıklar piyasayı izler: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD.
 - Tutarı ve sıklığı siz belirlersiniz; süre üç, beş veya on yıl, ya da verinin geldiği en eski tarihe kadar (yaklaşık on üç yıl).
 - Getiri geriye düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
+- 3, 5 ve 10 yıl ile en uzun aralığın dışında **Özel** de seçilebilir: başlangıç ve bitiş tarihini verip verileri alın. Yaklaşık 35 yıl geriye gidilebilir — kaynak istek başına yaklaşık 640 takvim günü veriyor ve tarama en çok yirmi istek yapıyor.
 
 ## Pozisyon Getirisi
 
@@ -90,6 +102,7 @@ Tek bir alım, yıllarca tutulan — örneğin 2015'te 中国平安'a bir milyon
 - Önerilen isimler pazara göre değişir: Çin'de insanların gerçekten "tutmuştum" dediği hisseler (Ping An, Moutai, CMB…), Hong Kong'da Tencent, HSBC ve Tracker Fund, ABD'de Apple, Berkshire ve SPY.
 - Başlangıç sermayesi ve elde tutma süresi size ait; süre üç, beş veya on yıl olabilir, ya da verilerin yettiği kadar (yaklaşık on üç yıl).
 - Getiri geriye düzeltilmiş kapanışlarla — temettüler yeniden yatırıldı, ücretsiz — hesaplanır. Geriye düzeltme halka arzın ilk gününe demir atar ve temettüleri ileriye biriktirir, böylece cömert bir ödeyicinin ilk yılları asla negatif olmaz; ileriye düzeltmede bu olabilir.
+- Aynı **Özel** aralık elde tutma için de geçerlidir: iki tarih verip verileri alın. Araç belirttiğiniz tarihten sonra işlem görmeye başladıysa, elde tutma ilk işlem gününde başlar.
 
 ## Video
 
@@ -116,6 +129,8 @@ Ayarlar sayfası, pencerenin arkasına karartılmış bir resim koyabilir. Kartl
 Ayarlar sayfasında animasyonun neyin üzerine çizileceğini değiştirebilirsiniz: yerleşik geçiş, kendi seçtiğiniz iki renk veya bir resim. Önizleme, dışa aktarılan video ve kapak görseli için geçerlidir — üçünü de aynı oluşturucu çizer, yani "önizlemede güzel, dosyada farklı" diye bir şey yoktur.
 
 - Renk seçtiğinizde üst ve alt için birer ton verirsiniz ve kare ikisi arasında geçer. Koyu renkler daha uygundur: tüm metin tonları açıktır ve açık arka plan sayıları okumayı zorlaştırır.
+
+- Opaklık kaydırıcısı iki rengin ne kadarının kullanılacağını belirler: %100'de kare seçilen ikilinin kendisidir, altında sayfanın kendi koyu gradyanı alttan görünür. Açık bir ikiliyi okunur tutan şey budur.
 
 - Resim seçmek pencere arka planındaki gibi işler: bilgisayarınızdan bir resim ya da Windows ile gelen bir duvar kağıdı. Seçtiğiniz resim uygulamanın klasörüne kopyalanır.
 

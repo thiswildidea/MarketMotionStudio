@@ -31,10 +31,20 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     private readonly Playback _playback;
 
     /// <summary>
+    /// Carried by the span list's own entry rather than by a count, so that it stays
+    /// distinguishable from "as far back as there is" — which is a span too, and which
+    /// the walk itself has to discover.
+    /// </summary>
+    private const int CustomMonths = -1;
+
+    /// <summary>
     /// The holding's spans, as a number of months. Zero means as far back as the
     /// source still has data, which the walk in <see cref="HistoryWalk"/> finds on
     /// its own — and it is the default, because a holding's story starts where the
     /// holder says it did, and "since 2015" is a span no fixed choice covers.
+    ///
+    /// The last entry is that span typed out: two dates, because a holder asking
+    /// about their own holding names the day they bought on.
     /// </summary>
     private static readonly (int Months, string Key)[] Ranges =
     [
@@ -42,6 +52,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         (60, "DcaRange5Y"),
         (120, "DcaRange10Y"),
         (0, "DcaRangeMax"),
+        (CustomMonths, "StudioRangeCustom"),
     ];
 
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
@@ -65,6 +76,9 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
 
     private string _lastQuery = string.Empty;
 
+    /// <summary>Whether the page is finished being built; see the handlers that read it.</summary>
+    private bool _ready;
+
     private readonly ObservableCollection<StockFavourite> _favourites = [];
 
     private readonly DispatcherTimer _searchDebounce = new() { Interval = TimeSpan.FromMilliseconds(260) };
@@ -81,6 +95,18 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         // "As far back as there is": a holding is a years-long story by default, and
         // the walk stops where the listing's own history does.
         RangeCombo.SelectedIndex = 3;
+
+        // The two pickers cannot ask for a span one walk cannot gather: past that the
+        // walk runs out of requests before it runs out of range, and the holding would
+        // begin on whatever day the twentieth request happened to reach. See
+        // <see cref="HistoryWalk.MostDays"/>.
+        var now = DateTimeOffset.Now;
+        var oldest = now.AddDays(-HistoryWalk.MostDays);
+
+        FromDate.MinYear = oldest;
+        FromDate.MaxYear = now;
+        ToDate.MinYear = oldest;
+        ToDate.MaxYear = now;
 
         foreach (var entry in _market.PositionInstruments)
         {
@@ -123,6 +149,8 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         // reaches the preview through the same path a typed one does.
         RestorePreferences();
         ApplyPreviewSettings();
+
+        _ready = true;
     }
 
     protected override InfoBar StatusControl => Status;
@@ -151,10 +179,26 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         }
     }
 
+    private int ChosenMonths() =>
+        RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 0;
+
+    /// <summary>The two dates in the pickers. The span in force only when custom is chosen.</summary>
+    private (DateOnly From, DateOnly To) CustomSpan() =>
+        (DateOnly.FromDateTime(FromDate.Date.DateTime), DateOnly.FromDateTime(ToDate.Date.DateTime));
+
     private (DateOnly Start, DateOnly End) ChosenRange()
     {
-        var months = RangeCombo.SelectedItem is ComboBoxItem { Tag: int m } ? m : 0;
+        var months = ChosenMonths();
         var today = DateOnly.FromDateTime(DateTime.Now);
+
+        if (months == CustomMonths)
+        {
+            var (from, to) = CustomSpan();
+
+            // An end in the future is an end today: nothing after today has a price to
+            // mark the holding with, and the picker's own ceiling says as much.
+            return (from, to > today ? today : to);
+        }
 
         // "As far back as there is": ask for thirteen years and let the walk stop where
         // the source does. Clamped to the source's own ceiling so the first request
@@ -398,6 +442,16 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         var (start, end) = ChosenRange();
         var display = _instrumentName.Length > 0 ? _instrumentName : _instrumentCode;
 
+        // A typed span is the only one that can be wrong in a way the source would
+        // answer badly: for two dates in the wrong order it would report "too few days"
+        // and leave the last holding standing under a pair of dates it never ran over.
+        // Refused here, before a request is made.
+        if (ChosenMonths() == CustomMonths && start >= end)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Get("TurnoverRangeReversed"));
+            return;
+        }
+
         // Three minutes, not the calendar's two: a holding reaching back a dozen years
         // is up to twenty requests answered one after another.
         await RunAsync(FetchButton, async cancellation =>
@@ -445,6 +499,34 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         // Raised by the selection assignment in the constructor, before the page exists
         // well enough to save anything.
         if (RangeCombo is null)
+        {
+            return;
+        }
+
+        // The two pickers belong to the custom span alone. Set before the guard below,
+        // so that a saved custom span comes back with them already showing rather than
+        // with a pair of dates the person has to guess are there.
+        CustomRange.Visibility = ChosenMonths() == CustomMonths
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        if (!_ready)
+        {
+            return;
+        }
+
+        SavePreferences();
+    }
+
+    /// <summary>
+    /// One of the two typed dates moved. Remembered, and nothing else: a holding over a
+    /// dozen years is twenty requests answered one after another, and a fetch per change
+    /// would be a fetch per keystroke of a date. Fetching is a button on this page, and
+    /// it stays one.
+    /// </summary>
+    private void OnCustomRangeChanged(object sender, DatePickerValueChangedEventArgs e)
+    {
+        if (!_ready)
         {
             return;
         }
@@ -609,6 +691,22 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         var index = Array.FindIndex(Ranges, r => r.Months == months);
         RangeCombo.SelectedIndex = index >= 0 ? index : 3;
 
+        // Three years, so the two pickers say something sensible the first time the
+        // custom span is chosen instead of opening on today and today.
+        var today = DateTimeOffset.Now;
+        FromDate.Date = today.AddYears(-3);
+        ToDate.Date = today;
+
+        if (DateOnly.TryParse(_prefs.GetString("From", string.Empty), out var from))
+        {
+            FromDate.Date = new DateTimeOffset(from, TimeOnly.MinValue, TimeSpan.Zero);
+        }
+
+        if (DateOnly.TryParse(_prefs.GetString("To", string.Empty), out var to))
+        {
+            ToDate.Date = new DateTimeOffset(to, TimeOnly.MinValue, TimeSpan.Zero);
+        }
+
         var code = _prefs.GetString("Code", _market.PositionInstruments[0].Code);
 
         // A code saved under another market is not carried over: it would fetch from a
@@ -634,7 +732,9 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     private void SavePreferences()
     {
         _prefs.Save("Capital", ChosenCapital > 0 ? ChosenCapital : 1_000_000);
-        _prefs.Save("Months", RangeCombo.SelectedItem is ComboBoxItem { Tag: int m } ? m : 0);
+        _prefs.Save("Months", ChosenMonths());
+        _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
+        _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("Code", _instrumentCode);
         _prefs.Save("Name", _instrumentName);
 

@@ -37,7 +37,7 @@ public sealed class StockDirectory(HttpClient http)
     /// A code alone is ambiguous — `600519` carries its venue nowhere a reader can see it — so the
     /// prefix decides, and the two fallback single digits catch a code the prefix lists do not
     /// cover. Five digits are Hong Kong, letters are a US ticker, and anything already carrying a
-    /// venue is passed through untouched.
+    /// venue is put back into the shape the quote endpoints read.
     /// </summary>
     /// <returns>The normalised code, or null if the input is no code at all — which is how a name or
     /// a pinyin string ends up here, and the caller's cue to search instead.</returns>
@@ -45,11 +45,24 @@ public sealed class StockDirectory(HttpClient http)
     {
         var s = raw.Trim().ToLowerInvariant().Replace(" ", string.Empty);
 
-        if (s.Length is >= 4 and <= 8 &&
+        // A US code is the only one that runs past eight characters: it carries an
+        // exchange suffix — `usAAPL.OQ` is nine — and the other venues have nothing
+        // to put there. Left at eight, a suffixed code fell through to the ticker
+        // branch below and came back wearing a second `us`.
+        var longest = s.StartsWith("us") ? 12 : 8;
+
+        if (s.Length >= 4 && s.Length <= longest &&
             (s.StartsWith("sh") || s.StartsWith("sz") || s.StartsWith("bj") ||
              s.StartsWith("hk") || s.StartsWith("us")))
         {
-            return s;
+            // Put through Canonize rather than returned as it stands, because `s` has
+            // been lowered and that is only right for three of the four venues. A US
+            // ticker is read in upper case — `usAAPL.OQ` — and the chart endpoint
+            // answers `usaapl` with no bars rather than with an error, so a code that
+            // came out of the search box and went back in through 取数 read as an
+            // instrument with no history at all. The other three prefixes lowercase
+            // to themselves, so this changes nothing for them.
+            return Markets.Canonize(s);
         }
 
         if (s.Length == 6 && s.All(char.IsAsciiDigit))

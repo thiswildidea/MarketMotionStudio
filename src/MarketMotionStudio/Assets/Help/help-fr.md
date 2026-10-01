@@ -6,7 +6,7 @@ Cette application transforme des indicateurs du marché des actions A en vidéos
 
 Les paramètres déterminent de quel marché l'application tire ses cotations ; les actions A par défaut. Le changement prend effet après le redémarrage de l'application.
 
-- **Actions A** : les sept pages sont disponibles.
+- **Actions A** : les huit pages sont disponibles.
 - **Hong Kong** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise les quatre sous-indices Hang Seng ; **il n'existe pas de chiffre pour l'ensemble du marché, cette page est donc masquée**.
 - **États-Unis** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise dix ETF sectoriels SPDR ; la page des volumes ne garde que le mode quotidien, car le point d'accès minute ne sert pas de données américaines ; **les montants sont en dollars et la page du volume d'échanges du marché est masquée**.
 
@@ -28,6 +28,17 @@ Le montant échangé chaque jour sur tout le marché : les montants des indices 
 - Une séance encore en cours est écartée. Une journée inachevée ne contient que sa fixation d'ouverture et se dessinerait comme une barre collée à l'axe.
 - Ou regarder un seul segment : chaque bourse, chaque marché principal, STAR, ChiNext. Les marchés principaux sont déduits du total de la bourse moins son marché de croissance ; le BSE 50 reste une mesure de composantes.
 - Seul le marché des actions A donne un total pour l'ensemble du marché. Avec Hong Kong ou les États-Unis, la page est retirée de la navigation.
+
+## Chandeliers
+
+Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels, dessinés de quatre façons, avec ses moyennes et son volume en dessous.
+
+- **Granularité** décide de la durée que couvre un chandelier : un jour, une semaine ou un mois. La changer relance la récupération, car les trois sont des séries distinctes sur la source.
+- **Type de tracé** décide comment les quatre mêmes prix sont dessinés : chandeliers, barres OHLC, ligne de clôture ou aire de clôture. Passer de l'un à l'autre ne récupère rien.
+- **Animation** est soit l'arrivée des chandeliers l'un après l'autre jusqu'à ce que tout l'intervalle soit tracé, soit une fenêtre fixe qui avance. C'est la seconde qui garde le chandelier assez large pour être lu sur un intervalle long, et cette largeur est le réglage **Fenêtre**.
+- Les moyennes mobiles MA5, MA10 et MA20 peuvent être superposées aux chandeliers ; le panneau de volume en dessous peut être désactivé, et le panneau de prix reprend la place.
+- Une semaine ou un mois encore en cours est laissé de côté. Un chandelier fait de trois jours n'est pas une semaine.
+- Chaque marché est lu sur sa série ajustée : un jour de division n'est donc pas dessiné comme une baisse, et un dividende non plus.
 
 ## Volume et rotation
 
@@ -80,6 +91,7 @@ Acheter un titre à montant et cadence fixes — chaque jour de bourse, chaque s
 - Les instruments en un clic suivent le marché : ETF larges et or sur les actions A, fonds indiciels de Hong Kong, SPY, QQQ et GLD aux États-Unis.
 - Le montant et la fréquence se règlent librement ; la période fait trois, cinq ou dix ans, ou remonte aussi loin que les données le permettent (environ treize ans).
 - Le rendement est calculé sur des clôtures rétro-ajustées, sans frais. Le résultat décrit la série de prix, pas une facture que qui que ce soit aurait pu exécuter.
+- Outre 3, 5 et 10 ans et la période la plus longue, la plage peut être **Personnalisée** : indiquez une date de début et une date de fin, puis récupérez les données. Environ 35 ans sont accessibles — la source sert environ 640 jours civils par requête et le parcours en fait vingt au plus.
 
 ## Rendement de position
 
@@ -90,6 +102,7 @@ Un seul achat, conservé des années — un million dans 中国平安 en 2015, p
 - Les noms proposés suivent le marché : en Chine, les actions que l'on dit réellement avoir gardées (Ping An, Moutai, CMB…), à Hong Kong Tencent, HSBC et le Tracker Fund, aux États-Unis Apple, Berkshire et SPY.
 - Le capital initial et la période de détention sont à vous ; la période couvre trois, cinq ou dix ans, ou aussi loin que les données remontent (environ treize ans).
 - Le rendement est calculé sur des cours rétro-ajustés — dividendes réinvestis, sans frais. L'ajustement rétroactif s'ancre à l'introduction en bourse et cumule les dividendes vers l'avant, si bien que les premières années d'un gros versant ne deviennent jamais négatives, ce que l'ajustement avant peut produire.
+- La même plage **Personnalisée** s'applique à la détention : indiquez deux dates, puis récupérez les données. Si le titre a été coté après la date demandée, la détention commence à son premier jour de cotation.
 
 ## Vidéo
 
@@ -116,6 +129,8 @@ La page des paramètres peut placer une image derrière la fenêtre, assombrie. 
 La page Paramètres permet de changer ce sur quoi l'animation est dessinée : le dégradé intégré, deux couleurs de votre choix, ou une image. Cela vaut pour l'aperçu, pour la vidéo exportée et pour l'image de couverture : les trois sont dessinés par le même moteur, il n'y a donc pas de « joli dans l'aperçu, différent dans le fichier ».
 
 - Pour les couleurs, vous donnez un ton du haut et un ton du bas, et l'image passe de l'un à l'autre. Les tons sombres conviennent : chaque teinte de texte est claire et un fond clair rend les chiffres difficiles à lire.
+
+- Le curseur d'opacité règle la part des deux couleurs : à 100 %, l'image est la paire choisie, et en dessous le dégradé sombre de la page apparaît par-dessous. C'est ce qui garde une paire claire lisible.
 
 - Choisir une image fonctionne comme pour le fond de la fenêtre : une image de votre ordinateur, ou un fond d'écran fourni par Windows. Celle que vous choisissez est copiée dans le dossier de l'application.
 

@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>右マージン: {0}</value></data>
   <data name="StudioMarginBottom"><value>下マージン: {0}</value></data>
   <data name="StudioMarginTop"><value>上マージン: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>1080×1920 を基準とした値で、描画時に選んだ解像度へ比例拡大されます。ここで調整した値は解像度を変えてもそのまま使えます。左マージンは Y 軸目盛りの位置も決めます。 上マージンはスマホが自前のUIのために確保する帯から始まるため、タイトルがその下に入り込むことはありません。</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 を基準とした値で、描画時に選んだ解像度へ比例拡大されます。ここで調整した値は解像度を変えてもそのまま使えます。左マージンは Y 軸目盛りの位置も決めます。 上マージンは既定値 230 がスマホが自前のUIのために確保する帯で、これより小さくするとタイトルがステータスバーの重なる帯に入ります。</value></data>
   <data name="StudioSafeArea.Header"><value>セーフエリアのガイド</value></data>
   <data name="StudioSafeAreaNote.Text"><value>スマートフォンのアプリが自身の UI で覆う領域を示します。プレビューにのみ描かれ、ファイルには入りません。</value></data>
   <data name="StudioPlay.Content"><value>再生</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>上部</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>下部</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>これらのフレームには暗い色が向いています。文字の色はすべて明るい色だからです。明るい背景では動画内の数字が読みにくくなります。</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>100% なら選んだ二色そのものです。下げるとフレーム本来の暗いグラデーションが下から透けます。数字はどれも明るい色で描かれるため、明るい配色を選んでも読みやすさを保てます。</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>不透明度</value></data>
   <data name="NavHistoryBack"><value>戻る</value></data>
   <data name="NavHistoryBackTip"><value>戻る (Alt+←)</value></data>
   <data name="NavHistoryForward"><value>進む</value></data>
   <data name="NavHistoryForwardTip"><value>進む (Alt+→)</value></data>
+  <data name="NavCandle.Content"><value>ローソク足</value></data>
+  <data name="CandlePageTitle.Text"><value>ローソク足</value></data>
+  <data name="CandlePageSubtitle.Text"><value>1つの銘柄のローソク足。日足・週足・月足から選び、4つの描き方で表示します。下段に移動平均と出来高。</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>期間</value></data>
+  <data name="CandlePeriodDaily"><value>日足</value></data>
+  <data name="CandlePeriodWeekly"><value>週足</value></data>
+  <data name="CandlePeriodMonthly"><value>月足</value></data>
+  <data name="CandleStyleLabel.Header"><value>描き方</value></data>
+  <data name="CandleStyleCandles"><value>ローソク足</value></data>
+  <data name="CandleStyleBars"><value>OHLCバー</value></data>
+  <data name="CandleStyleLine"><value>終値ライン</value></data>
+  <data name="CandleStyleArea"><value>終値エリア</value></data>
+  <data name="CandleMotionLabel.Header"><value>進行</value></data>
+  <data name="CandleMotionGrow"><value>全区間を描く</value></data>
+  <data name="CandleMotionScroll"><value>窓をスクロール</value></data>
+  <data name="CandleWindowLabel.Header"><value>表示本数</value></data>
+  <data name="CandleShowAverages.Content"><value>移動平均 MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>出来高</value></data>
+  <data name="CandleOpen"><value>始値</value></data>
+  <data name="CandleClose"><value>終値</value></data>
+  <data name="CandleMoveLabel"><value>騰落率</value></data>
+  <data name="CandleCardRange"><value>期間騰落率</value></data>
+  <data name="CandleCardAmplitude"><value>振幅</value></data>
+  <data name="CandleLegendClose"><value>終値</value></data>
+  <data name="CandleFetched"><value>{0}本の{1}（{2}〜{3}）</value></data>
+  <data name="CandleRangeTooLong"><value>期間が長すぎます。{0}で取得できるのは最大およそ {1} 本です。開始日を後ろにずらしてください。</value></data>
 </root>

@@ -94,7 +94,7 @@
   <data name="StudioMarginRight"><value>右边距：{0}</value></data>
   <data name="StudioMarginBottom"><value>下边距：{0}</value></data>
   <data name="StudioMarginTop"><value>上边距：{0}</value></data>
-  <data name="StudioMarginNote.Text"><value>以 1080×1920 为基准记数，渲染时按所选分辨率等比缩放，所以在这里调好的值换分辨率不用重调。左边距同时决定 Y 轴刻度的落点。 上边距从手机留给系统界面的安全区起算，标题不会钻进状态栏。</value></data>
+  <data name="StudioMarginNote.Text"><value>以 1080×1920 为基准记数，渲染时按所选分辨率等比缩放，所以在这里调好的值换分辨率不用重调。左边距同时决定 Y 轴刻度的落点。 上边距默认 230，正是手机留给系统界面的那条安全区；调得更小，标题就会进入状态栏覆盖的那一条带。</value></data>
   <data name="StudioSafeArea.Header"><value>安全区参考线</value></data>
   <data name="StudioSafeAreaNote.Text"><value>标出手机应用会用自己界面遮住的区域。只画在预览里，绝不会进入视频文件。</value></data>
   <data name="StudioPlay.Content"><value>播放</value></data>
@@ -478,8 +478,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>顶部</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>底部</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>深色更适合这些画面：帧内所有文字都是浅色。浅色背景会让视频里的数字难以辨认。</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>100% 就是所选的两个颜色本身。调低会让画面自己的深色底从下面透上来——帧内数字都按浅色绘制，所以选了偏亮的配色时这样仍能看清。</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>不透明度</value></data>
   <data name="NavHistoryBack"><value>后退</value></data>
   <data name="NavHistoryBackTip"><value>后退 (Alt+向左键)</value></data>
   <data name="NavHistoryForward"><value>前进</value></data>
   <data name="NavHistoryForwardTip"><value>前进 (Alt+向右键)</value></data>
+  <data name="NavCandle.Content"><value>K线</value></data>
+  <data name="CandlePageTitle.Text"><value>K线走势</value></data>
+  <data name="CandlePageSubtitle.Text"><value>一只标的的 K 线：日K、周K、月K 三种周期，四种画法，下方带均线与成交量。</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>周期</value></data>
+  <data name="CandlePeriodDaily"><value>日K</value></data>
+  <data name="CandlePeriodWeekly"><value>周K</value></data>
+  <data name="CandlePeriodMonthly"><value>月K</value></data>
+  <data name="CandleStyleLabel.Header"><value>画法</value></data>
+  <data name="CandleStyleCandles"><value>蜡烛图</value></data>
+  <data name="CandleStyleBars"><value>美国线</value></data>
+  <data name="CandleStyleLine"><value>收盘线</value></data>
+  <data name="CandleStyleArea"><value>面积图</value></data>
+  <data name="CandleMotionLabel.Header"><value>推进方式</value></data>
+  <data name="CandleMotionGrow"><value>逐根铺满</value></data>
+  <data name="CandleMotionScroll"><value>窗口滚动</value></data>
+  <data name="CandleWindowLabel.Header"><value>窗口根数</value></data>
+  <data name="CandleShowAverages.Content"><value>均线 MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>成交量</value></data>
+  <data name="CandleOpen"><value>开</value></data>
+  <data name="CandleClose"><value>收</value></data>
+  <data name="CandleMoveLabel"><value>涨跌</value></data>
+  <data name="CandleCardRange"><value>区间涨跌</value></data>
+  <data name="CandleCardAmplitude"><value>振幅</value></data>
+  <data name="CandleLegendClose"><value>收盘价</value></data>
+  <data name="CandleFetched"><value>{0} 根{1}（{2} 至 {3}）</value></data>
+  <data name="CandleRangeTooLong"><value>区间过长：{0}最多能取约 {1} 根，请把起始日期往后调。</value></data>
 </root>

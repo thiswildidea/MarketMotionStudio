@@ -360,7 +360,18 @@ public sealed class PositionRenderer : IFrameRenderer
 
         using (var dateFormat = Ink.Format(context.Px(34)))
         {
-            Ink.Centred(session, Iso(point.Date), cx, Row(context, 0.262), dateFormat, Palette.Moving, a);
+            // The middle of the air between the holding's range line and the running figure
+            // below, measured to their ink rather than to their baselines: the figure is
+            // 128 pixels where the range line is 25, so half way between two baselines is
+            // not half way between two lines.
+            //
+            //     range line's foot  0.218 * 1920 + 0.06 * 25  = 420.1
+            //     figure's top       0.327 * 1920 - 0.72 * 128 = 535.7
+            //     the date is 0.72 * 34 = 24.5 tall
+            //
+            // and (535.7 + 420.1 + 24.5) / 2 = 490.1, which is 0.2553 of the frame. At the
+            // 0.262 it used to be the date had 58 pixels of air above it and 33 below.
+            Ink.Centred(session, Iso(point.Date), cx, Row(context, 0.2553), dateFormat, Palette.Moving, a);
         }
 
         // The headline: what the holding is worth over what went in, read off the

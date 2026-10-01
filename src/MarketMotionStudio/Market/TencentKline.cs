@@ -180,6 +180,277 @@ public sealed class TencentKline(HttpClient http)
     public sealed record StockBar(DateOnly Date, double Close, double RawVolume, double TurnoverRate, double AmountWan);
 
     /// <summary>
+    /// One candle: the four prices a bar is drawn from, and how much traded.
+    ///
+    /// Its own record rather than a wider <see cref="StockBar"/>, because the two
+    /// answer different questions. That one keeps whatever the row carried so a
+    /// caller can decide what the volume means; this one is what a chart draws,
+    /// and a field it cannot draw is a field it has to keep explaining.
+    ///
+    /// Kept unconverted: the prices are on whatever basis the adjustment asked for
+    /// puts them, which is the whole point — a ratio between two of them is the
+    /// return a holder earned, and converting first would only put a constant in
+    /// the way of every division.
+    /// </summary>
+    public sealed record CandleBar(
+        DateOnly Date, double Open, double High, double Low, double Close, double Volume);
+
+    /// <summary>
+    /// One instrument's candles over a range, on the venue's own adjusted series.
+    ///
+    /// The period is <c>day</c>, <c>week</c> or <c>month</c>, and each is served by
+    /// its own block — <c>hfqweek</c>, <c>qfqmonth</c> and so on — so the same
+    /// request that gets daily candles gets weekly ones by naming the period
+    /// twice: once in the parameter and once in the block read back. All three are
+    /// adjusted on every venue this app quotes, which is the reason this is not
+    /// derived from daily bars instead: an unadjusted month is a month with a split
+    /// in it, and a split is not a move.
+    /// </summary>
+    /// <param name="count">
+    /// How many candles to ask for. One request carries at most
+    /// <see cref="MostBarsPerRequest"/> of them, so a longer range is gathered by
+    /// asking again for the window ending before the earliest one held — see
+    /// <see cref="CandleLoader"/>.
+    /// </param>
+    public async Task<List<CandleBar>> CandleBarsAsync(
+        string code, string period, DateOnly start, DateOnly end, int count, CancellationToken cancellation)
+    {
+        if (!IsStockCode(code))
+        {
+            throw new ArgumentException($"Not a stock code: {code}", nameof(code));
+        }
+
+        if (start > end)
+        {
+            throw new ArgumentException("The start date must fall on or before the end date.", nameof(start));
+        }
+
+        // A bare US ticker answers with one bar from 2011 rather than with an error,
+        // so the venues are tried in turn — see UsSuffixCandidates.
+        if (Markets.IsBareUsTicker(code))
+        {
+            Exception? last = null;
+
+            // What each venue answered, carried into the message. An index written
+            // without a suffix goes through here, the venues answer it with a single
+            // row, and "no day bars in that range" says nothing about which of the
+            // four was asked or what came back — a diagnosis that costs one fetch to
+            // collect and is otherwise unobtainable from a log.
+            var tried = new List<string>();
+            var answered = false;
+
+            foreach (var candidate in UsSuffixCandidates(code))
+            {
+                try
+                {
+                    var bars = await FetchCandlesAsync(candidate, period, start, end, count, cancellation);
+
+                    if (bars.Count >= FewestBars)
+                    {
+                        RememberNameAs(code, candidate);
+                        return bars;
+                    }
+
+                    answered = true;
+                    tried.Add($"{candidate}: {bars.Count}");
+                }
+                catch (Exception ex)
+                {
+                    last = ex;
+                    tried.Add($"{candidate}: {ex.Message}");
+                }
+            }
+
+            // A window with no candles in it and a ticker that does not exist answer
+            // the same way from here, and the second one is not the more likely of the
+            // two. Caught by the walk, which asks its last window before it has
+            // finished: the cursor lands back on the range's own start, the source
+            // answers from outside that one-day window, every row is trimmed, and an
+            // exception here threw away a walk already holding seven hundred candles
+            // — on the US codes only, since a Hong Kong or A-share code is one request
+            // with nobody guessing at its venue. An empty list lets the walk stop with
+            // what it has; a ticker that really does not exist ends at the loader's
+            // own "too few candles" guard instead.
+            if (answered)
+            {
+                return [];
+            }
+
+            throw last ?? new InvalidOperationException(
+                $"{code}: no {period} bars in that range ({string.Join("; ", tried)}).");
+        }
+
+        return await FetchCandlesAsync(code, period, start, end, count, cancellation);
+    }
+
+    private async Task<List<CandleBar>> FetchCandlesAsync(
+        string code, string period, DateOnly start, DateOnly end, int count, CancellationToken cancellation)
+    {
+        var (endpoint, adjustment) = TotalReturn(code);
+
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                return await CandlesFromAsync(endpoint, adjustment, code, period, start, end, count, cancellation);
+            }
+            catch (Exception ex) when (attempt < AdjustedAttempts && IsTransient(ex))
+            {
+                await Task.Delay(TransientPause * attempt, cancellation);
+            }
+            catch (Exception ex)
+            {
+                // The same fallback the daily path makes, and for the same reason: the
+                // general endpoint always has the plain rows, and a series refused
+                // outright is worse than one drawn from them. A chart with a split day
+                // in it is wrong in a way the reader can see; a chart that never
+                // appears is wrong in a way nobody can.
+                Diagnostics.CrashLog.Note(
+                    $"[kline] {endpoint} failed for {code} {period} ({ex.Message}); falling back to {Endpoint}.");
+
+                return await CandlesFromAsync(Endpoint, adjustment, code, period, start, end, count, cancellation);
+            }
+        }
+    }
+
+    private async Task<List<CandleBar>> CandlesFromAsync(
+        string endpoint, string adjustment, string code, string period,
+        DateOnly start, DateOnly end, int count, CancellationToken cancellation)
+    {
+        var iso = CultureInfo.InvariantCulture;
+        var wanted = Math.Clamp(count, 5, MostBarsPerRequest);
+        var parameter = $"{code},{period},{start:yyyy-MM-dd},{end:yyyy-MM-dd},{wanted.ToString(iso)},{adjustment}";
+        var uri = $"{endpoint}?param={Uri.EscapeDataString(parameter)}";
+
+        using var response = await http.GetAsync(uri, cancellation);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
+        using var json = await JsonDocument.ParseAsync(stream, cancellationToken: cancellation);
+
+        var root = json.RootElement;
+
+        if (!root.TryGetProperty("code", out var status) || status.GetInt32() != 0)
+        {
+            var message = root.TryGetProperty("msg", out var msg) ? msg.GetString() : null;
+            throw new InvalidOperationException($"{code}: {message ?? "the quote source reported a failure"}");
+        }
+
+        if (!root.TryGetProperty("data", out var data) || !data.TryGetProperty(code, out var node))
+        {
+            throw new InvalidOperationException($"{code}: the response carried no data for this code.");
+        }
+
+        // The adjusted block for the period asked for, falling back to the plain
+        // one — which is what an index carries, having no dividend or split to
+        // adjust for.
+        var bars = node.TryGetProperty(adjustment + period, out var adjusted) && adjusted.GetArrayLength() > 0
+            ? adjusted
+            : node.TryGetProperty(period, out var plain) ? plain : default;
+
+        // Asked for a window that ends before this listing's history begins — which
+        // is what the backward walk in CandleLoader asks on its last pass — the
+        // source answers with no block at all, not with an empty one. That is the
+        // answer "there is nothing earlier", not a failure: the walk already holds
+        // every candle there is, and throwing here would drop the lot. It shows as
+        // a chart of 1,969 weekly bars ending in a thrown-away exception otherwise,
+        // and only on Hong Kong and US codes, whose weekly and monthly blocks are
+        // served differently from the A-share ones.
+        if (bars.ValueKind != JsonValueKind.Array || bars.GetArrayLength() == 0)
+        {
+            return [];
+        }
+
+        var name = code.ToUpperInvariant();
+
+        if (node.TryGetProperty("qt", out var qt) && qt.TryGetProperty(code, out var meta) &&
+            meta.GetArrayLength() > 1 && meta[1].GetString() is { Length: > 0 } known)
+        {
+            name = known;
+        }
+
+        var series = new List<CandleBar>();
+
+        foreach (var bar in bars.EnumerateArray())
+        {
+            // Six fields is the least a candle can be read from — the US
+            // forward-adjusted row stops after the volume — and every venue's
+            // weekly and monthly rows carry the four prices in the same places.
+            if (bar.ValueKind != JsonValueKind.Array || bar.GetArrayLength() < 6)
+            {
+                continue;
+            }
+
+            if (!DateOnly.TryParseExact(bar[0].GetString(), "yyyy-MM-dd", out var day) ||
+                !double.TryParse(bar[1].GetString(), NumberStyles.Float, iso, out var open) ||
+                !double.TryParse(bar[2].GetString(), NumberStyles.Float, iso, out var close) ||
+                !double.TryParse(bar[3].GetString(), NumberStyles.Float, iso, out var high) ||
+                !double.TryParse(bar[4].GetString(), NumberStyles.Float, iso, out var low))
+            {
+                continue;
+            }
+
+            if (day < start || day > end || !IsSettledFor(day, period))
+            {
+                continue;
+            }
+
+            if (open <= 0 || close <= 0 || high <= 0 || low <= 0)
+            {
+                continue;
+            }
+
+            // A row can arrive with a high below its own low, or a close outside
+            // them, from a source that wrote a stale field. Left alone it draws as
+            // a candle standing outside its own wick.
+            var top = Math.Max(Math.Max(open, close), high);
+            var foot = Math.Min(Math.Min(open, close), low);
+
+            series.Add(new CandleBar(day, open, top, foot, close, Field(bar, 5, iso)));
+        }
+
+        if (series.Count == 0)
+        {
+            Diagnostics.CrashLog.Note(
+                $"[kline] {code} {period}: {bars.GetArrayLength()} rows, none usable. {uri} first={bars[0].GetRawText()}");
+        }
+
+        BarMeta[code] = name;
+
+        return series;
+    }
+
+    /// <summary>
+    /// Whether a bar is finished, in the period it belongs to.
+    ///
+    /// A day's bar is settled once its session is over. A week's or a month's is
+    /// the week or the month *so far* until its last day has passed, and drawing
+    /// it is drawing a candle made of three days and calling it a week — it sits
+    /// at the end of the chart as a stub, and reads as a collapse rather than as a
+    /// period still running.
+    /// </summary>
+    private static bool IsSettledFor(DateOnly day, string period)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Now);
+
+        if (period is "week")
+        {
+            // Monday as the week's first day, so a week's bar is settled once the
+            // following Monday has come.
+            var back = ((int)today.DayOfWeek + 6) % 7;
+
+            return day < today.AddDays(-back);
+        }
+
+        if (period is "month")
+        {
+            return day < new DateOnly(today.Year, today.Month, 1);
+        }
+
+        return IsSettled(day);
+    }
+
+    /// <summary>
     /// One stock's daily bars over a range, unconverted.
     ///
     /// Same endpoint and same envelope as <see cref="DailyBarsAsync"/> — the market page and the
@@ -229,6 +500,7 @@ public sealed class TencentKline(HttpClient http)
         if (Markets.IsBareUsTicker(code))
         {
             Exception? last = null;
+            var answered = false;
 
             foreach (var candidate in UsSuffixCandidates(code))
             {
@@ -238,13 +510,24 @@ public sealed class TencentKline(HttpClient http)
 
                     if (bars.Count >= FewestBars)
                     {
+                        RememberNameAs(code, candidate);
                         return bars;
                     }
+
+                    answered = true;
                 }
                 catch (Exception ex)
                 {
                     last = ex;
                 }
+            }
+
+            // Nothing in this window is not the same as nothing under this name — see
+            // the note in CandleBarsAsync, where the same confusion took down a walk
+            // that had already finished.
+            if (answered)
+            {
+                return [];
             }
 
             throw last ?? new InvalidOperationException($"{code}: no daily bars in that range.");
@@ -271,6 +554,23 @@ public sealed class TencentKline(HttpClient http)
     /// Used only to tell a resolved US ticker from an unresolved one.
     /// </summary>
     private const int FewestBars = 2;
+
+    /// <summary>
+    /// Carries the name learned under one code over to another.
+    ///
+    /// A bare US ticker is quoted under whichever suffix answered, and that is the
+    /// code the name is cached against — while every caller asks for the ticker it
+    /// was given. Left alone <see cref="LastName"/> finds nothing and hands back the
+    /// code itself, and the frame is titled <c>USAAPL</c> where Apple should be.
+    /// </summary>
+    private void RememberNameAs(string code, string answered)
+    {
+        if (!string.Equals(code, answered, StringComparison.Ordinal) &&
+            BarMeta.TryGetValue(answered, out var name))
+        {
+            BarMeta[code] = name;
+        }
+    }
 
     /// <summary>
     /// The endpoint and adjustment that hold one code's total-return series.

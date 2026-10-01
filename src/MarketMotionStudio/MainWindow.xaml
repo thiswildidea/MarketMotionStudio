@@ -168,6 +168,13 @@
                 <mux:NavigationViewItem x:Name="NavMarketTurnover" x:Uid="NavMarketTurnover" Tag="MarketTurnover">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Directly under the market's own turnover, because the two answer the
+                     same question at two scales: the whole market's day, and one
+                     instrument's day. It used to sit seventh, which put the two readings
+                     of "what did today do" five items apart. -->
+                <mux:NavigationViewItem x:Name="NavCandle" x:Uid="NavCandle" Tag="Candle">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9E9;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavStockVolume" x:Uid="NavStockVolume" Tag="StockVolume">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

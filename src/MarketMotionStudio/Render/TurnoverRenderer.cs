@@ -198,7 +198,25 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
 
         using (var dateFormat = Ink.Format(context.Px(34)))
         {
-            Ink.Centred(session, Iso(series.Dates[movingIndex]), cx, Row(context, 0.258), dateFormat, Palette.Moving, a);
+            // The middle of the air between the two lines this sits between — the range
+            // line above and the running figure below.
+            //
+            // Measured to their ink and not to their baselines, because the two are not
+            // the same size: the figure is 128 pixels where the range line is 25, so half
+            // way between two baselines is not half way between two lines. The ink boxes
+            // are
+            //
+            //     range line's foot  0.214 * 1920 + 0.06 * 25  = 412.4
+            //     figure's top       0.327 * 1920 - 0.72 * 128 = 535.7
+            //     the date is 0.72 * 34 = 24.5 tall
+            //
+            // and (535.7 + 412.4 + 24.5) / 2 = 486.3, which is 0.2533 of the frame. At the
+            // 0.258 it used to be the date had 58 pixels of air above it and 40 below,
+            // which reads as belonging to the figure.
+            //
+            // The same rule the K-line page's date follows. That one lands at a different
+            // number only because the line under it is a row of prices and not a headline.
+            Ink.Centred(session, Iso(series.Dates[movingIndex]), cx, Row(context, 0.2533), dateFormat, Palette.Moving, a);
         }
 
         // The running figure takes its colour from the value *being displayed* rather than from the

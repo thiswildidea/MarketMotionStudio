@@ -88,7 +88,7 @@
   <data name="StudioMarginRight"><value>右邊界：{0}</value></data>
   <data name="StudioMarginBottom"><value>下邊界：{0}</value></data>
   <data name="StudioMarginTop"><value>上邊界：{0}</value></data>
-  <data name="StudioMarginNote.Text"><value>以 1080×1920 為基準計數，算繪時按所選解析度等比縮放，所以在這裡調好的值換解析度不必重調。左邊界同時決定 Y 軸刻度的落點。 上邊界從手機保留給系統介面的安全區起算，標題不會鑽進狀態列。</value></data>
+  <data name="StudioMarginNote.Text"><value>以 1080×1920 為基準計數，算繪時按所選解析度等比縮放，所以在這裡調好的值換解析度不必重調。左邊界同時決定 Y 軸刻度的落點。 上邊界預設 230，正是手機保留給系統介面的那條安全區；調得更小，標題就會進入狀態列覆蓋的那一條帶。</value></data>
   <data name="StudioSafeArea.Header"><value>安全區參考線</value></data>
   <data name="StudioSafeAreaNote.Text"><value>標出手機應用程式會用自己介面遮住的區域。只畫在預覽裡，絕不會進入影片檔。</value></data>
   <data name="StudioPlay.Content"><value>播放</value></data>
@@ -468,8 +468,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>頂部</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>底部</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>深色更適合這些畫面：畫格內所有文字都是淺色。淺色背景會讓影片裡的數字難以辨認。</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>100% 就是所選的兩個顏色本身。調低會讓畫面自己的深色底從下面透上來——畫面裡的數字都按淺色繪製，所以選了偏亮的配色時這樣仍能看清。</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>不透明度</value></data>
   <data name="NavHistoryBack"><value>上一頁</value></data>
   <data name="NavHistoryBackTip"><value>上一頁 (Alt+向左鍵)</value></data>
   <data name="NavHistoryForward"><value>下一頁</value></data>
   <data name="NavHistoryForwardTip"><value>下一頁 (Alt+向右鍵)</value></data>
+  <data name="NavCandle.Content"><value>K線</value></data>
+  <data name="CandlePageTitle.Text"><value>K線走勢</value></data>
+  <data name="CandlePageSubtitle.Text"><value>一檔標的的 K 線：日K、週K、月K 三種週期，四種畫法，下方帶均線與成交量。</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>週期</value></data>
+  <data name="CandlePeriodDaily"><value>日K</value></data>
+  <data name="CandlePeriodWeekly"><value>週K</value></data>
+  <data name="CandlePeriodMonthly"><value>月K</value></data>
+  <data name="CandleStyleLabel.Header"><value>畫法</value></data>
+  <data name="CandleStyleCandles"><value>蠟燭圖</value></data>
+  <data name="CandleStyleBars"><value>美國線</value></data>
+  <data name="CandleStyleLine"><value>收盤線</value></data>
+  <data name="CandleStyleArea"><value>面積圖</value></data>
+  <data name="CandleMotionLabel.Header"><value>推進方式</value></data>
+  <data name="CandleMotionGrow"><value>逐根鋪滿</value></data>
+  <data name="CandleMotionScroll"><value>視窗滾動</value></data>
+  <data name="CandleWindowLabel.Header"><value>視窗根數</value></data>
+  <data name="CandleShowAverages.Content"><value>均線 MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>成交量</value></data>
+  <data name="CandleOpen"><value>開</value></data>
+  <data name="CandleClose"><value>收</value></data>
+  <data name="CandleMoveLabel"><value>漲跌</value></data>
+  <data name="CandleCardRange"><value>區間漲跌</value></data>
+  <data name="CandleCardAmplitude"><value>振幅</value></data>
+  <data name="CandleLegendClose"><value>收盤價</value></data>
+  <data name="CandleFetched"><value>{0} 根{1}（{2} 至 {3}）</value></data>
+  <data name="CandleRangeTooLong"><value>區間過長：{0}最多能取約 {1} 根，請把起始日期往後調。</value></data>
 </root>

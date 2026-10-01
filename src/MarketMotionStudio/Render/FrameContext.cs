@@ -64,26 +64,26 @@ public sealed record FrameContext(
     public double CreditLine => Height - Margins.Bottom;
 
     /// <summary>
-    /// The first row the title block may occupy.
+    /// The first row the title block may occupy: the top margin, and nothing else.
     ///
-    /// The floor is <see cref="SafeArea.Top"/> — above it the phone's status bar and the
-    /// player's chrome overlap the frame, and no margin setting may cross that. The user's
-    /// top margin can only push the title further **down** from there, which is what keeps
-    /// the margin meaningful without being able to do damage: at the smallest value the
-    /// layout is exactly what it was before the top margin existed.
+    /// It used to be clamped to <see cref="SafeArea.Top"/>, which made the setting
+    /// one-directional — a margin below the band did nothing at all, so the lower half of
+    /// the slider's range was inert and the number it showed was not the number in force.
+    /// Measuring it straight from the margin instead lets the setting mean what it says:
+    /// at <see cref="ChartMargins.TopDefault"/> the title sits exactly where the safe area
+    /// puts it, and above that value it is inside the band a phone covers.
     /// </summary>
-    public double TitleTop => Height * SafeArea.Top + TopShift;
+    public double TitleTop => Margins.Top;
 
     /// <summary>
-    /// How far the top margin pushes the top stack down from where the safe area alone
-    /// would put it, in device pixels.
+    /// How far the top margin moves the top stack from where the safe area alone would put
+    /// it, in device pixels — negative when the margin is drawn in above the band.
     ///
-    /// Zero unless the margin is set past the safe-area floor. Every row anchored to the
-    /// top of the frame — the header block's rows and the plot's first row — shifts by
-    /// this same amount, so the spacing inside the stack never changes and the plot is
-    /// what absorbs the difference.
+    /// Every row anchored to the top of the frame — the header block's rows and the plot's
+    /// first row — shifts by this same amount, so the spacing inside the stack never
+    /// changes and the plot is what absorbs the difference.
     /// </summary>
-    public double TopShift => Math.Max(0, Margins.Top - Height * SafeArea.Top);
+    public double TopShift => Margins.Top - Height * SafeArea.Top;
 
     /// <summary>
     /// A row anchored to the top of the frame, stated as a fraction of frame height as the

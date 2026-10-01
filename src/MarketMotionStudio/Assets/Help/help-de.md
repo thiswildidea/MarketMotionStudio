@@ -6,7 +6,7 @@ Diese App macht aus Kennzahlen des A-Aktien-Markts hochformatige Videos für das
 
 In den Einstellungen wird gewählt, aus welchem Markt die App ihre Kurse bezieht; voreingestellt sind A-Aktien. Eine Änderung gilt nach dem Neustart der App.
 
-- **A-Aktien**: alle sieben Seiten sind verfügbar.
+- **A-Aktien**: alle acht Seiten sind verfügbar.
 - **Hongkong**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über die vier Hang-Seng-Subindizes; **eine Umsatzzahl für den Gesamtmarkt gibt es nicht, diese Seite wird ausgeblendet**.
 - **USA**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über zehn SPDR-Sektor-ETFs; die Volumenseite behält nur den Tagesmodus, weil der Minuten-Endpunkt keine US-Daten liefert; **Umsätze werden in Dollar angegeben, und die Seite für den Gesamtmarktumsatz ist ausgeblendet**.
 
@@ -28,6 +28,17 @@ Der tägliche Umsatz des gesamten Markts: die Beträge der Composite-Indizes von
 - Ein noch laufender Handelstag wird ausgelassen. Ein unfertiger Tag enthält nur seine Eröffnungsauktion und würde als Balken direkt auf der Achse erscheinen.
 - Oder ein Segment allein betrachten: jede der Börsen, jeden Hauptmarkt, STAR, ChiNext. Hauptmärkte werden als Börsenwert minus Wachstumssegment hergeleitet; der BSE 50 bleibt eine Kennzahl der Indexmitglieder.
 - Nur der A-Aktienmarkt liefert eine Summe für den ganzen Markt. Bei Hongkong oder USA wird die Seite aus der Navigation entfernt.
+
+## Kerzenchart
+
+Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich, auf vier Arten gezeichnet, mit Durchschnitten und Volumen darunter.
+
+- **Intervall** entscheidet, wie viel Marktzeit eine Kerze abdeckt — ein Tag, eine Woche oder ein Monat. Eine Änderung lädt neu, denn die drei sind auf der Quelle getrennte Reihen.
+- **Darstellung** entscheidet, wie dieselben vier Preise gezeichnet werden: Kerzen, OHLC-Balken, Schlusskurslinie oder Schlusskursfläche. Umschalten lädt nichts neu.
+- **Ablauf** ist entweder das Eintreffen der Kerzen nacheinander, bis der ganze Zeitraum steht, oder ein festes Fenster, das weiterwandert. Das zweite hält die Kerze auf einem langen Zeitraum breit genug zum Lesen, und wie breit ist die Einstellung **Fenster**.
+- Gleitende Durchschnitte MA5, MA10 und MA20 können über die Kerzen gelegt werden; das Volumenfeld darunter lässt sich abschalten, und das Preisfeld nimmt den Platz zurück.
+- Eine noch laufende Woche oder ein laufender Monat bleibt draußen. Eine Kerze aus drei Tagen ist keine Woche.
+- Jeder Markt wird auf seiner bereinigten Reihe gelesen, damit ein Split-Tag nicht als Rückgang erscheint und eine Dividende auch nicht.
 
 ## Volumen und Umschlag
 
@@ -80,6 +91,7 @@ Ein Wertpapier zum festen Betrag in festen Abständen gekauft — an jedem Hande
 - Die Ein-Tipp-Instrumente folgen dem Markt: Breite und Gold-ETFs auf dem A-Aktien-Markt, die Hongkonger Tracker-Fonds, in den USA SPY, QQQ und GLD.
 - Betrag und Rhythmus stellen Sie ein; der Zeitraum ist drei, fünf oder zehn Jahre, oder so weit zurück, wie es Daten gibt (etwa dreizehn Jahre).
 - Die Rendite wird auf rückwärts bereinigten Schlusskursen gerechnet, ohne Gebühren. Das Ergebnis beschreibt die Kursreihe, nicht eine Rechnung, die so jemand hätte ausführen können.
+- Neben 3, 5 und 10 Jahren und dem längsten Zeitraum kann auch **Benutzerdefiniert** gewählt werden: Anfangs- und Enddatum eintragen und dann die Daten abrufen. Etwa 35 Jahre sind erreichbar — die Quelle liefert pro Anfrage rund 640 Kalendertage, und der Durchlauf macht höchstens zwanzig.
 
 ## Depotrendite
 
@@ -90,6 +102,7 @@ Ein einziger Kauf, über Jahre gehalten — etwa eine Million in 中国平安 im
 - Die vorgeschlagenen Namen folgen dem Markt: In China sind es die Aktien, die Menschen wirklich lange gehalten haben (Ping An, Moutai, CMB …), in Hongkong Tencent, HSBC und der Tracker Fund, in den USA Apple, Berkshire und SPY.
 - Anfangskapital und Haltezeitraum sind frei wählbar; der Zeitraum umfasst drei, fünf oder zehn Jahre — oder alles, was die Daten hergeben (etwa dreizehn Jahre).
 - Die Rendite beruht auf rückwärts adjustierten Kursen — Dividenden reinvestiert, ohne Gebühren. Die rückwärtige Adjustierung verankert sich am Börsengang und trägt Dividenden nach vorn, sodass die frühen Jahre eines fleißigen Zahlers nie nichtpositiv werden, wie es die vorwärts adjustierte Reihe zulässt.
+- Dieselbe Auswahl **Benutzerdefiniert** gilt für die Haltedauer: zwei Daten eintragen und die Daten abrufen. Wurde das Papier später gelistet als das Anfangsdatum, beginnt die Haltung an seinem ersten Handelstag.
 
 ## Video
 
@@ -116,6 +129,8 @@ Auf der Einstellungsseite lässt sich ein Bild hinter das Fenster legen, abgedun
 Auf der Einstellungsseite lässt sich ändern, worauf die Animation gezeichnet wird: der eingebaute Farbverlauf, zwei eigene Farben oder ein Bild. Es gilt für die Vorschau, das exportierte Video und das Titelbild gleichermaßen – alle drei zeichnet derselbe Renderer, es gibt also kein „in der Vorschau schön, in der Datei anders“.
 
 - Bei Farben geben Sie oben und unten je einen Farbton an; das Bild blendet dazwischen über. Dunkel passt: Jede Schriftfarbe darin ist hell, auf hellem Grund sind die Zahlen schwer zu lesen.
+
+- Der Regler für die Deckkraft bestimmt, wie viel von den zwei Farben verwendet wird: Bei 100 % ist das Bild die gewählte Paarung, darunter scheint der eigene dunkle Verlauf der Seite von unten durch. So bleibt eine helle Paarung lesbar.
 
 - Ein Bild wählen funktioniert wie beim Fensterhintergrund: eines vom Rechner oder ein mitgeliefertes Windows-Hintergrundbild. Ein eigenes wird in den App-Ordner kopiert.
 

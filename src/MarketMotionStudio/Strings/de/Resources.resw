@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>Rechter Rand: {0}</value></data>
   <data name="StudioMarginBottom"><value>Unterer Rand: {0}</value></data>
   <data name="StudioMarginTop"><value>Oberer Rand: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>Gemessen gegen 1080×1920 und auf die gewählte Auflösung skaliert; ein hier abgestimmter Wert gilt daher in jeder Größe. Der linke Rand bestimmt außerdem, wo die Achsenbeschriftungen landen. Der obere Rand beginnt bei dem Bereich, den sich das Telefon für seine eigene Oberfläche reserviert, damit der Titel nie darunter rutscht.</value></data>
+  <data name="StudioMarginNote.Text"><value>Gemessen gegen 1080×1920 und auf die gewählte Auflösung skaliert; ein hier abgestimmter Wert gilt daher in jeder Größe. Der linke Rand bestimmt außerdem, wo die Achsenbeschriftungen landen. Der obere Rand beginnt bei 230 — dem Bereich, den sich das Telefon für seine eigene Oberfläche reserviert; darunter rutscht der Titel in den Streifen, den die Statusleiste überdeckt.</value></data>
   <data name="StudioSafeArea.Header"><value>Hilfslinien für den sicheren Bereich</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Umreißt die Bereiche, die eine Telefon-App mit ihrer eigenen Oberfläche verdeckt. Nur in der Vorschau gezeichnet, niemals in einer Datei.</value></data>
   <data name="StudioPlay.Content"><value>Abspielen</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Oben</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Unten</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Dunkle Farben passen zu diesen Bildern: Jede Schriftfarbe darin ist hell. Auf hellem Grund sind die Zahlen im Video schwer zu lesen.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>Bei 100 % ist das Bild die zwei gewählten Farben. Niedriger lässt den eigenen dunklen Verlauf des Bildes durchscheinen — so bleibt eine helle Wahl lesbar, denn jede Zahl darin ist in einem hellen Ton gezeichnet.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Deckkraft</value></data>
   <data name="NavHistoryBack"><value>Zurück</value></data>
   <data name="NavHistoryBackTip"><value>Zurück (Alt+Pfeil links)</value></data>
   <data name="NavHistoryForward"><value>Vorwärts</value></data>
   <data name="NavHistoryForwardTip"><value>Vorwärts (Alt+Pfeil rechts)</value></data>
+  <data name="NavCandle.Content"><value>Kerzen</value></data>
+  <data name="CandlePageTitle.Text"><value>Kerzenchart</value></data>
+  <data name="CandlePageSubtitle.Text"><value>Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich, auf vier Arten gezeichnet, mit Durchschnitten und Volumen darunter.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Intervall</value></data>
+  <data name="CandlePeriodDaily"><value>Täglich</value></data>
+  <data name="CandlePeriodWeekly"><value>Wöchentlich</value></data>
+  <data name="CandlePeriodMonthly"><value>Monatlich</value></data>
+  <data name="CandleStyleLabel.Header"><value>Darstellung</value></data>
+  <data name="CandleStyleCandles"><value>Kerzen</value></data>
+  <data name="CandleStyleBars"><value>OHLC-Balken</value></data>
+  <data name="CandleStyleLine"><value>Schlusskurslinie</value></data>
+  <data name="CandleStyleArea"><value>Schlusskursfläche</value></data>
+  <data name="CandleMotionLabel.Header"><value>Ablauf</value></data>
+  <data name="CandleMotionGrow"><value>Über den ganzen Zeitraum</value></data>
+  <data name="CandleMotionScroll"><value>Fenster weiterbewegen</value></data>
+  <data name="CandleWindowLabel.Header"><value>Fenster (Kerzen)</value></data>
+  <data name="CandleShowAverages.Content"><value>Gleitende Durchschnitte MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Volumen</value></data>
+  <data name="CandleOpen"><value>Eröffnung</value></data>
+  <data name="CandleClose"><value>Schluss</value></data>
+  <data name="CandleMoveLabel"><value>Veränderung</value></data>
+  <data name="CandleCardRange"><value>Rendite im Zeitraum</value></data>
+  <data name="CandleCardAmplitude"><value>Spanne</value></data>
+  <data name="CandleLegendClose"><value>Schlusskurs</value></data>
+  <data name="CandleFetched"><value>{0} {1} ({2} bis {3})</value></data>
+  <data name="CandleRangeTooLong"><value>Der Zeitraum ist zu lang — {0} erreicht höchstens etwa {1} Kerzen. Verschieben Sie das Startdatum nach hinten.</value></data>
 </root>

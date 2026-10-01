@@ -6,7 +6,7 @@ Questa app trasforma gli indicatori del mercato delle azioni A in video vertical
 
 Nelle impostazioni si sceglie da quale mercato l'app prende le quotazioni; come predefinite, le azioni A. La modifica ha effetto dopo il riavvio dell'app.
 
-- **Azioni A**: tutte e sette le pagine sono disponibili.
+- **Azioni A**: tutte e otto le pagine sono disponibili.
 - **Hong Kong**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa i quattro sottoindici Hang Seng; **non esiste un dato per l'intero mercato, quindi quella pagina è nascosta**.
 - **Stati Uniti**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa dieci ETF settoriali SPDR; la pagina dei volumi conserva solo la modalità giornaliera, perché l'endpoint dei minuti non serve dati statunitensi; **gli importi sono in dollari e la pagina del controvalore del mercato è nascosta**.
 
@@ -28,6 +28,17 @@ Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli ind
 - Una seduta ancora in corso viene esclusa. Un giorno non finito contiene solo la sua asta di apertura e si disegnerebbe come una barra appiccicata all'asse.
 - Oppure guardare un solo segmento: ciascuna borsa, ciascun mercato principale, STAR, ChiNext. I mercati principali sono ricavati dal totale della borsa meno il suo mercato di crescita; il BSE 50 resta una misura a componenti.
 - Solo il mercato delle azioni A dà un totale per l'intero mercato. Con Hong Kong o Stati Uniti la pagina viene rimossa dalla navigazione.
+
+## Candele
+
+Le candele di uno strumento: giornaliere, settimanali o mensili, disegnate in quattro modi, con le medie e il volume sotto.
+
+- **Intervallo** decide quanto tempo di mercato copre una candela: un giorno, una settimana o un mese. Cambiarlo ricarica i dati, perché sulla fonte le tre sono serie distinte.
+- **Tipo di disegno** decide come vengono disegnati gli stessi quattro prezzi: candele, barre OHLC, linea di chiusura o area di chiusura. Passare dall'uno all'altro non ricarica nulla.
+- **Animazione** è l'arrivo delle candele una dopo l'altra finché tutto l'intervallo è tracciato, oppure una finestra fissa che avanza. La seconda è ciò che mantiene la candela abbastanza larga da leggersi su un intervallo lungo, e quella ampiezza è l'impostazione **Finestra**.
+- Le medie mobili MA5, MA10 e MA20 possono essere sovrapposte alle candele; il pannello del volume sotto può essere spento, e il pannello del prezzo riprende lo spazio.
+- Una settimana o un mese ancora in corso resta fuori. Una candela fatta di tre giorni non è una settimana.
+- Ogni mercato è letto sulla sua serie rettificata, quindi un giorno di frazionamento non è disegnato come un calo, e nemmeno un dividendo.
 
 ## Volume e rotazione
 
@@ -80,6 +91,7 @@ Comprare uno strumento a importe e cadenza fissi — ogni giorno di borsa, ogni 
 - Gli strumenti a un tocco seguono il mercato: ETF ampi e oro sulle azioni A, i fondi indicizzati di Hong Kong, SPY, QQQ e GLD negli Stati Uniti.
 - Importo e frequenza si impostano liberamente; il periodo è di tre, cinque o dieci anni, oppure fino al dato più antico disponibile (circa tredici anni).
 - Il rendimento è calcolato su chiusure rettificate all'indietro, senza commissioni. Il risultato descrive la serie di prezzi, non una fattura che qualcuno avrebbe potuto eseguire.
+- Oltre a 3, 5 e 10 anni e all'intervallo più lungo, il periodo può essere **Personalizzato**: indica una data di inizio e una di fine, poi premi il pulsante per recuperare i dati. Si può risalire di circa 35 anni: la fonte restituisce circa 640 giorni di calendario per richiesta e la scansione ne fa al massimo venti.
 
 ## Rendimento di posizione
 
@@ -90,6 +102,7 @@ Un solo acquisto, mantenuto per anni — un milione in 中国平安 nel 2015, ad
 - I nomi proposti seguono il mercato: in Cina le azioni che la gente dice davvero di aver tenuto (Ping An, Moutai, CMB…), a Hong Kong Tencent, HSBC e il Tracker Fund, negli Stati Uniti Apple, Berkshire e SPY.
 - Capitale iniziale e periodo di detenzione sono tuoi; il periodo può essere di tre, cinque o dieci anni, o fino a dove arrivano i dati (circa tredici anni).
 - Il rendimento è calcolato su chiusure rettificate all'indietro — dividendi reinvestiti, nessuna commissione. La rettifica all'indietro si ancora alla quotazione e accumula i dividendi in avanti, così i primi anni di un grande pagatore non diventano mai negativi, come può fare la rettifica in avanti.
+- Lo stesso periodo **Personalizzato** vale per la detenzione: indica due date, poi premi il pulsante per recuperare i dati. Se lo strumento è stato quotato dopo la data indicata, la detenzione inizia nel suo primo giorno di negoziazione.
 
 ## Video
 
@@ -116,6 +129,8 @@ La pagina delle impostazioni può mettere un'immagine dietro la finestra, attenu
 Nella pagina Impostazioni puoi cambiare ciò su cui viene disegnata l'animazione: il gradiente predefinito, due colori tuoi oppure un'immagine. Vale per l'anteprima, per il video esportato e per l'immagine di copertina: tutti e tre li disegna lo stesso renderer, quindi non esiste un «bello nell'anteprima, diverso nel file».
 
 - Con i colori indichi un tono in alto e uno in basso e il fotogramma passa dall'uno all'altro. Meglio scuri: ogni tono di testo è chiaro e uno sfondo chiaro rende i numeri difficili da leggere.
+
+- La barra dell'opacità decide quanto si usano i due colori: al 100% il fotogramma è la coppia scelta, più in basso lascia intravedere il gradiente scuro della pagina. È questo che tiene leggibile una coppia chiara.
 
 - Scegliere un'immagine funziona come per lo sfondo della finestra: una dal computer o uno sfondo già incluso in Windows. Quella scelta viene copiata nella cartella dell'app.
 

@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Root element is the base class; see the note in MarketTurnoverPage.xaml. -->
+<local:StudioPage
+    x:Class="MarketMotionStudio.Pages.CandlePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:MarketMotionStudio.Controls"
+    xmlns:local="using:MarketMotionStudio.Pages"
+    xmlns:views="using:MarketMotionStudio.Views"
+    NavigationCacheMode="Required">
+
+    <!-- Required, not Disabled: the instrument, the period and the span are choices
+         someone made once and expects to find as they left them. -->
+
+    <Grid RowDefinitions="Auto,*">
+
+        <StackPanel Grid.Row="0" Padding="24,20,24,12" Spacing="2">
+            <TextBlock x:Uid="CandlePageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock x:Uid="CandlePageSubtitle"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+
+            <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto" Margin="24,0,12,24" RowSpacing="12">
+
+                <views:PreviewSurface x:Name="Preview" Grid.Row="0" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <!-- Icon button; see the note in MarketTurnoverPage.xaml. -->
+                    <Button x:Name="PlayButton"
+                            Grid.Column="0"
+                            Width="44"
+                            IsEnabled="False"
+                            Click="OnPlay">
+                        <FontIcon x:Name="PlayIcon" Glyph="&#xE768;" FontSize="16" />
+                    </Button>
+                    <Slider x:Name="Scrub"
+                            Grid.Column="1"
+                            Minimum="0" Maximum="1"
+                            StepFrequency="0.001"
+                            ValueChanged="OnScrub"
+                            VerticalAlignment="Center" />
+                    <TextBlock x:Name="ScrubText"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               MinWidth="72"
+                               TextAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <mux:InfoBar x:Name="Status" Grid.Row="2" IsOpen="False" IsClosable="True" />
+            </Grid>
+
+            <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
+                <StackPanel Spacing="14">
+
+                    <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- The same suggesting box as every page that names one instrument: a code,
+                         a Chinese name or pinyin all resolve to one of them, filtered to the
+                         market in force. -->
+                    <AutoSuggestBox x:Name="InstrumentSearch"
+                                    x:Uid="StockSearch"
+                                    QueryIcon="Find"
+                                    TextChanged="OnSearchTextChanged"
+                                    QuerySubmitted="OnSearchSubmitted"
+                                    SuggestionChosen="OnSuggestionChosen" />
+
+                    <!-- One-tap instruments: an index, a stock and a fund from this market,
+                         because the question this page is asked with is "what did it do", and
+                         the three are asked about equally often. -->
+                    <ItemsControl x:Name="Presets">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:MatrixPreset">
+                                <Button Content="{x:Bind Name}"
+                                        Tag="{x:Bind Code}"
+                                        Click="OnPresetClick"
+                                        Margin="0,0,8,6" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- The same watchlist as the other per-instrument pages, not a second one.
+                         A favourite is a fact about the instrument, not about the page it was
+                         added on. -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  HorizontalScrollMode="Auto"
+                                  VerticalScrollMode="Disabled"
+                                  VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl x:Name="Favourites">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="6" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local:StockFavourite">
+                                    <StackPanel Orientation="Horizontal" Spacing="0">
+                                        <Button Click="OnFavouriteClick"
+                                                Padding="10,5"
+                                                CornerRadius="10,0,0,10"
+                                                Tag="{x:Bind Code}">
+                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                <TextBlock Text="{x:Bind Name}" />
+                                                <TextBlock Text="{x:Bind CodeUpper}"
+                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="OnFavouriteRemove"
+                                                Padding="8,5"
+                                                CornerRadius="0,10,10,0"
+                                                Tag="{x:Bind Code}"
+                                                Content="&#x2715;" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <Button x:Name="FavouriteButton"
+                            x:Uid="StockAddFavourite"
+                            HorizontalAlignment="Left"
+                            Click="OnAddFavourite" />
+
+                    <!-- What one candle covers. Changing it re-fetches: the periods are
+                         different series on the source, not one series drawn differently. -->
+                    <ComboBox x:Name="PeriodCombo"
+                              x:Uid="CandlePeriodLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnPeriodChanged" />
+
+                    <!-- How far back, in the spans this period offers. A daily chart ten
+                         years long is two and a half thousand candles; the periods do not
+                         offer the same spans because they cannot draw them. A custom span
+                         is the last entry on every period. -->
+                    <ComboBox x:Name="RangeCombo"
+                              x:Uid="StudioRange"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnRangeChanged" />
+
+                    <!-- Shown only while the custom span is selected. Not wired to fetch on
+                         every spin of a calendar: a date is picked in three clicks and each
+                         one would be a request, so the span is submitted with 取数 the way
+                         every other page's custom range is. -->
+                    <StackPanel x:Name="CustomRange" Spacing="8" Visibility="Collapsed">
+                        <DatePicker x:Name="FromDate" x:Uid="StudioRangeFrom" HorizontalAlignment="Stretch" />
+                        <DatePicker x:Name="ToDate" x:Uid="StudioRangeTo" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+
+                    <!-- How the four prices are drawn. Four ways of reading the same bars,
+                         so this one re-fetches nothing. -->
+                    <ComboBox x:Name="StyleCombo"
+                              x:Uid="CandleStyleLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <!-- Whether the whole range is laid out, or a window of it walked
+                         forward. The second is the only way a long range keeps a candle
+                         wide enough to read. -->
+                    <ComboBox x:Name="MotionCombo"
+                              x:Uid="CandleMotionLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <!-- How many candles the window holds. Only means something while the
+                         motion is scrolling, so it says so by being off otherwise. -->
+                    <TextBox x:Name="WindowBox"
+                             x:Uid="CandleWindowLabel"
+                             Text="60"
+                             TextChanged="OnLookChanged" />
+
+                    <CheckBox x:Name="AveragesCheck"
+                              x:Uid="CandleShowAverages"
+                              IsChecked="True"
+                              Click="OnLookChanged" />
+
+                    <!-- Its own key, not the frame's `StockPanelVolume`: this is the
+                         checkbox, that one is the panel label, and a bare key cannot
+                         share a stem with a `<key>.Content` entry — MakePri reads the
+                         dot as a qualifier and refuses the pair (PRI278). -->
+                    <CheckBox x:Name="VolumeCheck"
+                              x:Uid="CandleShowVolume"
+                              IsChecked="True"
+                              Click="OnLookChanged" />
+
+                    <Button x:Name="FetchButton"
+                            x:Uid="StudioFetch"
+                            HorizontalAlignment="Stretch"
+                            Click="OnFetch" />
+
+                    <views:VideoSettingsPanel x:Name="VideoSettings" />
+
+                    <Button x:Name="ExportButton"
+                            x:Uid="StudioExport"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="OnExport" />
+
+                    <Button x:Name="CoverButton"
+                            x:Uid="StudioCover"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnSaveCover" />
+
+                    <TextBlock x:Uid="StudioCoverNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <Button x:Name="CancelButton"
+                            x:Uid="StudioCancel"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnCancel" />
+
+                    <TextBlock x:Uid="StudioDisclaimer"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</local:StudioPage>

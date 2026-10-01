@@ -51,6 +51,19 @@ internal static class HistoryWalk
     private const int MostRequests = 20;
 
     /// <summary>
+    /// The furthest back one walk can reach, in calendar days.
+    ///
+    /// One request carries <see cref="TencentKline.MostBarsPerRequest"/> days at most,
+    /// and the walk makes <see cref="MostRequests"/> of them. A page offering two dates
+    /// to type in bounds its pickers by this rather than by a number picked for how it
+    /// sounds: past it the walk runs out of requests before it runs out of range, and
+    /// the series quietly starts later than the date that was asked for — which is the
+    /// one answer a custom span must not give, because the whole point of typing two
+    /// dates is that they are the dates.
+    /// </summary>
+    public const int MostDays = MostRequests * TencentKline.MostBarsPerRequest;
+
+    /// <summary>
     /// The closes from <paramref name="start"/> to <paramref name="end"/>, or as
     /// many as the source has, keyed by trading day. Duplicates are collapsed by
     /// date, so overlapping requests cost nothing.

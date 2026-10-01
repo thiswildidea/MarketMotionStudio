@@ -24,6 +24,7 @@ public static class AnimationBackdrop
     private const string TopKey = "FrameBackdropTop";
     private const string BottomKey = "FrameBackdropBottom";
     private const string DimKey = "FrameBackdropDim";
+    private const string StrengthKey = "FrameBackdropStrength";
 
     /// <summary>
     /// The dimming range for a picture, in percent. Not down to zero: every
@@ -37,6 +38,19 @@ public static class AnimationBackdrop
     public const int MaxDim = 95;
 
     public const int DefaultDim = 60;
+
+    /// <summary>
+    /// The opacity range for a colour, in percent. The top is full: two colour
+    /// stops are the whole point of choosing them, and a pair that cannot be
+    /// had at full strength is a pair that was not really offered. The floor
+    /// keeps a colour from being set so faint that it is only a tint of the
+    /// frame's own backdrop and the choice stops reading as a choice.
+    /// </summary>
+    public const int MinStrength = 20;
+
+    public const int MaxStrength = 100;
+
+    public const int DefaultStrength = 100;
 
     /// <summary>
     /// Its own copies, separate from the window's. See <see cref="PictureLibrary"/>.
@@ -105,6 +119,26 @@ public static class AnimationBackdrop
         }
     }
 
+    /// <summary>
+    /// How opaque the two chosen colours are, in percent, for <see cref="BackdropKind.Colour"/>.
+    ///
+    /// Unlike <see cref="Dim"/> this runs the other way: 100 is the colours as
+    /// chosen and lower lets the page's own gradient through. A picture needs
+    /// holding back because it arrives with colours of its own; a colour was
+    /// chosen, so what there is to decide about it is how much of it to use.
+    /// </summary>
+    public static int Strength
+    {
+        get => Settings.Values[StrengthKey] is int strength
+            ? Math.Clamp(strength, MinStrength, MaxStrength)
+            : DefaultStrength;
+        set
+        {
+            Settings.Values[StrengthKey] = Math.Clamp(value, MinStrength, MaxStrength);
+            Announce();
+        }
+    }
+
     /// <summary>The chosen picture, or null when there is none.</summary>
     public static string? Picture => Pictures.Current;
 
@@ -141,7 +175,7 @@ public static class AnimationBackdrop
     private static Backdrop? _resolved;
 
     private static Backdrop Resolve() =>
-        new(Kind, Top, Bottom, Pictures.Current, Dim / 100.0);
+        new(Kind, Top, Bottom, Pictures.Current, Dim / 100.0, Strength / 100.0);
 
     private static void Announce()
     {

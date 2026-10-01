@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>Margem direita: {0}</value></data>
   <data name="StudioMarginBottom"><value>Margem inferior: {0}</value></data>
   <data name="StudioMarginTop"><value>Margem superior: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>Medidas contra 1080×1920 e escalonadas para a resolução escolhida, então um valor ajustado aqui vale em qualquer tamanho. A margem esquerda também decide onde caem os rótulos do eixo. A margem superior começa na faixa que o celular reserva para a própria interface, então o título nunca fica por baixo dela.</value></data>
+  <data name="StudioMarginNote.Text"><value>Medidas contra 1080×1920 e escalonadas para a resolução escolhida, então um valor ajustado aqui vale em qualquer tamanho. A margem esquerda também decide onde caem os rótulos do eixo. A margem superior começa em 230, a faixa que o celular reserva para a própria interface; abaixo disso o título entra na faixa coberta pela barra de status.</value></data>
   <data name="StudioSafeArea.Header"><value>Guias de área segura</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Delimita as regiões que um aplicativo de celular cobre com a própria interface. Desenhadas apenas na prévia, nunca em um arquivo.</value></data>
   <data name="StudioPlay.Content"><value>Reproduzir</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Topo</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Base</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Cores escuras combinam com estes quadros: todos os tons de texto são claros. Sobre um fundo claro, os números ficam difíceis de ler no vídeo.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>Em 100% o quadro são as duas cores escolhidas. Abaixo disso o degradê escuro do próprio quadro aparece por baixo: é assim que uma escolha clara continua legível, pois todos os números são desenhados em tons claros.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Opacidade</value></data>
   <data name="NavHistoryBack"><value>Voltar</value></data>
   <data name="NavHistoryBackTip"><value>Voltar (Alt+Seta para a esquerda)</value></data>
   <data name="NavHistoryForward"><value>Avançar</value></data>
   <data name="NavHistoryForwardTip"><value>Avançar (Alt+Seta para a direita)</value></data>
+  <data name="NavCandle.Content"><value>Candlestick</value></data>
+  <data name="CandlePageTitle.Text"><value>Candlestick</value></data>
+  <data name="CandlePageSubtitle.Text"><value>Os candles de um instrumento: diários, semanais ou mensais, desenhados de quatro formas, com médias e volume abaixo.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Intervalo</value></data>
+  <data name="CandlePeriodDaily"><value>Diários</value></data>
+  <data name="CandlePeriodWeekly"><value>Semanais</value></data>
+  <data name="CandlePeriodMonthly"><value>Mensais</value></data>
+  <data name="CandleStyleLabel.Header"><value>Tipo de desenho</value></data>
+  <data name="CandleStyleCandles"><value>Candles</value></data>
+  <data name="CandleStyleBars"><value>Barras OHLC</value></data>
+  <data name="CandleStyleLine"><value>Linha de fechamento</value></data>
+  <data name="CandleStyleArea"><value>Área de fechamento</value></data>
+  <data name="CandleMotionLabel.Header"><value>Animação</value></data>
+  <data name="CandleMotionGrow"><value>Todo o período</value></data>
+  <data name="CandleMotionScroll"><value>Janela deslizante</value></data>
+  <data name="CandleWindowLabel.Header"><value>Janela (candles)</value></data>
+  <data name="CandleShowAverages.Content"><value>Médias móveis MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Volume</value></data>
+  <data name="CandleOpen"><value>Abertura</value></data>
+  <data name="CandleClose"><value>Fechamento</value></data>
+  <data name="CandleMoveLabel"><value>Variação</value></data>
+  <data name="CandleCardRange"><value>Retorno do período</value></data>
+  <data name="CandleCardAmplitude"><value>Amplitude</value></data>
+  <data name="CandleLegendClose"><value>Fechamento</value></data>
+  <data name="CandleFetched"><value>{0} {1} ({2} a {3})</value></data>
+  <data name="CandleRangeTooLong"><value>O intervalo é longo demais — {0} alcança cerca de {1} candles no máximo. Adiante a data de início.</value></data>
 </root>

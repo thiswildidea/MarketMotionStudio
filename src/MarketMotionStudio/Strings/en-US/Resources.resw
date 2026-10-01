@@ -96,7 +96,7 @@
   <data name="StudioMarginRight"><value>Right margin: {0}</value></data>
   <data name="StudioMarginBottom"><value>Bottom margin: {0}</value></data>
   <data name="StudioMarginTop"><value>Top margin: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>Measured against 1080×1920 and scaled to the chosen resolution, so a value tuned here holds at every size. The left margin also decides where the axis labels land. The top margin starts at the band a phone keeps for its own interface, so the title can never slide under it.</value></data>
+  <data name="StudioMarginNote.Text"><value>Measured against 1080×1920 and scaled to the chosen resolution, so a value tuned here holds at every size. The left margin also decides where the axis labels land. The top margin opens at 230, the band a phone keeps for its own interface; set it lower and the title moves into the strip a status bar covers.</value></data>
   <data name="StudioSafeArea.Header"><value>Safe-area guides</value></data>
   <data name="StudioSafeAreaNote.Text"><value>Outlines the regions a phone app covers with its own interface. Drawn in the preview only, and never in a file.</value></data>
   <data name="StudioPlay.Content"><value>Play</value></data>
@@ -480,8 +480,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Top</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Bottom</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Dark colours suit these frames: every tone of text in them is light. On a light background the numbers are hard to read in the video.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>At 100% the frame is the two colours as chosen. Lower lets the frame's own dark gradient through, which is how a light pair stays readable: every number in a frame is drawn in a light tone.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>Opacity</value></data>
   <data name="NavHistoryBack"><value>Back</value></data>
   <data name="NavHistoryBackTip"><value>Back (Alt+Left)</value></data>
   <data name="NavHistoryForward"><value>Forward</value></data>
   <data name="NavHistoryForwardTip"><value>Forward (Alt+Right)</value></data>
+  <data name="NavCandle.Content"><value>Candles</value></data>
+  <data name="CandlePageTitle.Text"><value>Candles</value></data>
+  <data name="CandlePageSubtitle.Text"><value>One instrument's candles: daily, weekly or monthly, drawn four ways, with its averages and its volume underneath.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>Period</value></data>
+  <data name="CandlePeriodDaily"><value>Daily</value></data>
+  <data name="CandlePeriodWeekly"><value>Weekly</value></data>
+  <data name="CandlePeriodMonthly"><value>Monthly</value></data>
+  <data name="CandleStyleLabel.Header"><value>Style</value></data>
+  <data name="CandleStyleCandles"><value>Candles</value></data>
+  <data name="CandleStyleBars"><value>OHLC bars</value></data>
+  <data name="CandleStyleLine"><value>Closing line</value></data>
+  <data name="CandleStyleArea"><value>Closing area</value></data>
+  <data name="CandleMotionLabel.Header"><value>Motion</value></data>
+  <data name="CandleMotionGrow"><value>Grow across the range</value></data>
+  <data name="CandleMotionScroll"><value>Scroll a window</value></data>
+  <data name="CandleWindowLabel.Header"><value>Window (candles)</value></data>
+  <data name="CandleShowAverages.Content"><value>Moving averages MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>Volume</value></data>
+  <data name="CandleOpen"><value>Open</value></data>
+  <data name="CandleClose"><value>Close</value></data>
+  <data name="CandleMoveLabel"><value>Change</value></data>
+  <data name="CandleCardRange"><value>Range return</value></data>
+  <data name="CandleCardAmplitude"><value>Amplitude</value></data>
+  <data name="CandleLegendClose"><value>Close</value></data>
+  <data name="CandleFetched"><value>{0} {1} candles ({2} to {3})</value></data>
+  <data name="CandleRangeTooLong"><value>That range is too long — {0} reaches about {1} candles at most. Move the start date later.</value></data>
 </root>

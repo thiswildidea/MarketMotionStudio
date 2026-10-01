@@ -89,7 +89,7 @@
   <data name="StudioMarginRight"><value>오른쪽 여백: {0}</value></data>
   <data name="StudioMarginBottom"><value>아래쪽 여백: {0}</value></data>
   <data name="StudioMarginTop"><value>위쪽 여백: {0}</value></data>
-  <data name="StudioMarginNote.Text"><value>1080×1920 기준으로 적은 값이며 선택한 해상도에 비례해 확대됩니다. 여기서 맞춘 값은 해상도를 바꿔도 그대로 쓸 수 있습니다. 왼쪽 여백은 Y축 눈금의 위치도 결정합니다. 위쪽 여백은 휴대폰이 자체 UI를 위해 확보한 영역에서 시작하므로 제목이 그 아래로 들어가지 않습니다.</value></data>
+  <data name="StudioMarginNote.Text"><value>1080×1920 기준으로 적은 값이며 선택한 해상도에 비례해 확대됩니다. 여기서 맞춘 값은 해상도를 바꿔도 그대로 쓸 수 있습니다. 왼쪽 여백은 Y축 눈금의 위치도 결정합니다. 위쪽 여백의 기본값 230은 휴대폰이 자체 UI를 위해 확보한 영역이며, 더 줄이면 제목이 상태 표시줄이 덮는 띠로 들어갑니다.</value></data>
   <data name="StudioSafeArea.Header"><value>안전 영역 가이드</value></data>
   <data name="StudioSafeAreaNote.Text"><value>휴대폰 앱이 자체 인터페이스로 가리는 영역을 표시합니다. 미리 보기에만 그려지고 파일에는 들어가지 않습니다.</value></data>
   <data name="StudioPlay.Content"><value>재생</value></data>
@@ -469,8 +469,38 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>위쪽</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>아래쪽</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>이 프레임에는 어두운 색이 어울립니다. 글자 색이 모두 밝은 색이기 때문입니다. 밝은 배경에서는 영상 속 숫자가 잘 읽히지 않습니다.</value></data>
+  <data name="SettingsFrameStrengthNote.Text" xml:space="preserve"><value>100%면 선택한 두 색 그대로입니다. 낮추면 프레임 고유의 어두운 그라데이션이 아래에서 비칩니다. 숫자는 모두 밝은 색으로 그려지므로 밝은 조합을 골라도 읽을 수 있습니다.</value></data>
+  <data name="SettingsFrameStrengthLabel.Text" xml:space="preserve"><value>불투명도</value></data>
   <data name="NavHistoryBack"><value>뒤로</value></data>
   <data name="NavHistoryBackTip"><value>뒤로 (Alt+왼쪽 화살표)</value></data>
   <data name="NavHistoryForward"><value>앞으로</value></data>
   <data name="NavHistoryForwardTip"><value>앞으로 (Alt+오른쪽 화살표)</value></data>
+  <data name="NavCandle.Content"><value>캔들</value></data>
+  <data name="CandlePageTitle.Text"><value>캔들 차트</value></data>
+  <data name="CandlePageSubtitle.Text"><value>한 종목의 캔들입니다. 일·주·월 중에서 고르고 네 가지 방식으로 그립니다. 아래에 이동평균과 거래량.</value></data>
+  <data name="CandleSubtitleLine"><value>{0} · {1}</value></data>
+  <data name="CandleDefaultTitle"><value>{0} · {1}</value></data>
+  <data name="CandlePeriodLabel.Header"><value>주기</value></data>
+  <data name="CandlePeriodDaily"><value>일봉</value></data>
+  <data name="CandlePeriodWeekly"><value>주봉</value></data>
+  <data name="CandlePeriodMonthly"><value>월봉</value></data>
+  <data name="CandleStyleLabel.Header"><value>표시 방식</value></data>
+  <data name="CandleStyleCandles"><value>캔들</value></data>
+  <data name="CandleStyleBars"><value>OHLC 바</value></data>
+  <data name="CandleStyleLine"><value>종가 선</value></data>
+  <data name="CandleStyleArea"><value>종가 영역</value></data>
+  <data name="CandleMotionLabel.Header"><value>진행 방식</value></data>
+  <data name="CandleMotionGrow"><value>전체 구간 그리기</value></data>
+  <data name="CandleMotionScroll"><value>창 이동</value></data>
+  <data name="CandleWindowLabel.Header"><value>창 크기(캔들)</value></data>
+  <data name="CandleShowAverages.Content"><value>이동평균 MA5/10/20</value></data>
+  <data name="CandleShowVolume.Content"><value>거래량</value></data>
+  <data name="CandleOpen"><value>시가</value></data>
+  <data name="CandleClose"><value>종가</value></data>
+  <data name="CandleMoveLabel"><value>등락률</value></data>
+  <data name="CandleCardRange"><value>구간 수익률</value></data>
+  <data name="CandleCardAmplitude"><value>진폭</value></data>
+  <data name="CandleLegendClose"><value>종가</value></data>
+  <data name="CandleFetched"><value>{0}개 {1} ({2} ~ {3})</value></data>
+  <data name="CandleRangeTooLong"><value>기간이 너무 깁니다. {0}은(는) 최대 약 {1}개까지 가져올 수 있습니다. 시작 날짜를 뒤로 미루세요.</value></data>
 </root>

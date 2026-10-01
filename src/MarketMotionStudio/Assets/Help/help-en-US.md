@@ -6,7 +6,7 @@ This app turns A-share market indicators into vertical videos for phones. You pi
 
 Settings picks which market the app takes its quotes from; A-shares by default. A change takes effect after the app is restarted.
 
-- **A-shares**: all seven pages are available.
+- **A-shares**: all eight pages are available.
 - **Hong Kong**: the return matrix and the gain-loss calendar work; the sector race runs on the four Hang Seng sub-indices; **there is no whole-market turnover figure, so that page is hidden**.
 - **United States**: the return matrix and the gain-loss calendar work; the sector race runs on ten SPDR sector ETFs; the volume page keeps its daily mode only, because the minute endpoint serves no US data; **amounts are quoted in dollars, and the whole-market turnover page is hidden**.
 
@@ -28,6 +28,17 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
 - A session still in progress is left out. An unfinished day holds only its opening auction, which would draw as a bar flat against the axis.
 - Or look at one slice alone: either exchange, either main board, STAR, ChiNext. Main boards are derived as the exchange total less its growth board; the BSE 50 remains a constituent measure.
 - Only the A-share market yields a whole-market total. On Hong Kong or the United States the page is taken out of the navigation.
+
+## Candles
+
+One instrument's prices as candles: daily, weekly or monthly, drawn four ways, with its averages and its volume underneath.
+
+- **Period** decides how much market time one candle covers — a day, a week or a month. Changing it fetches again, because the three are separate series on the source.
+- **Style** decides how the same four prices are drawn: candles, OHLC bars, a closing line, or a closing area. Switching between them re-fetches nothing.
+- **Motion** is either candles arriving one after another until the whole range is laid out, or a fixed window of them walking forward. The second is what keeps a candle wide enough to read on a long range, and how wide is the **window** setting.
+- Moving averages MA5, MA10 and MA20 can be laid over the candles; the volume panel underneath can be turned off, and the price panel takes the room back.
+- A week or a month still in progress is left out. A candle made of three days is not a week.
+- Every market is read on its adjusted series, so a split day is not drawn as a fall, and neither is a dividend.
 
 ## Volume and Turnover
 
@@ -80,6 +91,7 @@ Buying one instrument for a fixed amount on a fixed cadence — every trading da
 - The one-tap instruments follow the market: broad and gold ETFs on the A-share market, the Hong Kong tracker funds, SPY, QQQ and GLD in the United States.
 - The amount and the cadence are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
 - Returns are computed on backward-adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
+- Besides three, five and ten years and the longest span, the range can be **Custom**: give a start and an end date, then press Fetch. About 35 years is reachable — the source serves roughly 640 calendar days per request, and the walk makes at most twenty of them.
 
 ## Holdings Return
 
@@ -90,6 +102,7 @@ One purchase, held for years — a million into 中国平安 in 2015, say — an
 - The one-tap names follow the market: the A-share list is the stocks people actually say they have held (Ping An, Moutai, CMB...), Hong Kong gets Tencent, HSBC and the Tracker Fund, the United States gets Apple, Berkshire and SPY.
 - The initial capital and the holding span are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
 - Returns are computed on backward-adjusted closes — dividends reinvested, no fees. The backward adjustment anchors at the listing and accumulates dividends forward, so a heavy payer's early years never turn negative the way the forward-adjusted series can.
+- The same **Custom** span works for the holding: give two dates, then press Fetch. If the instrument listed later than the date you asked for, the holding starts on its first trading day.
 
 ## Video
 
@@ -116,6 +129,8 @@ The Settings page can put a picture behind the window, dimmed. Cards and panels 
 The Settings page can change what the animation is drawn on: the built-in gradient, two colours of your own, or a picture. It applies to the preview, the exported video and the cover image alike — all three are drawn by the same renderer, so there is no "looks good in the preview, different in the file".
 
 - Choosing colours gives you a top and a bottom stop, and the frame fades from one to the other. Dark suits these frames: every tone of text in them is light, and a light background makes the numbers hard to read.
+
+- The opacity slider sets how much of the two colours is used: at 100% the frame is the pair as chosen, and lower lets the page's own dark gradient through from underneath. It is what keeps a light pair readable.
 
 - Choosing a picture works the same way as the window's: pick one from your computer, or use a wallpaper Windows already ships. One you pick is copied into the app's own folder.
 

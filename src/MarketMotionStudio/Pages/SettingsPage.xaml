@@ -146,6 +146,38 @@
                             </DropDownButton>
                         </StackPanel>
 
+                        <!-- The two colours as they will run down the frame. This is
+                             not decoration: the swatch on each dropdown is eighteen
+                             pixels across, and the frame itself is on another page, so
+                             without it the only feedback a colour change gave was a
+                             small square, and "did that do anything" had no answer on
+                             the page where the colour was chosen.
+
+                             Two layers, and the one underneath is the frame's own
+                             gradient: the bar has to show the opacity as it will be
+                             applied, which is the chosen pair over that gradient, or
+                             it shows a colour the video will not contain. -->
+                        <Border x:Name="FrameGradientPreview"
+                                Height="40"
+                                CornerRadius="4"
+                                BorderThickness="1"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                            <Border x:Name="FrameGradientOverlay" CornerRadius="3" />
+                        </Border>
+
+                        <TextBlock x:Uid="SettingsFrameStrengthLabel"
+                                   Margin="0,4,0,0"
+                                   Style="{StaticResource CaptionTextBlockStyle}" />
+                        <Slider x:Name="FrameStrengthSlider"
+                                Width="320"
+                                HorizontalAlignment="Left"
+                                StepFrequency="5"
+                                ValueChanged="OnFrameStrengthChanged" />
+                        <TextBlock x:Uid="SettingsFrameStrengthNote"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
                         <TextBlock x:Uid="SettingsFrameBackdropColourNote"
                                    TextWrapping="Wrap"
                                    Style="{StaticResource CaptionTextBlockStyle}"

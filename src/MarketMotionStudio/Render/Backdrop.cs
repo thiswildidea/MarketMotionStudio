@@ -37,8 +37,13 @@ public enum BackdropKind
 /// <param name="Bottom">The bottom of the gradient, for <see cref="BackdropKind.Colour"/>.</param>
 /// <param name="Picture">Path to the picture, for <see cref="BackdropKind.Picture"/>.</param>
 /// <param name="Dim">How far a picture is faded back towards the base, 0 to 1.</param>
+/// <param name="Strength">
+/// How opaque the chosen pair of colours is, 0 to 1, for <see cref="BackdropKind.Colour"/>.
+/// Below 1 the frame's own gradient shows through, which is how a colour too
+/// light for the numbers to be read on is made usable without giving it up.
+/// </param>
 public sealed record Backdrop(
-    BackdropKind Kind, Color Top, Color Bottom, string? Picture, double Dim)
+    BackdropKind Kind, Color Top, Color Bottom, string? Picture, double Dim, double Strength = 1)
 {
     /// <summary>
     /// Fills the whole frame.
@@ -54,9 +59,31 @@ public sealed record Backdrop(
     {
         var box = new Rect(0, 0, context.Width, context.Height);
 
-        var stops = Kind == BackdropKind.Colour ? [(0f, Top), (1f, Bottom)] : fallback;
+        if (Kind == BackdropKind.Colour)
+        {
+            if (Strength >= 1)
+            {
+                Ink.FillVertical(session, box, [(0f, Top), (1f, Bottom)]);
+                return;
+            }
 
-        Ink.FillVertical(session, box, stops);
+            // The page's own gradient goes down first and the chosen pair is
+            // laid over it, rather than the pair being darkened towards black:
+            // what shows through at a lower opacity is the backdrop the frame
+            // was designed with, so every setting between the two is a frame
+            // that still reads, instead of a colour that has been made muddy
+            // to make it darker.
+            Ink.FillVertical(session, box, fallback);
+
+            var alpha = Math.Clamp(Strength, 0, 1);
+
+            Ink.FillVertical(
+                session, box, [(0f, Ink.Fade(Top, alpha)), (1f, Ink.Fade(Bottom, alpha))]);
+
+            return;
+        }
+
+        Ink.FillVertical(session, box, fallback);
 
         if (Kind != BackdropKind.Picture || Picture is not { Length: > 0 })
         {
@@ -96,7 +123,7 @@ public sealed record Backdrop(
         // designed, and at every setting between it keeps that backdrop's cast.
         Ink.FillVertical(
             session, box,
-            [.. stops.Select(s => (s.Position, Ink.Fade(s.Colour, Math.Clamp(Dim, 0, 1))))]);
+            [.. fallback.Select(s => (s.Position, Ink.Fade(s.Colour, Math.Clamp(Dim, 0, 1))))]);
     }
 
     /// <summary>The largest rectangle of the picture's shape that covers <paramref name="box"/>, centred.</summary>
