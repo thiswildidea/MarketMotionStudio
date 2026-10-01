@@ -44,6 +44,60 @@ full feature set — that version is published and is not repeated here.
 
 ### 修复 / Fixed
 
+- **港股与美股的价格没有复权 / Hong Kong and US prices were unadjusted** — 定投计划与持仓
+  收益要的是「任意两天之比就是持有者真实赚到的」那种价格，也就是复权价，而行情源只在 A 股
+  上直接给得出。港股与美股拿到的是不复权的收盘价，于是拆股那一天成了一次凭空的暴跌：腾讯
+  控股 2014-05-15 一拆五，图上是从 514 跌到 108.8，一夜 −78.83%；苹果 2020-08-31 一拆四，
+  −74.15%。分红同样没有算进去——除息那天的下跌留在了曲线上，而那份现金没有回到持有者手里。
+  现在这两个市场各走自己的复权端点：港股用 `hkfqkline` 的后复权，美股用 `usfqkline` 的前
+  复权（前复权与后复权只差一个贯穿全序列的常数因子，在「份额 = 金额 ÷ 价」「市值 = 份额 ×
+  价」里正好抵消）。十三年的月度定投，苹果从 +99.7% 回到 +576.4%，特斯拉从 +24.2% 回到
+  +1061.2%，腾讯从 +48.2% 回到 +82.3%。指数与从未分派过的信托仍然用不复权的行——它们本来
+  就没有可复权的东西。
+  The plan and the position need a price whose ratio between any two days is what a holder
+  actually earned, which is to say an adjusted one — and the source only serves that directly for
+  an A-share. Hong Kong and US codes came back unadjusted, so a split arrived as a collapse out of
+  nowhere: 腾讯控股's one-for-five on 2014-05-15 read as a close of 514.0 falling to 108.8
+  overnight, minus 78.83 per cent, and Apple's four-for-one on 2020-08-31 as minus 74.15.
+  Dividends were missing too — the drop on the ex-date stayed on the curve while the cash it paid
+  out never came back to the holder. Each venue now goes to the endpoint that carries its adjusted
+  rows: `hkfqkline` for Hong Kong, `usfqkline` for the United States, whose only adjusted series
+  is the forward-adjusted one. Forward and backward differ by a single constant factor over the
+  whole series, and that factor cancels in everything these pages derive — a buy is
+  `amount / price` and a marking is `shares × price`. Over thirteen years of monthly
+  buying, Apple goes from +99.7% to +576.4%, Tesla from +24.2% to +1061.2%, Tencent from +48.2%
+  to +82.3%. Indices and trusts that have never distributed still read their unadjusted rows,
+  having nothing to adjust for.
+
+- **定投计划与持仓收益取不到数 / the plan and position pages failed to fetch** — 这两个页面
+  要把十几年的日线一段一段往回翻，最后一段是「区间起点到已拿到的最早一根之前」；区间起点
+  如果落在周末或假期（例如「近 5 年」从 2021-10-01 起，紧跟着就是国庆长假），这一小段里
+  一根 K 线也没有。行情源按请求的窗口裁剪，于是返回空——而代码把「窗口里没有 K 线」当成
+  错误抛了出去，多年数据已经拿到手，整条回溯却倒在了最后一步，页面报出一句英文的
+  `no daily bars in that range.`。现在空窗口照空处理，回溯按既定规则停下。任何起点落在
+  休市日的区间都会碰到它，一年里大约三分之一的日子。
+  Both pages walk years of daily bars back one page at a time, and the last step asks for the
+  stretch between the range's start and the earliest bar already held. When the start lands on a
+  weekend or a public holiday — "the last five years" from 2026-10-01 starts on 2021-10-01, the
+  first day of the National Day week — that stretch holds no bars at all, and the source, which
+  clips rows to the window it was asked for, answers with nothing. The code took "no bars in the
+  window" for a failure and threw, so a walk that had already gathered years of data died on its
+  last step and the page reported `no daily bars in that range.` An empty window is now read as an
+  empty window and the walk stops as it was designed to. Any range whose start falls on a day the
+  market is shut runs into this — roughly a third of the calendar.
+
+- **画面上写着的是上一个标的的名字 / the frame named the previous instrument** — 在定投计划与
+  持仓收益里换标的时，画面标题只在取数成功后才跟着变；取数失败（比如上面那条）就停在旧名字
+  上，于是图上写着「沪深300ETF定投计划」而失败信息里的代码是另一个。现在换标的那一刻就重画：
+  属于旧标的的曲线一并清掉，标题立刻是新标的的名字。恢复参数时若存的只有代码没有名字，也
+  不再回落到本市场的第一个内置标的（那同样是给画面安了一个不存在的名字）。
+  On both pages the frame's title only followed a new pick once the fetch succeeded, so a failed
+  fetch left the old name standing over the new code — the chart said "沪深300ETF plan" while the
+  error named another instrument. The frame is redrawn the moment a pick is made now: the previous
+  instrument's series is dropped and the title is the new instrument's. And when a restored
+  preference carries a code but no name, the fallback is the code rather than the market's first
+  built-in — which was the same defect wearing a friendlier name.
+
 - **行业板块竞速的板块名跟随界面语言 / the race's sector names follow the language** — 内置
   列表（中证一级行业、热门主题板块、恒生分类指数、美股行业 ETF）的板块名用的是行情源自己的
   中文，于是在其他 13 种语言下，一张英文标题、英文副标题的图上，每一行都是中文。这些名字
@@ -77,8 +131,9 @@ full feature set — that version is published and is not repeated here.
 ### 商店文案同步 / Store listing
 
 `docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份已改为**只写
-本次改动**：页面导航。
-The fourteen "What's new in this version" lines now describe only this change: page navigation.
+本次改动**：页面导航、板块名跟随语言、以及取数失败与标题两处修复各一句。
+The fourteen "What's new in this version" lines now describe only this release: page navigation,
+sector names following the language, and one sentence each for the fetch failure and the title.
 
 ---
 

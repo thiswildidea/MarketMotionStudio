@@ -371,6 +371,12 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         _instrumentCode = code;
         _instrumentName = InstrumentNames.Display(code, name);
 
+        // The holding in the frame belongs to the instrument it was fetched for. A new
+        // pick drops it rather than leaving it standing under a title that no longer
+        // names it, and redraws now so the title says what the fetch is about to ask for.
+        _fetched = null;
+        ApplyPreviewSettings();
+
         Fetch();
     }
 
@@ -573,11 +579,12 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         {
             _instrumentCode = code;
 
+            // The stored name is only a hint: the code decides. Falling back to the
+            // market's *first* preset — as this once did — put a name on the frame that
+            // belonged to an instrument the fetch was never going to ask for.
             var name = _prefs.GetString("Name", string.Empty);
 
-            _instrumentName = name.Length > 0
-                ? InstrumentNames.Display(code, name)
-                : InstrumentNames.Display(_market.PositionInstruments[0].Code, _market.PositionInstruments[0].Name);
+            _instrumentName = InstrumentNames.Display(code, name.Length > 0 ? name : code);
         }
 
         VideoSettings.Restore(_prefs);

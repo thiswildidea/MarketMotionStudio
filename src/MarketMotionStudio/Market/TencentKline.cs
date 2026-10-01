@@ -28,6 +28,22 @@ public sealed class TencentKline(HttpClient http)
     private const string Endpoint = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get";
 
     /// <summary>
+    /// Hong Kong's own adjusted-history endpoint. The general one answers a Hong
+    /// Kong code with unadjusted rows whatever adjustment is asked for — and a
+    /// listing there splits: 腾讯控股 went one-for-five on 2014-05-15, which
+    /// unadjusted is a close of 514.0 falling to 108.8 overnight, minus seventy-nine
+    /// per cent on a day the holder lost nothing.
+    /// </summary>
+    private const string HongKongFqEndpoint = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/hkfqkline/get";
+
+    /// <summary>
+    /// The US one, which carries only the forward-adjusted series: there is no
+    /// <c>hfqday</c> for a US code anywhere on this source. Apple's four-for-one
+    /// split on 2020-08-31 is minus seventy-four per cent unadjusted.
+    /// </summary>
+    private const string UnitedStatesFqEndpoint = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/usfqkline/get";
+
+    /// <summary>
     /// The A-share session ends at 15:00. Five minutes of slack covers the closing
     /// auction being settled into the day's bar.
     /// </summary>
@@ -235,16 +251,59 @@ public sealed class TencentKline(HttpClient http)
     /// </summary>
     private const int FewestBars = 2;
 
+    /// <summary>
+    /// The endpoint and adjustment that hold one code's total-return series.
+    ///
+    /// <c>hfq</c> is how the two pages that buy at a price ask for "a series whose
+    /// ratios are what a holder earned, dividends and splits included" — and the
+    /// general endpoint only answers that for an A-share. A Hong Kong code comes
+    /// back unadjusted there and is served by its own endpoint; a US code has no
+    /// backward-adjusted series on this source at all, only the forward-adjusted
+    /// one. The two differ by a single constant factor over the whole series, and
+    /// that factor cancels in everything these pages derive: a buy is
+    /// <c>amount / price</c> and a marking is <c>shares × price</c>, so the same
+    /// constant sits above and below.
+    /// </summary>
+    private static (string Endpoint, string Adjustment) TotalReturn(string code) =>
+        code.StartsWith("hk") ? (HongKongFqEndpoint, "hfq") :
+        code.StartsWith("us") ? (UnitedStatesFqEndpoint, "qfq") :
+        (Endpoint, "hfq");
+
     private async Task<List<StockBar>> FetchStockBarsAsync(
         string code, DateOnly start, DateOnly end, CancellationToken cancellation,
         string adjustment = "qfq")
+    {
+        var (endpoint, wanted) = adjustment == "hfq" ? TotalReturn(code) : (Endpoint, adjustment);
+
+        try
+        {
+            return await FetchFromAsync(endpoint, wanted, code, start, end, cancellation);
+        }
+        catch (Exception ex) when (endpoint != Endpoint)
+        {
+            // Only the unadjusted rows are guaranteed to be on the general
+            // endpoint, and a plan refused outright is worse than one drawn from
+            // them: a code the source knows under a path it does not serve would
+            // otherwise fail with a message about the range, which is nowhere near
+            // what went wrong.
+            Diagnostics.CrashLog.Note(
+                $"[kline] {endpoint} failed for {code} ({ex.Message}); falling back to {Endpoint}.");
+
+            return await FetchFromAsync(Endpoint, adjustment, code, start, end, cancellation);
+        }
+    }
+
+    private async Task<List<StockBar>> FetchFromAsync(
+        string endpoint,
+        string adjustment,
+        string code, DateOnly start, DateOnly end, CancellationToken cancellation)
     {
         var span = end.DayNumber - start.DayNumber;
         var count = Math.Clamp(span, 5, MostBarsPerRequest);
 
         var iso = CultureInfo.InvariantCulture;
         var parameter = $"{code},day,{start:yyyy-MM-dd},{end:yyyy-MM-dd},{count.ToString(iso)},{adjustment}";
-        var uri = $"{Endpoint}?param={Uri.EscapeDataString(parameter)}";
+        var uri = $"{endpoint}?param={Uri.EscapeDataString(parameter)}";
 
         using var response = await http.GetAsync(uri, cancellation);
         response.EnsureSuccessStatusCode();
@@ -265,9 +324,11 @@ public sealed class TencentKline(HttpClient http)
             throw new InvalidOperationException($"{code}: the response carried no data for this code.");
         }
 
-        // The adjusted series named after the adjustment asked for, falling back to the
-        // plain one — venues whose rows are never adjusted (Hong Kong and US rows come
-        // back unadjusted whatever is asked) answer with `day` alone.
+        // The adjusted series named after the adjustment asked for, falling back to
+        // the plain one. The fallback is not about the venue any more — Hong Kong and
+        // US rows are adjusted now — but about the instrument: an index has no
+        // dividend and no split to adjust for, and neither has a trust that has never
+        // paid one, so those rows legitimately carry `day` alone.
         var bars = node.TryGetProperty(adjustment + "day", out var wanted) && wanted.GetArrayLength() > 0
             ? wanted
             : node.TryGetProperty("day", out var plain) ? plain : default;
@@ -290,20 +351,25 @@ public sealed class TencentKline(HttpClient http)
 
         foreach (var bar in bars.EnumerateArray())
         {
-            if (bar.ValueKind != JsonValueKind.Array || bar.GetArrayLength() < 9)
+            // A row carries more fields on the general endpoint than on the
+            // adjusted ones: the US forward-adjusted series stops after the
+            // volume, with no turnover and no change rate behind it, so a bar
+            // that demands nine fields reads nothing at all from it. The date and
+            // the close are what every row has; the rest is read where it exists.
+            if (bar.ValueKind != JsonValueKind.Array || bar.GetArrayLength() < 6)
             {
                 continue;
             }
 
             if (!DateOnly.TryParseExact(bar[0].GetString(), "yyyy-MM-dd", out var day) ||
-                !double.TryParse(bar[2].GetString(), NumberStyles.Float, iso, out var close) ||
-                !double.TryParse(bar[5].GetString(), NumberStyles.Float, iso, out var volume) ||
-                !double.TryParse(bar[8].GetString(), NumberStyles.Float, iso, out var amount))
+                !double.TryParse(bar[2].GetString(), NumberStyles.Float, iso, out var close))
             {
                 continue;
             }
 
-            double.TryParse(bar[7].GetString(), NumberStyles.Float, iso, out var rate);
+            var volume = Field(bar, 5, iso);
+            var amount = Field(bar, 8, iso);
+            var rate = Field(bar, 7, iso);
 
             if (day < start || day > end || !IsSettled(day))
             {
@@ -313,11 +379,16 @@ public sealed class TencentKline(HttpClient http)
             series.Add(new StockBar(day, close, volume, rate, amount));
         }
 
-        if (series.Count == 0)
-        {
-            throw new InvalidOperationException($"{code}: no daily bars in that range.");
-        }
-
+        // An empty window is an answer, not a failure — the rows were there, the range
+        // simply holds none of them, which is what a range starting inside a holiday
+        // week looks like. <see cref="HistoryWalk"/> depends on reading it that way: it
+        // walks backwards asking for the window between the range's start and the
+        // earliest bar it holds, and stops when that comes back empty. Thrown instead,
+        // it would abort a walk that has already gathered years of bars — a plan over
+        // "the last five years" failing whenever the start date lands on a weekend or a
+        // public holiday, which is roughly a third of the calendar. The genuinely
+        // dataless reply — no bars block at all — still throws above, and
+        // <see cref="DailyBarsAsync"/> has always answered an empty window this way.
         BarMeta[code] = name;
 
         return series;
@@ -331,6 +402,21 @@ public sealed class TencentKline(HttpClient http)
     private readonly Dictionary<string, string> BarMeta = [];
 
     public string LastName(string code) => BarMeta.TryGetValue(code, out var name) ? name : code.ToUpperInvariant();
+
+    /// <summary>
+    /// One numeric field of a bar, zero when the row is too short to carry it or
+    /// when it holds something that is not a number.
+    ///
+    /// The adjusted endpoints hand back shorter rows than the general one, so
+    /// asking for a field by index and trusting it to be there is what turns a
+    /// whole series into nothing.
+    /// </summary>
+    private static double Field(JsonElement bar, int index, IFormatProvider iso) =>
+        index < bar.GetArrayLength() &&
+        bar[index].ValueKind == JsonValueKind.String &&
+        double.TryParse(bar[index].GetString(), NumberStyles.Float, iso, out var value)
+            ? value
+            : 0d;
 
     /// <summary>
     /// A stock code is looser than a market code: five digits for Hong Kong, letters for a US

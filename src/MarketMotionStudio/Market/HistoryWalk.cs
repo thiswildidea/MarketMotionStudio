@@ -14,6 +14,15 @@
 /// than what is already held — which is both "the range is covered" and "this
 /// instrument's history starts here", two states the source does not distinguish.
 ///
+/// Because the source clips what it returns to the window it was asked for, the
+/// last step of a walk backwards from <c>end</c> asks for the stretch between the
+/// range's own start and the earliest bar held — a stretch that can hold no bars
+/// at all, since a start date landing on a weekend or inside a holiday week has no
+/// trading days after it before the first bar. That reply arrives as an empty list,
+/// and the stop condition below is what reads it as "the range is covered"; see
+/// <see cref="TencentKline.StockBarsAsync"/>, which must answer it rather than
+/// refuse it.
+///
 /// The walk asks for <c>hfq</c>, the backward-adjusted series, and that choice is
 /// not cosmetic. The forward-adjusted one rebases itself to *today*: every past
 /// dividend and split pushes earlier prices further down, and for a heavy payer
@@ -21,8 +30,15 @@
 /// which a ratio-based chart survives but anything that buys at a price does not.
 /// The backward-adjusted series anchors itself at the listing instead, so every
 /// close is positive and the ratio between any two days is the holding's real
-/// total return, dividends reinvested. Hong Kong and US rows come back unadjusted
-/// whatever is asked, which for those venues is the same question anyway.
+/// total return, dividends reinvested.
+///
+/// What <c>hfq</c> asks for here is that total return, not literally a block with
+/// that name: <see cref="TencentKline"/> sends it to whichever endpoint carries the
+/// venue's adjusted rows, which for the United States is the forward-adjusted
+/// series, since no backward-adjusted one exists there. The two answer the same
+/// question up to one constant factor over the whole series, and that factor
+/// cancels in everything these two pages derive — a buy is <c>amount / price</c>
+/// and a marking is <c>shares × price</c>.
 /// </summary>
 internal static class HistoryWalk
 {

@@ -63,6 +63,13 @@ public sealed record DcaSeries(
 /// slippage, no timing but the calendar — the closing figures are a description of
 /// the price series, not of anything anyone could have executed, which is what the
 /// frame's disclaimer says.
+///
+/// The closes are adjusted ones (see <see cref="HistoryWalk"/>), so a dividend and
+/// a split are already inside the answer: the price a distribution would knock
+/// down does not fall here, which is to say the plan is drawn as though every
+/// distribution were reinvested at that day's close. That is a measure, and it is
+/// the generous one — a holder who took the cash, or who owed tax on it, earned
+/// less than these figures say.
 /// </summary>
 public static class DcaPlanner
 {
