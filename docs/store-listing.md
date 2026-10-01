@@ -27,7 +27,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增：标题栏左侧多了「后退 / 前进」两个按钮，像浏览器一样在访问过的页面之间来回走。Alt+← / Alt+→ 和鼠标侧键同样有效。切换有方向——后退时新页面从左边滑进来，前进时从右边。导航窗格收起时它们照样可用，而那正是 9:16 预览最需要宽度的时候。
+本版新增：标题栏左侧多了「后退 / 前进」两个按钮，像浏览器一样在访问过的页面之间来回走。Alt+← / Alt+→ 和鼠标侧键同样有效。切换有方向——后退时新页面从左边滑进来，前进时从右边。导航窗格收起时它们照样可用，而那正是 9:16 预览最需要宽度的时候。 另外，行业板块竞速里的板块名现在也跟着界面语言走了。
 
 ### 产品功能
 
@@ -63,7 +63,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增：標題列左側多了「上一頁 / 下一頁」兩個按鈕，像瀏覽器一樣在造訪過的頁面之間來回走。Alt+← / Alt+→ 和滑鼠側鍵同樣有效。切換有方向——上一頁時新頁面從左邊滑進來，下一頁時從右邊。導覽窗格收起時它們照樣可用，而那正是 9:16 預覽最需要寬度的時候。
+本版新增：標題列左側多了「上一頁 / 下一頁」兩個按鈕，像瀏覽器一樣在造訪過的頁面之間來回走。Alt+← / Alt+→ 和滑鼠側鍵同樣有效。切換有方向——上一頁時新頁面從左邊滑進來，下一頁時從右邊。導覽窗格收起時它們照樣可用，而那正是 9:16 預覽最需要寬度的時候。 另外，行業板塊競速裡的板塊名現在也跟著介面語言走了。
 
 ### 產品功能
 
@@ -99,7 +99,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-New in this version: Back and Forward buttons in the title bar, so you can move between the pages you have visited the way a browser does. Alt+Left and Alt+Right do the same, as do the side buttons on a mouse. The transition knows which way you are going — a step back slides the page in from the left, a step forward from the right. Both work with the navigation pane collapsed, which is when the 9:16 preview needs the width most.
+New in this version: Back and Forward buttons in the title bar, so you can move between the pages you have visited the way a browser does. Alt+Left and Alt+Right do the same, as do the side buttons on a mouse. The transition knows which way you are going — a step back slides the page in from the left, a step forward from the right. Both work with the navigation pane collapsed, which is when the 9:16 preview needs the width most. Also, the sector names in the race now follow the interface language.
 
 ### Product features
 
@@ -135,7 +135,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンの新機能：タイトルバーに「戻る / 進む」ボタンが付き、ブラウザのように訪れたページを行き来できます。Alt+← / Alt+→ でもマウスのサイドボタンでも同じ操作ができます。切り替えには向きがあり、戻るときは左から、進むときは右からページがスライドしてきます。ナビゲーションウィンドウを折りたたんでいても使えます。9:16 のプレビューが幅を最も必要とする場面です。
+このバージョンの新機能：タイトルバーに「戻る / 進む」ボタンが付き、ブラウザのように訪れたページを行き来できます。Alt+← / Alt+→ でもマウスのサイドボタンでも同じ操作ができます。切り替えには向きがあり、戻るときは左から、進むときは右からページがスライドしてきます。ナビゲーションウィンドウを折りたたんでいても使えます。9:16 のプレビューが幅を最も必要とする場面です。 また、業種レースのセクター名もインターフェースの言語に従うようになりました。
 
 ### 製品の機能
 
@@ -171,7 +171,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전의 새 기능: 제목 표시줄에 뒤로 / 앞으로 버튼이 생겨, 브라우저처럼 방문한 페이지 사이를 오갈 수 있습니다. Alt+← / Alt+→ 로도, 마우스 측면 버튼으로도 같은 동작을 합니다. 전환에는 방향이 있어 뒤로 갈 때는 왼쪽에서, 앞으로 갈 때는 오른쪽에서 페이지가 밀려 들어옵니다. 탐색 창이 접혀 있어도 동작합니다. 9:16 미리보기가 너비를 가장 필요로 할 때입니다.
+이 버전의 새 기능: 제목 표시줄에 뒤로 / 앞으로 버튼이 생겨, 브라우저처럼 방문한 페이지 사이를 오갈 수 있습니다. Alt+← / Alt+→ 로도, 마우스 측면 버튼으로도 같은 동작을 합니다. 전환에는 방향이 있어 뒤로 갈 때는 왼쪽에서, 앞으로 갈 때는 오른쪽에서 페이지가 밀려 들어옵니다. 탐색 창이 접혀 있어도 동작합니다. 9:16 미리보기가 너비를 가장 필요로 할 때입니다. 또한 업종 레이스의 섹터 이름도 이제 인터페이스 언어를 따릅니다.
 
 ### 제품 기능
 
@@ -207,7 +207,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Neu in dieser Version: Schaltflächen für Zurück und Vorwärts in der Titelleiste, mit denen Sie wie im Browser zwischen den besuchten Seiten wechseln. Alt+Pfeil-links und Alt+Pfeil-rechts tun dasselbe, ebenso die Seitentasten einer Maus. Der Übergang kennt die Richtung: Ein Schritt zurück lässt die Seite von links hereingleiten, ein Schritt nach vorn von rechts. Beide funktionieren auch bei eingeklapptem Navigationsbereich — genau dann, wenn die 9:16-Vorschau die Breite am meisten braucht.
+Neu in dieser Version: Schaltflächen für Zurück und Vorwärts in der Titelleiste, mit denen Sie wie im Browser zwischen den besuchten Seiten wechseln. Alt+Pfeil-links und Alt+Pfeil-rechts tun dasselbe, ebenso die Seitentasten einer Maus. Der Übergang kennt die Richtung: Ein Schritt zurück lässt die Seite von links hereingleiten, ein Schritt nach vorn von rechts. Beide funktionieren auch bei eingeklapptem Navigationsbereich — genau dann, wenn die 9:16-Vorschau die Breite am meisten braucht. Außerdem folgen die Sektornamen im Branchenrennen jetzt der Sprache der Oberfläche.
 
 ### Produktfunktionen
 
@@ -243,7 +243,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Nouveautés de cette version : des boutons Précédent et Suivant dans la barre de titre, pour circuler entre les pages déjà visitées comme dans un navigateur. Alt+Flèche gauche et Alt+Flèche droite font de même, tout comme les boutons latéraux de la souris. La transition connaît le sens : un retour fait glisser la page depuis la gauche, une avancée depuis la droite. Les deux restent utilisables lorsque le volet de navigation est replié, c'est-à-dire au moment où l'aperçu 9:16 a le plus besoin de largeur.
+Nouveautés de cette version : des boutons Précédent et Suivant dans la barre de titre, pour circuler entre les pages déjà visitées comme dans un navigateur. Alt+Flèche gauche et Alt+Flèche droite font de même, tout comme les boutons latéraux de la souris. La transition connaît le sens : un retour fait glisser la page depuis la gauche, une avancée depuis la droite. Les deux restent utilisables lorsque le volet de navigation est replié, c'est-à-dire au moment où l'aperçu 9:16 a le plus besoin de largeur. Par ailleurs, les noms de secteurs de la course suivent désormais la langue de l'interface.
 
 ### Fonctionnalités
 
@@ -279,7 +279,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Novità di questa versione: i pulsanti Indietro e Avanti nella barra del titolo, per spostarsi fra le pagine visitate come in un browser. Alt+Freccia sinistra e Alt+Freccia destra fanno lo stesso, così come i pulsanti laterali del mouse. La transizione conosce la direzione: un passo indietro fa entrare la pagina da sinistra, un passo avanti da destra. Funzionano anche con il riquadro di navigazione compresso, proprio quando l'anteprima 9:16 ha più bisogno di larghezza.
+Novità di questa versione: i pulsanti Indietro e Avanti nella barra del titolo, per spostarsi fra le pagine visitate come in un browser. Alt+Freccia sinistra e Alt+Freccia destra fanno lo stesso, così come i pulsanti laterali del mouse. La transizione conosce la direzione: un passo indietro fa entrare la pagina da sinistra, un passo avanti da destra. Funzionano anche con il riquadro di navigazione compresso, proprio quando l'anteprima 9:16 ha più bisogno di larghezza. Inoltre, i nomi dei settori nella corsa ora seguono la lingua dell'interfaccia.
 
 ### Funzionalità del prodotto
 
@@ -315,7 +315,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Novedades de esta versión: botones Atrás y Adelante en la barra de título, para moverte entre las páginas que has visitado como en un navegador. Alt+Flecha izquierda y Alt+Flecha derecha hacen lo mismo, igual que los botones laterales del ratón. La transición conoce el sentido: un paso atrás entra la página desde la izquierda, un paso adelante desde la derecha. Funcionan también con el panel de navegación plegado, justo cuando la vista previa 9:16 más necesita el ancho.
+Novedades de esta versión: botones Atrás y Adelante en la barra de título, para moverte entre las páginas que has visitado como en un navegador. Alt+Flecha izquierda y Alt+Flecha derecha hacen lo mismo, igual que los botones laterales del ratón. La transición conoce el sentido: un paso atrás entra la página desde la izquierda, un paso adelante desde la derecha. Funcionan también con el panel de navegación plegado, justo cuando la vista previa 9:16 más necesita el ancho. Además, los nombres de los sectores de la carrera ahora siguen el idioma de la interfaz.
 
 ### Funciones del producto
 
@@ -350,7 +350,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Novidades desta versão: botões Voltar e Avançar na barra de título, para navegar entre as páginas visitadas como num navegador. Alt+Seta para a esquerda e Alt+Seta para a direita fazem o mesmo, assim como os botões laterais do mouse. A transição conhece o sentido: um passo atrás entra pela esquerda, um passo à frente pela direita. Funcionam também com o painel de navegação recolhido, que é quando a prévia 9:16 mais precisa de largura.
+Novidades desta versão: botões Voltar e Avançar na barra de título, para navegar entre as páginas visitadas como num navegador. Alt+Seta para a esquerda e Alt+Seta para a direita fazem o mesmo, assim como os botões laterais do mouse. A transição conhece o sentido: um passo atrás entra pela esquerda, um passo à frente pela direita. Funcionam também com o painel de navegação recolhido, que é quando a prévia 9:16 mais precisa de largura. Além disso, os nomes dos setores na corrida agora seguem o idioma da interface.
 
 ### Funcionalidades do produto
 
@@ -386,7 +386,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Co nowego w tej wersji: przyciski Wstecz i Dalej w pasku tytułu, dzięki którym przechodzisz między odwiedzonymi stronami jak w przeglądarce. To samo robią Alt+Strzałka w lewo i Alt+Strzałka w prawo oraz boczne przyciski myszy. Przejście zna kierunek: krok wstecz wsuwa stronę z lewej, krok w przód z prawej. Działają także przy zwiniętym panelu nawigacji, czyli wtedy, gdy podgląd 9:16 najbardziej potrzebuje szerokości.
+Co nowego w tej wersji: przyciski Wstecz i Dalej w pasku tytułu, dzięki którym przechodzisz między odwiedzonymi stronami jak w przeglądarce. To samo robią Alt+Strzałka w lewo i Alt+Strzałka w prawo oraz boczne przyciski myszy. Przejście zna kierunek: krok wstecz wsuwa stronę z lewej, krok w przód z prawej. Działają także przy zwiniętym panelu nawigacji, czyli wtedy, gdy podgląd 9:16 najbardziej potrzebuje szerokości. Ponadto nazwy sektorów w wyścigu podążają teraz za językiem interfejsu.
 
 ### Funkcje produktu
 
@@ -422,7 +422,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Co je nového v této verzi: tlačítka Zpět a Vpřed v záhlaví, která vám umožní pohybovat se mezi navštívenými stránkami jako v prohlížeči. Totéž udělá Alt+Šipka vlevo a Alt+Šipka vpravo i boční tlačítka myši. Přechod zná směr: krok zpět přisune stránku zleva, krok vpřed zprava. Fungují i se sbaleným navigačním panelem, tedy právě tehdy, kdy náhled 9:16 potřebuje šířku nejvíce.
+Co je nového v této verzi: tlačítka Zpět a Vpřed v záhlaví, která vám umožní pohybovat se mezi navštívenými stránkami jako v prohlížeči. Totéž udělá Alt+Šipka vlevo a Alt+Šipka vpravo i boční tlačítka myši. Přechod zná směr: krok zpět přisune stránku zleva, krok vpřed zprava. Fungují i se sbaleným navigačním panelem, tedy právě tehdy, kdy náhled 9:16 potřebuje šířku nejvíce. Kromě toho názvy sektorů v závodě nyní sledují jazyk rozhraní.
 
 ### Funkce produktu
 
@@ -458,7 +458,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Что нового в этой версии: кнопки «Назад» и «Вперёд» в заголовке окна — можно ходить по посещённым страницам как в браузере. То же делают Alt+Стрелка влево и Alt+Стрелка вправо, а также боковые кнопки мыши. Переход знает направление: шаг назад вводит страницу слева, шаг вперёд — справа. Обе работают и со свёрнутой панелью навигации — именно тогда, когда предпросмотру 9:16 больше всего нужна ширина.
+Что нового в этой версии: кнопки «Назад» и «Вперёд» в заголовке окна — можно ходить по посещённым страницам как в браузере. То же делают Alt+Стрелка влево и Alt+Стрелка вправо, а также боковые кнопки мыши. Переход знает направление: шаг назад вводит страницу слева, шаг вперёд — справа. Обе работают и со свёрнутой панелью навигации — именно тогда, когда предпросмотру 9:16 больше всего нужна ширина. Кроме того, названия секторов в гонке теперь следуют языку интерфейса.
 
 ### Функции продукта
 
@@ -494,7 +494,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümdeki yenilikler: başlık çubuğunda Geri ve İleri düğmeleri — ziyaret ettiğiniz sayfalar arasında tarayıcıdaki gibi gezinebilirsiniz. Aynı işi Alt+Sol ok ve Alt+Sağ ok ile farenin yan düğmeleri de yapar. Geçiş yönü biliyor: geri adımda sayfa soldan, ileri adımda sağdan kayarak gelir. Gezinme bölmesi katlanmışken de çalışırlar; 9:16 önizlemenin genişliğe en çok ihtiyaç duyduğu an da budur.
+Bu sürümdeki yenilikler: başlık çubuğunda Geri ve İleri düğmeleri — ziyaret ettiğiniz sayfalar arasında tarayıcıdaki gibi gezinebilirsiniz. Aynı işi Alt+Sol ok ve Alt+Sağ ok ile farenin yan düğmeleri de yapar. Geçiş yönü biliyor: geri adımda sayfa soldan, ileri adımda sağdan kayarak gelir. Gezinme bölmesi katlanmışken de çalışırlar; 9:16 önizlemenin genişliğe en çok ihtiyaç duyduğu an da budur. Ayrıca yarıştaki sektör adları artık arayüz dilini izliyor.
 
 ### Ürün özellikleri
 

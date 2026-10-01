@@ -275,9 +275,19 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
     /// <summary>
     /// The entries behind a built-in slot, or null if the market has no list in it.
+    ///
+    /// Named through <see cref="InstrumentNames"/> rather than carried as the market file
+    /// spells them. The file holds the source's own Chinese — it is the fallback, and the
+    /// right one for a code the search endpoint invents — but a race drawn from a built-in
+    /// list has to answer in the language the app is running in, exactly as the picker's
+    /// candidates and the typed-stock names already do. Taken raw, every row of a built-in
+    /// race read Chinese in all fourteen languages while the header above it read English.
     /// </summary>
     private RaceEntry[]? BuiltIn(Roster roster) =>
-        (int)roster < _market.Rosters.Length ? _market.Rosters[(int)roster].Entries : null;
+        (int)roster < _market.Rosters.Length
+            ? [.. _market.Rosters[(int)roster].Entries.Select(
+                entry => new RaceEntry(entry.Code, InstrumentNames.Display(entry.Code, entry.Name)))]
+            : null;
 
     private IReadOnlyList<RaceEntry> CurrentRoster()
     {
@@ -750,11 +760,20 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
     private void RestorePreferences()
     {
-        // Clamped to what the menu actually lists, not to the enum's own end: a market
-        // with one built-in list has three items, and an index of 3 read off a two-item
-        // combo is a selection the page cannot show.
-        RosterCombo.SelectedIndex = Math.Clamp(
-            _prefs.GetInt("Roster", (int)Roster.BuiltIn0), 0, RosterCombo.Items.Count - 1);
+        // Restored by tag, not by position. The menu is shorter in a market with one
+        // built-in list than in the A-share one, so the same tag sits at a different
+        // index in each: read back as an index, "custom sectors" came back as
+        // "watchlist stocks" — a different list, silently, with a row count under it
+        // that still looked plausible.
+        var saved = _prefs.GetInt("Roster", (int)Roster.BuiltIn0);
+        var wanted = Enum.IsDefined(typeof(Roster), saved) ? (Roster)saved : Roster.BuiltIn0;
+
+        RosterCombo.SelectedItem =
+            RosterCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is Roster r && r == wanted)
+            // No second built-in list here. Fall back to the first, as CurrentRoster
+            // does, rather than leave the page on a selection the menu does not offer.
+            ?? RosterCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is Roster.BuiltIn0)
+            ?? RosterCombo.Items[0];
         MetricCombo.SelectedIndex = Math.Clamp(_prefs.GetInt("Metric", (int)RaceMetric.Return), 0, 1);
 
         var custom = _prefs.GetString("Custom", string.Empty);

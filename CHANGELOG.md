@@ -42,6 +42,26 @@ full feature set — that version is published and is not repeated here.
   panel for width, and once the pane is folded away this is the quickest way back to the page
   you were on.
 
+### 修复 / Fixed
+
+- **行业板块竞速的板块名跟随界面语言 / the race's sector names follow the language** — 内置
+  列表（中证一级行业、热门主题板块、恒生分类指数、美股行业 ETF）的板块名用的是行情源自己的
+  中文，于是在其他 13 种语言下，一张英文标题、英文副标题的图上，每一行都是中文。这些名字
+  现在按代码查界面语言，与自选股的名称走同一条路；查不到的仍回落到源端原名。
+  A built-in roster carried the quote source's own Chinese, so in the other thirteen languages a
+  chart with an English title and an English caption still had a Chinese word on every row. The
+  names are looked up by code now, as watchlist names already were; a code with no entry still
+  falls back to the name the source gave.
+
+- **切换市场后竞速列表回来的还是同一份 / the roster comes back as the same list** — 竞速列表
+  的选中项此前是按位置记的，而只有一个内置列表的市场菜单更短，同一个位置落到的是另一份列表：
+  「自定义板块」重启后会变成「自选股」。现在按标识记，位置上没有对应项时回落到第一个内置
+  列表——与取数时已有的回退一致。
+  The chosen roster was remembered by position, and a market with one built-in list has a shorter
+  menu — the same position pointed at a different list, turning "custom sectors" into "watchlist
+  stocks" across a restart. It is remembered by identity now, falling back to the first built-in
+  list where the position has no equivalent, as the fetch itself already did.
+
 ### 已知限制 / Known limits（沿用 1.0.1.0，本版未变 / unchanged from 1.0.1.0）
 
 - 导出规格为 720×1280 / 1080×1920 / 1440×2560 三种尺寸 × 30 / 60 fps。1440p60 长片有过一次
