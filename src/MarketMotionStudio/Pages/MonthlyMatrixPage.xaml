@@ -27,7 +27,13 @@
                 <views:PreviewSurface x:Name="Preview" Grid.Row="0" />
 
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-                    <Button x:Name="PlayButton" x:Uid="StudioPlay" Grid.Column="0" Click="OnPlay" />
+                    <!-- Icon button; see the note in MarketTurnoverPage.xaml. -->
+                    <Button x:Name="PlayButton"
+                            Grid.Column="0"
+                            Width="44"
+                            Click="OnPlay">
+                        <FontIcon x:Name="PlayIcon" Glyph="&#xE768;" FontSize="16" />
+                    </Button>
                     <Slider x:Name="Scrub"
                             Grid.Column="1"
                             Minimum="0" Maximum="1"

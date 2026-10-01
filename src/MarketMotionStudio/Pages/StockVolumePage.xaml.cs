@@ -121,6 +121,11 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
 
         _playback = new Playback(this);
 
+        // Named before it has ever been pressed: the button is an icon, so the tooltip and
+        // the name a screen reader announces are the only words it has, and neither can
+        // wait for the first toggle to appear.
+        SetPlaybackState(playing: false);
+
         Favourites.ItemsSource = _favourites;
 
         _searchDebounce.Tick += async (_, _) =>
@@ -547,25 +552,58 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
 
     private void OnScrub(object sender, RangeBaseValueChangedEventArgs e)
     {
-        _playback?.Stop();
-
-        Preview.Progress = Scrub.Value;
-        RefreshScrubText();
-        Preview.Redraw();
+        // Moving the slider is an instruction to look at one moment, which means stopping the
+        // playback wherever it had got to — and moving the position a press afterwards will
+        // start from. See the longer note on MarketTurnoverPage.
+        _playback?.Seek(Scrub.Value);
     }
 
     private void RefreshScrubText()
     {
-        var at = VideoSettings.Duration.TotalSeconds * Preview.Progress;
-        ScrubText.Text = Strings.Format("StudioScrubPosition", at.ToString("0.0"), (int)VideoSettings.Duration.TotalSeconds);
+        var total = VideoSettings.Duration;
+        var at = TimeSpan.FromSeconds(total.TotalSeconds * Math.Clamp(Preview.Progress, 0, 1));
+
+        ScrubText.Text = Strings.Format("StudioScrubPosition", Clock(at), Clock(total));
     }
 
-    private void OnPlay(object sender, RoutedEventArgs e) => _playback.Toggle();
+    private void OnPlay(object sender, RoutedEventArgs e)
+    {
+        // At the end there is nothing left to run, and a play button that does nothing
+        // reads as a broken one. Starting again is what the press meant: these clips run
+        // for a minute or two, so watching one twice is an ordinary thing to do.
+        //
+        // Through the seek rather than by setting the preview's progress directly, so that
+        // the position playback counts from is the position the picture is showing. Two
+        // places to put the position are two places to disagree about it.
+        if (!_playback.IsPlaying && Preview.Progress >= 0.999)
+        {
+            _playback.Seek(0);
+        }
+
+        _playback.Toggle();
+    }
 
     void IPlaybackHost.ShowMoment(double progress) => ShowMoment(progress);
 
-    void IPlaybackHost.ShowPlaybackState(bool playing) =>
-        PlayButton.Content = Strings.Get(playing ? "StudioPause.Content" : "StudioPlay.Content");
+    void IPlaybackHost.ShowPlaybackState(bool playing) => SetPlaybackState(playing);
+
+    /// <summary>
+    /// Points the button at what it will do next: ▶ to run the animation, ⏸ to hold it.
+    ///
+    /// An icon carries no text of its own, so the same word that picks the glyph is put on
+    /// the tooltip and on the name a screen reader announces. Without that the button is
+    /// unnamed, and "unnamed button" is what a reader has to say about a control whose
+    /// whole meaning is a shape.
+    /// </summary>
+    private void SetPlaybackState(bool playing)
+    {
+        var label = Strings.Get(playing ? "StudioPause.Content" : "StudioPlay.Content");
+
+        PlayIcon.Glyph = playing ? "\uE769" : "\uE768";
+
+        ToolTipService.SetToolTip(PlayButton, label);
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(PlayButton, label);
+    }
 
     TimeSpan IPlaybackHost.PlaybackDuration => VideoSettings.Duration;
 

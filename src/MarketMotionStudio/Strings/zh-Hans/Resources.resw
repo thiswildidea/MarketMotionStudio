@@ -102,7 +102,7 @@
   <data name="StudioFetch.Content"><value>获取数据</value></data>
   <data name="StudioExport.Content"><value>导出 MP4</value></data>
   <data name="StudioCancel.Content"><value>取消</value></data>
-  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1}</value></data>
   <data name="StudioStageNoData"><value>尚无数据</value></data>
   <data name="StudioCredit"><value>数据来源：腾讯财经</value></data>
   <data name="NavMatrix.Content"><value>收益矩阵</value></data>

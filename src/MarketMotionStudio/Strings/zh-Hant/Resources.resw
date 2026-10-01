@@ -96,7 +96,7 @@
   <data name="StudioFetch.Content"><value>取得資料</value></data>
   <data name="StudioExport.Content"><value>匯出 MP4</value></data>
   <data name="StudioCancel.Content"><value>取消</value></data>
-  <data name="StudioScrubPosition"><value>{0} / {1} 秒</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1}</value></data>
   <data name="StudioStageNoData"><value>尚無資料</value></data>
   <data name="StudioCredit"><value>資料來源：騰訊財經</value></data>
   <data name="NavMatrix.Content"><value>收益矩陣</value></data>

@@ -40,7 +40,22 @@
                      the frame the titles finish on — and a play button can only
                      take you past it. -->
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-                    <Button x:Name="PlayButton" x:Uid="StudioPlay" Grid.Column="0" IsEnabled="False" Click="OnPlay" />
+                    <!-- Icon rather than a word. The button says which way it will move
+                         the animation — ▶ to run it, ⏸ to hold it — and the shape of the
+                         action is read at a glance where a label has to be read first.
+
+                         Deliberately no x:Uid on it. A key here would set Content, and
+                         Content is now the icon, so the key would swap the glyph out for
+                         a string — the trap the settings item fell into. The words it
+                         still needs — a tooltip, and the name a screen reader announces —
+                         are set in code, because both have to follow the state. -->
+                    <Button x:Name="PlayButton"
+                            Grid.Column="0"
+                            Width="44"
+                            IsEnabled="False"
+                            Click="OnPlay">
+                        <FontIcon x:Name="PlayIcon" Glyph="&#xE768;" FontSize="16" />
+                    </Button>
                     <Slider x:Name="Scrub"
                             Grid.Column="1"
                             Minimum="0" Maximum="1"

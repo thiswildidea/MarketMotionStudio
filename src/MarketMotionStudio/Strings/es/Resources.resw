@@ -97,7 +97,7 @@
   <data name="StudioFetch.Content"><value>Obtener datos</value></data>
   <data name="StudioExport.Content"><value>Exportar MP4</value></data>
   <data name="StudioCancel.Content"><value>Cancelar</value></data>
-  <data name="StudioScrubPosition"><value>{0} / {1} s</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1}</value></data>
   <data name="StudioStageNoData"><value>Todavía sin datos</value></data>
   <data name="StudioCredit"><value>Fuente: Tencent Finance</value></data>
   <data name="NavMatrix.Content"><value>Matriz de rentabilidad</value></data>

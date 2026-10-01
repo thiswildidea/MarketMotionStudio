@@ -97,7 +97,7 @@
   <data name="StudioFetch.Content"><value>Veriyi al</value></data>
   <data name="StudioExport.Content"><value>MP4 olarak ver</value></data>
   <data name="StudioCancel.Content"><value>İptal</value></data>
-  <data name="StudioScrubPosition"><value>{0} / {1} sn</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1}</value></data>
   <data name="StudioStageNoData"><value>Henüz veri yok</value></data>
   <data name="StudioCredit"><value>Kaynak: Tencent Finance</value></data>
   <data name="NavMatrix.Content"><value>Getiri matrisi</value></data>

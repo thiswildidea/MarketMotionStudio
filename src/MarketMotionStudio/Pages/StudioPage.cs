@@ -26,6 +26,24 @@ public abstract partial class StudioPage : Page
     /// </summary>
     protected abstract string JobName { get; }
 
+    /// <summary>
+    /// A moment of the animation as the transport writes it: 75 seconds reads "1:15".
+    ///
+    /// A clock rather than a count of seconds, because a position is something people
+    /// locate rather than measure. "0:45 / 1:15" is read off directly as two thirds of
+    /// the way through; "45.0 / 75 秒" is the same fact with the division left to do.
+    ///
+    /// Minutes alone until the composition is an hour long, so the ordinary case does
+    /// not carry a leading "0:" that means nothing. The seam at an hour is the one
+    /// thing to get wrong here, and <see cref="TimeSpan.Minutes"/> is what gets it
+    /// wrong: it is the minutes past the hour, so 3661 seconds would print "1:01" and
+    /// lose the hour entirely.
+    /// </summary>
+    protected static string Clock(TimeSpan value) =>
+        value.TotalHours >= 1
+            ? $"{(int)value.TotalHours}:{value.Minutes:00}:{value.Seconds:00}"
+            : $"{value.Minutes}:{value.Seconds:00}";
+
     protected void ShowStatus(InfoBarSeverity severity, string message)
     {
         StatusControl.Severity = severity;

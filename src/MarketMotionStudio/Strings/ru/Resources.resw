@@ -97,7 +97,7 @@
   <data name="StudioFetch.Content"><value>Получить данные</value></data>
   <data name="StudioExport.Content"><value>Экспорт в MP4</value></data>
   <data name="StudioCancel.Content"><value>Отмена</value></data>
-  <data name="StudioScrubPosition"><value>{0} / {1} с</value></data>
+  <data name="StudioScrubPosition"><value>{0} / {1}</value></data>
   <data name="StudioStageNoData"><value>Данных пока нет</value></data>
   <data name="StudioCredit"><value>Источник: Tencent Finance</value></data>
   <data name="NavMatrix.Content"><value>Матрица доходности</value></data>
