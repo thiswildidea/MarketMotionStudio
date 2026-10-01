@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Abrir</value></data>
   <data name="TrayExit.Text"><value>Salir</value></data>
   <data name="TrayBusy"><value>Trabajando: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Actualizar a {0}</value></data>
+  <data name="TrayUpToDate"><value>Tiene la versión más reciente ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Icono en el área de notificación</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Al cerrar la ventana, la aplicación se oculta aquí en lugar de terminar. Si lo desactivas, cerrar la ventana cierra la aplicación.</value></data>
   <data name="SettingsStartup.Text"><value>Iniciar con Windows</value></data>

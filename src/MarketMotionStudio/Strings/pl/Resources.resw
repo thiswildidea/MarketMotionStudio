@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Otwórz</value></data>
   <data name="TrayExit.Text"><value>Zamknij</value></data>
   <data name="TrayBusy"><value>W toku: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Aktualizuj do {0}</value></data>
+  <data name="TrayUpToDate"><value>Masz najnowszą wersję ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Ikona w obszarze powiadomień</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Zamknięcie okna ukrywa aplikację w tym miejscu zamiast ją kończyć. Po wyłączeniu zamknięcie okna kończy działanie aplikacji.</value></data>
   <data name="SettingsStartup.Text"><value>Uruchamiaj z systemem Windows</value></data>

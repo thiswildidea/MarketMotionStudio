@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Ouvrir</value></data>
   <data name="TrayExit.Text"><value>Quitter</value></data>
   <data name="TrayBusy"><value>En cours : {0}</value></data>
+  <data name="TrayUpdateTo"><value>Mettre à jour vers {0}</value></data>
+  <data name="TrayUpToDate"><value>Vous disposez de la dernière version ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Icône de la zone de notification</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Fermer la fenêtre masque l'application ici au lieu de la quitter. Si vous la désactivez, fermer la fenêtre quitte l'application.</value></data>
   <data name="SettingsStartup.Text"><value>Démarrer avec Windows</value></data>

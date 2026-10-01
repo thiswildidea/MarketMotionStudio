@@ -31,6 +31,15 @@ public sealed partial class MainWindow : Window
 
     public System.Windows.Input.ICommand ExitCommand { get; }
 
+    /// <summary>
+    /// The tray menu's update item. The window's own update button and this one do
+    /// the same thing, so they share <see cref="InstallUpdateAsync"/>; what differs
+    /// is that the tray may be the only thing on screen, and installing needs the
+    /// window back — it may ask about running work, and the Store may show its own
+    /// prompt.
+    /// </summary>
+    public System.Windows.Input.ICommand UpdateCommand { get; }
+
     private sealed class RelayCommand(Action execute) : System.Windows.Input.ICommand
     {
         public event EventHandler? CanExecuteChanged { add { } remove { } }
@@ -53,6 +62,7 @@ public sealed partial class MainWindow : Window
         // something to bind to.
         ShowWindowCommand = new RelayCommand(RestoreFromTray);
         ExitCommand = new RelayCommand(ExitApp);
+        UpdateCommand = new RelayCommand(UpdateFromTray);
 
         InitializeComponent();
 
@@ -76,6 +86,11 @@ public sealed partial class MainWindow : Window
         // The icon is created with the window; its visibility is the stored
         // preference, applied here and again whenever Settings changes it.
         ApplyTrayVisibility();
+
+        // Its name, too, and not only when work starts: an icon without one is
+        // the only thing in Windows that cannot say what it is, and until now
+        // the name arrived only once a job began and changed it.
+        RefreshTrayTooltip();
 
         ApplyTheme();
 
@@ -161,7 +176,47 @@ public sealed partial class MainWindow : Window
         ToolTipService.SetToolTip(UpdateButton, tip);
         Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(UpdateButton, tip ?? string.Empty);
 
+        RefreshTrayUpdateItem();
         RefreshSettingsItem();
+    }
+
+    /// <summary>
+    /// The tray's update item: "Update to …" and pressable while the Store has
+    /// one, and the installed version otherwise, greyed out — with nothing to
+    /// install there is nothing for the item to do, and a pressable item that
+    /// does nothing is worse than one that says it cannot.
+    ///
+    /// The window's button is hidden in that case instead of disabled: the
+    /// navigation pane has room to spare, and a button that comes and goes is
+    /// what says the Store answered. The tray menu has no such room, and an
+    /// item that appeared and disappeared would make the menu jump.
+    /// </summary>
+    private void RefreshTrayUpdateItem()
+    {
+        var updates = _services.Updates;
+
+        TrayUpdateItem.IsEnabled = updates.Available && !updates.Installing;
+        TrayUpdateItem.Text = updates.Available
+            ? updates.NewVersion is { } version ? Strings.Format("TrayUpdateTo", version) : Strings.Get("NavUpdate")
+            : Strings.Format("TrayUpToDate", Pages.SettingsPage.AppVersion);
+        TrayUpdateGlyph.Glyph = updates.Available ? "\uE896" : "\uE895";
+    }
+
+    /// <summary>Installs the update the tray item is offering.</summary>
+    private async void UpdateFromTray()
+    {
+        var updates = _services.Updates;
+
+        if (!updates.Available || updates.Installing)
+        {
+            return;
+        }
+
+        // The install asks about running work and the Store may show its own
+        // prompt, both of which need a window; the tray has none of its own.
+        RestoreFromTray();
+
+        await InstallUpdateAsync();
     }
 
     /// <summary>
@@ -180,8 +235,13 @@ public sealed partial class MainWindow : Window
         ToolTipService.SetToolTip(NavSettingsItem, labelShown ? null : NavSettingsLabel.Text);
     }
 
+    /// <summary>Installs the update the window's button is offering.</summary>
+    private async void OnUpdate(object sender, RoutedEventArgs e) => await InstallUpdateAsync();
+
     /// <summary>
-    /// Installs the update the button is offering.
+    /// Installs the update on offer, from either the window's button or the tray's
+    /// item — both offer the same install, and both must ask the same question
+    /// before it starts.
     ///
     /// Installing replaces the running app, so anything in progress is ended
     /// with it — here that is an export, which runs for minutes and is the one
@@ -189,7 +249,7 @@ public sealed partial class MainWindow : Window
     /// and only then: with nothing running there is nothing to lose, and the
     /// button was the request.
     /// </summary>
-    private async void OnUpdate(object sender, RoutedEventArgs e)
+    private async Task InstallUpdateAsync()
     {
         var updates = _services.Updates;
 
@@ -220,10 +280,20 @@ public sealed partial class MainWindow : Window
             }
         }
 
+        // Both surfaces count up together: the window is the one being watched
+        // while it installs, but the menu is what is open when the install was
+        // started from the tray, and a menu item frozen on "Update to …" would
+        // look like nothing had happened.
         var progress = new Progress<double>(fraction =>
-            UpdateCaption.Text = Strings.Format("NavUpdating", (int)Math.Round(Math.Clamp(fraction, 0, 1) * 100)));
+        {
+            var text = Strings.Format("NavUpdating", (int)Math.Round(Math.Clamp(fraction, 0, 1) * 100));
+            UpdateCaption.Text = text;
+            TrayUpdateItem.Text = text;
+        });
 
         UpdateCaption.Text = Strings.Format("NavUpdating", 0);
+        TrayUpdateItem.Text = Strings.Format("NavUpdating", 0);
+        TrayUpdateItem.IsEnabled = false;
 
         var outcome = await updates.InstallAsync(WindowHandle, progress);
 

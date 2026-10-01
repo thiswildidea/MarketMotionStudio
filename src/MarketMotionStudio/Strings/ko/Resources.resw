@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>열기</value></data>
   <data name="TrayExit.Text"><value>종료</value></data>
   <data name="TrayBusy"><value>작업 중: {0}</value></data>
+  <data name="TrayUpdateTo"><value>{0}(으)로 업데이트</value></data>
+  <data name="TrayUpToDate"><value>최신 버전({0})을 사용하고 있습니다.</value></data>
   <data name="SettingsTrayIcon.Text"><value>알림 영역 아이콘</value></data>
   <data name="SettingsTrayIconNote.Text"><value>창을 닫으면 앱이 종료되지 않고 여기에 숨겨집니다. 이를 끄면 창을 닫을 때 앱이 종료됩니다.</value></data>
   <data name="SettingsStartup.Text"><value>Windows 시작 시 실행</value></data>

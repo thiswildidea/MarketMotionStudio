@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Aç</value></data>
   <data name="TrayExit.Text"><value>Çık</value></data>
   <data name="TrayBusy"><value>Çalışıyor: {0}</value></data>
+  <data name="TrayUpdateTo"><value>{0} sürümüne güncelle</value></data>
+  <data name="TrayUpToDate"><value>En son sürümü kullanıyorsunuz ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Bildirim alanı simgesi</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Pencereyi kapatmak uygulamayı sonlandırmak yerine buraya gizler. Kapatırsanız pencereyi kapatmak uygulamadan çıkar.</value></data>
   <data name="SettingsStartup.Text"><value>Windows ile başlat</value></data>

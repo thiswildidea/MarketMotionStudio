@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Öffnen</value></data>
   <data name="TrayExit.Text"><value>Beenden</value></data>
   <data name="TrayBusy"><value>Arbeitet: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Auf {0} aktualisieren</value></data>
+  <data name="TrayUpToDate"><value>Sie haben die neueste Version ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Symbol im Benachrichtigungsbereich</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Schließen des Fensters verbirgt die App hier, statt sie zu beenden. Ist es aus, beendet das Schließen die App.</value></data>
   <data name="SettingsStartup.Text"><value>Mit Windows starten</value></data>

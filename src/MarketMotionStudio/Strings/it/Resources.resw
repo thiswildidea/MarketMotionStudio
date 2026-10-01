@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Apri</value></data>
   <data name="TrayExit.Text"><value>Esci</value></data>
   <data name="TrayBusy"><value>In corso: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Aggiorna a {0}</value></data>
+  <data name="TrayUpToDate"><value>Hai la versione più recente ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Icona nell'area di notifica</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Chiudere la finestra nasconde l'app qui invece di terminarla. Disattivandola, chiudere la finestra esce dall'app.</value></data>
   <data name="SettingsStartup.Text"><value>Avvia con Windows</value></data>

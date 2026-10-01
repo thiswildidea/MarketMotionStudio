@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Открыть</value></data>
   <data name="TrayExit.Text"><value>Выход</value></data>
   <data name="TrayBusy"><value>Выполняется: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Обновить до {0}</value></data>
+  <data name="TrayUpToDate"><value>У вас последняя версия ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Значок в области уведомлений</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Закрытие окна сворачивает приложение сюда вместо завершения. Если отключить, закрытие окна завершит работу приложения.</value></data>
   <data name="SettingsStartup.Text"><value>Запускать вместе с Windows</value></data>

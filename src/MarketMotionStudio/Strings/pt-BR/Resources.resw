@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Abrir</value></data>
   <data name="TrayExit.Text"><value>Sair</value></data>
   <data name="TrayBusy"><value>Em andamento: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Atualizar para {0}</value></data>
+  <data name="TrayUpToDate"><value>Você tem a versão mais recente ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Ícone na área de notificação</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Fechar a janela oculta o app aqui em vez de encerrá-lo. Se você o desativar, fechar a janela encerra o app.</value></data>
   <data name="SettingsStartup.Text"><value>Iniciar com o Windows</value></data>

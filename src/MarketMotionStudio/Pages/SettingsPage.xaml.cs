@@ -681,7 +681,7 @@ public sealed partial class SettingsPage : Page
     /// from the package rather than from an assembly attribute: the package version
     /// is what the Store shows and what an update changes.
     /// </summary>
-    private static string AppVersion
+    internal static string AppVersion
     {
         get
         {

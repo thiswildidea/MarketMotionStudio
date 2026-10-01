@@ -46,15 +46,39 @@
         <tray:TaskbarIcon x:Name="Tray"
                           IconSource="ms-appx:///Assets/AppIcon.ico"
                           NoLeftClickDelay="True"
+                          ContextMenuMode="SecondWindow"
                           LeftClickCommand="{x:Bind ShowWindowCommand}">
+            <!-- SecondWindow, not the default. The default hands the flyout to
+                 the system's own Win32 menu, which carries text and nothing
+                 else — every icon below would be dropped. This mode shows the
+                 WinUI menu itself in a small window of its own, icons and all,
+                 and it is the reason the item is reachable to automation: the
+                 native menu is not. -->
             <tray:TaskbarIcon.ContextFlyout>
                 <!-- Commands, not Click. The flyout is hosted by the library in its
                      own popup and a Click handler here is never reached; the item just
                      highlights and dismisses, which looks like a broken action. -->
                 <MenuFlyout>
-                    <MenuFlyoutItem x:Uid="TrayOpen" Command="{x:Bind ShowWindowCommand}" />
+                    <MenuFlyoutItem x:Uid="TrayOpen" Command="{x:Bind ShowWindowCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE8A7;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <!-- "Update to …" while the Store has one, and the version
+                         already installed otherwise, greyed out — there is
+                         nothing to press it for. Both are set in code, since
+                         the text carries the version number. -->
+                    <MenuFlyoutItem x:Name="TrayUpdateItem" Command="{x:Bind UpdateCommand}" IsEnabled="False">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon x:Name="TrayUpdateGlyph" Glyph="&#xE895;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem x:Uid="TrayExit" Command="{x:Bind ExitCommand}" />
+                    <MenuFlyoutItem x:Uid="TrayExit" Command="{x:Bind ExitCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE7E8;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
                 </MenuFlyout>
             </tray:TaskbarIcon.ContextFlyout>
         </tray:TaskbarIcon>

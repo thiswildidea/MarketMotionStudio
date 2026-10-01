@@ -297,6 +297,8 @@
   <data name="TrayOpen.Text"><value>開啟</value></data>
   <data name="TrayExit.Text"><value>結束</value></data>
   <data name="TrayBusy"><value>處理中：{0}</value></data>
+  <data name="TrayUpdateTo"><value>更新至 {0}</value></data>
+  <data name="TrayUpToDate"><value>已是最新版本（{0}）。</value></data>
   <data name="SettingsTrayIcon.Text"><value>通知區域圖示</value></data>
   <data name="SettingsTrayIconNote.Text"><value>關閉視窗後應用程式會收納到這裡而非結束。關掉它之後，關閉視窗將直接結束應用程式。</value></data>
   <data name="SettingsStartup.Text"><value>開機時啟動</value></data>

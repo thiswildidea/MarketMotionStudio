@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>Otevřít</value></data>
   <data name="TrayExit.Text"><value>Ukončit</value></data>
   <data name="TrayBusy"><value>Probíhá: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Aktualizovat na {0}</value></data>
+  <data name="TrayUpToDate"><value>Máte nejnovější verzi ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Ikona v oznamovací oblasti</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Zavřením okna se aplikace skryje sem místo ukončení. Vypnete-li ji, zavření okna aplikaci ukončí.</value></data>
   <data name="SettingsStartup.Text"><value>Spouštět se systémem Windows</value></data>

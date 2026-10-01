@@ -309,6 +309,8 @@
   <data name="TrayOpen.Text"><value>Open</value></data>
   <data name="TrayExit.Text"><value>Exit</value></data>
   <data name="TrayBusy"><value>Working: {0}</value></data>
+  <data name="TrayUpdateTo"><value>Update to {0}</value></data>
+  <data name="TrayUpToDate"><value>You have the latest version ({0}).</value></data>
   <data name="SettingsTrayIcon.Text"><value>Notification area icon</value></data>
   <data name="SettingsTrayIconNote.Text"><value>Closing the window hides the app here instead of ending it. Turn this off and closing the window quits the app.</value></data>
   <data name="SettingsStartup.Text"><value>Start with Windows</value></data>

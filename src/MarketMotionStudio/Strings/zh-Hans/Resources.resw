@@ -307,6 +307,8 @@
   <data name="TrayOpen.Text"><value>打开</value></data>
   <data name="TrayExit.Text"><value>退出</value></data>
   <data name="TrayBusy"><value>正在处理：{0}</value></data>
+  <data name="TrayUpdateTo"><value>更新到 {0}</value></data>
+  <data name="TrayUpToDate"><value>已是最新版本（{0}）。</value></data>
   <data name="SettingsTrayIcon.Text"><value>通知区域图标</value></data>
   <data name="SettingsTrayIconNote.Text"><value>关闭窗口后应用会收起到这里，而不是退出。关掉它之后，关闭窗口将直接退出应用。</value></data>
   <data name="SettingsStartup.Text"><value>开机时启动</value></data>

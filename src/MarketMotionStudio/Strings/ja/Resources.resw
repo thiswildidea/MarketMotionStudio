@@ -298,6 +298,8 @@
   <data name="TrayOpen.Text"><value>開く</value></data>
   <data name="TrayExit.Text"><value>終了</value></data>
   <data name="TrayBusy"><value>処理中: {0}</value></data>
+  <data name="TrayUpdateTo"><value>{0} に更新</value></data>
+  <data name="TrayUpToDate"><value>最新バージョン ({0}) を使用しています。</value></data>
   <data name="SettingsTrayIcon.Text"><value>通知領域のアイコン</value></data>
   <data name="SettingsTrayIconNote.Text"><value>ウィンドウを閉じるとアプリは終了せずここに隠れます。オフにすると、ウィンドウを閉じるとアプリが終了します。</value></data>
   <data name="SettingsStartup.Text"><value>Windows の起動時に開始</value></data>
