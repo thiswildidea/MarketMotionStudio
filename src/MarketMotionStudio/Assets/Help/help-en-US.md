@@ -10,6 +10,16 @@ Settings picks which market the app takes its quotes from; A-shares by default. 
 - **Hong Kong**: the return matrix and the gain-loss calendar work; the sector race runs on the four Hang Seng sub-indices; **there is no whole-market turnover figure, so that page is hidden**.
 - **United States**: the return matrix and the gain-loss calendar work; the sector race runs on ten SPDR sector ETFs; the volume page keeps its daily mode only, because the minute endpoint serves no US data; **amounts are quoted in dollars, and the whole-market turnover page is hidden**.
 
+
+
+## Moving between pages
+
+The two buttons at the left of the title bar step back and forward through the pages you have visited, as a browser does — **Alt+Left** and **Alt+Right**, or the side buttons on a mouse.
+
+- A page is kept as you left it, so going back to one returns to the period and the preview as they stood, not to a page opened afresh.
+- Picking a new page clears what lay ahead, as a browser does.
+- They work with the navigation pane collapsed as well, which is when the preview needs the width most.
+
 ## Market Turnover
 
 The whole market's daily turnover: the Shanghai and Shenzhen composite amounts added together, one bar per trading day.

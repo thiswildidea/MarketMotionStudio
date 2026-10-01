@@ -10,6 +10,16 @@ Les paramètres déterminent de quel marché l'application tire ses cotations ; 
 - **Hong Kong** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise les quatre sous-indices Hang Seng ; **il n'existe pas de chiffre pour l'ensemble du marché, cette page est donc masquée**.
 - **États-Unis** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise dix ETF sectoriels SPDR ; la page des volumes ne garde que le mode quotidien, car le point d'accès minute ne sert pas de données américaines ; **les montants sont en dollars et la page du volume d'échanges du marché est masquée**.
 
+
+
+## Passer d'une page à l'autre
+
+Les deux boutons à gauche de la barre de titre reculent et avancent parmi les pages visitées, comme le fait un navigateur : **Alt+Gauche** et **Alt+Droite**, ou les boutons latéraux de la souris.
+
+- Une page est conservée telle que vous l'avez laissée : y revenir ramène la période et l'aperçu dans l'état où ils étaient, et non une page ouverte à neuf.
+- Comme dans un navigateur, choisir une nouvelle page efface ce qui était devant.
+- Elles fonctionnent aussi lorsque le volet de navigation est replié, c'est-à-dire au moment où l'aperçu a le plus besoin de largeur.
+
 ## Volume d'échanges du marché
 
 Le montant échangé chaque jour sur tout le marché : les montants des indices composites de Shanghai et de Shenzhen additionnés, une barre par séance.

@@ -478,4 +478,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Top</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Bottom</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Dark colours suit these frames: every tone of text in them is light. On a light background the numbers are hard to read in the video.</value></data>
+  <data name="NavHistoryBack"><value>Back</value></data>
+  <data name="NavHistoryBackTip"><value>Back (Alt+Left)</value></data>
+  <data name="NavHistoryForward"><value>Forward</value></data>
+  <data name="NavHistoryForwardTip"><value>Forward (Alt+Right)</value></data>
 </root>

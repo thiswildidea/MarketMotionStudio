@@ -10,6 +10,16 @@ W ustawieniach wybiera się, z którego rynku aplikacja pobiera notowania; domy�
 - **Hongkong**: macierz stóp zwrotu i kalendarz działają; wyścig sektorów korzysta z czterech subindeksów Hang Seng; **nie ma danych dla całego rynku, więc ta strona jest ukryta**.
 - **USA**: macierz stóp zwrotu i kalendarz działają; wyścig sektorów korzysta z dziesięciu sektorowych ETF-ów SPDR; strona wolumenu ma tylko tryb dzienny, bo minutowy endpoint nie obsługuje danych z USA; **kwoty są w dolarach, a strona obrotu całego rynku jest ukryta**.
 
+
+
+## Przechodzenie między stronami
+
+Dwa przyciski po lewej stronie paska tytułu cofają się i przesuwają do przodu po odwiedzonych stronach, tak jak robi to przeglądarka — **Alt+Strzałka w lewo** i **Alt+Strzałka w prawo** albo boczne przyciski myszy.
+
+- Strona pozostaje taka, jak ją zostawiono, więc powrót do niej przywraca wybrany okres i podgląd w takim stanie, w jakim były, a nie świeżo otwartą stronę.
+- Jak w przeglądarce: wybranie nowej strony czyści to, co było przed Tobą.
+- Działają także przy zwiniętym panelu nawigacji, czyli wtedy, gdy podgląd najbardziej potrzebuje szerokości.
+
 ## Obroty rynku
 
 Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen zsumowane, jeden słupek na sesję.

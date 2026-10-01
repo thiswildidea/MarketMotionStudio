@@ -466,4 +466,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>頂部</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>底部</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>深色更適合這些畫面：畫格內所有文字都是淺色。淺色背景會讓影片裡的數字難以辨認。</value></data>
+  <data name="NavHistoryBack"><value>上一頁</value></data>
+  <data name="NavHistoryBackTip"><value>上一頁 (Alt+向左鍵)</value></data>
+  <data name="NavHistoryForward"><value>下一頁</value></data>
+  <data name="NavHistoryForwardTip"><value>下一頁 (Alt+向右鍵)</value></data>
 </root>

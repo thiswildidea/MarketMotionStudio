@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Góra</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Dół</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Tym klatkom pasują ciemne kolory: wszystkie odcienie tekstu są jasne. Na jasnym tle liczby są w wideo trudne do odczytania.</value></data>
+  <data name="NavHistoryBack"><value>Wstecz</value></data>
+  <data name="NavHistoryBackTip"><value>Wstecz (Alt+Strzałka w lewo)</value></data>
+  <data name="NavHistoryForward"><value>Dalej</value></data>
+  <data name="NavHistoryForwardTip"><value>Dalej (Alt+Strzałka w prawo)</value></data>
 </root>

@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>위쪽</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>아래쪽</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>이 프레임에는 어두운 색이 어울립니다. 글자 색이 모두 밝은 색이기 때문입니다. 밝은 배경에서는 영상 속 숫자가 잘 읽히지 않습니다.</value></data>
+  <data name="NavHistoryBack"><value>뒤로</value></data>
+  <data name="NavHistoryBackTip"><value>뒤로 (Alt+왼쪽 화살표)</value></data>
+  <data name="NavHistoryForward"><value>앞으로</value></data>
+  <data name="NavHistoryForwardTip"><value>앞으로 (Alt+오른쪽 화살표)</value></data>
 </root>

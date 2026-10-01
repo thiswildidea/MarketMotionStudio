@@ -10,6 +10,16 @@ Em Configurações escolhe-se de qual mercado o app obtém suas cotações; aç�
 - **Hong Kong**: a matriz de retorno e o calendário funcionam; a corrida de setores usa os quatro subíndices Hang Seng; **não há número para o mercado inteiro, então essa página fica oculta**.
 - **Estados Unidos**: a matriz de retorno e o calendário funcionam; a corrida de setores usa dez ETFs setoriais SPDR; a página de volume mantém só o modo diário, porque o endpoint de minutos não serve dados americanos; **os valores estão em dólares e a página de volume do mercado fica oculta**.
 
+
+
+## Navegando entre as páginas
+
+Os dois botões à esquerda da barra de título voltam e avançam pelas páginas visitadas, como faz um navegador: **Alt+Seta para a esquerda** e **Alt+Seta para a direita**, ou os botões laterais do mouse.
+
+- A página é mantida como você a deixou, portanto voltar a ela traz de volta o período e a prévia no estado em que estavam, e não uma página recém-aberta.
+- Como em um navegador, escolher uma nova página limpa o que estava à frente.
+- Funcionam também com o painel de navegação recolhido, que é quando a prévia mais precisa de largura.
+
 ## Volume financeiro do mercado
 
 O volume financeiro de cada dia em todo o mercado: os valores dos índices compostos de Xangai e Shenzhen somados, uma barra por pregão.

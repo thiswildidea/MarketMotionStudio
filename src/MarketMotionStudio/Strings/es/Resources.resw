@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Arriba</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Abajo</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Los colores oscuros convienen a estos fotogramas: todos los tonos de texto son claros. Sobre un fondo claro, las cifras se leen mal en el vídeo.</value></data>
+  <data name="NavHistoryBack"><value>Atrás</value></data>
+  <data name="NavHistoryBackTip"><value>Atrás (Alt+Flecha izquierda)</value></data>
+  <data name="NavHistoryForward"><value>Adelante</value></data>
+  <data name="NavHistoryForwardTip"><value>Adelante (Alt+Flecha derecha)</value></data>
 </root>

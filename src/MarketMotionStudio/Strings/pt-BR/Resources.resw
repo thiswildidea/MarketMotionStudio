@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Topo</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Base</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Cores escuras combinam com estes quadros: todos os tons de texto são claros. Sobre um fundo claro, os números ficam difíceis de ler no vídeo.</value></data>
+  <data name="NavHistoryBack"><value>Voltar</value></data>
+  <data name="NavHistoryBackTip"><value>Voltar (Alt+Seta para a esquerda)</value></data>
+  <data name="NavHistoryForward"><value>Avançar</value></data>
+  <data name="NavHistoryForwardTip"><value>Avançar (Alt+Seta para a direita)</value></data>
 </root>

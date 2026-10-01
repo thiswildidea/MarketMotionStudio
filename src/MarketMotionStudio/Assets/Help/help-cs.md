@@ -10,6 +10,16 @@ V nastavení se volí, z kterého trhu aplikace bere kurzy; výchozí jsou A-akc
 - **Hongkong**: matice výnosů a kalendář fungují; závod sektorů běží na čtyřech subindexech Hang Seng; **údaj za celý trh neexistuje, proto je tato stránka skrytá**.
 - **USA**: matice výnosů a kalendář fungují; závod sektorů běží na deseti sektorových ETF SPDR; stránka objemu má jen denní režim, protože minutový endpoint data pro USA nevrací; **částky jsou v dolarech a stránka obratu celého trhu je skrytá**.
 
+
+
+## Přecházení mezi stránkami
+
+Dvě tlačítka vlevo v záhlaví procházejí navštívené stránky zpět a vpřed, jako to dělá prohlížeč — **Alt+šipka vlevo** a **Alt+šipka vpravo**, nebo boční tlačítka myši.
+
+- Stránka zůstává tak, jak jste ji opustili, takže návrat na ni vrací zvolené období a náhled ve stavu, v jakém byly, nikoli nově otevřenou stránku.
+- Jako v prohlížeči: výběr nové stránky smaže to, co bylo před vámi.
+- Fungují i se sbaleným navigačním panelem, tedy právě tehdy, kdy náhled potřebuje šířku nejvíce.
+
 ## Obrat trhu
 
 Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu sečtené, jeden sloupec na obchodní den.

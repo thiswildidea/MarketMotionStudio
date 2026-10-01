@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Nahoře</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Dole</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Těmto snímkům sluší tmavé barvy: všechny odstíny textu jsou světlé. Na světlém pozadí se čísla ve videu špatně čtou.</value></data>
+  <data name="NavHistoryBack"><value>Zpět</value></data>
+  <data name="NavHistoryBackTip"><value>Zpět (Alt+šipka vlevo)</value></data>
+  <data name="NavHistoryForward"><value>Vpřed</value></data>
+  <data name="NavHistoryForwardTip"><value>Vpřed (Alt+šipka vpravo)</value></data>
 </root>

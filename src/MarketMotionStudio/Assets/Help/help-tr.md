@@ -10,6 +10,16 @@ Ayarlarda uygulamanın hangi piyasadan fiyat aldığı seçilir; varsayılan A h
 - **Hong Kong**: getiri matrisi ve takvim çalışır; sektör yarışı dört Hang Seng alt endeksiyle koşulur; **tüm piyasa için veri yok, bu yüzden o sayfa gizlenir**.
 - **ABD**: getiri matrisi ve takvim çalışır; sektör yarışı on SPDR sektör ETF'i ile koşulur; hacim sayfasında yalnızca günlük mod kalır, çünkü dakikalık uç nokta ABD verisi sunmaz; **tutarlar dolar cinsindendir ve tüm piyasa hacmi sayfası gizlenir**.
 
+
+
+## Sayfalar arasında gezinme
+
+Başlık çubuğunun solundaki iki düğme, tıpkı bir tarayıcı gibi, ziyaret ettiğiniz sayfalarda geri ve ileri gider: **Alt+Sol ok** ve **Alt+Sağ ok** ya da farenin yan düğmeleri.
+
+- Sayfa bıraktığınız hâliyle korunur, bu yüzden bir sayfaya dönmek seçili aralığı ve önizlemeyi olduğu gibi geri getirir; yeniden açılmış bir sayfa değildir.
+- Tarayıcıdaki gibi, yeni bir sayfa seçmek önünüzdekini siler.
+- Gezinme bölmesi katlanmışken de çalışırlar; önizlemenin genişliğe en çok ihtiyaç duyduğu an da budur.
+
 ## Piyasa işlem hacmi
 
 Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerinin tutarları toplanır, her işlem günü için bir çubuk.

@@ -65,12 +65,46 @@
 
              Nothing is centred in it, so no column is reserved for the caption
              buttons: that reservation exists to keep a centred control centred
-             on the usable width, and there is nothing here to centre. -->
+             on the usable width, and there is nothing here to centre.
+
+             Back and forward move through the pages visited, as a browser
+             does, rather than the pane's own back button: that one is turned
+             off here, and the pane itself is hidden behind its toggle on a
+             narrow window — which is also when the preview needs the width.
+             The accelerators are the ones a browser answers to; the mouse's
+             side buttons are handled in code. -->
         <Grid x:Name="AppTitleBar" Grid.Row="0" Height="48">
             <StackPanel Orientation="Horizontal"
                         Spacing="10"
                         VerticalAlignment="Center"
-                        Margin="16,0,0,0">
+                        Margin="8,0,0,0">
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <Button x:Name="HistoryBackButton"
+                            Click="OnHistoryBack"
+                            IsEnabled="False"
+                            Width="36" Height="32" Padding="0"
+                            Background="Transparent" BorderThickness="0"
+                            KeyboardAcceleratorPlacementMode="Hidden">
+                        <Button.KeyboardAccelerators>
+                            <!-- WinUI's VirtualKey has no GoBack or GoForward, and
+                                 naming one throws XamlParseException from
+                                 InitializeComponent. Alt+Left is the shortcut. -->
+                            <KeyboardAccelerator Modifiers="Menu" Key="Left" />
+                        </Button.KeyboardAccelerators>
+                        <FontIcon Glyph="&#xE72B;" FontSize="14" />
+                    </Button>
+                    <Button x:Name="HistoryForwardButton"
+                            Click="OnHistoryForward"
+                            IsEnabled="False"
+                            Width="36" Height="32" Padding="0"
+                            Background="Transparent" BorderThickness="0"
+                            KeyboardAcceleratorPlacementMode="Hidden">
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Menu" Key="Right" />
+                        </Button.KeyboardAccelerators>
+                        <FontIcon Glyph="&#xE72A;" FontSize="14" />
+                    </Button>
+                </StackPanel>
                 <Image Source="ms-appx:///Assets/TitleBarLogo.png" Width="20" Height="20" />
                 <TextBlock x:Name="TitleText"
                            VerticalAlignment="Center"

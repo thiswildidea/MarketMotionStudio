@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Üst</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Alt</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>Bu karelere koyu renkler yakışır: içlerindeki her metin tonu açıktır. Açık bir arka planda sayılar videoda zor okunur.</value></data>
+  <data name="NavHistoryBack"><value>Geri</value></data>
+  <data name="NavHistoryBackTip"><value>Geri (Alt+Sol ok)</value></data>
+  <data name="NavHistoryForward"><value>İleri</value></data>
+  <data name="NavHistoryForwardTip"><value>İleri (Alt+Sağ ok)</value></data>
 </root>

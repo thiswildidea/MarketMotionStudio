@@ -10,6 +10,16 @@ En Ajustes se elige de qué mercado toma sus cotizaciones la aplicación; las ac
 - **Hong Kong**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa los cuatro subíndices Hang Seng; **no hay cifra para todo el mercado, así que esa página se oculta**.
 - **Estados Unidos**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa diez ETF sectoriales SPDR; la página de volumen conserva solo el modo diario, porque el endpoint de minutos no sirve datos estadounidenses; **los importes están en dólares y la página de volumen del mercado se oculta**.
 
+
+
+## Moverse entre páginas
+
+Los dos botones de la izquierda de la barra de título retroceden y avanzan por las páginas visitadas, como lo hace un navegador: **Alt+Flecha izquierda** y **Alt+Flecha derecha**, o los botones laterales del ratón.
+
+- Cada página se conserva tal como la dejaste, así que volver a ella devuelve el periodo y la vista previa en el estado en que estaban, no una página recién abierta.
+- Como en un navegador, elegir una página nueva borra lo que había por delante.
+- También funcionan con el panel de navegación plegado, justo cuando la vista previa más necesita el ancho.
+
 ## Volumen negociado del mercado
 
 El importe negociado cada día en todo el mercado: los importes de los índices compuestos de Shanghái y Shenzhen sumados, una barra por sesión.

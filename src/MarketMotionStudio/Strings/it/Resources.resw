@@ -467,4 +467,8 @@
   <data name="SettingsFrameBackdropTop.Text" xml:space="preserve"><value>Sopra</value></data>
   <data name="SettingsFrameBackdropBottom.Text" xml:space="preserve"><value>Sotto</value></data>
   <data name="SettingsFrameBackdropColourNote.Text" xml:space="preserve"><value>I colori scuri si adattano a questi fotogrammi: ogni tono di testo è chiaro. Su uno sfondo chiaro i numeri si leggono male nel video.</value></data>
+  <data name="NavHistoryBack"><value>Indietro</value></data>
+  <data name="NavHistoryBackTip"><value>Indietro (Alt+Freccia sinistra)</value></data>
+  <data name="NavHistoryForward"><value>Avanti</value></data>
+  <data name="NavHistoryForwardTip"><value>Avanti (Alt+Freccia destra)</value></data>
 </root>

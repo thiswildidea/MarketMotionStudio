@@ -102,6 +102,10 @@ public sealed partial class MainWindow : Window
         // carries what is running rather than just the app's name.
         _services.Work.Changed += (_, _) => _dispatcher.TryEnqueue(RefreshTrayTooltip);
 
+        // Before the first navigation, so that the first page shown is the first
+        // entry in the history rather than a second visit to nothing.
+        WireHistory();
+
         // Before the first navigation: the menu is pared back to what the market can
         // supply, and the page the window opens on is read from what is left. Done the
         // other way round the shell would land on a page the market has no data for
@@ -627,6 +631,9 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        ContentFrame.Navigate(page, null, new EntranceNavigationTransitionInfo());
+        // The transition says which way the reader moved: stepping back slides the
+        // page in from the left, a new visit enters as it always has.
+        ContentFrame.Navigate(page, null, HistoryTransition());
+        RecordVisit(tag);
     }
 }

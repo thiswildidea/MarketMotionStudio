@@ -10,6 +10,16 @@ Nelle impostazioni si sceglie da quale mercato l'app prende le quotazioni; come 
 - **Hong Kong**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa i quattro sottoindici Hang Seng; **non esiste un dato per l'intero mercato, quindi quella pagina è nascosta**.
 - **Stati Uniti**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa dieci ETF settoriali SPDR; la pagina dei volumi conserva solo la modalità giornaliera, perché l'endpoint dei minuti non serve dati statunitensi; **gli importi sono in dollari e la pagina del controvalore del mercato è nascosta**.
 
+
+
+## Spostarsi tra le pagine
+
+I due pulsanti a sinistra della barra del titolo vanno indietro e avanti tra le pagine visitate, come fa un browser: **Alt+Freccia sinistra** e **Alt+Freccia destra**, oppure i pulsanti laterali del mouse.
+
+- Una pagina resta come l'hai lasciata, quindi tornarci riporta il periodo e l'anteprima nello stato in cui si trovavano, non una pagina appena aperta.
+- Come in un browser, scegliere una nuova pagina cancella ciò che stava davanti.
+- Funzionano anche con il riquadro di navigazione compresso, proprio quando l'anteprima ha più bisogno di larghezza.
+
 ## Controvalore del mercato
 
 Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli indici composti di Shanghai e Shenzhen sommati, una barra per seduta.
