@@ -713,7 +713,6 @@
   <data name="ExtremeDaysStageTitle"><value>Extreme days</value></data>
   <data name="ExtremeDaysCount"><value>One instrument, every trading day in the range. The frame draws the {0} largest moves, red for a rise and green for a fall.</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>Move = the change in the adjusted close from the previous trading day, in per cent. Ranked by size and not by sign, so a fall stands beside a rise of the same size. A day is ranked only once it has happened, which is why the board fills in.</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>Instrument</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>candidate days</value></data>
   <data name="ExtremeDaysFetched"><value>{0} candidate days · {1} trading days · biggest {2} {3} · smallest on the board {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Longest (about 35 years)</value></data>

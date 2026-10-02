@@ -702,7 +702,6 @@
   <data name="ExtremeDaysStageTitle"><value>極端な日</value></data>
   <data name="ExtremeDaysCount"><value>銘柄は一つ、期間内のすべての取引日。画面には最も大きな {0} 日の値動きを描きます。上昇は赤、下落は緑です。</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>値動き = 前の取引日に比べた調整済み終値の変化、単位はパーセント。符号ではなく大きさで並べるので、下落は同じ大きさの上昇の隣に並びます。その日が実際に来て初めて順位に入るため、表は少しずつ埋まります。</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>銘柄</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>候補日</value></data>
   <data name="ExtremeDaysFetched"><value>候補 {0} 日 · 取引日 {1} 日 · 最大 {2} {3} · 画面内で最小 {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>最長（約 35 年）</value></data>

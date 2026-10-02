@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
@@ -38,11 +39,12 @@ namespace MarketMotionStudio.Pages;
 /// **Any instrument the market quotes, not only the broad indices.** The board is one
 /// instrument's own days, and "what were its largest days" is asked about single stocks and
 /// funds at least as often as about an index — so the page carries the same suggesting box the
-/// candle and calendar pages carry, and the list underneath is a shortcut to the usual ones
-/// rather than the boundary of the page. Two things a reader meets only once a stock is
-/// allowed, both already true of the numbers and neither a special case: a limit-rule day is
-/// the day a stock's board is mostly made of, and a listing shorter than
-/// <see cref="ExtremeDayBoard.FewestDays"/> trading days has no board to draw.
+/// candle and calendar pages carry, the broad indices underneath it as one tap each rather than
+/// as the boundary of the page, and the same watchlist for the same reason a favourite exists
+/// at all: it is a fact about the instrument, not about the page it was added on. Two things a
+/// reader meets only once a stock is allowed, both already true of the numbers and neither a
+/// special case: a limit-rule day is the day a stock's board is mostly made of, and a listing
+/// shorter than <see cref="ExtremeDayBoard.FewestDays"/> trading days has no board to draw.
 /// </summary>
 public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
 {
@@ -52,6 +54,24 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     private readonly StudioPreferences _prefs = new("ExtremeDays.");
 
     private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
+
+    /// <summary>
+    /// The per-stock page's preference container, used for the watchlist key only. The watchlist
+    /// is one list shared by every page that names one instrument — a favourite is a fact about
+    /// the instrument, not about the page it was added on — so it is read and written under that
+    /// page's prefix deliberately, the same way the candle and calendar pages do it.
+    /// </summary>
+    private readonly StudioPreferences _watchlist = new("Stock.");
+
+    private readonly ObservableCollection<StockFavourite> _favourites = [];
+
+    /// <summary>
+    /// The instrument the series in hand was fetched for, or null before anything has been
+    /// fetched. A favourite is added out of the fetch rather than out of the box, because the
+    /// name only exists once the source has answered — a favourite without one is a code nobody
+    /// recognises a month later.
+    /// </summary>
+    private RaceEntry? _fetched;
 
     private SectorRaceSeries? _series;
 
@@ -91,18 +111,15 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
         InitializeComponent();
 
         // The market's broad indices: an index is the instrument whose single-day move is a
-        // sentence about the market, so the list leads with them. It is a shortcut, not the
-        // limit — the search box above it takes any code the market quotes.
+        // sentence about the market, so they lead. One tap each, and still a shortcut rather
+        // than the limit — the search box above them takes any code the market quotes, and most
+        // of what this page can be pointed at is not one of these.
         foreach (var entry in _market.BroadIndices)
         {
-            InstrumentCombo.Items.Add(new ComboBoxItem
-            {
-                Content = InstrumentNames.Display(entry.Code, entry.Name),
-                Tag = entry.Code,
-            });
+            Presets.Items.Add(new MatrixPreset(entry.Code, InstrumentNames.Display(entry.Code, entry.Name)));
         }
 
-        InstrumentCombo.SelectedIndex = 0;
+        Favourites.ItemsSource = _favourites;
 
         _searchDebounce.Tick += async (_, _) =>
         {
@@ -176,24 +193,100 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     /// <summary>
     /// Sets the instrument without fetching: the button still decides when the source is asked,
     /// and choosing a stock is not a request to wait on one.
+    ///
+    /// Whatever was fetched goes with it. A board belongs to the instrument it was fetched for,
+    /// and leaving one standing under another instrument's name is a sentence about a stock that
+    /// no pixel of the frame admits is about a different one. Same rule as the candle page.
     /// </summary>
     private void ChooseInstrument(string code, string name)
     {
         _instrumentCode = code;
         _instrumentName = InstrumentNames.Display(code, name);
 
-        // The list keeps up when it can: an instrument that is one of the usual ones should
-        // look chosen. Anything else leaves the list blank rather than pointing at a
-        // neighbouring index — the frame's own caption is what names the instrument now.
-        InstrumentCombo.SelectionChanged -= OnInstrumentChanged;
-
-        InstrumentCombo.SelectedItem =
-            InstrumentCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is string c && c == code);
-
-        InstrumentCombo.SelectionChanged += OnInstrumentChanged;
+        _series = null;
+        _fetched = null;
 
         SavePreferences();
         ApplyPreviewSettings();
+    }
+
+    // ---- the usual ones, and the watchlist ----------------------------------------------
+
+    /// <summary>One of the market's broad indices, tapped.</summary>
+    private void OnPresetClick(object sender, RoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.Tag is string code)
+        {
+            var name = Presets.Items.OfType<MatrixPreset>().FirstOrDefault(p => p.Code == code)?.Name ?? code;
+            ChooseInstrument(code, name);
+        }
+    }
+
+    /// <summary>Serialised as `code|name;…` under the shared watchlist key — see <see cref="_watchlist"/>.</summary>
+    private const string FavouriteKey = "Favourites";
+
+    private void LoadFavourites()
+    {
+        var raw = _watchlist.GetString(FavouriteKey, string.Empty);
+
+        foreach (var item in raw.Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var parts = item.Split('|');
+
+            if (parts.Length == 2 && parts[0].Length > 0)
+            {
+                _favourites.Add(new StockFavourite(parts[0], parts[1]));
+            }
+        }
+    }
+
+    private void SaveFavourites()
+    {
+        _watchlist.Save(FavouriteKey, string.Join(";", _favourites.Select(f => $"{f.Code}|{f.Name}")));
+    }
+
+    private void OnAddFavourite(object sender, RoutedEventArgs e)
+    {
+        if (_fetched is not { } fetched)
+        {
+            // The name comes with the fetch and cannot be guessed before it: a favourite is a
+            // code and a name, and a list of bare codes is a list nobody can read later.
+            ShowStatus(InfoBarSeverity.Informational, Strings.Get("StockFavNeedData"));
+            return;
+        }
+
+        if (_favourites.Any(f => f.Code == fetched.Code))
+        {
+            return;
+        }
+
+        _favourites.Add(new StockFavourite(fetched.Code, fetched.Name));
+        SaveFavourites();
+    }
+
+    private void OnFavouriteClick(object sender, RoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.Tag is string code)
+        {
+            var name = _favourites.FirstOrDefault(f => f.Code == code)?.Name ?? code;
+            ChooseInstrument(code, name);
+        }
+    }
+
+    private void OnFavouriteRemove(object sender, RoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.Tag is not string code)
+        {
+            return;
+        }
+
+        var at = _favourites.ToList().FindIndex(f => f.Code == code);
+
+        if (at >= 0)
+        {
+            _favourites.RemoveAt(at);
+            SaveFavourites();
+        }
     }
 
     // ---- the picture -------------------------------------------------------------------
@@ -245,26 +338,6 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
 
         RefreshScrubText();
         Preview.Redraw();
-    }
-
-    // ---- range ---------------------------------------------------------------------------
-
-    private void OnInstrumentChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // A choice from the list is the same act as a choice from the search, and it lands in
-        // the same place. A different instrument is a different board, so whatever was fetched
-        // is no longer what the panel describes — but nothing is fetched until the button is
-        // pressed, the same rule as the candle page.
-        if (InstrumentCombo.SelectedItem is ComboBoxItem { Tag: string code })
-        {
-            var entry = _market.BroadIndices.FirstOrDefault(x => x.Code == code, new RaceEntry(code, code));
-
-            _instrumentCode = entry.Code;
-            _instrumentName = InstrumentNames.Display(entry.Code, entry.Name);
-        }
-
-        SavePreferences();
-        ApplyPreviewSettings();
     }
 
     // ---- search -------------------------------------------------------------------------
@@ -353,6 +426,8 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
         ChooseInstrument(code, code);
     }
 
+    // ---- range ---------------------------------------------------------------------------
+
     private void OnRangeChanged(object sender, SelectionChangedEventArgs e)
     {
         if (CustomRange is null)
@@ -418,6 +493,11 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
                 Services.Quotes, _market, ChosenInstrument(), start, end, progress, cancellation);
 
             _series = series;
+
+            // What a favourite needs, and the only moment both halves of it exist: the code the
+            // page settled on and the name the frame is captioned with. The loader answers with
+            // days rather than with an instrument, so it can supply neither.
+            _fetched = new RaceEntry(_instrumentCode, ChosenInstrumentName());
 
             ApplyPreviewSettings();
             ShowMoment(1);
@@ -617,15 +697,18 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     {
         var code = _prefs.GetString("Code", _market.BroadIndices[0].Code);
 
+        // The name as it was spelled when it was chosen. Most of the things this page can be
+        // pointed at are not one of the usual ones, so the name is remembered rather than looked
+        // up — a code alone would caption the frame with a code. Nothing is highlighted in the
+        // row of buttons for the same reason: they are shortcuts, and most of what this page
+        // draws is not on them.
+        //
         // A code saved under another market is not carried over: it would fetch from a venue
-        // whose list and suggestions this page no longer shows.
+        // whose suggestions this page no longer shows.
         if (_market.Accepts(code))
         {
             _instrumentCode = code;
 
-            // The name as it was spelled when it was chosen. Most of the things this page can
-            // be pointed at are not on the list below, so the name is remembered rather than
-            // looked up — a code alone would caption the frame with a code.
             var name = _prefs.GetString("Name", string.Empty);
 
             _instrumentName = name.Length > 0 ? InstrumentNames.Display(code, name) : code;
@@ -635,11 +718,6 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
             _instrumentCode = _market.BroadIndices[0].Code;
             _instrumentName = InstrumentNames.Display(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name);
         }
-
-        // Blank when the remembered instrument is not one of the usual ones: pointing the list
-        // at a neighbouring index would say the frame is drawn on something it is not.
-        InstrumentCombo.SelectedItem =
-            InstrumentCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is string c && c == _instrumentCode);
 
         var months = _prefs.GetInt("Months", 120);
         var match = RangeCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is int m && m == months);
@@ -658,5 +736,7 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
         {
             ToDate.Date = new DateTimeOffset(to, TimeOnly.MinValue, TimeSpan.Zero);
         }
+
+        LoadFavourites();
     }
 }

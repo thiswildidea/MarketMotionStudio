@@ -702,7 +702,6 @@
   <data name="ExtremeDaysStageTitle"><value>Jours extrêmes</value></data>
   <data name="ExtremeDaysCount"><value>Un instrument, chaque jour de cotation de la période. L'image trace les {0} plus grands mouvements, rouge pour une hausse et vert pour une baisse.</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>Mouvement = la variation du cours de clôture ajusté par rapport au jour de cotation précédent, en pourcentage. Classé par ampleur et non par signe, de sorte qu'une baisse se place à côté d'une hausse de même taille. Un jour n'est classé qu'une fois arrivé, d'où le tableau qui se remplit.</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>Instrument</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>jours candidats</value></data>
   <data name="ExtremeDaysFetched"><value>{0} jours candidats · {1} jours de cotation · le plus grand {2} {3} · le plus petit du tableau {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Le plus long (environ 35 ans)</value></data>

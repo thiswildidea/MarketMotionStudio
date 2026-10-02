@@ -11,6 +11,9 @@
 3. **画面上的量词写死在渲染器里。** 表头那行「N 个交易日 · N 个候选日」在 UIA 树里
    没有节点，截图里只是像素——所以只能断言"量词由页面传、渲染器不许自己编"。
 
+4. **收藏是这一页自己的那一份，而不是共享的那一份。** 收藏列表在两个页面上长得一模一样，
+   所以从画面上看不出它是同一个列表还是各存各的；只有在一页上加、到另一页上找，才分得清。
+
 再者是**数字对不对**：状态行报出最大单日涨跌幅，脚本直接打源端把同一段日线独立算一遍。
 
 用法：python tools/verify-extremedays.py
@@ -21,6 +24,7 @@ import re
 import sys
 import time
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import date, timedelta
 
 import uiautomation as auto
@@ -41,10 +45,20 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE = os.path.join(REPO, "src/MarketMotionStudio/Market/ExtremeDays.cs")
 PAGE = os.path.join(REPO, "src/MarketMotionStudio/Pages/ExtremeDaysPage.xaml.cs")
 RENDER = os.path.join(REPO, "src/MarketMotionStudio/Render/SectorRaceRenderer.cs")
+XAML = os.path.join(REPO, "src/MarketMotionStudio/Pages/ExtremeDaysPage.xaml")
 
 # 与页面「近 10 年」同一段区间，也用同一个端点与同一档复权。
 CODE = "sh000001"
 YEARS = 10
+
+# 一键预设就是原来那个下拉里的八项：A 股当前的八个宽基指数，一个不多一个不少。
+# 断成集合，而不是「至少五个」——少一个也算改错了东西，而这个清单是这一页唯一的
+# 固定选项。
+BROAD = {"上证指数", "深证成指", "沪深300", "中证500", "创业板指", "科创50", "中小100", "上证50"}
+
+# 收藏条目的第二行：代码的大写形态（`sh510300` → `SH510300`）。整窗里认这个形状，
+# 是因为收藏行那个 `ItemsControl` 在 UIA 里没有节点可认（见 `favourite_codes`）。
+CODE_LIKE = re.compile(r"^(SH|SZ|HK|US)[0-9A-Z.]{4,}$")
 
 FAILED = []
 
@@ -317,6 +331,124 @@ def pick_instrument(win, code):
     return True
 
 
+def resw(key, tag="zh-Hans"):
+    """某一份语言文件里的一个字符串。
+
+    文案断言不把中文抄进脚本：抄进去的那天起，断言核对的就是脚本自己 —— 而页面把词改
+    了它也不会响。这一页的提示语在 14 份里各一条，读的就是界面正在用的那一份。
+    """
+    path = os.path.join(REPO, "src/MarketMotionStudio/Strings", tag, "Resources.resw")
+
+    for node in ET.parse(path).getroot().findall("data"):
+        if node.get("name") == key:
+            return node.find("value").text or ""
+
+    return ""
+
+
+def preset_labels(win):
+    """一键预设按钮上写着的名字，按树序。
+
+    在整窗里按按钮名找，而不是先找容器再往里走：`ItemsControl` 有没有自己的 UIA 节点
+    并不牢靠（这一页的收藏行就找不到），而「这一页有哪八个按钮」不该取决于那个节点在
+    不在。
+    """
+    return [b.Name for b in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl")
+            if b.Name in BROAD]
+
+
+def click_preset(win, name):
+    """点一个一键预设。找不到就报 False —— 不点别的，别人家的指数不是上证。"""
+    for button in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+        if button.Name != name:
+            continue
+
+        try:
+            button.GetInvokePattern().Invoke()
+            time.sleep(2.0)
+            return True
+        except Exception:  # noqa: BLE001
+            return False
+
+    return False
+
+
+def favourite_codes(win):
+    """收藏行（也可能在别的页面）上写着的那些代码：每条收藏第二行那行小灰字。
+
+    整窗里按「长得像代码」筛，而不是先找容器再往里走：**那个 `ItemsControl` 按
+    AutomationId 找不到**（第一版就是这么写的，退回整窗后数到 92 个文本节点，而收藏多
+    一条是多出来的三个）。
+    """
+    return [t.Name for t in winui.find_all(win, lambda c: c.ControlTypeName == "TextControl")
+            if t.Name and CODE_LIKE.match(t.Name)]
+
+
+def favourite_closers(win):
+    """每一条收藏右边那个 ✕。一条收藏一个，所以它的个数就是收藏的条数。"""
+    return [b for b in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl")
+            if b.Name == "✕"]
+
+
+def click_favourite(win):
+    """按「收藏」。"""
+    button = winui.find(win, lambda c: c.AutomationId == "FavouriteButton")
+
+    if button is None:
+        return False
+
+    try:
+        button.GetInvokePattern().Invoke()
+        time.sleep(1.5)
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def remove_favourite(win, upper):
+    """删掉写着这个代码的那一条：找它的 ✕，按位置找而不是按树序找。
+
+    树序里「名字按钮后面的下一个按钮」平时正好是它的 ✕，但最后一条收藏的下一个按钮是
+    「收藏」按钮 —— 那样删不掉东西，而画面上什么都没变，看是看不出来的。所以找右边离它
+    最近的那个 ✕。
+    """
+    chip = None
+
+    for button in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+        here = [t.Name for t in winui.find_all(button, lambda c: c.ControlTypeName == "TextControl")]
+
+        if upper in here:
+            chip = button
+            break
+
+    if chip is None:
+        return False
+
+    mine = chip.BoundingRectangle
+    best = None
+    gap = None
+
+    for closer in favourite_closers(win):
+        other = closer.BoundingRectangle
+
+        if other.left < mine.left:
+            continue
+
+        if gap is None or other.left - mine.left < gap:
+            best = closer
+            gap = other.left - mine.left
+
+    if best is None:
+        return False
+
+    try:
+        best.GetInvokePattern().Invoke()
+        time.sleep(1.5)
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def frame_colours(win):
     """数预览画面里的红/绿像素 —— 用的还是截图，所以和用户看到的是同一张图。"""
     try:
@@ -418,10 +550,14 @@ def main():
     check("渲染器没有写死某个具体周期的量词",
           "MarketCapUnitMonths" not in render and "AhPremiumUnitPairs" not in render)
 
-    # ---- 0b) 源码级：任意标的（个股 / ETF）也得能上这一页
+    # ---- 0b) 源码级：标的区是 K线页那一套（搜索 + 一键预设 + 共享收藏）
     #
-    # 数据层本来就接任何 RaceEntry，所以放开的是页面。页面曾经从下拉读当前标的，那样搜索
-    # 出来的东西无处可放 —— 断言断在「当前标的由字段持有」上，才拦得住退回旧写法。
+    # 数据层本来就接任何 RaceEntry，所以放开的是页面。页面曾经把当前标的放在一个下拉里，
+    # 搜索出来的东西于是无处可放 —— 断言断在「当前标的由字段持有、下拉那套读回逻辑不在」
+    # 上，才拦得住退回旧写法。收藏那几条同理：它长得和别的页面一模一样，是「同一个列表」
+    # 还是「长得一样的第二个列表」，只能从代码和跨页面上找证据。
+    xaml = open(XAML, encoding="utf-8").read()
+
     check("页面有搜索框（不是只有那一份固定清单）", "OnSearchSubmitted" in page)
     check("当前标的由字段持有，不是从下拉读回来的",
           "private RaceEntry ChosenInstrument() => new(_instrumentCode, _instrumentName);" in page)
@@ -433,6 +569,25 @@ def main():
           '_prefs.Save("Name", _instrumentName);' in page)
     check("换市场时不把别处的代码带过来", "if (_market.Accepts(code))" in page)
 
+    check("标的那个下拉已经不在（控件与事件都不该剩）",
+          "InstrumentCombo" not in xaml and "InstrumentCombo" not in page)
+    check("那个下拉的 resw 键也一并删了（没有控件再读它）",
+          resw("ExtremeDaysInstrument.Header") == "")
+    check("一键预设取自当前市场的宽基指数（换市场会换掉这一行）",
+          "foreach (var entry in _market.BroadIndices)" in page)
+    check("预设按钮与其它页面同一种记录类型（不为这一页再写一个）",
+          "Presets.Items.Add(new MatrixPreset(entry.Code" in page and "StockFavourite" in page)
+    check("预设按钮的点击落到与搜索同一个入口",
+          "OnPresetClick" in xaml and "ChooseInstrument(code, name);" in page)
+    check("收藏读写的是共享的那一份自选股（Stock. 前缀）",
+          'private readonly StudioPreferences _watchlist = new("Stock.");' in page)
+    check("收藏记的是取过数的那只标的（名字只有取数之后才有）",
+          "_fetched = new RaceEntry(_instrumentCode, ChosenInstrumentName());" in page)
+    check("没取过数时按收藏给的是提示，不是静默无反应",
+          'Strings.Get("StockFavNeedData")' in page)
+    check("换标的后不再留着上一只的榜（标题与数字会各说各话）",
+          "_series = null;\n        _fetched = null;" in page)
+
     # ---- 1) 页面在
     if not goto(win, "极端交易日"):
         check("导航里有「极端交易日」", False)
@@ -442,10 +597,14 @@ def main():
 
     # **先复位，再断言。** 标的偏好是持久的：上一次跑脚本时选的东西会留在这里，脚本若
     # 默认页面还在上证指数上，第一次取数就会拿别人的数跟上证的数比，然后报「不一致」——
-    # 而这一页此时接了搜索框，上次留下的很可能是一只根本不在清单里的 ETF。
-    winui.combo_pick(win, winui.find(win, lambda c: c.AutomationId == "InstrumentCombo"), "上证指数")
+    # 而这一页现在还能指到任意代码上，上次留下的很可能是一只 ETF。
+    labels = preset_labels(win)
 
-    check("标的下拉在", winui.find(win, lambda c: c.AutomationId == "InstrumentCombo") is not None)
+    check("一键预设就是那八个宽基指数（一个不多一个不少）",
+          set(labels) == BROAD, " / ".join(sorted(labels)))
+
+    check("点「上证指数」把标的复位", click_preset(win, "上证指数"))
+    check("收藏按钮在", winui.find(win, lambda c: c.AutomationId == "FavouriteButton") is not None)
     check("区间下拉在", winui.find(win, lambda c: c.AutomationId == "RangeCombo") is not None)
     check("取数按钮在", winui.find(win, lambda c: c.AutomationId == "FetchButton") is not None)
 
@@ -462,6 +621,15 @@ def main():
         body = " ".join(texts(note))
         check("口径说明写了复权与按幅度排序", "复权" in body and "幅度" in body, body[:60])
 
+    # ---- 1b) 收藏：还没取过数时按一次
+    #
+    # 这是「收藏真的接进去了」的唯一证据：它读的是 _fetched，而 _fetched 只在取数成功之
+    # 后才存在。提示语从 resw 里读，不抄进脚本 —— 抄进去的话，页面换了词这条也不会响。
+    need = resw("StockFavNeedData")
+
+    check("没取过数时按收藏，给的是「先取数」的提示",
+          click_favourite(win) and need[:6] in status_text(win), status_text(win)[:80])
+
     # ---- 2) 档位
     combo = winui.find(win, lambda c: c.AutomationId == "RangeCombo")
     options = winui.combo_labels(win, combo) if combo is not None else []
@@ -469,9 +637,6 @@ def main():
     check("区间下拉是那五档",
           set(options) == {"近 3 年", "近 5 年", "近 10 年", "最长（约 35 年）", "自定义"},
           " / ".join(options))
-
-    instruments = winui.combo_labels(win, winui.find(win, lambda c: c.AutomationId == "InstrumentCombo"))
-    check("标的下拉是宽基指数（至少 5 个）", len(instruments) >= 5, " / ".join(instruments[:8]))
 
     # ---- 3) 近 10 年取数
     if combo is not None:
@@ -517,20 +682,20 @@ def main():
           f"页面 {run['bottom']:+.2f}% / 脚本 {mine['bottom']:+.2f}%")
 
     # ---- 5) 换一个标的：数字必须变
-    instrument = winui.find(win, lambda c: c.AutomationId == "InstrumentCombo")
+    #
+    # 换的是另一个一键预设（深证成指），走的是与搜索、与收藏同一个入口 —— 所以这一步同
+    # 时也在验「那几个按钮真的接到取数上了」，而不是画着好看的装饰。
+    check("点「深证成指」", click_preset(win, "深证成指"))
 
-    if instrument is not None and len(instruments) >= 2:
-        winui.combo_pick(win, instrument, instruments[1])
+    other, status = fetch(win)
+    check("换标的后取数成功", other is not None, str(status)[:90])
 
-        other, status = fetch(win)
-        check("换标的后取数成功", other is not None, str(status)[:90])
+    if other is not None:
+        check("换标的后榜首不再是同一个数",
+              abs(abs(other["top"]) - abs(run["top"])) > 1e-9,
+              f"{run['top']:+.2f}% → {other['top']:+.2f}%")
 
-        if other is not None:
-            check("换标的后榜首不再是同一个数",
-                  abs(abs(other["top"]) - abs(run["top"])) > 1e-9,
-                  f"{run['top']:+.2f}% → {other['top']:+.2f}%")
-
-            shot(win, "verify-extremedays-other.png")
+        shot(win, "verify-extremedays-other.png")
 
     # ---- 6) 任意标的：一只个股和一只 ETF，各自独立算一遍
     #
@@ -557,8 +722,12 @@ def main():
 
         check(f"{label} {code} 能填进搜索框", True)
 
-        empty = winui.value(winui.find(win, lambda c: c.AutomationId == "InstrumentCombo"))
-        check(f"{label}不在预设清单里时下拉不再指着别的东西", empty in (None, ""), str(empty))
+        # 搜索落在一只不在预设里的标的上时，预设那一行不能跟着变：它是当前市场的那八个
+        # 指数，是「常用几个」。一个会随搜索变化的快捷方式就不是常用几个了。
+        still = preset_labels(win)
+
+        check(f"搜到{label}之后，预设那一行还是那八个指数",
+              set(still) == set(labels), " / ".join(sorted(still)))
 
         run2, status = fetch(win)
         check(f"{label} {code} 取数成功", run2 is not None, str(status)[:90])
@@ -578,6 +747,42 @@ def main():
               f"页面 {run2['top']:+.2f}% / 脚本 {theirs['top']:+.2f}%")
 
         shot(win, f"verify-extremedays-{code}.png")
+
+    # ---- 6b) 收藏：一页上加，另一页上找
+    #
+    # 两个页面的收藏行长得一模一样，所以画面上分不出它是同一个列表还是各存各的第二个。
+    # 只有在一页上加、到另一页上去找，才分得清 —— 而这是这一页接收藏的全部意义：一只股票
+    # 最猛的那些天和它的 K 线是同一样东西的两面，收藏这件事本来就不属于哪一页。
+    if etf is not None:
+        upper = "SH510300"
+
+        if upper in favourite_codes(win):
+            # 上一次跑脚本没删干净（或者本来就有）：那就不增删 —— 免得把别人的收藏删了。
+            check("收藏里本来就有这只 ETF（跳过这一段的增删）", True)
+        else:
+            was = len(favourite_closers(win))
+
+            check("取过数之后按收藏，这只 ETF 进了收藏行",
+                  click_favourite(win) and upper in favourite_codes(win),
+                  " / ".join(favourite_codes(win)))
+
+            check("收藏多了一条（不是把原来的挤掉）",
+                  len(favourite_closers(win)) == was + 1,
+                  f"{was} → {len(favourite_closers(win))} 条")
+
+            # 一份清单而不是两份：在 K线页上也看得见它。
+            #
+            # **只断这一个方向。** 每一页都在自己构造的时候读一次这份清单（六个页面都是
+            # 这样），所以「在这一页删掉、另一页当场也少一条」在这个进程里不成立 —— 那半句
+            # 脚本不去猜。等六页一起改成每次进来重读，再断那一半。
+            if goto(win, "K线"):
+                check("同一个收藏在 K线页也看得到（一份清单，不是两份）",
+                      upper in favourite_codes(win), " / ".join(favourite_codes(win)))
+
+                goto(win, "极端交易日")
+
+            check("在这一页把它删掉", remove_favourite(win, upper))
+            check("删掉之后这一页上没有了", upper not in favourite_codes(win))
 
     # ---- 7) 重启后还记得
     winui.kill(winui.EXE)
@@ -599,13 +804,11 @@ def main():
           remembered in ("近 3 年", "近 5 年", "近 10 年", "最长（约 35 年）", "自定义"),
           str(remembered))
 
-    instrument = winui.find(win, lambda c: c.AutomationId == "InstrumentCombo")
-    kept = winui.value(instrument) if instrument is not None else None
-
-    # 记住的是搜索出来的那只 ETF，不是清单里的某一项。搜索框是空的（它是个输入框，不是
-    # 当前状态的显示器），画布上的标题才写着名字，而画布没有 UIA 节点 —— 所以只能用
-    # 「再取一次数，数字还是那只 ETF 的数字」来证明。
-    check("重启后下拉仍然是空的（那只 ETF 不在清单里）", kept in (None, ""), str(kept))
+    # 记住的是搜索出来的那只 ETF，而搜索框是空的（它是个输入框，不是当前状态的显示器），
+    # 预设那一行里也没有它 —— 所以「还记得标的」只有一种证明方式：再取一次数，数字还是那
+    # 只 ETF 的数字。画布上的标题才写着名字，而画布没有 UIA 节点。
+    check("重启后预设那一行仍然是那八个指数（不因为上次搜过 ETF 而变）",
+          set(preset_labels(win)) == BROAD, " / ".join(sorted(preset_labels(win))))
 
     if etf is not None:
         again, status = fetch(win)

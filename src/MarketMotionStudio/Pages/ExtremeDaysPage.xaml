@@ -5,6 +5,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:MarketMotionStudio.Controls"
     xmlns:local="using:MarketMotionStudio.Pages"
     xmlns:views="using:MarketMotionStudio.Views"
     NavigationCacheMode="Required">
@@ -75,12 +76,73 @@
                                     QuerySubmitted="OnSearchSubmitted"
                                     SuggestionChosen="OnSuggestionChosen" />
 
-                    <!-- The usual ones, as a shortcut. Not the limit of the page: whatever the
-                         search settles on is the instrument, whether or not it appears here. -->
-                    <ComboBox x:Name="InstrumentCombo"
-                              x:Uid="ExtremeDaysInstrument"
-                              HorizontalAlignment="Stretch"
-                              SelectionChanged="OnInstrumentChanged" />
+                    <!-- The usual ones, as one tap each: the market's own broad indices, which
+                         is the list this page used to keep in a combo box. Buttons rather than a
+                         list because there are eight of them and either way the choice is one
+                         tap — and because a combo box that is showing nothing cannot be told
+                         apart from a combo box that is empty, which is exactly what it does
+                         whenever the search has settled on something the list does not carry.
+                         Still a shortcut and not the boundary: what the search lands on is the
+                         instrument whether or not it is one of these. -->
+                    <ItemsControl x:Name="Presets">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:MatrixPreset">
+                                <Button Content="{x:Bind Name}"
+                                        Tag="{x:Bind Code}"
+                                        Click="OnPresetClick"
+                                        Margin="0,0,8,6" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- The same watchlist as the other pages that name one instrument, not a
+                         second one. A favourite is a fact about the instrument, not about the
+                         page it was added on: a stock whose worst afternoons this page just
+                         showed is the same stock the candle page is asked for, and one list is
+                         the only way both pages agree on that. -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  HorizontalScrollMode="Auto"
+                                  VerticalScrollMode="Disabled"
+                                  VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl x:Name="Favourites">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="6" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local:StockFavourite">
+                                    <StackPanel Orientation="Horizontal" Spacing="0">
+                                        <Button Click="OnFavouriteClick"
+                                                Padding="10,5"
+                                                CornerRadius="10,0,0,10"
+                                                Tag="{x:Bind Code}">
+                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                <TextBlock Text="{x:Bind Name}" />
+                                                <TextBlock Text="{x:Bind CodeUpper}"
+                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="OnFavouriteRemove"
+                                                Padding="8,5"
+                                                CornerRadius="0,10,10,0"
+                                                Tag="{x:Bind Code}"
+                                                Content="&#x2715;" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <Button x:Name="FavouriteButton"
+                            x:Uid="StockAddFavourite"
+                            HorizontalAlignment="Left"
+                            Click="OnAddFavourite" />
 
                     <ComboBox x:Name="RangeCombo"
                               x:Uid="StudioRange"

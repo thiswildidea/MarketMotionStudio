@@ -702,7 +702,6 @@
   <data name="ExtremeDaysStageTitle"><value>Extreme Tage</value></data>
   <data name="ExtremeDaysCount"><value>Ein Instrument, jeder Handelstag des Zeitraums. Das Bild zeichnet die {0} größten Bewegungen, rot für ein Plus und grün für ein Minus.</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>Bewegung = die Veränderung des bereinigten Schlusskurses gegenüber dem vorherigen Handelstag, in Prozent. Nach Größe gereiht, nicht nach Vorzeichen, sodass ein Minus neben einem gleich großen Plus steht. Ein Tag zählt erst, wenn er vergangen ist — darum füllt sich das Tableau.</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>Instrument</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>Kandidatentage</value></data>
   <data name="ExtremeDaysFetched"><value>{0} Kandidatentage · {1} Handelstage · größte {2} {3} · kleinste im Bild {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Längste (etwa 35 Jahre)</value></data>

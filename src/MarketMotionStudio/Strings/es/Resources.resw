@@ -702,7 +702,6 @@
   <data name="ExtremeDaysStageTitle"><value>Días extremos</value></data>
   <data name="ExtremeDaysCount"><value>Un instrumento, cada día de negociación del periodo. El fotograma dibuja los {0} movimientos más grandes, rojo para una subida y verde para una bajada.</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>Movimiento = la variación del cierre ajustado respecto al día de negociación anterior, en porcentaje. Se ordena por magnitud y no por signo, así que una bajada se sitúa junto a una subida del mismo tamaño. Un día cuenta solo cuando ya ha ocurrido, y por eso el tablero se llena.</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>Instrumento</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>días candidatos</value></data>
   <data name="ExtremeDaysFetched"><value>{0} días candidatos · {1} días de negociación · el mayor {2} {3} · el menor del cuadro {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Más largo (unos 35 años)</value></data>

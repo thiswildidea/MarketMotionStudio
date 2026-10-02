@@ -702,7 +702,6 @@
   <data name="ExtremeDaysStageTitle"><value>Extrémní dny</value></data>
   <data name="ExtremeDaysCount"><value>Jeden nástroj, každý obchodní den období. Snímek kreslí {0} největších pohybů, červeně pro růst a zeleně pro pokles.</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>Pohyb = změna upravené závěrečné ceny oproti předchozímu obchodnímu dni, v procentech. Řazeno podle velikosti, ne podle znaménka, takže pokles stojí vedle stejně velkého růstu. Den se počítá, až když nastal — proto se tabulka zaplňuje.</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>Nástroj</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>kandidátních dnů</value></data>
   <data name="ExtremeDaysFetched"><value>{0} kandidátních dnů · {1} obchodních dnů · největší {2} {3} · nejmenší v obraze {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Nejdelší (asi 35 let)</value></data>

@@ -701,7 +701,6 @@
   <data name="ExtremeDaysStageTitle"><value>極端交易日</value></data>
   <data name="ExtremeDaysCount"><value>一個標的，區間內每一個交易日。畫面畫出幅度最大的 {0} 天，漲是紅、跌是綠。</value></data>
   <data name="ExtremeDaysMethodNote.Text"><value>漲跌幅 = 相對於上一個交易日的複權收盤價變化，單位是百分比。按幅度排序而不是按正負，所以下跌會和同等幅度的上漲並排。只有已經發生的日子才進榜，榜單因此是逐步填滿的。</value></data>
-  <data name="ExtremeDaysInstrument.Header"><value>標的</value></data>
   <data name="ExtremeDaysUnitCandidates"><value>個候選日</value></data>
   <data name="ExtremeDaysFetched"><value>{0} 個候選日 · {1} 個交易日 · 最大 {2} {3} · 榜尾 {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>最長（約 35 年）</value></data>

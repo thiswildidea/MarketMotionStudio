@@ -433,8 +433,10 @@ price drops by the dividend that morning, and an unadjusted series would put tha
 a board of the largest falls in history, when nobody holding the stock lost anything. On an index the
 distinction is invisible, which is exactly why it is stated rather than left to be discovered on a
 stock — and a stock can be on this board. Any instrument the market quotes goes in through the same
-search box the candle and calendar pages carry; the market's broad indices are kept underneath it as
-a shortcut, not as the boundary.
+search box the candle and calendar pages carry; the market's broad indices sit underneath it as one
+tap each — still a shortcut and not the boundary of the page — and the watchlist beside them is the
+same list every other per-instrument page reads, because a favourite is a fact about the instrument
+and not about the page it was added on.
 
 **The longest span is about thirty-five years**, and that is the walk's limit rather than a choice:
 one request carries about 640 daily bars and the walk makes twenty. A span with fewer than sixty
@@ -927,7 +929,7 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 733 keys
+Every language carries the same keys in the same order. All fourteen currently report 732 keys
 with no encoding damage, and all fourteen help documents carry the same twenty-five sections in
 the same order — the equality the cross-language check rests on.
 
