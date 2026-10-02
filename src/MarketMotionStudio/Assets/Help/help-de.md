@@ -39,6 +39,7 @@ Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich, auf vier Ar
 - Gleitende Durchschnitte MA5, MA10 und MA20 können über die Kerzen gelegt werden; das Volumenfeld darunter lässt sich abschalten, und das Preisfeld nimmt den Platz zurück.
 - Eine noch laufende Woche oder ein laufender Monat bleibt draußen. Eine Kerze aus drei Tagen ist keine Woche.
 - Jeder Markt wird auf seiner bereinigten Reihe gelesen, damit ein Split-Tag nicht als Rückgang erscheint und eine Dividende auch nicht.
+- **Der Zeitraum** folgt der Periode: Tageskerzen bieten 3, 6 oder 12 Monate sowie 3, 5 oder 10 Jahre; Wochenkerzen 1, 3, 5 oder 10 Jahre; Monatskerzen 3, 5 oder 10 Jahre oder so weit zurück, wie die Quelle reicht (etwa 13). Eine Anfrage liefert rund 640 Tageskerzen, und diese Seite blättert seitenweise zurück — zehn Jahre, etwa 2.500 Kerzen, liegen darin.
 
 ## Volumen und Umschlag
 
@@ -47,6 +48,7 @@ Volumen und Umschlagsrate eines Titels, in zwei übereinanderliegenden Feldern.
 - Über Handelstage hinweg sind Volumen und Umschlagsrate proportional, die beiden Felder haben also fast dieselbe Form. Innerhalb eines Tages sehen Minutenvolumen und kumulierte Umschlagsrate wirklich unterschiedlich aus, und das ist das interessantere Bild.
 - Die Intraday-Quelle hält nur die letzten Handelstage, daher bietet dieser Modus diese Tage an und kein beliebiges Datum.
 - Minutendaten gibt es nur für A-Aktien und Hongkong; in den USA wird dieser Modus nicht angeboten.
+- Bei Tagesbalken sind es 1, 3, 6, 12 oder 24 Monate oder ein eigenes Start- und Enddatum; ein eigener Zeitraum endet bei etwa 900 Kalendertagen — so viel liefert eine Anfrage — und die Datumsauswahl endet dort ebenfalls. Der Intraday-Modus bietet eine Wahl unter den wenigen verfügbaren Handelstagen.
 
 ## Sektor-Rennen
 
@@ -85,6 +87,7 @@ die Reihenfolge ändert sich bis zum letzten Bild. Monatlich abgetastet.
   einem, und der Kopf des Bildes zählt Monate. Eine Rangfolge nach Marktkapitalisierung ist eine
   langsame Größe, und eine monatliche Abtastung bekommt mit einer Anfrage die ganze Historie.
 - **Jeder Markt hat seine eigenen fünfzehn.** Die drei werden nie gemischt: ihr Geld ist nicht
+- Der Zeitraum sind die letzten 12 Monate, 3, 5 oder 10 Jahre oder **Längster** — eine Anfrage liefert alle 180 Monatsperioden, etwa fünfzehn Jahre, und dort endet dieser Eintrag. Ein eigenes Start- und Enddatum wird ebenfalls angeboten.
   dasselbe Geld. Hongkong und New York behalten ein festes Feld, weil keine für diese App
   erreichbare Rangliste sie bedient.
 
@@ -392,7 +395,7 @@ Kurse kommen von den öffentlichen Endpunkten von Tencent Finance, und das Bild 
 
 - Umsätze werden in Hundert-Millionen-Yuan umgerechnet, und das Volumen wechselt auf eine größere Einheit, sobald die Zahlen es verlangen, damit die Achse lesbar bleibt.
 - Umsätze werden in Hunderte Millionen umgerechnet — Yuan auf dem Festland und in Hongkong, Dollar in den USA. Jeder Markt behält seine eigene Währung.
-- Ein Zeitraum von mehr als etwa 640 Kalendertagen wird abgelehnt und nicht stillschweigend gekürzt, denn mehr gibt eine Anfrage an die Quelle nicht zurück.
+- Ein Zeitraum, der über das hinausgeht, was eine Anfrage liefert, wird abgelehnt statt still gekürzt: etwa 900 Kalendertage bei Tagesbalken, etwa fünfzehn Jahre auf der Kerzenseite, die seitenweise zurückblättert, und die ganze Historie bei Monatsbalken. Stilles Kürzen ist das schlechteste Ergebnis — es fehlt dann der **Anfang**, und ein Diagramm ohne seine ersten Jahre ist ein kürzeres Diagramm, das völlig normal aussieht.
 
 ## Aktualisieren
 

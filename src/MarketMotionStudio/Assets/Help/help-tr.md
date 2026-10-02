@@ -39,6 +39,7 @@ Bir enstrümanın mumları: günlük, haftalık veya aylık, dört farklı şeki
 - MA5, MA10 ve MA20 hareketli ortalamaları mumların üzerine bindirilebilir; alttaki hacim paneli kapatılabilir ve fiyat paneli o alanı geri alır.
 - Henüz bitmemiş bir hafta veya ay dışarıda bırakılır. Üç günden oluşan bir mum bir hafta değildir.
 - Her piyasa düzeltilmiş serisinden okunur, bu yüzden bir bölünme günü düşüş olarak çizilmez; temettü de çizilmez.
+- **Aralık** periyoda göre değişir: günlükte 3, 6 veya 12 ay ya da 3, 5 veya 10 yıl; haftalıkta 1, 3, 5 veya 10 yıl; aylıkta 3, 5 veya 10 yıl ya da kaynağın sunduğu en uzun aralık (yaklaşık 13). Bir istek yaklaşık 640 günlük mum getirir ve sayfa geriye doğru sayfa sayfa ilerler, bu yüzden on yıl — yaklaşık 2.500 mum — sınırın içinde kalır.
 
 ## Hacim ve devir
 
@@ -47,6 +48,7 @@ Bir hissenin işlem miktarı ile devir hızı, üst üste iki panel halinde.
 - İşlem günleri boyunca işlem miktarı ile devir hızı oranlıdır, dolayısıyla iki panel neredeyse aynı biçimi alır. Tek bir gün içinde dakikalık miktar ile birikimli devir gerçekten farklı görünür ve daha ilgi çekici olan resim budur.
 - Gün içi kaynağı yalnızca son birkaç işlem gününü tutar; bu yüzden o kip rastgele bir tarih değil, o günleri sunar.
 - Dakikalık veri yalnızca A hisseleri ve Hong Kong için sunulur; ABD’de bu mod sunulmaz.
+- Günlük veride aralık 1, 3, 6, 12 veya 24 ay ya da kendi belirlediğiniz başlangıç ve bitiş tarihidir; özel aralık yaklaşık 900 takvim gününde durur — bir isteğin döndürdüğü kadar — ve tarih seçiciler de orada durur. Gün içi modu, o birkaç işlem günü arasından bir gün seçmenizi sağlar.
 
 ## Sektör yarışı
 
@@ -84,6 +86,7 @@ sıralama son kareye kadar değişir. Örnekleme aylıktır.
   yazar. Piyasa değeri sıralaması yavaş bir değişkendir ve aylık örnekleme tüm geçmişi tek istekte
   alır.
 - **Her piyasanın kendi on beşi var.** Üçü asla karıştırılmaz: paraları aynı para değildir.
+- Aralık son 12 ay, 3, 5 veya 10 yıl ya da **En uzun** seçeneğidir — bir istek 180 aylık dönemin tamamını, yani yaklaşık on beş yılı döndürür ve bu seçenek orada biter. Kendi başlangıç ve bitiş tarihlerinizi de yazabilirsiniz.
   Hong Kong ve New York sabit kadro kullanır, çünkü bu uygulamanın erişebildiği bir sıralama
   onlara hizmet etmiyor.
 
@@ -369,7 +372,7 @@ Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir ve kare kayn
 
 - İşlem hacmi yüz milyon yuan birimine çevrilir ve sayılar gerektirdiğinde işlem miktarı daha büyük bir birime geçer, böylece eksen okunabilir kalır.
 - Tutarlar yüz milyonlara çevrilir — anakara ve Hong Kong’da yuan, ABD’de dolar. Her piyasa kendi para birimini korur.
-- Yaklaşık 640 takvim gününden uzun bir dönem, sessizce kısaltılmak yerine reddedilir; çünkü kaynağa yapılan tek bir istek ancak bu kadarını döndürür.
+- Bir isteğin döndürebileceğinden uzun bir aralık sessizce kısaltılmaz, reddedilir: günlükte yaklaşık 900 takvim günü, sayfa sayfa geri giden mum sayfasında yaklaşık on beş yıl ve aylıkta tüm geçmiş. Sessizce kısaltmak en kötü sonuçtur — eksilen kısım **başlangıçtır** ve ilk yılları çıkmış bir grafik, tamamen normal görünen daha kısa bir grafiktir.
 
 ## Güncelleme
 

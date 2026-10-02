@@ -39,6 +39,7 @@ Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen 
 - Średnie kroczące MA5, MA10 i MA20 można nałożyć na świece; panel wolumenu poniżej można wyłączyć, a panel ceny odzyskuje to miejsce.
 - Tydzień lub miesiąc wciąż trwający zostaje pominięty. Świeca złożona z trzech dni nie jest tygodniem.
 - Każdy rynek jest czytany na swojej serii skorygowanej, więc dzień splitu nie jest rysowany jako spadek, tak samo jak dywidenda.
+- **Zakres** zależy od interwału: dzienny daje 3, 6 lub 12 miesięcy albo 3, 5 lub 10 lat; tygodniowy 1, 3, 5 lub 10 lat; miesięczny 3, 5 lub 10 lat lub maksimum, jakie ma źródło (około 13). Jedno żądanie przynosi około 640 świec dziennych, a strona cofa się strona po stronie, więc dziesięć lat — około 2.500 świec — mieści się w tym.
 
 ## Wolumen i obrót
 
@@ -47,6 +48,7 @@ Wolumen jednej spółki na tle jej wskaźnika obrotu, w dwóch panelach jeden na
 - Z sesji na sesję wolumen i wskaźnik obrotu są proporcjonalne, więc oba panele mają niemal ten sam kształt. W ciągu jednego dnia wolumen minutowy i narastający obrót wyglądają naprawdę inaczej, i to jest ciekawszy obraz.
 - Źródło danych śróddziennych trzyma tylko ostatnie sesje, więc ten tryb proponuje właśnie je, a nie dowolną datę.
 - Dane minutowe są dostępne tylko dla akcji A i Hongkongu; w USA ten tryb nie jest oferowany.
+- W interwale dziennym zakres to 1, 3, 6, 12 lub 24 miesiące albo własne daty początku i końca; zakres niestandardowy kończy się na około 900 dniach kalendarzowych — tyle zwraca jedno żądanie — i wybór dat kończy się w tym samym miejscu. Tryb intraday pozwala wybrać jeden z kilku dostępnych dni.
 
 ## Wyścig sektorów
 
@@ -84,6 +86,7 @@ kapitalizacji; kolejność zmienia się do ostatniej klatki. Próbkowanie miesi�
   a nagłówek klatki liczy miesiące. Ranking kapitalizacji zmienia się powoli, a próbka miesięczna
   dostaje całą historię w jednym zapytaniu.
 - **Każdy rynek ma swoje piętnaście.** Trzech nigdy się nie miesza: ich pieniądz to nie ten sam
+- Zakres to ostatnie 12 miesięcy, 3, 5 lub 10 lat albo **Najdłuższy** — jedno żądanie zwraca wszystkie 180 okresów miesięcznych, około piętnastu lat, i tam kończy się ta pozycja. Możesz też podać własne daty początku i końca.
   pieniądz. Hongkong i Nowy Jork mają stałe grono, bo żaden dostępny tej aplikacji ranking ich nie
   obsługuje.
 
@@ -377,7 +380,7 @@ Notowania pochodzą z publicznych punktów końcowych Tencent Finance, a kadr za
 
 - Obroty są przeliczane na setki milionów juanów, a wolumen przechodzi na większą jednostkę, gdy liczby tego wymagają, żeby oś dała się czytać.
 - Obroty przelicza się na setki milionów — juanów na kontynencie i w Hongkongu, dolarów w USA. Każdy rynek zachowuje swoją walutę.
-- Okres dłuższy niż około 640 dni kalendarzowych jest odrzucany, a nie po cichu skracany, bo tyle zwraca jedno zapytanie do źródła.
+- Zakres dłuższy niż to, co jedno żądanie może zwrócić, jest odrzucany zamiast po cichu ucięty: około 900 dni kalendarzowych na interwale dziennym, około piętnastu lat na stronie świec, która cofa się strona po stronie, i cała historia na miesięcznym. Ciche ucięcie to najgorszy wynik — znika wtedy **początek**, a wykres bez pierwszych lat to po prostu krótszy wykres, który wygląda zupełnie normalnie.
 
 ## Aktualizowanie
 

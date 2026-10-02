@@ -39,6 +39,7 @@ Os candles de um instrumento: diários, semanais ou mensais, desenhados de quatr
 - As médias móveis MA5, MA10 e MA20 podem ser sobrepostas aos candles; o painel de volume abaixo pode ser desligado, e o painel de preço recupera o espaço.
 - Uma semana ou um mês ainda em curso fica de fora. Um candle feito de três dias não é uma semana.
 - Todo mercado é lido na sua série ajustada, então um dia de desdobramento não é desenhado como queda, e um dividendo tampouco.
+- **O intervalo** acompanha o período: no diário, 3, 6 ou 12 meses, ou 3, 5 ou 10 anos; no semanal, 1, 3, 5 ou 10 anos; no mensal, 3, 5 ou 10 anos ou o máximo de que a fonte dispõe (cerca de 13). Um pedido traz cerca de 640 barras diárias e a página volta página por página, então dez anos — cerca de 2.500 barras — cabem nela.
 
 ## Volume e giro
 
@@ -47,6 +48,7 @@ O volume de uma ação diante da sua taxa de giro, em dois painéis sobrepostos.
 - De um pregão para outro, volume e taxa de giro são proporcionais, então os dois painéis têm quase a mesma forma. Dentro de um dia, o volume por minuto e o giro acumulado ficam realmente diferentes, e essa é a imagem mais interessante.
 - A fonte intradiária guarda apenas os últimos pregões, então esse modo oferece esses e não uma data qualquer.
 - Os dados por minuto são servidos apenas para ações A e Hong Kong; nos Estados Unidos esse modo não é oferecido.
+- No diário o intervalo é de 1, 3, 6, 12 ou 24 meses, ou datas de início e fim definidas por você; um intervalo personalizado para em cerca de 900 dias corridos — o que um pedido devolve — e os seletores de data também param aí. O modo intradiário oferece escolher um dia entre os poucos disponíveis.
 
 ## Corrida de setores
 
@@ -84,6 +86,7 @@ mercado, com a ordem mudando até o último quadro. Amostragem mensal.
   do quadro conta meses. Uma classificação por valor de mercado é uma grandeza lenta, e uma amostra
   mensal obtém todo o histórico em uma requisição.
 - **Cada mercado tem os seus quinze.** Os três nunca se misturam: o dinheiro deles não é o mesmo.
+- O intervalo são os últimos 12 meses, 3, 5 ou 10 anos, ou **Máximo** — um pedido devolve todos os 180 períodos mensais, cerca de quinze anos, e é aí que essa opção termina. Também é possível definir suas próprias datas de início e fim.
   Hong Kong e Nova York mantêm um grupo fixo, porque nenhuma classificação acessível a este
   aplicativo os atende.
 
@@ -380,7 +383,7 @@ As cotações vêm dos endpoints públicos da Tencent Finance, e o quadro sempre
 
 - Os valores são convertidos para centenas de milhões de yuans, e o volume muda para uma unidade maior assim que os números pedem, para que o eixo continue legível.
 - Os valores são convertidos em centenas de milhões — de yuans no continente e em Hong Kong, de dólares nos Estados Unidos. Cada mercado mantém sua própria moeda.
-- Um período maior que cerca de 640 dias de calendário é recusado em vez de truncado em silêncio, porque isso é tudo o que uma requisição à fonte devolve.
+- Um intervalo maior do que um pedido pode devolver é recusado em vez de ser cortado em silêncio: cerca de 900 dias corridos no diário, cerca de quinze anos na página de velas, que volta página por página, e o histórico completo no mensal. Cortar em silêncio é o pior resultado — o que desaparece é o **começo**, e um gráfico sem seus primeiros anos é um gráfico mais curto que parece inteiramente normal.
 
 ## Atualização
 

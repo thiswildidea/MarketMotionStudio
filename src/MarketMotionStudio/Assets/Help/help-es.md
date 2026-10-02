@@ -39,6 +39,7 @@ Las velas de un instrumento: diarias, semanales o mensuales, dibujadas de cuatro
 - Las medias móviles MA5, MA10 y MA20 pueden superponerse a las velas; el panel de volumen de abajo se puede apagar, y el panel de precio recupera ese espacio.
 - Una semana o un mes aún en curso queda fuera. Una vela hecha de tres días no es una semana.
 - Todos los mercados se leen en su serie ajustada, así que un día de split no se dibuja como una caída, ni un dividendo tampoco.
+- **El rango** sigue al periodo: en diario, 3, 6 o 12 meses, o 3, 5 o 10 años; en semanal, 1, 3, 5 o 10 años; en mensual, 3, 5 o 10 años o el máximo del que dispone la fuente (unos 13). Una petición devuelve unas 640 velas diarias y la página retrocede página a página, así que diez años —unas 2.500 velas— entran sin problema.
 
 ## Volumen y rotación
 
@@ -47,6 +48,7 @@ El volumen de un valor frente a su tasa de rotación, en dos paneles superpuesto
 - De una sesión a otra, volumen y tasa de rotación son proporcionales, así que los dos paneles tienen casi la misma forma. Dentro de una jornada, el volumen por minuto y la rotación acumulada se ven de verdad distintos, y esa es la imagen más interesante.
 - La fuente intradía solo guarda las últimas sesiones, así que ese modo ofrece esas en lugar de una fecha cualquiera.
 - Los datos por minuto solo se sirven para acciones A y Hong Kong; en Estados Unidos ese modo no se ofrece.
+- En diario el rango es de 1, 3, 6, 12 o 24 meses, o unas fechas de inicio y fin propias; un intervalo personalizado se detiene en unos 900 días naturales —lo que devuelve una petición— y los selectores de fecha se detienen ahí también. El modo intradía ofrece elegir un día entre los pocos disponibles.
 
 ## Carrera de sectores
 
@@ -84,6 +86,7 @@ capitalización, con el orden cambiando hasta el último fotograma. Muestreo men
   encabezado del fotograma cuenta meses. Una clasificación por capitalización es una magnitud
   lenta, y una muestra mensual obtiene toda la historia en una petición.
 - **Cada mercado tiene sus propios quince.** Los tres nunca se mezclan: su dinero no es el mismo.
+- El rango son los últimos 12 meses, 3, 5 o 10 años, o **Máximo** — una petición devuelve los 180 periodos mensuales, unos quince años, y ahí termina esa opción. También puedes fijar tus propias fechas de inicio y fin.
   Hong Kong y Nueva York mantienen un grupo fijo, porque ninguna clasificación accesible a esta
   aplicación les sirve.
 
@@ -384,7 +387,7 @@ Las cotizaciones vienen de los puntos de acceso públicos de Tencent Finance, y 
 
 - Los importes se convierten a cientos de millones de yuanes, y el volumen pasa a una unidad mayor cuando las cifras lo piden, para que el eje siga siendo legible.
 - Los importes se convierten a cientos de millones — de yuanes en el continente y Hong Kong, de dólares en Estados Unidos. Cada mercado mantiene su propia divisa.
-- Un periodo de más de unos 640 días naturales se rechaza en lugar de recortarse en silencio, porque eso es todo lo que devuelve una petición a la fuente.
+- Un rango mayor que lo que una petición puede devolver se rechaza en lugar de recortarse en silencio: unos 900 días naturales en diario, unos quince años en la página de velas, que retrocede página a página, y el historial completo en mensual. Recortar en silencio es el peor resultado — lo que falta es el **principio**, y un gráfico sin sus primeros años es un gráfico más corto que parece completamente normal.
 
 ## Actualizar
 

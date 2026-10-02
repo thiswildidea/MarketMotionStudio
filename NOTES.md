@@ -1785,3 +1785,45 @@ Verification: `tools/verify-nav-icons.py` — 16 items carry their own geometry,
 every bounding box is `[2,18]²`, every drawing carries its two marks, and on the real machine all
 sixteen items are present and selectable, captured in the current theme and in both explicit ones.
 No new resource keys: the labels did not change, only the shapes beside them.
+
+## The documents caught up with the app (2026-10-02)
+
+The code had moved twice in one day — four range menus re-cut against what the endpoints return, and
+sixteen icons drawn rather than borrowed — and none of it was in the documents yet. The store
+listing was the worst of it: its description still said **ten chart pages** while the app had
+sixteen, and its "What's new" was still counting pages one at a time ("an eighth chart page", "a
+ninth"), which is the wrong shape for a field that asks about *this* version.
+
+**Descriptions were taken, not written.** Six pages had to join the description in fourteen
+languages. Writing them by hand would have produced fourteen sets of wording that drift from the
+app's own. Instead each entry is the **first sentence of that page's chapter in the same language's
+manual** — already translated, already the words the UI uses. The page name comes from resw, so the
+listing cannot call a page something the app does not call it. The dash each entry uses is read from
+the section's own first bullet: the German listing writes `–` where the English writes `—`, and
+guessing one for fourteen languages would have been wrong in at least one.
+
+**Numbers are the anchors.** `900`, `180`, `24`, `16` are written the same way in every language,
+while "Longest", "Sechzehn" and "最长" are not. `tools/verify-docs.py` therefore asserts on digits:
+the candle chapter's last bullet contains `10`, the volume chapter's contains `24`, the market-cap
+chapter's contains `180`, the data chapter's contains `900` and no longer `640`, every listing
+section has sixteen bullets ending with that language's name for Hold Odds, and the CHANGELOG's
+first entry matches the manifest's `Version`. One assertion set covers fourteen files, and a
+fourteen-language synonym table — which would itself go stale — is not needed.
+
+**Two traps in this file set.**
+- `docs/store-listing.md` is **CRLF**; the help manuals are **LF**. A script that joins with `\n`
+  and compares whole lines never converges: every line still carries the `\r`, so "is this already
+  done?" is always false and the file is rewritten on every run. Both scripts now strip on read and
+  restore on write. The listing also must not carry a BOM, and the scripts refuse to run if it does.
+- Injecting by **chapter position**, not by sentence. "The last bullet of chapter N" is the same
+  place in all fourteen languages; matching a sentence means fourteen patterns, each of which breaks
+  the moment a translation is reworded.
+
+**Position, too, has to be read before it is used.** One script computed the dash from `bullets[0]`
+before `bullets` existed for that iteration — Python keeps the previous iteration's value, so the
+German section was silently given the Korean section's dash. The symptom was a single wrong
+character in one language.
+
+Version bumped to **1.0.4.0** (manifest plus a CHANGELOG entry, Chinese and English). The package
+has not been built or uploaded: store copy may run ahead of the package, but must never be uploaded
+before the package that matches it.

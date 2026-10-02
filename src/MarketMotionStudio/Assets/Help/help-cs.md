@@ -39,6 +39,7 @@ Svíčky jednoho nástroje: denní, týdenní nebo měsíční, kreslené čtyř
 - Klouzavé průměry MA5, MA10 a MA20 lze položit přes svíčky; panel objemu dole lze vypnout a panel ceny místo získá zpět.
 - Probíhající týden nebo měsíc je vynechán. Svíčka ze tří dnů není týden.
 - Každý trh se čte na své upravené řadě, takže den štěpení akcií není nakreslen jako pokles, a dividenda také ne.
+- **Rozsah** se řídí periodou: denní nabízí 3, 6 nebo 12 měsíců a 3, 5 nebo 10 let; týdenní 1, 3, 5 nebo 10 let; měsíční 3, 5 nebo 10 let nebo maximum, které zdroj má (asi 13). Jeden požadavek přinese asi 640 denních svíček a strana se vrací po stránkách, takže deset let — asi 2 500 svíček — se do toho vejde.
 
 ## Objem a obrat
 
@@ -47,6 +48,7 @@ Objem jedné akcie proti její míře obratu, ve dvou panelech nad sebou.
 - Mezi obchodními dny jsou objem a míra obratu proporcionální, takže oba panely mají téměř stejný tvar. V průběhu jednoho dne vypadají minutový objem a kumulovaný obrat skutečně jinak, a to je zajímavější obrázek.
 - Zdroj vnitrodenních dat drží jen posledních několik obchodních dní, takže tento režim nabízí právě je, a ne libovolné datum.
 - Minutová data jsou k dispozici jen pro A-akcie a Hongkong; v USA se tento režim nenabízí.
+- U denních dat je rozsah 1, 3, 6, 12 nebo 24 měsíců, nebo vlastní datum začátku a konce; vlastní rozsah končí asi na 900 kalendářních dnech — tolik vrátí jeden požadavek — a výběr data končí tamtéž. V intradenním režimu si vybíráte jeden z několika dostupných dnů.
 
 ## Závod sektorů
 
@@ -83,6 +85,7 @@ kapitalizace; pořadí se mění až do posledního snímku. Vzorkování po mě
   počítá měsíce. Žebříček podle kapitalizace je pomalá veličina a měsíční vzorek získá celou
   historii jedním dotazem.
 - **Každý trh má svých patnáct.** Ty tři se nikdy nemíchají: jejich peníze nejsou tytéž peníze.
+- Rozsah je posledních 12 měsíců, 3, 5 nebo 10 let, nebo **Nejdelší** — jeden požadavek vrátí všech 180 měsíčních období, asi patnáct let, a tam tato položka končí. Lze zadat i vlastní datum začátku a konce.
   Hongkong a New York mají pevnou sestavu, protože jim žádný žebříček dostupný této aplikaci
   neposlouží.
 
@@ -366,7 +369,7 @@ Kurzy přicházejí z veřejných rozhraní Tencent Finance a záběr zdroj vžd
 
 - Obraty se přepočítávají na stovky milionů jüanů a objem přechází na větší jednotku, jakmile si to čísla vyžádají, aby osa zůstala čitelná.
 - Obraty se přepočítávají na stovky milionů — jüanů na pevnině a v Hongkongu, dolarů v USA. Každý trh si ponechává svou měnu.
-- Období delší než přibližně 640 kalendářních dní se odmítne, místo aby se tiše zkrátilo, protože víc jeden dotaz na zdroj nevrátí.
+- Rozsah delší, než může jeden požadavek vrátit, je odmítnut místo tichého zkrácení: asi 900 kalendářních dnů u denních dat, asi patnáct let na straně svíček, která listuje zpět po stránkách, a celá historie u měsíčních. Tiché zkrácení je nejhorší výsledek — chybí pak **začátek**, a graf bez prvních let je jen kratší graf, který vypadá naprosto normálně.
 
 ## Aktualizace
 

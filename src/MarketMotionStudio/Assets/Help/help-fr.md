@@ -39,6 +39,7 @@ Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels, dessin�
 - Les moyennes mobiles MA5, MA10 et MA20 peuvent être superposées aux chandeliers ; le panneau de volume en dessous peut être désactivé, et le panneau de prix reprend la place.
 - Une semaine ou un mois encore en cours est laissé de côté. Un chandelier fait de trois jours n'est pas une semaine.
 - Chaque marché est lu sur sa série ajustée : un jour de division n'est donc pas dessiné comme une baisse, et un dividende non plus.
+- **La plage** suit la période : en quotidien 3, 6 ou 12 mois, ou 3, 5 ou 10 ans ; en hebdomadaire 1, 3, 5 ou 10 ans ; en mensuel 3, 5 ou 10 ans, ou le maximum dont la source dispose (environ 13 ans). Une requête ramène environ 640 bougies quotidiennes et la page remonte page par page : dix ans, soit quelque 2 500 bougies, y tiennent.
 
 ## Volume et rotation
 
@@ -47,6 +48,7 @@ Le volume d'un titre face à son taux de rotation, en deux panneaux superposés.
 - D'une séance à l'autre, volume et taux de rotation sont proportionnels : les deux panneaux ont donc presque la même forme. À l'intérieur d'une journée, le volume par minute et la rotation cumulée n'ont plus rien de commun, et c'est l'image la plus intéressante.
 - La source intrajournalière ne conserve que les dernières séances ; ce mode propose donc celles-là plutôt qu'une date quelconque.
 - Les données minute ne sont servies que pour les actions A et Hong Kong ; aux États-Unis ce mode n'est pas proposé.
+- En quotidien, la plage est de 1, 3, 6, 12 ou 24 mois, ou de dates de début et de fin à votre choix ; une plage personnalisée s'arrête à environ 900 jours calendaires — ce qu'une requête ramène — et les sélecteurs de date s'arrêtent au même endroit. Le mode intrajournalier propose de choisir un jour parmi les quelques séances disponibles.
 
 ## Course de secteurs
 
@@ -85,6 +87,7 @@ l'ordre changeant jusqu'à la dernière image. Échantillonnage mensuel.
   l'en-tête de l'image compte des mois. Un classement par capitalisation est une grandeur lente, et
   un échantillon mensuel obtient tout l'historique en une requête.
 - **Chaque marché a ses propres quinze.** Les trois ne sont jamais mélangés : leur monnaie n'est
+- La plage est les 12 derniers mois, 3, 5 ou 10 ans, ou **Maximale** — une requête ramène les 180 périodes mensuelles, soit environ quinze ans, et c'est là que cette entrée s'arrête. Des dates de début et de fin à vous sont proposées également.
   pas la même. Hong Kong et New York gardent un plateau fixe, faute de classement accessible à
   cette application.
 
@@ -396,7 +399,7 @@ Les cours viennent des points d'accès publics de Tencent Finance, et l'image ci
 
 - Les montants sont convertis en centaines de millions de yuans, et le volume passe à une unité plus grande dès que les chiffres l'exigent, pour que l'axe reste lisible.
 - Les montants sont convertis en centaines de millions — de yuans sur le continent et à Hong Kong, de dollars aux États-Unis. Chaque marché garde sa propre devise.
-- Une période de plus de 640 jours civils environ est refusée plutôt que tronquée en silence, car c'est tout ce qu'une requête à la source renvoie.
+- Une plage plus longue que ce qu'une requête peut ramener est refusée plutôt que tronquée en silence : environ 900 jours calendaires en quotidien, environ quinze ans sur la page Chandeliers, qui remonte page par page, et toute l'historique en mensuel. Tronquer en silence est le pire résultat — ce qui disparaît alors, c'est le **début**, et un graphique amputé de ses premières années est un graphique plus court qui a l'air parfaitement normal.
 
 ## Mise à jour
 

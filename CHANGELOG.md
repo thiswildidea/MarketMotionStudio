@@ -20,6 +20,107 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.4.0 — 2026-10-02（更新版 / update）
+
+本版的文案已经写好、版本号已经升上，**包尚未构建上传**——等发版时再构建。
+The copy for this version is written and the number is bumped; **the package has not been built
+or uploaded yet** — that happens when it is released.
+
+### 新增 / Added
+
+- **十六个页面各有各的图标 / an icon drawn for each of the sixteen pages** — 导航里原先有
+  **三对页面共用同一个系统字形**：K线与行业板块竞速（`E9E9`）、成交量换手率与持有胜率（`E9D2`）、
+  市场成交额与持仓收益（`E9D9`）。一个形状说不了两个页面，而 Segoe Fluent Icons 里能用的字形
+  就那么多，页面长大了装不下。现在十六幅都是画出来的：20×20 网格上的描边骨架（线、圆环、折线、
+  箭头）由 shapely 外扩求并成填充几何，落在 `Themes/Icons.xaml`，跟随深浅主题变色，包里不加
+  任何位图。每幅图都带两个定位点把包围盒钉成 `[2,18]²`——`PathIcon` 按包围盒等比缩放，没有它们
+  宽扁的会被撑高、瘦高的会被压扁。帮助与设置保留系统字形：问号和齿轮是这套菜单里唯一从来没有
+  歧义的两个。
+  Three pairs of pages had been sharing one system glyph: Candles with Sector Race (`E9E9`),
+  Volume & Turnover with Hold Odds (`E9D2`), Market Turnover with Position Replay (`E9D9`). One
+  shape cannot mean two pages, and there are only so many usable glyphs in Segoe Fluent Icons.
+  All sixteen are drawn instead: a stroke skeleton on a 20×20 grid — lines, rings, polylines,
+  arrowheads — expanded and unioned by shapely into the filled geometry a `PathIcon` needs, kept in
+  `Themes/Icons.xaml`, taking its colour from the light or dark theme and adding no bitmap to the
+  package. Each drawing carries two registration marks that pin its bounding box to `[2,18]²`,
+  because `PathIcon` scales by bounding box and, without them, a wide icon is stretched tall and a
+  tall one squashed flat. Help and settings keep their glyphs: a question mark and a gear are the
+  two shapes in this menu that were never ambiguous.
+- **四页的区间按接口实测重定 / four range menus, re-cut against what the endpoints return** —
+  实测发现 `count` 是**根数不是天数**，源端从结束日往回数、忽略起始日：要 365 天回 365 根、要 640
+  回 640、要 1825 仍然只有 640 根。所以超长区间丢的是**头部**，回来的图短一截却完全正常——这正是
+  区间最不该给出的答案。据此：K线日线加了 **5 年与 10 年**两档（日线走分页，6 × 640 = 3840 根，
+  约 15 年；实测十年是 2462 根）；成交量换手率与行业板块竞速加了 **24 个月**一档，自定义区间的
+  上限从 640 天改到 **900 天**（旧阈值会把源端答得出来的两年拦下），日期选择器同步收窄；市值榜
+  加了「**最长**」与「**自定义**」，它的天花板是月线自己的 180 个月，而不是按日线算出来的三十五年。
+  新增 `TencentKline.MostDaysPerRequest = 900`（天），与既有的 `MostBarsPerRequest = 640`（根）
+  分开——拿根数去挡天数会拦下源端答得出来的区间。
+  Measured: `count` is a number of **bars**, not of days, and the source counts backwards from the
+  end date, ignoring the start — ask for 365 days and 365 bars come back, ask for 640 and 640 come
+  back, ask for 1825 and it is still 640. So a span past the ceiling loses its **head**, and a
+  chart with its first years missing is a shorter chart that looks entirely correct, which is the
+  one answer a span must not give. Accordingly: daily candles gained **5 and 10 years** (daily
+  pages backwards, 6 × 640 = 3840 bars, about fifteen years; ten years measured at 2,462 bars);
+  Volume & Turnover and Sector Race gained **24 months**, and the ceiling on a custom span went
+  from 640 to **900 days** — the old one refused two years the source answers happily — with the
+  date pickers narrowed to match; Market Cap Race gained **Longest** and **Custom**, its ceiling
+  being the monthly series' own 180 periods rather than the thirty-five years a daily walk would
+  suggest. `TencentKline.MostDaysPerRequest = 900` (days) now sits beside `MostBarsPerRequest =
+  640` (bars): using a bar count to police a number of days refuses spans the source will answer.
+
+### 改进 / Changed
+
+- **帮助手册 14 份补上了本版的口径 / the manual now says what the menus do** — K线、成交量换手率、
+  市值榜三章各多一句本页的档位；「数据，以及它不会告诉你的事」里那条「超过约 640 个自然日会被
+  拒绝」改成按页分档的说法，并写明为什么不能悄悄截断。改动由 `tools/port-help-ranges.py` 按
+  **章节位置**注入（14 种语言里"第 N 章的最后一条 bullet"都是同一处，而按句子匹配要写 14 份正则）。
+  The Candles, Volume and Market Cap chapters each gained a line about that page's entries, and the
+  "longer than about 640 calendar days is refused" line in the data chapter now states the ceiling
+  per page and why nothing is quietly truncated. `tools/port-help-ranges.py` injects them by
+  **chapter position** — "the last bullet of chapter N" is the same place in all fourteen
+  languages, where matching a sentence means fourteen patterns.
+- **商店文案从十页补到十六页 / the store listing stopped saying ten pages** — 说明段还写着「十大
+  图表页」，而后加的六页（极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率）从来
+  没进过商店文案。现在补上了，描述**取自各语言帮助手册那一章的首句**（那是项目自己翻的、与界面
+  一致的说法），页面名取自 resw，破折号抄这一段自己已有的那一条（德语那段用的是短破折号）。
+  十四条「此版本的新增功能」改写为本版内容——它们此前还在一页一页地数「新增第八个图表页」，与
+  「十六大图表页」并排是自相矛盾的；历史留在 CHANGELOG 里。
+  The description still said "Ten chart pages" while the six pages added since — extreme days,
+  currency corridors, index race, asset classes, drawdowns, hold odds — had never made it into the
+  copy. They are in now, each described by **the first sentence of that chapter in the same
+  language's manual** (the project's own translation, the same words the UI uses), named from resw,
+  and dashed with whatever that section already uses (the German one writes an en dash). The
+  fourteen "What's new" lines were rewritten for this version: they were still counting "an eighth
+  chart page", which contradicts "Sixteen chart pages" sitting above it. The history lives here.
+
+### 已知限制 / Known limits（沿用 1.0.3.0 / unchanged from 1.0.3.0）
+
+- 图标只换在导航里：设置与帮助仍是系统字形（问号与齿轮），工具条上的字形也没有重画。
+  The new icons are in the navigation only; Settings and Help keep their glyphs, and the toolbar's
+  glyphs were not redrawn.
+- 成交量换手率与行业板块竞速的日线区间上限仍是约 900 个自然日，一次请求的天花板就到那里。
+  The daily ceiling on Volume & Turnover and Sector Race is still about 900 calendar days, which is
+  where one request stops.
+- 美股没有日内模式（那个分时端点的 `data` 是 list 不是 object），日内只有最近几个交易日可选。
+  There is no intraday mode on the United States (that endpoint returns a list, not an object), and
+  intraday offers only the last few trading days.
+
+### 商店文案同步 / Store listing
+
+`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份改写为本版
+的两个改动（图标、区间）；同一份文件里「说明」的图表页数与「产品功能」的图表条数从十改成十六，
+说明段补上六条。三处各由一个脚本按语言改（`tools/port-store-listing-pages.py`、
+`tools/port-store-listing-whatsnew.py`），幂等，且按整行精确匹配——某语言的措辞与脚本里的不一致
+时会报错而不是留下一个旧数字。这两个文件都是 CRLF，脚本读写都保持原样。
+The fourteen "What's new" lines now describe this version's two changes — the icons and the ranges;
+the description's page count and the features bullet went from ten to sixteen, with six entries
+added to the list. A script per edit does it per language
+(`tools/port-store-listing-pages.py`, `tools/port-store-listing-whatsnew.py`), idempotent and
+matching whole lines, so a language whose wording differs fails loudly instead of keeping a stale
+number. Both files are CRLF and the scripts keep them that way.
+
+---
+
 ## 1.0.3.0 — 2026-10-01（更新版 / update）
 
 **1.0.2.0 那一版只构建成包、从未上传商店**，所以它写下的内容（页面导航、三个市场的复权口径等）

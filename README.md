@@ -36,6 +36,25 @@ instrument's prices as candles — daily, weekly or monthly — drawn four ways 
 closing line, a closing area) with MA5/10/20 and a volume panel, arriving one candle at a time
 across the whole range or walking forward inside a window of it.
 
+**Eight more pages followed**, and the navigation now numbers sixteen: **Market Cap Race** (a
+market's fifteen largest by total value, the field asked for at fetch time so members really come
+and go), **AH premium** (one company's two listings priced against each other), **Extreme Days**
+(one instrument's biggest moves ranked — the only board whose rows are days, not companies),
+**Currency Corridors** (a pair per row, and the row *is* the corridor), **Index Race** (how far each
+index has come since its own first month, never its level), **Asset Classes** (eight
+mainland-listed funds — what holding them earned), **Drawdowns** (how far below its own high each
+sits, and how long the way back took), and **Hold Odds** (of every entry that finished, the share
+that gained). The last three share one watchlist that mixes all three markets.
+
+**The sixteen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
+Fluent glyph — Candles with Sector Race, Volume & Turnover with Hold Odds, Market Turnover with
+Position Replay — and one shape cannot mean two pages; the menu was quietly saying those pairs were
+the same thing. Each is now a stroke skeleton on a shared 20×20 grid (lines, rings, polylines,
+arrowheads) that `tools/make-icons.py` expands into the filled geometry a `PathIcon` needs, written
+to `Themes/Icons.xaml` and taking its colour from the theme. Every drawing carries two registration
+marks pinning its bounding box to `[2,18]²`, because `PathIcon` scales by bounding box and, without
+them, a wide icon comes back stretched and a tall one squashed. Help and Settings keep their glyphs.
+
 **Export is now measured rather than designed.** Three consecutive 90-second 1080p30 exports, driven
 through the live app against 65 trading days of fetched data:
 

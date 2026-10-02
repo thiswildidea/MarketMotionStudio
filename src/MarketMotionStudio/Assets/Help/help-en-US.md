@@ -39,6 +39,7 @@ One instrument's prices as candles: daily, weekly or monthly, drawn four ways, w
 - Moving averages MA5, MA10 and MA20 can be laid over the candles; the volume panel underneath can be turned off, and the price panel takes the room back.
 - A week or a month still in progress is left out. A candle made of three days is not a week.
 - Every market is read on its adjusted series, so a split day is not drawn as a fall, and neither is a dividend.
+- **Range** follows the period: daily offers 3, 6 or 12 months and 3, 5 or 10 years; weekly 1, 3, 5 or 10 years; monthly 3, 5 or 10 years, or as far back as the source goes (about 13). One request carries about 640 daily bars and this page walks backwards a page at a time, so ten years — around 2,500 bars — is inside it.
 
 ## Volume and Turnover
 
@@ -47,6 +48,7 @@ One stock's volume against its turnover rate, as two stacked panels.
 - Across trading days, volume and turnover rate are proportional, so the two panels have nearly the same shape. Within one day, per-minute volume and cumulative turnover look genuinely different, which is the more interesting picture.
 - The intraday source only keeps the last few trading days, so that mode offers those rather than an arbitrary date.
 - Minute data is served for A-shares and Hong Kong only; on the United States that mode is not offered.
+- On daily bars the range is 1, 3, 6, 12 or 24 months, or a start and end date of your own; a custom span stops at about 900 calendar days — what one request returns — and the date pickers stop there too. The intraday mode offers a choice among those few trading days.
 
 ## Sector Race
 
@@ -85,6 +87,7 @@ order changing to the last frame. Sampled monthly.
   one, and the frame's own header counts months. A market-cap ranking is a slow variable, and a
   monthly sample gets a whole history in one request.
 - **Each market has its own fifteen.** The three are never mixed: their money is not one money,
+- The range is the last 12 months, 3, 5 or 10 years, or **Longest** — one request returns all 180 monthly periods, about fifteen years, and that is where the longest entry ends. A start and an end date of your own is offered too.
   and a board of mixed currencies means nothing. Hong Kong and New York keep a fixed field, because
   no ranking this app can reach serves them.
 
@@ -383,7 +386,7 @@ Quotes come from Tencent Finance's public endpoints, and the frame always says s
 
 - Turnover is converted to hundreds of millions of yuan, and volume switches to a larger unit once the numbers warrant it, so the axis stays readable.
 - Turnover is converted to hundreds of millions — of yuan on the mainland and in Hong Kong, of dollars in the United States. Each market keeps its own currency.
-- A range longer than about 640 calendar days is refused rather than quietly truncated, because that is as much as one request to the source returns.
+- A range longer than one request can return is refused rather than quietly truncated: about 900 calendar days of daily bars, about fifteen years on the candle page, which pages backwards, and a full history of monthly bars. Truncating quietly is the worst outcome — what goes missing is the **beginning**, and a chart missing its first years is a shorter chart that looks entirely correct.
 
 ## Updating
 

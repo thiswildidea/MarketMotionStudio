@@ -39,6 +39,7 @@ Le candele di uno strumento: giornaliere, settimanali o mensili, disegnate in qu
 - Le medie mobili MA5, MA10 e MA20 possono essere sovrapposte alle candele; il pannello del volume sotto può essere spento, e il pannello del prezzo riprende lo spazio.
 - Una settimana o un mese ancora in corso resta fuori. Una candela fatta di tre giorni non è una settimana.
 - Ogni mercato è letto sulla sua serie rettificata, quindi un giorno di frazionamento non è disegnato come un calo, e nemmeno un dividendo.
+- **L'intervallo** segue il periodo: il giornaliero offre 3, 6 o 12 mesi e 3, 5 o 10 anni; il settimanale 1, 3, 5 o 10 anni; il mensile 3, 5 o 10 anni, oppure il massimo di cui la fonte dispone (circa 13). Una richiesta porta circa 640 barre giornaliere e la pagina torna indietro una pagina alla volta: dieci anni, circa 2.500 barre, ci stanno dentro.
 
 ## Volume e rotazione
 
@@ -47,6 +48,7 @@ I volumi di un titolo a confronto con il suo tasso di rotazione, in due pannelli
 - Da una seduta all'altra volumi e tasso di rotazione sono proporzionali, quindi i due pannelli hanno quasi la stessa forma. All'interno di una giornata, i volumi al minuto e la rotazione cumulata risultano davvero diversi, ed è l'immagine più interessante.
 - La fonte intraday conserva solo le ultime sedute, quindi quella modalità propone quelle e non una data qualsiasi.
 - I dati al minuto sono serviti solo per azioni A e Hong Kong; negli Stati Uniti quella modalità non è proposta.
+- Sul giornaliero l'intervallo è di 1, 3, 6, 12 o 24 mesi, oppure una data di inizio e di fine scelte da te; un intervallo personalizzato si ferma a circa 900 giorni di calendario — quanto restituisce una richiesta — e anche i selettori di data si fermano lì. La modalità intraday propone di scegliere uno dei pochi giorni disponibili.
 
 ## Gara di settori
 
@@ -84,6 +86,7 @@ capitalizzazione; l'ordine cambia fino all'ultimo fotogramma. Campionamento mens
   l'intestazione del fotogramma conta i mesi. Una classifica per capitalizzazione è una grandezza
   lenta, e un campione mensile ottiene tutta la storia in una richiesta.
 - **Ogni mercato ha i suoi quindici.** I tre non si mescolano mai: la loro moneta non è la stessa.
+- L'intervallo è gli ultimi 12 mesi, 3, 5 o 10 anni, o **Massimo** — una richiesta restituisce tutti i 180 periodi mensili, circa quindici anni, ed è lì che finisce questa voce. Sono offerte anche una data di inizio e una di fine scelte da te.
   Hong Kong e New York tengono un campo fisso, perché nessuna classifica raggiungibile da questa
   applicazione li serve.
 
@@ -391,7 +394,7 @@ Le quotazioni vengono dagli endpoint pubblici di Tencent Finance, e l'inquadratu
 
 - I controvalori sono convertiti in centinaia di milioni di yuan, e i volumi passano a un'unità più grande appena i numeri lo richiedono, perché l'asse resti leggibile.
 - I controvalori sono convertiti in centinaia di milioni — di yuan sulla terraferma e a Hong Kong, di dollari negli Stati Uniti. Ogni mercato mantiene la propria valuta.
-- Un periodo più lungo di circa 640 giorni di calendario viene rifiutato invece di essere troncato in silenzio, perché è tutto quello che una richiesta alla fonte restituisce.
+- Un intervallo più lungo di quanto una richiesta possa restituire viene rifiutato invece di essere troncato in silenzio: circa 900 giorni di calendario sul giornaliero, circa quindici anni sulla pagina Candele, che sfoglia indietro una pagina alla volta, e tutta la storia sul mensile. Troncare in silenzio è il risultato peggiore — a mancare è l'**inizio**, e un grafico senza i suoi primi anni è un grafico più corto che sembra del tutto normale.
 
 ## Aggiornamento
 
