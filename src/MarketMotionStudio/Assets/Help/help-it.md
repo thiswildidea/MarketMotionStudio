@@ -150,6 +150,30 @@ una volta che quel giorno è passato il valore non cambia più.
   di intestazione porta il periodo, il numero di giorni di negoziazione e il numero di giorni
   candidati.
 
+## Corridoi valutari
+
+Una riga per coppia, e **la riga è il corridoio stesso**: un'estremità è il livello più basso
+che la coppia ha avuto nel periodo scelto, l'altra il più alto, e l'indicatore è il cambio di oggi.
+Questo tabellone non è come gli altri — altrove la lunghezza di una barra dice *quanto*, qui la riga
+occupa tutta la larghezza in ogni fotogramma, e a muoversi sono l'indicatore e il corridoio intorno.
+
+- **Il corridoio si allarga.** Le sue pareti sono il minimo e il massimo **finora**, non quelli di
+  tutto il periodo. Un mese che va oltre tutti i precedenti spinge una delle due verso l'esterno, e
+  una coppia al 100% è al livello più caro che abbia mai avuto — non a un limite.
+- **Ogni coppia è misurata sul proprio intervallo.** 157,92 su USD/JPY e 1,1245 su EUR/USD non sono
+  due punti di una stessa scala; è la normalizzazione che permette a sei coppie di stare su un
+  quadro. Il prezzo da pagare è che un corridoio stretto e uno largo si vedono allo stesso modo, e
+  per questo i due estremi sono scritti sotto ogni riga.
+- **Candele mensili, non rettificate.** Una valuta non ha dividendi né frazionamenti da rettificare,
+  e la pagina prende lo stesso percorso grezzo nella fonte che prende la pagina A+H.
+- **La copertura differisce, ed è per questo che le liste sono due**: USD/CNY arriva al 2005, le
+  altre cinque coppie del renminbi al 2016; i principali cross cominciano tutti nel 2005-07 e portano
+  325 mesi. Su un tabellone solo si leggerebbe quando la fonte ha iniziato a quotare ogni coppia.
+- **L'impostazione di mercato non vale qui**: una coppia di valute non appartiene a nessuna Borsa, e
+  il tabellone è lo stesso qualunque sia il mercato in vigore.
+- Il periodo più lungo è di circa vent'anni, la copertura mensile della fonte; meno di dodici mesi
+  viene rifiutato — sono poche settimane di movimento, non un corridoio.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

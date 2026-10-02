@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} jours candidats · {1} jours de cotation · le plus grand {2} {3} · le plus petit du tableau {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Le plus long (environ 35 ans)</value></data>
   <data name="ExtremeDaysTooFew"><value>Pas assez de jours de cotation dans cette période. Essayez plus long.</value></data>
+  <data name="NavFxCorridor.Content"><value>Couloirs de devises</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Couloirs de devises</value></data>
+  <data name="FxCorridorStageTitle"><value>Couloirs de devises</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Où se situe chaque paire entre le plus bas et le plus haut qu'elle a connus. Chaque paire est mesurée à sa propre fourchette.</value></data>
+  <data name="FxCorridorList.Header"><value>Paires</value></data>
+  <data name="FxCorridorListCny"><value>Paires du renminbi</value></data>
+  <data name="FxCorridorListCrosses"><value>Principaux cross</value></data>
+  <data name="FxCorridorRangeMax"><value>Le plus long</value></data>
+  <data name="FxCorridorNote.Text"><value>Une ligne par paire. La ligne est le couloir — le plancher et le plafond entre lesquels la paire a coté — et le repère est le cours actuel. Les deux sont imprimés sous chaque ligne, car un couloir étroit et un couloir large se ressemblent à l'image.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Bougies mensuelles, non ajustées — une devise n'a ni dividende ni split à ajuster. Le couloir est le plus bas et le plus haut **jusqu'ici**, il s'élargit donc avec les mois, et une paire à 100 % est au plus cher qu'elle ait été, pas à une limite. La couverture diffère : USD/CNY remonte à 2005, les autres paires du renminbi à 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} paires · {1} mois · le plus haut dans son couloir {2} à {3} · le plus bas {4} à {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Trop peu de mois dans cette période pour un couloir. Essayez une période plus longue.</value></data>
 </root>

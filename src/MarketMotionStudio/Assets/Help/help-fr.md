@@ -150,6 +150,31 @@ cotation précédent, et une fois ce jour passé la valeur ne change plus jamais
 - **La date en haut de l'image est l'axe du temps**, la barre dessous est la progression. La ligne
   d'en-tête porte la période, le nombre de jours de cotation et le nombre de jours candidats.
 
+## Couloirs de devises
+
+Une ligne par paire, et **la ligne est le couloir lui-même** : une extrémité est le niveau le
+plus bas que la paire a connu dans la période choisie, l'autre le plus haut, et le repère est le
+cours actuel. Ce tableau n'est donc pas comme les autres — ailleurs la longueur d'une barre dit
+*combien*, ici la ligne occupe toute la largeur à chaque image, et ce qui bouge est le repère, avec
+le couloir autour de lui.
+
+- **Le couloir s'élargit.** Ses murs sont le plus bas et le plus haut **jusqu'ici**, pas ceux de
+  toute la période. Un mois qui va plus loin que tous ceux d'avant pousse l'un des deux vers
+  l'extérieur, et une paire à 100 % est au plus cher qu'elle ait jamais été — pas à une limite.
+- **Chaque paire est mesurée à sa propre fourchette.** 157,92 sur USD/JPY et 1,1245 sur EUR/USD ne
+  sont pas deux points d'une même échelle ; c'est la normalisation qui permet à six paires de tenir
+  sur une image. Le prix à payer : un couloir étroit et un couloir large se ressemblent — d'où les
+  deux bornes imprimées sous chaque ligne.
+- **Bougies mensuelles, non ajustées.** Une devise n'a ni dividende ni split à ajuster, et la page
+  prend le même chemin brut dans la source que la page A+H.
+- **La couverture diffère, et c'est pourquoi il y a deux listes** : USD/CNY remonte à 2005, les cinq
+  autres paires du renminbi à 2016 ; les grands cross commencent tous en 2005-07 et portent 325 mois.
+  Sur un seul tableau, on lirait la date à laquelle la source a commencé à coter chaque paire.
+- **Le réglage de marché ne s'applique pas ici** : une paire de devises n'appartient à aucune Bourse,
+  et le tableau est le même quel que soit le marché en vigueur.
+- La période la plus longue est d'environ vingt ans, la couverture mensuelle de la source ; moins de
+  douze mois est refusé — c'est quelques semaines de mouvement, pas un couloir.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

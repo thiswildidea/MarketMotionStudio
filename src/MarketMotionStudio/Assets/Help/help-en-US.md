@@ -150,6 +150,30 @@ happened the value never changes again.
 - **The date at the top of the frame is the time axis**, and the bar underneath it is the progress.
   The header line carries the span, the trading-day count and the number of candidate days.
 
+## Currency corridors
+
+One row per pair, and **the row is the corridor itself**: one end is the cheapest the pair has
+been in the chosen span, the other the dearest, and the marker is where the rate is now. So this
+board is not like the others — elsewhere a bar's length is *how much*, and here the row is full
+width in every frame; what moves is the marker, and the corridor around it.
+
+- **The corridor widens.** Its walls are the lowest low and the highest high **so far**, not over
+  the whole span. A month that goes further than any month before it pushes one of them outwards,
+  and a pair sitting at 100% is at the dearest it has ever been — not at a limit.
+- **Every pair is measured against its own range.** 157.92 on USD/JPY and 1.1245 on EUR/USD are not
+  two points on one scale; normalising each corridor is what lets six pairs stand on one board. The
+  cost is that a narrow corridor and a wide one look alike, which is why the floor and the ceiling
+  are printed under every row.
+- **Monthly bars, unadjusted.** A currency has no dividend and no split to adjust for, and the page
+  takes the same raw path through the source that the A+H page takes.
+- **Coverage differs, which is why the two lists are separate**: USD/CNY reaches back to 2005, the
+  other five renminbi pairs to 2016; the major crosses all begin in 2005-07 and carry 325 months
+  each. Put them on one board and what you are reading is when the source started quoting each pair.
+- **The market setting does not apply here**: a currency pair belongs to no stock market, and the
+  board is the same whichever one is in force.
+- The longest span is about twenty years, which is the source's monthly coverage; a range shorter
+  than twelve months is refused — that is a few weeks of movement, not a corridor.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

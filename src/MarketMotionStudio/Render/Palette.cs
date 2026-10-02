@@ -101,6 +101,42 @@ public static class Palette
     ];
 
     /// <summary>
+    /// The sixteen row colours a race hands out, in order.
+    ///
+    /// Here rather than inside the race renderer because two renderers now draw rows from it and
+    /// a second copy of the list is a second place a colour can be changed: the same pair quoted
+    /// on two pages would come out in two colours, and the hashed index below would disagree
+    /// between them.
+    /// </summary>
+    public static readonly Color[] Race16 =
+    [
+        Rgb(0xEF, 0x44, 0x44), Rgb(0xF5, 0x9E, 0x0B), Rgb(0xEA, 0xB3, 0x08), Rgb(0x84, 0xCC, 0x16),
+        Rgb(0x22, 0xC5, 0x5E), Rgb(0x14, 0xB8, 0xA6), Rgb(0x06, 0xB6, 0xD4), Rgb(0x3B, 0x82, 0xF6),
+        Rgb(0x63, 0x66, 0xF1), Rgb(0x8B, 0x5C, 0xF6), Rgb(0xA8, 0x55, 0xF7), Rgb(0xD9, 0x46, 0xEF),
+        Rgb(0xEC, 0x48, 0x99), Rgb(0xF4, 0x72, 0xB6), Rgb(0xFB, 0x92, 0x3C), Rgb(0x94, 0xA3, 0xB8),
+    ];
+
+    /// <summary>
+    /// Which of <see cref="Race16"/> a row gets, from the code it stands for.
+    ///
+    /// Hashed by hand rather than with `string.GetHashCode`, which .NET randomises per process:
+    /// the same video would come out in different colours on two runs, and a colour that differs
+    /// between the preview and the export is the one thing the single-render-path rule exists to
+    /// prevent.
+    /// </summary>
+    public static int RaceIndex(string code)
+    {
+        var hash = 17;
+
+        foreach (var ch in code)
+        {
+            hash = ((hash * 31) + ch) & 0x7FFFFFFF;
+        }
+
+        return hash % Race16.Length;
+    }
+
+    /// <summary>
     /// Turnover and volume: blue through cyan and orange to red, with the warm end
     /// compressed into the top quarter. See the note on this class.
     /// </summary>

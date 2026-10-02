@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} дней-кандидатов · {1} торговых дней · самый большой {2} {3} · самый маленький в кадре {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Самый длинный (около 35 лет)</value></data>
   <data name="ExtremeDaysTooFew"><value>В этом периоде слишком мало торговых дней. Возьмите период длиннее.</value></data>
+  <data name="NavFxCorridor.Content"><value>Валютные коридоры</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Валютные коридоры</value></data>
+  <data name="FxCorridorStageTitle"><value>Валютные коридоры</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Где каждая пара находится между самым дешёвым и самым дорогим уровнем, на котором она бывала. Каждая пара измеряется по своему диапазону.</value></data>
+  <data name="FxCorridorList.Header"><value>Пары</value></data>
+  <data name="FxCorridorListCny"><value>Пары с юанем</value></data>
+  <data name="FxCorridorListCrosses"><value>Основные кроссы</value></data>
+  <data name="FxCorridorRangeMax"><value>Самый длинный</value></data>
+  <data name="FxCorridorNote.Text"><value>Одна строка на пару. Строка — это коридор: минимум и максимум, между которыми пара торговалась, а маркер — где курс сейчас. Оба значения напечатаны под строкой, потому что узкий и широкий коридор выглядят на кадре одинаково.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Месячные бары, без корректировки — у валюты нет ни дивиденда, ни сплита, которые нужно было бы корректировать. Коридор — это минимум и максимум **на данный момент**, поэтому он расширяется с месяцами, и пара на 100% находится на самом дорогом уровне в диапазоне, а не на границе. Охват различается: USD/CNY уходит в 2005, остальные пары с юанем — в 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} пар · {1} месяцев · выше всего в своём коридоре {2} на {3} · ниже всего {4} на {5}</value></data>
+  <data name="FxCorridorTooFew"><value>В этом периоде слишком мало месяцев для коридора. Возьмите период длиннее.</value></data>
 </root>

@@ -4,8 +4,8 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-10-02 (after the eleventh page: extreme days, the board whose rows are days;
-see the end).
+Last reviewed: 2026-10-02 (after the twelfth page: currency corridors, the board whose rows are
+ranges; see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -1267,3 +1267,61 @@ the row labels are checked another way — every broad index has an `INST*` key 
 languages, and a row's name is an ISO date, which needs no translating); no export has been run at
 any format; the custom span has not been exercised; nor has the Hong Kong or United States market
 been through it.
+
+## The twelfth page: currency corridors
+
+One row per pair, and **the row is the range itself** — the floor and the ceiling the pair has
+traded between in the span — with the rate as a marker somewhere along it. This is the board where
+a row is a *place* and not a quantity: everywhere else here a bar's length is how much of something
+a racer has, and here the row is drawn full width in every frame because a corridor is a place. What
+moves is the marker, and the walls.
+
+**The walls expand.** They are the lowest low and the highest high **so far**, not over the whole
+span. A fixed ruler with a dot sliding along it would be a gauge, and the picture would measure
+today against the extremes of a range that had not happened yet; an expanding corridor is a record,
+and it visibly widens as the years pass — which is also why a pair can sit at 100% and stay there:
+100% is "the dearest this pair has ever been in this span", not a limit being touched.
+
+**Every pair is measured against itself, and that is the whole trick and the whole cost.** 157.92 on
+USD/JPY and 1.1245 on EUR/USD are not two points on one scale, and normalising each corridor is what
+lets six pairs share one board. The cost is that a narrow corridor and a wide one are drawn alike,
+so the floor and the ceiling are printed under every row — the only place on the frame that says
+which is which. Without those two numbers the board would be six bars of the same length.
+
+**Two lists, because the source's coverage is not one shape.** Measured 2026-10-02:
+
+| list | pairs | coverage |
+|---|---|---|
+| renminbi | USD/CNY 316 months from 2005-10; EUR, HKD, GBP, AUD, CAD 124 from 2016-01 | not one start |
+| crosses | EUR/USD, GBP/USD, AUD/USD, USD/JPY, USD/CHF, USD/CAD — 325 months each, all from 2005-07 | one start |
+
+On one board together, what a viewer reads is when the source started quoting each pair, which
+nobody asked about. The renminbi list also means the board is not full at its longest span: five of
+its six pairs have no rate before 2016, and a pair with no rate is not a pair at 0% — it has no
+position, so it is left off the board and out of the ranking rather than pinned to the floor.
+
+**Monthly, and one request per pair.** 325 months against a 430-month ceiling, so the whole history
+comes back in one reply and "as far back as there is" costs six requests instead of a hundred and
+twenty. Unadjusted, on the same `RawBarsAsync` path the A+H page uses: a currency has no dividend
+and no split, and an adjustment on one side of a comparison compares two different things.
+
+**A month the source has not finished is not on it**, which is `CandlesFromAsync`'s settled-period
+rule and not this page's — fetch on 2 October and the last month on the board is September. It cost
+three failing checks to find, and the failing side was the script: `verify-fxcorridor.py` fetched
+the month in progress, so it carried one month more than the app, and a corridor measured over a
+different set of months has different walls and a different last close — 59.5% against the page's
+61%, 1.8% against 0%. The app was right all three times. The rule is now stated in the script and
+asserted against the source file, and the tolerance is back to one percentage point: 61 against
+61.4, and 0 against 0.5.
+
+**Measured 2026-10-02**, renminbi list, ten years: 113 months (the source's monthly coverage of a
+ten-year window is 113–114, not 120 — it carries no bar for a handful of months), 6 pairs, highest
+GBP/CNY at 61% of its own corridor, lowest CAD/CNY at 0%. The crosses over the same span put
+USD/JPY highest at 89% and USD/CHF lowest at 27% — a board whose top and bottom are both far from
+the middle, which is what a decade of one-way dollar strength looks like when each pair is measured
+against itself. `verify-fxcorridor.py` is 37 checks, 37 pass.
+
+**Owed on this page:** the English interface has not been driven through it (a pair's name is an ISO
+code, the same in all fourteen languages, so there is no `INST*` key to miss — but the group names,
+the card and the status line have not been read in English); no export has been run at any format;
+the custom span has not been exercised; nor has the "longest" span been taken through either list.

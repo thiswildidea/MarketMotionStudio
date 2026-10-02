@@ -145,6 +145,30 @@ que o dia passa, o valor nunca mais muda.
 - **A data no topo do quadro é o eixo do tempo** e a barra abaixo é o progresso. A linha de
   cabeçalho traz o período, o número de dias de negociação e o de dias candidatos.
 
+## Corredores de câmbio
+
+Uma linha por par, e **a linha é o corredor em si**: uma ponta é o nível mais baixo que o par
+teve no período escolhido, a outra o mais alto, e o marcador é a cotação de hoje. Este quadro não é
+como os outros — nos outros o comprimento de uma barra diz *quanto*, aqui a linha ocupa toda a
+largura em cada quadro, e o que se move é o marcador, junto com o corredor.
+
+- **O corredor se alarga.** Suas paredes são a mínima e a máxima **até agora**, não as de todo o
+  período. Um mês que vai além de todos os anteriores empurra uma das duas para fora, e um par a
+  100% está no mais caro que já esteve — não em um limite.
+- **Cada par é medido contra a própria faixa.** 157,92 em USD/JPY e 1,1245 em EUR/USD não são dois
+  pontos de uma mesma escala; é a normalização que permite que seis pares caibam num quadro. O preço
+  é que um corredor estreito e um largo se parecem, e por isso os dois extremos são impressos sob
+  cada linha.
+- **Velas mensais, sem ajuste.** Uma moeda não tem dividendo nem desdobramento a ajustar, e a página
+  toma o mesmo caminho bruto na fonte que a página A+H.
+- **A cobertura difere, e por isso há duas listas**: USD/CNY chega a 2005, os outros cinco pares do
+  renminbi a 2016; os principais cruzamentos começam todos em 2005-07 e trazem 325 meses. Num quadro
+  só, ler-se-ia quando a fonte começou a cotar cada par.
+- **A configuração de mercado não se aplica aqui**: um par de moedas não pertence a nenhuma bolsa, e
+  o quadro é o mesmo seja qual for o mercado em vigor.
+- O período mais longo é de cerca de vinte anos, a cobertura mensal da fonte; menos de doze meses é
+  recusado — são algumas semanas de movimento, não um corredor.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

@@ -39,19 +39,6 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
     private const double HeaderTopFraction = 0.278;
 
-    /// <summary>
-    /// The source's fixed colour set, in order. A row keeps one colour for the whole video so a
-    /// viewer can track it by colour — a ramp keyed to the value would repaint a row the moment
-    /// it passed another.
-    /// </summary>
-    private static readonly Color[] Palette16 =
-    [
-        Rgb(0xEF, 0x44, 0x44), Rgb(0xF5, 0x9E, 0x0B), Rgb(0xEA, 0xB3, 0x08), Rgb(0x84, 0xCC, 0x16),
-        Rgb(0x22, 0xC5, 0x5E), Rgb(0x14, 0xB8, 0xA6), Rgb(0x06, 0xB6, 0xD4), Rgb(0x3B, 0x82, 0xF6),
-        Rgb(0x63, 0x66, 0xF1), Rgb(0x8B, 0x5C, 0xF6), Rgb(0xA8, 0x55, 0xF7), Rgb(0xD9, 0x46, 0xEF),
-        Rgb(0xEC, 0x48, 0x99), Rgb(0xF4, 0x72, 0xB6), Rgb(0xFB, 0x92, 0x3C), Rgb(0x94, 0xA3, 0xB8),
-    ];
-
     private readonly SectorRaceSeries _series;
 
     private readonly RaceMetric _metric;
@@ -362,7 +349,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
             // the value label beside it agree about which way the day went.
             var colour = ColourBySign
                 ? (state.Values[k] >= 0 ? Rgb(0xEF, 0x44, 0x44) : Rgb(0x22, 0xC5, 0x5E))
-                : Palette16[ColourIndex(_series.Entries[k].Code)];
+                : Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)];
             var yc = top + ((state.Slots[k] + 0.5) * rowH);
             var vx = x0 + ((state.Values[k] - state.AxisMin) / span) * plotW;
 
@@ -491,25 +478,6 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
     /// <summary>Room the name column leaves between the text and the plot.</summary>
     private const double GutterTextInset = 24;
-
-    /// <summary>
-    /// The palette slot for a listing, from its code.
-    ///
-    /// By hand rather than with `string.GetHashCode`, which .NET randomises per process: the same
-    /// video would come out in different colours on two runs, and a colour that differs between
-    /// the preview and the export is the one thing the single-render-path rule exists to prevent.
-    /// </summary>
-    private static int ColourIndex(string code)
-    {
-        var hash = 17;
-
-        foreach (var ch in code)
-        {
-            hash = ((hash * 31) + ch) & 0x7FFFFFFF;
-        }
-
-        return hash % Palette16.Length;
-    }
 
     private string ValueText(double value) =>
         (_metric is RaceMetric.Return && value > 0 ? "+" : string.Empty)

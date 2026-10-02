@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} dias candidatos · {1} dias de negociação · maior {2} {3} · menor no quadro {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Mais longo (cerca de 35 anos)</value></data>
   <data name="ExtremeDaysTooFew"><value>Poucos dias de negociação neste período. Tente um período mais longo.</value></data>
+  <data name="NavFxCorridor.Content"><value>Corredores de câmbio</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Corredores de câmbio</value></data>
+  <data name="FxCorridorStageTitle"><value>Corredores de câmbio</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Onde cada par está entre o mais barato e o mais caro que já esteve. Cada par é medido contra sua própria faixa.</value></data>
+  <data name="FxCorridorList.Header"><value>Pares</value></data>
+  <data name="FxCorridorListCny"><value>Pares do renminbi</value></data>
+  <data name="FxCorridorListCrosses"><value>Principais cruzamentos</value></data>
+  <data name="FxCorridorRangeMax"><value>Mais longo</value></data>
+  <data name="FxCorridorNote.Text"><value>Uma linha por par. A linha é o corredor — o piso e o teto entre os quais o par negociou — e o marcador é onde está a cotação agora. Os dois aparecem sob cada linha, porque um corredor estreito e um largo se parecem no quadro.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Velas mensais, sem ajuste — uma moeda não tem dividendo nem desdobramento a ajustar. O corredor é a mínima e a máxima **até agora**, então ele se alarga com os meses, e um par a 100% está no mais caro que já esteve, não em um limite. A cobertura varia: USD/CNY chega a 2005, os outros pares do renminbi a 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} pares · {1} meses · mais alto no próprio corredor {2} em {3} · mais baixo {4} em {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Meses demaisados poucos neste período para um corredor. Tente um período mais longo.</value></data>
 </root>

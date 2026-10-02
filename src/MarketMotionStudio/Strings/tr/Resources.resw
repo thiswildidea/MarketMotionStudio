@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} aday gün · {1} işlem günü · en büyük {2} {3} · karedeki en küçük {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>En uzun (yaklaşık 35 yıl)</value></data>
   <data name="ExtremeDaysTooFew"><value>Bu dönemde yeterli işlem günü yok. Daha uzun bir dönem deneyin.</value></data>
+  <data name="NavFxCorridor.Content"><value>Döviz koridorları</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Döviz koridorları</value></data>
+  <data name="FxCorridorStageTitle"><value>Döviz koridorları</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Her paritenin, gördüğü en ucuz ile en pahalı arasında nerede durduğu. Her parite kendi aralığına göre ölçülür.</value></data>
+  <data name="FxCorridorList.Header"><value>Pariteler</value></data>
+  <data name="FxCorridorListCny"><value>Renminbi pariteleri</value></data>
+  <data name="FxCorridorListCrosses"><value>Ana çaprazlar</value></data>
+  <data name="FxCorridorRangeMax"><value>En uzun</value></data>
+  <data name="FxCorridorNote.Text"><value>Her parite için bir satır. Satır koridorun kendisidir — paritenin arasında işlem gördüğü taban ve tavan — işaret ise kurun şu anki yeri. İkisi de her satırın altında yazılır, çünkü dar bir koridorla geniş bir koridor görüntüde aynı görünür.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Aylık mumlar, düzeltilmemiş — bir para biriminin düzeltilcek temettüsü veya bölünmesi yok. Koridor, **şimdiye kadarki** en düşük ve en yüksektir, bu yüzden aylar geçtikçe genişler ve %100'deki bir parite bir sınırda değil, aralıkta gördüğü en pahalı yerdedir. Kapsam farklı: USD/CNY 2005'e, diğer renminbi pariteleri 2016'ya kadar uzanır.</value></data>
+  <data name="FxCorridorFetched"><value>{0} parite · {1} ay · kendi koridorunda en yüksek {2}, {3} · en düşük {4}, {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Bu aralıkta bir koridor için çok az ay var. Daha uzun bir aralık deneyin.</value></data>
 </root>

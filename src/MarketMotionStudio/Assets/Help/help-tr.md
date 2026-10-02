@@ -144,6 +144,30 @@ değer bir daha değişmez.
 - **Karenin üstündeki tarih zaman eksenidir**, altındaki çubuk ilerlemedir. Başlık satırı dönemi,
   işlem günü sayısını ve aday gün sayısını taşır.
 
+## Döviz koridorları
+
+Her parite için bir satır, ve **satırın kendisi koridordur**: bir ucu paritenin seçilen
+dönemde gördüğü en düşük seviye, diğeri en yüksek, işaret ise bugünkü kur. Bu tablo diğerlerine
+benzemez — başka yerlerde çubuğun uzunluğu *ne kadar* der, burada satır her karede tüm genişliği
+kaplar; hareket eden işaret ve çevresindeki koridordur.
+
+- **Koridor genişler.** Duvarları tüm dönemin değil, **şimdiye kadarki** en düşük ve en yüksektir.
+  Önceki tüm aylardan ileri giden bir ay duvarlardan birini dışa iter ve %100'deki bir parite bir
+  sınırda değil, şimdiye kadarki en pahalı yerindedir.
+- **Her parite kendi aralığıyla ölçülür.** USD/JPY'de 157,92 ile EUR/USD'de 1,1245 aynı ölçeğin
+  üzerinde iki nokta değildir; altı pariteyi tek bir görüntüye sığdıran şey normalizasyondur. Bedeli,
+  dar bir koridorla geniş bir koridorun aynı görünmesidir — bu yüzden iki uç her satırın altına
+  yazılır.
+- **Aylık mumlar, düzeltilmemiş.** Bir para biriminin düzeltilecek temettüsü veya bölünmesi yoktur ve
+  sayfa kaynağa AH sayfasının gittiği ham yoldan gider.
+- **Kapsam farklı, bu yüzden iki liste var**: USD/CNY 2005'e, diğer beş renminbi paritesi 2016'ya
+  kadar uzanır; ana çaprazların hepsi 2005-07'de başlar ve 325 ay taşır. Tek tabloda okunacak şey,
+  kaynağın her pariteyi ne zaman kotlamaya başladığı olurdu.
+- **Piyasa ayarı burada geçmez**: bir para birimi çifti hiçbir borsaya ait değildir ve tablo, hangi
+  piyasa seçilmiş olursa olsun aynıdır.
+- En uzun dönem yaklaşık yirmi yıldır; bu kaynağın aylık kapsamıdır. On iki aydan kısa dönemler
+  reddedilir — bu bir koridor değil, birkaç haftalık harekettir.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

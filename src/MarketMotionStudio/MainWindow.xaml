@@ -203,6 +203,14 @@
                 <mux:NavigationViewItem x:Name="NavExtremeDays" x:Uid="NavExtremeDays" Tag="ExtremeDays">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8D5;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Beside the extreme-day board, because both read one number against the range
+                     it has lived in: that one asks how large a day was next to the largest day,
+                     this one asks where a rate is between the cheapest and the dearest it has
+                     been. The row is a range, which no other page here has — and unlike every
+                     other board, it is not the market that decides whether it is offered. -->
+                <mux:NavigationViewItem x:Name="NavFxCorridor" x:Uid="NavFxCorridor" Tag="FxCorridor">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE909;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

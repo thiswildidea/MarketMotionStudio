@@ -147,6 +147,30 @@ minie, wartość już się nie zmienia.
 - **Data u góry kadru to oś czasu**, a pasek pod nią to postęp. Wiersz nagłówka niesie okres,
   liczbę sesji i liczbę dni kandydackich.
 
+## Korytarze walutowe
+
+Jeden wiersz na parę, i **ten wiersz jest korytarzem**: jeden koniec to najniższy poziom, na
+jakim para była w wybranym okresie, drugi — najwyższy, a znacznik to kurs z dziś. Ta tablica nie jest
+więc jak inne — gdzie indziej długość słupka mówi *ile*, tu wiersz w każdej klatce zajmuje całą
+szerokość, a porusza się znacznik wraz z korytarzem wokół niego.
+
+- **Korytarz się rozszerza.** Jego ściany to najniższe i najwyższe **dotąd**, nie w całym okresie.
+  Miesiąc, który wyjdzie dalej niż wszystkie wcześniejsze, wypycha jedną ze ścian, a para na 100%
+  jest najdroższa, jaka kiedykolwiek była — nie przy jakimś limicie.
+- **Każda para mierzona jest własnym zakresem.** 157,92 na USD/JPY i 1,1245 na EUR/USD to nie dwa
+  punkty na jednej skali; to normalizacja pozwala sześciu parom stanąć na jednym obrazie. Ceną jest
+  to, że wąski i szeroki korytarz wyglądają tak samo — dlatego obie wartości są wypisane pod każdym
+  wierszem.
+- **Świece miesięczne, bez korekty.** Waluta nie ma dywidendy ani podziału do skorygowania, a strona
+  idzie tą samą surową ścieżką do źródła co strona A+H.
+- **Zasięg danych jest różny, dlatego są dwie listy**: USD/CNY sięga 2005, pozostałe pięć par
+  renminbi — 2016; główne crossy zaczynają się wszystkie w 2005-07 i mają po 325 miesięcy. Na jednej
+  tablicy czytałoby się, od kiedy źródło zaczęło notować każdą parę.
+- **Ustawienie rynku tu nie działa**: para walutowa nie należy do żadnej giełdy, a tablica jest ta
+  sama niezależnie od wybranego rynku.
+- Najdłuższy okres to około dwudziestu lat — tyle obejmują miesięczne dane źródła. Mniej niż
+  dwanaście miesięcy jest odrzucane: to kilka tygodni ruchu, nie korytarz.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

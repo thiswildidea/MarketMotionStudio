@@ -720,4 +720,16 @@
   <data name="ExtremeDaysFetched"><value>{0} 个候选日 · {1} 个交易日 · 最大 {2} {3} · 榜尾 {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>最长（约 35 年）</value></data>
   <data name="ExtremeDaysTooFew"><value>这段区间的交易日太少，换长一点的区间试试。</value></data>
+  <data name="NavFxCorridor.Content"><value>汇率走廊</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>汇率走廊</value></data>
+  <data name="FxCorridorStageTitle"><value>汇率走廊</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>每一组货币在自己最便宜与最贵之间走到哪里。每一组都用自己的区间来量。</value></data>
+  <data name="FxCorridorList.Header"><value>货币组</value></data>
+  <data name="FxCorridorListCny"><value>人民币汇率</value></data>
+  <data name="FxCorridorListCrosses"><value>主要交叉盘</value></data>
+  <data name="FxCorridorRangeMax"><value>最长</value></data>
+  <data name="FxCorridorNote.Text"><value>每一组货币一行。那一行的本身就是走廊——这组货币走过的下限与上限——游标是现在的汇率。下限与上限印在每一行的下方，因为窄的走廊和宽的走廊在画面上看起来是一样的。</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>月线，不调整——货币没有股息也没有拆股需要调整。走廊是**截至目前**的最低与最高，所以它随月份推进而变宽；一组货币走到 100% 是它在这段区间里最贵的位置，不是撞到上限。数据起点各组不同：USD/CNY 可回溯到 2005 年，其他人民币组别到 2016 年。</value></data>
+  <data name="FxCorridorFetched"><value>{0} 组货币 · {1} 个月 · 在自己走廊里位置最高的是 {2}，{3} · 最低的是 {4}，{5}</value></data>
+  <data name="FxCorridorTooFew"><value>这段区间的月份太少，撑不起一条走廊。换长一点的区间试试。</value></data>
 </root>

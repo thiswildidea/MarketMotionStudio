@@ -148,6 +148,30 @@ día el valor ya no cambia.
 - **La fecha en la parte superior es el eje del tiempo** y la barra de abajo es el progreso. La
   línea de encabezado lleva el periodo, el número de días de negociación y el de días candidatos.
 
+## Corredores de divisas
+
+Una fila por par, y **la fila es el corredor mismo**: un extremo es el nivel más bajo que el par
+ha tenido en el periodo elegido, el otro el más alto, y la marca es la cotización de hoy. Este
+tablero no es como los demás — en los demás la longitud de una barra dice *cuánto*, aquí la fila
+ocupa todo el ancho en cada fotograma, y lo que se mueve es la marca, junto con el corredor.
+
+- **El corredor se ensancha.** Sus paredes son el mínimo y el máximo **hasta ahora**, no los de todo
+  el periodo. Un mes que va más lejos que todos los anteriores empuja una de las dos hacia afuera, y
+  un par al 100% está en lo más caro que ha estado nunca — no en un límite.
+- **Cada par se mide contra su propio rango.** 157,92 en USD/JPY y 1,1245 en EUR/USD no son dos
+  puntos de una misma escala; es la normalización la que permite que seis pares quepan en un cuadro.
+  El precio es que un corredor estrecho y uno ancho se ven igual, y por eso ambos extremos se
+  imprimen bajo cada fila.
+- **Velas mensuales, sin ajustar.** Una divisa no tiene dividendo ni split que ajustar, y la página
+  toma el mismo camino en crudo por la fuente que toma la página A+H.
+- **La cobertura difiere, y por eso hay dos listas**: USD/CNY llega hasta 2005, los otros cinco
+  pares del renminbi hasta 2016; los principales cruces empiezan todos en 2005-07 y traen 325 meses.
+  En un solo tablero se leería cuándo empezó la fuente a cotizar cada par.
+- **El ajuste de mercado no aplica aquí**: un par de divisas no pertenece a ninguna bolsa, y el
+  tablero es el mismo sea cual sea el mercado en vigor.
+- El periodo más largo es de unos veinte años, la cobertura mensual de la fuente; menos de doce meses
+  se rechaza — son unas semanas de movimiento, no un corredor.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

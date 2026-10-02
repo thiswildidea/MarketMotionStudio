@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} kandidátních dnů · {1} obchodních dnů · největší {2} {3} · nejmenší v obraze {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Nejdelší (asi 35 let)</value></data>
   <data name="ExtremeDaysTooFew"><value>V tomto období je příliš málo obchodních dnů. Zkuste delší.</value></data>
+  <data name="NavFxCorridor.Content"><value>Měnové koridory</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Měnové koridory</value></data>
+  <data name="FxCorridorStageTitle"><value>Měnové koridory</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Kde se každý pár nachází mezi nejlevnější a nejdražší úrovní, na které byl. Každý pár se měří vlastním rozpětím.</value></data>
+  <data name="FxCorridorList.Header"><value>Páry</value></data>
+  <data name="FxCorridorListCny"><value>Páry renminbi</value></data>
+  <data name="FxCorridorListCrosses"><value>Hlavní crosy</value></data>
+  <data name="FxCorridorRangeMax"><value>Nejdelší</value></data>
+  <data name="FxCorridorNote.Text"><value>Jeden řádek na pár. Řádek je koridor — nejnižší a nejvyšší kurz, mezi kterými se pár obchodoval — a značka je, kde je kurz teď. Obě hodnoty jsou pod každým řádkem, protože úzký a široký koridor vypadají na obrázku stejně.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Měsíční svíčky, bez úprav — měna nemá dividendu ani rozdělení, které by se upravovalo. Koridor je nejnižší a nejvyšší **dosud**, takže se s měsíci rozšiřuje, a pár na 100% je nejdráž, jak kdy v rozpětí byl, ne na limitu. Pokrytí se liší: USD/CNY sahá do roku 2005, ostatní páry renminbi do roku 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} párů · {1} měsíců · nejvýše ve vlastním koridoru {2} na {3} · nejníže {4} na {5}</value></data>
+  <data name="FxCorridorTooFew"><value>V tomto období je příliš málo měsíců pro koridor. Zkuste delší období.</value></data>
 </root>

@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>후보 {0}일 · 거래일 {1}일 · 최대 {2} {3} · 화면 안 최소 {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>최장(약 35년)</value></data>
   <data name="ExtremeDaysTooFew"><value>이 기간의 거래일이 너무 적습니다. 더 긴 기간을 선택하세요.</value></data>
+  <data name="NavFxCorridor.Content"><value>환율 코리도</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>환율 코리도</value></data>
+  <data name="FxCorridorStageTitle"><value>환율 코리도</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>각 통화쌍이 지금까지의 최저와 최고 사이 어디에 있는지. 모든 쌍은 자기 구간으로 측정됩니다.</value></data>
+  <data name="FxCorridorList.Header"><value>통화쌍</value></data>
+  <data name="FxCorridorListCny"><value>위안화 쌍</value></data>
+  <data name="FxCorridorListCrosses"><value>주요 크로스</value></data>
+  <data name="FxCorridorRangeMax"><value>가장 긴</value></data>
+  <data name="FxCorridorNote.Text"><value>통화쌍마다 한 줄. 줄 자체가 그 쌍이 오간 하한과 상한인 코리도이고, 표식은 현재 환율입니다. 하한과 상한은 각 줄 아래에 적힙니다. 좁은 코리도와 넓은 코리도는 화면에서 구분되지 않기 때문입니다.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>월별 봉, 조정 없음 — 통화에는 조정할 배당이나 분할이 없습니다. 코리도는 **지금까지의** 최저와 최고이므로 달이 지날수록 넓어지고, 100%인 쌍은 한계에 닿은 것이 아니라 그 구간에서 가장 비쌌던 위치에 있습니다. 자료 범위는 쌍마다 다릅니다. USD/CNY는 2005년까지, 다른 위안화 쌍은 2016년까지입니다.</value></data>
+  <data name="FxCorridorFetched"><value>{0}개 쌍 · {1}개월 · 자기 코리도에서 가장 높은 쌍 {2} {3} · 가장 낮은 쌍 {4} {5}</value></data>
+  <data name="FxCorridorTooFew"><value>이 기간은 코리도를 만들기에 달 수가 너무 적습니다. 더 긴 기간을 선택하세요.</value></data>
 </root>

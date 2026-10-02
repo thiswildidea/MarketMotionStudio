@@ -140,6 +140,29 @@ onoho dne proti závěru předchozího obchodního dne, a jakmile ten den nastan
 - **Datum nahoře ve snímku je časová osa** a pruh pod ním je průběh. Hlavičková řada nese období,
   počet obchodních dnů a počet kandidátních dnů.
 
+## Měnové koridory
+
+Jeden řádek na pár a **ten řádek je sám koridor**: jeden konec je nejnižší úroveň, na které
+pár ve zvoleném období byl, druhý nejvyšší, a značka je dnešní kurz. Tahle tabule se tedy liší od
+ostatních — jinde délka pruhu říká *kolik*, tady řádek v každém snímku zabírá celou šířku a pohybuje
+se značka spolu s koridorem kolem ní.
+
+- **Koridor se rozšiřuje.** Jeho stěny jsou nejnižší a nejvyšší **dosud**, ne za celé období. Měsíc,
+  který zajde dál než všechny předchozí, vytlačí jednu ze stěn ven, a pár na 100% je nejdráž, jak kdy
+  byl — ne na nějakém limitu.
+- **Každý pár se měří vlastním rozpětím.** 157,92 u USD/JPY a 1,1245 u EUR/USD nejsou dva body na
+  jedné stupnici; teprve normalizace umožní šesti párům stát na jednom obraze. Cenou je, že úzký a
+  široký koridor vypadají stejně — proto jsou obě hodnoty vypsány pod každým řádkem.
+- **Měsíční svíčky, bez úprav.** Měna nemá dividendu ani rozdělení, které by se upravovalo, a stránka
+  jde stejnou neupravenou cestou ke zdroji jako stránka A+H.
+- **Pokrytí se liší, a proto jsou dvě nabídky**: USD/CNY sahá do roku 2005, ostatních pět párů
+  renminbi do roku 2016; hlavní crosy začínají všechny v roce 2005-07 a nesou 325 měsíců. Na jedné
+  tabuli by se četlo, kdy zdroj který pár začal kotovat.
+- **Nastavení trhu se tu neuplatní**: měnový pár nepatří žádné burze a tabule je stejná, ať platí
+  kterýkoli trh.
+- Nejdelší období je asi dvacet let, což je měsíční pokrytí zdroje; méně než dvanáct měsíců je
+  odmítnuto — to je pár týdnů pohybu, ne koridor.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

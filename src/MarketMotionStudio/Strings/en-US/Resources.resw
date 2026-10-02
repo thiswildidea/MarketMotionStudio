@@ -722,4 +722,16 @@
   <data name="ExtremeDaysFetched"><value>{0} candidate days · {1} trading days · biggest {2} {3} · smallest on the board {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Longest (about 35 years)</value></data>
   <data name="ExtremeDaysTooFew"><value>Not enough trading days in this range. Try a longer one.</value></data>
+  <data name="NavFxCorridor.Content"><value>Currency corridors</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Currency corridors</value></data>
+  <data name="FxCorridorStageTitle"><value>Currency corridors</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Where each pair sits between the cheapest and the dearest it has been. Every pair is measured against its own range.</value></data>
+  <data name="FxCorridorList.Header"><value>Pairs</value></data>
+  <data name="FxCorridorListCny"><value>Renminbi pairs</value></data>
+  <data name="FxCorridorListCrosses"><value>Major crosses</value></data>
+  <data name="FxCorridorRangeMax"><value>Longest</value></data>
+  <data name="FxCorridorNote.Text"><value>One row per pair. The row is the corridor — the floor and the ceiling the pair has traded between — and the marker is where the rate is now. Both are printed under each row, because a narrow corridor and a wide one look alike on the frame.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Monthly bars, unadjusted — a currency has no dividend or split to adjust for. The corridor is the lowest low and the highest high **so far**, so it widens as the months pass and a pair at 100% is at the dearest it has been in the range, not at a limit. Coverage differs: USD/CNY reaches back to 2005, the other renminbi pairs to 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} pairs · {1} months · highest in its corridor {2} at {3} · lowest {4} at {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Too few months in this range for a corridor. Try a longer range.</value></data>
 </root>

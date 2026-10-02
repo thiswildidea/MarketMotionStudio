@@ -150,6 +150,31 @@ Handelstags, und sobald der Tag vergangen ist, ändert sich dieser Wert nie wied
 - **Das Datum oben im Bild ist die Zeitachse**, der Balken darunter der Fortschritt. Die
   Kopfzeile nennt den Zeitraum, die Zahl der Handelstage und die Zahl der Kandidatentage.
 
+## Währungskorridore
+
+Eine Zeile je Paar, und **die Zeile ist der Korridor selbst**: ein Ende ist der billigste Stand,
+den das Paar in der gewählten Spanne hatte, das andere der teuerste, und die Markierung ist der Kurs
+von heute. Dieses Tableau ist also anders als die anderen — anderswo ist die Länge eines Balkens
+*wieviel*, hier füllt die Zeile in jedem Bild die ganze Breite, und es bewegen sich die Markierung
+und der Korridor um sie herum.
+
+- **Der Korridor weitet sich.** Seine Wände sind das bisherige Tief und das bisherige Hoch, nicht
+  die der ganzen Spanne. Ein Monat, der weiter geht als jeder Monat zuvor, drückt eine der beiden
+  nach außen, und ein Paar bei 100% ist so teuer wie nie zuvor — nicht an einer Grenze.
+- **Jedes Paar wird an der eigenen Spanne gemessen.** 157,92 bei USD/JPY und 1,1245 bei EUR/USD
+  sind keine zwei Punkte auf einer Skala; erst die Normierung lässt sechs Paare auf einem Bild
+  stehen. Der Preis dafür: ein enger und ein weiter Korridor sehen gleich aus — darum stehen beide
+  Enden unter jeder Zeile.
+- **Monatskerzen, nicht bereinigt.** Eine Währung hat keine Dividende und keinen Split, und die Seite
+  nimmt denselben unbereinigten Weg durch die Quelle den die A+H-Seite nimmt.
+- **Die Reichweite ist unterschiedlich, darum sind es zwei Listen**: USD/CNY reicht bis 2005, die
+  anderen fünf Renminbi-Paare bis 2016; die wichtigen Crosses beginnen alle 2005-07 und tragen 325
+  Monate. Auf einem Tableau zusammen läse man, wann die Quelle welches Paar zu notieren begann.
+- **Die Markteinstellung gilt hier nicht**: ein Währungspaar gehört zu keiner Börse, und das Tableau
+  ist dasselbe, welcher Markt auch gilt.
+- Die längste Spanne ist etwa zwanzig Jahre — die Reichweite der Monatsreihe der Quelle. Weniger als
+  zwölf Monate werden abgelehnt: das sind ein paar Wochen Bewegung, kein Korridor.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

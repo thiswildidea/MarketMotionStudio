@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **eleven pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **twelve pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -131,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The eleven pages
+## The twelve pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -440,6 +440,38 @@ one request carries about 640 daily bars and the walk makes twenty. A span with 
 trading days is refused — the largest single day inside a quiet month is not a fact a board should
 be built on.
 
+**Currency corridors** — the twelfth page, and the one whose row is a *place* rather than a
+quantity: six currency pairs, each drawn against the range it has actually traded in.
+
+**The row is the corridor.** One end is the cheapest the pair has been in the chosen span, the
+other the dearest, and the marker is where the rate is now. So the row is drawn full width in every
+frame — a corridor is a place, not an amount — and what moves is the marker, together with the
+walls, which are the lowest low and the highest high **so far**: a month that goes further than any
+month before it pushes one of them outwards, and the corridor visibly widens as the years pass. A
+fixed ruler with a dot on it would be a gauge; an expanding corridor is a record, and a pair
+sitting at 100% is at the dearest it has ever been in the span, not at a limit.
+
+**Every pair is measured against itself.** 157.92 on USD/JPY and 1.1245 on EUR/USD are not two
+points on one scale, and normalising each corridor is what lets six pairs share one board. The cost
+is that a narrow corridor and a wide one look alike, so the floor and the ceiling are printed under
+every row — the only place on the frame that tells them apart.
+
+**Two lists, offered separately, because the source's coverage differs.** USD/CNY reaches back to
+2005 and carries 316 months; the other five renminbi pairs begin in 2016; the major crosses all
+begin in 2005-07 and carry 325 months each. On one board together, what a viewer would be reading
+is when the source started quoting each pair. A pair with no rate in a month is not a pair at 0% —
+it is a pair with no position, so it is left off the board and out of the ranking rather than
+pinned to the floor.
+
+**Monthly, and one request per pair.** The endpoint answers a whole monthly history in one reply —
+325 months against a 430-month ceiling — so "as far back as there is" costs six requests rather
+than a hundred and twenty. Unadjusted, like the A+H page: a currency has no dividend and no split,
+and an adjustment on one side of a comparison compares two different things.
+
+**The market setting does not apply here.** A currency pair belongs to no stock market, so the
+board is the same whichever one is in force — the second page, after A+H, that sits outside the
+market switch's reach.
+
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
 A title too long for the frame is scaled down to fit rather than clipped or wrapped, to half
@@ -641,13 +673,15 @@ src/MarketMotionStudio/
                    CandleSeries (daily/weekly/monthly bars, and the two animations' shapes),
                    MarketCaps (the fifteen-per-market field, and today's value turned into a history),
                    AhPremium (the A+H pairs, and the one page that must not use adjusted prices),
-                   ExtremeDays (one instrument's largest single-day moves, rows that are days)
+                   ExtremeDays (one instrument's largest single-day moves, rows that are days),
+                   FxRates (the pairs, their monthly bars, and the corridor's arithmetic)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race and the market-cap board),
+                   FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
   Pages/           StudioPage base, the indicator pages, the two buy-at-a-price pages,
@@ -669,6 +703,7 @@ tools/
                          languages — the page list, what's new, the feature bullets
   port-ahpremium-*.py    The same, for the A+H page — including the 40 A-leg names it needed
   port-extremedays-*.py  The same, for the extreme-day board
+  port-fxcorridor-*.py   The same, for the currency corridor
   port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
                          (the pool script carries the 93 candidates that only need zh + en)
   verify-*.py            Drive the UI and assert the feature behaves as documented
@@ -763,8 +798,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 662 keys
-with no encoding damage, and all fourteen help documents carry the same twenty sections in the
+Every language carries the same keys in the same order. All fourteen currently report 674 keys
+with no encoding damage, and all fourteen help documents carry the same twenty-one sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -778,7 +813,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all eleven pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all twelve pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -854,11 +889,11 @@ first export asks and then remembers.
   source's own bars and matching to two decimals), and its preferences survive a restart. It has not
   been exported at any format, its custom span has not been exercised, and Hong Kong and New York
   have not been driven through it. See NOTES.
-- **The Store screenshots show seven pages, not eleven.** `tools/store-screenshots.py` predates the
-  candle page, the market-cap board, the A+H page and the extreme-day board, so the gallery has none
-  of the four. The listing copy says ten charts in all fourteen languages — it predates this page too,
-  and the listing is written at release time — so the copy and the gallery
-  disagree until all three captures are taken. The copy deliberately runs ahead of the package: it is
+- **The Store screenshots show seven pages, not twelve.** `tools/store-screenshots.py` predates the
+  candle page, the market-cap board, the A+H page, the extreme-day board and the currency corridor,
+  so the gallery has none of the five. The listing copy says ten charts in all fourteen languages —
+  it predates the last two pages, and the listing is written at release time — so the copy and the
+  gallery disagree until all five captures are taken. The copy deliberately runs ahead of the package: it is
   written for the version being prepared, and it must not be uploaded before that package is.
 - **The A+H page has been fetched and read at two spans** (three years and the longest, twenty-two
   checks), and its headline number was recomputed independently from the source — the dearest premium

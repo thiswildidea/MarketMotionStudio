@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} giorni candidati · {1} giorni di negoziazione · il più grande {2} {3} · il più piccolo nel quadro {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Il più lungo (circa 35 anni)</value></data>
   <data name="ExtremeDaysTooFew"><value>Troppo pochi giorni di negoziazione in questo periodo. Prova un periodo più lungo.</value></data>
+  <data name="NavFxCorridor.Content"><value>Corridoi valutari</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Corridoi valutari</value></data>
+  <data name="FxCorridorStageTitle"><value>Corridoi valutari</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Dov'è ogni coppia tra il livello più basso e il più alto che ha avuto. Ogni coppia è misurata sul proprio intervallo.</value></data>
+  <data name="FxCorridorList.Header"><value>Coppie</value></data>
+  <data name="FxCorridorListCny"><value>Coppie del renminbi</value></data>
+  <data name="FxCorridorListCrosses"><value>Cross principali</value></data>
+  <data name="FxCorridorRangeMax"><value>Il più lungo</value></data>
+  <data name="FxCorridorNote.Text"><value>Una riga per coppia. La riga è il corridoio — il pavimento e il soffitto fra cui la coppia ha quotato — e l'indicatore è dove sta il cambio ora. Entrambi sono scritti sotto ogni riga, perché un corridoio stretto e uno largo si vedono allo stesso modo.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Candele mensili, non rettificate — una valuta non ha dividendi né frazionamenti da rettificare. Il corridoio è il minimo e il massimo **finora**, quindi si allarga con i mesi, e una coppia al 100% è al livello più caro che abbia avuto, non a un limite. La copertura differisce: USD/CNY arriva al 2005, le altre coppie del renminbi al 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} coppie · {1} mesi · la più alta nel proprio corridoio {2} a {3} · la più bassa {4} a {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Troppi pochi mesi in questo periodo per un corridoio. Provi un periodo più lungo.</value></data>
 </root>

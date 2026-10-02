@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>候補 {0} 日 · 取引日 {1} 日 · 最大 {2} {3} · 画面内で最小 {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>最長（約 35 年）</value></data>
   <data name="ExtremeDaysTooFew"><value>この期間の取引日が少なすぎます。もっと長い期間をお試しください。</value></data>
+  <data name="NavFxCorridor.Content"><value>為替コリドー</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>為替コリドー</value></data>
+  <data name="FxCorridorStageTitle"><value>為替コリドー</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>各ペアがこれまでの最安値と最高値の間のどこにいるか。すべてのペアは自分のレンジで測ります。</value></data>
+  <data name="FxCorridorList.Header"><value>通貨ペア</value></data>
+  <data name="FxCorridorListCny"><value>人民元のペア</value></data>
+  <data name="FxCorridorListCrosses"><value>主要クロス</value></data>
+  <data name="FxCorridorRangeMax"><value>最長</value></data>
+  <data name="FxCorridorNote.Text"><value>通貨ペアごとに1行。行そのものがコリドー（そのペアが動いた下限と上限）で、マーカーは現在のレートです。下限と上限は各行の下に印刷されます。細いコリドーと広いコリドーは画面上では見分けがつかないからです。</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>月足、調整なし — 通貨に配当も分割もありません。コリドーは**これまでの**最安値と最高値なので、月が進むほど広がり、100%のペアは上限に達したのではなく、その範囲で最も高かった位置にいます。データの範囲はペアごとに異なります。USD/CNYは2005年まで、他の人民元ペアは2016年までです。</value></data>
+  <data name="FxCorridorFetched"><value>{0} ペア · {1} か月 · 自分のコリドーで最も高いのは {2}（{3}） · 最も低いのは {4}（{5}）</value></data>
+  <data name="FxCorridorTooFew"><value>この期間では月数が少なすぎてコリドーになりません。もっと長い期間をお試しください。</value></data>
 </root>

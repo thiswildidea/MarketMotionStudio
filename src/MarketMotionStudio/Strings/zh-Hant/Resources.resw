@@ -710,4 +710,16 @@
   <data name="ExtremeDaysFetched"><value>{0} 個候選日 · {1} 個交易日 · 最大 {2} {3} · 榜尾 {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>最長（約 35 年）</value></data>
   <data name="ExtremeDaysTooFew"><value>這段區間的交易日太少，換長一點的區間試試。</value></data>
+  <data name="NavFxCorridor.Content"><value>匯率走廊</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>匯率走廊</value></data>
+  <data name="FxCorridorStageTitle"><value>匯率走廊</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>每一組貨幣在自己最便宜與最貴之間走到哪裡。每一組都用自己的區間來量。</value></data>
+  <data name="FxCorridorList.Header"><value>貨幣組</value></data>
+  <data name="FxCorridorListCny"><value>人民幣匯率</value></data>
+  <data name="FxCorridorListCrosses"><value>主要交叉盤</value></data>
+  <data name="FxCorridorRangeMax"><value>最長</value></data>
+  <data name="FxCorridorNote.Text"><value>每一組貨幣一行。那一行的本身就是走廊——這組貨幣走過的下限與上限——游標是現在的匯率。下限與上限印在每一行的下方，因為窄的走廊和寬的走廊在畫面上看起來是一樣的。</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>月線，不調整——貨幣沒有股息也沒有拆股需要調整。走廊是**截至目前**的最低與最高，所以它隨月份推進而變寬；一組貨幣走到 100% 是它在這段區間裡最貴的位置，不是撞到上限。資料起點各組不同：USD/CNY 可回溯到 2005 年，其他人民幣組別到 2016 年。</value></data>
+  <data name="FxCorridorFetched"><value>{0} 組貨幣 · {1} 個月 · 在自己走廊裡位置最高的是 {2}，{3} · 最低的是 {4}，{5}</value></data>
+  <data name="FxCorridorTooFew"><value>這段區間的月份太少，撐不起一條走廊。換長一點的區間試試。</value></data>
 </root>

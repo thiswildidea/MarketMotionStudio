@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} dni kandydujących · {1} dni sesyjnych · największy {2} {3} · najmniejszy w kadrze {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Najdłuższy (około 35 lat)</value></data>
   <data name="ExtremeDaysTooFew"><value>Za mało dni sesyjnych w tym okresie. Spróbuj dłuższego.</value></data>
+  <data name="NavFxCorridor.Content"><value>Korytarze walutowe</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Korytarze walutowe</value></data>
+  <data name="FxCorridorStageTitle"><value>Korytarze walutowe</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Gdzie każda para jest między najtańszym a najdroższym poziomem, na jakim była. Każda para jest mierzona własnym zakresem.</value></data>
+  <data name="FxCorridorList.Header"><value>Pary</value></data>
+  <data name="FxCorridorListCny"><value>Pary renminbi</value></data>
+  <data name="FxCorridorListCrosses"><value>Główne crossy</value></data>
+  <data name="FxCorridorRangeMax"><value>Najdłuższy</value></data>
+  <data name="FxCorridorNote.Text"><value>Jeden wiersz na parę. Wiersz to korytarz — najniższy i najwyższy kurs, między którymi para się poruszała — a znacznik to kurs teraz. Oba są wypisane pod każdym wierszem, bo wąski i szeroki korytarz wyglądają na obrazie tak samo.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Świece miesięczne, bez korekty — waluta nie ma dywidendy ani podziału do skorygowania. Korytarz to najniższe i najwyższe **dotąd**, więc rozszerza się wraz z miesiącami, a para na 100% jest najdroższa, jaka była w tym zakresie, a nie przy jakimś limicie. Zasięg danych jest różny: USD/CNY sięga 2005, pozostałe pary renminbi — 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} par · {1} miesięcy · najwyżej w swoim korytarzu {2} przy {3} · najniżej {4} przy {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Za mało miesięcy w tym okresie, by utworzyć korytarz. Spróbuj dłuższego okresu.</value></data>
 </root>

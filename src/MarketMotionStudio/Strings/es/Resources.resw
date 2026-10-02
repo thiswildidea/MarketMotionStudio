@@ -711,4 +711,16 @@
   <data name="ExtremeDaysFetched"><value>{0} días candidatos · {1} días de negociación · el mayor {2} {3} · el menor del cuadro {4} {5}</value></data>
   <data name="ExtremeDaysRangeMax"><value>Más largo (unos 35 años)</value></data>
   <data name="ExtremeDaysTooFew"><value>No hay suficientes días de negociación en este periodo. Pruebe uno más largo.</value></data>
+  <data name="NavFxCorridor.Content"><value>Corredores de divisas</value></data>
+  <data name="FxCorridorPageTitle.Text"><value>Corredores de divisas</value></data>
+  <data name="FxCorridorStageTitle"><value>Corredores de divisas</value></data>
+  <data name="FxCorridorPageSubtitle.Text"><value>Dónde está cada par entre lo más barato y lo más caro que ha estado. Cada par se mide contra su propio rango.</value></data>
+  <data name="FxCorridorList.Header"><value>Pares</value></data>
+  <data name="FxCorridorListCny"><value>Pares del renminbi</value></data>
+  <data name="FxCorridorListCrosses"><value>Cruces principales</value></data>
+  <data name="FxCorridorRangeMax"><value>Más largo</value></data>
+  <data name="FxCorridorNote.Text"><value>Una fila por par. La fila es el corredor — el suelo y el techo entre los que ha cotizado — y la marca es dónde está la cotización ahora. Ambos se imprimen bajo cada fila, porque un corredor estrecho y uno ancho se ven igual en el fotograma.</value></data>
+  <data name="FxCorridorMethodNote.Text"><value>Velas mensuales, sin ajustar — una divisa no tiene dividendo ni split que ajustar. El corredor es el mínimo y el máximo **hasta ahora**, así que se ensancha con los meses, y un par al 100% está en lo más caro que ha estado, no en un límite. La cobertura varía: USD/CNY llega hasta 2005, los demás pares del renminbi hasta 2016.</value></data>
+  <data name="FxCorridorFetched"><value>{0} pares · {1} meses · el más alto en su corredor {2} en {3} · el más bajo {4} en {5}</value></data>
+  <data name="FxCorridorTooFew"><value>Demasiados pocos meses en este periodo para un corredor. Pruebe con un periodo más largo.</value></data>
 </root>
