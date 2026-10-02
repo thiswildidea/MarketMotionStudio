@@ -185,14 +185,23 @@ on one scale, and drawing levels would be a board about where each index happene
   the Dow only to 2009, and the Hang Seng Tech index starts in 2020. It is absent, not parked at
   0.00% — parked there it would rank above every index that was ever down, and read as a market in
   which nothing happened.
-- **Monthly bars, unadjusted.** An index pays no dividend, but the reason is the other one: an
-  adjustment rebases a series, and two rebased series side by side are not comparable. The page takes
-  the same raw path through the source that the A+H page takes.
+- **Monthly, and adjusted now.** An index pays nothing out, but a stock pays dividends and splits
+  its shares: Apple reads +193% across ten years unadjusted and +1183% adjusted, because the
+  unadjusted line carries cliffs no holder ever fell off. The indices are untouched by it — asked
+  for an adjustment, the source answers an index with the same rows it always did, and all twelve
+  came back identical on both calls. What the board does carry is a difference worth stating rather
+  than hiding: an index row is a **price** return, because an index is not a holding, while a stock
+  row is a **total** one, dividends and splits put back.
 - **The market setting does not govern this page**: it reads three markets at once, and switching the
   market does not change it. You can take the mainland's six, Hong Kong's three, New York's three, or
   all twelve.
 - The longest span is held down by the source's monthly ceiling of 430 bars, about thirty-five years;
   a range shorter than twelve months is refused — that is a sprint, not a long run.
+- **Or your own list.** The last group in the menu is a list of your own: type a code, a name or
+  pinyin to add one, and a mainland share, a Hong Kong one and a New York one can sit on it together
+  — this board never asks the market setting. One list, shared by four boards, so a stock added here
+  is offered on the asset race, the drawdown board and the hold-odds board too. Fewer than three and
+  the fetch is refused.
 
 ## Asset classes
 
@@ -213,6 +222,11 @@ funds listed on a mainland exchange, bought with the same money, so they can be 
   that has not joined yet is absent, not 0.00%.
 - **The market setting does not govern this page**: all eight are listed on the mainland. Fewer than
   twelve months is refused.
+- **Or your own list.** The last group in the menu is a list of your own: type a code, a name or
+  pinyin to add one, and the three markets can be mixed on it. One list shared by four boards, so a
+  stock added here is offered on the other three as well; it is fetched adjusted, exactly like the
+  eight funds, so dividends and share splits are in the number. Fewer than three and the fetch is
+  refused.
 
 ## Drawdowns
 
@@ -238,6 +252,11 @@ other.
   its high at the top, and they trade places as their months pass.
 - **Gold and the commodity fund were still under water when this was measured** — the board reports
   that kind of fall as open, because the range ended before it was mended.
+- **Or your own list.** The last group in the menu is a list of your own: type a code, a name or
+  pinyin to add one, and the three markets can be mixed on it. One list shared by four boards, so a
+  stock added here is offered on the other three as well; it is fetched adjusted, exactly like the
+  eight funds, so dividends and share splits are in the number. Fewer than three and the fetch is
+  refused.
 
 Not governed by the market setting: all eight are quoted on a mainland exchange. Fewer than twelve
 months in the range is refused.
@@ -266,6 +285,11 @@ than on how much they made.
   years are different questions with different answers, and the eight rows reorder between them.
 - **The rows still race.** They are ordered by their rate, most often ahead at the top, and they
   trade places as their months pass.
+- **Or your own list.** The last group in the menu is a list of your own: type a code, a name or
+  pinyin to add one, and the three markets can be mixed on it. One list shared by four boards, so a
+  stock added here is offered on the other three as well; it is fetched adjusted, exactly like the
+  eight funds, so dividends and share splits are in the number. Fewer than three and the fetch is
+  refused.
 
 Measured over the last ten years with a three-year hold: the Nasdaq fund was ahead on all
 eighty-four of its entries and the Hong Kong fund on forty per cent of them — two rows the asset

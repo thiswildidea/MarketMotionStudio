@@ -183,14 +183,24 @@ una misma escala: dibujar niveles sería un tablero sobre dónde empezó a conta
   solo hasta 2009, y el índice Hang Seng Tech empieza en 2020. Está ausente, no aparcado en el 0,00%
   — ahí se situaría por encima de todo índice que haya caído alguna vez, y se leería como un mercado
   en el que no pasó nada.
-- **Velas mensuales, sin ajustar.** Un índice no paga dividendo, pero la razón es la otra: un ajuste
-  rebasó una serie, y dos series rebasadas una al lado de la otra no son comparables. La página toma
-  el mismo camino en crudo por la fuente que toma la página A+H.
+- **Mensual, y ahora ajustado.** Un índice no reparte nada, pero una acción paga dividendos y
+  desdobla sus títulos: Apple marca +193 % en diez años sin ajustar y +1183 % ajustado, porque la
+  serie sin ajustar lleva acantilados por los que ningún tenedor cayó nunca. Los índices no se
+  alteran: si se pide ajuste, la fuente responde a un índice con las mismas filas de siempre, y los
+  doce resultaron idénticos en ambas vías. Lo que sí trae el tablero es una diferencia que conviene
+  declarar: la fila de un índice es una rentabilidad **de precio**, porque un índice no es una
+  posición, mientras que la de una acción es **total**, con dividendos y desdoblamientos
+  incorporados.
 - **El ajuste de mercado no gobierna esta página**: lee tres mercados a la vez, y cambiar de mercado
   no la cambia. Pueden tomarse las seis del continente, las tres de Hong Kong, las tres de Nueva York
   o las doce.
 - El periodo más largo está limitado por el techo mensual de la fuente — 430 velas, unos treinta y
   cinco años; menos de doce meses se rechaza: eso es un esprint, no una carrera de fondo.
+- **O su propia lista.** El último grupo del menú es una lista propia: escriba un código, un
+  nombre o pinyin para añadir uno, y un valor continental, uno de Hong Kong y uno de Nueva York
+  pueden convivir en ella — este tablero nunca consulta el ajuste de mercado. Una lista para cuatro
+  tableros: una acción añadida aquí también se ofrece en la carrera de activos, en las caídas y en
+  la tasa de acierto. Con menos de tres se rechaza la descarga.
 
 ## Clases de activos
 
@@ -212,6 +222,11 @@ comparar directamente.
   en 2019. Una fila que aún no ha entrado está ausente, no en 0,00 %.
 - **El ajuste de mercado no gobierna esta página**: las ocho cotizan en el continente. Menos de doce
   meses se rechaza.
+- **O su propia lista.** El último grupo del menú es una lista propia: escriba un código, un
+  nombre o pinyin para añadir uno, y en ella pueden mezclarse los tres mercados. Una lista para
+  cuatro tableros: una acción añadida aquí también se ofrece en los otros tres; se descarga
+  ajustada, exactamente como los ocho fondos, de modo que dividendos y desdoblamientos están en la
+  cifra. Con menos de tres se rechaza la descarga.
 
 ## Caídas
 
@@ -237,6 +252,11 @@ contra sí mismas en lugar de entre sí.
   más cerca de su máximo arriba — e intercambian puestos a medida que pasan los meses.
 - **El oro y el fondo de materias primas seguían bajo el agua cuando se midió esto** — el tablero
   reporta ese tipo de caída como abierta, porque el periodo terminó antes de que se reparara.
+- **O su propia lista.** El último grupo del menú es una lista propia: escriba un código, un
+  nombre o pinyin para añadir uno, y en ella pueden mezclarse los tres mercados. Una lista para
+  cuatro tableros: una acción añadida aquí también se ofrece en los otros tres; se descarga
+  ajustada, exactamente como los ocho fondos, de modo que dividendos y desdoblamientos están en la
+  cifra. Con menos de tres se rechaza la descarga.
 
 No depende del ajuste de mercado: los ocho cotizan en una bolsa continental. Menos de doce meses
 en el periodo se rechaza.
@@ -266,6 +286,11 @@ no por cuánto dieron.
   se reordenan entre una y otra.
 - **Las filas siguen corriendo.** Se ordenan por su tasa — la que más veces acaba en ganancia
   arriba — y se intercambian los puestos mientras pasan los meses.
+- **O su propia lista.** El último grupo del menú es una lista propia: escriba un código, un
+  nombre o pinyin para añadir uno, y en ella pueden mezclarse los tres mercados. Una lista para
+  cuatro tableros: una acción añadida aquí también se ofrece en los otros tres; se descarga
+  ajustada, exactamente como los ocho fondos, de modo que dividendos y desdoblamientos están en la
+  cifra. Con menos de tres se rechaza la descarga.
 
 Medido en los últimos diez años con una tenencia de tres años: el fondo Nasdaq acabó en ganancia
 en las ochenta y cuatro entradas y el fondo de Hong Kong en el cuarenta por ciento de ellas — dos

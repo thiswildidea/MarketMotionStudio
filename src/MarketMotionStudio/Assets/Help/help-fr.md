@@ -187,14 +187,25 @@ chaque indice a commencé à compter.
   Dow seulement à 2009, et l'indice Hang Seng Tech commence en 2020. Il est absent, il ne stationne
   pas à 0,00 % — à ce niveau il se classerait au-dessus de tout indice jamais baissier, et se lirait
   comme un marché où rien ne s'est passé.
-- **Bougies mensuelles, non ajustées.** Un indice ne verse pas de dividende, mais la raison est
-  l'autre : un ajustement rebase une série, et deux séries rebasées côte à côte ne sont pas
-  comparables. La page prend le même chemin brut dans la source que la page A+H.
+- **Mensuel, et désormais ajusté.** Un indice ne distribue rien, mais une action verse des
+  dividendes et divise ses titres : Apple affiche +193 % sur dix ans sans ajustement et +1183 %
+  ajusté, car la ligne non ajustée porte des falaises dont aucun détenteur n'est jamais tombé. Les
+  indices n'y changent pas : si l'on demande un ajustement, la source répond à un indice avec les
+  mêmes lignes qu'avant, et les douze étaient identiques sur les deux voies. Ce que le tableau porte
+  désormais est une différence qu'il vaut mieux énoncer : la ligne d'un indice est un rendement
+  **de prix**, car un indice n'est pas une position, celle d'une action est un rendement **total**,
+  dividendes et divisions remis dedans.
 - **Le réglage de marché ne gouverne pas cette page** : elle lit trois marchés à la fois, et changer
   de marché ne la change pas. On peut prendre les six du continent, les trois de Hong Kong, les trois
   de New York, ou les douze.
 - La période la plus longue est bornée par le plafond mensuel de la source — 430 bougies, environ
   trente-cinq ans ; moins de douze mois est refusé : c'est un sprint, pas une course de fond.
+- **Ou votre propre liste.** Le dernier groupe du menu est une liste personnelle : tapez un code,
+  un nom ou du pinyin pour en ajouter un, et une valeur continentale, une de Hong Kong et une de
+  New York peuvent y figurer ensemble — ce tableau ne consulte jamais le réglage de marché. Une
+  liste pour quatre tableaux : une action ajoutée ici est également proposée dans la course
+  d'actifs, dans les replis et dans le taux de réussite. En dessous de trois, le chargement est
+  refusé.
 
 ## Classes d'actifs
 
@@ -218,6 +229,11 @@ directement comparables.
   0,00 %.
 - **Le réglage de marché ne régit pas cette page** : les huit sont cotés sur le continent. Moins de
   douze mois est refusé.
+- **Ou votre propre liste.** Le dernier groupe du menu est une liste personnelle : tapez un code,
+  un nom ou du pinyin pour en ajouter un, et les trois marchés peuvent s'y mélanger. Une liste pour
+  quatre tableaux : une action ajoutée ici est également proposée sur les trois autres ; elle est
+  chargée ajustée, exactement comme les huit fonds, si bien que dividendes et divisions sont dans
+  le chiffre. En dessous de trois, le chargement est refusé.
 
 ## Reculs
 
@@ -248,6 +264,11 @@ des classes d'actifs, mesurés par rapport à eux-mêmes au lieu de l'être entr
 - **L'or et le fonds de matières premières étaient encore sous l'eau lors de cette mesure** — le
   tableau signale ce genre de recul comme ouvert, parce que la période s'est terminée avant qu'il
   ne soit réparé.
+- **Ou votre propre liste.** Le dernier groupe du menu est une liste personnelle : tapez un code,
+  un nom ou du pinyin pour en ajouter un, et les trois marchés peuvent s'y mélanger. Une liste pour
+  quatre tableaux : une action ajoutée ici est également proposée sur les trois autres ; elle est
+  chargée ajustée, exactement comme les huit fonds, si bien que dividendes et divisions sont dans
+  le chiffre. En dessous de trois, le chargement est refusé.
 
 Ne dépend pas du réglage de marché : les huit sont cotés sur une place de marché continentale.
 Moins de douze mois dans la période est refusé.
@@ -277,6 +298,11 @@ si les détenir a fonctionné, non sur ce qu'ils ont rapporté.
   se réordonnent entre les deux.
 - **Les lignes courent toujours.** Elles sont ordonnées par leur taux — le plus souvent en gain
   en haut — et échangent leurs places à mesure que les mois passent.
+- **Ou votre propre liste.** Le dernier groupe du menu est une liste personnelle : tapez un code,
+  un nom ou du pinyin pour en ajouter un, et les trois marchés peuvent s'y mélanger. Une liste pour
+  quatre tableaux : une action ajoutée ici est également proposée sur les trois autres ; elle est
+  chargée ajustée, exactement comme les huit fonds, si bien que dividendes et divisions sont dans
+  le chiffre. En dessous de trois, le chargement est refusé.
 
 Mesuré sur les dix dernières années avec une détention de trois ans : le fonds Nasdaq était en
 avance sur ses quatre-vingt-quatre entrées et le fonds de Hong Kong sur quarante pour cent d'entre

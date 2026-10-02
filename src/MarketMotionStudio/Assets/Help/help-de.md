@@ -187,15 +187,25 @@ zufällig zu zählen begann.
 - **Ein Index, der später kommt, steht erst ab dann auf dem Bild.** Der S&P reicht bis 1950, der Dow
   nur bis 2009, und der Hang-Seng-Tech-Index beginnt 2020. Er fehlt, statt bei 0,00% zu parken — dort
   stünde er über jedem Index, der je gefallen ist, und man läse einen Markt, in dem nichts geschah.
-- **Monatskerzen, nicht bereinigt.** Ein Index zahlt keine Dividende, aber der Grund ist der andere:
-  eine Bereinigung basiert eine Reihe neu, und zwei neu basierte Reihen nebeneinander sind nicht
-  vergleichbar. Die Seite nimmt denselben unbereinigten Weg durch die Quelle wie die A+H-Seite.
+- **Monatlich, und jetzt angepasst.** Ein Index schüttet nichts aus, aber eine Aktie zahlt
+  Dividenden und teilt ihre Anteile: Apple liegt über zehn Jahre unangepasst bei +193 % und
+  angepasst bei +1183 %, weil die unangepasste Linie Klippen enthält, von denen kein Halter je
+  gefallen ist. Die Indizes bleiben unberührt — auf eine Anpassung hin antwortet die Quelle einem
+  Index mit denselben Zeilen wie immer, und alle zwölf waren auf beiden Wegen identisch. Was das
+  Tableau nun trägt, ist ein Unterschied, den man nennen sollte: Eine Indexzeile ist eine
+  **Kurs**rendite, denn ein Index ist keine Position, eine Aktienzeile dagegen eine
+  **Gesamt**rendite mit Dividenden und Splits.
 - **Die Markteinstellung gilt hier nicht**: die Seite liest drei Märkte zugleich, und ein Wechsel des
   Marktes ändert sie nicht. Zur Wahl stehen die sechs des Festlands, die drei aus Hongkong, die drei
   aus New York oder alle zwölf.
 - Die längste Spanne ist durch die Monatsgrenze der Quelle gedeckelt — 430 Kerzen, etwa
   fünfunddreißig Jahre. Weniger als zwölf Monate werden abgelehnt: das ist ein Sprint, kein
   Langstreckenlauf.
+- **Oder die eigene Liste.** Die letzte Gruppe im Menü ist eine eigene Liste: Code, Name oder
+  Pinyin eintippen, um einen Wert hinzuzufügen, und eine Festlandaktie, eine aus Hongkong und eine
+  aus New York dürfen gemeinsam darauf stehen — dieses Tableau fragt die Markteinstellung nie. Eine
+  Liste für vier Tableaus: Wer hier eine Aktie ergänzt, findet sie auch beim Anlagenrennen, bei den
+  Rücksetzern und bei der Haltequote wieder. Unter dreien wird das Holen verweigert.
 
 ## Anlageklassen
 
@@ -219,6 +229,11 @@ direkt vergleichbar.
   Eine Zeile, die noch nicht dabei ist, fehlt, statt bei 0,00 % zu stehen.
 - **Die Markteinstellung regiert diese Seite nicht**: alle acht sind auf dem Festland notiert.
   Weniger als zwölf Monate werden abgelehnt.
+- **Oder die eigene Liste.** Die letzte Gruppe im Menü ist eine eigene Liste: Code, Name oder
+  Pinyin eintippen, um einen Wert hinzuzufügen, und die drei Märkte dürfen darauf gemischt werden.
+  Eine Liste für vier Tableaus: Wer hier eine Aktie ergänzt, findet sie auf den drei anderen
+  wieder; geholt wird sie ajustiert, genau wie die acht Fonds, also mit Dividenden und
+  Anteilssplits in der Zahl. Unter dreien wird das Holen verweigert.
 
 ## Rücksetzer
 
@@ -245,6 +260,11 @@ Anlageklassen, am eigenen Hoch gemessen statt gegeneinander.
   stehen — dem Hoch am nächsten oben — und tauschen die Plätze, während die Monate vergehen.
 - **Gold und der Rohstofffonds lagen bei dieser Messung noch unter Wasser** — die Tafel meldet
   solche Rücksetzer als offen, weil der Zeitraum endete, bevor sie behoben waren.
+- **Oder die eigene Liste.** Die letzte Gruppe im Menü ist eine eigene Liste: Code, Name oder
+  Pinyin eintippen, um einen Wert hinzuzufügen, und die drei Märkte dürfen darauf gemischt werden.
+  Eine Liste für vier Tableaus: Wer hier eine Aktie ergänzt, findet sie auf den drei anderen
+  wieder; geholt wird sie ajustiert, genau wie die acht Fonds, also mit Dividenden und
+  Anteilssplits in der Zahl. Unter dreien wird das Holen verweigert.
 
 Nicht von der Markteinstellung abhängig: alle acht werden an einer Festlandbörse gehandelt.
 Weniger als zwölf Monate im Zeitraum werden abgelehnt.
@@ -274,6 +294,11 @@ Halten funktionierte, nicht danach, wie viel es einbrachte.
   acht Zeilen ordnen sich dazwischen neu.
 - **Die Zeilen rennen weiter.** Sie sind nach ihrer Quote geordnet — am häufigsten im Plus oben —
   und tauschen die Plätze, während die Monate vergehen.
+- **Oder die eigene Liste.** Die letzte Gruppe im Menü ist eine eigene Liste: Code, Name oder
+  Pinyin eintippen, um einen Wert hinzuzufügen, und die drei Märkte dürfen darauf gemischt werden.
+  Eine Liste für vier Tableaus: Wer hier eine Aktie ergänzt, findet sie auf den drei anderen
+  wieder; geholt wird sie ajustiert, genau wie die acht Fonds, also mit Dividenden und
+  Anteilssplits in der Zahl. Unter dreien wird das Holen verweigert.
 
 Gemessen über die letzten zehn Jahre mit drei Jahren Haltedauer: Der Nasdaq-Fonds lag bei allen
 vierundachtzig Einstiegen vorn, der Hongkong-Fonds bei vierzig Prozent von ihnen — zwei Zeilen, die

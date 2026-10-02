@@ -174,13 +174,22 @@ stupnici; kreslit úrovně by byla tabule o tom, kde který index začal počít
 - **Index, který přijde později, na tabuli není, dokud nepřijde.** S&P sahá do roku 1950, Dow jen do
   2009 a index Hang Seng Tech začíná v roce 2020. Chybí, nestojí na 0,00 % — tam by se zařadil nad
   každý index, který kdy klesl, a četlo by se to jako trh, kde se nic nestalo.
-- **Měsíční svíčky, bez úprav.** Index nevyplácí dividendu, ale důvod je jiný: úprava přebazuje sérii
-  a dvě přebazované řady vedle sebe nejsou srovnatelné. Stránka jde stejnou neupravenou cestou ke
-  zdroji jako stránka A+H.
+- **Měsíčně, a nyní ajustováno.** Index nic nevyplácí, ale akcie platí dividendy a dělí své
+  podíly: Apple ukazuje +193 % za deset let neajustovaně a +1183 % ajustovaně, protože
+  neajustovaná čára nese srázy, z nichž žádný držitel nikdy nespadl. Indexů se to nedotkne —
+  požádán o úpravu odpoví zdroj indexu týmiž řádky jako vždy, a všech dvanáct vyšlo na obou
+  cestách identicky. Co tabule nese nyní, je rozdíl, který stojí za řeč: řádek indexu je
+  **cenový** výnos, protože index není pozice, zatímco řádek akcie je výnos **celkový**, s
+  dividendami a děleními zpět uvnitř.
 - **Nastavení trhu tuto stránku neřídí**: čte tři trhy najednou a změna trhu ji nezmění. Lze vzít šest
   z pevniny, tři z Hongkongu, tři z New Yorku nebo všech dvanáct.
 - Nejdelší období omezuje měsíční strop zdroje — 430 svíček, asi třicet pět let; méně než dvanáct
   měsíců je odmítnuto: to je sprint, ne dlouhý běh.
+- **Nebo vlastní seznam.** Poslední skupina v menu je vlastní seznam: napište kód, název nebo
+  pinyin a přidejte jeden, a cenný papír z pevniny, z Hongkongu a z New Yorku mohou být na něm
+  zároveň — tato tabule se nikdy neptá na nastavení trhu. Jeden seznam pro čtyři tabule: akcii
+  přidanou zde najdete i v závodu aktiv, v poklesech a v úspěšnosti držení. Pod tři se stahování
+  odmítne.
 
 ## Třídy aktiv
 
@@ -200,6 +209,10 @@ kotované na kontinentální burze, koupené za stejné peníze, takže je lze s
   který ještě nenastoupil, chybí — nestojí na 0,00 %.
 - **Nastavení trhu tuto stránku neřídí**: všech osm je kotováno na pevnině. Méně než dvanáct měsíců
   je odmítnuto.
+- **Nebo vlastní seznam.** Poslední skupina v menu je vlastní seznam: napište kód, název nebo
+  pinyin a přidejte jeden; tři trhy na něm lze míchat. Jeden seznam pro čtyři tabule: akcii
+  přidanou zde najdete i na dalších třech; stahuje se ajustovaně, přesně jako osm fondů, takže
+  dividendy a dělení jsou v čísle. Pod tři se stahování odmítne.
 
 ## Poklesy
 
@@ -225,6 +238,10 @@ sobě navzájem.
   maximu nahoře — a vyměňují si místa, jak měsíce plynou.
 - **Zlato a komoditní fond byly při tomto měření stále pod vodou** — tabule hlásí takový pokles jako
   otevřený, protože období skončilo dřív, než byl napraven.
+- **Nebo vlastní seznam.** Poslední skupina v menu je vlastní seznam: napište kód, název nebo
+  pinyin a přidejte jeden; tři trhy na něm lze míchat. Jeden seznam pro čtyři tabule: akcii
+  přidanou zde najdete i na dalších třech; stahuje se ajustovaně, přesně jako osm fondů, takže
+  dividendy a dělení jsou v čísle. Pod tři se stahování odmítne.
 
 Neřídí se nastavením trhu: všech osm je kótováno na kontinentální burze. Méně než dvanáct měsíců
 v období je odmítnuto.
@@ -252,6 +269,10 @@ vynesly.
   jsou dvě různé otázky se dvěma různými odpověďmi a osm řádků se mezi nimi přerovná.
 - **Řádky stále běží.** Řadí se podle své míry — nejčastěji v plusu nahoře — a vyměňují si místa,
   jak měsíce plynou.
+- **Nebo vlastní seznam.** Poslední skupina v menu je vlastní seznam: napište kód, název nebo
+  pinyin a přidejte jeden; tři trhy na něm lze míchat. Jeden seznam pro čtyři tabule: akcii
+  přidanou zde najdete i na dalších třech; stahuje se ajustovaně, přesně jako osm fondů, takže
+  dividendy a dělení jsou v čísle. Pod tři se stahování odmítne.
 
 Měřeno za posledních deset let s tříletým držením: fond Nasdaq byl v plusu při všech osmdesáti
 čtyřech vstupech a fond z Hongkongu při čtyřiceti procentech z nich — dva řádky, které závod tříd

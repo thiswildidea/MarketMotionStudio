@@ -179,13 +179,21 @@ olurdu.
 - **Geç gelen bir endeks, gelene kadar tabloda yoktur.** S&P 1950'ye, Dow yalnızca 2009'a uzanır ve
   Hang Seng Teknoloji endeksi 2020'de başlar. %0,00'de durmaz, hiç yoktur — orada dursaydı şimdiye
   kadar düşmüş her endeksin üstünde sıralanır ve 'hiçbir şey olmayan bir piyasa' gibi okunurdu.
-- **Aylık mumlar, düzeltilmemiş.** Bir endeks temettü ödemez, ama asıl neden diğeridir: düzeltme bir
-  seriyi yeniden bazlar ve yan yana konan iki yeniden bazlanmış seri karşılaştırılamaz. Sayfa,
-  kaynağa AH sayfasının gittiği ham yoldan gider.
+- **Aylık, ve artık düzeltilmiş.** Bir endeks hiçbir şey dağıtmaz, ama bir hisse temettü öder ve
+  paylarını böler: Apple on yılda düzeltilmemiş +193 %, düzeltilmiş +1183 % okur, çünkü
+  düzeltilmemiş çizgi hiçbir yatırımcının düşmediği uçurumlar taşır. Endeksler bundan etkilenmez —
+  düzeltme istendiğinde kaynak bir endekse her zamanki satırlarla yanıt verir ve on ikisi de iki
+  yolda birebir aynı çıktı. Tablonun şimdi taşıdığı şey saklanacak değil söylenecek bir farktır:
+  bir endeks satırı **fiyat** getirisidir, çünkü endeks bir pozisyon değildir; bir hisse satırı ise
+  temettüleri ve bölünmeleri içine alan **toplam** getiridir.
 - **Piyasa ayarı bu sayfayı yönetmez**: üç piyasayı birlikte okur, piyasa değişse de o değişmez.
   Anakaranın altısı, Hong Kong'un üçü, New York'un üçü veya on ikisi birden seçilebilir.
 - En uzun dönem, kaynağın aylık tavanıyla sınırlıdır — 430 mum, yaklaşık otuz beş yıl; on iki aydan
   kısa dönemler reddedilir: bu uzun koşu değil, kısa mesafedir.
+- **Ya da kendi listeniz.** Menünün son grubu kendi listenizdir: bir tane eklemek için kod, ad
+  veya pinyin yazın; anakara, Hong Kong ve New York değerleri birlikte durabilir — bu tablo piyasa
+  ayarını hiç sormaz. Dört tablo için tek liste: buraya eklenen bir hisse, varlık yarışında,
+  geri çekilmelerde ve tutma başarısında da sunulur. Üçün altında çekme reddedilir.
 
 ## Varlık sınıfları
 
@@ -206,6 +214,10 @@ karşılaştırılabilir.
   bir satır yoktur, %0,00'de durmaz.
 - **Piyasa ayarı bu sayfayı yönetmez**: sekizi de anakarada işlem görür. On iki aydan kısa dönemler
   reddedilir.
+- **Ya da kendi listeniz.** Menünün son grubu kendi listenizdir: bir tane eklemek için kod, ad
+  veya pinyin yazın; üç piyasa burada karıştırılabilir. Dört tablo için tek liste: buraya eklenen
+  bir hisse diğer üçünde de sunulur; sekiz fonla tamamen aynı şekilde düzeltilmiş çekilir, yani
+  temettüler ve pay bölünmeleri sayının içindedir. Üçün altında çekme reddedilir.
 
 ## Düşüşler
 
@@ -231,6 +243,10 @@ değil kendine göre ölçülüyor.
   zirvesine en yakın olan en üstte — ve aylar geçtikçe yer değiştirirler.
 - **Altın ve emtia fonu ölçüm yapıldığında hâlâ suyun altındaydı** — tablo bu tür düşüşü açık olarak
   bildirir, çünkü aralık onarılmadan önce sona ermiştir.
+- **Ya da kendi listeniz.** Menünün son grubu kendi listenizdir: bir tane eklemek için kod, ad
+  veya pinyin yazın; üç piyasa burada karıştırılabilir. Dört tablo için tek liste: buraya eklenen
+  bir hisse diğer üçünde de sunulur; sekiz fonla tamamen aynı şekilde düzeltilmiş çekilir, yani
+  temettüler ve pay bölünmeleri sayının içindedir. Üçün altında çekme reddedilir.
 
 Piyasa ayarına bağlı değil: sekizi de anakara borsasında kote. Aralıkta on iki aydan az varsa reddedilir.
 
@@ -257,6 +273,10 @@ veriliyor.
   ve farklı cevapları vardır; sekiz satır ikisi arasında yeniden sıralanır.
 - **Satırlar hâlâ yarışıyor.** Oranlarına göre dizilirler — en sık artıda biten üstte — ve aylar
   geçtikçe yer değiştirirler.
+- **Ya da kendi listeniz.** Menünün son grubu kendi listenizdir: bir tane eklemek için kod, ad
+  veya pinyin yazın; üç piyasa burada karıştırılabilir. Dört tablo için tek liste: buraya eklenen
+  bir hisse diğer üçünde de sunulur; sekiz fonla tamamen aynı şekilde düzeltilmiş çekilir, yani
+  temettüler ve pay bölünmeleri sayının içindedir. Üçün altında çekme reddedilir.
 
 Son on yılda üç yıllık tutuşla ölçüldüğünde: Nasdaq fonu seksen dört girişinin tamamında öndeydi,
 Hong Kong fonu ise bunların yüzde kırkında — varlık sınıfları yarışının on yıllık toplam getiriyle

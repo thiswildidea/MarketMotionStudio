@@ -87,11 +87,25 @@ public static class WorldIndexLists
 /// are not Hong Kong's and neither is New York's, and a day any one of them lacked would either
 /// drop out of every row or be carried forward into a claim that nothing moved.
 ///
-/// **Unadjusted, and that is the whole of the comparison.** Every other board here is drawn from
-/// an adjusted series, because a dividend is not a fall. An index has no dividend to adjust for
-/// — but that is not the reason. The reason is the one the A+H page found: an adjustment is a
-/// rebasing of one series, and putting two rebased series side by side compares two different
-/// things. `RawBarsAsync` is the call that cannot be something else by accident.
+/// **Adjusted, and what that costs an index is nothing.** This board was drawn unadjusted for the
+/// reason the A+H page found: an adjustment rebases one series, and two rebased series side by
+/// side compare two different things. That reason died the day this board took a reader's own
+/// list, because a single stock on an unadjusted series is not a small error — a dividend is a
+/// cliff and a split is a halving, and neither is anything a holder lost. Measured over the last
+/// ten years, Apple reads +193% unadjusted and +1183% adjusted.
+///
+/// So the call is `TotalReturnBarsAsync`, and the indices are unaffected by it: asked for an
+/// adjustment, the source answers an index with the same unadjusted rows it always did — all
+/// twelve were checked on both calls and the first close, the last close and the ten-year change
+/// came back identical to four decimal places. **The rebasing that rule was protecting against is
+/// a thing the source does not do to an index**, so the protection was never doing any work here;
+/// what it was doing was making a stock unquotable.
+///
+/// What the board does carry now is a difference worth knowing rather than one worth hiding: an
+/// index row is a *price* return, because an index is not a holding and pays nothing out, while a
+/// stock row is a *total* return, dividends and splits put back. Two rows of the same board
+/// answering slightly different questions, which is why it is written down here and in the help
+/// rather than left to be discovered.
 ///
 /// **A row that has not started yet is not on the board**, and this is the one board that needs
 /// saying. The S&amp;P reaches back to 1950, the Dow to 2009, 恒生科技 to 2020. On a shared axis
@@ -138,7 +152,9 @@ public static class IndexRace
                 CultureInfo.InvariantCulture, "{0} ({1}/{2})",
                 InstrumentNames.Display(entry.Code, entry.Name), i + 1, indices.Count));
 
-            var bars = await kline.RawBarsAsync(
+            // Adjusted — see the class note. An index comes back the same either way; a stock
+            // does not, and a stock is what the reader's own list is made of.
+            var bars = await kline.TotalReturnBarsAsync(
                 entry.Code, Period, start, end, MonthsWanted, cancellation);
 
             var byMonth = new Dictionary<DateOnly, double>();

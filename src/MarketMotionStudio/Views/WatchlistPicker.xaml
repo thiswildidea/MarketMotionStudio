@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MarketMotionStudio.Views.WatchlistPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:market="using:MarketMotionStudio.Market">
+
+    <!-- One's own list, as chips. Bound to the shared collection, so a pick made on one roster
+         board is on every other one without this control or that page doing anything about it. -->
+    <StackPanel Spacing="8">
+        <AutoSuggestBox x:Name="Search"
+                        x:Uid="StockSearch"
+                        QueryIcon="Find"
+                        TextChanged="OnSearchTextChanged"
+                        QuerySubmitted="OnSearchSubmitted"
+                        SuggestionChosen="OnSuggestionChosen" />
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      HorizontalScrollMode="Auto"
+                      VerticalScrollMode="Disabled"
+                      VerticalScrollBarVisibility="Hidden">
+            <ItemsControl x:Name="Chips">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="6" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="market:RaceEntry">
+                        <Button Click="OnRemove"
+                                Padding="10,5"
+                                CornerRadius="10"
+                                Tag="{x:Bind Code}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="{x:Bind Name}" />
+                                <TextBlock Text="×"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </StackPanel>
+</UserControl>

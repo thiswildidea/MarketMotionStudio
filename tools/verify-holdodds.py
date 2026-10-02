@@ -85,15 +85,29 @@ def report():
 # ---- 独立算一遍（不经过应用）----------------------------------------------------------
 
 
+def endpoint_for(code):
+    """`TencentKline.TotalReturn` 的那张路由表：代码前缀决定端点和复权档。
+
+    自选股是跨市场的（这一页不看市场设置），脚本若只认通用端点，港股和美股那两行会一路
+    取到空表 —— 而应用照常出榜，两边各说各话谁也不报错。
+    """
+    if code.startswith("hk"):
+        return "https://web.ifzq.gtimg.cn/appstock/app/hkfqkline/get", "hfq"
+    if code.startswith("us"):
+        return "https://web.ifzq.gtimg.cn/appstock/app/usfqkline/get", "qfq"
+    return "https://web.ifzq.gtimg.cn/appstock/app/newfqkline/get", "hfq"
+
+
 def monthly(code, start, end):
-    """源端的月线，**后复权**——和应用里 TotalReturnBarsAsync 用的是同一条路径。
+    """源端的月线，**复权**——和应用里 TotalReturnBarsAsync 用的是同一条路径。
 
     两条清洗规则一起复刻，否则两边差一个月：
       - `CandlesFromAsync` 丢掉还没走完的月（`IsSettledFor`），十月初取数末月是九月；
       - 同一条调用还按 start/end 裁一遍，因为源端对月线的 start 并不总是买账。
     """
-    url = ("https://web.ifzq.gtimg.cn/appstock/app/newfqkline/get"
-           f"?param={code},month,{start},{end},430,hfq")
+    base, adj = endpoint_for(code)
+
+    url = f"{base}?param={code},month,{start},{end},430,{adj}"
 
     raw = urllib.request.urlopen(
         urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}),
@@ -102,7 +116,7 @@ def monthly(code, start, end):
     node = json.loads(raw).get("data", {}).get(code, {})
 
     rows = None
-    for key in ("hfqmonth", "month"):
+    for key in (adj + "month", "month"):
         value = node.get(key)
         if isinstance(value, list) and value:
             rows = value
@@ -297,15 +311,21 @@ def canvas_box(whole):
     Not by a proportion of the window: on a light theme the window's own background is light,
     and a crop that assumed the canvas fills the frame counted the whole settings panel as one
     enormous white row.
+
+    **Vivid, not dark.** "Dark" was the first rule here and it works on most boards, whose
+    backgrounds are near-black — but this page's canvas is a deep red, so `max(r, g, b) < 95`
+    matched the window's own chrome instead and the row count came out as one. Saturation is
+    what those two really differ in: a grey window has none, whatever its brightness, and every
+    canvas in this app has a lot.
     """
     pixels = whole.load()
     width, height = whole.size
 
-    def dark(x, y):
+    def vivid(x, y):
         r, g, b = pixels[x, y]
-        return max(r, g, b) < 95
+        return max(r, g, b) - min(r, g, b) > 60 and max(r, g, b) > 60
 
-    columns = [sum(1 for y in range(0, height, 4) if dark(x, y)) for x in range(width)]
+    columns = [sum(1 for y in range(0, height, 4) if vivid(x, y)) for x in range(width)]
     widest = max(columns)
     band = [x for x, count in enumerate(columns) if count > widest * 0.5]
 
@@ -314,7 +334,7 @@ def canvas_box(whole):
 
     left, right = band[0], band[-1]
 
-    across = [sum(1 for x in range(left, right, 4) if dark(x, y)) for y in range(height)]
+    across = [sum(1 for x in range(left, right, 4) if vivid(x, y)) for y in range(height)]
     tallest = max(across)
     band = [y for y, count in enumerate(across) if count > tallest * 0.5]
 
@@ -465,6 +485,74 @@ def fetch(win, seconds=480):
     }, status
 
 
+def watch_chips(win):
+    """自选那一排 chip，每项是 (按钮, 标的名)。
+
+    每个 chip 自己就是删除按钮（点一下就删掉那一条）。两件事都是打印出来才看清的：
+
+      - 那个 `ItemsControl` 在 UIA 里**没有自己的节点**，所以只能从整窗里找；
+      - 按钮自己的 `Name` 是**空的**（`Name='' 子树=['贵州茅台', '×']`）—— 名字在子文本里，
+        不按按钮名认，否则数出来永远是 0，而画面上三条 chip 好好地在那儿。
+    """
+    out = []
+
+    for button in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+        kids = [t.Name for t in winui.find_all(
+            button, lambda c: c.ControlTypeName == "TextControl", limit=6)]
+
+        if any(k.strip() in ("×", "✕") for k in kids):
+            name = next((k for k in kids if k.strip() not in ("×", "✕")), "")
+            out.append((button, name))
+
+    return out
+
+
+def clear_watch(win):
+    """把自选清空。
+
+    **先清空再断言**：这份清单是四页共用、跨会话留下的，上一次跑脚本加的东西还在这里。若
+    不清空，取的数是「上次那几只 + 这次这几只」，而脚本按这次这几只重算 —— 两边对不上，
+    而画面是一版漂亮的自选榜，看不出它多画了几行。
+    """
+    for _ in range(24):
+        chips = watch_chips(win)
+
+        if not chips:
+            return True
+
+        try:
+            chips[0][0].GetInvokePattern().Invoke()
+        except Exception:  # noqa: BLE001
+            return False
+
+        time.sleep(0.6)
+
+    return False
+
+
+def add_watch(win, code):
+    """在自选的搜索框里填一个代码并提交。
+
+    代码走剪贴板而不是按键，回车提交而不是点建议：建议弹层是另一个顶层窗口。
+    """
+    box = winui.find(win, lambda c: c.AutomationId == "Search")
+    edit = None if box is None else winui.find(box, lambda c: c.AutomationId == "TextBox", limit=6)
+
+    if edit is None:
+        return False
+
+    edit.SetFocus()
+    time.sleep(0.3)
+    edit.SendKeys("{Ctrl}a", waitTime=0.3)
+    auto.SetClipboardText(code)
+    edit.SendKeys("{Ctrl}v", waitTime=0.5)
+    time.sleep(1.0)
+    edit.SendKeys("{Enter}", waitTime=0.5)
+    time.sleep(2.0)
+
+    return True
+
+
 def maxed(win):
     win.SetActive()
     time.sleep(1.5)
@@ -503,7 +591,7 @@ def main():
 
     # 量词：页面必须自己给，渲染器不许替页面编。
     check("周期词由页面传", 'SpanWord = Strings.Get("MarketCapUnitMonths")' in page)
-    check("计数词由页面传", 'UnitWord = Strings.Get("AssetRaceUnitAssets")' in page)
+    check("计数词由页面传", "UnitWord = ChosenUnit()" in page)
 
     # 一次持有从**走完的那个月**才计入，不是从买入的那个月。
     check("持有记在走完的那个月（不是买入的那个月）", "endsAt[i + hold]++" in source)
@@ -521,6 +609,38 @@ def main():
 
     # 状态行是格式化的：带 {0} 的键用 `Strings.Get` 读会把占位符印在卡片上。
     check("状态行格式化而非原样读", 'Strings.Format(\n                "HoldOddsFetched"' in page)
+
+    # ---- 0c) 源码级：自选股这一组
+    #
+    # 自选能不能画出来不是问题 —— 切回内置组再取数也会成功。问题在**数是谁的**：所以断在
+    # 「清单从共享的那份来」而不是「页面上有个搜索框」。
+    check("清单里有一组是自选股", '(Watchlist.RosterKey, "SectorListStocks")' in page)
+    check("自选组取的是那一份共享清单",
+          "ChosenKey() is Watchlist.RosterKey ? Watch.Entries" in page)
+    check("自选组的计数词换成「只个股」（基金叫标的，个股不是）",
+          'Watchlist.RosterKey ? "SectorUnitStocks"' in page)
+
+    # 换组/增删之后必须把上一份数丢掉：留着的话，画面照常漂亮而标题已经换了名字。
+    check("换了组就把已取的数丢掉", "if (!_prefs.Restoring)\n        {\n            _series = null;" in page)
+    check("增删自选后也把已取的数丢掉", "private void OnWatchChanged" in page)
+
+    # 名字由端点纠正一次，四页读的是同一个名字。
+    check("取数后把名字改成端点叫的", "Watchlist.Rename(entry.Code" in page)
+    check("自选不足三只不给取数", "list.Count < Watchlist.Fewest" in page)
+
+    store = open(os.path.join(REPO, "src/MarketMotionStudio/Pages/Watchlist.cs"),
+                encoding="utf-8").read()
+
+    check("自选是一份共享的集合，不是每页各读一次",
+          "public static ObservableCollection<RaceEntry> Picks" in store)
+    check("自选存在盘上（重启还在）", 'StudioPreferences Store = new("Watchlist.")' in store)
+    check("自选有上限（和板块竞速那一份一致）", "public const int Most = 16;" in store)
+
+    picker = open(os.path.join(REPO, "src/MarketMotionStudio/Views/WatchlistPicker.xaml.cs"),
+                 encoding="utf-8").read()
+
+    # 这一页不看市场设置，所以搜索不能只问一个市场 —— 否则港股和美股搜不出来，而它们能画。
+    check("自选的搜索问三个市场", "foreach (var id in Markets.All)" in picker)
 
     # ---- 1) 页面在
     if not goto(win, "持有胜率"):
@@ -557,8 +677,8 @@ def main():
 
     groups = winui.combo_labels(win, winui.find(win, lambda c: c.AutomationId == "ListCombo"))
 
-    check("标的组是那三组",
-          set(groups) == {"全部八类", "股票", "非股票"}, " / ".join(groups))
+    check("标的组是那四组（多了自选股）",
+          set(groups) == {"全部八类", "股票", "非股票", "自选股"}, " / ".join(groups))
 
     holds = winui.combo_labels(win, winui.find(win, lambda c: c.AutomationId == "HoldCombo"))
 
@@ -688,6 +808,69 @@ def main():
             if scrub(win, 1.0):
                 shot(win, "verify-holdodds-equity.png")
 
+    # ---- 6b) 自选股：一份清单，四页共用，三个市场混装
+    #
+    # 这一页本来只有那八档境内基金。加了自选之后，最难的不是画出来，而是**证明画面上的数
+    # 真的是这几只的**：切回内置组再取数也会成功、也会给一版漂亮的榜。所以脚本自己打源端
+    # 独立算一遍胜率再逐项比对 —— 而且这三只里有一只在另一个端点上（hk → hkfqkline）。
+    WATCH = [("sh600519", "贵州茅台"), ("sh510300", "沪深300ETF"), ("hk00700", "腾讯控股")]
+
+    if winui.combo_pick(win, winui.find(win, lambda c: c.AutomationId == "ListCombo"), "自选股"):
+        check("清单里多了「自选股」这一组", True)
+
+        # 搜索框只在选中这一组时才在：另外三组是内置清单，没有可填的东西。
+        check("选了自选股才出现搜索框",
+              winui.find(win, lambda c: c.AutomationId == "Search") is not None)
+
+        check("清空上一次跑脚本留下的自选（这份清单是跨会话共享的）", clear_watch(win))
+
+        for code, _ in WATCH:
+            if not add_watch(win, code):
+                check(f"加进自选：{code}", False)
+
+        chips = watch_chips(win)
+
+        check("三只都进了自选（跨市场：A股 + 港股）", len(chips) == len(WATCH),
+              " / ".join(n for _, n in chips))
+
+        data5, status5 = fetch(win)
+
+        if data5 is None:
+            check("用自选股这一组取数", False, status5[:120])
+        else:
+            check("用自选股这一组取数", True)
+            check("自选组报的是三只", data5["assets"] == len(WATCH), f"{data5['assets']} 只")
+
+            _, rows5 = expected(start, today, 12, WATCH)
+
+            check("自选组三行都在（港股那一行也取到了数）", len(rows5) == len(WATCH),
+                  "、".join(r["name"] for r in rows5))
+
+            if rows5:
+                best5 = max(rows5, key=lambda r: r["rate"])
+                worst5 = min(rows5, key=lambda r: r["rate"])
+
+                check("自选组最常赚的是同一只", data5["best"] == best5["name"],
+                      f"页面 {data5['best']} / 脚本 {best5['name']}")
+                check("自选组最常赚的胜率对得上",
+                      abs(data5["best_pct"] - best5["rate"]) < 0.06,
+                      f"页面 {data5['best_pct']} / 脚本 {best5['rate']:.2f}")
+                check("自选组最不常赚的胜率对得上",
+                      abs(data5["worst_pct"] - worst5["rate"]) < 0.06,
+                      f"页面 {data5['worst_pct']} / 脚本 {worst5['rate']:.2f}")
+
+        # 一份清单，不是四份：在另一页上也看得见这三只。
+        if goto(win, "回撤与修复"):
+            if winui.combo_pick(win, winui.find(win, lambda c: c.AutomationId == "ListCombo"), "自选股"):
+                there = watch_chips(win)
+
+                check("同一份自选在回撤页也看得到（不是各存各的）",
+                      len(there) == len(WATCH), " / ".join(n for _, n in there))
+
+            goto(win, "持有胜率")
+    else:
+        check("清单里多了「自选股」这一组", False)
+
     # ---- 7) 偏好留住了
     winui.kill(winui.EXE)
     time.sleep(2.0)
@@ -704,7 +887,12 @@ def main():
         group = winui.find(win, lambda c: c.AutomationId == "ListCombo")
         kept = winui.value(group) if group is not None else None
 
-        check("重启后标的组仍记着（还是「股票」）", kept == "股票", str(kept))
+        check("重启后标的组仍记着（还是「自选股」）", kept == "自选股", str(kept))
+
+        # 共享的那份清单跨重启还在：三只都还在，不是取数时才临时凑出来的。
+        check("重启后自选那三只还在（清单存在盘上，不是内存里）",
+              len(watch_chips(win)) == len(WATCH),
+              " / ".join(n for _, n in watch_chips(win)))
 
         hold = winui.find(win, lambda c: c.AutomationId == "HoldCombo")
         kept_hold = winui.value(hold) if hold is not None else None

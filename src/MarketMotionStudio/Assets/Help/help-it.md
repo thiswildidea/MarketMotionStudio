@@ -186,14 +186,24 @@ a contare.
   solo al 2009 e l'indice Hang Seng Tech comincia nel 2020. È assente, non parcheggiato a 0,00%: lì
   si classificherebbe sopra ogni indice mai sceso e si leggerebbe come un mercato in cui non è
   successo niente.
-- **Candele mensili, non rettificate.** Un indice non paga dividendi, ma la ragione è l'altra: una
-  rettifica ribasa una serie, e due serie ribasate affiancate non sono confrontabili. La pagina
-  prende lo stesso percorso grezzo nella fonte della pagina A+H.
+- **Mensile, e ora aggiustato.** Un indice non distribuisce nulla, ma un'azione paga dividendi e
+  fraziona le proprie quote: Apple segna +193 % in dieci anni non aggiustata e +1183 % aggiustata,
+  perché la linea non aggiustata porta dirupi da cui nessun detentore è mai caduto. Gli indici non
+  ne risentono: se si chiede un aggiustamento, la fonte risponde a un indice con le stesse righe di
+  sempre, e tutti e dodici risultarono identici su entrambe le vie. Ciò che la tavola porta ora è
+  una differenza da dichiarare: la riga di un indice è un rendimento **di prezzo**, perché un
+  indice non è una posizione, quella di un'azione è un rendimento **totale**, con dividendi e
+  frazionamenti rimessi dentro.
 - **L'impostazione del mercato non governa questa pagina**: legge tre mercati insieme e cambiare
   mercato non la cambia. Si possono prendere le sei della Cina continentale, le tre di Hong Kong, le
   tre di New York, o tutte e dodici.
 - Il periodo più lungo è limitato dal tetto mensile della fonte — 430 candele, circa trentacinque
   anni; meno di dodici mesi viene rifiutato: è uno scatto, non una corsa lunga.
+- **Oppure la vostra lista.** L'ultimo gruppo del menu è una lista propria: scrivete un codice,
+  un nome o il pinyin per aggiungerne uno, e un titolo continentale, uno di Hong Kong e uno di
+  New York possono starci insieme — questa tavola non consulta mai l'impostazione di mercato. Una
+  lista per quattro tavole: un'azione aggiunta qui è proposta anche nella corsa degli attivi, nei
+  ribassi e nel tasso di riuscita. Sotto tre il recupero è rifiutato.
 
 ## Classi di attività
 
@@ -216,6 +226,11 @@ denaro, quindi direttamente confrontabili.
   nel 2019. Una riga non ancora entrata è assente, non a 0,00%.
 - **L'impostazione di mercato non governa questa pagina**: tutti e otto sono quotati sul continente.
   Meno di dodici mesi è rifiutato.
+- **Oppure la vostra lista.** L'ultimo gruppo del menu è una lista propria: scrivete un codice,
+  un nome o il pinyin per aggiungerne uno, e i tre mercati possono esservi mescolati. Una lista per
+  quattro tavole: un'azione aggiunta qui è proposta anche sulle altre tre; è scaricata aggiustata,
+  esattamente come gli otto fondi, quindi dividendi e frazionamenti sono nel numero. Sotto tre il
+  recupero è rifiutato.
 
 ## Ribassi
 
@@ -244,6 +259,11 @@ misurati rispetto a sé stessi invece che tra loro.
 - **Oro e fondo di materie prime erano ancora sott'acqua al momento di questa misurazione** — la
   tavola segnala questo tipo di ribasso come aperto, perché l'intervallo è finito prima che fosse
   riparato.
+- **Oppure la vostra lista.** L'ultimo gruppo del menu è una lista propria: scrivete un codice,
+  un nome o il pinyin per aggiungerne uno, e i tre mercati possono esservi mescolati. Una lista per
+  quattro tavole: un'azione aggiunta qui è proposta anche sulle altre tre; è scaricata aggiustata,
+  esattamente come gli otto fondi, quindi dividendi e frazionamenti sono nel numero. Sotto tre il
+  recupero è rifiutato.
 
 Non dipende dall'impostazione del mercato: tutti e otto sono quotati su una borsa continentale.
 Meno di dodici mesi nell'intervallo viene rifiutato.
@@ -273,6 +293,11 @@ che tenerli abbia funzionato, non su quanto abbiano reso.
   riordinano fra le due.
 - **Le righe corrono ancora.** Sono ordinate per il loro tasso — più spesso in guadagno in alto — e
   si scambiano di posto mentre i mesi passano.
+- **Oppure la vostra lista.** L'ultimo gruppo del menu è una lista propria: scrivete un codice,
+  un nome o il pinyin per aggiungerne uno, e i tre mercati possono esservi mescolati. Una lista per
+  quattro tavole: un'azione aggiunta qui è proposta anche sulle altre tre; è scaricata aggiustata,
+  esattamente come gli otto fondi, quindi dividendi e frazionamenti sono nel numero. Sotto tre il
+  recupero è rifiutato.
 
 Misurato sugli ultimi dieci anni con una detenzione di tre anni: il fondo Nasdaq era in vantaggio
 su tutte le ottantaquattro entrate e il fondo di Hong Kong sul quaranta per cento di esse — due

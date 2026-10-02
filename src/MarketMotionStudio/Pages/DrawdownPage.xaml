@@ -69,6 +69,13 @@
                               HorizontalAlignment="Stretch"
                               SelectionChanged="OnListChanged" />
 
+                    <!-- One's own list, shown when the menu names it. Shared with the other
+                         roster boards — a pick made here is on them too — and cross-market,
+                         because nothing on this page is governed by the market setting. -->
+                    <views:WatchlistPicker x:Name="Watch"
+                                           Visibility="Collapsed"
+                                           Changed="OnWatchChanged" />
+
                     <ComboBox x:Name="RangeCombo"
                               x:Uid="StudioRange"
                               HorizontalAlignment="Stretch"

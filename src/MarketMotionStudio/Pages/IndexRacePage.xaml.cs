@@ -24,10 +24,14 @@ namespace MarketMotionStudio.Pages;
 /// begins and is set to zero there — which is why the frame fills in as the years pass, and why
 /// 恒生科技 is simply absent from the 2010 frames rather than sitting at 0.00% below everything.
 ///
-/// **Unadjusted prices.** Every other board here is drawn from an adjusted series, because a
-/// dividend is not a fall. An index pays no dividend, but the reason is the other one: an
-/// adjustment rebases one series, and two rebased series side by side are not comparable. The
-/// same `RawBarsAsync` the A+H page uses is the call that cannot be something else by accident.
+/// **Adjusted prices, since this board took a reader's own list.** It was unadjusted, for the
+/// reason the A+H page still has: an adjustment rebases a series, and two rebased series are not
+/// comparable. The source does not rebase an index — asked for an adjustment it answers with the
+/// same rows — so every number already on this board is unchanged, while a stock on an unadjusted
+/// series is not merely off but wrong: Apple reads +193% that way and +1183% with its split and
+/// dividends put back. What the board now carries is a difference in kind between its rows: an
+/// index row is a price return, because an index is not a holding, and a stock row is a total
+/// one. See the loader's note.
 ///
 /// **Monthly.** One request per index carries 430 months — the source's ceiling — so "longest"
 /// costs twelve requests rather than twelve walks, and the three markets' mismatched holidays
@@ -64,6 +68,11 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
         (WorldIndexLists.AShareKey, "IndexRaceListAShare"),
         (WorldIndexLists.HongKongKey, "IndexRaceListHongKong"),
         (WorldIndexLists.UnitedStatesKey, "IndexRaceListUnitedStates"),
+
+        // One's own. Named by the sector race's own key, because that is the same offer: the
+        // reader's list instead of one the app ships. See the class note for what putting a
+        // stock on this board does to the one thing the board's old rule was protecting.
+        (Watchlist.RosterKey, "SectorListStocks"),
     ];
 
     public IndexRacePage()
@@ -89,6 +98,9 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddYears(-5);
         ToDate.Date = today;
+
+        // The picker has no panel of its own to write into, so what it has to say is said here.
+        Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
 
         VideoSettings.AllowHideTitle = true;
 
@@ -124,25 +136,31 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
     /// <summary>“指数长跑” — what the frame says when no title was typed.</summary>
     private static string AutoTitle() => Strings.Get("IndexRacePageTitle.Text");
 
-    private IReadOnlyList<RaceEntry> ChosenList()
-    {
-        var key = ListCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : WorldIndexLists.AllKey;
+    private string ChosenKey() =>
+        ListCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : WorldIndexLists.AllKey;
 
-        return WorldIndexLists.Of(key);
-    }
+    private IReadOnlyList<RaceEntry> ChosenList() =>
+        ChosenKey() is Watchlist.RosterKey ? Watch.Entries : WorldIndexLists.Of(ChosenKey());
 
     private string ChosenListName()
     {
-        var key = ListCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : WorldIndexLists.AllKey;
+        var key = ChosenKey();
 
         return Strings.Get(key switch
         {
             WorldIndexLists.AShareKey => "IndexRaceListAShare",
             WorldIndexLists.HongKongKey => "IndexRaceListHongKong",
             WorldIndexLists.UnitedStatesKey => "IndexRaceListUnitedStates",
+            Watchlist.RosterKey => "SectorListStocks",
             _ => "IndexRaceListAll",
         });
     }
+
+    /// <summary>
+    /// What a row counts: an index on the built-in groups, a stock on the reader's own.
+    /// </summary>
+    private string ChosenUnit() =>
+        Strings.Get(ChosenKey() is Watchlist.RosterKey ? "SectorUnitStocks" : "IndexRaceUnitIndices");
 
     // ---- the picture -------------------------------------------------------------------
 
@@ -162,7 +180,7 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = ChosenListName(),
-                UnitWord = Strings.Get("IndexRaceUnitIndices"),
+                UnitWord = ChosenUnit(),
 
                 // Monthly, so the header counts months — the renderer's own fallback names
                 // trading days, and the page says it because the page is what asked for months.
@@ -192,9 +210,29 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
 
     private void OnListChanged(object sender, SelectionChangedEventArgs e)
     {
+        // Shown only for the one group it feeds. Done while a restore is running too — a
+        // remembered choice of one's own list has to come back with the list under it.
+        Watch.Visibility = ChosenKey() is Watchlist.RosterKey ? Visibility.Visible : Visibility.Collapsed;
+
         // A different group is a different board, so whatever was fetched is no longer what the
-        // panel describes. Nothing is fetched until the button is pressed — see the same rule on
-        // the candle page.
+        // panel describes, and it is dropped rather than left standing: a frame still drawn from
+        // the twelve indices under a caption reading 自选股 answers a question nobody asked, and
+        // it looks entirely plausible while it does.
+        if (!_prefs.Restoring)
+        {
+            _series = null;
+        }
+
+        // Nothing is fetched until the button is pressed — see the same rule on the candle page.
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
+
+    private void OnWatchChanged(object? sender, EventArgs e)
+    {
+        // A pick added or removed here changes the board on every roster page, all four sharing
+        // one list, and on this one it retires the series that was fetched from the old one.
+        _series = null;
         SavePreferences();
         ApplyPreviewSettings();
     }
@@ -249,15 +287,36 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
             return;
         }
 
+        var list = ChosenList();
+
+        // Two rows is a comparison, not a board. The built-in groups are all above this, so it
+        // is the reader's own list that can be short — and a list can be emptied without the
+        // page noticing, one chip at a time.
+        if (list.Count < Watchlist.Fewest)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooFew", Watchlist.Fewest, ChosenUnit()));
+            return;
+        }
+
         _ = RunAsync(FetchButton, async cancellation =>
         {
             var progress = new Progress<string>(message =>
                 ShowStatus(InfoBarSeverity.Informational, Strings.Format("SectorFetching", message)));
 
             var series = await IndexRace.LoadAsync(
-                Services.Quotes, ChosenList(), start, end, progress, cancellation);
+                Services.Quotes, list, start, end, progress, cancellation);
 
             _series = series;
+
+            // A typed pick is renamed to what the endpoint calls it, which is also the name the
+            // other three boards will read off the shared list.
+            if (ChosenKey() is Watchlist.RosterKey)
+            {
+                foreach (var entry in series.Entries)
+                {
+                    Watchlist.Rename(entry.Code, InstrumentNames.Display(entry.Code, entry.Name));
+                }
+            }
 
             ApplyPreviewSettings();
             ShowMoment(1);

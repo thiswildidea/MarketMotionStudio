@@ -1363,10 +1363,27 @@ is no index-ranking service, and a benchmark is not chosen by a formula — so t
 name. That is a different kind of list from the market-cap board's, and it carries a different kind of
 debt: by headcount the all-twelve board is half mainland, which a viewer may read as a weighting.
 
-**Monthly, one request per index, unadjusted.** The same `RawBarsAsync` path the A+H and corridor
-pages take: an index pays no dividend, but the reason is the other one — an adjustment rebases a
-series, and two rebased series side by side are not comparable. The 430-month ceiling means the whole
-history comes back in one reply, so "as far back as there is" costs twelve requests and no paging.
+**Monthly, one request per index — and adjusted, since 2026-10-02.** It was unadjusted, on the same
+`RawBarsAsync` path the A+H and corridor pages take, for the reason those pages have: an adjustment
+rebases a series, and two rebased series side by side are not comparable. Then this board learned to
+race a reader's own list, and one of the two reasons stopped being true.
+
+**What an adjustment costs an index is nothing, and that was measured rather than argued.** Asked
+either way, the source answers an index with the same rows: across all twelve, the first month's
+close, the last month's close and the ten-year change differ by **0.0000**. The source simply ignores
+the adjustment parameter for an index. So the board moved to the adjusted path and every figure
+already published from it is unchanged — `verify-indexrace.py` still reads 纳斯达克 +417.64% and
+恒生科技 −40.55%, now recomputed down the adjusted route.
+
+**What it buys a share is everything.** Over the same decade Apple reads +193% unadjusted and
+**+1183%** adjusted, the gap being a four-for-one split in 2020; CATL 305% against 684%; Gree 71%
+against 138%. A board that can race a share alongside an index cannot leave those cliffs in, because
+a holder never fell off them. The one thing the change does cost is a difference of kind, and the
+page says it: an index row is a *price* return, since an index is not something you can hold, while a
+share row is a *total* one, dividends and splits put back.
+
+The 430-month ceiling means the whole history comes back in one reply, so "as far back as there is"
+costs twelve requests and no paging.
 
 **Only `newfqkline` answers with the whole history.** Measured 2026-10-02: `usINX` returns 922 months
 from 1950-01, where `fqkline` returns ten months for the same code and one for `usDJI`. The rule is
@@ -1381,19 +1398,26 @@ that case, which is where the eye already is. Fixed in the shared renderer, so t
 market-cap board and extreme days inherit it.
 
 **Counting rows in the picture.** "The board has not filled up yet" is a fact about the frame and not
-about any string in the UI, so `verify-indexrace.py` counts bars from pixels: a scanline is inside a
-row when it holds a run of four or more saturated pixels, and rows are the bands of those scanlines
-within the canvas interior. Calibrated against four boards whose row count is known — the twelve, the
-Americas' three, AH premium's fifteen and extreme days' fifteen all come out exact. Where two rows'
-glows touch the bands merge, so a count can come out low and never high; that is why the assertions
-are "the last frame is full" and "the first frame is not", with only the three-row group asserted as
-an exact number. Both statements are the picture saying what the data layer says.
+about any string in the UI, so `verify-indexrace.py` counts rows from pixels: a row carries a name, and
+a name is one bright near-grey patch at a fixed place in the row, while the bar beside it is saturated
+colour and so never counts as a glyph. Where two rows are close their names merge, so a count can come
+out low and never high; that is why the assertions are "the last frame is full" and "the first frame is
+not", with only the three-row group asserted as an exact number. Both statements are the picture saying
+what the data layer says.
+
+**The canvas is found by colour, not by a proportion of the window.** The crop that used to be here —
+"the canvas is 39%–62% across" — counted **one** row on this page's frames: the preview has no
+automation node to measure, and the window layout is not a fixed fraction of anything. Saturation is
+what the canvas and the window around it really differ in: grey chrome has none at any brightness, and
+every canvas here has a lot. (The rule used to be "dark", which is right about most boards' near-black
+backgrounds and wrong about a tinted one — it matched the window's own chrome instead. All four roster
+boards now look for saturation.)
 
 **Measured 2026-10-02**, all twelve over ten years: 120 months (the index monthly coverage of a
 ten-year window is fuller than the currency one's 113–114), 纳斯达克 leading at +417.64%, 恒生科技 last
 at −40.55%; the first frame of the run draws ten or eleven rows because the Hang Seng Tech index has
 not joined. The Americas alone: 纳斯达克 +417.64%, 道琼斯 +180.59%, and the bottom of the board moves
-off 恒生科技. `verify-indexrace.py` is 39 checks, 39 pass.
+off 恒生科技. `verify-indexrace.py` is 58 checks, 58 pass.
 
 **Owed on this page:** the English interface has not been driven through it (the index names are the
 `INST*` keys the other pages already carry, the group names are new — none of it has been read in
@@ -1439,12 +1463,16 @@ first port run rewrote them, which would have moved three other pages' preset la
 back from `HEAD` and verified value by value in all fourteen files. One key, one owner — the port
 script now writes only the four new ones and says why in a comment.
 
-**Verified 41 ways** (`tools/verify-assetrace.py`), including recomputing the leader and the loser
+**Verified 63 ways** (`tools/verify-assetrace.py`), including recomputing the leader and the loser
 from the source's own *adjusted* bars: they match to 0.01 of a percentage point, which is what proves
 the adjustment rather than merely asserting it. One assertion is written against the call rather than
 the name, because this page's own comment names `RawBarsAsync` on purpose — to explain why it is not
 used — so "the string appears" does not mean "the wrong path was taken". The index race was re-run
-afterwards and still passes 39.
+afterwards and still passes.
+
+With a watchlist roster the script recomputes all three rows and compares **both ends** of the board.
+Comparing only the leader would have let a wrong row in the middle go unnoticed — which is exactly
+what happened, see the watchlist chapter.
 
 Measured 2026-10-02, ten years: 120 months, the Nasdaq fund +578.20%, gold +209.59%, the CSI 300 fund
 +49.02%, and the money-market fund +18.76% behind.
@@ -1512,12 +1540,17 @@ when this was measured, and the right gutter says so in words ("not recovered ye
 printing a large number that looks like the others. The three lines in that gutter are the whole row
 compressed: where it is now, how deep it got, how long the climb took.
 
-**Verified 43 ways** (`tools/verify-drawdown.py`), including recomputing the deepest fall, the months
+**Verified 61 ways** (`tools/verify-drawdown.py`), including recomputing the deepest fall, the months
 back and the shallowest row from the source's own adjusted bars — and asserting that at least one row
 is still unhealed, so that branch is known to be live rather than assumed. The row count comes off the
 pixels: two bands from a filled curve merge far too easily for the race pages' "longest run of colour"
 method, so this page counts the **names** instead — each row has exactly one, in a fixed column, and a
 saturated curve cannot be mistaken for one.
+
+On a watchlist roster the script recomputes the depth and the heal of the deepest row independently,
+and asserts that the deepest one fell by more than 5%: three stocks, none of them a money-market fund,
+cannot produce a board whose worst fall is a rounding error — if it does, either the wrong endpoint was
+asked or the series came back empty.
 
 Measured 2026-10-02, ten years, 120 months: the Hang Seng fund deepest at -43.90% (35 months back),
 the Nasdaq fund closest to its high at 0.00%, and gold, the commodity fund and cash still under water.
@@ -1571,7 +1604,7 @@ each other exactly as they should — so no new renderer was written. The page's
 what counts as an entry and when it counts as finished, neither of which has a pixel to show for
 itself.
 
-**Verified 44 ways** (`tools/verify-holdodds.py`), including recomputing the whole rate table from the
+**Verified 72 ways** (`tools/verify-holdodds.py`), including recomputing the whole rate table from the
 source's own adjusted bars and comparing the months, the entries per row, the best row and its rate,
 and the worst row and its rate — and asserting that the best and the worst are more than twenty points
 apart, because a board on which they were not would be a second copy of the asset race. The one-year
@@ -1581,3 +1614,64 @@ periods, so proving the control works from it would have proved nothing.
 **Owed on this page:** no export at any format; the custom span and the longest span have not been
 exercised; the English interface has not been driven through it; and nobody has checked the roster or
 the sixth-entry threshold against anything but the reasoning above.
+
+## One list of your own, shared by four boards (2026-10-02)
+
+**The four roster boards had a hole in them, and the hole was the same shape on all four.** The index
+race offers twelve named indices, the asset race eight named funds, and the drawdown and hold-odds
+boards re-use that second roster. All four are lists *somebody else chose*. Every one of them says
+something about a thing the reader actually holds only by accident. The sector race has had a
+watchlist group since the beginning; these four did not, and the reason was never stated — they were
+built as boards about a market rather than boards about a portfolio.
+
+**One list, not four.** A pick is a fact about an instrument, not about the page it was typed on —
+the same argument that made the per-stock favourites shared. So `Pages/Watchlist.cs` holds one
+`ObservableCollection` in a static property and all four pages read that instance; a stock added on
+the index race is on the asset race, the drawdown board and the hold-odds board without being added
+again. It is persisted under a `Watchlist.` preference prefix and survives a restart, which the
+scripts assert rather than assume.
+
+**Cross-market, because nothing on these four boards is governed by the market setting.** The index
+race reads three markets at once by definition; the other three are mainland funds but sit outside
+the market switch as well. So a mainland share, a Hong Kong one and a New York one can share a board,
+and the fetch routes each code to the endpoint its prefix asks for. The search box therefore queries
+**all three markets** rather than the one in force — and it has to do it through
+`AppServices.Current`, because a shared control has no page-level `Services` alias to borrow.
+
+**Bounds, and why.** Fewer than three picks and the fetch is refused: a race needs a field, and a
+board of one row is a line. Sixteen is the ceiling, for the reason the sector race already had — a
+vertical frame is a barcode.
+
+**Two consequences inside the pages, both easy to miss:**
+
+- **Changing group — or changing the list — has to throw the fetched series away.** Keeping it gives a
+  board whose title and whose numbers disagree, and nothing in the UI says so. The guard is
+  `!_prefs.Restoring`, so restoring a preference on start-up does not discard work.
+- **The counting word is the page's, not the renderer's.** An index is 个指数, a fund is 个标的, a stock
+  is 只个股 — so each page passes `UnitWord` through a `ChosenUnit()` and the shared renderer still
+  carries none of them. This is the rule the shared renderer was written under, and it is the one a
+  new roster breaks first.
+
+**Names are re-resolved after the fetch.** What the search box returns is not necessarily what the
+rest of the app calls the instrument, so the page pushes the display name back through
+`InstrumentNames.Display` once the bars are in.
+
+**The one change this forced outside the four pages** is the index race's move from unadjusted to
+adjusted bars — see that page's chapter. It is not a side-effect anybody would have predicted: giving
+a board the ability to race a share is what made "unadjusted" indefensible on it.
+
+**What the verification caught, and it was not in the app.** Three cross-market picks, one of them a
+Hong Kong share: the board reported −66.86% and healed in thirty-five months, the script computing it
+independently said −69.83% and *not healed*. The script was wrong, not the app — it had hard-coded the
+generic kline endpoint, and `hk` codes are answered by `hkfqkline` with a different series behind
+them. Three percentage points is close enough to read as rounding, and it was enough to invert a
+status. Both sides were reporting confidently and neither was failing. `endpoint_for(code)` now
+reproduces `TencentKline.TotalReturn`'s routing table in the two scripts that take cross-market
+picks, and the asset-race script compares its *loser* as well as its leader, because a wrong row in
+the middle of the board is invisible to a leader-only check.
+
+**Owed on this:** no export at any format with a watchlist roster; the English interface has not been
+driven through the picker; the sixteen-pick ceiling and the three-pick floor have been exercised but
+not at a frame height anybody has looked at; and a pick whose bars are shorter than a year has not
+been tried on the hold-odds board, where the sixth-entry threshold would leave it off the board
+entirely.

@@ -182,13 +182,22 @@ punkty na jednej skali; rysowanie poziomów byłoby tablicą o tym, gdzie który
   Dow tylko 2009, a indeks Hang Seng Tech zaczyna się w 2020. Brakuje go, a nie stoi na 0,00% — tam
   znalazłby się nad każdym indeksem, który kiedykolwiek spadł, i czytałoby się to jako rynek, na
   którym nic się nie wydarzyło.
-- **Świece miesięczne, bez korekty.** Indeks nie wypłaca dywidendy, ale powód jest inny: korekta
-  zmienia bazę serii, a dwie serie po zmianie bazy nie są porównywalne. Strona idzie tą samą surową
-  ścieżką do źródła co strona A+H.
+- **Miesięcznie, i teraz już z korektą.** Indeks nic nie wypłaca, ale akcja płaci dywidendy i
+  dzieli swoje udziały: Apple pokazuje +193 % w dziesięć lat bez korekty i +1183 % z korektą, bo
+  linia bez korekty niesie urwiska, z których żaden posiadacz nigdy nie spadł. Indeksów to nie
+  dotyka — poproszona o korektę, źródło odpowiada indeksowi tymi samymi wierszami co zwykle, i
+  wszystkie dwanaście wyszły identycznie obiema drogami. To, co tablica teraz niesie, to różnica
+  warta wypowiedzenia: wiersz indeksu to zwrot **cenowy**, bo indeks nie jest pozycją, a wiersz
+  akcji to zwrot **całkowity**, z dywidendami i podziałami wliczonymi.
 - **Ustawienie rynku tu nie rządzi**: strona czyta trzy rynki naraz, a zmiana rynku jej nie zmienia.
   Można wziąć sześć z kontynentu, trzy z Hongkongu, trzy z Nowego Jorku albo wszystkie dwanaście.
 - Najdłuższy okres ogranicza miesięczny sufit źródła — 430 świec, około trzydziestu pięciu lat;
   mniej niż dwanaście miesięcy jest odrzucane: to sprint, nie bieg długi.
+- **Albo własna lista.** Ostatnia grupa w menu to lista własna: wpisz kod, nazwę lub pinyin, aby
+  dodać jeden walor, i akcja z kontynentu, z Hongkongu oraz z Nowego Jorku mogą być na niej razem
+  — ta tablica nigdy nie pyta o ustawienie rynku. Jedna lista dla czterech tablic: akcję dodaną tu
+  znajdziesz też w wyścigu aktywów, w obsunięciach i w skuteczności trzymania. Poniżej trzech
+  pobieranie jest odrzucane.
 
 ## Klasy aktywów
 
@@ -209,6 +218,10 @@ porównywać wprost.
   2019. Wiersza, który jeszcze nie wszedł, nie ma — nie stoi na 0,00%.
 - **Ustawienie rynku tu nie rządzi**: wszystkie osiem jest notowanych na kontynencie. Mniej niż
   dwanaście miesięcy jest odrzucane.
+- **Albo własna lista.** Ostatnia grupa w menu to lista własna: wpisz kod, nazwę lub pinyin, aby
+  dodać jeden walor, a trzy rynki można na niej mieszać. Jedna lista dla czterech tablic: akcję
+  dodaną tu znajdziesz też na trzech pozostałych; pobiera się ją z korektą, dokładnie jak osiem
+  funduszy, więc dywidendy i podziały są w liczbie. Poniżej trzech pobieranie jest odrzucane.
 
 ## Obsunięcia
 
@@ -234,6 +247,10 @@ mierzone względem siebie samych, nie względem innych.
   szczytu na górze — i zamieniają się miejscami wraz z upływem miesięcy.
 - **Złoto i fundusz towarowy były w chwili pomiaru wciąż pod wodą** — tablica zgłasza taki spadek
   jako otwarty, bo okres skończył się, zanim został naprawiony.
+- **Albo własna lista.** Ostatnia grupa w menu to lista własna: wpisz kod, nazwę lub pinyin, aby
+  dodać jeden walor, a trzy rynki można na niej mieszać. Jedna lista dla czterech tablic: akcję
+  dodaną tu znajdziesz też na trzech pozostałych; pobiera się ją z korektą, dokładnie jak osiem
+  funduszy, więc dywidendy i podziały są w liczbie. Poniżej trzech pobieranie jest odrzucane.
 
 Nie podlega ustawieniu rynku: wszystkie osiem jest notowanych na giełdzie kontynentalnej. Mniej niż
 dwanaście miesięcy w okresie jest odrzucane.
@@ -263,6 +280,10 @@ nie według tego, ile dały zarobić.
   porządkuje się między nimi na nowo.
 - **Wiersze wciąż biegną.** Są uporządkowane według wskaźnika — najczęściej na plusie na górze — i
   zamieniają się miejscami wraz z upływem miesięcy.
+- **Albo własna lista.** Ostatnia grupa w menu to lista własna: wpisz kod, nazwę lub pinyin, aby
+  dodać jeden walor, a trzy rynki można na niej mieszać. Jedna lista dla czterech tablic: akcję
+  dodaną tu znajdziesz też na trzech pozostałych; pobiera się ją z korektą, dokładnie jak osiem
+  funduszy, więc dywidendy i podziały są w liczbie. Poniżej trzech pobieranie jest odrzucane.
 
 Zmierzone w ostatnich dziesięciu latach przy trzymaniu trzy lata: fundusz Nasdaq był na plusie przy
 wszystkich osiemdziesięciu czterech wejściach, a fundusz z Hongkongu przy czterdziestu procentach z

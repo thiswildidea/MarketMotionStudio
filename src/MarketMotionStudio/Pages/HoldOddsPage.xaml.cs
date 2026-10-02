@@ -82,6 +82,10 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
         (AssetClassLists.AllKey, "AssetRaceListAll"),
         (AssetClassLists.EquityKey, "AssetRaceListEquity"),
         (AssetClassLists.NonEquityKey, "AssetRaceListNonEquity"),
+
+        // One's own. Named by the sector race's own key, because that is the same offer: the
+        // reader's list instead of one the app ships.
+        (Watchlist.RosterKey, "SectorListStocks"),
     ];
 
     public HoldOddsPage()
@@ -114,6 +118,9 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddYears(-5);
         ToDate.Date = today;
+
+        // The picker has no panel of its own to write into, so what it has to say is said here.
+        Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
 
         VideoSettings.AllowHideTitle = true;
 
@@ -149,24 +156,32 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
     /// <summary>“持有胜率” — what the frame says when no title was typed.</summary>
     private static string AutoTitle() => Strings.Get("HoldOddsPageTitle.Text");
 
-    private IReadOnlyList<RaceEntry> ChosenList()
-    {
-        var key = ListCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : AssetClassLists.AllKey;
+    private string ChosenKey() =>
+        ListCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : AssetClassLists.AllKey;
 
-        return AssetClassLists.Of(key);
-    }
+    private IReadOnlyList<RaceEntry> ChosenList() =>
+        ChosenKey() is Watchlist.RosterKey ? Watch.Entries : AssetClassLists.Of(ChosenKey());
 
     private string ChosenListName()
     {
-        var key = ListCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : AssetClassLists.AllKey;
+        var key = ChosenKey();
 
         return Strings.Get(key switch
         {
             AssetClassLists.EquityKey => "AssetRaceListEquity",
             AssetClassLists.NonEquityKey => "AssetRaceListNonEquity",
+            Watchlist.RosterKey => "SectorListStocks",
             _ => "AssetRaceListAll",
         });
     }
+
+    /// <summary>
+    /// What a row counts. The eight funds are "标的" because a fund is not a stock and one of
+    /// them is not even a share; a reader's own list is made of stocks, and the header has to
+    /// say so rather than call a share something it is not.
+    /// </summary>
+    private string ChosenUnit() =>
+        Strings.Get(ChosenKey() is Watchlist.RosterKey ? "SectorUnitStocks" : "AssetRaceUnitAssets");
 
     /// <summary>How many months each entry is held for.</summary>
     private int ChosenHold() =>
@@ -191,7 +206,7 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = ChosenListName(),
-                UnitWord = Strings.Get("AssetRaceUnitAssets"),
+                UnitWord = ChosenUnit(),
 
                 // Monthly, so the header counts months — the renderer's own fallback names
                 // trading days, and the page says it because the page is what asked for months.
@@ -221,9 +236,29 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
 
     private void OnListChanged(object sender, SelectionChangedEventArgs e)
     {
+        // Shown only for the one group it feeds. Done while a restore is running too — a
+        // remembered choice of one's own list has to come back with the list under it.
+        Watch.Visibility = ChosenKey() is Watchlist.RosterKey ? Visibility.Visible : Visibility.Collapsed;
+
         // A different group is a different board, so whatever was fetched is no longer what the
-        // panel describes. Nothing is fetched until the button is pressed — see the same rule on
-        // the candle page.
+        // panel describes, and it is dropped rather than left standing: a frame still drawn from
+        // the eight funds under a caption reading 自选股 answers a question nobody asked, and it
+        // looks entirely plausible while it does.
+        if (!_prefs.Restoring)
+        {
+            _series = null;
+        }
+
+        // Nothing is fetched until the button is pressed — see the same rule on the candle page.
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
+
+    private void OnWatchChanged(object? sender, EventArgs e)
+    {
+        // A pick added or removed here changes the board on every roster page, all four sharing
+        // one list, and on this one it retires the series that was fetched from the old one.
+        _series = null;
         SavePreferences();
         ApplyPreviewSettings();
     }
@@ -286,6 +321,16 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
         }
 
         var hold = ChosenHold();
+        var list = ChosenList();
+
+        // Two rows is a comparison, not a board. The built-in groups are all above this, so it
+        // is the reader's own list that can be short — and a list can be emptied without the
+        // page noticing, one chip at a time.
+        if (list.Count < Watchlist.Fewest)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooFew", Watchlist.Fewest, ChosenUnit()));
+            return;
+        }
 
         _ = RunAsync(FetchButton, async cancellation =>
         {
@@ -293,9 +338,19 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
                 ShowStatus(InfoBarSeverity.Informational, Strings.Format("SectorFetching", message)));
 
             var series = await HoldOdds.LoadAsync(
-                Services.Quotes, ChosenList(), start, end, hold, progress, cancellation);
+                Services.Quotes, list, start, end, hold, progress, cancellation);
 
             _series = series;
+
+            // A typed pick is renamed to what the endpoint calls it, which is also the name the
+            // other three boards will read off the shared list.
+            if (ChosenKey() is Watchlist.RosterKey)
+            {
+                foreach (var entry in series.Entries)
+                {
+                    Watchlist.Rename(entry.Code, InstrumentNames.Display(entry.Code, entry.Name));
+                }
+            }
 
             ApplyPreviewSettings();
             ShowMoment(1);

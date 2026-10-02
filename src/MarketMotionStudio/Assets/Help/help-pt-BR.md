@@ -180,14 +180,23 @@ de uma mesma escala: desenhar níveis seria um quadro sobre onde cada índice co
 - **Um índice que chega tarde não está no quadro até chegar.** O S&P chega a 1950, o Dow apenas a
   2009, e o índice Hang Seng Tech começa em 2020. Ele está ausente, não estacionado em 0,00% — aí se
   colocaria acima de todo índice que já caiu e se leria como um mercado em que nada aconteceu.
-- **Velas mensais, sem ajuste.** Um índice não paga dividendo, mas a razão é a outra: um ajuste
-  rebaseia uma série, e duas séries rebaseadas lado a lado não são comparáveis. A página toma o mesmo
-  caminho bruto na fonte que a página A+H.
+- **Mensal, e agora ajustado.** Um índice não distribui nada, mas uma ação paga dividendos e
+  desdobra suas cotas: a Apple marca +193 % em dez anos sem ajuste e +1183 % com ajuste, porque a
+  linha sem ajuste carrega penhascos dos quais nenhum detentor jamais caiu. Os índices não se
+  alteram: pedido um ajuste, a fonte responde a um índice com as mesmas linhas de sempre, e os doze
+  saíram idênticos nos dois caminhos. O que o quadro agora carrega é uma diferença que vale declarar:
+  a linha de um índice é um retorno **de preço**, porque um índice não é uma posição, enquanto a de
+  uma ação é um retorno **total**, com dividendos e desdobramentos recolocados.
 - **A configuração de mercado não governa esta página**: ela lê três mercados ao mesmo tempo, e mudar
   o mercado não a muda. Pode-se escolher as seis do continente, as três de Hong Kong, as três de Nova
   York ou as doze.
 - O período mais longo é limitado pelo teto mensal da fonte — 430 velas, cerca de trinta e cinco anos;
   menos de doze meses é recusado: isso é uma corrida curta, não uma de fundo.
+- **Ou a sua própria lista.** O último grupo do menu é uma lista própria: digite um código, um
+  nome ou pinyin para acrescentar um, e um papel do continente, um de Hong Kong e um de Nova York
+  podem conviver nela — este quadro nunca consulta a configuração de mercado. Uma lista para quatro
+  quadros: uma ação acrescentada aqui também é oferecida na corrida de ativos, nas quedas e na taxa
+  de acerto. Abaixo de três, a busca é recusada.
 
 ## Classes de ativos
 
@@ -209,6 +218,11 @@ comparadas diretamente.
   2019. Uma linha que ainda não entrou está ausente, não em 0,00%.
 - **A configuração de mercado não rege esta página**: todas as oito são listadas no continente.
   Menos de doze meses é recusado.
+- **Ou a sua própria lista.** O último grupo do menu é uma lista própria: digite um código, um
+  nome ou pinyin para acrescentar um, e os três mercados podem ser misturados nela. Uma lista para
+  quatro quadros: uma ação acrescentada aqui também é oferecida nos outros três; ela é buscada
+  ajustada, exatamente como os oito fundos, de modo que dividendos e desdobramentos estão no
+  número. Abaixo de três, a busca é recusada.
 
 ## Quedas
 
@@ -234,6 +248,11 @@ em vez de entre si.
   perto da própria máxima no topo — e trocam de lugar enquanto os meses passam.
 - **Ouro e o fundo de commodities ainda estavam debaixo d'água quando isto foi medido** — o quadro
   reporta esse tipo de queda como aberta, porque o período terminou antes de ser reparada.
+- **Ou a sua própria lista.** O último grupo do menu é uma lista própria: digite um código, um
+  nome ou pinyin para acrescentar um, e os três mercados podem ser misturados nela. Uma lista para
+  quatro quadros: uma ação acrescentada aqui também é oferecida nos outros três; ela é buscada
+  ajustada, exatamente como os oito fundos, de modo que dividendos e desdobramentos estão no
+  número. Abaixo de três, a busca é recusada.
 
 Não depende da configuração de mercado: todos os oito são cotados numa bolsa continental. Menos de
 doze meses no período é recusado.
@@ -263,6 +282,11 @@ funcionou, não por quanto renderam.
   reordenam entre elas.
 - **As linhas continuam correndo.** Ordenam-se pela taxa — a que mais vezes termina no positivo no
   topo — e trocam de lugar enquanto os meses passam.
+- **Ou a sua própria lista.** O último grupo do menu é uma lista própria: digite um código, um
+  nome ou pinyin para acrescentar um, e os três mercados podem ser misturados nela. Uma lista para
+  quatro quadros: uma ação acrescentada aqui também é oferecida nos outros três; ela é buscada
+  ajustada, exatamente como os oito fundos, de modo que dividendos e desdobramentos estão no
+  número. Abaixo de três, a busca é recusada.
 
 Medido nos últimos dez anos com manutenção de três anos: o fundo Nasdaq terminou no positivo em
 todas as oitenta e quatro entradas e o fundo de Hong Kong em quarenta por cento delas — duas linhas

@@ -85,6 +85,20 @@ def report():
 # ---- 独立算一遍（不经过应用）----------------------------------------------------------
 
 
+def endpoint_for(code):
+    """`TencentKline.TotalReturn` 的那张路由表：代码前缀决定端点和复权档。
+
+    自选那一组是跨市场的，脚本若只认通用端点，港股与美股那两行取到的是**另一条序列**——
+    数字差几个百分点，而应用照常出榜，两边各说各话谁也不报错。（在回撤页上栽出来的同一条：
+    港股那只页面 −66.86%、脚本按通用端点算成 −69.83%。）
+    """
+    if code.startswith("hk"):
+        return "https://web.ifzq.gtimg.cn/appstock/app/hkfqkline/get", "hfq"
+    if code.startswith("us"):
+        return "https://web.ifzq.gtimg.cn/appstock/app/usfqkline/get", "qfq"
+    return "https://web.ifzq.gtimg.cn/appstock/app/newfqkline/get", "hfq"
+
+
 def monthly(code, start, end):
     """源端的月线，**后复权**——和应用里 TotalReturnBarsAsync 用的是同一条路径。
 
@@ -95,8 +109,9 @@ def monthly(code, start, end):
       - `CandlesFromAsync` 丢掉还没走完的月（`IsSettledFor`），十月初取数末月是九月；
       - 同一条调用还按 start/end 裁一遍，因为源端对月线的 start 并不总是买账。
     """
-    url = ("https://web.ifzq.gtimg.cn/appstock/app/newfqkline/get"
-           f"?param={code},month,{start},{end},430,hfq")
+    base, adj = endpoint_for(code)
+
+    url = f"{base}?param={code},month,{start},{end},430,{adj}"
 
     raw = urllib.request.urlopen(
         urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}),
@@ -105,7 +120,7 @@ def monthly(code, start, end):
     node = json.loads(raw).get("data", {}).get(code, {})
 
     rows = None
-    for key in ("hfqmonth", "month"):
+    for key in (adj + "month", "month"):
         value = node.get(key)
         if isinstance(value, list) and value:
             rows = value
@@ -140,9 +155,12 @@ def monthly(code, start, end):
     return {m: float(r[2]) for m, r in by_month.items()}
 
 
-def expected(start, end):
-    """八个标的各自的累计涨幅，以及它们共用的那根月份轴。"""
-    per = [(name, monthly(code, start, end)) for code, name in CODES]
+def expected(start, end, codes=None):
+    """每个标的的累计涨幅，以及它们共用的那根月份轴。
+
+    `codes` 给的是自选那组：同一套算术，只是名单从读者来。不给就用内置那八档。
+    """
+    per = [(name, monthly(code, start, end)) for code, name in (codes or CODES)]
 
     months = sorted({m for _, series in per for m in series})
 
@@ -276,24 +294,48 @@ def frame_pixels(win, name):
     return coloured
 
 
+def canvas_box(whole):
+    """The canvas rectangle, found by colour.
+
+    Not by a proportion of the window: the crop that used to be here ("the canvas is 39%–62%
+    across") counted one row on this page's frames, because the window layout is not a fixed
+    fraction and the preview has no automation node to measure. Saturation is what the canvas
+    and the window around it really differ in: grey chrome has none, whatever its brightness,
+    and every canvas in this app has a lot.
+    """
+    pixels = whole.load()
+    width, height = whole.size
+
+    def vivid(x, y):
+        r, g, b = pixels[x, y]
+        return max(r, g, b) - min(r, g, b) > 60 and max(r, g, b) > 60
+
+    columns = [sum(1 for y in range(0, height, 4) if vivid(x, y)) for x in range(width)]
+    widest = max(columns)
+    band = [x for x, count in enumerate(columns) if count > widest * 0.5]
+
+    if not band:
+        return None
+
+    left, right = band[0], band[-1]
+
+    across = [sum(1 for x in range(left, right, 4) if vivid(x, y)) for y in range(height)]
+    tallest = max(across)
+    band = [y for y, count in enumerate(across) if count > tallest * 0.5]
+
+    if not band:
+        return None
+
+    return left, right, band[0], band[-1]
+
+
 def drawn_rows(win, name):
     """Counts the rows a frame actually draws, from its pixels.
 
-    A row is a name plus a bar plus a value label, and only the bar is a long horizontal run of
-    saturated colour — a picture of glyphs is a ragged run of a few pixels. So a scanline counts
-    as "inside a row" when it holds a run of four or more saturated pixels, and rows are the
-    bands of such scanlines. This is the only way to see "the board has not filled up yet", which
-    is a fact about the picture and not about any string in the UI.
-
-    The crop is the canvas interior as a proportion of the window, because the preview has no
-    automation node of its own. It keeps the rows and drops the coloured things around them: the
-    title-and-date band above, the legend line below, the navigation icons to the left, the
-    settings panel to the right.
-
-    Calibrated against frames whose row count is known: the twelve-index board, the three-index
-    Americas board, AH premium's fifteen and extreme days' fifteen all come out exact. Where two
-    neighbouring glows touch, the bands merge, so a count can come out low and never high — and
-    only a small board is asserted as an exact number.
+    A row is a name plus a bar plus a value label. The name is the dependable part: it sits at a
+    fixed place in every row and it is bright and nearly grey, while the bar beside it is
+    saturated colour and so never counts as a glyph. Where two rows are close their names merge,
+    so a count can come out low and never high.
     """
     try:
         from PIL import Image
@@ -302,40 +344,118 @@ def drawn_rows(win, name):
 
     path = shot(win, name)
     whole = Image.open(path).convert("RGB")
-    width, height = whole.size
+    pixels = whole.load()
 
-    image = whole.crop((int(width * 0.39), int(height * 0.33),
-                        int(width * 0.62), int(height * 0.83)))
-    pixels = image.load()
+    box = canvas_box(whole)
+
+    if box is None:
+        return -1
+
+    left, right, top, bottom = box
+
+    # Over the rows only: the title above and the credit below are bright enough to count as one
+    # more row each.
+    first = top + int((bottom - top) * 0.20)
+    last = top + int((bottom - top) * 0.85)
+
+    # The name column: the left quarter of the canvas. The title and the date are centred, so
+    # they are not in it.
+    name_right = left + int((right - left) * 0.26)
 
     ys = []
 
-    for y in range(image.size[1]):
-        best = 0
-        run = 0
+    for y in range(first, last):
+        white = 0
 
-        for x in range(image.size[0]):
+        for x in range(left + 2, name_right):
             r, g, b = pixels[x, y]
 
-            if max(r, g, b) > 110 and max(r, g, b) - min(r, g, b) > 70:
-                run += 1
-                best = max(best, run)
-            else:
-                run = 0
+            if min(r, g, b) > 140 and max(r, g, b) - min(r, g, b) < 60:
+                white += 1
 
-        if best >= 4:
+        if white >= 2:
             ys.append(y)
 
-    rows = 0
+    bands = 0
     previous = -10
 
     for y in ys:
-        if y - previous > 2:
-            rows += 1
+        # A gap of six: a glyph's strokes come and go over a couple of scanlines, and two rows
+        # are fifty apart, so nothing inside one name splits and nothing between two merges.
+        if y - previous > 6:
+            bands += 1
 
         previous = y
 
-    return rows
+    return bands
+
+
+def watch_chips(win):
+    """自选那一排 chip，每项是 (按钮, 标的名)。
+
+    每个 chip 自己就是删除按钮（点一下就删掉那一条）。两件事都是打印出来才看清的：
+
+      - 那个 `ItemsControl` 在 UIA 里**没有自己的节点**，所以只能从整窗里找；
+      - 按钮自己的 `Name` 是**空的**（`Name='' 子树=['贵州茅台', '×']`）—— 名字在子文本里，
+        不按按钮名认，否则数出来永远是 0，而画面上三条 chip 好好地在那儿。
+    """
+    out = []
+
+    for button in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+        kids = [t.Name for t in winui.find_all(
+            button, lambda c: c.ControlTypeName == "TextControl", limit=6)]
+
+        if any(k.strip() in ("×", "✕") for k in kids):
+            name = next((k for k in kids if k.strip() not in ("×", "✕")), "")
+            out.append((button, name))
+
+    return out
+
+
+def clear_watch(win):
+    """把自选清空。
+
+    **先清空再断言**：这份清单是四页共用、跨会话留下的，上一次跑脚本加的东西还在这里。若
+    不清空，取的数是「上次那几只 + 这次这几只」，而脚本按这次这几只重算 —— 两边对不上，
+    而画面是一版漂亮的自选榜，看不出它多画了几行。
+    """
+    for _ in range(24):
+        chips = watch_chips(win)
+
+        if not chips:
+            return True
+
+        try:
+            chips[0][0].GetInvokePattern().Invoke()
+        except Exception:  # noqa: BLE001
+            return False
+
+        time.sleep(0.6)
+
+    return False
+
+
+def add_watch(win, code):
+    """在自选的搜索框里填一个代码并提交。
+
+    代码走剪贴板而不是按键，回车提交而不是点建议：建议弹层是另一个顶层窗口。
+    """
+    box = winui.find(win, lambda c: c.AutomationId == "Search")
+    edit = None if box is None else winui.find(box, lambda c: c.AutomationId == "TextBox", limit=6)
+
+    if edit is None:
+        return False
+
+    edit.SetFocus()
+    time.sleep(0.3)
+    edit.SendKeys("{Ctrl}a", waitTime=0.3)
+    auto.SetClipboardText(code)
+    edit.SendKeys("{Ctrl}v", waitTime=0.5)
+    time.sleep(1.0)
+    edit.SendKeys("{Enter}", waitTime=0.5)
+    time.sleep(2.0)
+
+    return True
 
 
 def scrub(win, progress):
@@ -437,8 +557,27 @@ def main():
 
     # 量词：页面必须自己给，渲染器不许替页面编。
     check("周期词由页面传", 'SpanWord = Strings.Get("MarketCapUnitMonths")' in page)
-    check("计数词由页面传", 'UnitWord = Strings.Get("AssetRaceUnitAssets")' in page)
+    check("计数词由页面传", "UnitWord = ChosenUnit()" in page)
+    check("自选组的计数词换成「只个股」（基金叫标的，个股不是）",
+          'Watchlist.RosterKey ? "SectorUnitStocks" : "AssetRaceUnitAssets"' in page)
     check("渲染器没有写死这一页的量词", "AssetRaceUnitAssets" not in render)
+
+    # ---- 0c) 源码级：自选股这一组
+    #
+    # 自选能不能画出来不是问题 —— 切回内置组再取数也会成功。问题在**数是谁的**：所以断在
+    # 「清单从共享的那份来」而不是「页面上有个搜索框」。
+    check("清单里有一组是自选股", '(Watchlist.RosterKey, "SectorListStocks")' in page)
+    check("自选组取的是那一份共享清单",
+          "ChosenKey() is Watchlist.RosterKey ? Watch.Entries" in page)
+    check("自选组的计数词换成「只个股」（基金叫标的，个股不是）",
+          'Watchlist.RosterKey ? "SectorUnitStocks"' in page)
+    # 换组要把上一份数丢掉：留着的话画面照常漂亮，而标题已经换了名字。分成两段比对，
+    # 避免把缩进与换行抄进脚本 —— 抄进去的那天起，断言核对的就是脚本自己的排版。
+    check("换了组就把已取的数丢掉",
+          "!_prefs.Restoring" in page and "            _series = null;" in page)
+    check("增删自选后也把已取的数丢掉", "private void OnWatchChanged" in page)
+    check("取数后把名字改成端点叫的", "Watchlist.Rename(entry.Code" in page)
+    check("自选不足三只不给取数", "list.Count < Watchlist.Fewest" in page)
 
     # 还没上场的行：不排名、不画、不占位置。
     check("上场月份由数据层带出来", "IReadOnlyList<int>? Starts = null" in series)
@@ -484,8 +623,9 @@ def main():
 
     groups = winui.combo_labels(win, winui.find(win, lambda c: c.AutomationId == "ListCombo"))
 
-    check("资产组是那三组",
-          set(groups) == {"全部八类", "股票", "非股票"}, " / ".join(groups))
+    # 四组：三个内置清单 + 读者的自选。少一组说明接线掉了，多一组说明别处也挂上了。
+    check("资产组是那四组",
+          set(groups) == {"全部八类", "股票", "非股票", "自选股"}, " / ".join(groups))
 
     # ---- 3) 近 10 年取数
     # Preferences persist, so both dials are set explicitly: a previous run leaves the page on
@@ -581,6 +721,76 @@ def main():
 
             check("股票组画面上只有 4 行", four == 4, f"{four} 行")
 
+    # ---- 6b) 自选股：一份清单，四页共用，三个市场混装
+    #
+    # 这一页本来只有那八档境内基金，而且**只有复权这一条路是对的**（不复权的货币 ETF 是
+    # +0.0%，会变成垫底）。自选里放进一只拆过份额的或一只高分红的，走错路的代价立刻现形；
+    # 但更难的是证明画面上的数真的是这几只的 —— 切回内置组再取数也会成功、也会给一版漂亮
+    # 的榜。所以脚本自己打源端独立算一遍再逐项比对，而且这三只里有一只在另一个端点上
+    # （hk → hkfqkline + hfq）。
+    WATCH = [("sh600519", "贵州茅台"), ("sh510300", "沪深300ETF"), ("hk00700", "腾讯控股")]
+
+    if winui.combo_pick(win, winui.find(win, lambda c: c.AutomationId == "ListCombo"), "自选股"):
+        check("清单里多了「自选股」这一组", True)
+
+        # 搜索框只在选中这一组时才在：另外三组是内置清单，没有可填的东西。
+        check("选了自选股才出现搜索框",
+              winui.find(win, lambda c: c.AutomationId == "Search") is not None)
+
+        check("清空上一次跑脚本留下的自选（这份清单是跨会话共享的）", clear_watch(win))
+
+        for code, _ in WATCH:
+            if not add_watch(win, code):
+                check(f"加进自选：{code}", False)
+
+        chips = watch_chips(win)
+
+        check("三只都进了自选（跨市场：A股 + 港股）", len(chips) == len(WATCH),
+              " / ".join(n for _, n in chips))
+
+        data5, status5 = fetch(win)
+
+        if data5 is None:
+            check("用自选股这一组取数", False, status5[:120])
+        else:
+            check("用自选股这一组取数", True)
+            check("自选组报的是三只", data5["assets"] == len(WATCH), f"{data5['assets']} 只")
+
+            _, mine5 = expected(start, end, WATCH)
+
+            check("自选组三行都在（港股那一行也取到了数）", len(mine5) == len(WATCH),
+                  "、".join(n for n, _ in mine5))
+
+            if len(mine5) == len(WATCH):
+                check("自选组领先的是同一只", mine5[0][0] == data5["top"],
+                      f"页面 {data5['top']} / 脚本 {mine5[0][0]}")
+                check("自选组领先的涨幅对得上（容差 0.5 个百分点）",
+                      abs(mine5[0][1] - data5["top_pct"]) <= 0.5,
+                      f"页面 {data5['top_pct']}% / 脚本 {mine5[0][1]:.2f}%")
+                # 垫底也要比对：只比领先的话，中间那几行（尤其是跨市场那只，脚本容易走错
+                # 端点）算错了也没人发现。
+                check("自选组垫底的是同一只", mine5[-1][0] == data5["bottom"],
+                      f"页面 {data5['bottom']} / 脚本 {mine5[-1][0]}")
+                check("自选组垫底的涨幅对得上（容差 0.5 个百分点）",
+                      abs(mine5[-1][1] - data5["bottom_pct"]) <= 0.5,
+                      f"页面 {data5['bottom_pct']}% / 脚本 {mine5[-1][1]:.2f}%")
+                # 茅台十年分红不算多，但拆过的 ETF 与高分红的个股只有复权才算得平 —— 垫底
+                # 那一行的绝对值必须大于 1%，否则说明这一组又走了不复权那条路。
+                check("自选组垫底那行不是 0.00%（复权生效了）",
+                      abs(data5["bottom_pct"]) > 1.0, f"{data5['bottom_pct']}%")
+
+        # 一份清单，不是四份：在另一页上也看得见这三只。
+        if goto(win, "回撤与修复"):
+            if winui.combo_pick(win, winui.find(win, lambda c: c.AutomationId == "ListCombo"), "自选股"):
+                there = watch_chips(win)
+
+                check("同一份自选在回撤页也看得到（不是各存各的）",
+                      len(there) == len(WATCH), " / ".join(n for _, n in there))
+
+            goto(win, "大类资产")
+    else:
+        check("清单里多了「自选股」这一组", False)
+
     # ---- 7) 重启后还记得
     winui.kill(winui.EXE)
     time.sleep(2.0)
@@ -604,7 +814,13 @@ def main():
     group = winui.find(win, lambda c: c.AutomationId == "ListCombo")
     kept = winui.value(group) if group is not None else None
 
-    check("重启后资产组仍记着", kept == "股票", str(kept))
+    # 上一节把这一页留在自选股上，所以重启后记着的应该是自选股。
+    check("重启后资产组仍记着（还是「自选股」）", kept == "自选股", str(kept))
+
+    # 共享清单跨重启还在：三只都还在，不是取数时才临时凑出来的。
+    check("重启后自选那三只还在（清单存在盘上，不是内存里）",
+          len(watch_chips(win)) == len(WATCH),
+          " / ".join(n for _, n in watch_chips(win)))
 
     return report()
 

@@ -493,17 +493,28 @@ each row joined — one number per racer, from the loader, out to the renderer, 
 the row out of the ranking and skips it when drawing. A row merely ranked last still holds its
 place, and twelve places with seven of them empty is a board full of holes.
 
-**Monthly, unadjusted.** One request per index carries 430 months — the source's ceiling — so
-"longest" costs twelve requests and about thirty-five years. Daily would be worse than slower: the
-three markets' holidays are not each other's, and a day any one of them lacked would either drop
-out of every row or be carried forward into a claim that nothing moved. Unadjusted because an
-adjustment rebases one series, and two rebased series side by side are not comparable — the
-`RawBarsAsync` path the A+H and currency-corridor pages already take.
+**Monthly, and adjusted since this board learned to race a reader's own list.** One request per
+index carries 430 months — the source's ceiling — so "longest" costs twelve requests and about
+thirty-five years. Daily would be worse than slower: the three markets' holidays are not each
+other's, and a day any one of them lacked would either drop out of every row or be carried forward
+into a claim that nothing moved.
+
+Adjustment was the one open question, and it is settled by measurement rather than by argument.
+**The source ignores the adjustment parameter for an index**: asked either way, all twelve come back
+identical — the first month's close, the last month's close and the ten-year change differ by
+0.0000 across every one of them. What an adjustment costs an index is nothing, and what it buys a
+share is everything: over the same decade Apple reads +193% unadjusted against **+1183%** adjusted,
+because of a four-for-one split in 2020; CATL reads 305% against 684%, Gree 71% against 138%. So
+the board now takes the adjusted path, every figure already published from it is unchanged, and a
+share sitting alongside those twelve is no longer short-changed by its own calendar. The one thing
+it does cost is a difference of kind, and the page states it rather than hiding it: an index row is
+a **price** return, because an index is not something you can hold, while a share row is a **total**
+one, with the dividends and the splits put back.
 
 **The market setting does not apply here either.** This page reads three markets at once, so there
 is no single market it could be about; the group is chosen on the page — all twelve, the mainland's
-six, Hong Kong's three, or New York's three. It is the third page, after A+H and the currency
-corridors, that sits outside the market switch's reach.
+six, Hong Kong's three, New York's three, or **a list of your own**. It is the third page, after
+A+H and the currency corridors, that sits outside the market switch's reach.
 
 **Asset classes** — the fourteenth page, and the index race's other half: eight asset classes you
 could actually have held, one fund each, measured against one another. That board races published
@@ -531,7 +542,7 @@ two rules the index race established, for the same two reasons. The commodity fu
 **All eight are quoted on a mainland exchange**, so every row is bought with the same money, and the
 two overseas rows carry the exchange rate inside them — which is what a mainland holder's return
 actually was. That is also why the market setting does not apply here: the board is chosen on the
-page — all eight, the four share funds, or the four that are not shares.
+page — all eight, the four share funds, the four that are not shares, or **a list of your own**.
 
 Measured 2026-10-02 over ten years: 120 months, the Nasdaq fund ahead at +578.20%, the gold fund at
 +209.59%, and the money-market fund behind at +18.76%.
@@ -563,7 +574,9 @@ the picture cannot show the difference: the curves are drawn either way.
 
 Adjusted, monthly and measured from each holding's own first month, all three for the reasons the
 asset race gives — and unadjusted this board would be worse than wrong, because the one row that has
-never fallen would be the only row with a hole in it.
+never fallen would be the only row with a hole in it. The roster is chosen on the page — all eight,
+the four share funds, the four that are not shares, or **a list of your own** — and a share put on
+that list is measured the same way, from its own first month, with the same two numbers.
 
 **Hold odds** — the sixteenth page, and the third board on that same roster. The first two are drawn
 on the range's own two ends: one way in, one way out, which answers "was this decade good". The
@@ -588,6 +601,18 @@ asset race separates by ten years of total return; this board separates them by 
 worked at all. Held for one year instead of three, the same decade is a different question with a
 different answer — the CSI 300 fund goes from 69.0% to 59.3% and the Hong Kong fund from 40.5% to
 49.1%, because a short hold catches different falls.
+
+**One list of your own, shared by four boards.** The last group in each of those menus is a roster
+you fill in yourself: type a code, a Chinese name or pinyin, and it joins. It is **one list, not
+four** — a stock added on the index race is offered on the asset race, the drawdown board and the
+hold-odds board, and it survives a restart, because a pick is a fact about the instrument and not
+about the page it was typed on. It is also **cross-market**: none of those four boards is governed
+by the market setting, so a mainland share, a Hong Kong one and a New York one sit on it together
+and are fetched from the three endpoints the code asks for, which is why the search box looks in all
+three markets rather than in the one in force. Under three picks the fetch is refused — a race needs
+a field — and sixteen is the ceiling. A pick's name is re-resolved through the app's own instrument
+table after a fetch rather than frozen at whatever the search box returned, so the same code reads
+the same on this board as it does everywhere else in the app.
 
 **A short fall's label moves out of the way.** The race renderer puts a value label outside the
 bar's end when the bar is too short to hold it. For a fall that means to the left — and the axis's
@@ -752,6 +777,14 @@ turnover in 万元.
 
 **It serves JSON under `Content-Type: text/html`.** The content type is no use as a check; the
 envelope's own `code` field is.
+
+**A verification script has to follow the same routing table the app does.** An outside script that
+recomputes a board's numbers is the only check on them, and the easiest way to write it wrong is to
+hard-code the generic endpoint: `hk` codes are answered by `hkfqkline`, `us` codes by `usfqkline`,
+and asking the generic one for a Hong Kong share returns a *different series* rather than an error.
+The board came out at −66.86% for one pick and the script at −69.83%, which is close enough to look
+like rounding and was enough to flip "healed in thirty-five months" into "not healed yet". Both
+sides were confidently reporting and neither was failing.
 
 **`CultureInfo.CurrentCulture` does not follow the language the app is showing.** A language
 pinned in Settings goes through `PrimaryLanguageOverride`, which redirects *resource* lookup; the
