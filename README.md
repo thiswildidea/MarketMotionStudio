@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **ten pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **eleven pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -131,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The ten pages
+## The eleven pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -405,6 +405,41 @@ text before drawing: `Agricultural Bank of China` at the row's own size runs off
 the frame, and nothing complains — the first frame that names a company is the first frame that is
 visibly wrong. One shared size for the whole column, computed once rather than per frame.
 
+**Extreme days** — the eleventh page, and the one whose rows are days rather than companies: one
+instrument's largest single-day moves, ranked by size.
+
+**A row's value never changes, which is the whole inversion.** Every other board gives a racer a
+value that moves day by day; here the racer *is* a day, and its value is how far the instrument
+moved on it — fixed the moment that day closed. What moves instead is membership: a day is worth
+nothing until it happens, so the board fills in as the years pass, and a day larger than the
+fifteenth takes its place and pushes someone off the bottom. Twenty-four candidate days race for
+fifteen places.
+
+**Ranked by magnitude, not by sign.** A board of moves is a board of *moves*: −7.7% belongs beside
++8.1%. Ranking the signed values would file every fall below every rise, however small the rise,
+and the page would be a list of good days with the crashes filed underneath. Bars therefore grow
+both ways from the zero axis — **a rise to the right in red, a fall to the left in green** — which
+is also the one board here whose bars are coloured by what the row says rather than by a hash of
+its code: a company is something a viewer follows up a board, and a day is not.
+
+**Days that have not happened yet are not on it.** Before its own date a row is worth zero, and
+ranked by magnitude it sits at the bottom of the field — which is not far enough, because
+twenty-four candidates of which five have happened still fill a fifteen-row frame, ten of them
+reading 0.00%. The renderer skips a row whose value is zero *at that day*, which is also what makes
+the board visibly fill up rather than start full.
+
+**The move is the change in the adjusted close**, because an ex-dividend day is not a crash: the
+price drops by the dividend that morning, and an unadjusted series would put that day at the top of
+a board of the largest falls in history, when nobody holding the stock lost anything. Indices are
+what the page is normally asked about — one of the current market's broad ones — and there the
+distinction is invisible, which is exactly why it is stated rather than left to be discovered on a
+stock.
+
+**The longest span is about thirty-five years**, and that is the walk's limit rather than a choice:
+one request carries about 640 daily bars and the walk makes twenty. A span with fewer than sixty
+trading days is refused — the largest single day inside a quiet month is not a fact a board should
+be built on.
+
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
 A title too long for the frame is scaled down to fit rather than clipped or wrapped, to half
@@ -605,7 +640,8 @@ src/MarketMotionStudio/
                    DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding),
                    CandleSeries (daily/weekly/monthly bars, and the two animations' shapes),
                    MarketCaps (the fifteen-per-market field, and today's value turned into a history),
-                   AhPremium (the A+H pairs, and the one page that must not use adjusted prices)
+                   AhPremium (the A+H pairs, and the one page that must not use adjusted prices),
+                   ExtremeDays (one instrument's largest single-day moves, rows that are days)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
@@ -632,6 +668,7 @@ tools/
   port-store-listing.py  Rewrites the three paragraphs the Store listing repeats in fourteen
                          languages — the page list, what's new, the feature bullets
   port-ahpremium-*.py    The same, for the A+H page — including the 40 A-leg names it needed
+  port-extremedays-*.py  The same, for the extreme-day board
   port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
                          (the pool script carries the 93 candidates that only need zh + en)
   verify-*.py            Drive the UI and assert the feature behaves as documented
@@ -726,8 +763,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 651 keys
-with no encoding damage, and all fourteen help documents carry the same nineteen sections in the
+Every language carries the same keys in the same order. All fourteen currently report 662 keys
+with no encoding damage, and all fourteen help documents carry the same twenty sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -741,7 +778,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all ten pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all eleven pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -812,9 +849,15 @@ first export asks and then remembers.
   past three years — 726 buys; a ten-year plan of 2,429 buys fetched by hand the same day),
   one cover, one 1080p30 export with its boxes verified. Not the Hong Kong or US preset
   lists, not the weekly or monthly cadences, not another format. See NOTES.
-- **The Store screenshots show seven pages, not ten.** `tools/store-screenshots.py` predates the
-  candle page, the market-cap board and the A+H page, so the listing's gallery has none of the
-  three. The listing copy says ten charts in all fourteen languages, so the copy and the gallery
+- **The extreme-day board has been fetched and read at one span, on two instruments** (A-shares, ten
+  years, 32 checks: 24 candidate days over 2,427 trading days, the largest move recomputed from the
+  source's own bars and matching to two decimals), and its preferences survive a restart. It has not
+  been exported at any format, its custom span has not been exercised, and Hong Kong and New York
+  have not been driven through it. See NOTES.
+- **The Store screenshots show seven pages, not eleven.** `tools/store-screenshots.py` predates the
+  candle page, the market-cap board, the A+H page and the extreme-day board, so the gallery has none
+  of the four. The listing copy says ten charts in all fourteen languages — it predates this page too,
+  and the listing is written at release time — so the copy and the gallery
   disagree until all three captures are taken. The copy deliberately runs ahead of the package: it is
   written for the version being prepared, and it must not be uploaded before that package is.
 - **The A+H page has been fetched and read at two spans** (three years and the longest, twenty-two

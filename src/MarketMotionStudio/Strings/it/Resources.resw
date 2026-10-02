@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>Il cambio non è arrivato, quindi nessun premio può essere calcolato.</value></data>
   <data name="AhPremiumTooFew"><value>Troppe poche coppie coprono questo periodo. Provane uno più corto.</value></data>
   <data name="AhRangeMax"><value>Il più lungo (circa 9 anni)</value></data>
+  <data name="NavExtremeDays.Content"><value>Giorni estremi</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Giornate di trading estreme</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>I maggiori movimenti di una sola seduta di uno strumento, ordinati per ampiezza. La classifica si riempie con il passare degli anni.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Giorni estremi</value></data>
+  <data name="ExtremeDaysCount"><value>Uno strumento, ogni giorno di negoziazione del periodo. Il fotogramma disegna i {0} movimenti più grandi, rosso per un rialzo e verde per un ribasso.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Movimento = la variazione del close rettificato rispetto al giorno di negoziazione precedente, in percentuale. Ordinato per ampiezza e non per segno, così una discesa sta accanto a un rialzo della stessa misura. Un giorno entra in classifica solo dopo che è avvenuto, ed è per questo che il quadro si riempie.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Strumento</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>giorni candidati</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} giorni candidati · {1} giorni di negoziazione · il più grande {2} {3} · il più piccolo nel quadro {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Il più lungo (circa 35 anni)</value></data>
+  <data name="ExtremeDaysTooFew"><value>Troppo pochi giorni di negoziazione in questo periodo. Prova un periodo più lungo.</value></data>
 </root>

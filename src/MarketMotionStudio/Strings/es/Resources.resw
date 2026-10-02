@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>El tipo de cambio no llegó, así que no se puede calcular ninguna prima.</value></data>
   <data name="AhPremiumTooFew"><value>Muy pocos pares cubren este periodo. Pruebe uno más corto.</value></data>
   <data name="AhRangeMax"><value>Más largo (unos 9 años)</value></data>
+  <data name="NavExtremeDays.Content"><value>Días extremos</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Días extremos de negociación</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>Los mayores movimientos en un solo día de un instrumento, ordenados por magnitud. El tablero se llena a medida que pasan los años.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Días extremos</value></data>
+  <data name="ExtremeDaysCount"><value>Un instrumento, cada día de negociación del periodo. El fotograma dibuja los {0} movimientos más grandes, rojo para una subida y verde para una bajada.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Movimiento = la variación del cierre ajustado respecto al día de negociación anterior, en porcentaje. Se ordena por magnitud y no por signo, así que una bajada se sitúa junto a una subida del mismo tamaño. Un día cuenta solo cuando ya ha ocurrido, y por eso el tablero se llena.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Instrumento</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>días candidatos</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} días candidatos · {1} días de negociación · el mayor {2} {3} · el menor del cuadro {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Más largo (unos 35 años)</value></data>
+  <data name="ExtremeDaysTooFew"><value>No hay suficientes días de negociación en este periodo. Pruebe uno más largo.</value></data>
 </root>

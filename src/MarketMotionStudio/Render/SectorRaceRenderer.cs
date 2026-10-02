@@ -70,11 +70,29 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     /// listings and asks for the fifteen that were largest at each moment, which is what makes its
     /// membership change over time.
     /// </param>
+    /// <param name="rankByMagnitude">
+    /// Rank by size rather than by signed value, for a board whose rows can go either way.
+    ///
+    /// Off by default, because a race of cumulative returns or of turnovers is a race *up*: the
+    /// signed value is the standing. A board of the largest single-day moves is the other kind,
+    /// where −7.7% belongs next to +8.1% and a signed sort buries every drop under every rise.
+    /// Only the ranking changes — the bar still grows to whichever side of the zero axis its own
+    /// sign says.
+    ///
+    /// **A constructor argument and not a property**, which is the one thing this page's first
+    /// build got wrong: the whole ranking table is precomputed here, before an object initialiser
+    /// runs, so `new SectorRaceRenderer(...) { RankByMagnitude = true }` sorted by sign and said
+    /// nothing. The frame drew the eight biggest rises and the seven smallest falls — a plausible
+    /// picture of the wrong board — while the page's own status line, which ranked by magnitude
+    /// itself, reported the correct days. Nothing in the UI could tell the two apart.
+    /// </param>
     public SectorRaceRenderer(
-        SectorRaceSeries series, RaceMetric metric, TimeSpan duration, int showTop = int.MaxValue)
+        SectorRaceSeries series, RaceMetric metric, TimeSpan duration, int showTop = int.MaxValue,
+        bool rankByMagnitude = false)
     {
         _series = series;
         _metric = metric;
+        _rankByMagnitude = rankByMagnitude;
         Duration = duration;
         TotalMs = duration.TotalMilliseconds;
         _showTop = Math.Clamp(showTop, 1, Math.Max(1, series.Racers));
@@ -97,7 +115,10 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                 order[k] = k;
             }
 
-            Array.Sort(order, (a, b) => values[b][i].CompareTo(values[a][i]));
+            // Magnitude, when the page asks for it: a board of the day's biggest moves either
+            // way wants −7% beside +8%, and ranking the signed values would file every drop
+            // below every rise however small the rise was.
+            Array.Sort(order, (a, b) => Rank(values[b][i]).CompareTo(Rank(values[a][i])));
 
             for (var pos = 0; pos < order.Length; pos++)
             {
@@ -151,6 +172,35 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     public string Title { get; set; } = string.Empty;
 
     public bool ShowTitle { get; set; } = true;
+
+    /// <summary>
+    /// Leave out a row whose value is zero at this moment, for a field whose rows have not all
+    /// happened yet.
+    ///
+    /// The extreme-day board carries twenty-four candidate days and draws fifteen, and a day
+    /// that is still in the future has no move to show. Ranked by magnitude it sits at the
+    /// bottom of the field, which is not far enough: with only five days behind it the frame
+    /// still had fifteen rows on it, ten of them reading 0.00%. A row that has not happened
+    /// yet is not on the board at all, which is also how the board comes to fill up as the
+    /// years pass.
+    /// </summary>
+    public bool HideEmptyRows { get; set; }
+
+    /// <summary>
+    /// Colour the bar by the sign of its value rather than by a hash of its code.
+    ///
+    /// One colour per row is what lets a viewer follow a company up a market-cap board. A board
+    /// of single-day moves has nothing to follow — every row is one day, and what the viewer is
+    /// reading is which way it went. So the bar is red for a rise and green for a fall, the
+    /// pair this app uses everywhere, and the hashed palette is left to the pages whose rows
+    /// are things that persist.
+    /// </summary>
+    public bool ColourBySign { get; set; }
+
+    /// <summary>Read once, in the constructor: the ranking table depends on it.</summary>
+    private readonly bool _rankByMagnitude;
+
+    private double Rank(double value) => _rankByMagnitude ? Math.Abs(value) : value;
 
     /// <summary>
     /// The resource key for the amount metric's unit word. Overridable because the metric is
@@ -275,8 +325,16 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
         var lastRow = rows - 1;
 
+        var raw = _series.ReturnsOrAmounts(_metric);
+
         foreach (var k in order)
         {
+            // A row whose day has not come yet is not on the board — see HideEmptyRows.
+            if (HideEmptyRows && raw[k][state.DayIndex] == 0)
+            {
+                continue;
+            }
+
             // A field is wider than the board, so a row can be off the bottom of it. Rather than
             // have a listing pop in at the moment it takes fifteenth place, it fades over the
             // place below — which is also what makes "who is falling out" legible.
@@ -300,7 +358,11 @@ public sealed class SectorRaceRenderer : IFrameRenderer
             // sixteen colours, so index-based colours would repeat between rows that can stand
             // next to each other. Hashed, two listings that happen to share a colour are two
             // listings that are unlikely to be adjacent.
-            var colour = Palette16[ColourIndex(_series.Entries[k].Code)];
+            // The same two tones Palette.Return ends on at full depth, so a bar's colour and
+            // the value label beside it agree about which way the day went.
+            var colour = ColourBySign
+                ? (state.Values[k] >= 0 ? Rgb(0xEF, 0x44, 0x44) : Rgb(0x22, 0xC5, 0x5E))
+                : Palette16[ColourIndex(_series.Entries[k].Code)];
             var yc = top + ((state.Slots[k] + 0.5) * rowH);
             var vx = x0 + ((state.Values[k] - state.AxisMin) / span) * plotW;
 

@@ -4,8 +4,8 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-10-02 (after the tenth page, the A+H pairs and what they cost to compare; see
-the end).
+Last reviewed: 2026-10-02 (after the eleventh page: extreme days, the board whose rows are days;
+see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -1189,3 +1189,81 @@ run at any format — the preview and the encoder share a renderer, so an export
 the verification. The custom span has not been exercised. The frame has been read at two spans
 (three years: 68 pairs, 36 months; the longest: 52 pairs, 123 months) plus one independent
 recomputation of the dearest premium, which matched the page to 0.04 of a percentage point.
+
+## The eleventh page: extreme days
+
+One instrument, and the days it moved the most — horizontal bars ranked by size. **The row is a
+day**, which no other page here does, and it inverts what a race is: every other board gives a racer
+a value that moves day by day, and this one gives a row a value that is fixed the moment that day
+closed. What moves is membership. A day is worth nothing until it happens, so the board fills in as
+the years pass, and a day larger than the fifteenth takes its place and pushes someone off. The
+field is twenty-four candidate days, the frame draws fifteen.
+
+**Ranked by magnitude, and that is the page's whole argument.** −7.7% and +8.1% are the same size of
+move and belong next to each other; ranking the signed values files every fall below every rise, and
+the board becomes a list of good days with the crashes underneath. Bars grow both ways from the zero
+axis — a rise to the right in red, a fall to the left in green — which is also the first board whose
+bars are coloured by what the row says rather than by a hash of its code: a company is a thing a
+viewer follows up a board, and a day is not.
+
+**Days that have not happened yet are not on it.** This is the one that needed a renderer change.
+Before its own date a row is worth zero, and ranked by magnitude it sits at the bottom of the
+field — which is not far enough, because twenty-four candidates of which five have happened still
+fill a fifteen-row frame, ten of them reading 0.00%. `HideEmptyRows` skips a row whose value is zero
+*at that day*, and that is also what makes the board visibly fill up instead of starting full.
+
+**The move is the change in the adjusted close.** An ex-dividend day is not a crash: the price drops
+by the dividend that morning, and an unadjusted series would put that day at the top of a board of
+the largest falls in history, when nobody holding the stock lost anything. Indices are what the page
+is asked about normally and there the distinction is invisible, which is why it is stated rather
+than left to be discovered on a stock.
+
+**Measured on 2026-10-02**, A-shares, ten years: 24 candidate days over 2,427 trading days,
+biggest 2024-09-30 +8.06%, bottom of the drawn board 2018-10-22 +4.09%. The same span on 深证成指
+gave +10.67% and a −5.31% at the bottom, which is what proves the sign is carried and the ranking is
+by size. Both figures were recomputed independently by `tools/verify-extremedays.py` straight from
+the source's daily bars, and matched to two decimals. `verify-extremedays.py` is 32 checks, 32 pass.
+
+**The longest span is about thirty-five years**, which is the walk's limit and not a choice: one
+request carries about 640 daily bars and the walk makes twenty. Its label is its own key rather than
+the plan page's "longest", because that one says thirteen years for its own reason — a label borrowed
+across pages is a label that lies on one of them.
+
+**Two defects found in the A+H page while this one was being built**, both fixed here:
+- `AhPremiumCount` carries a `{0}` for the board's size and the page read it with `Strings.Get`, so
+  the panel showed a literal "{0}". Now formatted. The new page copied the defect and fixed it in the
+  same pass; both pages now have a check asserting the placeholder is gone.
+- `AhPremiumFetched`'s fourteen values are read positionally, and the slot en-US reads held the
+  Chinese string — the English interface reported a whole status line in Chinese. No UI test running
+  in Chinese would see it, so the check is against the file: the English value must contain no CJK.
+
+**A third defect, found by the app refusing to start.** The new nav item's key was written
+`NavExtremeDays.Text`; a NavigationViewItem is a ContentControl and the `x:Uid` loader asks for
+`.Content`. `MainWindow.InitializeComponent` threw `Unable to resolve property 'Text' while
+processing properties for Uid 'NavExtremeDays'` — a crash on launch, three times, recorded in
+`crash.log`. The load-bearing part is that the crash log said exactly which Uid and which property.
+
+**The bug worth remembering: a renderer option that has to be a constructor argument.** Ranking by
+magnitude was written as a property, because that is how the renderer's other options are spelled
+(`UnitWord`, `SpanWord`, `HideEmptyRows`, `ColourBySign`) — and the ranking table is built **inside
+the constructor**, which runs *before* an object initialiser. So `new SectorRaceRenderer(…) {
+RankByMagnitude = true }` sorted by sign and said nothing at all. The frame drew the eight biggest
+rises and the seven smallest falls: on 上证指数 over ten years the second, third and fourth largest
+moves are all crashes (−7.72%, −7.34%, −6.62%), and the first build showed none of them, with the
+board's bottom at +4.09% instead of −7.72% at the top of the field. **Nothing in the UI could
+distinguish it from a correct board** — the board filled, the bars were red and green, the numbers
+were real, and the layout was exactly what the page would have drawn if the index had no crashes.
+
+It survived the first verification run, which was 32 checks and passed, because **the status line
+ranks by magnitude itself** — the page reports its own standings and those were right — while the
+renderer was drawing a different board. What catches it is the pixels: the frame is captured, cropped
+to the preview's own rectangle and its red and green pixels are counted, because a board of the
+largest moves either way on an instrument that has crashed must show both. That check was added and
+the option became the constructor's fifth parameter, with a check that the page passes it as an
+argument and *not* as an initialiser.
+
+**Owed on this page:** the English interface has not been driven through it (the instrument names and
+the row labels are checked another way — every broad index has an `INST*` key in all fourteen
+languages, and a row's name is an ISO date, which needs no translating); no export has been run at
+any format; the custom span has not been exercised; nor has the Hong Kong or United States market
+been through it.

@@ -119,6 +119,34 @@ notowanych po obu stronach, miesiąc po miesiącu, jako słupki, które się wyp
   ponownie ze źródła 2026-10-02, a 海通证券 wypadło właśnie wtedy (akcje H wycofane po fuzji z
   国泰海通).
 
+## Ekstremalne dni
+
+Jeden instrument i dni, w których poruszył się najmocniej — poziome słupki uporządkowane
+według wielkości. **Wierszami tej tablicy są dni, nie spółki**, czego nie robi żadna inna strona:
+wartością wiersza jest ruch z danego dnia względem zamknięcia poprzedniej sesji i gdy ten dzień
+minie, wartość już się nie zmienia.
+
+- **Ruch to zmiana skorygowanej ceny zamknięcia.** Skorygowanej, bo dzień odcięcia dywidendy nie
+  jest krachem: tego ranka cena spada o dywidendę, a seria bez korekty umieściłaby ten dzień na
+  czele największych spadków w historii, choć nikt nic nie stracił.
+- **Uporządkowane według wielkości, nie według znaku.** −7,7 % i +8,1 % to ruchy tej samej
+  wielkości, więc stoją obok siebie; sortowanie wartości ze znakiem umieściłoby każdy spadek pod
+  każdym wzrostem. Słupki rosną więc w obie strony: **wzrost w prawo, na czerwono; spadek w lewo,
+  na zielono**.
+- **Dzień liczy się dopiero, gdy nadejdzie.** Dwudziestu czterech kandydatów to największe ruchy
+  okresu, a kadr rysuje piętnaście największych z nich. Dzień nie bierze udziału w rankingu, póki
+  nie nadejdzie jego data, więc tablica zapełnia się wraz z latami zamiast być pełna od początku.
+- **Instrument jest jeden, jeden z szerokich indeksów bieżącego rynku** (na rynku A: Shanghai
+  Composite, Shenzhen Component, CSI 300 i tak dalej). Zmiana rynku wymienia całą listę; zmiana
+  instrumentu lub okresu tylko zapisuje preferencję — nic nie jest pobierane, dopóki nie naciśniesz
+  取数.
+- **Najdłuższy okres to około trzydzieści pięć lat**, co jest ograniczeniem źródła: jedno żądanie
+  niesie około 640 świec dziennych, a cofanie wykonuje się najwyżej dwadzieścia razy. Okres
+  krótszy niż sześćdziesiąt sesji jest odrzucany — największy dzień spokojnego miesiąca to nie jest
+  fakt wart tablicy.
+- **Data u góry kadru to oś czasu**, a pasek pod nią to postęp. Wiersz nagłówka niesie okres,
+  liczbę sesji i liczbę dni kandydackich.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

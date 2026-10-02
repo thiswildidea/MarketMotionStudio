@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>Der Wechselkurs kam nicht zurück, also lässt sich keine Prämie berechnen.</value></data>
   <data name="AhPremiumTooFew"><value>Zu wenige Paare reichen über diesen Zeitraum zurück. Versuchen Sie einen kürzeren.</value></data>
   <data name="AhRangeMax"><value>Längste (etwa 9 Jahre)</value></data>
+  <data name="NavExtremeDays.Content"><value>Extreme Tage</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Extreme Handelstage</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>Die größten Tagesbewegungen eines Instruments, nach Größe gereiht. Das Tableau füllt sich, während die Jahre vergehen.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Extreme Tage</value></data>
+  <data name="ExtremeDaysCount"><value>Ein Instrument, jeder Handelstag des Zeitraums. Das Bild zeichnet die {0} größten Bewegungen, rot für ein Plus und grün für ein Minus.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Bewegung = die Veränderung des bereinigten Schlusskurses gegenüber dem vorherigen Handelstag, in Prozent. Nach Größe gereiht, nicht nach Vorzeichen, sodass ein Minus neben einem gleich großen Plus steht. Ein Tag zählt erst, wenn er vergangen ist — darum füllt sich das Tableau.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Instrument</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>Kandidatentage</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} Kandidatentage · {1} Handelstage · größte {2} {3} · kleinste im Bild {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Längste (etwa 35 Jahre)</value></data>
+  <data name="ExtremeDaysTooFew"><value>Zu wenig Handelstage in diesem Zeitraum. Versuchen Sie einen längeren.</value></data>
 </root>

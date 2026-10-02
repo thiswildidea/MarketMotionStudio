@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>Курс не пришёл, поэтому премию вычислить нельзя.</value></data>
   <data name="AhPremiumTooFew"><value>Слишком мало пар покрывают этот период. Возьмите короче.</value></data>
   <data name="AhRangeMax"><value>Самый длинный (около 9 лет)</value></data>
+  <data name="NavExtremeDays.Content"><value>Экстремальные дни</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Экстремальные торговые дни</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>Самые большие движения одного инструмента за один день, упорядоченные по величине. Таблица заполняется по мере того, как идут годы.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Экстремальные дни</value></data>
+  <data name="ExtremeDaysCount"><value>Один инструмент, каждый торговый день периода. Кадр рисует {0} крупнейших движений: рост красным, падение зелёным.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Движение = изменение скорректированного закрытия относительно предыдущего торгового дня, в процентах. Ранжируется по величине, а не по знаку, поэтому падение стоит рядом с равным по величине ростом. День попадает в рейтинг только когда он уже произошёл — поэтому таблица заполняется.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Инструмент</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>дней-кандидатов</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} дней-кандидатов · {1} торговых дней · самый большой {2} {3} · самый маленький в кадре {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Самый длинный (около 35 лет)</value></data>
+  <data name="ExtremeDaysTooFew"><value>В этом периоде слишком мало торговых дней. Возьмите период длиннее.</value></data>
 </root>

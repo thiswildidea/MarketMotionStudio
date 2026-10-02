@@ -369,7 +369,9 @@ PAGE = [
     # 叫它"最便宜"会让人以为场上有个负溢价的公司在榜上——真正负溢价的两家
     # （招商银行、药明康德）排在名单末尾，进不了这 15 名。
     ("AhPremiumFetched", [
-        "{0} 对 · {1} 个月 · 最高 {2} {3} · 榜尾 {4} {5}",
+        # The English column, which an earlier run left holding the Chinese string: the fourteen
+        # values are read positionally, and the first of them is the one en-US gets.
+        "{0} pairs · {1} months · highest {2} {3} · bottom of the board {4} {5}",
         "{0} Paare · {1} Monate · höchste {2} {3} · Schlusslicht {4} {5}",
         "{0} pares · {1} meses · más alta {2} {3} · último del cuadro {4} {5}",
         "{0} paires · {1} mois · plus forte {2} {3} · dernière du classement {4} {5}",

@@ -283,6 +283,17 @@ def main():
     check("日期轴按年月归并（月末日期三条腿各不相同）",
           "DaysInMonth" in source and "MonthEnd" in source)
 
+    # The port script's values are read **positionally**, and one row had the Chinese string in
+    # the slot en-US reads: the English interface reported a whole status line in Chinese. No UI
+    # test running in Chinese would ever see it, so it is asserted against the file.
+    english = open(os.path.join(REPO, "src/MarketMotionStudio/Strings/en-US/Resources.resw"),
+                   encoding="utf-8").read()
+    hit = re.search(r'<data name="AhPremiumFetched"[^>]*><value>(.*?)</value>', english, re.S)
+
+    check("英文的状态行是英文（注入脚本没把列对错位）",
+          hit is not None and not re.search(r"[一-鿿]", hit.group(1)),
+          hit.group(1)[:60] if hit else "MISSING")
+
     # ---- 1) 页面在，而且面板里没有多余的选择
     if not goto(win, "AH 溢价"):
         check("导航里有「AH 溢价」", False)
@@ -297,6 +308,10 @@ def main():
     if labels is not None:
         shown = " ".join(texts(labels))
         check("卡片说明了名单与区间的关系", "两" in shown or "69" in shown, shown[:70])
+
+        # The card's copy carries a {0} for the board's size, and the page read it with
+        # `Strings.Get` — so the panel showed a literal "{0}" where fifteen should have been.
+        check("卡片里的 {0} 已被替换（没有字面占位符）", "{0}" not in shown, shown[:70])
 
     note = winui.find(win, lambda c: c.AutomationId == "AhPremiumMethodNote")
 

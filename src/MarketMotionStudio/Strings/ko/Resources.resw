@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>환율을 받지 못해 프리미엄을 계산할 수 없습니다.</value></data>
   <data name="AhPremiumTooFew"><value>이 기간을 채우는 쌍이 부족합니다. 더 짧은 기간을 선택하세요.</value></data>
   <data name="AhRangeMax"><value>최장(약 9년)</value></data>
+  <data name="NavExtremeDays.Content"><value>극단의 날</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>극단의 거래일</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>하나의 종목에서 가장 컸던 하루 등락을 크기순으로 세운 표입니다. 세월이 흐르며 표가 채워집니다.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>극단의 날</value></data>
+  <data name="ExtremeDaysCount"><value>종목은 하나, 기간 안의 모든 거래일. 화면에는 가장 컸던 {0}일의 움직임을 그립니다. 오름은 빨강, 내림은 초록입니다.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>움직임 = 이전 거래일 대비 조정 종가의 변화, 단위는 퍼센트. 부호가 아니라 크기로 세우므로 하락은 같은 크기의 상승 옆에 놓입니다. 그날이 실제로 지나야 순위에 오르기 때문에 표는 조금씩 채워집니다.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>종목</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>후보일</value></data>
+  <data name="ExtremeDaysFetched"><value>후보 {0}일 · 거래일 {1}일 · 최대 {2} {3} · 화면 안 최소 {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>최장(약 35년)</value></data>
+  <data name="ExtremeDaysTooFew"><value>이 기간의 거래일이 너무 적습니다. 더 긴 기간을 선택하세요.</value></data>
 </root>

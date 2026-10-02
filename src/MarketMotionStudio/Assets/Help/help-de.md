@@ -122,6 +122,34 @@ Firmen, die auf beiden Seiten notieren, Monat für Monat als Balken, die sich ü
   2026-10-02 gegen die Kursquelle gelesen, und 海通证券 ist genau das, was diese Prüfung entfernt
   hat (H-Aktien nach der Fusion mit 国泰海通 delistet).
 
+## Extreme Tage
+
+Ein Instrument und die Tage, an denen es sich am stärksten bewegt hat — waagrechte Balken,
+nach Größe gereiht. **Die Zeilen dieses Tableaus sind Tage, keine Unternehmen**, was sonst keine
+Seite hier tut: Der Wert einer Zeile ist die Bewegung gegenüber dem Schlusskurs des vorherigen
+Handelstags, und sobald der Tag vergangen ist, ändert sich dieser Wert nie wieder.
+
+- **Die Bewegung ist die Veränderung des bereinigten Schlusskurses.** Bereinigt, weil ein
+  Ex-Dividenden-Tag kein Crash ist: Der Kurs fällt an jenem Morgen um die Dividende, und eine
+  unbereinigte Reihe setzte diesen Tag an die Spitze der größten Verluste der Geschichte, obwohl
+  niemand, der die Aktie hielt, etwas verloren hat.
+- **Nach Größe gereiht, nicht nach Vorzeichen.** −7,7 % und +8,1 % sind gleich große Bewegungen
+  und stehen daher nebeneinander; nach Vorzeichen gereiht läge jedes Minus unter jedem Plus.
+  Deshalb wachsen die Balken in beide Richtungen: **ein Plus nach rechts, rot; ein Minus nach
+  links, grün**.
+- **Ein Tag zählt erst, wenn er vergangen ist.** Die vierundzwanzig größten Bewegungen des
+  Zeitraums sind die Kandidaten, gezeichnet werden die fünfzehn größten davon. Ein Tag nimmt erst
+  an der Reihung teil, wenn sein Datum gekommen ist, darum füllt sich das Tableau mit den Jahren.
+- **Es gibt ein Instrument, einen breiten Index des aktuellen Marktes** (im A-Aktien-Markt:
+  Shanghai Composite, Shenzhen Component, CSI 300 und so weiter). Ein anderer Markt tauscht die
+  ganze Liste; ein anderes Instrument oder ein anderer Zeitraum speichert nur eine Einstellung —
+  geholt wird erst mit 取数.
+- **Der längste Zeitraum ist etwa fünfunddreißig Jahre**, das ist die Grenze der Quelle: Eine
+  Anfrage liefert etwa 640 Tageskerzen, der Rücklauf macht höchstens zwanzig. Weniger als sechzig
+  Handelstage werden abgelehnt — der größte Tag eines ruhigen Monats ist kein Fakt für ein Tableau.
+- **Das Datum oben im Bild ist die Zeitachse**, der Balken darunter der Fortschritt. Die
+  Kopfzeile nennt den Zeitraum, die Zahl der Handelstage und die Zahl der Kandidatentage.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

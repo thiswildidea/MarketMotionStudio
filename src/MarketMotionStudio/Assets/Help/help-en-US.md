@@ -123,6 +123,33 @@ listed on both sides — month by month, as bars that overtake one another.
   endpoint on 2026-10-02, and 海通证券 is what that check removed, its H shares delisted after the
   merger into 国泰海通. Kept, it would have been a lane that stayed empty for the whole video.
 
+## Extreme days
+
+One instrument, and the days it moved the most — horizontal bars ranked by size. **The rows of
+this board are days, not companies**, which no other page here does: a row's value is how far the
+instrument moved on that day against the previous trading day's close, and once that day has
+happened the value never changes again.
+
+- **The move is the change in the adjusted close.** Adjusted, because an ex-dividend day is not a
+  crash: a stock's price drops by the dividend on that morning, and an unadjusted series would put
+  that day at the top of a board of the largest falls in history, when nobody holding it lost
+  anything.
+- **Ranked by size, not by sign.** −7.7% and +8.1% are the same size of move, so they stand next
+  to each other; ranking the signed values would file every fall underneath every rise. The bars
+  therefore grow both ways: **a rise to the right, in red; a fall to the left, in green**.
+- **A day is ranked only once it has happened.** The twenty-four largest moves in the span are the
+  candidates and the frame draws the fifteen largest of those; a day does not take part until its
+  own date arrives, so the board fills in as the years pass rather than starting full.
+- **There is one instrument, one of the current market's broad indices** (in the A-share market:
+  the Shanghai composite, the Shenzhen component, the CSI 300 and so on). Changing the market
+  changes the whole list; changing the instrument or the span only saves a preference — nothing is
+  fetched until 取数 is pressed.
+- **The longest span is about thirty-five years**, which is the source's limit: one request carries
+  about 640 daily bars and the walk makes at most twenty. A span with fewer than sixty trading days
+  is refused — the largest single day inside a quiet month is not a fact worth a board.
+- **The date at the top of the frame is the time axis**, and the bar underneath it is the progress.
+  The header line carries the span, the trading-day count and the number of candidate days.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

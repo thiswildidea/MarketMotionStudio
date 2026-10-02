@@ -706,9 +706,20 @@
   <data name="AhPremiumUnitPairs"><value>pairs</value></data>
   <data name="AhPremiumCount"><value>Famous companies listed on both sides: A shares on the mainland and H shares in Hong Kong. The longer the span, the fewer pairs qualify — one whose Hong Kong listing is younger than two years is left out. Each frame shows the {0} with the highest premium.</value></data>
   <data name="AhPremiumMethodNote.Text"><value>Premium = A price ÷ (H price × HKD/CNY) − 1. Both legs are prices actually paid — no adjustment — because a backward-adjusted series inflates recent prices, and two markets adjusted separately cannot be compared. The rate is a mid rate from a public quote service. Some services state the same gap the other way round — H against A, and negative — which is the reciprocal of this figure, not another price.</value></data>
-  <data name="AhPremiumFetched"><value>{0} 对 · {1} 个月 · 最高 {2} {3} · 榜尾 {4} {5}</value></data>
+  <data name="AhPremiumFetched"><value>{0} pairs · {1} months · highest {2} {3} · bottom of the board {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Reading the exchange rate (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>The exchange rate did not come back, so no premium can be worked out.</value></data>
   <data name="AhPremiumTooFew"><value>Not enough pairs reach back over this span. Try a shorter one.</value></data>
   <data name="AhRangeMax"><value>Longest (about 9 years)</value></data>
+  <data name="NavExtremeDays.Content"><value>Extreme days</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Extreme trading days</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>One instrument's largest single-day moves, ranked by size. The board fills in as the years pass.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Extreme days</value></data>
+  <data name="ExtremeDaysCount"><value>One instrument, every trading day in the range. The frame draws the {0} largest moves, red for a rise and green for a fall.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Move = the change in the adjusted close from the previous trading day, in per cent. Ranked by size and not by sign, so a fall stands beside a rise of the same size. A day is ranked only once it has happened, which is why the board fills in.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Instrument</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>candidate days</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} candidate days · {1} trading days · biggest {2} {3} · smallest on the board {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Longest (about 35 years)</value></data>
+  <data name="ExtremeDaysTooFew"><value>Not enough trading days in this range. Try a longer one.</value></data>
 </root>

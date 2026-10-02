@@ -116,6 +116,30 @@ kotovaných na obou stranách, měsíc po měsíci, jako pruhy, které se předh
   hongkongskou". Zato je ověřitelný: každý pár byl 2026-10-02 znovu přečten ze zdroje a 海通证券 je
   to, co tato kontrola odstranila (akcie H vyřazeny po fúzi do 国泰海通).
 
+## Extrémní dny
+
+Jeden nástroj a dny, kdy se pohnul nejvíce — vodorovné pruhy seřazené podle velikosti.
+**Řádky této tabulky jsou dny, ne firmy**, co žádná jiná strana nedělá: hodnotou řádku je pohyb
+onoho dne proti závěru předchozího obchodního dne, a jakmile ten den nastane, hodnota se už nezmění.
+
+- **Pohyb je změna upravené závěrečné ceny.** Upravené, protože den odpočtu dividendy není krach:
+  toho rána cena klesne o dividendu a neupravená řada by ten den postavila na vrchol největších
+  pádů historie, přestože nikdo nic neztratil.
+- **Řazeno podle velikosti, ne podle znaménka.** −7,7 % a +8,1 % jsou pohyby stejné velikosti, a
+  tak stojí vedle sebe; řazení podle hodnoty se znaménkem by každý pokles odsunulo pod každý růst.
+  Pruhy proto rostou oběma směry: **růst doprava, červeně; pokles doleva, zeleně**.
+- **Den se počítá, až když nastane.** Kandidáty je dvacet čtyři největších pohybů období a snímek
+  kreslí patnáct největších z nich; den se řazení neúčastní, dokud nepřijde jeho datum, takže se
+  tabulka zaplňuje s léty místo aby byla plná od začátku.
+- **Nástroj je jeden, jeden ze širokých indexů aktuálního trhu** (na trhu A: Shanghai Composite,
+  Shenzhen Component, CSI 300 a tak dále). Změna trhu vymění celý seznam; změna nástroje nebo
+  období jen uloží předvolbu — nic se nestahuje, dokud nestisknete 取数.
+- **Nejdelší období je asi třicet pět let**, což je mez zdroje: jedna žádost nese asi 640 denních
+  svíček a vracení se provede nejvýše dvacetkrát. Období kratší než šedesát obchodních dnů je
+  odmítnuto — největší den klidného měsíce není fakt hodný tabulky.
+- **Datum nahoře ve snímku je časová osa** a pruh pod ním je průběh. Hlavičková řada nese období,
+  počet obchodních dnů a počet kandidátních dnů.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

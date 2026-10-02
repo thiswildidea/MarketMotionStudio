@@ -119,6 +119,37 @@ per le società quotate su entrambi i lati — mese per mese, come barre che si 
   fonte il 2026-10-02, e 海通证券 è ciò che quel controllo ha rimosso (azioni H delistate dopo la
   fusione in 国泰海通).
 
+## Giorni estremi
+
+Uno strumento e i giorni in cui si è mosso di più — barre orizzontali ordinate per ampiezza.
+**Le righe di questo quadro sono giorni, non aziende**, cosa che nessun'altra pagina qui fa: il
+valore di una riga è lo spostamento di quel giorno rispetto alla chiusura del giorno precedente, e
+una volta che quel giorno è passato il valore non cambia più.
+
+- **Il movimento è la variazione del close rettificato.** Rettificato, perché un giorno di stacco
+  del dividendo non è un crollo: quel mattino il prezzo scende del dividendo, e una serie non
+  rettificata metterebbe quel giorno in cima alle più grandi cadute della storia, mentre chi
+  deteneva il titolo non ha perso nulla.
+- **Ordinato per ampiezza, non per segno.** −7,7 % e +8,1 % sono movimenti della stessa misura e
+  quindi stanno vicini; ordinare i valori con segno metterebbe ogni ribasso sotto ogni rialzo. Le
+  barre crescono quindi da entrambi i lati: **un rialzo a destra, in rosso; un ribasso a sinistra,
+  in verde**.
+- **Un giorno entra in classifica solo quando è arrivato.** I ventiquattro movimenti più grandi del
+  periodo sono i candidati e il fotogramma ne disegna i quindici più grandi; un giorno non partecipa
+  finché non arriva la sua data, così il quadro si riempie con il passare degli anni invece di
+  essere pieno dall'inizio.
+- **C'è un solo strumento, uno degli indici ampi del mercato corrente** (nel mercato A: il
+  composite di Shanghai, il componente di Shenzhen, il CSI 300 e così via). Cambiare mercato
+  sostituisce tutta la lista; cambiare strumento o periodo salva solo una preferenza — non si
+  scarica nulla finché non si preme 取数.
+- **Il periodo più lungo è di circa trentacinque anni**, che è il limite della fonte: una richiesta
+  porta circa 640 barre giornaliere e il riavvolgimento ne fa al massimo venti. Un periodo con meno
+  di sessanta giorni di negoziazione viene rifiutato — il giorno più grande di un mese tranquillo
+  non è un fatto che merita un quadro.
+- **La data in alto nel fotogramma è l'asse del tempo**, la barra sotto è l'avanzamento. La riga
+  di intestazione porta il periodo, il numero di giorni di negoziazione e il numero di giorni
+  candidati.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

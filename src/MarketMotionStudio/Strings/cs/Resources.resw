@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>Kurz se nevrátil, takže prémii nelze spočítat.</value></data>
   <data name="AhPremiumTooFew"><value>Na toto období se nedostane dost párů. Zkuste kratší.</value></data>
   <data name="AhRangeMax"><value>Nejdelší (asi 9 let)</value></data>
+  <data name="NavExtremeDays.Content"><value>Extrémní dny</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Extrémní obchodní dny</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>Největší jednodenní pohyby jednoho nástroje, seřazené podle velikosti. Tabulka se zaplňuje, jak léta plynou.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Extrémní dny</value></data>
+  <data name="ExtremeDaysCount"><value>Jeden nástroj, každý obchodní den období. Snímek kreslí {0} největších pohybů, červeně pro růst a zeleně pro pokles.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Pohyb = změna upravené závěrečné ceny oproti předchozímu obchodnímu dni, v procentech. Řazeno podle velikosti, ne podle znaménka, takže pokles stojí vedle stejně velkého růstu. Den se počítá, až když nastal — proto se tabulka zaplňuje.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Nástroj</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>kandidátních dnů</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} kandidátních dnů · {1} obchodních dnů · největší {2} {3} · nejmenší v obraze {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Nejdelší (asi 35 let)</value></data>
+  <data name="ExtremeDaysTooFew"><value>V tomto období je příliš málo obchodních dnů. Zkuste delší.</value></data>
 </root>

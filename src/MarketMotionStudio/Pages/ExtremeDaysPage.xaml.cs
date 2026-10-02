@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
@@ -9,47 +9,46 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 namespace MarketMotionStudio.Pages;
 
 /// <summary>
-/// The A+H page: one company, two listings, two currencies — ranked by how much more expensive
-/// the mainland listing is.
+/// The extreme-day board: one instrument, and its largest single-day moves, ranked by size.
 ///
-/// The tenth page and the third to use the horizontal race, which is the point of the page as
-/// much as the data is: every row is a different company rather than a different day, and the
-/// ranking across them reverses over the years.
+/// The eleventh page and the fourth on the horizontal race — and the one that turns the race
+/// inside out. Every other board gives a row a value that changes day by day; this one gives a
+/// row a value that never changes, because **the row is a day**. What moves is the membership:
+/// a day is worth nothing until it happens, so the board fills in as the years pass, and a day
+/// larger than the fifteenth takes its place and pushes someone off the bottom.
 ///
-/// **What the frame shows is the dearest fifteen, and all of them are dear.** The premium is
-/// structurally positive — sixty-seven of the sixty-nine are in September 2026, from +2% to
-/// +194% — so the bars grow right from a zero axis at the far left. Only 招商银行 and 药明康德
-/// trade the other way, their H shares above their A shares, and at −6% and −9% they sit at the
-/// bottom of the list where a top-fifteen board never reaches. The bars therefore say "how much
-/// dearer" and not "which side", and the manual, the card and this comment all say so — a frame
-/// drawn with a bar poking left would contradict all three.
+/// Three things the renderer is asked for that no other page asks for, and why:
 ///
-/// Two things make it unlike the market-cap board it otherwise resembles.
+/// **Rank by magnitude.** A board of moves is board of *moves*: −7.7% belongs next to +8.1%.
+/// Ranking the signed values would file every fall below every rise, however small the rise,
+/// and the board would be a list of good days with the crashes filed underneath.
 ///
-/// **Nothing is derived.** A past market value had to be today's value times an adjusted ratio,
-/// because a share count's history is not served. A premium is two prices and a rate, all three
-/// served, and the page fetches the *unadjusted* series for exactly that reason — see
-/// <see cref="AhPremiumSeries"/>.
+/// **Leave the empty rows out.** Before its day arrives a row is worth zero, and twenty-four
+/// candidates of which five have happened still fill a fifteen-row frame — ten rows reading
+/// 0.00% is what the first month of the video would look like without this.
 ///
-/// **The field is what it is.** The pairs are listed in the source file, and the page reports how
-/// many of them survived the span rather than promising a number: a pair whose Hong Kong listing
-/// is four years old is dropped from a ten-year run and present in a three-year one. That is why
-/// the count on the card is a count and not a name.
+/// **Colour by sign.** One colour per row is how a viewer follows a company up a market-cap
+/// board; a day is not a thing to follow. So the bar is red for a rise and green for a fall,
+/// which is also how the value label beside it already reads.
+///
+/// The change is the change in the **adjusted** close. For an index that is the index; for a
+/// single stock it is the total return, so a stock going ex-dividend does not show a fall that
+/// nobody suffered. An unadjusted series would put that fall at the top of the board.
 /// </summary>
-public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
+public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
 {
     private readonly StageRenderer _stage = new();
     private readonly Playback _playback;
 
-    private readonly StudioPreferences _prefs = new("AhPremium.");
+    private readonly StudioPreferences _prefs = new("ExtremeDays.");
+
+    private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
 
     private SectorRaceSeries? _series;
 
     /// <summary>
-    /// -1 is the custom span and 0 is "as far back as the rate series goes", which is what the
-    /// plan and holding pages already mean by 0. The two cannot share a number: this page offers
-    /// a longest span *and* a custom one, and the page that introduced 0 was one where they were
-    /// the same thing.
+    /// -1 is the custom span and 0 is "as far back as the source goes", which is what the plan
+    /// and holding pages already mean by 0.
     /// </summary>
     private const int CustomMonths = -1;
 
@@ -57,30 +56,44 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
     [
         (36, "DcaRange3Y"),
         (60, "DcaRange5Y"),
-        (0, "AhRangeMax"),
+        (120, "DcaRange10Y"),
+        (0, "ExtremeDaysRangeMax"),
         (CustomMonths, "StudioRangeCustom"),
     ];
 
-    public AhPremiumPage()
+    public ExtremeDaysPage()
     {
         InitializeComponent();
+
+        // The market's broad indices: the whole point of the page is one instrument's history,
+        // and an index is the instrument whose single-day move is a sentence about the market.
+        foreach (var entry in _market.BroadIndices)
+        {
+            InstrumentCombo.Items.Add(new ComboBoxItem
+            {
+                Content = InstrumentNames.Display(entry.Code, entry.Name),
+                Tag = entry.Code,
+            });
+        }
+
+        InstrumentCombo.SelectedIndex = 0;
 
         foreach (var (months, key) in Ranges)
         {
             RangeCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = months });
         }
 
-        // Five years: long enough for a premium to have moved, short enough to carry the pairs
-        // whose Hong Kong listing is a few years old.
-        RangeCombo.SelectedIndex = 1;
+        // Ten years: long enough to carry a crash and a rally, short enough that the board is
+        // not twenty years of 1990s limit-rule days with nothing recent on it.
+        RangeCombo.SelectedIndex = 2;
 
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddYears(-5);
         ToDate.Date = today;
 
-        // Formatted, because the string names the number of rows: read with `Strings.Get` the
-        // card showed a literal "{0}" where the board's size should have been.
-        ListText.Text = Strings.Format("AhPremiumCount", AhPairs.Board);
+        // Formatted, because the string names the number of rows the frame draws. Read with
+        // `Strings.Get` the card showed a literal "{0}" — the same defect the A+H page had.
+        ListText.Text = Strings.Format("ExtremeDaysCount", ExtremeDayBoard.Board);
 
         VideoSettings.AllowHideTitle = true;
 
@@ -111,10 +124,20 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
 
     protected override InfoBar StatusControl => Status;
 
-    protected override string JobName => Strings.Get("AhPremiumPageTitle.Text");
+    protected override string JobName => Strings.Get("ExtremeDaysPageTitle.Text");
 
-    /// <summary>“AH 溢价” — what the frame says when no title was typed.</summary>
-    private static string AutoTitle() => Strings.Get("AhPremiumPageTitle.Text");
+    /// <summary>“极端交易日” — what the frame says when no title was typed.</summary>
+    private static string AutoTitle() => Strings.Get("ExtremeDaysPageTitle.Text");
+
+    private RaceEntry ChosenInstrument()
+    {
+        var code = InstrumentCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : string.Empty;
+
+        return _market.BroadIndices.FirstOrDefault(e => e.Code == code, _market.BroadIndices[0]);
+    }
+
+    private string ChosenInstrumentName() =>
+        InstrumentNames.Display(ChosenInstrument().Code, ChosenInstrument().Name);
 
     // ---- the picture -------------------------------------------------------------------
 
@@ -126,32 +149,33 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
 
         if (_series is { } series)
         {
-            // The race renderer on its **return** metric: a premium is a percentage, and that is
-            // the metric whose value labels end in % and whose decimals — two — suit a spread of
-            // percentage points. The renderer puts the zero axis wherever the data needs it, so
-            // with every drawn value positive the bars grow from the left edge.
-            //
-            // `showTop`: the field is sixty-odd pairs and the frame draws fifteen of them, the
-            // fifteen that were dearest at each moment.
+            // The race renderer on its **return** metric: a move is a percentage, and that is
+            // the metric whose labels end in %. `showTop`: twenty-four candidate days race for
+            // fifteen places. The three flags are this page's own — see the note on the class.
+            // `rankByMagnitude` as the constructor's argument, not as a property set below: the
+            // ranking table is built inside the constructor, so an initialiser would be read too
+            // late and the frame would be sorted by sign — see the note on that parameter.
             Preview.Renderer = new SectorRaceRenderer(
-                series, RaceMetric.Return, VideoSettings.Duration, AhPairs.Board)
+                series, RaceMetric.Return, VideoSettings.Duration, ExtremeDayBoard.Board,
+                rankByMagnitude: true)
             {
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
-                ListLabel = Strings.Get("AhPremiumListLabel"),
-                UnitWord = Strings.Get("AhPremiumUnitPairs"),
+                ListLabel = ChosenInstrumentName(),
+                UnitWord = Strings.Get("ExtremeDaysUnitCandidates"),
 
-                // Monthly, so the header counts months. `MarketCapUnitMonths` rather than a key
-                // of this page's own: "个月" is one string in this app, not two that happen to
-                // agree today, and the same rule already keeps "近 5 年" shared with the plan page.
-                SpanWord = Strings.Get("MarketCapUnitMonths"),
+                // Daily, so the header counts trading days — the renderer's own fallback is the
+                // same string, and the page says it because the page is what chose the interval.
+                SpanWord = Strings.Get("StockTradingDaysUnit"),
+                HideEmptyRows = true,
+                ColourBySign = true,
             };
         }
         else
         {
             _stage.Title = VideoSettings.TitleText.Length > 0
                 ? VideoSettings.TitleText
-                : Strings.Get("AhPremiumStageTitle");
+                : Strings.Get("ExtremeDaysStageTitle");
             _stage.ShowTitle = VideoSettings.ShowTitle;
             Preview.Renderer = _stage;
         }
@@ -167,6 +191,15 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
     }
 
     // ---- range ---------------------------------------------------------------------------
+
+    private void OnInstrumentChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // A different instrument is a different board, so whatever was fetched is no longer
+        // what the panel describes. Nothing is fetched until the button is pressed — see the
+        // same rule on the candle page.
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
 
     private void OnRangeChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -195,9 +228,9 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
 
             if (months == 0)
             {
-                // "As far back as there is" — asked for generously and trimmed by the data, which
-                // is the only thing that knows where the rate series starts.
-                return (today.AddYears(-12), today);
+                // "As far back as there is" — asked for generously and trimmed by the walk,
+                // which is the only thing that knows where the source's history starts.
+                return (today.AddYears(-30), today);
             }
         }
 
@@ -229,35 +262,35 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
             var progress = new Progress<string>(message =>
                 ShowStatus(InfoBarSeverity.Informational, Strings.Format("SectorFetching", message)));
 
-            var series = await AhPremiumSeries.LoadAsync(
-                Services.Quotes, start, end, progress, cancellation);
+            var series = await ExtremeDaySeries.LoadAsync(
+                Services.Quotes, _market, ChosenInstrument(), start, end, progress, cancellation);
 
             _series = series;
 
             ApplyPreviewSettings();
             ShowMoment(1);
 
-            var standings = series.Standings(RaceMetric.Return);
-            var dearest = standings[0];
+            var standings = ExtremeDaySeries.ByMagnitude(series);
+            var biggest = standings[0];
 
-            // The dearest and the cheapest **of the fifteen drawn**, not of the field. The field
-            // holds pairs the frame never shows, and "cheapest" naming a company nobody can see on
-            // the frame is a sentence about the data rather than about the picture.
-            var cheapest = standings[Math.Min(AhPairs.Board, standings.Length) - 1];
+            // The largest and the smallest **of the fifteen the frame draws**, not of the field:
+            // the field holds days the board never shows, and "the smallest move" naming a day
+            // nobody can see is a sentence about the data rather than about the picture.
+            var smallest = standings[Math.Min(ExtremeDayBoard.Board, standings.Length) - 1];
 
             ShowStatus(InfoBarSeverity.Success, Strings.Format(
-                "AhPremiumFetched",
+                "ExtremeDaysFetched",
                 series.Racers,
                 series.Days,
-                series.Entries[dearest.Index].Name,
-                FormatValue(dearest.Value),
-                series.Entries[cheapest.Index].Name,
-                FormatValue(cheapest.Value)));
+                series.Entries[biggest.Index].Name,
+                FormatValue(biggest.Value),
+                series.Entries[smallest.Index].Name,
+                FormatValue(smallest.Value)));
         }, TimeSpan.FromMinutes(6));
     }
 
     private static string FormatValue(double value) =>
-        (value >= 0 ? "+" : "−") + Math.Abs(value).ToString("0.0", CultureInfo.InvariantCulture) + "%";
+        (value >= 0 ? "+" : "−") + Math.Abs(value).ToString("0.00", CultureInfo.InvariantCulture) + "%";
 
     // ---- preview transport -----------------------------------------------------------------
 
@@ -421,14 +454,21 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
             return;
         }
 
-        _prefs.Save("Months", RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 60);
+        _prefs.Save("Code", ChosenInstrument().Code);
+        _prefs.Save("Months", RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 120);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
     }
 
     private void RestorePreferences()
     {
-        var months = _prefs.GetInt("Months", 60);
+        var code = _prefs.GetString("Code", _market.BroadIndices[0].Code);
+
+        InstrumentCombo.SelectedItem =
+            InstrumentCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is string c && c == code)
+            ?? InstrumentCombo.Items[0];
+
+        var months = _prefs.GetInt("Months", 120);
         var match = RangeCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is int m && m == months);
 
         if (match is not null)

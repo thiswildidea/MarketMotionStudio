@@ -119,6 +119,35 @@ compañías que cotizan en ambos lados: mes a mes, en barras que se adelantan.
   fuente el 2026-10-02, y 海通证券 es lo que esa comprobación eliminó (acciones H excluidas de
   cotización tras la fusión con 国泰海通).
 
+## Días extremos
+
+Un instrumento y los días en que más se movió — barras horizontales ordenadas por magnitud.
+**Las filas de este tablero son días, no empresas**, algo que no hace ninguna otra página: el valor
+de una fila es cuánto se movió ese día respecto al cierre del día anterior, y una vez ocurrido ese
+día el valor ya no cambia.
+
+- **El movimiento es la variación del cierre ajustado.** Ajustado, porque un día de descuento de
+  dividendo no es un desplome: esa mañana el precio cae el importe del dividendo, y una serie sin
+  ajustar pondría ese día a la cabeza de las mayores caídas de la historia, cuando nadie perdió
+  nada.
+- **Ordenado por magnitud, no por signo.** −7,7 % y +8,1 % son movimientos del mismo tamaño y por
+  eso se colocan juntos; ordenar por el valor con signo pondría cada bajada debajo de cada subida.
+  Las barras crecen hacia los dos lados: **una subida hacia la derecha, en rojo; una bajada hacia
+  la izquierda, en verde**.
+- **Un día se clasifica solo cuando ha ocurrido.** Los veinticuatro movimientos más grandes del
+  periodo son los candidatos y el fotograma dibuja los quince mayores; un día no participa hasta
+  que llega su fecha, así que el tablero se llena con los años en lugar de empezar lleno.
+- **Hay un solo instrumento, uno de los índices amplios del mercado actual** (en el mercado A:
+  el compuesto de Shanghái, el componente de Shenzhen, el CSI 300 y así sucesivamente). Cambiar de
+  mercado cambia toda la lista; cambiar de instrumento o de periodo solo guarda una preferencia —
+  no se descarga nada hasta pulsar 取数.
+- **El periodo más largo es de unos treinta y cinco años**, que es el límite de la fuente: una
+  petición trae unas 640 barras diarias y el retroceso hace veinte como máximo. Un periodo con
+  menos de sesenta días de negociación se rechaza — el día más grande de un mes tranquilo no es un
+  dato que merezca un tablero.
+- **La fecha en la parte superior es el eje del tiempo** y la barra de abajo es el progreso. La
+  línea de encabezado lleva el periodo, el número de días de negociación y el de días candidatos.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

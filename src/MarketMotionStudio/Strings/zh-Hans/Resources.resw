@@ -709,4 +709,15 @@
   <data name="AhPremiumNoRate"><value>取不到汇率，算不出溢价。</value></data>
   <data name="AhPremiumTooFew"><value>能覆盖这段区间的對太少，换短一点的区间试试。</value></data>
   <data name="AhRangeMax"><value>最长（约 9 年）</value></data>
+  <data name="NavExtremeDays.Content"><value>极端交易日</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>极端交易日</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>单一标的史上最大的单日涨跌幅，按幅度排序。随着年份推进，榜单一格一格填满。</value></data>
+  <data name="ExtremeDaysStageTitle"><value>极端交易日</value></data>
+  <data name="ExtremeDaysCount"><value>一个标的，区间内每一个交易日。画面画出幅度最大的 {0} 天，涨是红、跌是绿。</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>涨跌幅 = 相对于上一个交易日的复权收盘价变化，单位是百分比。按幅度排序而不是按正负，所以下跌会和同等幅度的上涨并排。只有已经发生的日子才进榜，榜单因此是逐步填满的。</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>标的</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>个候选日</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} 个候选日 · {1} 个交易日 · 最大 {2} {3} · 榜尾 {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>最长（约 35 年）</value></data>
+  <data name="ExtremeDaysTooFew"><value>这段区间的交易日太少，换长一点的区间试试。</value></data>
 </root>

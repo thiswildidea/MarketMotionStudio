@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>Döviz kuru gelmedi, dolayısıyla prim hesaplanamaz.</value></data>
   <data name="AhPremiumTooFew"><value>Bu dönemi kapsayan çift sayısı yetersiz. Daha kısa bir dönem deneyin.</value></data>
   <data name="AhRangeMax"><value>En uzun (yaklaşık 9 yıl)</value></data>
+  <data name="NavExtremeDays.Content"><value>Aşırı günler</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Aşırı işlem günleri</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>Bir enstrümanın en büyük tek günlük hareketleri, büyüklüğe göre sıralanır. Tablo yıllar geçtikçe dolar.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Aşırı günler</value></data>
+  <data name="ExtremeDaysCount"><value>Bir enstrüman, dönemdeki her işlem günü. Kare en büyük {0} hareketi çizer: yükseliş kırmızı, düşüş yeşil.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Hareket = önceki işlem gününe göre düzeltilmiş kapanışın değişimi, yüzde olarak. İşarete göre değil büyüklüğe göre sıralanır, böylece bir düşüş aynı büyüklükteki bir yükselişin yanında durur. Bir gün ancak gerçekleştikten sonra sıralamaya girer; tablo bu yüzden dolar.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Enstrüman</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>aday gün</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} aday gün · {1} işlem günü · en büyük {2} {3} · karedeki en küçük {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>En uzun (yaklaşık 35 yıl)</value></data>
+  <data name="ExtremeDaysTooFew"><value>Bu dönemde yeterli işlem günü yok. Daha uzun bir dönem deneyin.</value></data>
 </root>

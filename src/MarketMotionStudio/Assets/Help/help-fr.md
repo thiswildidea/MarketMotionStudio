@@ -121,6 +121,35 @@ sociétés cotées des deux côtés — mois après mois, en barres qui se dépa
   depuis la source le 2026-10-02, et 海通证券 est ce que cette vérification a retiré (actions H
   radiées après la fusion dans 国泰海通).
 
+## Jours extrêmes
+
+Un instrument, et les jours où il a le plus bougé — des barres horizontales classées par
+ampleur. **Les lignes de ce tableau sont des jours, pas des entreprises**, ce qu'aucune autre page
+ici ne fait : la valeur d'une ligne est le mouvement de ce jour par rapport à la clôture du jour de
+cotation précédent, et une fois ce jour passé la valeur ne change plus jamais.
+
+- **Le mouvement est la variation du cours de clôture ajusté.** Ajusté, parce qu'un jour de
+  détachement de dividende n'est pas un krach : le cours baisse du montant du dividende ce matin-là,
+  et une série non ajustée placerait ce jour en tête des plus grandes baisses de l'histoire, alors
+  que personne n'a rien perdu.
+- **Classé par ampleur, pas par signe.** −7,7 % et +8,1 % sont des mouvements de même taille et se
+  tiennent donc côte à côte ; classer les valeurs signées mettrait chaque baisse sous chaque hausse.
+  Les barres poussent donc des deux côtés : **une hausse vers la droite, en rouge ; une baisse vers
+  la gauche, en vert**.
+- **Un jour n'est classé qu'une fois arrivé.** Les vingt-quatre plus grands mouvements de la période
+  sont les candidats et l'image en dessine les quinze plus grands ; un jour ne participe pas avant sa
+  propre date, donc le tableau se remplit au fil des années au lieu d'être plein dès le début.
+- **Il y a un seul instrument, l'un des indices larges du marché courant** (dans le marché A :
+  le composite de Shanghai, le composant de Shenzhen, le CSI 300 et ainsi de suite). Changer de
+  marché change toute la liste ; changer d'instrument ou de période ne fait qu'enregistrer une
+  préférence — rien n'est chargé avant d'avoir pressé 取数.
+- **La période la plus longue est d'environ trente-cinq ans**, c'est la limite de la source : une
+  requête porte environ 640 barres quotidiennes et le retour en arrière en fait vingt au plus. Une
+  période de moins de soixante jours de cotation est refusée — le plus grand jour d'un mois calme
+  n'est pas un fait qui mérite un tableau.
+- **La date en haut de l'image est l'axe du temps**, la barre dessous est la progression. La ligne
+  d'en-tête porte la période, le nombre de jours de cotation et le nombre de jours candidats.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

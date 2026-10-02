@@ -118,6 +118,33 @@ companhias cotadas dos dois lados — mês a mês, em barras que se ultrapassam.
   uma em Hong Kong». Em compensação, ela é conferível: cada par foi relido da fonte em 2026-10-02, e
   海通证券 foi o que essa conferência removeu (ações H deslistadas após a fusão no 国泰海通).
 
+## Dias extremos
+
+Um instrumento e os dias em que ele mais se moveu — barras horizontais ordenadas por
+tamanho. **As linhas deste quadro são dias, não empresas**, o que nenhuma outra página aqui faz: o
+valor de uma linha é quanto aquele dia se moveu em relação ao fechamento do dia anterior e, depois
+que o dia passa, o valor nunca mais muda.
+
+- **O movimento é a variação do fechamento ajustado.** Ajustado, porque um dia de desconto de
+  dividendo não é um crash: naquela manhã o preço cai o valor do dividendo, e uma série sem ajuste
+  colocaria esse dia no topo das maiores quedas da história, quando ninguém perdeu nada.
+- **Ordenado por tamanho, não por sinal.** −7,7 % e +8,1 % são movimentos do mesmo tamanho e por
+  isso ficam lado a lado; ordenar pelo valor com sinal poria cada queda abaixo de cada alta. As
+  barras crescem para os dois lados: **alta para a direita, em vermelho; queda para a esquerda, em
+  verde**.
+- **Um dia só entra na classificação quando acontece.** Os vinte e quatro maiores movimentos do
+  período são os candidatos e o quadro desenha os quinze maiores deles; um dia não participa até
+  que sua data chegue, então o quadro se preenche com os anos em vez de começar cheio.
+- **Há um único instrumento, um dos índices amplos do mercado atual** (no mercado A: o composto de
+  Xangai, o componente de Shenzhen, o CSI 300 e assim por diante). Mudar de mercado troca toda a
+  lista; mudar o instrumento ou o período só salva uma preferência — nada é buscado até apertar 取数.
+- **O período mais longo é de cerca de trinta e cinco anos**, que é o limite da fonte: um pedido
+  traz cerca de 640 barras diárias e o retrocesso faz no máximo vinte. Um período com menos de
+  sessenta dias de negociação é recusado — o maior dia de um mês tranquilo não é um fato que mereça
+  um quadro.
+- **A data no topo do quadro é o eixo do tempo** e a barra abaixo é o progresso. A linha de
+  cabeçalho traz o período, o número de dias de negociação e o de dias candidatos.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

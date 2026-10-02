@@ -118,6 +118,32 @@ pahalı olduğu — ay ay, birbirini geçen çubuklar olarak.
   okundu ve 海通证券 tam da bu kontrolün çıkardığı şirkettir (国泰海通 birleşmesinden sonra H
   hisseleri işlemden kaldırıldı).
 
+## Aşırı günler
+
+Tek bir enstrüman ve en çok hareket ettiği günler — büyüklüğe göre sıralanmış yatay
+çubuklar. **Bu tablonun satırları şirket değil gündür**, buradaki başka hiçbir sayfa bunu yapmaz:
+bir satırın değeri, o günün önceki işlem gününün kapanışına göre hareketidir ve o gün geçtiğinde
+değer bir daha değişmez.
+
+- **Hareket, düzeltilmiş kapanıştaki değişimdir.** Düzeltilmiş, çünkü temettü düşüm günü bir çöküş
+  değildir: o sabah fiyat temettü kadar düşer ve düzeltilmemiş seri bu günü tarihin en büyük
+  düşüşlerinin başına koyardı — oysa elinde tutan kimse bir şey kaybetmemiştir.
+- **İşarete göre değil büyüklüğe göre sıralanır.** −%7,7 ile +%8,1 aynı büyüklükte hareketlerdir,
+  bu yüzden yan yana dururlar; işaretli değere göre sıralamak her düşüşü her yükselişin altına
+  koyardı. Çubuklar bu yüzden iki yana büyür: **yükseliş sağa, kırmızı; düşüş sola, yeşil**.
+- **Bir gün ancak gerçekleştiğinde sıralamaya girer.** Dönemin en büyük yirmi dört hareketi
+  adaydır, kare bunların en büyük on beşini çizer; bir gün kendi tarihi gelmeden sıralamaya katılmaz,
+  bu yüzden tablo baştan dolu olmak yerine yıllar geçtikçe dolar.
+- **Tek bir enstrüman vardır: mevcut piyasanın geniş endekslerinden biri** (A pazarında: Şanghay
+  bileşik, Shenzhen bileşen, CSI 300 ve benzeri). Pazarı değiştirmek tüm listeyi değiştirir;
+  enstrümanı veya dönemi değiştirmek yalnızca tercihi kaydeder — 取数 tuşuna basılmadan hiçbir şey
+  çekilmez.
+- **En uzun dönem yaklaşık otuz beş yıldır**, bu kaynağın sınırıdır: bir istek yaklaşık 640 günlük
+  bar taşır ve geriye yürüme en çok yirmi kez yapılır. Altmış işlem gününden kısa dönemler
+  reddedilir — sakin bir ayın en büyük günü tabloya değer bir olgu değildir.
+- **Karenin üstündeki tarih zaman eksenidir**, altındaki çubuk ilerlemedir. Başlık satırı dönemi,
+  işlem günü sayısını ve aday gün sayısını taşır.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

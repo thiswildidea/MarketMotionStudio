@@ -700,4 +700,15 @@
   <data name="AhPremiumNoRate"><value>Kurs nie wrócił, więc nie da się obliczyć premii.</value></data>
   <data name="AhPremiumTooFew"><value>Zbyt mało par sięga tego okresu. Spróbuj krótszego.</value></data>
   <data name="AhRangeMax"><value>Najdłuższy (około 9 lat)</value></data>
+  <data name="NavExtremeDays.Content"><value>Ekstremalne dni</value></data>
+  <data name="ExtremeDaysPageTitle.Text"><value>Ekstremalne sesje</value></data>
+  <data name="ExtremeDaysPageSubtitle.Text"><value>Największe jednosesyjne ruchy jednego instrumentu, uszeregowane według wielkości. Tablica wypełnia się wraz z upływem lat.</value></data>
+  <data name="ExtremeDaysStageTitle"><value>Ekstremalne dni</value></data>
+  <data name="ExtremeDaysCount"><value>Jeden instrument, każdy dzień sesyjny okresu. Kadr rysuje {0} największych ruchów, czerwony dla wzrostu i zielony dla spadku.</value></data>
+  <data name="ExtremeDaysMethodNote.Text"><value>Ruch = zmiana skorygowanej ceny zamknięcia względem poprzedniego dnia sesyjnego, w procentach. Uporządkowane według wielkości, nie według znaku, więc spadek stoi obok równie dużego wzrostu. Dzień liczy się dopiero, gdy się wydarzył — dlatego tablica się wypełnia.</value></data>
+  <data name="ExtremeDaysInstrument.Header"><value>Instrument</value></data>
+  <data name="ExtremeDaysUnitCandidates"><value>dni kandydujących</value></data>
+  <data name="ExtremeDaysFetched"><value>{0} dni kandydujących · {1} dni sesyjnych · największy {2} {3} · najmniejszy w kadrze {4} {5}</value></data>
+  <data name="ExtremeDaysRangeMax"><value>Najdłuższy (około 35 lat)</value></data>
+  <data name="ExtremeDaysTooFew"><value>Za mało dni sesyjnych w tym okresie. Spróbuj dłuższego.</value></data>
 </root>

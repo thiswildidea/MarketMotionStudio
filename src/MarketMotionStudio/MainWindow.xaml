@@ -196,6 +196,13 @@
                 <mux:NavigationViewItem x:Name="NavAhPremium" x:Uid="NavAhPremium" Tag="AhPremium">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8AB;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Beside the market-cap board and the A+H page, because all three rank things
+                     rather than span time: those two ask which company is largest and which is
+                     dearest, this one asks which single day moved the most. The row is a day,
+                     which no other page here has. -->
+                <mux:NavigationViewItem x:Name="NavExtremeDays" x:Uid="NavExtremeDays" Tag="ExtremeDays">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8D5;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
