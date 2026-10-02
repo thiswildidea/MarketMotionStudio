@@ -7,8 +7,10 @@
 旧文案还挂在上面，而 md 里早就是十六种了。
 
 **只写三块**：`Description`(ID 2)、`ReleaseNotes`(ID 3)、`Feature1..20`(ID 700+)。
-Title（应用名是预留名，不该改）、截图的 URL（已上传的图）、`OverrideLogosForWin10`
-一律不动 —— 这个脚本改的是字，不是资产。
+Title（应用名是预留名，不该改）与 `OverrideLogosForWin10` 一律不动 —— 这个脚本改的是
+字，不是资产。截图列（`DesktopScreenshot1..30`）也曾经属于「不动」，在值是上一次上传
+回来的一串 `listingassets` URL 的时候；现在归 `tools/port-listing-csv-screens.py` 管，
+它把图片搬到 `docs\store-screens\` 下并写入相对路径。**两个脚本各管一块，不交叉。**
 
 Partner Center 的上限（learn.microsoft.com 官方答复，写在这里是因为改文案时必踩）：
 Description **10,000** 字符、What's new **1,500**、Product features **20 条 × 200 字符**。

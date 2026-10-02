@@ -9,7 +9,10 @@
    因为 md 的中文标题用的是**全角括号**，而抽取语言代码的正则只认半角，整节被跳过。
    所以这里是**逐字比对**每一格，不是「看着像就行」。
 
-不动 Title、截图的 URL、`OverrideLogosForWin10`：那些是资产不是字，改了就找不回来。
+不动 Title 与 `OverrideLogosForWin10`：那是资产不是字，改了就找不回来。截图列原本也
+在「不动」之列（值是上一次上传后回来的 `listingassets` URL），现在它由
+`tools/port-listing-csv-screens.py` 改写成相对路径，所以这里改判另一件事：**每一格指向
+的 PNG 是不是真躺在磁盘上**——相对路径写错一个字母，上传时才知道，而那时已经晚了。
 """
 
 import csv
@@ -144,10 +147,31 @@ def main():
     check("14 列的 Title 都还是 MarketMotionStudio",
           all(title[columns[code]] == "MarketMotionStudio" for code in listing))
 
-    shot = [r for r in rows[1:] if r[0] == "DesktopScreenshot1"][0]
-    check("截图的 URL 还在（至少 13 个语言列有值）",
-          sum(1 for code in listing if shot[columns[code]].startswith("http")) >= 13,
-          "%d 个" % sum(1 for code in listing if shot[columns[code]].startswith("http")))
+    # 截图列现在是相对路径（相对 CSV 所在的 docs\），每一格都得能在磁盘上找到。
+    shot_rows = [r for r in rows[1:] if re.match(r"^DesktopScreenshot\d+$", r[0])]
+    counts = {}
+    on_disk = True
+
+    for code in listing:
+        column = columns[code]
+        paths = [r[column] for r in shot_rows if r[column]]
+        counts[code] = len(paths)
+        on_disk = on_disk and bool(paths) and all(
+            os.path.exists(os.path.join(REPO, "docs", *p.split("/"))) for p in paths)
+
+    check("14 列的截图都指向磁盘上真实存在的 PNG", on_disk,
+          " ".join("%s %d" % (c, counts[c]) for c in sorted(counts)))
+
+    check("zh-hans 八张、其余各七张（市场成交额页只在 A股 市场有）",
+          counts.get("zh-hans") == 8
+          and all(counts.get(c) == 7 for c in listing if c != "zh-hans"),
+          "zh-hans %d" % counts.get("zh-hans", 0))
+
+    check("没有残留的旧 listingassets URL",
+          not any(r[columns[code]].startswith("http")
+                  for r in shot_rows for code in listing),
+          "%d 格" % sum(1 for r in shot_rows for code in listing
+                        if r[columns[code]].startswith("http")))
 
     logo = [r for r in rows[1:] if r[0] == "OverrideLogosForWin10"][0]
     check("OverrideLogosForWin10 还是 False",
