@@ -34,6 +34,15 @@ namespace MarketMotionStudio.Pages;
 /// The change is the change in the **adjusted** close. For an index that is the index; for a
 /// single stock it is the total return, so a stock going ex-dividend does not show a fall that
 /// nobody suffered. An unadjusted series would put that fall at the top of the board.
+///
+/// **Any instrument the market quotes, not only the broad indices.** The board is one
+/// instrument's own days, and "what were its largest days" is asked about single stocks and
+/// funds at least as often as about an index — so the page carries the same suggesting box the
+/// candle and calendar pages carry, and the list underneath is a shortcut to the usual ones
+/// rather than the boundary of the page. Two things a reader meets only once a stock is
+/// allowed, both already true of the numbers and neither a special case: a limit-rule day is
+/// the day a stock's board is mostly made of, and a listing shorter than
+/// <see cref="ExtremeDayBoard.FewestDays"/> trading days has no board to draw.
 /// </summary>
 public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
 {
@@ -45,6 +54,22 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
 
     private SectorRaceSeries? _series;
+
+    /// <summary>
+    /// The instrument the board is drawn on. The search sets it to anything the market quotes —
+    /// a stock, a fund or an index — and the list below is a shortcut to the usual ones, not
+    /// the limit. Held as a code and a name rather than read back off the list, because most of
+    /// the things a person can choose are not on the list.
+    /// </summary>
+    private string _instrumentCode = string.Empty;
+
+    private string _instrumentName = string.Empty;
+
+    private StockSuggestion? _pendingChoice;
+
+    private string _lastQuery = string.Empty;
+
+    private readonly DispatcherTimer _searchDebounce = new() { Interval = TimeSpan.FromMilliseconds(260) };
 
     /// <summary>
     /// -1 is the custom span and 0 is "as far back as the source goes", which is what the plan
@@ -65,8 +90,9 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     {
         InitializeComponent();
 
-        // The market's broad indices: the whole point of the page is one instrument's history,
-        // and an index is the instrument whose single-day move is a sentence about the market.
+        // The market's broad indices: an index is the instrument whose single-day move is a
+        // sentence about the market, so the list leads with them. It is a shortcut, not the
+        // limit — the search box above it takes any code the market quotes.
         foreach (var entry in _market.BroadIndices)
         {
             InstrumentCombo.Items.Add(new ComboBoxItem
@@ -77,6 +103,12 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
         }
 
         InstrumentCombo.SelectedIndex = 0;
+
+        _searchDebounce.Tick += async (_, _) =>
+        {
+            _searchDebounce.Stop();
+            await SearchSuggestionsAsync();
+        };
 
         foreach (var (months, key) in Ranges)
         {
@@ -129,15 +161,40 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     /// <summary>“极端交易日” — what the frame says when no title was typed.</summary>
     private static string AutoTitle() => Strings.Get("ExtremeDaysPageTitle.Text");
 
-    private RaceEntry ChosenInstrument()
-    {
-        var code = InstrumentCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : string.Empty;
-
-        return _market.BroadIndices.FirstOrDefault(e => e.Code == code, _market.BroadIndices[0]);
-    }
+    /// <summary>
+    /// The board's one instrument, whichever way it was chosen. The name is what the frame
+    /// captions itself with and what the fetch announces, so it is carried as it was chosen
+    /// rather than looked up — a code typed by hand has no entry to look one up in.
+    /// </summary>
+    private RaceEntry ChosenInstrument() => new(_instrumentCode, _instrumentName);
 
     private string ChosenInstrumentName() =>
-        InstrumentNames.Display(ChosenInstrument().Code, ChosenInstrument().Name);
+        _instrumentName.Length > 0
+            ? InstrumentNames.Display(_instrumentCode, _instrumentName)
+            : _instrumentCode;
+
+    /// <summary>
+    /// Sets the instrument without fetching: the button still decides when the source is asked,
+    /// and choosing a stock is not a request to wait on one.
+    /// </summary>
+    private void ChooseInstrument(string code, string name)
+    {
+        _instrumentCode = code;
+        _instrumentName = InstrumentNames.Display(code, name);
+
+        // The list keeps up when it can: an instrument that is one of the usual ones should
+        // look chosen. Anything else leaves the list blank rather than pointing at a
+        // neighbouring index — the frame's own caption is what names the instrument now.
+        InstrumentCombo.SelectionChanged -= OnInstrumentChanged;
+
+        InstrumentCombo.SelectedItem =
+            InstrumentCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is string c && c == code);
+
+        InstrumentCombo.SelectionChanged += OnInstrumentChanged;
+
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
 
     // ---- the picture -------------------------------------------------------------------
 
@@ -194,11 +251,106 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
 
     private void OnInstrumentChanged(object sender, SelectionChangedEventArgs e)
     {
-        // A different instrument is a different board, so whatever was fetched is no longer
-        // what the panel describes. Nothing is fetched until the button is pressed — see the
-        // same rule on the candle page.
+        // A choice from the list is the same act as a choice from the search, and it lands in
+        // the same place. A different instrument is a different board, so whatever was fetched
+        // is no longer what the panel describes — but nothing is fetched until the button is
+        // pressed, the same rule as the candle page.
+        if (InstrumentCombo.SelectedItem is ComboBoxItem { Tag: string code })
+        {
+            var entry = _market.BroadIndices.FirstOrDefault(x => x.Code == code, new RaceEntry(code, code));
+
+            _instrumentCode = entry.Code;
+            _instrumentName = InstrumentNames.Display(entry.Code, entry.Name);
+        }
+
         SavePreferences();
         ApplyPreviewSettings();
+    }
+
+    // ---- search -------------------------------------------------------------------------
+
+    private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        // Only a typed change asks for suggestions; choosing one assigns the text in code.
+        if (args.Reason is not AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            return;
+        }
+
+        _lastQuery = sender.Text;
+        _searchDebounce.Stop();
+        _searchDebounce.Start();
+    }
+
+    /// <summary>
+    /// Suggestions while a person types; a code, a Chinese name or pinyin all resolve. Filtered
+    /// to the market in force, so a suggestion that would be refused on fetch never appears.
+    /// </summary>
+    private async Task SearchSuggestionsAsync()
+    {
+        var query = _lastQuery.Trim();
+
+        if (query.Length == 0)
+        {
+            InstrumentSearch.ItemsSource = null;
+            return;
+        }
+
+        try
+        {
+            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
+
+            InstrumentSearch.ItemsSource = found
+                .Where(r => _market.Accepts(r.Code))
+                .Take(12)
+                .Select(r => new StockSuggestion(r.Code, r.Name, r.Code[..2].ToUpperInvariant()))
+                .ToArray();
+        }
+        catch (Exception)
+        {
+            // A failed suggestion list is a quiet failure: the person is still typing, and a
+            // status line flashing under every keystroke is worse than no suggestions.
+            InstrumentSearch.ItemsSource = null;
+        }
+    }
+
+    private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        // Held rather than read from the submit event's args — this projection of AutoSuggestBox
+        // does not carry ChosenItem there, and the field survives either way.
+        if (args.SelectedItem is StockSuggestion chosen)
+        {
+            _pendingChoice = chosen;
+            sender.Text = chosen.Display;
+        }
+    }
+
+    private void OnSearchSubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        if (_pendingChoice is { } pick)
+        {
+            _pendingChoice = null;
+            ChooseInstrument(pick.Code, pick.Name);
+            return;
+        }
+
+        var code = StockDirectory.Normalize(sender.Text);
+
+        if (code is null)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Get("StockBadCode"));
+            return;
+        }
+
+        // A code the normalizer can read but the market in force does not quote: the reader's
+        // next step is different from the one above, so it says which market.
+        if (!_market.Accepts(code))
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("WrongMarket", _market.Name));
+            return;
+        }
+
+        ChooseInstrument(code, code);
     }
 
     private void OnRangeChanged(object sender, SelectionChangedEventArgs e)
@@ -454,7 +606,8 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
             return;
         }
 
-        _prefs.Save("Code", ChosenInstrument().Code);
+        _prefs.Save("Code", _instrumentCode);
+        _prefs.Save("Name", _instrumentName);
         _prefs.Save("Months", RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 120);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
@@ -464,9 +617,29 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     {
         var code = _prefs.GetString("Code", _market.BroadIndices[0].Code);
 
+        // A code saved under another market is not carried over: it would fetch from a venue
+        // whose list and suggestions this page no longer shows.
+        if (_market.Accepts(code))
+        {
+            _instrumentCode = code;
+
+            // The name as it was spelled when it was chosen. Most of the things this page can
+            // be pointed at are not on the list below, so the name is remembered rather than
+            // looked up — a code alone would caption the frame with a code.
+            var name = _prefs.GetString("Name", string.Empty);
+
+            _instrumentName = name.Length > 0 ? InstrumentNames.Display(code, name) : code;
+        }
+        else
+        {
+            _instrumentCode = _market.BroadIndices[0].Code;
+            _instrumentName = InstrumentNames.Display(_market.BroadIndices[0].Code, _market.BroadIndices[0].Name);
+        }
+
+        // Blank when the remembered instrument is not one of the usual ones: pointing the list
+        // at a neighbouring index would say the frame is drawn on something it is not.
         InstrumentCombo.SelectedItem =
-            InstrumentCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is string c && c == code)
-            ?? InstrumentCombo.Items[0];
+            InstrumentCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is string c && c == _instrumentCode);
 
         var months = _prefs.GetInt("Months", 120);
         var match = RangeCombo.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is int m && m == months);

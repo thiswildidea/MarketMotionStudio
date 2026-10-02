@@ -134,10 +134,11 @@ değer bir daha değişmez.
 - **Bir gün ancak gerçekleştiğinde sıralamaya girer.** Dönemin en büyük yirmi dört hareketi
   adaydır, kare bunların en büyük on beşini çizer; bir gün kendi tarihi gelmeden sıralamaya katılmaz,
   bu yüzden tablo baştan dolu olmak yerine yıllar geçtikçe dolar.
-- **Tek bir enstrüman vardır: mevcut piyasanın geniş endekslerinden biri** (A pazarında: Şanghay
-  bileşik, Shenzhen bileşen, CSI 300 ve benzeri). Pazarı değiştirmek tüm listeyi değiştirir;
-  enstrümanı veya dönemi değiştirmek yalnızca tercihi kaydeder — 取数 tuşuna basılmadan hiçbir şey
-  çekilmez.
+- **Piyasanın kotasyon verdiği her enstrüman, sadece geniş endeksler değil.** Arama kutusuna bir
+  kod, bir ad veya pinyin yazın: tek bir hisse ve borsada işlem gören bir fon bu tabloya bir endeks
+  kadar uyar, alttaki liste ise yalnızca alışılmış olanlara bir kısayoldur. Piyasa değiştirmek
+  listeyi değiştirir ve başka bir piyasanın enstrümanını geride bırakır; enstrüman veya aralık
+  seçmek yalnızca bir tercih kaydeder — 取数'e basılana kadar hiçbir şey çekilmez.
 - **En uzun dönem yaklaşık otuz beş yıldır**, bu kaynağın sınırıdır: bir istek yaklaşık 640 günlük
   bar taşır ve geriye yürüme en çok yirmi kez yapılır. Altmış işlem gününden kısa dönemler
   reddedilir — sakin bir ayın en büyük günü tabloya değer bir olgu değildir.

@@ -131,9 +131,11 @@ onoho dne proti závěru předchozího obchodního dne, a jakmile ten den nastan
 - **Den se počítá, až když nastane.** Kandidáty je dvacet čtyři největších pohybů období a snímek
   kreslí patnáct největších z nich; den se řazení neúčastní, dokud nepřijde jeho datum, takže se
   tabulka zaplňuje s léty místo aby byla plná od začátku.
-- **Nástroj je jeden, jeden ze širokých indexů aktuálního trhu** (na trhu A: Shanghai Composite,
-  Shenzhen Component, CSI 300 a tak dále). Změna trhu vymění celý seznam; změna nástroje nebo
-  období jen uloží předvolbu — nic se nestahuje, dokud nestisknete 取数.
+- **Jakýkoli nástroj, který trh kotuje, nejen široké indexy.** Napište kód, název nebo pinyin do
+  vyhledávání: jedna akcie a burzovně obchodovaný fond patří na tuto tabuli stejně jako index,
+  a seznam pod ním je jen zkratka k obvyklým. Změna trhu tento seznam vymění a ponechá stranou
+  nástroj z jiného trhu; volba nástroje nebo rozsahu uloží jen předvolbu — nic se nestahuje, dokud
+  nestisknete 取数.
 - **Nejdelší období je asi třicet pět let**, což je mez zdroje: jedna žádost nese asi 640 denních
   svíček a vracení se provede nejvýše dvacetkrát. Období kratší než šedesát obchodních dnů je
   odmítnuto — největší den klidného měsíce není fakt hodný tabulky.

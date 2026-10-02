@@ -63,6 +63,20 @@
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
+                    <!-- Any instrument the market quotes, not only the ones the list below
+                         offers: a code, a Chinese name or pinyin all resolve. A single stock
+                         belongs on this board as much as an index does — a board of one
+                         instrument's largest days is the question "what were its worst
+                         afternoons", and that is asked about stocks and funds constantly. -->
+                    <AutoSuggestBox x:Name="InstrumentSearch"
+                                    x:Uid="StockSearch"
+                                    QueryIcon="Find"
+                                    TextChanged="OnSearchTextChanged"
+                                    QuerySubmitted="OnSearchSubmitted"
+                                    SuggestionChosen="OnSuggestionChosen" />
+
+                    <!-- The usual ones, as a shortcut. Not the limit of the page: whatever the
+                         search settles on is the instrument, whether or not it appears here. -->
                     <ComboBox x:Name="InstrumentCombo"
                               x:Uid="ExtremeDaysInstrument"
                               HorizontalAlignment="Stretch"

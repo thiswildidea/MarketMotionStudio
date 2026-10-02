@@ -137,10 +137,11 @@ día el valor ya no cambia.
 - **Un día se clasifica solo cuando ha ocurrido.** Los veinticuatro movimientos más grandes del
   periodo son los candidatos y el fotograma dibuja los quince mayores; un día no participa hasta
   que llega su fecha, así que el tablero se llena con los años en lugar de empezar lleno.
-- **Hay un solo instrumento, uno de los índices amplios del mercado actual** (en el mercado A:
-  el compuesto de Shanghái, el componente de Shenzhen, el CSI 300 y así sucesivamente). Cambiar de
-  mercado cambia toda la lista; cambiar de instrumento o de periodo solo guarda una preferencia —
-  no se descarga nada hasta pulsar 取数.
+- **Cualquier instrumento que cotice en el mercado, no solo los índices amplios.** Escriba un
+  código, un nombre o pinyin en el buscador: una acción concreta y un fondo cotizado pertenecen a
+  este tablero tanto como un índice, y la lista de abajo es solo un atajo a los habituales. Cambiar
+  de mercado sustituye esa lista y deja atrás un instrumento de otro mercado; elegir instrumento o
+  periodo solo guarda una preferencia — nada se descarga hasta pulsar 取数.
 - **El periodo más largo es de unos treinta y cinco años**, que es el límite de la fuente: una
   petición trae unas 640 barras diarias y el retroceso hace veinte como máximo. Un periodo con
   menos de sesenta días de negociación se rechaza — el día más grande de un mes tranquilo no es un

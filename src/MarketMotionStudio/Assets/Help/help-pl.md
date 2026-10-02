@@ -136,10 +136,11 @@ minie, wartość już się nie zmienia.
 - **Dzień liczy się dopiero, gdy nadejdzie.** Dwudziestu czterech kandydatów to największe ruchy
   okresu, a kadr rysuje piętnaście największych z nich. Dzień nie bierze udziału w rankingu, póki
   nie nadejdzie jego data, więc tablica zapełnia się wraz z latami zamiast być pełna od początku.
-- **Instrument jest jeden, jeden z szerokich indeksów bieżącego rynku** (na rynku A: Shanghai
-  Composite, Shenzhen Component, CSI 300 i tak dalej). Zmiana rynku wymienia całą listę; zmiana
-  instrumentu lub okresu tylko zapisuje preferencję — nic nie jest pobierane, dopóki nie naciśniesz
-  取数.
+- **Dowolny instrument notowany na tym rynku, nie tylko szerokie indeksy.** Wpisz kod, nazwę lub
+  pinyin w polu wyszukiwania: pojedyncza akcja i fundusz notowany na giełdzie pasują tu tak samo jak
+  indeks, a lista poniżej to tylko skrót do najczęstszych. Zmiana rynku podmienia tę listę i porzuca
+  instrument z innego rynku; wybór instrumentu lub zakresu zapisuje tylko preferencję — nic nie jest
+  pobierane, dopóki nie naciśniesz 取数.
 - **Najdłuższy okres to około trzydzieści pięć lat**, co jest ograniczeniem źródła: jedno żądanie
   niesie około 640 świec dziennych, a cofanie wykonuje się najwyżej dwadzieścia razy. Okres
   krótszy niż sześćdziesiąt sesji jest odrzucany — największy dzień spokojnego miesiąca to nie jest

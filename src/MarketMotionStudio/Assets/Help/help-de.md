@@ -140,10 +140,12 @@ Handelstags, und sobald der Tag vergangen ist, ändert sich dieser Wert nie wied
 - **Ein Tag zählt erst, wenn er vergangen ist.** Die vierundzwanzig größten Bewegungen des
   Zeitraums sind die Kandidaten, gezeichnet werden die fünfzehn größten davon. Ein Tag nimmt erst
   an der Reihung teil, wenn sein Datum gekommen ist, darum füllt sich das Tableau mit den Jahren.
-- **Es gibt ein Instrument, einen breiten Index des aktuellen Marktes** (im A-Aktien-Markt:
-  Shanghai Composite, Shenzhen Component, CSI 300 und so weiter). Ein anderer Markt tauscht die
-  ganze Liste; ein anderes Instrument oder ein anderer Zeitraum speichert nur eine Einstellung —
-  geholt wird erst mit 取数.
+- **Jedes Instrument, das der Markt notiert, nicht nur die breiten Indizes.** Code, Name oder
+  Pinyin in das Suchfeld tippen: Eine einzelne Aktie und ein börsennotierter Fonds gehören auf
+  dieses Tableau so sehr wie ein Index, und die Liste darunter ist nur ein Schnellweg zu den
+  üblichen. Ein anderer Markt tauscht die Liste und lässt ein Instrument von einem anderen Markt
+  zurück; ein anderes Instrument oder ein anderer Zeitraum speichert nur eine Einstellung — geholt
+  wird erst mit 取数.
 - **Der längste Zeitraum ist etwa fünfunddreißig Jahre**, das ist die Grenze der Quelle: Eine
   Anfrage liefert etwa 640 Tageskerzen, der Rücklauf macht höchstens zwanzig. Weniger als sechzig
   Handelstage werden abgelehnt — der größte Tag eines ruhigen Monats ist kein Fakt für ein Tableau.

@@ -140,10 +140,11 @@ happened the value never changes again.
 - **A day is ranked only once it has happened.** The twenty-four largest moves in the span are the
   candidates and the frame draws the fifteen largest of those; a day does not take part until its
   own date arrives, so the board fills in as the years pass rather than starting full.
-- **There is one instrument, one of the current market's broad indices** (in the A-share market:
-  the Shanghai composite, the Shenzhen component, the CSI 300 and so on). Changing the market
-  changes the whole list; changing the instrument or the span only saves a preference — nothing is
-  fetched until 取数 is pressed.
+- **Any instrument the market quotes, not only the broad indices.** Type a code, a name or
+  pinyin into the search box: a single stock and an exchange-traded fund belong on this board as
+  much as an index does, and the list underneath is only a shortcut to the usual ones. Changing the
+  market swaps that list and leaves behind an instrument from another market; choosing an instrument
+  or a span only saves a preference — nothing is fetched until 取数 is pressed.
 - **The longest span is about thirty-five years**, which is the source's limit: one request carries
   about 640 daily bars and the walk makes at most twenty. A span with fewer than sixty trading days
   is refused — the largest single day inside a quiet month is not a fact worth a board.

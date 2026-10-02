@@ -88,9 +88,16 @@ def daily_closes(code, start, end):
 
         node = json.loads(raw).get("data", {}).get(code, {})
 
+        # **同一个端点，指数与个股给的键名不同**：指数是 `day`，个股和基金是 `hfqday`
+        # （不复权的 `day` 只在指数那一侧出现）。只认 `day` 的话，个股这一路取到的是一张
+        # 空表 —— 脚本于是一行也没算，而应用那一侧照常取数、照常给出一版漂亮的榜，
+        # 两条线各说各话，谁也不报错。
         rows = None
-        for key, value in node.items():
-            if key == "day" and isinstance(value, list) and value and isinstance(value[0], list):
+
+        for key in ("hfqday", "qfqday", "day"):
+            value = node.get(key)
+
+            if isinstance(value, list) and value and isinstance(value[0], list):
                 rows = value
                 break
 
@@ -100,7 +107,10 @@ def daily_closes(code, start, end):
         for row in rows:
             close = float(row[2])
 
-            if close > 0:
+            # **源端的 K 线忽略 start** —— 它只认 count，往回给满一页。所以裁剪是客户端
+            # 的事，应用那边做，脚本这边也得做：少这一步，个股三年会取到 1280 天（多出来的
+            # 是 start 之前那一段），而多出来的那一段里最大的一天不是这三年里最大的一天。
+            if close > 0 and start <= row[0] <= end:
                 closes[row[0]] = close
 
         earliest = rows[0][0]
@@ -261,6 +271,52 @@ def fetch(win, seconds=480):
     }, status
 
 
+def search_text(win):
+    box = winui.find(win, lambda c: c.AutomationId == "InstrumentSearch")
+    edit = None if box is None else winui.find(box, lambda c: c.AutomationId == "TextBox", limit=6)
+
+    if edit is None:
+        return None
+
+    try:
+        return edit.GetValuePattern().Value.strip()
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def pick_instrument(win, code):
+    """把搜索框填成这只代码并提交。
+
+    代码走剪贴板而不是按键：中文打不进 AutoSuggestBox，虽然代码只有数字，两条路用同一条
+    比记着哪条需要哪条便宜。回车提交而不是点建议 —— 裸代码自己就能解析，而建议弹层是另一个
+    顶层窗口。
+    """
+    box = winui.find(win, lambda c: c.AutomationId == "InstrumentSearch")
+    edit = None if box is None else winui.find(box, lambda c: c.AutomationId == "TextBox", limit=6)
+
+    if edit is None:
+        return False
+
+    edit.SetFocus()
+    time.sleep(0.3)
+    edit.SendKeys("{Ctrl}a", waitTime=0.3)
+    auto.SetClipboardText(code)
+    edit.SendKeys("{Ctrl}v", waitTime=0.5)
+
+    deadline = time.time() + 5
+
+    while time.time() < deadline:
+        if search_text(win) == code:
+            break
+
+        time.sleep(0.3)
+
+    edit.SendKeys("{Enter}", waitTime=0.5)
+    time.sleep(2.0)
+
+    return True
+
+
 def frame_colours(win):
     """数预览画面里的红/绿像素 —— 用的还是截图，所以和用户看到的是同一张图。"""
     try:
@@ -362,12 +418,33 @@ def main():
     check("渲染器没有写死某个具体周期的量词",
           "MarketCapUnitMonths" not in render and "AhPremiumUnitPairs" not in render)
 
+    # ---- 0b) 源码级：任意标的（个股 / ETF）也得能上这一页
+    #
+    # 数据层本来就接任何 RaceEntry，所以放开的是页面。页面曾经从下拉读当前标的，那样搜索
+    # 出来的东西无处可放 —— 断言断在「当前标的由字段持有」上，才拦得住退回旧写法。
+    check("页面有搜索框（不是只有那一份固定清单）", "OnSearchSubmitted" in page)
+    check("当前标的由字段持有，不是从下拉读回来的",
+          "private RaceEntry ChosenInstrument() => new(_instrumentCode, _instrumentName);" in page)
+    check("从建议里选中会设置当前标的", "ChooseInstrument(pick.Code, pick.Name);" in page)
+    check("手输代码也会设置当前标的", "ChooseInstrument(code, code);" in page)
+    check("搜索结果按当前市场过滤", "_market.Accepts(r.Code)" in page)
+    check("手输代码先过规范化再判市场", "StockDirectory.Normalize(sender.Text)" in page)
+    check("偏好多记一个名字（只有代码的话画面会用代码当标题）",
+          '_prefs.Save("Name", _instrumentName);' in page)
+    check("换市场时不把别处的代码带过来", "if (_market.Accepts(code))" in page)
+
     # ---- 1) 页面在
     if not goto(win, "极端交易日"):
         check("导航里有「极端交易日」", False)
         return report()
 
     check("导航里有「极端交易日」", True)
+
+    # **先复位，再断言。** 标的偏好是持久的：上一次跑脚本时选的东西会留在这里，脚本若
+    # 默认页面还在上证指数上，第一次取数就会拿别人的数跟上证的数比，然后报「不一致」——
+    # 而这一页此时接了搜索框，上次留下的很可能是一只根本不在清单里的 ETF。
+    winui.combo_pick(win, winui.find(win, lambda c: c.AutomationId == "InstrumentCombo"), "上证指数")
+
     check("标的下拉在", winui.find(win, lambda c: c.AutomationId == "InstrumentCombo") is not None)
     check("区间下拉在", winui.find(win, lambda c: c.AutomationId == "RangeCombo") is not None)
     check("取数按钮在", winui.find(win, lambda c: c.AutomationId == "FetchButton") is not None)
@@ -455,7 +532,54 @@ def main():
 
             shot(win, "verify-extremedays-other.png")
 
-    # ---- 6) 重启后还记得
+    # ---- 6) 任意标的：一只个股和一只 ETF，各自独立算一遍
+    #
+    # 这一页的标的曾经只能是下拉里那八只宽基指数。搜索框接上之后要证明的不是「框在」——
+    # 框在是可以断言的，而**数字是这只个股自己的**只能靠脚本另算一遍：把下拉换成默认标的
+    # 再取数也会成功，也会给一版漂亮的榜。
+    check("页面上有搜索框", winui.find(win, lambda c: c.AutomationId == "InstrumentSearch") is not None)
+
+    combo = winui.find(win, lambda c: c.AutomationId == "RangeCombo")
+
+    if combo is not None:
+        winui.combo_pick(win, combo, "近 3 年")
+
+    short_end = date.today()
+    short_start = short_end.replace(year=short_end.year - 3)
+
+    # 贵州茅台：一只个股，涨停板日会进榜；沪深300ETF：一只基金。两只都不在那份指数清单里。
+    etf = None
+
+    for label, code in (("个股", "sh600519"), ("ETF", "sh510300")):
+        if not pick_instrument(win, code):
+            check(f"{label} {code} 能填进搜索框", False)
+            continue
+
+        check(f"{label} {code} 能填进搜索框", True)
+
+        empty = winui.value(winui.find(win, lambda c: c.AutomationId == "InstrumentCombo"))
+        check(f"{label}不在预设清单里时下拉不再指着别的东西", empty in (None, ""), str(empty))
+
+        run2, status = fetch(win)
+        check(f"{label} {code} 取数成功", run2 is not None, str(status)[:90])
+
+        if run2 is None:
+            continue
+
+        etf = run2
+        theirs = expected_board(daily_closes(code, short_start.isoformat(), short_end.isoformat()))
+
+        check(f"{label}的交易日数与脚本一致（容差 5 天）",
+              abs(theirs["days"] - run2["days"]) <= 5,
+              f"页面 {run2['days']} / 脚本 {theirs['days']}")
+
+        check(f"{label}的最大单日波动与脚本独立算的一致（容差 0.06 个百分点）",
+              abs(abs(theirs["top"]) - abs(run2["top"])) < 0.06,
+              f"页面 {run2['top']:+.2f}% / 脚本 {theirs['top']:+.2f}%")
+
+        shot(win, f"verify-extremedays-{code}.png")
+
+    # ---- 7) 重启后还记得
     winui.kill(winui.EXE)
     time.sleep(2.0)
 
@@ -478,7 +602,20 @@ def main():
     instrument = winui.find(win, lambda c: c.AutomationId == "InstrumentCombo")
     kept = winui.value(instrument) if instrument is not None else None
 
-    check("重启后标的仍记着", kept == instruments[1], f"{kept} vs {instruments[1]}")
+    # 记住的是搜索出来的那只 ETF，不是清单里的某一项。搜索框是空的（它是个输入框，不是
+    # 当前状态的显示器），画布上的标题才写着名字，而画布没有 UIA 节点 —— 所以只能用
+    # 「再取一次数，数字还是那只 ETF 的数字」来证明。
+    check("重启后下拉仍然是空的（那只 ETF 不在清单里）", kept in (None, ""), str(kept))
+
+    if etf is not None:
+        again, status = fetch(win)
+
+        check("重启后取数成功", again is not None, str(status)[:90])
+
+        if again is not None:
+            check("重启后仍记着搜索出来的那只 ETF（天数与榜首都对得上）",
+                  again["days"] == etf["days"] and abs(again["top"] - etf["top"]) < 1e-6,
+                  f"{etf['days']} 天 / {etf['top']:+.2f}% → {again['days']} 天 / {again['top']:+.2f}%")
 
     return report()
 

@@ -430,10 +430,11 @@ the board visibly fill up rather than start full.
 
 **The move is the change in the adjusted close**, because an ex-dividend day is not a crash: the
 price drops by the dividend that morning, and an unadjusted series would put that day at the top of
-a board of the largest falls in history, when nobody holding the stock lost anything. Indices are
-what the page is normally asked about — one of the current market's broad ones — and there the
+a board of the largest falls in history, when nobody holding the stock lost anything. On an index the
 distinction is invisible, which is exactly why it is stated rather than left to be discovered on a
-stock.
+stock — and a stock can be on this board. Any instrument the market quotes goes in through the same
+search box the candle and calendar pages carry; the market's broad indices are kept underneath it as
+a shortcut, not as the boundary.
 
 **The longest span is about thirty-five years**, and that is the walk's limit rather than a choice:
 one request carries about 640 daily bars and the walk makes twenty. A span with fewer than sixty

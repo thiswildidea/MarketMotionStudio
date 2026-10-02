@@ -139,10 +139,11 @@ cotation précédent, et une fois ce jour passé la valeur ne change plus jamais
 - **Un jour n'est classé qu'une fois arrivé.** Les vingt-quatre plus grands mouvements de la période
   sont les candidats et l'image en dessine les quinze plus grands ; un jour ne participe pas avant sa
   propre date, donc le tableau se remplit au fil des années au lieu d'être plein dès le début.
-- **Il y a un seul instrument, l'un des indices larges du marché courant** (dans le marché A :
-  le composite de Shanghai, le composant de Shenzhen, le CSI 300 et ainsi de suite). Changer de
-  marché change toute la liste ; changer d'instrument ou de période ne fait qu'enregistrer une
-  préférence — rien n'est chargé avant d'avoir pressé 取数.
+- **N'importe quel instrument coté sur le marché, pas seulement les grands indices.** Tapez un
+  code, un nom ou du pinyin dans la recherche : une action particulière et un fonds coté ont autant
+  leur place ici qu'un indice, et la liste en dessous n'est qu'un raccourci vers les habituels.
+  Changer de marché remplace cette liste et abandonne un instrument d'un autre marché ; choisir un
+  instrument ou une période n'enregistre qu'une préférence — rien n'est chargé avant 取数.
 - **La période la plus longue est d'environ trente-cinq ans**, c'est la limite de la source : une
   requête porte environ 640 barres quotidiennes et le retour en arrière en fait vingt au plus. Une
   période de moins de soixante jours de cotation est refusée — le plus grand jour d'un mois calme

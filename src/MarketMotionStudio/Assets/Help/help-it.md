@@ -138,10 +138,11 @@ una volta che quel giorno è passato il valore non cambia più.
   periodo sono i candidati e il fotogramma ne disegna i quindici più grandi; un giorno non partecipa
   finché non arriva la sua data, così il quadro si riempie con il passare degli anni invece di
   essere pieno dall'inizio.
-- **C'è un solo strumento, uno degli indici ampi del mercato corrente** (nel mercato A: il
-  composite di Shanghai, il componente di Shenzhen, il CSI 300 e così via). Cambiare mercato
-  sostituisce tutta la lista; cambiare strumento o periodo salva solo una preferenza — non si
-  scarica nulla finché non si preme 取数.
+- **Qualsiasi strumento quotato dal mercato, non solo gli indici ampi.** Scrivete un codice, un
+  nome o il pinyin nella casella di ricerca: un'azione singola e un fondo quotato stanno su questa
+  tavola quanto un indice, e l'elenco sotto è solo una scorciatoia ai soliti. Cambiare mercato
+  sostituisce quell'elenco e lascia indietro uno strumento di un altro mercato; scegliere strumento
+  o intervallo salva solo una preferenza — nulla viene scaricato finché non si preme 取数.
 - **Il periodo più lungo è di circa trentacinque anni**, che è il limite della fonte: una richiesta
   porta circa 640 barre giornaliere e il riavvolgimento ne fa al massimo venti. Un periodo con meno
   di sessanta giorni di negoziazione viene rifiutato — il giorno più grande di un mese tranquillo
