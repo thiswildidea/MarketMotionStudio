@@ -227,6 +227,38 @@ sobě navzájem.
 Neřídí se nastavením trhu: všech osm je kótováno na kontinentální burze. Méně než dvanáct měsíců
 v období je odmítnuto.
 
+## Úspěšnost
+
+Řádek je **podíl uzavřených vstupů, které vydělaly** — ze všech měsíců, v nichž se dalo vstoupit a
+držet stejně dlouho, ta část, která skončila v plusu. Týchž osm nástrojů jako v závodu tříd aktiv a
+na tabuli poklesů, hodnocených podle toho, jestli jejich držení fungovalo, ne podle toho, kolik
+vynesly.
+
+- **Jeden vstup je náhoda; osmdesát čtyři je míra.** Každý měsíc období je vstup a každý je držen
+  stejně dlouho, takže tříleté držení v průběhu deseti let je osmdesát čtyři vstupů na řádek, ne
+  jeden. Sdílejí měsíce a v tom je pointa: zredukovat je na tři nezávislé by ponechalo míru se
+  třemi pozorováními uvnitř.
+- **Vstup se počítá od měsíce, v němž končí.** To, co je koupeno v posledních třech letech období,
+  ještě neskončilo, a započítat neskončený vstup jako ztrátu by na konci ohne každý řádek dolů
+  jenom kvůli kalendáři. Tabule proto začíná prvním měsícem, v němž vstup mohl skončit.
+- **Řádek nastupuje, jakmile skončí šest vstupů.** Jeden vstup je 0 % nebo 100 %, a kterákoli z těch
+  dvou cifer na konci pořadí je konec, který si nezasloužil.
+- **S úpravou, měsíčně a od prvního vlastního měsíce každého nástroje**, z důvodů, které uvádí
+  závod tříd aktiv: distribuce fondu se v jeho ceně nikdy neobjeví a fond založený v roce 2019 nemá
+  žádné vstupy z roku 2016, které by mohl vyhrát nebo prohrát.
+- **Doba držení je jediná nová volba na této tabuli.** Jeden rok a pět let ve stejných deseti letech
+  jsou dvě různé otázky se dvěma různými odpověďmi a osm řádků se mezi nimi přerovná.
+- **Řádky stále běží.** Řadí se podle své míry — nejčastěji v plusu nahoře — a vyměňují si místa,
+  jak měsíce plynou.
+
+Měřeno za posledních deset let s tříletým držením: fond Nasdaq byl v plusu při všech osmdesáti
+čtyřech vstupech a fond z Hongkongu při čtyřiceti procentech z nich — dva řádky, které závod tříd
+aktiv odděluje deseti lety celkového výnosu a tato tabule odděluje tím, jestli se vůbec povedlo
+vstoupit.
+
+Neřídí se nastavením trhu: všech osm je kótováno na kontinentální burze. Méně než dvanáct měsíců
+v období je odmítnuto.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

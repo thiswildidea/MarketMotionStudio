@@ -768,4 +768,17 @@
   <data name="DrawdownHealed"><value>{0} 個月修復</value></data>
   <data name="DrawdownNotHealed"><value>至今未修復</value></data>
   <data name="DrawdownNeverFell"><value>未回撤</value></data>
+  <data name="NavHoldOdds.Content"><value>持有勝率</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>持有勝率</value></data>
+  <data name="HoldOddsStageTitle"><value>持有勝率</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>與「大類資產」同為那八檔，但打分的是「持有」這件事多常成立：在區間裡每一個可以買進並持有相同時間的月份中，最後是賺的那一部分佔多少。</value></data>
+  <data name="HoldOddsNote.Text"><value>一行是已走完的持有中賺錢的那一部分。區間裡每一個月都是一次買進，每一次都持有相同的時間：一次是運氣，八十四次才是比率。</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>月線、已復原（股息與份額折算都還原），每行從自己在區間裡的第一個月起算。一次持有從「走完的那個月」才計入，所以靠近區間末尾買進的不會被算成虧損；一個行要有六次持有走完才上板。</value></data>
+  <data name="HoldOddsHold.Header"><value>持有期</value></data>
+  <data name="HoldOddsHold1Y"><value>1 年</value></data>
+  <data name="HoldOddsHold2Y"><value>2 年</value></data>
+  <data name="HoldOddsHold3Y"><value>3 年</value></data>
+  <data name="HoldOddsHold5Y"><value>5 年</value></data>
+  <data name="HoldOddsFetched"><value>取到 {0} 檔 · {1} 個月 · 持有 {2} 個月 · 最常賺：{3} {4} · 最不常賺：{5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>這個區間的月份不夠讓持有走完——請選長一點的區間，或短一點的持有期。</value></data>
 </root>

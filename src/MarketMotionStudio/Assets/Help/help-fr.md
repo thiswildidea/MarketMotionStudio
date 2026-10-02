@@ -251,6 +251,40 @@ des classes d'actifs, mesurés par rapport à eux-mêmes au lieu de l'être entr
 Ne dépend pas du réglage de marché : les huit sont cotés sur une place de marché continentale.
 Moins de douze mois dans la période est refusé.
 
+## Taux de réussite
+
+Une ligne, c'est **la part des entrées terminées qui ont gagné** — parmi tous les mois où l'on
+aurait pu entrer et garder la même durée, la part qui s'est terminée dans le vert. Les huit mêmes
+supports que la course des classes d'actifs et le tableau des reculs, notés sur le fait de savoir
+si les détenir a fonctionné, non sur ce qu'ils ont rapporté.
+
+- **Une entrée, c'est de la chance ; quatre-vingt-quatre, c'est un taux.** Chaque mois de la
+  période est une entrée, et toutes sont gardées la même durée : détenir trois ans sur dix ans,
+  c'est quatre-vingt-quatre entrées par ligne, pas une. Elles partagent des mois, et c'est là le
+  point : les réduire à trois entrées indépendantes laisserait un taux avec trois observations.
+- **Une entrée compte à partir du mois où elle se termine.** Ce qui est acheté dans les trois
+  dernières années de la période n'est pas terminé ; compter une entrée non terminée comme une
+  perte ferait plier chaque ligne vers le bas à la fin pour la seule raison du calendrier. Le
+  tableau commence donc au premier mois où une entrée pouvait se terminer.
+- **Une ligne arrive dès que six entrées sont terminées.** Une entrée, c'est 0 % ou 100 %, et
+  chacun de ces deux nombres à un bout du classement est un bout qu'elle n'a pas mérité.
+- **Ajusté, mensuel, et à partir du premier mois propre à chaque support**, pour les raisons que
+  donne la course des classes d'actifs : les distributions d'un fonds n'apparaissent jamais dans
+  son cours, et un fonds lancé en 2019 n'a aucune entrée de 2016 à avoir gagnée ou perdue.
+- **La durée de détention est le seul nouveau choix de ce tableau.** Un an et cinq ans sur les
+  mêmes dix ans sont deux questions différentes avec deux réponses différentes, et les huit lignes
+  se réordonnent entre les deux.
+- **Les lignes courent toujours.** Elles sont ordonnées par leur taux — le plus souvent en gain
+  en haut — et échangent leurs places à mesure que les mois passent.
+
+Mesuré sur les dix dernières années avec une détention de trois ans : le fonds Nasdaq était en
+avance sur ses quatre-vingt-quatre entrées et le fonds de Hong Kong sur quarante pour cent d'entre
+elles — deux lignes que la course des classes d'actifs sépare par dix ans de rendement total et que
+ce tableau sépare par le fait d'entrer, tout simplement.
+
+Ne dépend pas du réglage de marché : les huit sont cotés sur une place continentale. Moins de douze
+mois dans la période est refusé.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

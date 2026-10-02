@@ -247,6 +247,40 @@ misurati rispetto a sé stessi invece che tra loro.
 Non dipende dall'impostazione del mercato: tutti e otto sono quotati su una borsa continentale.
 Meno di dodici mesi nell'intervallo viene rifiutato.
 
+## Tasso di riuscita
+
+Una riga è **la quota delle entrate concluse che hanno guadagnato** — fra tutti i mesi in cui si
+sarebbe potuti entrare e mantenere per la stessa durata, la quota finita in guadagno. Gli stessi
+otto strumenti della corsa delle classi di attività e della tavola dei ribassi, valutati sul fatto
+che tenerli abbia funzionato, non su quanto abbiano reso.
+
+- **Un'entrata è fortuna; ottantaquattro sono un tasso.** Ogni mese dell'intervallo è un'entrata e
+  tutte sono mantenute per la stessa durata: detenere tre anni su dieci anni sono ottantaquattro
+  entrate per riga, non una. Condividono i mesi, ed è proprio questo il punto: diradarle a tre
+  indipendenti lascerebbe un tasso con tre osservazioni dentro.
+- **Un'entrata conta dal mese in cui finisce.** Ciò che è comprato negli ultimi tre anni
+  dell'intervallo non è finito, e contare un'entrata non finita come perdita piegherebbe ogni riga
+  verso il basso alla fine per la sola ragione del calendario. La tavola parte quindi dal primo mese
+  in cui un'entrata poteva finire.
+- **Una riga entra quando sei entrate sono concluse.** Un'entrata è 0% o 100%, e ciascuno di questi
+  due numeri a un'estremità della classifica è un'estremità che non ha meritato.
+- **Aggiustato, mensile e dal primo mese proprio di ciascuno strumento**, per le ragioni che dà la
+  corsa delle classi di attività: le distribuzioni di un fondo non compaiono mai nel suo prezzo, e
+  un fondo lanciato nel 2019 non ha entrate del 2016 da aver vinte o perse.
+- **Il periodo di detenzione è l'unica nuova scelta di questa tavola.** Un anno e cinque anni sugli
+  stessi dieci anni sono due domande diverse con due risposte diverse, e le otto righe si
+  riordinano fra le due.
+- **Le righe corrono ancora.** Sono ordinate per il loro tasso — più spesso in guadagno in alto — e
+  si scambiano di posto mentre i mesi passano.
+
+Misurato sugli ultimi dieci anni con una detenzione di tre anni: il fondo Nasdaq era in vantaggio
+su tutte le ottantaquattro entrate e il fondo di Hong Kong sul quaranta per cento di esse — due
+righe che la corsa delle classi di attività separa per dieci anni di rendimento totale e che questa
+tavola separa per il semplice fatto di essere entrati.
+
+Non dipende dall'impostazione del mercato: tutti e otto sono quotati su una borsa continentale.
+Meno di dodici mesi nell'intervallo viene rifiutato.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

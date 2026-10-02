@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} ayda döndü</value></data>
   <data name="DrawdownNotHealed"><value>hâlâ altında</value></data>
   <data name="DrawdownNeverFell"><value>hiç düşmedi</value></data>
+  <data name="NavHoldOdds.Content"><value>Tutma oranı</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Tutma oranı</value></data>
+  <data name="HoldOddsStageTitle"><value>Tutma oranı</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Varlık sınıfları yarışındaki aynı sekiz varlık, ama puanı elde tutmanın işe yarama sıklığına göre: aynı süre boyunca girilip tutulabilecek her ay içinde, kârla bitenlerin payı.</value></data>
+  <data name="HoldOddsNote.Text"><value>Bir satır, kazançla biten tamamlanmış girişlerin payıdır. Aralıktaki her ay bir giriştir ve hepsi aynı süre tutulur: bir giriş şanstır, seksen dördü bir orandır.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Aylık ve düzeltilmiş — temettüler ve bölünmeler dahil — ve her satır kendi ilk ayında başlar. Bir giriş, bittiği aydan itibaren sayılır; böylece aralığın sonuna yakın alınan hiçbir şey zarar sayılmaz; altı giriş tamamlandığında satır katılır.</value></data>
+  <data name="HoldOddsHold.Header"><value>Tutma süresi</value></data>
+  <data name="HoldOddsHold1Y"><value>1 yıl</value></data>
+  <data name="HoldOddsHold2Y"><value>2 yıl</value></data>
+  <data name="HoldOddsHold3Y"><value>3 yıl</value></data>
+  <data name="HoldOddsHold5Y"><value>5 yıl</value></data>
+  <data name="HoldOddsFetched"><value>{0} varlık alındı · {1} ay · {2} ay tutuldu · en sık kârda: {3} {4} · en az: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Girişlerin tamamlanması için bu aralıkta yeterince ay yok — daha uzun bir aralık ya da daha kısa bir tutma süresi seçin.</value></data>
 </root>

@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} meses para voltar</value></data>
   <data name="DrawdownNotHealed"><value>ainda abaixo</value></data>
   <data name="DrawdownNeverFell"><value>nunca caiu</value></data>
+  <data name="NavHoldOdds.Content"><value>Taxa de acerto</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Taxa de acerto</value></data>
+  <data name="HoldOddsStageTitle"><value>Taxa de acerto</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Os mesmos oito ativos da corrida de classes de ativos, pontuados por quantas vezes mantê-los funcionou: de todos os meses em que se poderia ter entrado e mantido pelo mesmo tempo, a parcela que terminou no positivo.</value></data>
+  <data name="HoldOddsNote.Text"><value>Uma linha é a parcela das entradas concluídas que ganharam. Cada mês do período é uma entrada, todas mantidas pelo mesmo tempo: uma entrada é sorte, oitenta e quatro são uma taxa.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Mensal e ajustado — dividendos e desdobramentos incluídos — e cada linha começa no seu primeiro mês. Uma entrada conta a partir do mês em que termina, para que nada comprado perto do fim do período seja contado como perda; uma linha entra quando seis entradas terminaram.</value></data>
+  <data name="HoldOddsHold.Header"><value>Período de manutenção</value></data>
+  <data name="HoldOddsHold1Y"><value>1 ano</value></data>
+  <data name="HoldOddsHold2Y"><value>2 anos</value></data>
+  <data name="HoldOddsHold3Y"><value>3 anos</value></data>
+  <data name="HoldOddsHold5Y"><value>5 anos</value></data>
+  <data name="HoldOddsFetched"><value>Obtidos {0} ativos · {1} meses · mantidos {2} meses · com mais frequência no positivo: {3} {4} · com menos frequência: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Meses insuficientes nesse período para que as entradas terminem — escolha um período mais longo ou uma manutenção mais curta.</value></data>
 </root>

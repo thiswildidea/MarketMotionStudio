@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} mesi per tornare</value></data>
   <data name="DrawdownNotHealed"><value>ancora sotto</value></data>
   <data name="DrawdownNeverFell"><value>mai sceso</value></data>
+  <data name="NavHoldOdds.Content"><value>Tasso di riuscita</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Tasso di riuscita</value></data>
+  <data name="HoldOddsStageTitle"><value>Tasso di riuscita</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Gli stessi otto strumenti della corsa delle classi di attività, valutati su quanto spesso tenerli ha funzionato: fra tutti i mesi in cui si sarebbe potuti entrare e mantenere per la stessa durata, la quota finita in guadagno.</value></data>
+  <data name="HoldOddsNote.Text"><value>Una riga è la quota delle entrate concluse che hanno guadagnato. Ogni mese dell'intervallo è un'entrata, tutte mantenute per la stessa durata: un'entrata è fortuna, ottantaquattro sono un tasso.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Mensile e aggiustato — dividendi e frazionamenti inclusi — e ogni riga parte dal proprio primo mese. Un'entrata conta dal mese in cui finisce, così nulla di ciò che è comprato vicino alla fine dell'intervallo conta come perdita; una riga entra quando sei entrate sono concluse.</value></data>
+  <data name="HoldOddsHold.Header"><value>Periodo di detenzione</value></data>
+  <data name="HoldOddsHold1Y"><value>1 anno</value></data>
+  <data name="HoldOddsHold2Y"><value>2 anni</value></data>
+  <data name="HoldOddsHold3Y"><value>3 anni</value></data>
+  <data name="HoldOddsHold5Y"><value>5 anni</value></data>
+  <data name="HoldOddsFetched"><value>Recuperati {0} strumenti · {1} mesi · detenuti {2} mesi · più spesso in guadagno: {3} {4} · meno spesso: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Non abbastanza mesi in questo intervallo perché le entrate finiscano: scegliete un intervallo più lungo o un periodo di detenzione più breve.</value></data>
 </root>

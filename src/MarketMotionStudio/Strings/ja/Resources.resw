@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} か月で回復</value></data>
   <data name="DrawdownNotHealed"><value>未回復</value></data>
   <data name="DrawdownNeverFell"><value>下落なし</value></data>
+  <data name="NavHoldOdds.Content"><value>保有勝率</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>保有勝率</value></data>
+  <data name="HoldOddsStageTitle"><value>保有勝率</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>資産クラスレースと同じ八つの資産を、保有がうまくいった頻度で採点する——同じ期間だけ買って保有できるすべての月のうち、最終的にプラスになった割合。</value></data>
+  <data name="HoldOddsNote.Text"><value>行は、利益で終わった完了エントリーの割合。区間の各月がエントリーで、どれも同じ期間保有する——一つのエントリーは運、八十四个は率である。</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>月次・調整済み（配当と分割を戻し込み）、各行は自分の最初の月から始まる。エントリーは完了した月から数えるため、区間の終わり近くで買った分が損失として数えられることはない。六つのエントリーが完了した時点で行が参加する。</value></data>
+  <data name="HoldOddsHold.Header"><value>保有期間</value></data>
+  <data name="HoldOddsHold1Y"><value>1 年</value></data>
+  <data name="HoldOddsHold2Y"><value>2 年</value></data>
+  <data name="HoldOddsHold3Y"><value>3 年</value></data>
+  <data name="HoldOddsHold5Y"><value>5 年</value></data>
+  <data name="HoldOddsFetched"><value>{0} 銘柄を取得 · {1} か月 · 保有 {2} か月 · プラスで終わった割合が最も高い: {3} {4} · 最も低い: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>この期間ではエントリーが完了するだけの月数が足りません——もっと長い期間か、もっと短い保有期間を選んでください。</value></data>
 </root>

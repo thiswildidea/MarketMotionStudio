@@ -240,6 +240,40 @@ contra sí mismas en lugar de entre sí.
 No depende del ajuste de mercado: los ocho cotizan en una bolsa continental. Menos de doce meses
 en el periodo se rechaza.
 
+## Tasa de acierto
+
+Una fila es **la proporción de entradas terminadas que ganaron** — de todos los meses en que se
+pudo entrar y mantener el mismo tiempo, la parte que acabó en ganancia. Las mismas ocho inversiones
+que la carrera de clases de activos y el tablero de caídas, puntuadas por si mantenerlas funcionó,
+no por cuánto dieron.
+
+- **Una entrada es suerte; ochenta y cuatro son una tasa.** Cada mes del periodo es una entrada y
+  todas se mantienen el mismo tiempo, así que mantener tres años a lo largo de diez son ochenta y
+  cuatro entradas por fila, no una. Comparten meses, y ahí está el punto: reducirlas a tres
+  independientes dejaría una tasa con tres observaciones dentro.
+- **Una entrada cuenta desde el mes en que termina.** Lo comprado en los últimos tres años del
+  periodo no ha terminado, y contar una entrada sin terminar como pérdida doblaría cada fila hacia
+  abajo al final por la sola razón del calendario. El tablero empieza por tanto en el primer mes en
+  que una entrada podía haber terminado.
+- **Una fila entra cuando han terminado seis entradas.** Una entrada es 0 % o 100 %, y cualquiera
+  de esas dos cifras en un extremo de la clasificación es un extremo que no ha ganado.
+- **Ajustado, mensual y desde el primer mes propio de cada inversión**, por las razones que da la
+  carrera de clases de activos: las distribuciones de un fondo nunca aparecen en su precio, y un
+  fondo lanzado en 2019 no tiene entradas de 2016 que ganar o perder.
+- **El periodo de tenencia es la única elección nueva de este tablero.** Un año y cinco años sobre
+  los mismos diez años son dos preguntas distintas con dos respuestas distintas, y las ocho filas
+  se reordenan entre una y otra.
+- **Las filas siguen corriendo.** Se ordenan por su tasa — la que más veces acaba en ganancia
+  arriba — y se intercambian los puestos mientras pasan los meses.
+
+Medido en los últimos diez años con una tenencia de tres años: el fondo Nasdaq acabó en ganancia
+en las ochenta y cuatro entradas y el fondo de Hong Kong en el cuarenta por ciento de ellas — dos
+filas que la carrera de clases de activos separa por diez años de rentabilidad total y este tablero
+separa por si entrar, sencillamente, funcionó.
+
+No depende del ajuste de mercado: las ocho cotizan en un mercado continental. Menos de doce meses
+en el periodo se rechaza.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

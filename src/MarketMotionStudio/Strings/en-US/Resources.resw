@@ -780,4 +780,17 @@
   <data name="DrawdownHealed"><value>{0} mo back</value></data>
   <data name="DrawdownNotHealed"><value>still under</value></data>
   <data name="DrawdownNeverFell"><value>never fell</value></data>
+  <data name="NavHoldOdds.Content"><value>Hold odds</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Hold odds</value></data>
+  <data name="HoldOddsStageTitle"><value>Hold odds</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>The same eight holdings as the asset race, scored on how often holding them worked: of every month a holder could have bought in and held for the same length of time, the share that ended up ahead.</value></data>
+  <data name="HoldOddsNote.Text"><value>A row is the share of finished entries that gained. Every month in the range is an entry, each held for the same length of time: one entry is luck, eighty-four of them are a rate.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Monthly and adjusted — dividends and splits put back — and each row starts on its own first month. An entry counts from the month it finishes, so nothing bought near the end of the range is counted as a loss; a row joins once six entries have finished.</value></data>
+  <data name="HoldOddsHold.Header"><value>Holding period</value></data>
+  <data name="HoldOddsHold1Y"><value>1 year</value></data>
+  <data name="HoldOddsHold2Y"><value>2 years</value></data>
+  <data name="HoldOddsHold3Y"><value>3 years</value></data>
+  <data name="HoldOddsHold5Y"><value>5 years</value></data>
+  <data name="HoldOddsFetched"><value>Fetched {0} holdings · {1} months · held {2} months · most often ahead: {3} {4} · least often: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Not enough months in that range for entries to finish — pick a longer range or a shorter holding period.</value></data>
 </root>

@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} Mon. bis zurück</value></data>
   <data name="DrawdownNotHealed"><value>noch unter</value></data>
   <data name="DrawdownNeverFell"><value>nie gefallen</value></data>
+  <data name="NavHoldOdds.Content"><value>Haltequote</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Haltequote</value></data>
+  <data name="HoldOddsStageTitle"><value>Haltequote</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Dieselben acht Anlagen wie beim Rennen der Anlageklassen, bewertet danach, wie oft das Halten funktionierte: von allen Monaten, in denen man hätte einsteigen und gleich lang halten können, der Anteil, der am Ende im Plus lag.</value></data>
+  <data name="HoldOddsNote.Text"><value>Eine Zeile ist der Anteil der beendeten Einstiege, die gewonnen haben. Jeder Monat im Zeitraum ist ein Einstieg, alle gleich lang gehalten: ein Einstieg ist Glück, vierundachtzig sind eine Quote.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Monatlich und adjustiert – Dividenden und Splits eingerechnet – und jede Zeile beginnt in ihrem eigenen ersten Monat. Ein Einstieg zählt ab dem Monat, in dem er endet, damit nichts, was am Ende des Zeitraums gekauft wurde, als Verlust zählt; eine Zeile kommt dazu, sobald sechs Einstiege beendet sind.</value></data>
+  <data name="HoldOddsHold.Header"><value>Haltedauer</value></data>
+  <data name="HoldOddsHold1Y"><value>1 Jahr</value></data>
+  <data name="HoldOddsHold2Y"><value>2 Jahre</value></data>
+  <data name="HoldOddsHold3Y"><value>3 Jahre</value></data>
+  <data name="HoldOddsHold5Y"><value>5 Jahre</value></data>
+  <data name="HoldOddsFetched"><value>{0} Anlagen geladen · {1} Monate · {2} Monate gehalten · am häufigsten im Plus: {3} {4} · am seltensten: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Zu wenige Monate in diesem Zeitraum, als dass Einstiege enden könnten – wählen Sie einen längeren Zeitraum oder eine kürzere Haltedauer.</value></data>
 </root>

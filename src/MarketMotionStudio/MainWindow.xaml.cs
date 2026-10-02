@@ -686,6 +686,7 @@ public sealed partial class MainWindow : Window
             "IndexRace" => typeof(IndexRacePage),
             "AssetRace" => typeof(AssetRacePage),
             "Drawdown" => typeof(DrawdownPage),
+            "HoldOdds" => typeof(HoldOddsPage),
             "Matrix" => typeof(MonthlyMatrixPage),
             "GainCalendar" => typeof(GainCalendarPage),
             "DcaPlan" => typeof(DcaPlanPage),

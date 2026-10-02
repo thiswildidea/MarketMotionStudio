@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} mois pour revenir</value></data>
   <data name="DrawdownNotHealed"><value>pas encore revenu</value></data>
   <data name="DrawdownNeverFell"><value>jamais baissé</value></data>
+  <data name="NavHoldOdds.Content"><value>Taux de réussite</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Taux de réussite</value></data>
+  <data name="HoldOddsStageTitle"><value>Taux de réussite</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Les huit mêmes supports que la course des classes d'actifs, notés sur la fréquence à laquelle les détenir a fonctionné : parmi tous les mois où l'on aurait pu entrer et garder la même durée, la part qui s'est terminée dans le vert.</value></data>
+  <data name="HoldOddsNote.Text"><value>Une ligne est la part des entrées terminées qui ont gagné. Chaque mois de la période est une entrée, toutes gardées la même durée : une entrée, c'est de la chance ; quatre-vingt-quatre, c'est un taux.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Mensuel et ajusté — dividendes et divisions intégrés — et chaque ligne commence à son propre premier mois. Une entrée compte à partir du mois où elle se termine : rien de ce qui est acheté près de la fin de la période n'est compté comme une perte ; une ligne arrive dès que six entrées sont terminées.</value></data>
+  <data name="HoldOddsHold.Header"><value>Durée de détention</value></data>
+  <data name="HoldOddsHold1Y"><value>1 an</value></data>
+  <data name="HoldOddsHold2Y"><value>2 ans</value></data>
+  <data name="HoldOddsHold3Y"><value>3 ans</value></data>
+  <data name="HoldOddsHold5Y"><value>5 ans</value></data>
+  <data name="HoldOddsFetched"><value>{0} supports récupérés · {1} mois · détenus {2} mois · le plus souvent en gain : {3} {4} · le moins souvent : {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Pas assez de mois dans cette période pour que des entrées se terminent — choisissez une période plus longue ou une durée de détention plus courte.</value></data>
 </root>

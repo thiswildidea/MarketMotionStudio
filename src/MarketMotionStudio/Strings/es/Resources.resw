@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} meses para volver</value></data>
   <data name="DrawdownNotHealed"><value>aún por debajo</value></data>
   <data name="DrawdownNeverFell"><value>nunca cayó</value></data>
+  <data name="NavHoldOdds.Content"><value>Tasa de acierto</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Tasa de acierto</value></data>
+  <data name="HoldOddsStageTitle"><value>Tasa de acierto</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Las mismas ocho inversiones que en la carrera de clases de activos, puntuadas por cuántas veces funcionó mantenerlas: de todos los meses en que se pudo entrar y mantener el mismo tiempo, la proporción que acabó en ganancia.</value></data>
+  <data name="HoldOddsNote.Text"><value>Cada fila es la proporción de entradas terminadas que ganaron. Cada mes del periodo es una entrada, todas mantenidas el mismo tiempo: una entrada es suerte, ochenta y cuatro son una tasa.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Mensual y ajustado — dividendos y splits incluidos — y cada fila empieza en su propio primer mes. Una entrada cuenta desde el mes en que termina, para que nada comprado cerca del final del periodo cuente como pérdida; una fila entra cuando han terminado seis entradas.</value></data>
+  <data name="HoldOddsHold.Header"><value>Periodo de tenencia</value></data>
+  <data name="HoldOddsHold1Y"><value>1 año</value></data>
+  <data name="HoldOddsHold2Y"><value>2 años</value></data>
+  <data name="HoldOddsHold3Y"><value>3 años</value></data>
+  <data name="HoldOddsHold5Y"><value>5 años</value></data>
+  <data name="HoldOddsFetched"><value>Obtenidas {0} inversiones · {1} meses · mantenidas {2} meses · más a menudo en ganancia: {3} {4} · menos a menudo: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>No hay suficientes meses en ese periodo para que terminen las entradas: elija un periodo más largo o una tenencia más corta.</value></data>
 </root>

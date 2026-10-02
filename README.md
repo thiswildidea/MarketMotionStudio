@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **fifteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **sixteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -131,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The fifteen pages
+## The sixteen pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -562,6 +562,30 @@ Adjusted, monthly and measured from each holding's own first month, all three fo
 asset race gives — and unadjusted this board would be worse than wrong, because the one row that has
 never fallen would be the only row with a hole in it.
 
+**Hold odds** — the sixteenth page, and the third board on that same roster. The first two are drawn
+on the range's own two ends: one way in, one way out, which answers "was this decade good". The
+question a holder actually faces is a different one — walk in on a month you did not pick, hold for
+the same length of time, how often does that work. So this board runs **every entry there was**: one
+per month in the range, each held for the same length of time, counted once it has finished.
+
+**One entry is luck; eighty-four of them are a rate.** A three-year hold sampled monthly across ten
+years is eighty-four entries per row. They share months, and nothing here thins them out to make
+them independent: that would leave three observations in a rate, and a rate built on three
+observations is the luck the board exists to measure.
+
+**An entry counts from the month it finishes.** Nothing bought in the last three years of the range
+has finished, and counting an unfinished entry as a loss would bend every row downwards at the end
+for no reason but the calendar. The board therefore opens on the first month an entry could have
+finished on, and a row joins on the month its sixth one did — one entry is 0% or 100%, and either
+number at an end of the ranking is an end it has not earned.
+
+Measured 2026-10-02 over ten years with a three-year hold: the Nasdaq fund was ahead on all
+eighty-four of its entries and the Hong Kong fund on forty per cent of them. Those are two rows the
+asset race separates by ten years of total return; this board separates them by whether walking in
+worked at all. Held for one year instead of three, the same decade is a different question with a
+different answer — the CSI 300 fund goes from 69.0% to 59.3% and the Hong Kong fund from 40.5% to
+49.1%, because a short hold catches different falls.
+
 **A short fall's label moves out of the way.** The race renderer puts a value label outside the
 bar's end when the bar is too short to hold it. For a fall that means to the left — and the axis's
 proportional headroom puts the *most* negative value only about a sixth of the way into the plot,
@@ -774,14 +798,15 @@ src/MarketMotionStudio/
                    FxRates (the pairs, their monthly bars, and the corridor's arithmetic),
                    IndexRace (twelve indices from three markets, each measured from its own first month),
                    AssetRace (eight asset classes as funds, and the one page that must use adjusted prices),
-                   Drawdown (the same eight funds measured against their own highs: depth and the climb back)
+                   Drawdown (the same eight funds measured against their own highs: depth and the climb back),
+                   HoldOdds (every entry in the range, each held the same length of time, and the share that gained)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
-                   the extreme-day board, the index race and the asset-class board),
+                   the extreme-day board, the index race, the asset-class board and the hold-odds board),
                    UnderwaterRenderer (ranked curves, one depth scale for the whole board),
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    FrameExporter (one frame to PNG)
@@ -901,8 +926,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 720 keys
-with no encoding damage, and all fourteen help documents carry the same twenty-four sections in
+Every language carries the same keys in the same order. All fourteen currently report 733 keys
+with no encoding damage, and all fourteen help documents carry the same twenty-five sections in
 the same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -916,7 +941,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all fifteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all sixteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed

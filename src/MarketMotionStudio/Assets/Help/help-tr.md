@@ -233,6 +233,37 @@ değil kendine göre ölçülüyor.
 
 Piyasa ayarına bağlı değil: sekizi de anakara borsasında kote. Aralıkta on iki aydan az varsa reddedilir.
 
+## Tutma oranı
+
+Bir satır, **kazançla biten tamamlanmış girişlerin payı** — aynı süre boyunca girilip tutulabilecek
+tüm ayların içinde, artıda bitenlerin oranı. Varlık sınıfları yarışı ve düşüş tablosundaki aynı
+sekiz varlık; puan, ne kadar kazandırdığına değil, elde tutmanın işe yarayıp yaramadığına göre
+veriliyor.
+
+- **Bir giriş şanstır; seksen dördü bir orandır.** Aralıktaki her ay bir giriştir ve hepsi aynı süre
+  tutulur, dolayısıyla on yıl içindeki üç yıllık tutuş satır başına seksen dört giriştir, bir değil.
+  Ayları paylaşırlar ve mesele tam olarak budur: onları üç bağımsız girişe indirmek, içinde üç
+  gözlem olan bir oran bırakırdı.
+- **Bir giriş, bittiği aydan itibaren sayılır.** Aralığın son üç yılında alınan henüz bitmemiştir;
+  bitmemiş bir girişi zarar saymak, her satırı sonunda sırf takvim yüzünden aşağı büker. Bu yüzden
+  tablo, bir girişin bitebileceği ilk ayda açılır.
+- **Altı giriş tamamlandığında satır katılır.** Bir giriş ya %0 ya %100'dür ve bu iki sayıdan hangisi
+  sıralamanın bir ucunda durursa dursun, o uç hak edilmiş bir uç değildir.
+- **Düzeltilmiş, aylık ve her varlığın kendi ilk ayından**, varlık sınıflarının verdiği gerekçelerle:
+  bir fonun dağıtımları fiyatında hiç görünmez ve 2019'da kurulan bir fonun kazanıp kaybedebileceği
+  2016 girişi yoktur.
+- **Tutma süresi bu tablonun tek yeni seçimi.** Aynı on yıl için bir yıl ile beş yıl farklı sorulardır
+  ve farklı cevapları vardır; sekiz satır ikisi arasında yeniden sıralanır.
+- **Satırlar hâlâ yarışıyor.** Oranlarına göre dizilirler — en sık artıda biten üstte — ve aylar
+  geçtikçe yer değiştirirler.
+
+Son on yılda üç yıllık tutuşla ölçüldüğünde: Nasdaq fonu seksen dört girişinin tamamında öndeydi,
+Hong Kong fonu ise bunların yüzde kırkında — varlık sınıfları yarışının on yıllık toplam getiriyle
+ayırdığı iki satırı bu tablo, "içeri girmek işe yaradı mı" ile ayırıyor.
+
+Piyasa ayarına bağlı değil: sekizi de anakara borsasında kote. Aralıkta on iki aydan az varsa
+reddedilir.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

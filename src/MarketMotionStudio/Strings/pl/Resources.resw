@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} mies. powrotu</value></data>
   <data name="DrawdownNotHealed"><value>wciąż poniżej</value></data>
   <data name="DrawdownNeverFell"><value>nigdy nie spadł</value></data>
+  <data name="NavHoldOdds.Content"><value>Skuteczność</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Skuteczność</value></data>
+  <data name="HoldOddsStageTitle"><value>Skuteczność</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Te same osiem instrumentów co w wyścigu klas aktywów, oceniane według tego, jak często ich trzymanie się opłaciło: ze wszystkich miesięcy, w których można było wejść i trzymać równie długo, udział tych zakończonych na plusie.</value></data>
+  <data name="HoldOddsNote.Text"><value>Wiersz to udział zakończonych wejść, które zarobiły. Każdy miesiąc okresu jest wejściem, wszystkie trzymane równie długo: jedno wejście to szczęście, osiemdziesiąt cztery to wskaźnik.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Miesięcznie i z korektą — dywidendy i splity wliczone — a każdy wiersz zaczyna się w swoim pierwszym miesiącu. Wejście liczy się od miesiąca, w którym się kończy, więc nic kupionego blisko końca okresu nie jest liczone jako strata; wiersz dołącza, gdy zakończy się sześć wejść.</value></data>
+  <data name="HoldOddsHold.Header"><value>Okres utrzymania</value></data>
+  <data name="HoldOddsHold1Y"><value>1 rok</value></data>
+  <data name="HoldOddsHold2Y"><value>2 lata</value></data>
+  <data name="HoldOddsHold3Y"><value>3 lata</value></data>
+  <data name="HoldOddsHold5Y"><value>5 lat</value></data>
+  <data name="HoldOddsFetched"><value>Pobrano {0} instrumentów · {1} miesięcy · trzymane {2} miesięcy · najczęściej na plusie: {3} {4} · najrzadziej: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>Za mało miesięcy w tym okresie, by wejścia zdążyły się zakończyć — wybierz dłuższy okres albo krótszy czas trzymania.</value></data>
 </root>

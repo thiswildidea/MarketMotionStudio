@@ -231,6 +231,9 @@
                 <mux:NavigationViewItem x:Name="NavDrawdown" x:Uid="NavDrawdown" Tag="Drawdown">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE74B;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavHoldOdds" x:Uid="NavHoldOdds" Tag="HoldOdds">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

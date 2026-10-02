@@ -237,6 +237,40 @@ mierzone względem siebie samych, nie względem innych.
 Nie podlega ustawieniu rynku: wszystkie osiem jest notowanych na giełdzie kontynentalnej. Mniej niż
 dwanaście miesięcy w okresie jest odrzucane.
 
+## Skuteczność
+
+Wiersz to **udział zakończonych wejść, które zarobiły** — ze wszystkich miesięcy, w których można
+było wejść i trzymać równie długo, część zakończona na plusie. Te same osiem instrumentów co w
+wyścigu klas aktywów i na tablicy obsunięć, oceniane według tego, czy trzymanie ich zadziałało, a
+nie według tego, ile dały zarobić.
+
+- **Jedno wejście to szczęście; osiemdziesiąt cztery to wskaźnik.** Każdy miesiąc okresu jest
+  wejściem i każde jest trzymane równie długo, więc trzymanie trzy lata w ciągu dziesięciu to
+  osiemdziesiąt cztery wejścia na wiersz, nie jedno. Współdzielą miesiące i to jest sedno:
+  przerzedzenie ich do trzech niezależnych zostawiłoby wskaźnik z trzema obserwacjami w środku.
+- **Wejście liczy się od miesiąca, w którym się kończy.** To, co kupione w ostatnich trzech latach
+  okresu, jeszcze się nie zakończyło, a policzenie niezakończonego wejścia jako straty wygięłoby
+  każdy wiersz w dół na końcu wyłącznie z powodu kalendarza. Tablica zaczyna się więc w pierwszym
+  miesiącu, w którym wejście mogło się zakończyć.
+- **Wiersz dołącza, gdy zakończy się sześć wejść.** Jedno wejście to 0% albo 100%, i każda z tych
+  dwóch liczb na końcu rankingu jest końcem, na który nie zapracowała.
+- **Z korektą, miesięcznie i od pierwszego własnego miesiąca każdego instrumentu**, z powodów,
+  które podaje wyścig klas aktywów: dystrybucje funduszu nigdy nie pojawiają się w jego cenie, a
+  fundusz uruchomiony w 2019 nie ma wejść z 2016, które mógłby wygrać albo przegrać.
+- **Okres utrzymania to jedyny nowy wybór na tej tablicy.** Jeden rok i pięć lat w tych samych
+  dziesięciu latach to dwa różne pytania z dwiema różnymi odpowiedziami, a osiem wierszy
+  porządkuje się między nimi na nowo.
+- **Wiersze wciąż biegną.** Są uporządkowane według wskaźnika — najczęściej na plusie na górze — i
+  zamieniają się miejscami wraz z upływem miesięcy.
+
+Zmierzone w ostatnich dziesięciu latach przy trzymaniu trzy lata: fundusz Nasdaq był na plusie przy
+wszystkich osiemdziesięciu czterech wejściach, a fundusz z Hongkongu przy czterdziestu procentach z
+nich — dwa wiersze, które wyścig klas aktywów rozdziela dziesięcioma latami całkowitego zwrotu, a
+ta tablica rozdziela tym, czy w ogóle udało się wejść.
+
+Nie zależy od ustawienia rynku: wszystkie osiem jest notowanych na giełdzie kontynentalnej. Mniej
+niż dwanaście miesięcy w okresie jest odrzucane.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

@@ -241,6 +241,39 @@ other.
 Not governed by the market setting: all eight are quoted on a mainland exchange. Fewer than twelve
 months in the range is refused.
 
+## Hold odds
+
+A row is **the share of finished entries that gained** — of all the months a holder could have
+bought in and held for the same length of time, the share that ended up ahead. The same eight
+holdings as the asset race and the drawdown board, scored on whether holding them worked rather
+than on how much they made.
+
+- **One entry is luck; eighty-four of them are a rate.** Every month in the range is an entry and
+  each is held for the same length of time, so a three-year hold across ten years is eighty-four
+  entries per row, not one. They share months, and that is the point: thinning them out to three
+  independent ones would leave a rate with three observations in it.
+- **An entry counts from the month it finishes.** Nothing bought in the last three years of the
+  range has finished, and counting an unfinished entry as a loss would bend every row downwards at
+  the end for no reason but the calendar. So the board opens on the first month an entry could have
+  finished on.
+- **A row joins on its sixth finished entry.** One entry is 0% or 100%, and either number sitting
+  at an end of the ranking is an end it has not earned.
+- **Adjusted, monthly, and from each holding's own first month**, for the reasons the asset race
+  gives: a fund's distributions never appear in its price, and a fund launched in 2019 has no 2016
+  entry to have won or lost.
+- **The holding period is this board's one new choice.** One year and five years over the same ten
+  years are different questions with different answers, and the eight rows reorder between them.
+- **The rows still race.** They are ordered by their rate, most often ahead at the top, and they
+  trade places as their months pass.
+
+Measured over the last ten years with a three-year hold: the Nasdaq fund was ahead on all
+eighty-four of its entries and the Hong Kong fund on forty per cent of them — two rows the asset
+race separates by ten years of total return and this board separates by whether walking in worked
+at all.
+
+Not governed by the market setting: all eight are quoted on a mainland exchange. Fewer than twelve
+months in the range is refused.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

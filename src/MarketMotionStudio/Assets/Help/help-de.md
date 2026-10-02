@@ -247,6 +247,40 @@ Anlageklassen, am eigenen Hoch gemessen statt gegeneinander.
 Nicht von der Markteinstellung abhängig: alle acht werden an einer Festlandbörse gehandelt.
 Weniger als zwölf Monate im Zeitraum werden abgelehnt.
 
+## Haltequote
+
+Eine Zeile ist **der Anteil der beendeten Einstiege, die gewonnen haben** — von allen Monaten, in
+denen man hätte einsteigen und gleich lang halten können, der Anteil, der am Ende im Plus lag.
+Dieselben acht Anlagen wie bei den Anlageklassen und den Rücksetzern, bewertet danach, ob das
+Halten funktionierte, nicht danach, wie viel es einbrachte.
+
+- **Ein Einstieg ist Glück; vierundachtzig sind eine Quote.** Jeder Monat im Zeitraum ist ein
+  Einstieg, und alle werden gleich lang gehalten: ein dreijähriges Halten über zehn Jahre sind
+  vierundachtzig Einstiege pro Zeile, nicht einer. Sie teilen sich Monate, und genau das ist der
+  Punkt — sie auf drei unabhängige auszudünnen ließe eine Quote mit drei Beobachtungen übrig.
+- **Ein Einstieg zählt ab dem Monat, in dem er endet.** Was in den letzten drei Jahren des Zeitraums
+  gekauft wurde, ist nicht beendet; ein nicht beendeter Einstieg als Verlust gezählt würde jede
+  Zeile am Ende allein wegen des Kalenders nach unten biegen. Die Tafel beginnt daher mit dem
+  ersten Monat, in dem ein Einstieg überhaupt enden konnte.
+- **Eine Zeile kommt dazu, sobald sechs Einstiege beendet sind.** Ein Einstieg ist 0 % oder 100 %,
+  und jede dieser Zahlen an einem Ende der Rangliste ist ein Ende, das sie sich nicht verdient hat.
+- **Adjustiert, monatlich und ab dem jeweils ersten eigenen Monat**, aus den Gründen, die die
+  Anlageklassen nennen: Ausschüttungen eines Fonds erscheinen nie in seinem Preis, und ein 2019
+  aufgelegter Fonds hat keinen Einstieg aus 2016, den er gewinnen oder verlieren konnte.
+- **Die Haltedauer ist die einzige neue Wahl auf dieser Tafel.** Ein Jahr und fünf Jahre über
+  dieselben zehn Jahre sind zwei verschiedene Fragen mit zwei verschiedenen Antworten, und die
+  acht Zeilen ordnen sich dazwischen neu.
+- **Die Zeilen rennen weiter.** Sie sind nach ihrer Quote geordnet — am häufigsten im Plus oben —
+  und tauschen die Plätze, während die Monate vergehen.
+
+Gemessen über die letzten zehn Jahre mit drei Jahren Haltedauer: Der Nasdaq-Fonds lag bei allen
+vierundachtzig Einstiegen vorn, der Hongkong-Fonds bei vierzig Prozent von ihnen — zwei Zeilen, die
+die Anlageklassen nach zehn Jahren Gesamtertrag trennt und diese Tafel danach trennt, ob das
+Einsteigen überhaupt funktioniert hat.
+
+Nicht von der Markteinstellung abhängig: alle acht werden an einer Festlandbörse gehandelt. Weniger
+als zwölf Monate im Zeitraum werden abgelehnt.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

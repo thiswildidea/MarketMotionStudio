@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} мес. до возврата</value></data>
   <data name="DrawdownNotHealed"><value>ещё не вернулся</value></data>
   <data name="DrawdownNeverFell"><value>не падал</value></data>
+  <data name="NavHoldOdds.Content"><value>Доля удачных</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Доля удачных</value></data>
+  <data name="HoldOddsStageTitle"><value>Доля удачных</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Те же восемь инструментов, что в гонке классов активов, но оценённые по тому, как часто удержание срабатывало: из всех месяцев, в которые можно было войти и держать одинаково долго, доля завершившихся в плюсе.</value></data>
+  <data name="HoldOddsNote.Text"><value>Строка — это доля завершённых входов, которые оказались в плюсе. Каждый месяц диапазона — это вход, и все они держатся одинаково долго: один вход — это везение, восемьдесят четыре — это доля.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Ежемесячно и с поправкой — дивиденды и сплиты возвращены — и каждая строка начинается в своём первом месяце. Вход считается с месяца, в котором он завершился, поэтому ничто, купленное ближе к концу диапазона, не считается убытком; строка появляется, когда завершились шесть входов.</value></data>
+  <data name="HoldOddsHold.Header"><value>Срок удержания</value></data>
+  <data name="HoldOddsHold1Y"><value>1 год</value></data>
+  <data name="HoldOddsHold2Y"><value>2 года</value></data>
+  <data name="HoldOddsHold3Y"><value>3 года</value></data>
+  <data name="HoldOddsHold5Y"><value>5 лет</value></data>
+  <data name="HoldOddsFetched"><value>Получено инструментов: {0} · месяцев: {1} · удерживались {2} мес. · чаще всего в плюсе: {3} {4} · реже всего: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>В этом диапазоне слишком мало месяцев, чтобы входы успели завершиться, — выберите диапазон подлиннее или срок удержания покороче.</value></data>
 </root>

@@ -1525,3 +1525,59 @@ the Nasdaq fund closest to its high at 0.00%, and gold, the commodity fund and c
 **Owed on this page:** no export at any format; the custom span and the longest span have not been
 exercised; the English interface has not been driven through it; and nobody has checked the roster or
 the depth scale against anything but the reasoning above.
+
+## The sixteenth page: every entry, not the two ends of the range
+
+**The third board on the asset race's roster, and the question the other two cannot ask.** The asset
+race says what each holding earned across ten years; the drawdown board says what it cost to stay for
+it. Both are drawn on the range's own two ends — one way in, one way out — and both therefore answer
+"was this decade good". Nobody bought on the first month of the decade and sold on the last. What a
+holder actually did was walk in on some month and hold for a while, and the record of *those* entries
+is a different thing from either board.
+
+**What a row is.** Every month in the range is an entry, each held for the same length of time, and
+the bar is the share of the entries that have finished which ended up ahead. A three-year hold
+sampled monthly across ten years is eighty-four entries per row.
+
+**The entries overlap, and that is the point.** Eighty-four entries over ten years share months; three
+non-overlapping ones would be independent. Thinning them out to three is the move that sounds careful
+and is not — it would leave a rate with three observations in it, and a rate built on three
+observations is the luck this board exists to measure. Nothing here averages the overlaps away.
+
+**An entry counts from the month it finishes.** Nothing bought in the last three years of the range
+has finished, and counting an unfinished entry as a loss would bend every row downwards at the end for
+no reason but the calendar. So the board opens on the first month an entry *could* have finished on —
+the first `hold` months of the range are off it entirely — and a row joins on the month its sixth one
+did. One entry is 0% or 100%, and either number sitting at an end of the ranking is an end it has not
+earned. The cost is a row missing from the first few frames; the alternative is a board whose opening
+seconds are noise.
+
+**Measured 2026-10-02, ten years, held three years (84 entries per row):** the Nasdaq fund ahead on
+all eighty-four, the Hong Kong fund on 40.5%, the CSI 300 fund on 69.0%. Those first two are rows the
+asset race separates by ten years of total return; this board separates them by whether walking in
+worked at all.
+
+**Held one year instead of three, the same decade is a different question.** The CSI 300 fund goes
+69.0% → 59.3% and the Hong Kong fund 40.5% → 49.1% — it *improves*, because a one-year hold walks
+past falls a three-year hold has to sit through. The board's most reliable row changes identity
+entirely: with a three-year hold the Nasdaq fund leads at 100%, with a one-year hold it is the
+money-market fund, also at 100%, for the opposite reason — one because nothing it entered went down
+over three years, the other because nothing it entered went down over one. Two identical bars, two
+different claims, which is why the holding period is a control on the page and not a footnote.
+
+**Reusing the race renderer was the cheap half of this page, and the cheap half is the right half.**
+A share of entries is a percentage, the bars are lengths, longer means better, and the rows overtake
+each other exactly as they should — so no new renderer was written. The page's own work is entirely in
+what counts as an entry and when it counts as finished, neither of which has a pixel to show for
+itself.
+
+**Verified 44 ways** (`tools/verify-holdodds.py`), including recomputing the whole rate table from the
+source's own adjusted bars and comparing the months, the entries per row, the best row and its rate,
+and the worst row and its rate — and asserting that the best and the worst are more than twenty points
+apart, because a board on which they were not would be a second copy of the asset race. The one-year
+comparison checks the whole vector rather than the leading row: that row reads 100% at both holding
+periods, so proving the control works from it would have proved nothing.
+
+**Owed on this page:** no export at any format; the custom span and the longest span have not been
+exercised; the English interface has not been driven through it; and nobody has checked the roster or
+the sixth-entry threshold against anything but the reasoning above.

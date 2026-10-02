@@ -236,6 +236,40 @@ em vez de entre si.
 Não depende da configuração de mercado: todos os oito são cotados numa bolsa continental. Menos de
 doze meses no período é recusado.
 
+## Taxa de acerto
+
+Uma linha é **a parcela das entradas concluídas que ganharam** — de todos os meses em que se
+poderia ter entrado e mantido pelo mesmo tempo, a parte que terminou no positivo. Os mesmos oito
+ativos da corrida de classes de ativos e do quadro de quedas, pontuados por quantas vezes mantê-los
+funcionou, não por quanto renderam.
+
+- **Uma entrada é sorte; oitenta e quatro são uma taxa.** Cada mês do período é uma entrada e todas
+  são mantidas pelo mesmo tempo, então manter três anos ao longo de dez são oitenta e quatro
+  entradas por linha, não uma. Elas compartilham meses, e esse é o ponto: reduzi-las a três
+  independentes deixaria uma taxa com três observações dentro.
+- **Uma entrada conta a partir do mês em que termina.** O que foi comprado nos últimos três anos do
+  período ainda não terminou, e contar uma entrada inacabada como perda dobraria cada linha para
+  baixo no fim pela única razão do calendário. O quadro começa, portanto, no primeiro mês em que
+  uma entrada podia ter terminado.
+- **Uma linha entra quando seis entradas terminaram.** Uma entrada é 0% ou 100%, e qualquer um
+  desses dois números numa ponta do ranking é uma ponta que ela não conquistou.
+- **Ajustado, mensal e a partir do primeiro mês de cada ativo**, pelas razões que dá a corrida de
+  classes de ativos: as distribuições de um fundo nunca aparecem no seu preço, e um fundo lançado em
+  2019 não tem entradas de 2016 para ganhar ou perder.
+- **O período de manutenção é a única escolha nova deste quadro.** Um ano e cinco anos sobre os
+  mesmos dez anos são duas perguntas diferentes com duas respostas diferentes, e as oito linhas se
+  reordenam entre elas.
+- **As linhas continuam correndo.** Ordenam-se pela taxa — a que mais vezes termina no positivo no
+  topo — e trocam de lugar enquanto os meses passam.
+
+Medido nos últimos dez anos com manutenção de três anos: o fundo Nasdaq terminou no positivo em
+todas as oitenta e quatro entradas e o fundo de Hong Kong em quarenta por cento delas — duas linhas
+que a corrida de classes de ativos separa por dez anos de retorno total e este quadro separa por
+algo mais simples: entrar, pura e simplesmente, funcionou ou não.
+
+Não depende da configuração de mercado: os oito são cotados numa bolsa continental. Menos de doze
+meses no período é recusado.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

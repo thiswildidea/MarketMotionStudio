@@ -769,4 +769,17 @@
   <data name="DrawdownHealed"><value>{0} měs. zpět</value></data>
   <data name="DrawdownNotHealed"><value>stále pod</value></data>
   <data name="DrawdownNeverFell"><value>neklesl</value></data>
+  <data name="NavHoldOdds.Content"><value>Úspěšnost</value></data>
+  <data name="HoldOddsPageTitle.Text"><value>Úspěšnost</value></data>
+  <data name="HoldOddsStageTitle"><value>Úspěšnost</value></data>
+  <data name="HoldOddsPageSubtitle.Text"><value>Týchž osm nástrojů jako v závodu tříd aktiv, hodnocených podle toho, jak často držení fungovalo: ze všech měsíců, v nichž se dalo vstoupit a držet stejně dlouho, podíl těch, které skončily v plusu.</value></data>
+  <data name="HoldOddsNote.Text"><value>Řádek je podíl uzavřených vstupů, které vydělaly. Každý měsíc období je vstup, všechny držené stejně dlouho: jeden vstup je náhoda, osmdesát čtyři je míra.</value></data>
+  <data name="HoldOddsMethodNote.Text"><value>Měsíčně a s úpravou — dividendy a štěpení započítány — a každý řádek začíná ve svém prvním měsíci. Vstup se počítá od měsíce, v němž končí, takže nic koupeného blízko konce období se nepočítá jako ztráta; řádek nastupuje, jakmile skončí šest vstupů.</value></data>
+  <data name="HoldOddsHold.Header"><value>Doba držení</value></data>
+  <data name="HoldOddsHold1Y"><value>1 rok</value></data>
+  <data name="HoldOddsHold2Y"><value>2 roky</value></data>
+  <data name="HoldOddsHold3Y"><value>3 roky</value></data>
+  <data name="HoldOddsHold5Y"><value>5 let</value></data>
+  <data name="HoldOddsFetched"><value>Načteno {0} nástrojů · {1} měsíců · drženo {2} měsíců · nejčastěji v plusu: {3} {4} · nejméně často: {5} {6}</value></data>
+  <data name="HoldOddsTooFew"><value>V tomto období je příliš málo měsíců na to, aby vstupy skončily — zvolte delší období nebo kratší dobu držení.</value></data>
 </root>
