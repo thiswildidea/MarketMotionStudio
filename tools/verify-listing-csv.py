@@ -156,11 +156,19 @@ def main():
         column = columns[code]
         paths = [r[column] for r in shot_rows if r[column]]
         counts[code] = len(paths)
+        # 路径含导入文件夹的名字，所以从仓库根起算（见 port-listing-csv-screens.py）。
         on_disk = on_disk and bool(paths) and all(
-            os.path.exists(os.path.join(REPO, "docs", *p.split("/"))) for p in paths)
+            os.path.exists(os.path.join(REPO, *p.split("/"))) for p in paths)
 
     check("14 列的截图都指向磁盘上真实存在的 PNG", on_disk,
           " ".join("%s %d" % (c, counts[c]) for c in sorted(counts)))
+
+    # 少了根文件夹名，99 格会被整条拒掉，而报错只说「值无效」，不说差在哪。
+    root = os.path.basename(os.path.dirname(CSV_PATH))
+    check("路径都从导入文件夹名开头（%s/…）" % root,
+          all(p.startswith(root + "/")
+              for r in shot_rows for code in listing
+              for p in [r[columns[code]]] if p))
 
     check("zh-hans 八张、其余各七张（市场成交额页只在 A股 市场有）",
           counts.get("zh-hans") == 8

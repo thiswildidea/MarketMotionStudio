@@ -16,6 +16,13 @@ gitignore），落点 `docs\\store-screens\\<语言>\\`。**目录名用 CSV 列
 其余十三种各七张。填不满的 `DesktopScreenshotN` 一律清空——留着上一次的旧 URL 会让
 商店把旧图排在新图后面。`DesktopScreenshotCaption*` 不动（一直是空的）。
 
+**路径必须带上导入文件夹的名字。** Partner Center 导入资产只有两条路：「导入 .csv」
+（此时这一列只能填已经上传过的 `listingassets` URL）和「导入文件夹」（文件夹里一个 CSV
+加若干图片）。走第二条时，官方文档的例子是 `my_folder/images/screenshot1.png` —— 路径
+**从根文件夹名开始**，不是从 CSV 所在目录开始。写 `store-screens/pl/02-sector-race.png`
+会被整条拒掉（「您提供的值无效」，99 格全拒），而日志上只说是值不对，不说差在哪。
+这里的根文件夹就是 CSV 所在的 `docs`，导入时选它。
+
 幂等：跑第二遍 0 改动。BOM 与 CRLF 保持原样（Partner Center 导出来的就是这个样子）。
 """
 
@@ -35,6 +42,10 @@ TARGET = os.path.join(REPO, "docs", "store-screens")
 
 # CSV 里 DesktopScreenshot 一共给到 30。
 MOST_SHOTS = 30
+
+# 导入时选的那个文件夹的名字，路径必须含它（见文件头的说明）。取 CSV 所在目录的
+# 目录名，而不是写死一个字符串：导入时选的就是这一个文件夹，两边改一个名字就得一起改。
+ROOT = os.path.basename(os.path.dirname(CSV_PATH))
 
 # 前四列不是语言：Field / ID / Type / default。
 FIRST_LANGUAGE_COLUMN = 4
@@ -99,7 +110,7 @@ def main():
 
     for _, code in columns:
         names = copy_shots(code, sources[code])
-        wanted[code] = ["store-screens/%s/%s" % (code, n) for n in names]
+        wanted[code] = ["%s/store-screens/%s/%s" % (ROOT, code, n) for n in names]
 
     changed = 0
     report = []
@@ -131,7 +142,9 @@ def main():
 
     for column, code in columns:
         shots = wanted[code]
-        absent = [p for p in shots if not os.path.exists(os.path.join(REPO, "docs", *p.split("/")))]
+        # 路径从仓库根起算：它已经含了导入文件夹的名字。
+        absent = [p for p in shots
+                  if not os.path.exists(os.path.join(REPO, *p.split("/")))]
         report.append(len(absent))
 
         print("  %-8s %2d 张%s" % (
