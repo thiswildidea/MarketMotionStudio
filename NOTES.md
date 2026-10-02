@@ -1825,7 +1825,7 @@ German section was silently given the Korean section's dash. The symptom was a s
 character in one language.
 
 Version bumped to **1.0.4.0** (manifest plus a CHANGELOG entry, Chinese and English). The package
-was built at that version (`MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload`, 142.4 MB) and
+was built at that version (`MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload`, 149.3 MB / 142.4 MiB) and
 then rebuilt once more after the row-type change below — the same version number, because neither
 had been uploaded yet, and a package that does not match its own notes is worse than either.
 

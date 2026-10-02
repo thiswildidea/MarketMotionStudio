@@ -24,10 +24,10 @@ Entries run newest first. / 新版本在上。
 
 **1.0.3.0 已经提交商店、正在认证**，所以下面只列本版在它之上新增的改动。应用的完整能力仍见
 更下面的 0.0.0.0 条目。包已构建：`artifacts/MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload`
-（142.4 MB），拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.4.0`。
+（149.3 MB / 142.4 MiB），拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.4.0`。
 Version 1.0.3.0 has been submitted to the Store and is in certification, so what follows is only what
 this version adds on top of it. The full feature set is still in the 0.0.0.0 entry below. The package
-is built — `artifacts/MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload` (142.4 MB) — and both
+is built — `artifacts/MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload` (149.3 MB / 142.4 MiB) — and both
 inner packages, x64 and arm64, carry Identity `1.0.4.0`.
 
 ### 新增 / Added
