@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>국채 ETF</value></data>
   <data name="INSTSZ159985"><value>대두박 ETF</value></data>
   <data name="INSTSH511880"><value>머니마켓 ETF</value></data>
+  <data name="NavDrawdown.Content"><value>낙폭</value></data>
+  <data name="DrawdownPageTitle.Text"><value>낙폭</value></data>
+  <data name="DrawdownStageTitle"><value>낙폭</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>자산군 경주와 같은 여덟 자산을 서로가 아니라 각자의 고점에 견주어 측정한다—보유자가 고점 아래 얼마나 있었는지, 그리고 되돌아오는 데 몇 달이 걸렸는지.</value></data>
+  <data name="DrawdownList.Header"><value>종목</value></data>
+  <data name="DrawdownNote.Text"><value>행은 그 자산이 자기 고점에서 얼마나 아래 있는지다. 핵심은 곡선—저점과 그곳에서 빠져나온 지점은 곡선 위의 두 지점이고, 그 사이의 개월 수야말로 하나의 숫자가 빠뜨리는 절반이다.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>월간·조정 기준(배당과 분할 반영)이며 각 행은 구간 내 자신의 첫 달에서 수평으로 시작한다. 깊이 눈금은 보드 전체에 하나뿐—실제로 하락하지 않은 자산은 평평한 선이 되고, 그 평평함이 바로 그 행의 말이다.</value></data>
+  <data name="DrawdownFetched"><value>{0}개 종목 조회 · {1}개월 · 가장 깊음: {2} {3}({4}) · 고점에 가장 가까움: {5}</value></data>
+  <data name="DrawdownTooFew"><value>낙폭을 측정하기에 이 구간의 개월 수가 부족합니다—더 긴 구간을 고르세요.</value></data>
+  <data name="DrawdownDeepest"><value>저점 {0}</value></data>
+  <data name="DrawdownHealed"><value>{0}개월 회복</value></data>
+  <data name="DrawdownNotHealed"><value>미회복</value></data>
+  <data name="DrawdownNeverFell"><value>하락 없음</value></data>
 </root>

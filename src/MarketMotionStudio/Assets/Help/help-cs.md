@@ -199,6 +199,34 @@ kotované na kontinentální burze, koupené za stejné peníze, takže je lze s
 - **Nastavení trhu tuto stránku neřídí**: všech osm je kotováno na pevnině. Méně než dvanáct měsíců
   je odmítnuto.
 
+## Poklesy
+
+Řádek je **jak hluboko pod vlastním maximem se nástroj nachází** — ne kolik vydělal, ale co stálo
+to vydělat. Týchž osm nástrojů jako v závodu tříd aktiv, ale měřených vůči sobě samým, ne proti
+sobě navzájem.
+
+- **Křivka je to podstatné.** Všude jinde v této aplikaci se hodnota kreslí jako délka, a délka
+  umí říct jen to, jak hluboká je voda v tomto okamžiku. Hloubka je tvar v čase: minimum a cesta
+  ven z něj jsou dvě místa na křivce a vzdálenost mezi nimi napříč snímkem je počet měsíců, které
+  uplynuly.
+- **Obě čísla nestoupají společně.** Za posledních deset let fond Nasdaq klesl o 25,52 % a byl
+  zpět na úrovni za šest měsíců; fond CSI 500 klesl o 56,07 % a potřeboval osmdesát šest. Vytištěno
+  jako jedno číslo vypadá druhé jako zostřená verze prvního — a není.
+- **Jedna stupnice hloubky pro celou tabuli.** Škálovat každý řádek podle jeho vlastního nejhoršího
+  okamžiku by nakreslilo 0,2 % fondu peněžního trhu jako propast velikosti 56 % CSI 500 — na tabuli,
+  jejíž celý smysl je říct, že tyto dvě věci nejsou srovnatelné. Ten řádek je proto rovná čára
+  přilepená na svou linii maxima — a **ta rovnost je přesně to, co říká**.
+- **S úpravou, měsíčně a od vlastního prvního měsíce**, z důvodů, které uvádí závod tříd aktiv:
+  výnosy fondu se v jeho ceně nikdy neobjeví a nástroj, který přichází až v roce 2019, se neměří
+  proti maximu, které neměl.
+- **Řádky stále závodí.** Jsou seřazeny podle vzdálenosti od vlastního maxima — nejblíže vlastnímu
+  maximu nahoře — a vyměňují si místa, jak měsíce plynou.
+- **Zlato a komoditní fond byly při tomto měření stále pod vodou** — tabule hlásí takový pokles jako
+  otevřený, protože období skončilo dřív, než byl napraven.
+
+Neřídí se nastavením trhu: všech osm je kótováno na kontinentální burze. Méně než dvanáct měsíců
+v období je odmítnuto.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

@@ -206,6 +206,33 @@ karşılaştırılabilir.
 - **Piyasa ayarı bu sayfayı yönetmez**: sekizi de anakarada işlem görür. On iki aydan kısa dönemler
   reddedilir.
 
+## Düşüşler
+
+Bir satır, **bir varlığın kendi zirvesinin ne kadar altında olduğudur** — ne kazandığı değil, onu
+kazanmanın neye mal olduğu. Varlık sınıfları yarışındaki sekiz varlığın aynısı, ama birbirine karşı
+değil kendine göre ölçülüyor.
+
+- **Önemli olan eğri.** Bu uygulamanın geri kalanında bir değer uzunluk olarak çizilir ve uzunluk
+  ancak o anda suyun ne kadar derin olduğunu söyleyebilir. Derinlik zaman içindeki bir biçimdir:
+  dip ve ondan çıkış, eğrinin üzerindeki iki yerdir ve kare boyunca aralarındaki mesafe, arada geçen
+  ay sayısıdır.
+- **İki sayı birlikte artmaz.** Son on yılda Nasdaq fonu %25,52 düştü ve altı ayda yeniden eşit
+  duruma geldi; CSI 500 fonu %56,07 düştü ve seksen altı ay sürdü. Tek sayı olarak basıldığında
+  ikincisi, birincisinin ağırlaştırılmış hâli gibi görünür — ve değildir.
+- **Tüm tablo için tek derinlik ölçeği.** Her satırı kendi en kötü anına göre ölçeklemek, para piyasası
+  fonunun %0,2'sini CSI 500'ün %56'sı büyüklüğünde bir uçurum olarak çizerdi — oysa bu tablonun varlık
+  sebebi tam olarak bu ikisinin karşılaştırılamayacağını söylemektir. Bu yüzden o satır, kendi zirve
+  çizgisine yapışık düz bir çizgidir ve **o düzlük onun söylediği şeydir**.
+- **Düzeltilmiş, aylık ve her varlığın kendi ilk ayından**, varlık sınıflarının verdiği gerekçelerle:
+  bir fonun dağıtımları fiyatında hiç görünmez ve 2019'da katılan bir varlık, sahip olmadığı bir
+  zirveye göre ölçülmez.
+- **Satırlar hâlâ yarışıyor.** Kendi zirvelerinin ne kadar altında olduklarına göre sıralanırlar —
+  zirvesine en yakın olan en üstte — ve aylar geçtikçe yer değiştirirler.
+- **Altın ve emtia fonu ölçüm yapıldığında hâlâ suyun altındaydı** — tablo bu tür düşüşü açık olarak
+  bildirir, çünkü aralık onarılmadan önce sona ermiştir.
+
+Piyasa ayarına bağlı değil: sekizi de anakara borsasında kote. Aralıkta on iki aydan az varsa reddedilir.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

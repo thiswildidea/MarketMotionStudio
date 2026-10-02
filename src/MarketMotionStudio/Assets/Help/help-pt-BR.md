@@ -208,6 +208,34 @@ comparadas diretamente.
 - **A configuração de mercado não rege esta página**: todas as oito são listadas no continente.
   Menos de doze meses é recusado.
 
+## Quedas
+
+Uma linha é **a distância entre um ativo e sua própria máxima** — não o que ele rendeu, mas o que
+custou para render. Os mesmos oito ativos da corrida de classes de ativos, medidos contra si mesmos
+em vez de entre si.
+
+- **A curva é o ponto.** Em todo o resto deste aplicativo um valor é desenhado como um
+  comprimento, e um comprimento só pode dizer quão profunda está a água naquele instante. Uma
+  profundidade é uma forma no tempo: o fundo e a saída dele são dois lugares na curva, e a
+  distância que os separa no quadro é o número de meses decorridos.
+- **Os dois números não sobem juntos.** Nos últimos dez anos o fundo Nasdaq caiu 25,52% e voltou ao
+  nível em seis meses; o fundo CSI 500 caiu 56,07% e levou oitenta e seis. Impresso como um único
+  número, o segundo parece uma versão agravada do primeiro — e não é.
+- **Uma única escala de profundidade para todo o quadro.** Escalar cada linha pelo seu próprio pior
+  momento desenharia os 0,2% do fundo de mercado monetário como um abismo do tamanho dos 56% do CSI
+  500, num quadro cujo sentido inteiro é dizer que os dois não são comparáveis. Por isso essa
+  linha é uma linha reta colada à sua linha de máxima — e **essa retidão é o que ela diz**.
+- **Ajustado, mensal e a partir do primeiro mês próprio de cada ativo**, pelas razões que a corrida
+  de classes de ativos dá: as distribuições de um fundo nunca aparecem no seu preço, e um ativo que
+  chega em 2019 não é medido contra uma máxima que não tinha.
+- **As linhas continuam correndo.** São ordenadas por quão abaixo da própria máxima estão — a mais
+  perto da própria máxima no topo — e trocam de lugar enquanto os meses passam.
+- **Ouro e o fundo de commodities ainda estavam debaixo d'água quando isto foi medido** — o quadro
+  reporta esse tipo de queda como aberta, porque o período terminou antes de ser reparada.
+
+Não depende da configuração de mercado: todos os oito são cotados numa bolsa continental. Menos de
+doze meses no período é recusado.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

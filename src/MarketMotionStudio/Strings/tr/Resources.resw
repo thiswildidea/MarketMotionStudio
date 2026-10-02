@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>Devlet tahvili ETF</value></data>
   <data name="INSTSZ159985"><value>Soya küspesi ETF</value></data>
   <data name="INSTSH511880"><value>Para piyasası ETF</value></data>
+  <data name="NavDrawdown.Content"><value>Düşüşler</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Düşüşler</value></data>
+  <data name="DrawdownStageTitle"><value>Düşüşler</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Varlık sınıfları yarışındaki aynı sekiz varlık, ama birbirine karşı değil kendi zirvelerine göre ölçülüyor: elinde tutanın zirvenin ne kadar altında kaldığı ve geri dönüşün kaç ay sürdüğü.</value></data>
+  <data name="DrawdownList.Header"><value>Varlıklar</value></data>
+  <data name="DrawdownNote.Text"><value>Bir satır, bir varlığın kendi zirvesinin ne kadar altında olduğudur. Önemli olan eğri: dip ve ondan çıkış üzerindeki iki noktadır; aralarındaki aylar ise tek bir sayının dışarıda bıraktığı yarıdır.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Aylık ve düzeltilmiş — temettüler ve bölünmeler dahil — ve her satır kendi ilk ayında düz başlar. Tüm tablo için tek derinlik ölçeği: gerçekten düşmeyen bir varlık düz bir çizgidir ve o düzlük satırın söylediği şeydir.</value></data>
+  <data name="DrawdownFetched"><value>{0} varlık alındı · {1} ay · en derin: {2} {3} ({4}) · kendi zirvesine en yakın: {5}</value></data>
+  <data name="DrawdownTooFew"><value>Bir düşüşü ölçmek için bu aralıkta yeterince ay yok — daha uzun bir aralık seçin.</value></data>
+  <data name="DrawdownDeepest"><value>dip {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} ayda döndü</value></data>
+  <data name="DrawdownNotHealed"><value>hâlâ altında</value></data>
+  <data name="DrawdownNeverFell"><value>hiç düşmedi</value></data>
 </root>

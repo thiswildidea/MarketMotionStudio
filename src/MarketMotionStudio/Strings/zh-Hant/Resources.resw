@@ -755,4 +755,17 @@
   <data name="INSTSH511010"><value>國債ETF</value></data>
   <data name="INSTSZ159985"><value>豆粕ETF</value></data>
   <data name="INSTSH511880"><value>貨幣ETF</value></data>
+  <data name="NavDrawdown.Content"><value>回撤與修復</value></data>
+  <data name="DrawdownPageTitle.Text"><value>回撤與修復</value></data>
+  <data name="DrawdownStageTitle"><value>回撤與修復</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>與「大類資產」同為那八檔，只是不互相比，而是各自比自己的高點：持有者曾落在高點下方多遠，以及回到高點用了幾個月。</value></data>
+  <data name="DrawdownList.Header"><value>標的</value></data>
+  <data name="DrawdownNote.Text"><value>一行是它落在自己高點下方多遠。曲線才是重點：低點與爬出來的那一點是曲線上的兩個位置，中間隔的月數正是單一數字漏掉的那一半。</value></data>
+  <data name="DrawdownMethodNote.Text"><value>月線、已復原（股息與份額折算都還原），每行從自己在區間裡的第一個月起算為零。整塊板共用一把深度尺：從來沒真正跌過的那一行就是一條平線——這條平線正是它要說的話。</value></data>
+  <data name="DrawdownFetched"><value>取到 {0} 檔 · {1} 個月 · 最深：{2} {3}（{4}） · 離自己高點最近：{5}</value></data>
+  <data name="DrawdownTooFew"><value>這個區間的月份不夠，量不出回撤——請選長一點的區間。</value></data>
+  <data name="DrawdownDeepest"><value>最深 {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} 個月修復</value></data>
+  <data name="DrawdownNotHealed"><value>至今未修復</value></data>
+  <data name="DrawdownNeverFell"><value>未回撤</value></data>
 </root>

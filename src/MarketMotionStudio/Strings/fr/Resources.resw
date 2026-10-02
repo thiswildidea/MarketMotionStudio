@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF d'obligations d'État</value></data>
   <data name="INSTSZ159985"><value>ETF tourteau de soja</value></data>
   <data name="INSTSH511880"><value>ETF monétaire</value></data>
+  <data name="NavDrawdown.Content"><value>Reculs</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Reculs</value></data>
+  <data name="DrawdownStageTitle"><value>Reculs</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Les huit mêmes supports que la course des classes d'actifs, mesurés par rapport à leurs propres sommets au lieu de les comparer entre eux : à quelle distance du sommet le détenteur s'est trouvé, et en combien de mois il est remonté.</value></data>
+  <data name="DrawdownList.Header"><value>Supports</value></data>
+  <data name="DrawdownNote.Text"><value>Une ligne, c'est la distance entre une position et son propre sommet. La courbe est le sujet : le creux et la remontée y sont deux endroits, et les mois entre les deux sont la moitié qu'un seul nombre ne dit pas.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Mensuel et ajusté — dividendes et divisions intégrés — et chaque ligne part à plat sur son propre premier mois dans la période. Une seule échelle de profondeur pour tout le tableau : un support qui n'est jamais vraiment tombé est une ligne plate, et cette platitude est précisément ce que la ligne dit.</value></data>
+  <data name="DrawdownFetched"><value>{0} supports récupérés · {1} mois · le plus profond : {2} {3} ({4}) · le plus proche de son sommet : {5}</value></data>
+  <data name="DrawdownTooFew"><value>Pas assez de mois dans cette période pour mesurer un recul — choisissez une période plus longue.</value></data>
+  <data name="DrawdownDeepest"><value>plus bas {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} mois pour revenir</value></data>
+  <data name="DrawdownNotHealed"><value>pas encore revenu</value></data>
+  <data name="DrawdownNeverFell"><value>jamais baissé</value></data>
 </root>

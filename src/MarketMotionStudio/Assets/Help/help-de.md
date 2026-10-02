@@ -218,6 +218,35 @@ direkt vergleichbar.
 - **Die Markteinstellung regiert diese Seite nicht**: alle acht sind auf dem Festland notiert.
   Weniger als zwölf Monate werden abgelehnt.
 
+## Rücksetzer
+
+Eine Zeile ist, **wie weit unter dem eigenen Hoch eine Anlage steht** — nicht was sie verdient
+hat, sondern was es gekostet hat, es zu verdienen. Dieselben acht Anlagen wie bei den
+Anlageklassen, am eigenen Hoch gemessen statt gegeneinander.
+
+- **Die Kurve ist der Punkt.** Überall sonst in dieser App wird ein Wert als Länge gezeichnet, und
+  eine Länge kann nur sagen, wie tief das Wasser in diesem Augenblick ist. Eine Tiefe ist eine Form
+  über die Zeit: das Tief und der Weg heraus sind zwei Stellen auf der Kurve, und ihr Abstand über
+  das Bild ist die Zahl der Monate dazwischen.
+- **Die zwei Zahlen steigen nicht gemeinsam.** In den letzten zehn Jahren fiel der Nasdaq-Fonds um
+  25,52 % und war nach sechs Monaten wieder eben; der CSI-500-Fonds fiel um 56,07 % und brauchte
+  sechsundachtzig. Als eine Zahl gedruckt wirkt das zweite wie eine Steigerung des ersten — und ist
+  es nicht.
+- **Eine Tiefenskala für die ganze Tafel.** Würde jede Zeile auf ihr eigenes Tief skaliert, wäre
+  die 0,2 % des Geldmarktfonds ein Abgrund von der Größe der 56 % des CSI 500 — auf einer Tafel,
+  deren ganzer Anspruch lautet, dass die beiden nicht vergleichbar sind. Also ist diese Zeile eine
+  flache Linie an ihrer Hochwasserlinie, und **diese Flachheit ist ihre Aussage**.
+- **Adjustiert, monatlich und ab dem jeweils ersten eigenen Monat**, aus den Gründen, die die
+  Anlageklassen nennen: Ausschüttungen eines Fonds erscheinen nie in seinem Preis, und eine Anlage,
+  die erst 2019 dazukommt, wird nicht an einem Hoch gemessen, das sie nicht hatte.
+- **Die Zeilen rennen weiter.** Sie sind danach geordnet, wie weit sie unter dem eigenen Hoch
+  stehen — dem Hoch am nächsten oben — und tauschen die Plätze, während die Monate vergehen.
+- **Gold und der Rohstofffonds lagen bei dieser Messung noch unter Wasser** — die Tafel meldet
+  solche Rücksetzer als offen, weil der Zeitraum endete, bevor sie behoben waren.
+
+Nicht von der Markteinstellung abhängig: alle acht werden an einer Festlandbörse gehandelt.
+Weniger als zwölf Monate im Zeitraum werden abgelehnt.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

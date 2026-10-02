@@ -218,6 +218,39 @@ directement comparables.
 - **Le réglage de marché ne régit pas cette page** : les huit sont cotés sur le continent. Moins de
   douze mois est refusé.
 
+## Reculs
+
+Une ligne, c'est **la distance entre une position et son propre sommet** — pas ce qu'elle a
+rapporté, mais ce qu'il a fallu endurer pour le rapporter. Les huit mêmes supports que la course
+des classes d'actifs, mesurés par rapport à eux-mêmes au lieu de l'être entre eux.
+
+- **La courbe est le sujet.** Partout ailleurs dans cette application, une valeur est dessinée
+  comme une longueur, et une longueur ne peut dire que la profondeur de l'eau à cet instant. Une
+  profondeur est une forme dans le temps : le creux et la remontée sont deux endroits de la courbe,
+  et la distance qui les sépare sur l'image est le nombre de mois écoulés entre eux.
+- **Les deux nombres ne montent pas ensemble.** Sur les dix dernières années, le fonds Nasdaq a
+  perdu 25,52 % et était revenu à niveau en six mois ; le fonds CSI 500 a perdu 56,07 % et a mis
+  quatre-vingt-six mois. Imprimé comme un seul nombre, le second a l'air d'une version aggravée du
+  premier — et il ne l'est pas.
+- **Une seule échelle de profondeur pour tout le tableau.** Mettre chaque ligne à l'échelle de son
+  propre pire ferait des 0,2 % du fonds monétaire un gouffre de la taille des 56 % du CSI 500, sur
+  un tableau dont toute la raison d'être est de dire que ces deux-là ne se comparent pas. Cette
+  ligne est donc une ligne plate collée à sa ligne de plus-haut — et **cette platitude est précisément
+  ce qu'elle dit**.
+- **Ajusté, mensuel, et à partir du premier mois propre à chaque support**, pour les raisons que
+  donne la course des classes d'actifs : les distributions d'un fonds n'apparaissent jamais dans
+  son cours, et un support qui n'arrive qu'en 2019 n'est pas mesuré contre un sommet qu'il n'avait
+  pas.
+- **Les lignes courent toujours.** Elles sont ordonnées par la distance qui les sépare de leur
+  propre sommet — le plus proche de son sommet en haut — et elles échangent leurs places à mesure
+  que les mois passent.
+- **L'or et le fonds de matières premières étaient encore sous l'eau lors de cette mesure** — le
+  tableau signale ce genre de recul comme ouvert, parce que la période s'est terminée avant qu'il
+  ne soit réparé.
+
+Ne dépend pas du réglage de marché : les huit sont cotés sur une place de marché continentale.
+Moins de douze mois dans la période est refusé.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

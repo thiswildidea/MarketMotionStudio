@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>Staatsanleihen-ETF</value></data>
   <data name="INSTSZ159985"><value>Sojaschrot-ETF</value></data>
   <data name="INSTSH511880"><value>Geldmarkt-ETF</value></data>
+  <data name="NavDrawdown.Content"><value>Rücksetzer</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Rücksetzer</value></data>
+  <data name="DrawdownStageTitle"><value>Rücksetzer</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Dieselben acht Anlagen wie beim Rennen der Anlageklassen, aber am eigenen Hoch gemessen statt gegeneinander: wie weit unter dem Hoch ein Halter saß und wie viele Monate der Weg zurück dauerte.</value></data>
+  <data name="DrawdownList.Header"><value>Anlagen</value></data>
+  <data name="DrawdownNote.Text"><value>Eine Zeile ist, wie weit unter dem eigenen Hoch eine Anlage steht. Die Kurve ist der Punkt: das Tief und der Weg heraus sind zwei Stellen auf ihr, und die Monate dazwischen fehlen in jeder einzelnen Zahl.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Monatlich und adjustiert – Dividenden und Splits eingerechnet – und jede Zeile beginnt auf ihrem eigenen ersten Monat im Zeitraum mit null. Eine Tiefenskala für die ganze Tafel: Eine Anlage, die nie wirklich fiel, ist eine flache Linie, und diese Flachheit ist ihre Aussage.</value></data>
+  <data name="DrawdownFetched"><value>{0} Anlagen geladen · {1} Monate · am tiefsten: {2} {3} ({4}) · dem eigenen Hoch am nächsten: {5}</value></data>
+  <data name="DrawdownTooFew"><value>Zu wenige Monate in diesem Zeitraum für einen Rücksetzer – wählen Sie einen längeren.</value></data>
+  <data name="DrawdownDeepest"><value>Tief {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} Mon. bis zurück</value></data>
+  <data name="DrawdownNotHealed"><value>noch unter</value></data>
+  <data name="DrawdownNeverFell"><value>nie gefallen</value></data>
 </root>

@@ -767,4 +767,17 @@
   <data name="INSTSH511010"><value>Government bond ETF</value></data>
   <data name="INSTSZ159985"><value>Soybean meal ETF</value></data>
   <data name="INSTSH511880"><value>Money market ETF</value></data>
+  <data name="NavDrawdown.Content"><value>Drawdowns</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Drawdowns</value></data>
+  <data name="DrawdownStageTitle"><value>Drawdowns</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>The same eight holdings as the asset race, measured against their own highs instead of each other: how far below the high a holder sat, and how many months it took to get back.</value></data>
+  <data name="DrawdownList.Header"><value>Holdings</value></data>
+  <data name="DrawdownNote.Text"><value>A row is how far below its own high a holding sits. The curve is the point: the low and the climb out of it are two places on it, and the months between them are the half a single number leaves out.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Monthly and adjusted — dividends and splits put back — and each row starts level on its own first month in the range. One depth scale for the whole board, so a holding that never really fell is a flat line: that flatness is what the row says.</value></data>
+  <data name="DrawdownFetched"><value>Fetched {0} holdings · {1} months · deepest: {2} {3} ({4}) · closest to its high: {5}</value></data>
+  <data name="DrawdownTooFew"><value>Not enough months in that range to measure a drawdown — pick a longer one.</value></data>
+  <data name="DrawdownDeepest"><value>low {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} mo back</value></data>
+  <data name="DrawdownNotHealed"><value>still under</value></data>
+  <data name="DrawdownNeverFell"><value>never fell</value></data>
 </root>

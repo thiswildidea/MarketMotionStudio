@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF de títulos públicos</value></data>
   <data name="INSTSZ159985"><value>ETF de farelo de soja</value></data>
   <data name="INSTSH511880"><value>ETF de mercado monetário</value></data>
+  <data name="NavDrawdown.Content"><value>Quedas</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Quedas</value></data>
+  <data name="DrawdownStageTitle"><value>Quedas</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Os mesmos oito ativos da corrida de classes de ativos, medidos contra as próprias máximas em vez de entre si: a que distância da máxima ficou quem os manteve e quantos meses levou para voltar.</value></data>
+  <data name="DrawdownList.Header"><value>Ativos</value></data>
+  <data name="DrawdownNote.Text"><value>Uma linha é a distância entre um ativo e sua própria máxima. A curva é o ponto: o fundo e a saída dele são dois lugares nela, e os meses entre ambos são a metade que um único número deixa de fora.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Mensal e ajustado — dividendos e desdobramentos incluídos — e cada linha começa plana no seu primeiro mês do período. Uma única escala de profundidade para todo o quadro: um ativo que nunca caiu de fato é uma linha reta, e essa retidão é o que a linha diz.</value></data>
+  <data name="DrawdownFetched"><value>Obtidos {0} ativos · {1} meses · o mais profundo: {2} {3} ({4}) · o mais perto da própria máxima: {5}</value></data>
+  <data name="DrawdownTooFew"><value>Meses insuficientes nesse período para medir uma queda — escolha um mais longo.</value></data>
+  <data name="DrawdownDeepest"><value>mín. {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} meses para voltar</value></data>
+  <data name="DrawdownNotHealed"><value>ainda abaixo</value></data>
+  <data name="DrawdownNeverFell"><value>nunca caiu</value></data>
 </root>

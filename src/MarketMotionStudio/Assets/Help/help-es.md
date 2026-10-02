@@ -212,6 +212,34 @@ comparar directamente.
 - **El ajuste de mercado no gobierna esta página**: las ocho cotizan en el continente. Menos de doce
   meses se rechaza.
 
+## Caídas
+
+Una fila es **cuánto por debajo de su propio máximo está una inversión** — no lo que ganó, sino
+lo que costó ganarlo. Las mismas ocho inversiones que la carrera de clases de activos, medidas
+contra sí mismas en lugar de entre sí.
+
+- **La curva es el punto.** En el resto de la aplicación un valor se dibuja como una longitud, y
+  una longitud solo puede decir cuán profunda está el agua en ese instante. Una profundidad es una
+  forma en el tiempo: el mínimo y la salida de él son dos lugares de la curva, y la distancia que
+  los separa en el fotograma es el número de meses transcurridos.
+- **Los dos números no suben juntos.** En los últimos diez años el fondo Nasdaq cayó un 25,52% y
+  volvió a estar nivelado en seis meses; el fondo CSI 500 cayó un 56,07% y tardó ochenta y seis.
+  Impreso como un solo número, el segundo parece una versión agravada del primero — y no lo es.
+- **Una sola escala de profundidad para todo el tablero.** Escalar cada fila según su propio peor
+  momento dibujaría el 0,2% del fondo monetario como un abismo del tamaño del 56% del CSI 500, en
+  un tablero cuyo propósito entero es decir que esos dos no son comparables. Así que esa fila es
+  una línea plana pegada a su línea de máximo — y **esa planicie es lo que dice**.
+- **Ajustado, mensual y desde el primer mes propio de cada inversión**, por las razones que da la
+  carrera de clases de activos: las distribuciones de un fondo nunca aparecen en su precio, y una
+  inversión que llega en 2019 no se mide contra un máximo que no tenía.
+- **Las filas siguen compitiendo.** Se ordenan por cuán por debajo de su propio máximo están — la
+  más cerca de su máximo arriba — e intercambian puestos a medida que pasan los meses.
+- **El oro y el fondo de materias primas seguían bajo el agua cuando se midió esto** — el tablero
+  reporta ese tipo de caída como abierta, porque el periodo terminó antes de que se reparara.
+
+No depende del ajuste de mercado: los ocho cotizan en una bolsa continental. Menos de doce meses
+en el periodo se rechaza.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

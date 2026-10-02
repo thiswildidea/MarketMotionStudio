@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF obligacji skarbowych</value></data>
   <data name="INSTSZ159985"><value>ETF śruty sojowej</value></data>
   <data name="INSTSH511880"><value>ETF rynku pieniężnego</value></data>
+  <data name="NavDrawdown.Content"><value>Obsunięcia</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Obsunięcia</value></data>
+  <data name="DrawdownStageTitle"><value>Obsunięcia</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Te same osiem instrumentów co w wyścigu klas aktywów, tyle że mierzone względem własnych szczytów, nie względem siebie: jak daleko poniżej szczytu był posiadacz i ile miesięcy zajęła droga powrotna.</value></data>
+  <data name="DrawdownList.Header"><value>Instrumenty</value></data>
+  <data name="DrawdownNote.Text"><value>Wiersz to odległość instrumentu od własnego szczytu. Krzywa jest sednem: dołek i wyjście z niego to dwa miejsca na niej, a miesiące między nimi to połowa, której jedna liczba nie oddaje.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Miesięcznie i z korektą — dywidendy i splity wliczone — a każdy wiersz startuje płasko w swoim pierwszym miesiącu okresu. Jedna skala głębokości dla całej tablicy: instrument, który naprawdę nie spadł, jest płaską linią, i ta płaskość jest jego komunikatem.</value></data>
+  <data name="DrawdownFetched"><value>Pobrano {0} instrumentów · {1} miesięcy · najgłębszy: {2} {3} ({4}) · najbliżej własnego szczytu: {5}</value></data>
+  <data name="DrawdownTooFew"><value>Za mało miesięcy w tym okresie, by zmierzyć obsunięcie — wybierz dłuższy.</value></data>
+  <data name="DrawdownDeepest"><value>dołek {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} mies. powrotu</value></data>
+  <data name="DrawdownNotHealed"><value>wciąż poniżej</value></data>
+  <data name="DrawdownNeverFell"><value>nigdy nie spadł</value></data>
 </root>

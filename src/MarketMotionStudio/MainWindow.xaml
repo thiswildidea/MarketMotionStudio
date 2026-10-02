@@ -228,6 +228,9 @@
                 <mux:NavigationViewItem x:Name="NavAssetRace" x:Uid="NavAssetRace" Tag="AssetRace">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8B9;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavDrawdown" x:Uid="NavDrawdown" Tag="Drawdown">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE74B;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

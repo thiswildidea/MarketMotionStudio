@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF titoli di Stato</value></data>
   <data name="INSTSZ159985"><value>ETF farina di soia</value></data>
   <data name="INSTSH511880"><value>ETF del mercato monetario</value></data>
+  <data name="NavDrawdown.Content"><value>Ribassi</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Ribassi</value></data>
+  <data name="DrawdownStageTitle"><value>Ribassi</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Gli stessi otto strumenti della corsa delle classi di attività, ma misurati rispetto ai propri massimi invece che tra loro: quanto sotto il massimo si è trovato chi li deteneva, e quanti mesi è costato tornarci.</value></data>
+  <data name="DrawdownList.Header"><value>Strumenti</value></data>
+  <data name="DrawdownNote.Text"><value>Una riga è quanto sotto il proprio massimo si trova uno strumento. La curva è il punto: il minimo e la risalita sono due punti su di essa, e i mesi fra loro sono la metà che un numero solo omette.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Mensile e aggiustato — dividendi e frazionamenti inclusi — e ogni riga parte piana nel proprio primo mese dell'intervallo. Una sola scala di profondità per tutta la tavola: uno strumento che non è mai caduto davvero è una linea piatta, e quella piattezza è ciò che la riga dice.</value></data>
+  <data name="DrawdownFetched"><value>Recuperati {0} strumenti · {1} mesi · il più profondo: {2} {3} ({4}) · il più vicino al proprio massimo: {5}</value></data>
+  <data name="DrawdownTooFew"><value>Non abbastanza mesi in questo intervallo per misurare un ribasso: sceglierne uno più lungo.</value></data>
+  <data name="DrawdownDeepest"><value>min {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} mesi per tornare</value></data>
+  <data name="DrawdownNotHealed"><value>ancora sotto</value></data>
+  <data name="DrawdownNeverFell"><value>mai sceso</value></data>
 </root>

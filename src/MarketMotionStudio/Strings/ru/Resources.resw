@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF гос. облигаций</value></data>
   <data name="INSTSZ159985"><value>ETF соевого шрота</value></data>
   <data name="INSTSH511880"><value>ETF денежного рынка</value></data>
+  <data name="NavDrawdown.Content"><value>Просадки</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Просадки</value></data>
+  <data name="DrawdownStageTitle"><value>Просадки</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Те же восемь инструментов, что в гонке классов активов, но измеренные по собственным максимумам, а не друг против друга: насколько ниже максимума оказывался держатель и за сколько месяцев он вернулся.</value></data>
+  <data name="DrawdownList.Header"><value>Инструменты</value></data>
+  <data name="DrawdownNote.Text"><value>Строка — это насколько инструмент ниже собственного максимума. Кривая и есть суть: минимум и выход из него — две точки на ней, а месяцы между ними — та половина, которую одно число не передаёт.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Ежемесячно и с поправкой — дивиденды и сплиты возвращены — и каждая строка начинается ровно в своём первом месяце диапазона. Одна шкала глубины на всю доску: инструмент, который по-настоящему не падал, — это прямая линия, и эта прямота и есть то, что строка говорит.</value></data>
+  <data name="DrawdownFetched"><value>Получено инструментов: {0} · месяцев: {1} · самый глубокий: {2} {3} ({4}) · ближе всех к своему максимуму: {5}</value></data>
+  <data name="DrawdownTooFew"><value>В этом диапазоне слишком мало месяцев, чтобы измерить просадку, — выберите подлиннее.</value></data>
+  <data name="DrawdownDeepest"><value>минимум {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} мес. до возврата</value></data>
+  <data name="DrawdownNotHealed"><value>ещё не вернулся</value></data>
+  <data name="DrawdownNeverFell"><value>не падал</value></data>
 </root>

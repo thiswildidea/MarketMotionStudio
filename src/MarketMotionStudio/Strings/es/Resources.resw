@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF de bonos del Estado</value></data>
   <data name="INSTSZ159985"><value>ETF de harina de soja</value></data>
   <data name="INSTSH511880"><value>ETF del mercado monetario</value></data>
+  <data name="NavDrawdown.Content"><value>Caídas</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Caídas</value></data>
+  <data name="DrawdownStageTitle"><value>Caídas</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Las mismas ocho inversiones que en la carrera de clases de activos, medidas contra sus propios máximos en lugar de entre sí: cuánto por debajo del máximo estuvo quien las mantuvo y cuántos meses costó volver.</value></data>
+  <data name="DrawdownList.Header"><value>Instrumentos</value></data>
+  <data name="DrawdownNote.Text"><value>Cada fila es cuánto por debajo de su propio máximo está una inversión. La curva es lo importante: el mínimo y la salida de él son dos puntos en ella, y los meses entre ambos son la mitad que un solo número deja fuera.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Mensual y ajustado — dividendos y splits incluidos — y cada fila empieza en su propio primer mes del periodo. Una sola escala de profundidad para todo el tablero: una inversión que nunca cayó de verdad es una línea plana, y esa planicie es lo que dice la fila.</value></data>
+  <data name="DrawdownFetched"><value>Obtenidas {0} inversiones · {1} meses · la más profunda: {2} {3} ({4}) · la más cerca de su máximo: {5}</value></data>
+  <data name="DrawdownTooFew"><value>No hay suficientes meses en ese periodo para medir una caída: elija uno más largo.</value></data>
+  <data name="DrawdownDeepest"><value>mín. {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} meses para volver</value></data>
+  <data name="DrawdownNotHealed"><value>aún por debajo</value></data>
+  <data name="DrawdownNeverFell"><value>nunca cayó</value></data>
 </root>

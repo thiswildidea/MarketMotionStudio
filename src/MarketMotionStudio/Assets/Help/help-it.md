@@ -216,6 +216,37 @@ denaro, quindi direttamente confrontabili.
 - **L'impostazione di mercato non governa questa pagina**: tutti e otto sono quotati sul continente.
   Meno di dodici mesi è rifiutato.
 
+## Ribassi
+
+Una riga è **quanto sotto il proprio massimo si trova uno strumento** — non quanto ha guadagnato,
+ma cosa è costato guadagnarlo. Gli stessi otto strumenti della corsa delle classi di attività,
+misurati rispetto a sé stessi invece che tra loro.
+
+- **La curva è il punto.** In ogni altra parte di questa app un valore è disegnato come una
+  lunghezza, e una lunghezza può dire solo quanto è profonda l'acqua in quell'istante. Una
+  profondità è una forma nel tempo: il minimo e la risalita sono due punti sulla curva, e la
+  distanza che li separa sul fotogramma è il numero di mesi trascorsi.
+- **I due numeri non crescono insieme.** Negli ultimi dieci anni il fondo Nasdaq è sceso del 25,52%
+  ed è tornato in pari in sei mesi; il fondo CSI 500 è sceso del 56,07% e ha impiegato
+  ottantasei mesi. Stampato come un numero solo, il secondo sembra una versione aggravata del
+  primo — e non lo è.
+- **Una sola scala di profondità per tutta la tavola.** Scalare ogni riga sul proprio peggior
+  momento disegnerebbe lo 0,2% del fondo monetario come un baratro grande quanto il 56% del CSI
+  500, su una tavola la cui intera ragione d'essere è dire che quei due non sono paragonabili.
+  Quindi quella riga è una linea piatta attaccata alla sua linea di massimo — e **quella piattezza
+  è ciò che dice**.
+- **Aggiustato, mensile e dal primo mese proprio di ciascuno strumento**, per le ragioni che dà la
+  corsa delle classi di attività: le distribuzioni di un fondo non compaiono mai nel suo prezzo, e
+  uno strumento che arriva solo nel 2019 non è misurato contro un massimo che non aveva.
+- **Le righe corrono ancora.** Sono ordinate per quanto sono sotto il proprio massimo — la più
+  vicina al proprio massimo in alto — e si scambiano di posto mentre i mesi passano.
+- **Oro e fondo di materie prime erano ancora sott'acqua al momento di questa misurazione** — la
+  tavola segnala questo tipo di ribasso come aperto, perché l'intervallo è finito prima che fosse
+  riparato.
+
+Non dipende dall'impostazione del mercato: tutti e otto sono quotati su una borsa continentale.
+Meno di dodici mesi nell'intervallo viene rifiutato.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

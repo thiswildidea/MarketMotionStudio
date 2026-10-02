@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>国債ETF</value></data>
   <data name="INSTSZ159985"><value>大豆ミールETF</value></data>
   <data name="INSTSH511880"><value>マネーマーケットETF</value></data>
+  <data name="NavDrawdown.Content"><value>ドローダウン</value></data>
+  <data name="DrawdownPageTitle.Text"><value>ドローダウン</value></data>
+  <data name="DrawdownStageTitle"><value>ドローダウン</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>資産クラスレースと同じ八つの資産を、互いではなく各自の高値に対して測る——保有者が高値からどれだけ下にいたか、そして戻るまでに何か月かかったか。</value></data>
+  <data name="DrawdownList.Header"><value>銘柄</value></data>
+  <data name="DrawdownNote.Text"><value>行はその資産が自分の高値からどれだけ下にいるか。要点は曲線——安値とそこからの回復は曲線上の二つの場所で、その間の月数こそ単一の数字が落とす半分である。</value></data>
+  <data name="DrawdownMethodNote.Text"><value>月次・調整済み（配当と分割を戻し込み）、各行は区間内の自分の最初の月から水平に始まる。深さの目盛りは盤面全体で一つ——本当は下落していない資産は平らな線になり、その平らさこそがその行の主張である。</value></data>
+  <data name="DrawdownFetched"><value>{0} 銘柄を取得 · {1} か月 · 最深: {2} {3}（{4}） · 高値に最も近い: {5}</value></data>
+  <data name="DrawdownTooFew"><value>この期間はドローダウンを測るのに月数が足りません——もっと長い期間を選んでください。</value></data>
+  <data name="DrawdownDeepest"><value>最安 {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} か月で回復</value></data>
+  <data name="DrawdownNotHealed"><value>未回復</value></data>
+  <data name="DrawdownNeverFell"><value>下落なし</value></data>
 </root>

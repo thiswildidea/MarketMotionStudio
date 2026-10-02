@@ -209,6 +209,34 @@ porównywać wprost.
 - **Ustawienie rynku tu nie rządzi**: wszystkie osiem jest notowanych na kontynencie. Mniej niż
   dwanaście miesięcy jest odrzucane.
 
+## Obsunięcia
+
+Wiersz to **jak daleko poniżej własnego szczytu jest instrument** — nie ile zarobił, lecz ile
+kosztowało wytrzymanie tego zarobku. Te same osiem instrumentów co w wyścigu klas aktywów, tyle że
+mierzone względem siebie samych, nie względem innych.
+
+- **Krzywa jest sednem.** W całej tej aplikacji wartość rysowana jest jako długość, a długość może
+  powiedzieć tylko, jak głęboka jest woda w tej jednej chwili. Głębokość jest kształtem w czasie:
+  dołek i wyjście z niego to dwa miejsca na krzywej, a odległość między nimi w kadrze to liczba
+  miesięcy, jakie upłynęły.
+- **Te dwie liczby nie rosną razem.** W ostatnich dziesięciu latach fundusz Nasdaq spadł o 25,52%
+  i wrócił do poziomu w sześć miesięcy; fundusz CSI 500 spadł o 56,07% i potrzebował osiemdziesięciu
+  sześciu. Wydrukowana jako jedna liczba, druga wygląda na wzmocnioną wersję pierwszej — a nie jest.
+- **Jedna skala głębokości dla całej tablicy.** Skalowanie każdego wiersza według jego własnego
+  najgorszego momentu narysowałoby 0,2% funduszu rynku pieniężnego jako otchłań wielkości 56% CSI
+  500 — na tablicy, której cały sens polega na tym, że tych dwóch nie można porównywać. Dlatego ten
+  wiersz jest płaską linią przy własnej linii szczytu — i **ta płaskość jest jego komunikatem**.
+- **Z korektą, miesięcznie i od własnego pierwszego miesiąca**, z powodów podanych przez wyścig
+  klas aktywów: dystrybucje funduszu nigdy nie pojawiają się w jego cenie, a instrument, który
+  dołącza w 2019, nie jest mierzony względem szczytu, którego nie miał.
+- **Wiersze wciąż biegną.** Są uporządkowane według odległości od własnego szczytu — najbliżej
+  szczytu na górze — i zamieniają się miejscami wraz z upływem miesięcy.
+- **Złoto i fundusz towarowy były w chwili pomiaru wciąż pod wodą** — tablica zgłasza taki spadek
+  jako otwarty, bo okres skończył się, zanim został naprawiony.
+
+Nie podlega ustawieniu rynku: wszystkie osiem jest notowanych na giełdzie kontynentalnej. Mniej niż
+dwanaście miesięcy w okresie jest odrzucane.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

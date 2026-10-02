@@ -756,4 +756,17 @@
   <data name="INSTSH511010"><value>ETF státních dluhopisů</value></data>
   <data name="INSTSZ159985"><value>ETF sojového šrotu</value></data>
   <data name="INSTSH511880"><value>ETF peněžního trhu</value></data>
+  <data name="NavDrawdown.Content"><value>Poklesy</value></data>
+  <data name="DrawdownPageTitle.Text"><value>Poklesy</value></data>
+  <data name="DrawdownStageTitle"><value>Poklesy</value></data>
+  <data name="DrawdownPageSubtitle.Text"><value>Týchž osm nástrojů jako v závodu tříd aktiv, ale měřených vůči vlastním maximům, ne proti sobě: jak hluboko pod maximem držitel byl a kolik měsíců trvala cesta zpět.</value></data>
+  <data name="DrawdownList.Header"><value>Nástroje</value></data>
+  <data name="DrawdownNote.Text"><value>Řádek je vzdálenost nástroje od vlastního maxima. Křivka je to podstatné: minimum a cesta ven z něj jsou na ní dvě místa a měsíce mezi nimi jsou ta polovina, kterou jediné číslo vynechává.</value></data>
+  <data name="DrawdownMethodNote.Text"><value>Měsíčně a s úpravou — dividendy a štěpení započítány — a každý řádek startuje rovně ve svém prvním měsíci období. Jedna stupnice hloubky pro celou tabuli: nástroj, který opravdu neklesl, je rovná čára, a ta rovnost je přesně to, co řádek říká.</value></data>
+  <data name="DrawdownFetched"><value>Načteno {0} nástrojů · {1} měsíců · nejhlubší: {2} {3} ({4}) · nejblíže vlastnímu maximu: {5}</value></data>
+  <data name="DrawdownTooFew"><value>V tomto období je příliš málo měsíců na měření poklesu — zvolte delší.</value></data>
+  <data name="DrawdownDeepest"><value>minimum {0}</value></data>
+  <data name="DrawdownHealed"><value>{0} měs. zpět</value></data>
+  <data name="DrawdownNotHealed"><value>stále pod</value></data>
+  <data name="DrawdownNeverFell"><value>neklesl</value></data>
 </root>

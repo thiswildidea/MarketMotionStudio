@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **fourteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **fifteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -131,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The fourteen pages
+## The fifteen pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -533,6 +533,35 @@ page — all eight, the four share funds, or the four that are not shares.
 Measured 2026-10-02 over ten years: 120 months, the Nasdaq fund ahead at +578.20%, the gold fund at
 +209.59%, and the money-market fund behind at +18.76%.
 
+**Drawdowns** — the fifteenth page, and the asset race's other half: the same eight holdings, on the
+same loader, over the same months, measured against their own highs instead of against each other.
+That page says what a holding earned; this one says what it cost to earn it. A row is a filled
+curve hanging below its own high-water line, deepest at its worst month, and the board's rows still
+trade places — closest to its high on top — so the two halves read as a pair.
+
+**Neither number implies the other, which is the whole reason the page exists.** Over the last ten
+years the CSI 300 fund fell 33.04% and took twenty-nine months to regain its high, while the CSI 500
+fund fell further — 36.10% — and was level again in nineteen. The Hang Seng fund went deepest of all
+at 43.90% and healed in thirty-five. A board printing only the depth would rank those rows and say
+nothing about which fall a holder could have sat through; the pair is the point, and the right
+gutter carries three lines per row — where it is now, how deep it got, how long the climb took.
+
+**The board keeps one depth scale, and that is the honest choice.** Scaling every row to its own
+worst would draw the money-market fund's 0.23% as a chasm the size of the CSI 500's, on a board whose
+whole claim is that those two are not comparable. So that row is a flat line pinned to its
+high-water line, and the flatness is what it says. Gold and the commodity fund were still under
+water when this was measured, and the board reports that kind of fall as open rather than healed.
+
+**The depth and the climb are measured in that order**, and that is a bug this page's own probe had
+first: written as one pass, a shallow dip early in the range sets the clock and the real fall is
+never timed at all. Every holding came back healed in "one or two months" — on a board where one of
+them took seven years. The deepest month has to be final before the months back mean anything, and
+the picture cannot show the difference: the curves are drawn either way.
+
+Adjusted, monthly and measured from each holding's own first month, all three for the reasons the
+asset race gives — and unadjusted this board would be worse than wrong, because the one row that has
+never fallen would be the only row with a hole in it.
+
 **A short fall's label moves out of the way.** The race renderer puts a value label outside the
 bar's end when the bar is too short to hold it. For a fall that means to the left — and the axis's
 proportional headroom puts the *most* negative value only about a sixth of the way into the plot,
@@ -744,7 +773,8 @@ src/MarketMotionStudio/
                    ExtremeDays (one instrument's largest single-day moves, rows that are days),
                    FxRates (the pairs, their monthly bars, and the corridor's arithmetic),
                    IndexRace (twelve indices from three markets, each measured from its own first month),
-                   AssetRace (eight asset classes as funds, and the one page that must use adjusted prices)
+                   AssetRace (eight asset classes as funds, and the one page that must use adjusted prices),
+                   Drawdown (the same eight funds measured against their own highs: depth and the climb back)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
@@ -752,6 +782,7 @@ src/MarketMotionStudio/
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
                    the extreme-day board, the index race and the asset-class board),
+                   UnderwaterRenderer (ranked curves, one depth scale for the whole board),
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
@@ -870,8 +901,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 707 keys
-with no encoding damage, and all fourteen help documents carry the same twenty-three sections in
+Every language carries the same keys in the same order. All fourteen currently report 720 keys
+with no encoding damage, and all fourteen help documents carry the same twenty-four sections in
 the same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -885,7 +916,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all fourteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all fifteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed

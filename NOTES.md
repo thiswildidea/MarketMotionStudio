@@ -1452,3 +1452,76 @@ Measured 2026-10-02, ten years: 120 months, the Nasdaq fund +578.20%, gold +209.
 **Owed on this page:** no export at any format; the custom span and the longest span have not been
 exercised; the English interface has not been driven through it; and nobody has checked the roster
 against anything but the judgement that wrote it.
+
+## The fifteenth page: depth, and the months back out of it
+
+**The asset race's other half, and taken together they are the whole question.** That board says what
+each holding earned in ten years; this one says what it cost to stay for it. Same eight funds, same
+loader, same loader *arguments* — the roster and the arithmetic are not repeated anywhere, and the two
+pages stand beside each other in the navigation for the reason they stand beside each other here.
+
+**What a row is.** A filled curve hanging below the holding's own high-water line, deepening month by
+month, with the high-water line itself drawn as a rule across the row. A row at its own high has no
+curve under it at all, which is why that rule has to be there: the flat row is the claim, and without
+the line there is nothing to see it is level with.
+
+**Why a curve and not a bar.** Every other board here draws a value as a length, and a length can only
+say how deep the water is at this instant. A depth is a shape over time — the low and the climb out of
+it are two places on the curve, and the distance between them across the frame is the months it took.
+That distance is the half of the story a bar cannot hold.
+
+**The two numbers do not rise together**, which is the entire reason the page is worth building. Over
+the ten years measured here:
+
+* the CSI 300 fund fell 33.04% and took twenty-nine months to regain the high;
+* the CSI 500 fund fell *further* — 36.10% — and was level again in **nineteen**;
+* the Hang Seng fund went deepest of the three at 43.90% and took thirty-five.
+
+So the deepest fall is not the longest recovery, and the second-deepest was the quickest of them all.
+A board printing only the depth ranks those rows and says nothing about which fall a holder could
+have sat through. This is also why the verification asserts the pair exists rather than asserting
+"the leader changed" — the leader can legitimately be the same row on two different rosters, which
+is a mistake the asset race's own script made once.
+
+**The range decides the numbers, and the probe that sized the page used a different one.** Every
+figure above is the ten-year window, which is the page's default. Over the *whole* history — which is
+what the sizing probe asked for — the CSI 500 fund fell 56.07% and took eighty-six months. Both are
+correct; they are answers to different spans, and a page whose whole subject is depth is a page where
+that distinction has to be visible in the copy rather than assumed.
+
+**One depth scale for the whole board.** Scaling each row to its own worst would draw the money-market
+fund's 0.23% as a chasm the size of the CSI 500's 36%, on a board whose entire claim is that those two
+are not comparable. So that row is a flat line pinned to its own high-water line, and the flatness is
+what it says. The cost is that a shallow row is a thin line — which is the honest picture of a
+holding that did not fall.
+
+**The depth and the climb are measured in that order, and getting it wrong is invisible.** The first
+draft of the probe that sized this page measured both in one pass, and every holding came back
+"healed in one or two months" — on a board where one of them took seven years. A shallow dip early in
+the range sets the clock, and the real fall is then never timed. So there are two passes: the deepest
+month first, then the first close back at *the high that month fell from* — not the first month back
+at "zero below its own high", which a holding can reach by setting a new high on the way up without
+ever having recovered the fall.
+
+Nothing about that bug shows in the picture. The curves are drawn either way, the rows still sort,
+the status line still prints a number. The verification recomputes both numbers the same two-pass way
+and compares; that is the only thing that catches it.
+
+**Still under water is a state, not a zero.** Gold and the commodity fund had not regained their highs
+when this was measured, and the right gutter says so in words ("not recovered yet") rather than
+printing a large number that looks like the others. The three lines in that gutter are the whole row
+compressed: where it is now, how deep it got, how long the climb took.
+
+**Verified 43 ways** (`tools/verify-drawdown.py`), including recomputing the deepest fall, the months
+back and the shallowest row from the source's own adjusted bars — and asserting that at least one row
+is still unhealed, so that branch is known to be live rather than assumed. The row count comes off the
+pixels: two bands from a filled curve merge far too easily for the race pages' "longest run of colour"
+method, so this page counts the **names** instead — each row has exactly one, in a fixed column, and a
+saturated curve cannot be mistaken for one.
+
+Measured 2026-10-02, ten years, 120 months: the Hang Seng fund deepest at -43.90% (35 months back),
+the Nasdaq fund closest to its high at 0.00%, and gold, the commodity fund and cash still under water.
+
+**Owed on this page:** no export at any format; the custom span and the longest span have not been
+exercised; the English interface has not been driven through it; and nobody has checked the roster or
+the depth scale against anything but the reasoning above.

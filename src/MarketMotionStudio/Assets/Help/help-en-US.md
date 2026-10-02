@@ -213,6 +213,34 @@ funds listed on a mainland exchange, bought with the same money, so they can be 
 - **The market setting does not govern this page**: all eight are listed on the mainland. Fewer than
   twelve months is refused.
 
+## Drawdowns
+
+A row is **how far below its own high a holding sits** — not what it earned, but what it cost to
+earn it. The same eight holdings as the asset race, measured against themselves instead of each
+other.
+
+- **The curve is the point.** Everywhere else in this app a value is drawn as a length, which can
+  only say how deep the water is at this instant. A depth is a shape over time: the low and the
+  climb out of it are two places on the curve, and the distance between them across the frame is
+  the months it took.
+- **The two numbers do not rise together.** Over the last ten years the Nasdaq fund fell 25.52%
+  and was level again in six months; the CSI 500 fund fell 56.07% and took eighty-six. Printed as
+  one number, the second looks like more of the same thing as the first and is not.
+- **One depth scale for the whole board.** Scaling each row to its own worst would draw the
+  money-market fund's 0.2% as a chasm the size of the CSI 500's 56%, on a board whose whole claim
+  is that those are not comparable. So that row is a flat line pinned to its high-water line — and
+  **the flatness is what it says**.
+- **Adjusted, monthly, and from each holding's own first month**, for the reasons the asset race
+  gives: a fund's distributions never appear in its price, and a holding that joins in 2019 is not
+  measured against a high it did not have.
+- **The rows still race.** They are ordered by how far below their own high they are, closest to
+  its high at the top, and they trade places as their months pass.
+- **Gold and the commodity fund were still under water when this was measured** — the board reports
+  that kind of fall as open, because the range ended before it was mended.
+
+Not governed by the market setting: all eight are quoted on a mainland exchange. Fewer than twelve
+months in the range is refused.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)
