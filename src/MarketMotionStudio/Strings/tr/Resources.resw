@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} A+H çifti</value></data>
   <data name="AhPremiumUnitPairs"><value>çift</value></data>
   <data name="AhPremiumCount"><value>İki tarafta kote olan tanıdık şirketler: karada A hissesi, Hong Kong'da H hissesi. Dönem uzadıkça uygun çift sayısı azalır — Hong Kong kotesi iki yıldan genç olan çift dışarıda kalır. Her kare, primi en yüksek {0} çifti gösterir.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Prim = A fiyatı ÷ (H fiyatı × HKD/CNY) − 1. İki bacak da gerçekten ödenen fiyatlardır — düzeltme yok —, çünkü geriye dönük düzeltilmiş seri son fiyatları şişirir ve ayrı ayrı düzeltilmiş iki piyasa karşılaştırılamaz. Kur, halka açık bir kotasyon servisinden alınan orta kurdur.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Prim = A fiyatı ÷ (H fiyatı × HKD/CNY) − 1. İki bacak da gerçekten ödenen fiyatlardır — düzeltme yok —, çünkü geriye dönük düzeltilmiş seri son fiyatları şişirir ve ayrı ayrı düzeltilmiş iki piyasa karşılaştırılamaz. Kur, halka açık bir kotasyon servisinden alınan orta kurdur. Bazı servisler aynı farkı ters yönde verir — H'ye karşı A, negatif olarak —, ki bu bu sayının tersidir, başka bir fiyat değil.</value></data>
   <data name="AhPremiumFetched"><value>{0} çift · {1} ay · en yüksek {2} {3} · listenin sonu {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Döviz kuru okunuyor (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>Döviz kuru gelmedi, dolayısıyla prim hesaplanamaz.</value></data>

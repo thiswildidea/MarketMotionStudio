@@ -90,6 +90,7 @@ capitalizzazione; l'ordine cambia fino all'ultimo fotogramma. Campionamento mens
 
 
 
+
 ## Premio A/H
 
 Quanto costa in più la quotazione continentale di una società rispetto a quella di Hong Kong,
@@ -100,6 +101,10 @@ per le società quotate su entrambi i lati — mese per mese, come barre che si 
   prezzi **non rettificati**. Una serie rettificata all'indietro gonfia i prezzi recenti, e due
   mercati rettificati separatamente non sono confrontabili — l'azione A di ICBC quota 8,28 sullo
   schermo e la serie rettificata ne dichiara 13,34: un premio del +26% diventa +245%.
+- **Lo stesso divario si scrive nei due sensi.** Questa pagina dà A contro H, la forma consueta:
+  +194% significa che l'azione continentale vale quasi il triplo di quella di Hong Kong. Alcuni
+  servizi mostrano lo stesso numero al contrario (溢价(H/A)) e per 新华制药 danno −66% nello stesso
+  giorno. È lo stesso fatto (1 ÷ (1 − 0,66) − 1 = 1,94): non un altro prezzo né un errore.
 - **Il fotogramma disegna le quindici più care**, quindi le barre crescono verso destra — anche
   la quindicesima superava il venti per cento. Solo due delle sessantanove vanno al contrario, con
   l'azione H sopra la A, ed entrambe stanno in fondo alla lista, fuori campo.

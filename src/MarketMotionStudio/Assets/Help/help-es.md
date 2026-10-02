@@ -90,6 +90,7 @@ capitalización, con el orden cambiando hasta el último fotograma. Muestreo men
 
 
 
+
 ## Prima A/H
 
 Cuánto más cara es la cotización continental de una compañía que la de Hong Kong, para las
@@ -100,7 +101,12 @@ compañías que cotizan en ambos lados: mes a mes, en barras que se adelantan.
   ajustar**. Una serie ajustada hacia atrás infla los precios recientes, y dos mercados ajustados
   por separado no son comparables: la acción A de ICBC marca 8,28 en pantalla y la serie ajustada
   declara 13,34, con lo que una prima del +26% pasa a +245%.
-- **El fotograma dibuja las quince más caras**, así que las barras crecen hacia la derecha:/n  incluso la decimoquinta superaba el veinte por ciento. Solo dos de las sesenta y nueve van al
+- **La misma diferencia se escribe en los dos sentidos.** Esta página da A frente a H, la forma
+  habitual: +194% significa que la acción continental cuesta casi el triple que la de Hong Kong.
+  Algunos servicios muestran la misma cifra al revés (溢价(H/A)) y para 新华制药 dan −66% el mismo
+  día. Es el mismo hecho (1 ÷ (1 − 0,66) − 1 = 1,94): ni otro precio ni un error de cálculo.
+- **El fotograma dibuja las quince más caras**, así que las barras crecen hacia la derecha:
+  incluso la decimoquinta superaba el veinte por ciento. Solo dos de las sesenta y nueve van al
   revés, con la acción H por encima de la A, y ambas quedan al final de la lista, fuera de cuadro.
 - **Cuanto más largo el periodo, menos compañías quedan.** Hay sesenta y nueve dobles cotizaciones
   conocidas como candidatas, pero solo se dibuja la pareja cuyas dos partes cubren todo el periodo:

@@ -91,6 +91,7 @@ order changing to the last frame. Sampled monthly.
 
 
 
+
 ## AH premium
 
 How much more a company's mainland listing costs than its Hong Kong one, for the firms
@@ -101,6 +102,11 @@ listed on both sides — month by month, as bars that overtake one another.
   **unadjusted** prices. A backward-adjusted series inflates recent prices, and two markets
   adjusted separately cannot be compared — ICBC's A share sells at 8.28 on the screen and the
   adjusted series reports 13.34, which turns a +26% premium into +245%.
+- **The same gap is written two ways, and the direction is not a detail.** This page gives A
+  against H, the form the industry uses: +194% means the mainland share costs nearly three times
+  the Hong Kong one. Some quote services state the same number the other way round — 溢价(H/A),
+  negative — where 新华制药 reads −66% on the same day. That is the same fact
+  (1 ÷ (1 − 0.66) − 1 = 1.94), not another price and not an error.
 - **The frame draws the fifteen dearest**, so the bars grow to the right — even the fifteenth
   carried a premium above twenty per cent. Only two of the sixty-nine go the other way, their H
   shares above their A shares, and both sit at the bottom of the list, past where the frame looks.

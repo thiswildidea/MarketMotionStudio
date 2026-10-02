@@ -41,6 +41,9 @@ BODIES = {
   同一时刻的真实成交价，本页也因此是全应用唯一必须取**不复权**价格的地方：后复权会把近期
   价格放大，两个市场各自放大之后不能直接比——工商银行的 A 股在屏幕上卖 8.28 元，复权序列
   却给 13.34，用它算出来的溢价是 +245%，而真实值是 +26%。
+- **同一个差距有两种写法，方向别弄反。** 本页按行业惯例给「A 相对 H」：+194% 表示 A 股比 H 股
+  贵近三倍。有些行情站把同一个数倒过来标成「溢价(H/A)」，新华制药同一天会显示 −66% ——
+  −66% 与 +194% 是同一件事（1 ÷ (1 − 0.66) − 1 = 1.94），不是另一个价格，也不是算错了。
 - **画面画的是溢价最高的十五家**，所以条形基本都向右长——2026 年 9 月排在第十五位的
   仍有两成以上的溢价。H 股反而比 A 股贵的只有两家（招商银行、药明康德），它们排在名单末尾，
   通常进不了画面。
@@ -60,6 +63,9 @@ BODIES = {
   時刻的真實成交價，本頁也因此是全應用唯一必須取**不複權**價格的地方：後復權會把近期價格
   放大，兩個市場各自放大之後不能直接比——工商銀行的 A 股在螢幕上賣 8.28 元，複權序列卻給
   13.34，用它算出來的溢價是 +245%，而真實值是 +26%。
+- **同一個差距有兩種寫法，方向別弄反。** 本頁按行業慣例給「A 相對 H」：+194% 表示 A 股比 H 股
+  貴近三倍。有些行情站把同一個數倒過來標成「溢價(H/A)」，新華製藥同一天會顯示 −66% ——
+  −66% 與 +194% 是同一件事（1 ÷ (1 − 0.66) − 1 = 1.94），不是另一個價格，也不是算錯了。
 - **畫面畫的是溢價最高的十五家**，所以條形基本都向右長——2026 年 9 月排第十五位的仍有
   兩成以上的溢價。H 股反而比 A 股貴的只有兩家（招商銀行、藥明康德），它們排在名單末尾，
   通常進不了畫面。
@@ -80,6 +86,11 @@ listed on both sides — month by month, as bars that overtake one another.
   **unadjusted** prices. A backward-adjusted series inflates recent prices, and two markets
   adjusted separately cannot be compared — ICBC's A share sells at 8.28 on the screen and the
   adjusted series reports 13.34, which turns a +26% premium into +245%.
+- **The same gap is written two ways, and the direction is not a detail.** This page gives A
+  against H, the form the industry uses: +194% means the mainland share costs nearly three times
+  the Hong Kong one. Some quote services state the same number the other way round — 溢价(H/A),
+  negative — where 新华制药 reads −66% on the same day. That is the same fact
+  (1 ÷ (1 − 0.66) − 1 = 1.94), not another price and not an error.
 - **The frame draws the fifteen dearest**, so the bars grow to the right — even the fifteenth
   carried a premium above twenty per cent. Only two of the sixty-nine go the other way, their H
   shares above their A shares, and both sit at the bottom of the list, past where the frame looks.
@@ -103,6 +114,10 @@ listed on both sides — month by month, as bars that overtake one another.
   売買された二つの価格です。そのためこのページだけは**調整なし**の価格を取ります。後方修正した
   系列は直近の価格を膨らませ、別々に調整した二つの市場は比べられません——工商銀行の A 株は
   画面では 8.28 元ですが、調整済み系列は 13.34 を返し、+26% のプレミアムが +245% になります。
+- **同じ差は向きを変えて書かれることがあります。** 本ページは業界慣行どおり A 対 H で示し、
+  +194% は A 株が H 株の約 3 倍という意味です。同じ数を逆向き（溢价(H/A)）に載せる行情サイトも
+  あり、新華製薬は同じ日に −66% と表示されます。これは同じ事実（1 ÷ (1 − 0.66) − 1 = 1.94）で、
+  別の価格でも計算間違いでもありません。
 - **描かれるのはプレミアムの高い 15 社**なので、棒はほぼ右に伸びます——15 位でも 2 割超の
   プレミアムがありました。逆に H 株が A 株より高いのは 2 社だけで、いずれもリストの末尾にあり、
   画面には出てきません。
@@ -122,6 +137,10 @@ listed on both sides — month by month, as bars that overtake one another.
   두 가격입니다. 그래서 이 페이지만 **조정 없는** 가격을 받습니다. 후방 조정 계열은 최근 가격을
   부풀리고, 따로 조정한 두 시장은 비교할 수 없습니다——공상은행 A주는 화면에서 8.28위안인데
   조정 계열은 13.34를 돌려주어 +26% 프리미엄이 +245%가 됩니다.
+- **같은 차이는 두 방향으로 적힙니다. 방향을 확인하세요.** 이 페이지는 업계 관행대로 A 대 H로
+  제시하며, +194%는 A주가 H주의 약 세 배라는 뜻입니다. 같은 숫자를 반대로(溢价(H/A)) 표기하는
+  사이트도 있고, 신화제약은 같은 날 −66%로 나옵니다. 같은 사실(1 ÷ (1 − 0.66) − 1 = 1.94)이며
+  다른 가격도, 계산 오류도 아닙니다.
 - **그려지는 것은 프리미엄이 가장 높은 15개**라서 막대는 거의 오른쪽으로 자랍니다——15위도
   20%대의 프리미엄이었습니다. 반대로 H주가 A주보다 비싼 기업은 둘뿐이고, 둘 다 명단 끝에 있어
   화면에는 나오지 않습니다.
@@ -141,6 +160,10 @@ Firmen, die auf beiden Seiten notieren, Monat für Monat als Balken, die sich ü
   **unbereinigte** Kurse holt. Eine rückwärts bereinigte Reihe bläht junge Kurse auf, und zwei
   getrennt bereinigte Märkte sind nicht vergleichbar — ICBCs A-Aktie steht mit 8,28 auf dem
   Schirm, die bereinigte Reihe meldet 13,34, und aus +26 % Prämie werden +245 %.
+- **Dieselbe Lücke wird in zwei Richtungen geschrieben.** Diese Seite nennt A gegen H, wie es üblich
+  ist: +194 % heißt, die Festlandaktie kostet fast dreimal so viel wie die Hongkonger. Manche
+  Dienste nennen dieselbe Zahl umgekehrt (溢价(H/A)) und zeigen für 新华制药 am selben Tag −66 %.
+  Das ist dieselbe Tatsache (1 ÷ (1 − 0,66) − 1 = 1,94) — kein anderer Kurs und kein Rechenfehler.
 - **Gezeichnet werden die fünfzehn teuersten**, also wachsen die Balken fast alle nach rechts —
   selbst der fünfzehnte lag über zwanzig Prozent. Nur zwei der neunundsechzig laufen andersherum,
   ihre H-Aktien über den A-Aktien, und beide stehen am Ende der Liste, wohin das Bild nicht reicht.
@@ -165,6 +188,10 @@ sociétés cotées des deux côtés — mois après mois, en barres qui se dépa
   cours **non ajustés**. Une série ajustée vers l'arrière gonfle les cours récents, et deux marchés
   ajustés séparément ne se comparent pas — l'action A d'ICBC s'affiche à 8,28 et la série ajustée
   annonce 13,34, ce qui transforme une prime de +26 % en +245 %.
+- **Le même écart s'écrit dans les deux sens.** Cette page donne A contre H, la forme usuelle :
+  +194 % signifie que l'action continentale vaut près du triple de l'action hongkongaise. Certains
+  services affichent le même chiffre à l'envers (溢价(H/A)) et donnent −66 % pour 新华制药 le même
+  jour. C'est le même fait (1 ÷ (1 − 0,66) − 1 = 1,94) : pas un autre cours, pas une erreur.
 - **L'image trace les quinze plus chères**, donc les barres poussent vers la droite — la
   quinzième portait encore plus de vingt pour cent. Seules deux des soixante-neuf vont dans l'autre
   sens, leur action H au-dessus de l'action A, et toutes deux finissent en bas de liste, hors champ.
@@ -188,6 +215,10 @@ per le società quotate su entrambi i lati — mese per mese, come barre che si 
   prezzi **non rettificati**. Una serie rettificata all'indietro gonfia i prezzi recenti, e due
   mercati rettificati separatamente non sono confrontabili — l'azione A di ICBC quota 8,28 sullo
   schermo e la serie rettificata ne dichiara 13,34: un premio del +26% diventa +245%.
+- **Lo stesso divario si scrive nei due sensi.** Questa pagina dà A contro H, la forma consueta:
+  +194% significa che l'azione continentale vale quasi il triplo di quella di Hong Kong. Alcuni
+  servizi mostrano lo stesso numero al contrario (溢价(H/A)) e per 新华制药 danno −66% nello stesso
+  giorno. È lo stesso fatto (1 ÷ (1 − 0,66) − 1 = 1,94): non un altro prezzo né un errore.
 - **Il fotogramma disegna le quindici più care**, quindi le barre crescono verso destra — anche
   la quindicesima superava il venti per cento. Solo due delle sessantanove vanno al contrario, con
   l'azione H sopra la A, ed entrambe stanno in fondo alla lista, fuori campo.
@@ -210,7 +241,12 @@ compañías que cotizan en ambos lados: mes a mes, en barras que se adelantan.
   ajustar**. Una serie ajustada hacia atrás infla los precios recientes, y dos mercados ajustados
   por separado no son comparables: la acción A de ICBC marca 8,28 en pantalla y la serie ajustada
   declara 13,34, con lo que una prima del +26% pasa a +245%.
-- **El fotograma dibuja las quince más caras**, así que las barras crecen hacia la derecha:/n  incluso la decimoquinta superaba el veinte por ciento. Solo dos de las sesenta y nueve van al
+- **La misma diferencia se escribe en los dos sentidos.** Esta página da A frente a H, la forma
+  habitual: +194% significa que la acción continental cuesta casi el triple que la de Hong Kong.
+  Algunos servicios muestran la misma cifra al revés (溢价(H/A)) y para 新华制药 dan −66% el mismo
+  día. Es el mismo hecho (1 ÷ (1 − 0,66) − 1 = 1,94): ni otro precio ni un error de cálculo.
+- **El fotograma dibuja las quince más caras**, así que las barras crecen hacia la derecha:
+  incluso la decimoquinta superaba el veinte por ciento. Solo dos de las sesenta y nueve van al
   revés, con la acción H por encima de la A, y ambas quedan al final de la lista, fuera de cuadro.
 - **Cuanto más largo el periodo, menos compañías quedan.** Hay sesenta y nueve dobles cotizaciones
   conocidas como candidatas, pero solo se dibuja la pareja cuyas dos partes cubren todo el periodo:
@@ -231,6 +267,10 @@ companhias cotadas dos dois lados — mês a mês, em barras que se ultrapassam.
   ajuste**. Uma série ajustada para trás infla os preços recentes, e dois mercados ajustados
   separadamente não são comparáveis — a ação A do ICBC aparece a 8,28 na tela e a série ajustada
   informa 13,34, transformando um prêmio de +26% em +245%.
+- **A mesma diferença se escreve nos dois sentidos.** Esta página dá A contra H, a forma usual:
+  +194% significa que a ação continental custa quase o triplo da de Hong Kong. Alguns serviços
+  mostram o mesmo número ao contrário (溢价(H/A)) e dão −66% para 新华制药 no mesmo dia. É o mesmo
+  fato (1 ÷ (1 − 0,66) − 1 = 1,94): não é outro preço nem erro de cálculo.
 - **O quadro desenha as quinze mais caras**, então as barras crescem para a direita — até a
   décima quinta passava de vinte por cento. Só duas das sessenta e nove vão ao contrário, com a ação
   H acima da A, e ambas ficam no fim da lista, fora do quadro.
@@ -252,6 +292,10 @@ notowanych po obu stronach, miesiąc po miesiącu, jako słupki, które się wyp
   **nieskorygowane**. Seria korygowana wstecz zawyża ostatnie kursy, a dwóch rynków korygowanych
   osobno nie da się porównać — akcja A ICBC kosztuje 8,28 na ekranie, a skorygowana seria podaje
   13,34, zamieniając premię +26% w +245%.
+- **Tę samą różnicę zapisuje się w obie strony.** Ta strona podaje A do H, czyli formę przyjętą w
+  branży: +194% znaczy, że akcja kontynentalna kosztuje prawie trzy razy tyle co hongkońska.
+  Niektóre serwisy pokazują tę samą liczbę odwrotnie (溢价(H/A)) i dla 新华制药 dają −66% tego
+  samego dnia. To ten sam fakt (1 ÷ (1 − 0,66) − 1 = 1,94), a nie inny kurs ani błąd.
 - **Rysowane jest piętnaście najdroższych**, więc słupki rosną w prawo — nawet piętnasta miała
   ponad dwadzieścia procent. Tylko dwie z sześćdziesięciu dziewięciu idą w drugą stronę, ich akcje
   H ponad akcjami A, i obie stoją na końcu listy, poza kadrem.
@@ -273,6 +317,10 @@ kotovaných na obou stranách, měsíc po měsíci, jako pruhy, které se předh
   zaplacené ve stejný okamžik, a proto tato stránka jako jediná načítá **neupravené** kurzy. Zpětně
   upravená řada nafukuje nedávné kurzy a dva trhy upravené odděleně srovnávat nelze — akcie A ICBC
   stojí na obrazovce 8,28 a upravená řada hlásí 13,34, čímž se prémie +26 % změní na +245 %.
+- **Stejný rozdíl se píše dvěma směry.** Tato stránka uvádí A vůči H, tedy obvyklou formu: +194 %
+  znamená, že kontinentální akcie stojí téměř třikrát více než hongkongská. Některé služby ukazují
+  stejné číslo obráceně (溢价(H/A)) a pro 新华制药 dají týž den −66 %. Je to stejný fakt
+  (1 ÷ (1 − 0,66) − 1 = 1,94), ne jiný kurz ani chyba.
 - **Kreslí se patnáct nejdražších**, takže pruhy rostou doprava — i patnáctá měla přes dvacet
   procent. Jen dva ze šedesáti devíti jdou opačně, jejich akcie H nad akciemi A, a oba stojí na
   konci seznamu, kam obraz nedosáhne.
@@ -294,6 +342,10 @@ kotovaných na obou stranách, měsíc po měsíci, jako pruhy, které se předh
   цены. Ряд, скорректированный назад, завышает недавние цены, а два рынка, скорректированные по
   отдельности, сравнивать нельзя: бумага A ICBC стоит на экране 8,28, а скорректированный ряд
   сообщает 13,34 — и премия +26 % превращается в +245 %.
+- **Один и тот же разрыв записывают в двух направлениях.** Эта страница даёт A к H, как принято:
+  +194 % означает, что материковая бумага стоит почти втрое дороже гонконгской. Некоторые
+  сервисы показывают то же число наоборот (溢价(H/A)) и в тот же день дают по 新华制药 −66 %.
+  Это один и тот же факт (1 ÷ (1 − 0,66) − 1 = 1,94), а не другая цена и не ошибка.
 - **Рисуются пятнадцать самых дорогих**, поэтому полосы растут вправо — даже у пятнадцатой
   премия была выше двадцати процентов. Лишь две из шестидесяти девяти идут в другую сторону, их
   бумаги H дороже бумаг A, и обе стоят в конце списка, куда кадр не достаёт.
@@ -316,6 +368,10 @@ pahalı olduğu — ay ay, birbirini geçen çubuklar olarak.
   dönük düzeltilmiş seri son fiyatları şişirir ve ayrı ayrı düzeltilmiş iki piyasa
   karşılaştırılamaz — ICBC'nin A hissesi ekranda 8,28 iken düzeltilmiş seri 13,34 der: +26%'lık
   prim +245% olur.
+- **Aynı fark iki yönde yazılır.** Bu sayfa, sektörde alışıldığı gibi A'yı H'ye göre verir: +194%,
+  karadaki hissenin Hong Kong hissesinin neredeyse üç katı olduğu anlamına gelir. Bazı servisler
+  aynı sayıyı ters yönde (溢价(H/A)) gösterir ve 新华制药 için aynı gün −66% yazar. Bu aynı
+  gerçektir (1 ÷ (1 − 0,66) − 1 = 1,94); ne başka bir fiyat ne de hesap hatası.
 - **Çizilen, primi en yüksek on beş çift**, bu yüzden çubuklar sağa büyür — on beşinci bile
   yüzde yirmiyi aşıyordu. Altmış dokuz çiftin yalnızca ikisi ters yönde, H hissesi A hissesinin
   üstünde, ve ikisi de listenin sonunda, karenin ulaşmadığı yerde.

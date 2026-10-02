@@ -90,6 +90,7 @@ mercado, com a ordem mudando até o último quadro. Amostragem mensal.
 
 
 
+
 ## Prêmio A/H
 
 Quanto mais cara é a cotação continental de uma companhia do que a de Hong Kong, para as
@@ -100,6 +101,10 @@ companhias cotadas dos dois lados — mês a mês, em barras que se ultrapassam.
   ajuste**. Uma série ajustada para trás infla os preços recentes, e dois mercados ajustados
   separadamente não são comparáveis — a ação A do ICBC aparece a 8,28 na tela e a série ajustada
   informa 13,34, transformando um prêmio de +26% em +245%.
+- **A mesma diferença se escreve nos dois sentidos.** Esta página dá A contra H, a forma usual:
+  +194% significa que a ação continental custa quase o triplo da de Hong Kong. Alguns serviços
+  mostram o mesmo número ao contrário (溢价(H/A)) e dão −66% para 新华制药 no mesmo dia. É o mesmo
+  fato (1 ÷ (1 − 0,66) − 1 = 1,94): não é outro preço nem erro de cálculo.
 - **O quadro desenha as quinze mais caras**, então as barras crescem para a direita — até a
   décima quinta passava de vinte por cento. Só duas das sessenta e nove vão ao contrário, com a ação
   H acima da A, e ambas ficam no fim da lista, fora do quadro.

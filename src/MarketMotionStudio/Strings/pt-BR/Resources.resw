@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} pares A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>pares</value></data>
   <data name="AhPremiumCount"><value>Companhias conhecidas cotadas nos dois lados: ações A no continente e ações H em Hong Kong. Quanto maior o período, menos pares restam — um par cuja cotação em Hong Kong tem menos de dois anos fica de fora. Cada quadro mostra os {0} de maior prêmio.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Prêmio = preço A ÷ (preço H × HKD/CNY) − 1. As duas pontas são preços realmente pagos — sem ajuste —, porque uma série ajustada para trás infla os preços recentes e dois mercados ajustados separadamente não são comparáveis. A taxa é uma taxa média de um serviço público de cotações.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Prêmio = preço A ÷ (preço H × HKD/CNY) − 1. As duas pontas são preços realmente pagos — sem ajuste —, porque uma série ajustada para trás infla os preços recentes e dois mercados ajustados separadamente não são comparáveis. A taxa é uma taxa média de um serviço público de cotações. Alguns serviços mostram a mesma diferença ao contrário — H contra A, em negativo —, e isso é o inverso deste número, não outro preço.</value></data>
   <data name="AhPremiumFetched"><value>{0} pares · {1} meses · maior {2} {3} · último do quadro {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Lendo a taxa de câmbio (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>A taxa de câmbio não voltou, então nenhum prêmio pode ser calculado.</value></data>

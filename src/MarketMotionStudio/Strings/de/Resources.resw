@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} A+H-Paare</value></data>
   <data name="AhPremiumUnitPairs"><value>Paare</value></data>
   <data name="AhPremiumCount"><value>Bekannte Unternehmen, die beidseitig notieren: A-Aktien auf dem Festland, H-Aktien in Hongkong. Je länger der Zeitraum, desto weniger Paare bleiben — ein Paar, dessen Hongkong-Notierung jünger als zwei Jahre ist, entfällt. Jedes Bild zeigt die {0} mit der höchsten Prämie.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Prämie = A-Kurs ÷ (H-Kurs × HKD/CNY) − 1. Beide Seiten sind tatsächlich gezahlte Kurse — ohne Bereinigung, weil eine rückwärts bereinigte Reihe junge Kurse aufbläht und zwei getrennt bereinigte Märkte nicht vergleichbar sind. Der Kurs ist ein Mittelkurs aus einem öffentlichen Kursdienst.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Prämie = A-Kurs ÷ (H-Kurs × HKD/CNY) − 1. Beide Seiten sind tatsächlich gezahlte Kurse — ohne Bereinigung, weil eine rückwärts bereinigte Reihe junge Kurse aufbläht und zwei getrennt bereinigte Märkte nicht vergleichbar sind. Der Kurs ist ein Mittelkurs aus einem öffentlichen Kursdienst. Manche Dienste nennen dieselbe Lücke umgekehrt — H gegen A, negativ —, und das ist der Kehrwert dieser Zahl, kein anderer Kurs.</value></data>
   <data name="AhPremiumFetched"><value>{0} Paare · {1} Monate · höchste {2} {3} · Schlusslicht {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Wechselkurs wird gelesen (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>Der Wechselkurs kam nicht zurück, also lässt sich keine Prämie berechnen.</value></data>

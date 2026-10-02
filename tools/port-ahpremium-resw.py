@@ -300,51 +300,70 @@ PAGE = [
         "Premium = A price ÷ (H price × HKD/CNY) − 1. Both legs are prices actually paid — no "
         "adjustment — because a backward-adjusted series inflates recent prices, and two markets "
         "adjusted separately cannot be compared. The rate is a mid rate from a public quote "
-        "service.",
+        "service. Some services state the same gap the other way round — H against A, and "
+        "negative — which is the reciprocal of this figure, not another price.",
         "Prämie = A-Kurs ÷ (H-Kurs × HKD/CNY) − 1. Beide Seiten sind tatsächlich gezahlte Kurse — "
         "ohne Bereinigung, weil eine rückwärts bereinigte Reihe junge Kurse aufbläht und zwei "
         "getrennt bereinigte Märkte nicht vergleichbar sind. Der Kurs ist ein Mittelkurs aus "
-        "einem öffentlichen Kursdienst.",
+        "einem öffentlichen Kursdienst. Manche Dienste nennen dieselbe Lücke umgekehrt — H gegen "
+        "A, negativ —, und das ist der Kehrwert dieser Zahl, kein anderer Kurs.",
         "Prima = precio A ÷ (precio H × HKD/CNY) − 1. Ambas partes son precios realmente "
         "pagados —sin ajuste—, porque una serie ajustada hacia atrás infla los precios recientes "
         "y dos mercados ajustados por separado no son comparables. El tipo es un tipo medio de "
-        "un servicio público de cotizaciones.",
+        "un servicio público de cotizaciones. Algunos servicios dan la misma diferencia al revés "
+        "— H frente a A, en negativo —, y eso es el recíproco de esta cifra, no otro precio.",
         "Prime = cours A ÷ (cours H × HKD/CNY) − 1. Les deux jambes sont des cours réellement "
         "payés — sans ajustement —, car une série ajustée vers l'arrière gonfle les cours "
         "récents et deux marchés ajustés séparément ne se comparent pas. Le taux est un taux "
-        "moyen d'un service de cotation public.",
+        "moyen d'un service de cotation public. Certains services donnent le même écart à "
+        "l'envers — H contre A, en négatif —, soit l'inverse de ce chiffre, pas un autre cours.",
         "Premio = prezzo A ÷ (prezzo H × HKD/CNY) − 1. Entrambe le gambe sono prezzi realmente "
         "pagati — nessun aggiustamento —, perché una serie rettificata all'indietro gonfia i "
         "prezzi recenti e due mercati rettificati separatamente non sono confrontabili. Il cambio "
-        "è un cambio medio da un servizio pubblico di quotazioni.",
+        "è un cambio medio da un servizio pubblico di quotazioni. Alcuni servizi mostrano lo "
+        "stesso divario al contrario — H contro A, in negativo —: è il reciproco di questa cifra, "
+        "non un altro prezzo.",
         "Premia = kurs A ÷ (kurs H × HKD/CNY) − 1. Obie nogi to kursy faktycznie płacone — bez "
         "korekty — bo seria korygowana wstecz zawyża ostatnie kursy, a dwóch rynków korygowanych "
-        "osobno nie da się porównać. Kurs to kurs średni z publicznego serwisu notowań.",
+        "osobno nie da się porównać. Kurs to kurs średni z publicznego serwisu notowań. Niektóre "
+        "serwisy podają tę samą różnicę odwrotnie — H do A, na minusie —, a to odwrotność tej "
+        "liczby, nie inny kurs.",
         "Prêmio = preço A ÷ (preço H × HKD/CNY) − 1. As duas pontas são preços realmente pagos — "
         "sem ajuste —, porque uma série ajustada para trás infla os preços recentes e dois "
         "mercados ajustados separadamente não são comparáveis. A taxa é uma taxa média de um "
-        "serviço público de cotações.",
+        "serviço público de cotações. Alguns serviços mostram a mesma diferença ao contrário — H "
+        "contra A, em negativo —, e isso é o inverso deste número, não outro preço.",
         "Prémie = kurz A ÷ (kurz H × HKD/CNY) − 1. Obě strany jsou skutečně placené kurzy — bez "
         "úpravy —, protože zpětně upravená řada nafukuje nedávné kurzy a dva trhy upravené "
-        "odděleně srovnávat nelze. Kurz je střední kurz z veřejné služby kotací.",
+        "odděleně srovnávat nelze. Kurz je střední kurz z veřejné služby kotací. Některé služby "
+        "uvádějí stejnou mezeru obráceně — H vůči A, v záporu —, což je převrácená hodnota tohoto "
+        "čísla, ne jiný kurz.",
         "Prim = A fiyatı ÷ (H fiyatı × HKD/CNY) − 1. İki bacak da gerçekten ödenen fiyatlardır — "
         "düzeltme yok —, çünkü geriye dönük düzeltilmiş seri son fiyatları şişirir ve ayrı ayrı "
         "düzeltilmiş iki piyasa karşılaştırılamaz. Kur, halka açık bir kotasyon servisinden "
-        "alınan orta kurdur.",
+        "alınan orta kurdur. Bazı servisler aynı farkı ters yönde verir — H'ye karşı A, negatif "
+        "olarak —, ki bu bu sayının tersidir, başka bir fiyat değil.",
         "Премия = цена A ÷ (цена H × HKD/CNY) − 1. Обе ноги — фактически уплаченные цены, без "
         "корректировки: ряд, скорректированный назад, завышает недавние цены, а два рынка, "
         "скорректированные по отдельности, сравнивать нельзя. Курс — средний, из публичного "
-        "сервиса котировок.",
+        "сервиса котировок. Некоторые сервисы показывают тот же разрыв наоборот — H к A, со "
+        "знаком минус —, и это обратная величина этого числа, а не другая цена.",
         "プレミアム = A 株価 ÷（H 株価 × 香港ドル/人民元）− 1。両方とも実際に売買された価格を使い、"
         "調整はかけません——後方修正した系列は直近の価格を膨らませ、別々に調整した二つの市場は"
-        "比べられないからです。為替は公開相場サービスの中値です。",
+        "比べられないからです。為替は公開相場サービスの中値です。同じ差を逆向き（H 対 A、"
+        "マイナス表記）で出す行情サイトもありますが、それはこの数字の逆数であって、"
+        "別の価格ではありません。",
         "프리미엄 = A 가격 ÷ (H 가격 × 홍콩달러/위안) − 1. 두 쪽 모두 실제로 거래된 가격이며 "
         "조정하지 않습니다——후방 조정 계열은 최근 가격을 부풀리고, 따로 조정한 두 시장은 "
-        "비교할 수 없기 때문입니다. 환율은 공개 시세 서비스의 중간값입니다.",
+        "비교할 수 없기 때문입니다. 환율은 공개 시세 서비스의 중간값입니다. 같은 차이를 "
+        "반대로(H 대비 A, 마이너스) 표기하는 사이트도 있는데, 그것은 이 숫자의 역수일 뿐 "
+        "다른 가격이 아닙니다.",
         "溢價 = A 股價 ÷（H 股價 × 港元兌人民幣）− 1。兩條腿都用實際成交價，不做任何調整——"
-        "後復權會把近期價格放大，而兩個市場各自調整後不能直接比。匯率取公開行情服務的中間價。",
+        "後復權會把近期價格放大，而兩個市場各自調整後不能直接比。匯率取公開行情服務的中間價。"
+        "有些行情站把同一個差距倒過來寫（H 對 A，帶負號），那是這個數字的倒數，不是另一個價格。",
         "溢价 = A 股价 ÷（H 股价 × 港元兑人民币）− 1。两条腿都用实际成交价，不做任何调整——"
-        "后复权会把近期价格放大，而两个市场各自调整后不能直接比。汇率取公开行情服务的中间价。"]),
+        "后复权会把近期价格放大，而两个市场各自调整后不能直接比。汇率取公开行情服务的中间价。"
+        "有些行情站把同一个差距倒过来写（H 对 A，带负号），那是这个数字的倒数，不是另一个价格。"]),
 
     # 「榜尾」而不是「最便宜」：画面画的是溢价最高的 15 家，第 15 名仍是 +78.8%，
     # 叫它"最便宜"会让人以为场上有个负溢价的公司在榜上——真正负溢价的两家

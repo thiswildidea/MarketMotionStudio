@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} pares A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>pares</value></data>
   <data name="AhPremiumCount"><value>Compañías conocidas cotizadas en ambos lados: acciones A en el continente y acciones H en Hong Kong. Cuanto más largo el periodo, menos pares quedan: uno cuya cotización en Hong Kong no llega a dos años se descarta. Cada fotograma muestra los {0} con mayor prima.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Prima = precio A ÷ (precio H × HKD/CNY) − 1. Ambas partes son precios realmente pagados —sin ajuste—, porque una serie ajustada hacia atrás infla los precios recientes y dos mercados ajustados por separado no son comparables. El tipo es un tipo medio de un servicio público de cotizaciones.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Prima = precio A ÷ (precio H × HKD/CNY) − 1. Ambas partes son precios realmente pagados —sin ajuste—, porque una serie ajustada hacia atrás infla los precios recientes y dos mercados ajustados por separado no son comparables. El tipo es un tipo medio de un servicio público de cotizaciones. Algunos servicios dan la misma diferencia al revés — H frente a A, en negativo —, y eso es el recíproco de esta cifra, no otro precio.</value></data>
   <data name="AhPremiumFetched"><value>{0} pares · {1} meses · más alta {2} {3} · último del cuadro {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Leyendo el tipo de cambio (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>El tipo de cambio no llegó, así que no se puede calcular ninguna prima.</value></data>

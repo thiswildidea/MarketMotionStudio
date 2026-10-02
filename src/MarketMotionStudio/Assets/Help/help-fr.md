@@ -91,6 +91,7 @@ l'ordre changeant jusqu'à la dernière image. Échantillonnage mensuel.
 
 
 
+
 ## Prime A/H
 
 De combien la cotation continentale d'une société dépasse sa cotation hongkongaise, pour les
@@ -101,6 +102,10 @@ sociétés cotées des deux côtés — mois après mois, en barres qui se dépa
   cours **non ajustés**. Une série ajustée vers l'arrière gonfle les cours récents, et deux marchés
   ajustés séparément ne se comparent pas — l'action A d'ICBC s'affiche à 8,28 et la série ajustée
   annonce 13,34, ce qui transforme une prime de +26 % en +245 %.
+- **Le même écart s'écrit dans les deux sens.** Cette page donne A contre H, la forme usuelle :
+  +194 % signifie que l'action continentale vaut près du triple de l'action hongkongaise. Certains
+  services affichent le même chiffre à l'envers (溢价(H/A)) et donnent −66 % pour 新华制药 le même
+  jour. C'est le même fait (1 ÷ (1 − 0,66) − 1 = 1,94) : pas un autre cours, pas une erreur.
 - **L'image trace les quinze plus chères**, donc les barres poussent vers la droite — la
   quinzième portait encore plus de vingt pour cent. Seules deux des soixante-neuf vont dans l'autre
   sens, leur action H au-dessus de l'action A, et toutes deux finissent en bas de liste, hors champ.

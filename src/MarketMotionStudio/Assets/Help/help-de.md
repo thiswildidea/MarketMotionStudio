@@ -91,6 +91,7 @@ die Reihenfolge ändert sich bis zum letzten Bild. Monatlich abgetastet.
 
 
 
+
 ## A/H-Prämie
 
 Wie viel teurer die Festlandnotierung eines Unternehmens ist als seine Hongkonger — für die
@@ -101,6 +102,10 @@ Firmen, die auf beiden Seiten notieren, Monat für Monat als Balken, die sich ü
   **unbereinigte** Kurse holt. Eine rückwärts bereinigte Reihe bläht junge Kurse auf, und zwei
   getrennt bereinigte Märkte sind nicht vergleichbar — ICBCs A-Aktie steht mit 8,28 auf dem
   Schirm, die bereinigte Reihe meldet 13,34, und aus +26 % Prämie werden +245 %.
+- **Dieselbe Lücke wird in zwei Richtungen geschrieben.** Diese Seite nennt A gegen H, wie es üblich
+  ist: +194 % heißt, die Festlandaktie kostet fast dreimal so viel wie die Hongkonger. Manche
+  Dienste nennen dieselbe Zahl umgekehrt (溢价(H/A)) und zeigen für 新华制药 am selben Tag −66 %.
+  Das ist dieselbe Tatsache (1 ÷ (1 − 0,66) − 1 = 1,94) — kein anderer Kurs und kein Rechenfehler.
 - **Gezeichnet werden die fünfzehn teuersten**, also wachsen die Balken fast alle nach rechts —
   selbst der fünfzehnte lag über zwanzig Prozent. Nur zwei der neunundsechzig laufen andersherum,
   ihre H-Aktien über den A-Aktien, und beide stehen am Ende der Liste, wohin das Bild nicht reicht.

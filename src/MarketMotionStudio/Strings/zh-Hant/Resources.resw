@@ -693,7 +693,7 @@
   <data name="AhPremiumListLabel"><value>{0} 對 A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>對</value></data>
   <data name="AhPremiumCount"><value>兩地上市的知名公司：A 股在本土，H 股在香港。區間越長，合格的对越少——H 股上市不足兩年的會被去掉。每一幀顯示溢價最高的 {0} 對。</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>溢價 = A 股價 ÷（H 股價 × 港元兌人民幣）− 1。兩條腿都用實際成交價，不做任何調整——後復權會把近期價格放大，而兩個市場各自調整後不能直接比。匯率取公開行情服務的中間價。</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>溢價 = A 股價 ÷（H 股價 × 港元兌人民幣）− 1。兩條腿都用實際成交價，不做任何調整——後復權會把近期價格放大，而兩個市場各自調整後不能直接比。匯率取公開行情服務的中間價。有些行情站把同一個差距倒過來寫（H 對 A，帶負號），那是這個數字的倒數，不是另一個價格。</value></data>
   <data name="AhPremiumFetched"><value>{0} 對 · {1} 個月 · 最高 {2} {3} · 榜尾 {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>正在讀取匯率（港元兌人民幣）…</value></data>
   <data name="AhPremiumNoRate"><value>取不到匯率，算不出溢價。</value></data>

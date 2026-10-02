@@ -90,6 +90,7 @@ sıralama son kareye kadar değişir. Örnekleme aylıktır.
 
 
 
+
 ## A/H primi
 
 İki tarafta da kote olan şirketler için, karadaki kotasyonun Hong Kong kotasyonundan ne kadar
@@ -100,6 +101,10 @@ pahalı olduğu — ay ay, birbirini geçen çubuklar olarak.
   dönük düzeltilmiş seri son fiyatları şişirir ve ayrı ayrı düzeltilmiş iki piyasa
   karşılaştırılamaz — ICBC'nin A hissesi ekranda 8,28 iken düzeltilmiş seri 13,34 der: +26%'lık
   prim +245% olur.
+- **Aynı fark iki yönde yazılır.** Bu sayfa, sektörde alışıldığı gibi A'yı H'ye göre verir: +194%,
+  karadaki hissenin Hong Kong hissesinin neredeyse üç katı olduğu anlamına gelir. Bazı servisler
+  aynı sayıyı ters yönde (溢价(H/A)) gösterir ve 新华制药 için aynı gün −66% yazar. Bu aynı
+  gerçektir (1 ÷ (1 − 0,66) − 1 = 1,94); ne başka bir fiyat ne de hesap hatası.
 - **Çizilen, primi en yüksek on beş çift**, bu yüzden çubuklar sağa büyür — on beşinci bile
   yüzde yirmiyi aşıyordu. Altmış dokuz çiftin yalnızca ikisi ters yönde, H hissesi A hissesinin
   üstünde, ve ikisi de listenin sonunda, karenin ulaşmadığı yerde.

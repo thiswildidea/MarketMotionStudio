@@ -1171,6 +1171,19 @@ months. Intersecting on the date found 94 months where there are 123. Grouped by
 dated on the month's own last day, they line up. This is the third time this project has paid for the
 same lesson (the market-cap board reported 139 periods for 120 months).
 
+**"The value is wrong" was a reading, not a computation.** The first doubt raised against this page
+was that 新华制药's premium "is about 65%, not 194%", with a screenshot of the frame. It was the
+direction: 雪球 prints the same company on the same close as `溢价(H/A) −65.97%`, and the page prints
+A against H, so the two are the same fact — 1 ÷ (1 − 0.66) − 1 = 1.94. Checked against two other
+sources before answering, because "the reader read it the other way" is also a convenient thing to
+believe: 東方財富 quoted 比价(A/H) 2.82 / 溢价(A/H) 181.80% on 2026-09-25 and 經濟通 189.1% on
+2026-09-23, both of which bracket the page's own +193.96% for 2026-09-30. Both close prices were also
+read back from two sources independently (Tencent 14.60 / 5.815, Sina 14.600 / 5.815). **What changed
+was wording, not arithmetic**: the card's method note and all fourteen manuals now say the other
+direction exists and is the same number. The same pass fixed a real defect found while in there — the
+Spanish manual had a literal `/n` where a line break was meant, in the one bullet it was easiest to
+miss.
+
 **Owed on this page:** the English interface has not been driven through it, and no export has been
 run at any format — the preview and the encoder share a renderer, so an export is the other half of
 the verification. The custom span has not been exercised. The frame has been read at two spans

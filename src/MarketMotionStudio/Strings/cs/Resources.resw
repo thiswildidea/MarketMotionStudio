@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} párů A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>párů</value></data>
   <data name="AhPremiumCount"><value>Známé společnosti kotované na obou stranách: akcie A na pevnině, akcie H v Hongkongu. Čím delší období, tím méně párů — pár, jehož hongkongská kotace je mladší než dva roky, vypadne. Každý snímek ukazuje {0} s nejvyšší prémií.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Prémie = kurz A ÷ (kurz H × HKD/CNY) − 1. Obě strany jsou skutečně placené kurzy — bez úpravy —, protože zpětně upravená řada nafukuje nedávné kurzy a dva trhy upravené odděleně srovnávat nelze. Kurz je střední kurz z veřejné služby kotací.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Prémie = kurz A ÷ (kurz H × HKD/CNY) − 1. Obě strany jsou skutečně placené kurzy — bez úpravy —, protože zpětně upravená řada nafukuje nedávné kurzy a dva trhy upravené odděleně srovnávat nelze. Kurz je střední kurz z veřejné služby kotací. Některé služby uvádějí stejnou mezeru obráceně — H vůči A, v záporu —, což je převrácená hodnota tohoto čísla, ne jiný kurz.</value></data>
   <data name="AhPremiumFetched"><value>{0} párů · {1} měsíců · nejvyšší {2} {3} · poslední v tabulce {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Načítání kurzu (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>Kurz se nevrátil, takže prémii nelze spočítat.</value></data>

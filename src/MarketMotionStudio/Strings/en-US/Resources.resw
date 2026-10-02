@@ -705,7 +705,7 @@
   <data name="AhPremiumListLabel"><value>{0} A+H pairs</value></data>
   <data name="AhPremiumUnitPairs"><value>pairs</value></data>
   <data name="AhPremiumCount"><value>Famous companies listed on both sides: A shares on the mainland and H shares in Hong Kong. The longer the span, the fewer pairs qualify — one whose Hong Kong listing is younger than two years is left out. Each frame shows the {0} with the highest premium.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Premium = A price ÷ (H price × HKD/CNY) − 1. Both legs are prices actually paid — no adjustment — because a backward-adjusted series inflates recent prices, and two markets adjusted separately cannot be compared. The rate is a mid rate from a public quote service.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Premium = A price ÷ (H price × HKD/CNY) − 1. Both legs are prices actually paid — no adjustment — because a backward-adjusted series inflates recent prices, and two markets adjusted separately cannot be compared. The rate is a mid rate from a public quote service. Some services state the same gap the other way round — H against A, and negative — which is the reciprocal of this figure, not another price.</value></data>
   <data name="AhPremiumFetched"><value>{0} 对 · {1} 个月 · 最高 {2} {3} · 榜尾 {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Reading the exchange rate (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>The exchange rate did not come back, so no premium can be worked out.</value></data>

@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} par A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>par</value></data>
   <data name="AhPremiumCount"><value>Znane spółki notowane po obu stronach: akcje A na kontynencie, akcje H w Hongkongu. Im dłuższy okres, tym mniej par — para, której notowanie w Hongkongu ma mniej niż dwa lata, wypada. Każda klatka pokazuje {0} o najwyższej premii.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Premia = kurs A ÷ (kurs H × HKD/CNY) − 1. Obie nogi to kursy faktycznie płacone — bez korekty — bo seria korygowana wstecz zawyża ostatnie kursy, a dwóch rynków korygowanych osobno nie da się porównać. Kurs to kurs średni z publicznego serwisu notowań.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Premia = kurs A ÷ (kurs H × HKD/CNY) − 1. Obie nogi to kursy faktycznie płacone — bez korekty — bo seria korygowana wstecz zawyża ostatnie kursy, a dwóch rynków korygowanych osobno nie da się porównać. Kurs to kurs średni z publicznego serwisu notowań. Niektóre serwisy podają tę samą różnicę odwrotnie — H do A, na minusie —, a to odwrotność tej liczby, nie inny kurs.</value></data>
   <data name="AhPremiumFetched"><value>{0} par · {1} miesięcy · najwyższa {2} {3} · ostatnia w tabeli {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Odczyt kursu (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>Kurs nie wrócił, więc nie da się obliczyć premii.</value></data>

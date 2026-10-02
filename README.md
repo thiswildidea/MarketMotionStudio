@@ -361,6 +361,13 @@ anchors a listing's earliest price and inflates every later one: ICBC's A share 
 adjusted series reports 13.34, which turns a +26% premium into +245%. **Two markets adjusted
 separately cannot be compared**, so both legs and the rate take the same raw call.
 
+**The same gap is quoted both ways round, which was the first thing a reader doubted.** This page
+gives A against H — the direction the industry's own premium index uses — so 新华制药 reads +194%.
+雪球 prints the same company on the same close as `溢价(H/A) −65.97%`: the same fact with the legs
+swapped, since 1 ÷ (1 − 0.66) − 1 = 1.94. The card's method note and all fourteen manuals say so,
+because the report that prompted them was "this value is wrong", and the value was right — it was
+being read in the other direction.
+
 **The frame draws the dearest fifteen, and on this market all fifteen are dear.** Across the field
 the premium ran from +194% (新华制药) down to −9% (药明康德) on 2026-09-30, and only two of the
 sixty-nine — 招商银行 and 药明康德 — have their Hong Kong line above their mainland one. At −6% and

@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} coppie A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>coppie</value></data>
   <data name="AhPremiumCount"><value>Società note quotate su entrambi i lati: azioni A sul continente, azioni H a Hong Kong. Più lungo il periodo, meno coppie restano — una coppia la cui quotazione a Hong Kong ha meno di due anni viene esclusa. Ogni fotogramma mostra le {0} con il premio più alto.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Premio = prezzo A ÷ (prezzo H × HKD/CNY) − 1. Entrambe le gambe sono prezzi realmente pagati — nessun aggiustamento —, perché una serie rettificata all'indietro gonfia i prezzi recenti e due mercati rettificati separatamente non sono confrontabili. Il cambio è un cambio medio da un servizio pubblico di quotazioni.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Premio = prezzo A ÷ (prezzo H × HKD/CNY) − 1. Entrambe le gambe sono prezzi realmente pagati — nessun aggiustamento —, perché una serie rettificata all'indietro gonfia i prezzi recenti e due mercati rettificati separatamente non sono confrontabili. Il cambio è un cambio medio da un servizio pubblico di quotazioni. Alcuni servizi mostrano lo stesso divario al contrario — H contro A, in negativo —: è il reciproco di questa cifra, non un altro prezzo.</value></data>
   <data name="AhPremiumFetched"><value>{0} coppie · {1} mesi · più alto {2} {3} · ultimo in classifica {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Lettura del cambio (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>Il cambio non è arrivato, quindi nessun premio può essere calcolato.</value></data>

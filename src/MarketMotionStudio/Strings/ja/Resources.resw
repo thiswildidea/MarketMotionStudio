@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} 組の A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>組</value></data>
   <data name="AhPremiumCount"><value>本土と香港の両方に上場する有名企業です。期間を長く取るほど残る組は減ります——香港上場が 2 年に満たない組は外れます。各フレームにはプレミアムの高い {0} 組を表示します。</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>プレミアム = A 株価 ÷（H 株価 × 香港ドル/人民元）− 1。両方とも実際に売買された価格を使い、調整はかけません——後方修正した系列は直近の価格を膨らませ、別々に調整した二つの市場は比べられないからです。為替は公開相場サービスの中値です。</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>プレミアム = A 株価 ÷（H 株価 × 香港ドル/人民元）− 1。両方とも実際に売買された価格を使い、調整はかけません——後方修正した系列は直近の価格を膨らませ、別々に調整した二つの市場は比べられないからです。為替は公開相場サービスの中値です。同じ差を逆向き（H 対 A、マイナス表記）で出す行情サイトもありますが、それはこの数字の逆数であって、別の価格ではありません。</value></data>
   <data name="AhPremiumFetched"><value>{0} 組 · {1} か月 · 最高 {2} {3} · 最下位 {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>為替（香港ドル/人民元）を読み込んでいます …</value></data>
   <data name="AhPremiumNoRate"><value>為替が取得できなかったため、プレミアムを計算できません。</value></data>

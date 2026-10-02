@@ -90,6 +90,7 @@ kapitalizacji; kolejność zmienia się do ostatniej klatki. Próbkowanie miesi�
 
 
 
+
 ## Premia A/H
 
 O ile droższe jest notowanie kontynentalne spółki od jej notowania w Hongkongu — dla spółek
@@ -100,6 +101,10 @@ notowanych po obu stronach, miesiąc po miesiącu, jako słupki, które się wyp
   **nieskorygowane**. Seria korygowana wstecz zawyża ostatnie kursy, a dwóch rynków korygowanych
   osobno nie da się porównać — akcja A ICBC kosztuje 8,28 na ekranie, a skorygowana seria podaje
   13,34, zamieniając premię +26% w +245%.
+- **Tę samą różnicę zapisuje się w obie strony.** Ta strona podaje A do H, czyli formę przyjętą w
+  branży: +194% znaczy, że akcja kontynentalna kosztuje prawie trzy razy tyle co hongkońska.
+  Niektóre serwisy pokazują tę samą liczbę odwrotnie (溢价(H/A)) i dla 新华制药 dają −66% tego
+  samego dnia. To ten sam fakt (1 ÷ (1 − 0,66) − 1 = 1,94), a nie inny kurs ani błąd.
 - **Rysowane jest piętnaście najdroższych**, więc słupki rosną w prawo — nawet piętnasta miała
   ponad dwadzieścia procent. Tylko dwie z sześćdziesięciu dziewięciu idą w drugą stronę, ich akcje
   H ponad akcjami A, i obie stoją na końcu listy, poza kadrem.

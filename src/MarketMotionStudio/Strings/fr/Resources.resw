@@ -694,7 +694,7 @@
   <data name="AhPremiumListLabel"><value>{0} paires A+H</value></data>
   <data name="AhPremiumUnitPairs"><value>paires</value></data>
   <data name="AhPremiumCount"><value>Des sociétés connues cotées des deux côtés : actions A sur le continent, actions H à Hong Kong. Plus la période est longue, moins il reste de paires — une paire dont la cotation à Hong Kong a moins de deux ans est écartée. Chaque image montre les {0} à prime la plus élevée.</value></data>
-  <data name="AhPremiumMethodNote.Text"><value>Prime = cours A ÷ (cours H × HKD/CNY) − 1. Les deux jambes sont des cours réellement payés — sans ajustement —, car une série ajustée vers l'arrière gonfle les cours récents et deux marchés ajustés séparément ne se comparent pas. Le taux est un taux moyen d'un service de cotation public.</value></data>
+  <data name="AhPremiumMethodNote.Text"><value>Prime = cours A ÷ (cours H × HKD/CNY) − 1. Les deux jambes sont des cours réellement payés — sans ajustement —, car une série ajustée vers l'arrière gonfle les cours récents et deux marchés ajustés séparément ne se comparent pas. Le taux est un taux moyen d'un service de cotation public. Certains services donnent le même écart à l'envers — H contre A, en négatif —, soit l'inverse de ce chiffre, pas un autre cours.</value></data>
   <data name="AhPremiumFetched"><value>{0} paires · {1} mois · plus forte {2} {3} · dernière du classement {4} {5}</value></data>
   <data name="AhPremiumReadingRate"><value>Lecture du taux de change (HKD/CNY) …</value></data>
   <data name="AhPremiumNoRate"><value>Le taux de change n'est pas revenu : aucune prime ne peut être calculée.</value></data>

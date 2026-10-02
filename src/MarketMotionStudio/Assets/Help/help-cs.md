@@ -89,6 +89,7 @@ kapitalizace; pořadí se mění až do posledního snímku. Vzorkování po mě
 
 
 
+
 ## Prémie A/H
 
 O kolik je kontinentální kotace společnosti dražší než její hongkongská — u společností
@@ -98,6 +99,10 @@ kotovaných na obou stranách, měsíc po měsíci, jako pruhy, které se předh
   zaplacené ve stejný okamžik, a proto tato stránka jako jediná načítá **neupravené** kurzy. Zpětně
   upravená řada nafukuje nedávné kurzy a dva trhy upravené odděleně srovnávat nelze — akcie A ICBC
   stojí na obrazovce 8,28 a upravená řada hlásí 13,34, čímž se prémie +26 % změní na +245 %.
+- **Stejný rozdíl se píše dvěma směry.** Tato stránka uvádí A vůči H, tedy obvyklou formu: +194 %
+  znamená, že kontinentální akcie stojí téměř třikrát více než hongkongská. Některé služby ukazují
+  stejné číslo obráceně (溢价(H/A)) a pro 新华制药 dají týž den −66 %. Je to stejný fakt
+  (1 ÷ (1 − 0,66) − 1 = 1,94), ne jiný kurz ani chyba.
 - **Kreslí se patnáct nejdražších**, takže pruhy rostou doprava — i patnáctá měla přes dvacet
   procent. Jen dva ze šedesáti devíti jdou opačně, jejich akcie H nad akciemi A, a oba stojí na
   konci seznamu, kam obraz nedosáhne.
