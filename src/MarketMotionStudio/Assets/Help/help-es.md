@@ -87,6 +87,32 @@ capitalización, con el orden cambiando hasta el último fotograma. Muestreo men
   Hong Kong y Nueva York mantienen un grupo fijo, porque ninguna clasificación accesible a esta
   aplicación les sirve.
 
+
+
+
+## Prima A/H
+
+Cuánto más cara es la cotización continental de una compañía que la de Hong Kong, para las
+compañías que cotizan en ambos lados: mes a mes, en barras que se adelantan.
+
+- **Prima = precio A ÷ (precio H × HKD/CNY) − 1.** Aquí nada se calcula: las dos partes son precios
+  realmente pagados en el mismo instante, y por eso esta es la única página que toma precios **sin
+  ajustar**. Una serie ajustada hacia atrás infla los precios recientes, y dos mercados ajustados
+  por separado no son comparables: la acción A de ICBC marca 8,28 en pantalla y la serie ajustada
+  declara 13,34, con lo que una prima del +26% pasa a +245%.
+- **El fotograma dibuja las quince más caras**, así que las barras crecen hacia la derecha:/n  incluso la decimoquinta superaba el veinte por ciento. Solo dos de las sesenta y nueve van al
+  revés, con la acción H por encima de la A, y ambas quedan al final de la lista, fuera de cuadro.
+- **Cuanto más largo el periodo, menos compañías quedan.** Hay sesenta y nueve dobles cotizaciones
+  conocidas como candidatas, pero solo se dibuja la pareja cuyas dos partes cubren todo el periodo:
+  una cotización en Hong Kong de menos de dos años se descarta.
+- **Muestreo mensual.** «El más largo» son unos nueve años, y el límite es la serie del tipo de
+  cambio, que solo llega a 2016. Las tres partes cierran el mes en días distintos, así que se agrupa
+  por mes natural y se toma el último precio del mes, en vez de intersecar por fecha.
+- **La lista es interna.** Ninguna de las dos fuentes responde a «qué cotizaciones continentales
+  tienen también una en Hong Kong». Lo que sí se puede es comprobarla: cada pareja se releyó de la
+  fuente el 2026-10-02, y 海通证券 es lo que esa comprobación eliminó (acciones H excluidas de
+  cotización tras la fusión con 国泰海通).
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

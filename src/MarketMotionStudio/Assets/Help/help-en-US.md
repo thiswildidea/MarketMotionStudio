@@ -88,6 +88,35 @@ order changing to the last frame. Sampled monthly.
   and a board of mixed currencies means nothing. Hong Kong and New York keep a fixed field, because
   no ranking this app can reach serves them.
 
+
+
+
+## AH premium
+
+How much more a company's mainland listing costs than its Hong Kong one, for the firms
+listed on both sides — month by month, as bars that overtake one another.
+
+- **Premium = A price ÷ (H price × HKD/CNY) − 1.** Nothing here is derived: both legs are prices
+  actually paid at the same moment, which is why this is the one page that must fetch
+  **unadjusted** prices. A backward-adjusted series inflates recent prices, and two markets
+  adjusted separately cannot be compared — ICBC's A share sells at 8.28 on the screen and the
+  adjusted series reports 13.34, which turns a +26% premium into +245%.
+- **The frame draws the fifteen dearest**, so the bars grow to the right — even the fifteenth
+  carried a premium above twenty per cent. Only two of the sixty-nine go the other way, their H
+  shares above their A shares, and both sit at the bottom of the list, past where the frame looks.
+- **The longer the span, the fewer companies qualify.** Sixty-nine well-known dual listings are
+  candidates, but only a pair with both legs covering the whole span is drawn: one whose Hong Kong
+  listing is under two years old drops out. So "past 3 years" carries more pairs than "longest",
+  and the count in the status line is the count on the frame.
+- **Sampled monthly, not daily.** "Longest" is about nine years, and the limit is the exchange
+  rate series, which reaches back to 2016 only. The three legs close their months on different
+  days, so they are grouped by calendar month and the month's last print is taken, rather than
+  intersected on the date itself.
+- **The list is built in.** Neither source answers "which mainland listings also have a Hong Kong
+  listing", so the pairs are written down — and checkable: every one was read back from the quote
+  endpoint on 2026-10-02, and 海通证券 is what that check removed, its H shares delisted after the
+  merger into 国泰海通. Kept, it would have been a lane that stayed empty for the whole video.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

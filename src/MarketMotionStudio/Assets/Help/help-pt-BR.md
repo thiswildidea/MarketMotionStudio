@@ -87,6 +87,32 @@ mercado, com a ordem mudando até o último quadro. Amostragem mensal.
   Hong Kong e Nova York mantêm um grupo fixo, porque nenhuma classificação acessível a este
   aplicativo os atende.
 
+
+
+
+## Prêmio A/H
+
+Quanto mais cara é a cotação continental de uma companhia do que a de Hong Kong, para as
+companhias cotadas dos dois lados — mês a mês, em barras que se ultrapassam.
+
+- **Prêmio = preço A ÷ (preço H × HKD/CNY) − 1.** Nada aqui é calculado: as duas pontas são preços
+  realmente pagos no mesmo instante, e é por isso que esta é a única página que busca preços **sem
+  ajuste**. Uma série ajustada para trás infla os preços recentes, e dois mercados ajustados
+  separadamente não são comparáveis — a ação A do ICBC aparece a 8,28 na tela e a série ajustada
+  informa 13,34, transformando um prêmio de +26% em +245%.
+- **O quadro desenha as quinze mais caras**, então as barras crescem para a direita — até a
+  décima quinta passava de vinte por cento. Só duas das sessenta e nove vão ao contrário, com a ação
+  H acima da A, e ambas ficam no fim da lista, fora do quadro.
+- **Quanto maior o período, menos companhias entram.** São sessenta e nove duplas cotações
+  conhecidas como candidatas, mas só é desenhado o par cujas duas pontas cobrem todo o período: uma
+  cotação em Hong Kong com menos de dois anos fica de fora.
+- **Amostragem mensal.** O «mais longo» tem cerca de nove anos, e o limite é a série do câmbio, que
+  só chega a 2016. As três pontas fecham o mês em dias diferentes, então agrupa-se por mês
+  calendário e toma-se o último preço do mês, em vez de cruzar pela data.
+- **A lista é interna.** Nenhuma das duas fontes responde «quais cotações continentais também têm
+  uma em Hong Kong». Em compensação, ela é conferível: cada par foi relido da fonte em 2026-10-02, e
+  海通证券 foi o que essa conferência removeu (ações H deslistadas após a fusão no 国泰海通).
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

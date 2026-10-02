@@ -283,6 +283,33 @@ public sealed class TencentKline(HttpClient http)
         return await FetchCandlesAsync(code, period, start, end, count, cancellation);
     }
 
+    /// <summary>
+    /// Bars as they were actually bought and sold — no adjustment of any kind.
+    ///
+    /// The rest of this class hands back a *ratio* series: `qfq` or `hfq` is what makes a
+    /// decade of returns comparable to itself. That is exactly what makes it useless for
+    /// comparing **two listings against each other**, which is what the AH page does. The
+    /// backward-adjusted series anchors the earliest price and lets every later one grow, so
+    /// ICBC's A share comes back at 13.34 when the price on the screen was 8.28 — and a ratio
+    /// built from two such series reported a 245% premium on a stock that trades at 26%.
+    ///
+    /// Empty adjustment at the general endpoint is what returns the plain block: the code in
+    /// `CandlesFromAsync` asks for `adjustment + period`, so an empty adjustment asks for
+    /// `month`, which is the price that was paid. `hkfqkline` cannot do this — an empty
+    /// adjustment there answers with an empty list — so both legs of a cross-market comparison
+    /// come through here, where one code path serves A shares, H shares and a currency alike.
+    /// </summary>
+    public async Task<List<CandleBar>> RawBarsAsync(
+        string code, string period, DateOnly start, DateOnly end, int count, CancellationToken cancellation)
+    {
+        if (start > end)
+        {
+            throw new ArgumentException("The start date must fall on or before the end date.", nameof(start));
+        }
+
+        return await CandlesFromAsync(Endpoint, string.Empty, code, period, start, end, count, cancellation);
+    }
+
     private async Task<List<CandleBar>> FetchCandlesAsync(
         string code, string period, DateOnly start, DateOnly end, int count, CancellationToken cancellation)
     {

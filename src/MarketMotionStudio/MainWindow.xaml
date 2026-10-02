@@ -188,6 +188,14 @@
                 <mux:NavigationViewItem x:Name="NavMarketCap" x:Uid="NavMarketCap" Tag="MarketCap">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8CB;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Beside the market-cap board, because both rank companies rather than days:
+                     that one asks which firm is largest, this one asks which firm's mainland
+                     listing costs the most more than its Hong Kong one. Two readings of one
+                     market's structure, and the only page here that needs a second market to
+                     mean anything at all. -->
+                <mux:NavigationViewItem x:Name="NavAhPremium" x:Uid="NavAhPremium" Tag="AhPremium">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8AB;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

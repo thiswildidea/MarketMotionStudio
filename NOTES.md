@@ -4,8 +4,8 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-10-01 (after the ninth page, the market-cap board's month wording, and 1.0.3.0;
-see the end).
+Last reviewed: 2026-10-02 (after the tenth page, the A+H pairs and what they cost to compare; see
+the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -927,10 +927,10 @@ never sent to Partner Center, so its entry in the CHANGELOG — page navigation,
 basis across all three markets — describes something no user has. 1.0.3.0 carries it. If a
 1.0.2.0 upload ever happens, the next number has to clear 1.0.3.0.
 
-**The Store gallery is two pages short.** `tools/store-screenshots.py` walks the seven pages that
-existed when it was written, and the listing copy — bumped to nine at the user's instruction, ahead
-of the release that carries them — names all nine in all fourteen languages. Capturing the candle
-page and the market-cap board is what closes it; nothing else about the listing is owed.
+**The Store gallery is three pages short.** `tools/store-screenshots.py` walks the seven pages that
+existed when it was written, and the listing copy — bumped to ten at the user's instruction, ahead
+of the release that carries them — names all ten in all fourteen languages. Capturing the candle
+page, the market-cap board and the A+H page is what closes it; nothing else about the listing is owed.
 
 **And the copy now describes a build nobody has.** The market-cap board is unreleased: the
 `artifacts/` package is 1.0.3.0 and carries eight pages, so the listing and the newest package
@@ -1074,3 +1074,105 @@ eye — the marketplace board's screenshot, not a re-run of `verify-*` for the r
 wording is now checked on the market-cap side only, and by source rather than by pixels: the line is
 drawn into the preview surface, so there is no UIA node to read and no text in a screenshot to
 assert on.
+
+## The A+H page: what the list is, and what it owes
+
+**The field, as measured on 2026-09-30** — the month every pair last has a settled close for. Premium
+is `A ÷ (H × HKD/CNY) − 1`, computed from **unadjusted** prices on both legs; the source was read
+again for every row here, and all sixty-nine answered. Kept because these codes are literals in
+`AhPremium.cs`, and a literal nobody can re-check is a literal that rots — **and one already did**:
+海通证券 was in the list when the page was designed, and its H shares were delisted after the merger
+into 国泰海通, so the field is seventy minus one rather than seventy.
+
+| pair | company | premium | months |
+|---|---|---|---|
+| `sz000756` / `hk00719` | 新华制药 | +194.0% | 123 |
+| `sh601238` / `hk02238` | 广汽集团 | +191.0% | 123 |
+| `sh601992` / `hk02009` | 金隅集团 | +165.8% | 123 |
+| `sh601991` / `hk00991` | 大唐发电 | +132.8% | 123 |
+| `sh601788` / `hk06178` | 光大证券 | +127.5% | 116 |
+| `sh601633` / `hk02333` | 长城汽车 | +122.5% | 123 |
+| `sh601618` / `hk01618` | 中国中冶 | +120.3% | 123 |
+| `sz000166` / `hk06806` | 申万宏源 | +112.8% | 84 |
+| `sh601800` / `hk01800` | 中国交建 | +106.4% | 123 |
+| `sz000898` / `hk00347` | 鞍钢股份 | +105.3% | 123 |
+| `sh600188` / `hk01171` | 兖矿能源 | +98.6% | 123 |
+| `sh600029` / `hk01055` | 南方航空 | +90.7% | 123 |
+| `sh601881` / `hk06881` | 中国银河 | +89.0% | 111 |
+| `sh600808` / `hk00323` | 马钢股份 | +82.0% | 123 |
+| `sz000002` / `hk02202` | 万科A | +78.8% | 117 |
+| `sh600958` / `hk03958` | 东方证券 | +77.4% | 117 |
+| `sh601111` / `hk00753` | 中国国航 | +75.2% | 123 |
+| `sh600332` / `hk00874` | 白云山 | +73.5% | 121 |
+| `sh601607` / `hk02607` | 上海医药 | +71.4% | 123 |
+| `sz000513` / `hk01513` | 丽珠集团 | +69.5% | 123 |
+| `sh601319` / `hk01339` | 中国人保 | +66.5% | 89 |
+| `sz300759` / `hk03759` | 康龙化成 | +65.5% | 81 |
+| `sh600938` / `hk00883` | 中国海油 | +63.3% | 54 |
+| `sh601186` / `hk01186` | 中国铁建 | +61.8% | 123 |
+| `sz003816` / `hk01816` | 中国广核 | +60.5% | 81 |
+| `sh601390` / `hk00390` | 中国中铁 | +57.4% | 121 |
+| `sh601898` / `hk01898` | 中煤能源 | +56.1% | 123 |
+| `sh601628` / `hk02628` | 中国人寿 | +52.8% | 123 |
+| `sh600196` / `hk02196` | 复星医药 | +52.3% | 123 |
+| `sh600115` / `hk00670` | 中国东航 | +51.4% | 123 |
+| `sh600362` / `hk00358` | 江西铜业 | +48.7% | 123 |
+| `sh601336` / `hk01336` | 新华保险 | +46.5% | 123 |
+| `sz300347` / `hk03347` | 泰格医药 | +45.9% | 74 |
+| `sh600028` / `hk00386` | 中国石化 | +39.9% | 123 |
+| `sh600999` / `hk06099` | 招商证券 | +37.6% | 114 |
+| `sz000776` / `hk01776` | 广发证券 | +36.8% | 123 |
+| `sh600011` / `hk00902` | 华能国际 | +36.6% | 123 |
+| `sh600027` / `hk01071` | 华电国际 | +36.4% | 123 |
+| `sh601766` / `hk01766` | 中国中车 | +36.0% | 123 |
+| `sh601857` / `hk00857` | 中国石油 | +35.8% | 123 |
+| `sh601600` / `hk02600` | 中国铝业 | +34.7% | 119 |
+| `sh601939` / `hk00939` | 建设银行 | +31.9% | 123 |
+| `sh600026` / `hk01138` | 中远海能 | +31.6% | 123 |
+| `sh601211` / `hk02611` | 国泰海通 | +31.2% | 108 |
+| `sh603993` / `hk03993` | 洛阳钼业 | +30.5% | 123 |
+| `sh601988` / `hk03988` | 中国银行 | +29.5% | 123 |
+| `sh601601` / `hk02601` | 中国太保 | +29.2% | 123 |
+| `sz002594` / `hk01211` | 比亚迪 | +29.0% | 123 |
+| `sh601888` / `hk01880` | 中国中免 | +28.7% | 50 |
+| `sh600585` / `hk00914` | 海螺水泥 | +26.8% | 123 |
+| `sh601088` / `hk01088` | 中国神华 | +26.2% | 121 |
+| `sh601818` / `hk06818` | 光大银行 | +25.8% | 123 |
+| `sh601398` / `hk01398` | 工商银行 | +25.7% | 123 |
+| `sh601688` / `hk06886` | 华泰证券 | +25.1% | 123 |
+| `sh601998` / `hk00998` | 中信银行 | +24.2% | 123 |
+| `sh600030` / `hk06030` | 中信证券 | +24.1% | 123 |
+| `sh601288` / `hk01288` | 农业银行 | +23.1% | 123 |
+| `sh600016` / `hk01988` | 民生银行 | +18.6% | 123 |
+| `sh601318` / `hk02318` | 中国平安 | +18.3% | 123 |
+| `sh600690` / `hk06690` | 海尔智家 | +18.1% | 70 |
+| `sh601919` / `hk01919` | 中远海控 | +15.8% | 122 |
+| `sh601658` / `hk01658` | 邮储银行 | +15.4% | 81 |
+| `sh600660` / `hk03606` | 福耀玻璃 | +14.8% | 123 |
+| `sh601328` / `hk03328` | 交通银行 | +8.5% | 123 |
+| `sh601899` / `hk02899` | 紫金矿业 | +8.2% | 123 |
+| `sz000338` / `hk02338` | 潍柴动力 | +2.3% | 123 |
+| `sz000333` / `hk00300` | 美的集团 | +2.2% | 25 |
+| `sh600036` / `hk03968` | 招商银行 | -6.2% | 123 |
+| `sh603259` / `hk02359` | 药明康德 | -9.0% | 88 |
+
+**The trap this page is built around.** Both legs must come from the *unadjusted* series. The rest of
+this app fetches `qfq`/`hfq` on purpose — a return is a ratio and adjustment is what makes a decade
+comparable to itself — but a ratio between two markets adjusted separately is a ratio between two
+different scales. ICBC's A share sells at 8.28 and the backward-adjusted series reports 13.34, so the
+first version of this page's own probe reported a +245% premium on a stock trading at +26%, and the
+same probe read 招商银行 at +404%. `TencentKline.RawBarsAsync` is the empty-adjustment call that
+fixes it, and it exists for this page. **An empty adjustment at the general endpoint returns the plain
+block**; `hkfqkline` cannot do it, answering an empty adjustment with `data: []`.
+
+**The axis is a month, and it has to be.** The A share's month closes on its last trading day, the H
+share's on the last business day, the rate's on the last banking day — three different dates in most
+months. Intersecting on the date found 94 months where there are 123. Grouped by year and month, and
+dated on the month's own last day, they line up. This is the third time this project has paid for the
+same lesson (the market-cap board reported 139 periods for 120 months).
+
+**Owed on this page:** the English interface has not been driven through it, and no export has been
+run at any format — the preview and the encoder share a renderer, so an export is the other half of
+the verification. The custom span has not been exercised. The frame has been read at two spans
+(three years: 68 pairs, 36 months; the longest: 52 pairs, 123 months) plus one independent
+recomputation of the dearest premium, which matched the page to 0.04 of a percentage point.

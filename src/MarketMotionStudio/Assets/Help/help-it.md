@@ -87,6 +87,33 @@ capitalizzazione; l'ordine cambia fino all'ultimo fotogramma. Campionamento mens
   Hong Kong e New York tengono un campo fisso, perché nessuna classifica raggiungibile da questa
   applicazione li serve.
 
+
+
+
+## Premio A/H
+
+Quanto costa in più la quotazione continentale di una società rispetto a quella di Hong Kong,
+per le società quotate su entrambi i lati — mese per mese, come barre che si sorpassano.
+
+- **Premio = prezzo A ÷ (prezzo H × HKD/CNY) − 1.** Nulla è derivato: entrambe le gambe sono prezzi
+  realmente pagati nello stesso istante, ed è per questo che questa è l'unica pagina che prende
+  prezzi **non rettificati**. Una serie rettificata all'indietro gonfia i prezzi recenti, e due
+  mercati rettificati separatamente non sono confrontabili — l'azione A di ICBC quota 8,28 sullo
+  schermo e la serie rettificata ne dichiara 13,34: un premio del +26% diventa +245%.
+- **Il fotogramma disegna le quindici più care**, quindi le barre crescono verso destra — anche
+  la quindicesima superava il venti per cento. Solo due delle sessantanove vanno al contrario, con
+  l'azione H sopra la A, ed entrambe stanno in fondo alla lista, fuori campo.
+- **Più lungo il periodo, meno società restano.** Le candidate sono sessantanove doppie quotazioni
+  note, ma viene disegnata solo una coppia con entrambe le gambe sull'intero periodo: una
+  quotazione a Hong Kong da meno di due anni viene esclusa.
+- **Campionamento mensile.** «Il più lungo» è circa nove anni, e il limite è la serie del cambio, che
+  risale solo al 2016. Le tre gambe chiudono il mese in giorni diversi: si raggruppa per mese di
+  calendario e si prende l'ultimo prezzo del mese, invece di intersecare sulla data.
+- **L'elenco è integrato.** Nessuna delle due fonti risponde a «quali quotazioni continentali hanno
+  anche una quotazione a Hong Kong». In compenso è verificabile: ogni coppia è stata riletta dalla
+  fonte il 2026-10-02, e 海通证券 è ciò che quel controllo ha rimosso (azioni H delistate dopo la
+  fusione in 国泰海通).
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

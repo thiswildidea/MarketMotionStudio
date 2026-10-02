@@ -88,6 +88,34 @@ l'ordre changeant jusqu'à la dernière image. Échantillonnage mensuel.
   pas la même. Hong Kong et New York gardent un plateau fixe, faute de classement accessible à
   cette application.
 
+
+
+
+## Prime A/H
+
+De combien la cotation continentale d'une société dépasse sa cotation hongkongaise, pour les
+sociétés cotées des deux côtés — mois après mois, en barres qui se dépassent.
+
+- **Prime = cours A ÷ (cours H × HKD/CNY) − 1.** Rien n'est calculé ici : les deux jambes sont des
+  cours réellement payés au même instant, et c'est pourquoi cette page est la seule à récupérer des
+  cours **non ajustés**. Une série ajustée vers l'arrière gonfle les cours récents, et deux marchés
+  ajustés séparément ne se comparent pas — l'action A d'ICBC s'affiche à 8,28 et la série ajustée
+  annonce 13,34, ce qui transforme une prime de +26 % en +245 %.
+- **L'image trace les quinze plus chères**, donc les barres poussent vers la droite — la
+  quinzième portait encore plus de vingt pour cent. Seules deux des soixante-neuf vont dans l'autre
+  sens, leur action H au-dessus de l'action A, et toutes deux finissent en bas de liste, hors champ.
+- **Plus la période est longue, moins de sociétés sont retenues.** Soixante-neuf doubles cotations
+  connues sont candidates, mais seules celles dont les deux jambes couvrent toute la période sont
+  tracées : une cotation hongkongaise de moins de deux ans est écartée.
+- **Échantillonnage mensuel.** « Le plus long » fait environ neuf ans, la limite venant de la série
+  de change qui ne remonte qu'à 2016. Les trois jambes closent leur mois à des dates différentes :
+  on regroupe par mois calendaire et on prend le dernier cours du mois, plutôt que d'intersecter
+  sur la date.
+- **La liste est intégrée.** Aucune des deux sources ne répond à « quelles cotations continentales
+  ont aussi une cotation à Hong Kong ». En revanche elle est vérifiable : chaque paire a été relue
+  depuis la source le 2026-10-02, et 海通证券 est ce que cette vérification a retiré (actions H
+  radiées après la fusion dans 国泰海通).
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

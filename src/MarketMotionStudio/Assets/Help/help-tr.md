@@ -87,6 +87,32 @@ sıralama son kareye kadar değişir. Örnekleme aylıktır.
   Hong Kong ve New York sabit kadro kullanır, çünkü bu uygulamanın erişebildiği bir sıralama
   onlara hizmet etmiyor.
 
+
+
+
+## A/H primi
+
+İki tarafta da kote olan şirketler için, karadaki kotasyonun Hong Kong kotasyonundan ne kadar
+pahalı olduğu — ay ay, birbirini geçen çubuklar olarak.
+
+- **Prim = A fiyatı ÷ (H fiyatı × HKD/CNY) − 1.** Burada hiçbir şey türetilmiyor: iki bacak da aynı
+  anda gerçekten ödenen fiyatlar, bu yüzden yalnızca bu sayfa **düzeltilmemiş** fiyat çeker. Geriye
+  dönük düzeltilmiş seri son fiyatları şişirir ve ayrı ayrı düzeltilmiş iki piyasa
+  karşılaştırılamaz — ICBC'nin A hissesi ekranda 8,28 iken düzeltilmiş seri 13,34 der: +26%'lık
+  prim +245% olur.
+- **Çizilen, primi en yüksek on beş çift**, bu yüzden çubuklar sağa büyür — on beşinci bile
+  yüzde yirmiyi aşıyordu. Altmış dokuz çiftin yalnızca ikisi ters yönde, H hissesi A hissesinin
+  üstünde, ve ikisi de listenin sonunda, karenin ulaşmadığı yerde.
+- **Dönem uzadıkça giren şirket azalır.** Aday, tanıdık altmış dokuz çift kotasyondur; ancak iki
+  bacağı da dönemin tamamını kapsayan çift çizilir: Hong Kong kotesi iki yıldan genç olan düşer.
+- **Örnekleme aylık.** "En uzun" yaklaşık dokuz yıldır ve sınır, yalnızca 2016'ya uzanan kur
+  serisidir. Üç bacak ayı farklı günlerde kapatır; bu yüzden tarihe göre kesişim alınmaz, takvim
+  ayına göre gruplanır ve ayın son fiyatı alınır.
+- **Liste gömülüdür.** İki kaynağın hiçbiri "hangi karadaki kotasyonun Hong Kong'da da kotasyonu
+  var" sorusunu yanıtlamaz. Buna karşılık doğrulanabilir: her çift 2026-10-02'de kaynaktan yeniden
+  okundu ve 海通证券 tam da bu kontrolün çıkardığı şirkettir (国泰海通 birleşmesinden sonra H
+  hisseleri işlemden kaldırıldı).
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

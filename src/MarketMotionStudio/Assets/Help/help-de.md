@@ -88,6 +88,35 @@ die Reihenfolge ändert sich bis zum letzten Bild. Monatlich abgetastet.
   dasselbe Geld. Hongkong und New York behalten ein festes Feld, weil keine für diese App
   erreichbare Rangliste sie bedient.
 
+
+
+
+## A/H-Prämie
+
+Wie viel teurer die Festlandnotierung eines Unternehmens ist als seine Hongkonger — für die
+Firmen, die auf beiden Seiten notieren, Monat für Monat als Balken, die sich überholen.
+
+- **Prämie = A-Kurs ÷ (H-Kurs × HKD/CNY) − 1.** Nichts davon ist abgeleitet: beide Seiten sind
+  tatsächlich gezahlte Kurse zum selben Zeitpunkt, weshalb diese Seite als einzige
+  **unbereinigte** Kurse holt. Eine rückwärts bereinigte Reihe bläht junge Kurse auf, und zwei
+  getrennt bereinigte Märkte sind nicht vergleichbar — ICBCs A-Aktie steht mit 8,28 auf dem
+  Schirm, die bereinigte Reihe meldet 13,34, und aus +26 % Prämie werden +245 %.
+- **Gezeichnet werden die fünfzehn teuersten**, also wachsen die Balken fast alle nach rechts —
+  selbst der fünfzehnte lag über zwanzig Prozent. Nur zwei der neunundsechzig laufen andersherum,
+  ihre H-Aktien über den A-Aktien, und beide stehen am Ende der Liste, wohin das Bild nicht reicht.
+- **Je länger der Zeitraum, desto weniger Unternehmen qualifizieren sich.** Neunundsechzig
+  bekannte Doppelnotierungen stehen zur Wahl, gezeichnet wird aber nur ein Paar, dessen beide
+  Seiten den ganzen Zeitraum abdecken: wer in Hongkong seit unter zwei Jahren notiert, fällt
+  heraus.
+- **Monatlich abgetastet.** „Längste" sind etwa neun Jahre, und die Grenze ist die Kursreihe, die
+  nur bis 2016 zurückreicht. Die drei Seiten schließen ihre Monate an verschiedenen Tagen, also
+  wird nach Kalendermonat gruppiert und der letzte Kurs des Monats genommen, statt auf das Datum
+  zu schneiden.
+- **Die Liste ist eingebaut.** Keine der beiden Quellen beantwortet „welche Festlandnotierung hat
+  auch eine in Hongkong", also stehen die Paare im Programm — und sind prüfbar: jedes wurde am
+  2026-10-02 gegen die Kursquelle gelesen, und 海通证券 ist genau das, was diese Prüfung entfernt
+  hat (H-Aktien nach der Fusion mit 国泰海通 delistet).
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

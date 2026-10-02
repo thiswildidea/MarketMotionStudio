@@ -680,6 +680,7 @@ public sealed partial class MainWindow : Window
             "StockVolume" => typeof(StockVolumePage),
             "SectorRace" => typeof(SectorRacePage),
             "MarketCap" => typeof(MarketCapPage),
+            "AhPremium" => typeof(AhPremiumPage),
             "Matrix" => typeof(MonthlyMatrixPage),
             "GainCalendar" => typeof(GainCalendarPage),
             "DcaPlan" => typeof(DcaPlanPage),

@@ -87,6 +87,33 @@ kapitalizacji; kolejność zmienia się do ostatniej klatki. Próbkowanie miesi�
   pieniądz. Hongkong i Nowy Jork mają stałe grono, bo żaden dostępny tej aplikacji ranking ich nie
   obsługuje.
 
+
+
+
+## Premia A/H
+
+O ile droższe jest notowanie kontynentalne spółki od jej notowania w Hongkongu — dla spółek
+notowanych po obu stronach, miesiąc po miesiącu, jako słupki, które się wyprzedzają.
+
+- **Premia = kurs A ÷ (kurs H × HKD/CNY) − 1.** Nic tu nie jest wyliczane: obie nogi to kursy
+  faktycznie płacone w tym samym momencie, dlatego ta strona jako jedyna pobiera kursy
+  **nieskorygowane**. Seria korygowana wstecz zawyża ostatnie kursy, a dwóch rynków korygowanych
+  osobno nie da się porównać — akcja A ICBC kosztuje 8,28 na ekranie, a skorygowana seria podaje
+  13,34, zamieniając premię +26% w +245%.
+- **Rysowane jest piętnaście najdroższych**, więc słupki rosną w prawo — nawet piętnasta miała
+  ponad dwadzieścia procent. Tylko dwie z sześćdziesięciu dziewięciu idą w drugą stronę, ich akcje
+  H ponad akcjami A, i obie stoją na końcu listy, poza kadrem.
+- **Im dłuższy okres, tym mniej spółek się kwalifikuje.** Kandydatów jest sześćdziesiąt dziewięć
+  znanych podwójnych notowań, ale rysowana jest tylko para, której obie nogi pokrywają cały okres:
+  notowanie w Hongkongu młodsze niż dwa lata wypada.
+- **Próbkowanie miesięczne.** „Najdłuższy" to około dziewięciu lat, a granicą jest seria kursu
+  walutowego sięgająca tylko 2016 roku. Trzy nogi kończą miesiąc w różnych dniach, więc grupujemy po
+  miesiącu kalendarzowym i bierzemy ostatni kurs miesiąca, zamiast przecinać po dacie.
+- **Lista jest wbudowana.** Żadne z dwóch źródeł nie odpowiada na pytanie „które notowania
+  kontynentalne mają też notowanie w Hongkongu". Jest za to sprawdzalna: każdą parę odczytano
+  ponownie ze źródła 2026-10-02, a 海通证券 wypadło właśnie wtedy (akcje H wycofane po fuzji z
+  国泰海通).
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

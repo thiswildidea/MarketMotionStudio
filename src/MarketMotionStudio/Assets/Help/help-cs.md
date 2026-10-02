@@ -86,6 +86,31 @@ kapitalizace; pořadí se mění až do posledního snímku. Vzorkování po mě
   Hongkong a New York mají pevnou sestavu, protože jim žádný žebříček dostupný této aplikaci
   neposlouží.
 
+
+
+
+## Prémie A/H
+
+O kolik je kontinentální kotace společnosti dražší než její hongkongská — u společností
+kotovaných na obou stranách, měsíc po měsíci, jako pruhy, které se předhánějí.
+
+- **Prémie = kurz A ÷ (kurz H × HKD/CNY) − 1.** Nic se tu nepočítá: obě strany jsou kurzy skutečně
+  zaplacené ve stejný okamžik, a proto tato stránka jako jediná načítá **neupravené** kurzy. Zpětně
+  upravená řada nafukuje nedávné kurzy a dva trhy upravené odděleně srovnávat nelze — akcie A ICBC
+  stojí na obrazovce 8,28 a upravená řada hlásí 13,34, čímž se prémie +26 % změní na +245 %.
+- **Kreslí se patnáct nejdražších**, takže pruhy rostou doprava — i patnáctá měla přes dvacet
+  procent. Jen dva ze šedesáti devíti jdou opačně, jejich akcie H nad akciemi A, a oba stojí na
+  konci seznamu, kam obraz nedosáhne.
+- **Čím delší období, tím méně společností se vejde.** Kandidátů je šedesát devět známých dvojích
+  kotací, ale kreslí se jen pár, jehož obě strany pokrývají celé období: hongkongská kotace mladší
+  dvou let vypadne.
+- **Vzorkování po měsících.** „Nejdelší" je asi devět let a hranicí je řada kurzu, která sahá jen do
+  roku 2016. Tři strany uzavírají měsíc v různých dnech, proto se seskupuje po kalendářním měsíci a
+  bere se poslední kurz měsíce, místo protnutí podle data.
+- **Seznam je vestavěný.** Ani jeden zdroj neodpovídá na „které kontinentální kotace mají i tu
+  hongkongskou". Zato je ověřitelný: každý pár byl 2026-10-02 znovu přečten ze zdroje a 海通证券 je
+  to, co tato kontrola odstranila (akcie H vyřazeny po fúzi do 国泰海通).
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

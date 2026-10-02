@@ -12,7 +12,7 @@
 
 MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9:16 竖屏动画，专为抖音、视频号、快手等竖屏平台设计：选择市场与标的，应用自动抓取行情、生成动画，一键导出 H.264 MP4，开箱即发。
 
-九大图表页：  
+十大图表页：  
 • 市场成交额——全市场每日成交额的历史长卷（A股）  
 • 成交量与换手率——单只股票的量价齐观（A股/港股）  
 • 行业板块竞速——行业指数涨跌的赛跑动画  
@@ -22,6 +22,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 • 持仓收益——一次买入、持有至今的市值与回撤回放
 • K线——一只标的的日/周/月 K 线，四种画法，带均线与成交量副图
 • 市值榜竞速——一个市场市值最大的十五家公司按总市值赛跑，成员会随时间进出
+• AH 溢价——同一家公司在 A 股与 H 股的价格差，按月竞速
 
 支持A股、港股、美股三个市场，界面内置 14 种语言。
 
@@ -35,7 +36,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 - 一键生成 9:16 竖屏行情动画视频
 - 覆盖A股、港股、美股三大市场
-- 九种图表：成交额、量价、板块竞速、市值榜、收益矩阵、涨跌日历、定投、持仓、K线
+- 十种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、K线
 - 导出 H.264 MP4，可直接发布到短视频平台
 - 界面内置 14 种语言
 - 无账号、无遥测，数据留在你自己的电脑上
@@ -50,7 +51,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shorts、Reels 等直式平台設計：選擇市場與標的，應用程式自動抓取行情、生成動畫，一鍵匯出 H.264 MP4，開箱即發。
 
-九大圖表頁：  
+十大圖表頁：  
 • 市場成交額——全市場每日成交額的歷史長卷（陸股）  
 • 成交量與換手率——單一股票的量價齊觀（陸股/港股）  
 • 行業板塊競速——類股指數漲跌的賽跑動畫  
@@ -60,6 +61,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 • 持倉收益——一次買入、持有至今的市值與回撤回放
 • K線——一檔標的的日線/週線/月線，四種畫法，帶均線與成交量副圖
 • 市值榜競速——一個市場市值最大的十五家公司按總市值賽跑，成員會隨時間進出
+• AH 溢價——同一家公司在 A 股與 H 股的價格差，按月競速
 
 支援陸股、港股、美股三個市場，介面內建 14 種語言。
 
@@ -73,7 +75,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 - 一鍵生成 9:16 直式行情動畫影片
 - 涵蓋陸股、港股、美股三大市場
-- 九種圖表：成交額、量價、板塊競速、市值榜、收益矩陣、漲跌日曆、定期定額、持倉、K線
+- 十種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、K線
 - 匯出 H.264 MP4，可直接發布到短影音平台
 - 介面內建 14 種語言
 - 無帳號、無遙測，資料留在你自己的電腦上
@@ -88,7 +90,7 @@ Turn stock-market indicators into ready-to-post vertical animated videos.
 
 Market Motion Studio turns stock-market data into 9:16 vertical animations, built for vertical platforms like TikTok, Shorts and Reels: pick a market and a symbol, the app fetches the data, animates it, and exports an H.264 MP4 ready to post.
 
-Nine chart pages:  
+Ten chart pages:  
 • Market turnover — a historical reel of whole-market daily turnover (A-share)  
 • Volume & turnover rate — a single stock's price and volume together (A-share/Hong Kong)  
 • Sector race — sector indices racing up and down  
@@ -98,6 +100,7 @@ Nine chart pages:
 • Position replay — buy once, hold to today: market value and drawdown replayed day by day
 • Candles — one instrument's daily/weekly/monthly candles, four ways, with moving averages and a volume panel
 • Market cap race — one market's fifteen largest companies racing on total market value
+• AH premium — one company's two listings, priced against each other month by month
 
 Three markets: China A-share, Hong Kong, and US. The interface ships in 14 languages.
 
@@ -111,7 +114,7 @@ New in this version: an eighth chart page, Candles — one instrument's prices a
 
 - One-click 9:16 vertical market-animation videos
 - Three markets: China A-share, Hong Kong, and US
-- Nine charts: turnover, volume, sector race, market cap, return matrix, calendar, DCA, position replay, candles
+- Ten charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, candles
 - Exports H.264 MP4, ready for short-video platforms
 - Interface available in 14 languages
 - No account, no telemetry — your data stays on your computer
@@ -126,7 +129,7 @@ New in this version: an eighth chart page, Candles — one instrument's prices a
 
 Market Motion Studio は株式市場データを 9:16 の縦型アニメーションに変換する、TikTok・ショート動画・リール向けの Windows アプリです。市場と銘柄を選ぶだけで、アプリが自動で相場データを取得し、アニメーションを生成、H.264 MP4 で書き出します。
 
-9 つのチャートページ：  
+10 つのチャートページ：  
 • 市場の売買代金 — 全市場の売買代金の歴史ロングリール（中国A株）  
 • 出来高と回転率 — 一眼でわかる銘柄の量価（中国A株/香港）  
 • 業界セクター競争 — セクター指数の騰落レース  
@@ -136,6 +139,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 • 保有収益 — 一度買って保有し続けた時価総額とドローダウンを日々再生
 • ローソク足 — 1 銘柄の日足・週足・月足を4種類の描き方で。移動平均線と出来高パネル付き
 • 時価総額レース — 1 つの市場の時価総額上位 15 社が総額で競う
+• A/H プレミアム — 同一企業の A 株と H 株の価格差を月次で競走
 
 中国A株・香港・米国の 3 市場に対応。インターフェースは 14 言語を内蔵。
 
@@ -149,7 +153,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 - ワンクリックで 9:16 縦型の相場アニメーション動画を作成
 - 中国A株・香港・米国の 3 市場に対応
-- 9 種類のチャート：売買代金、量価、セクターレース、時価総額レース、リターンマトリクス、カレンダー、積立、保有収益、ローソク足
+- 10 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、ローソク足
 - H.264 MP4 で書き出し、ショート動画プラットフォームにそのまま投稿可能
 - インターフェースは 14 言語内蔵
 - アカウント不要・テレメトリなし — データはあなたの PC の中だけ
@@ -164,7 +168,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이션으로 바꿔주는 Windows 앱입니다. 틱톡, 쇼츠, 릴스 같은 세로형 플랫폼을 위해 설계되었으며, 시장과 종목만 선택하면 앱이 자동으로 시세를 가져오고 애니메이션을 만들어 H.264 MP4로 내보냅니다.
 
-9가지 차트 페이지:  
+10가지 차트 페이지:  
 • 시장 거래대금 — 전체 시장 일별 거래대금의 히스토리 릴 (중국 A주식)  
 • 거래량과 회전율 — 종목의 가격과 거래량을 한 화면에 (중국 A주식/홍콩)  
 • 업종 경주 — 업종 지수의 등락 레이스  
@@ -174,6 +178,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 • 보유 수익 — 한 번 사서 오늘까지: 시가총액과 낙폭을 하루씩 재생
 • 캔들 — 하나의 종목을 일/주/월 단위로, 네 가지 방식으로. 이동평균선과 거래량 패널 포함
 • 시가총액 레이스 — 한 시장의 시가총액 상위 15개 기업의 경주
+• A/H 프리미엄 — 같은 기업의 A주와 H주 가격 차이를 월 단위로 경주
 
 중국 A주식, 홍콩, 미국 3개 시장 지원. 인터페이스는 14개 언어 내장.
 
@@ -187,7 +192,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 - 원클릭으로 9:16 세로형 시장 애니메이션 영상 제작
 - 중국 A주식, 홍콩, 미국 3개 시장 지원
-- 9가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들
+- 10가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들
 - H.264 MP4로 내보내 숏폼 플랫폼에 바로 게시
 - 14개 언어 인터페이스 내장
 - 계정 없음, 텔레메트리 없음 — 데이터는 내 컴퓨터에만
@@ -202,7 +207,7 @@ Verwandeln Sie Marktindikatoren in direkt veröffentlichbare vertikale Animation
 
 Market Motion Studio macht aus Börsendaten 9:16-Animationen im Hochformat – gebaut für vertikale Plattformen wie TikTok, Shorts und Reels: Markt und Symbol wählen, die App ruft die Kurse ab, animiert sie und exportiert eine H.264-MP4, bereit zum Posten.
 
-Neun Diagrammseiten:  
+Zehn Diagrammseiten:  
 • Marktumsatz – ein historischer Reel des täglichen Gesamtmarktumsatzes (China A-Aktien)  
 • Volumen und Umschlag – Kurs und Volumen einer Aktie zusammen (China A/Hongkong)  
 • Sektor-Rennen – Branchenindizes im Auf und Ab im Rennen  
@@ -212,6 +217,7 @@ Neun Diagrammseiten:
 • Depotrendite – einmal gekauft, bis heute gehalten: Marktwert und Drawdown Tag für Tag
 • Kerzen — ein Instrument täglich, wöchentlich oder monatlich, in vier Darstellungen, mit Durchschnitten und Volumenpanel
 • Marktkapitalisierungs-Rennen – die fünfzehn größten Unternehmen eines Marktes im Rennen nach Marktwert
+• A/H-Prämie – die beiden Notierungen eines Unternehmens, Monat für Monat gegeneinander
 
 Drei Märkte: China A-Aktien, Hongkong und USA. Die Oberfläche gibt es in 14 Sprachen.
 
@@ -225,7 +231,7 @@ Neu in dieser Version: eine achte Diagrammseite, Kerzen — die Kurse eines Inst
 
 - Mit einem Klick 9:16-Marktanimationsvideos im Hochformat
 - Drei Märkte: China A-Aktien, Hongkong und USA
-- Neun Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen
+- Zehn Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen
 - Export als H.264-MP4, fertig für Kurzvideo-Plattformen
 - Oberfläche in 14 Sprachen
 - Kein Konto, keine Telemetrie – Ihre Daten bleiben auf Ihrem Computer
@@ -240,7 +246,7 @@ Transformez les indicateurs de marché en vidéos animées verticales, prêtes �
 
 Market Motion Studio transforme les données boursières en animations 9:16 verticales, conçu pour les plateformes verticales comme TikTok, Shorts et Reels : choisissez un marché et un symbole, l'application récupère les cours, les anime et exporte un MP4 H.264 prêt à publier.
 
-Neuf pages de graphiques :  
+Dix pages de graphiques :  
 • Volume d'échanges du marché — un long format historique du volume quotidien de tout le marché (Chine A)  
 • Volume et rotation — le prix et le volume d'une action ensemble (Chine A/Hong Kong)  
 • Course de secteurs — les indices sectoriels qui montent et descendent en course  
@@ -250,6 +256,7 @@ Neuf pages de graphiques :
 • Rendement de position — acheté une fois, conservé jusqu'à aujourd'hui : valeur et drawdown rejoués jour après jour
 • Chandeliers — un instrument en quotidien, hebdomadaire ou mensuel, quatre tracés, avec moyennes mobiles et panneau de volume
 • Course des capitalisations — les quinze plus grandes sociétés d'un marché en course
+• Prime A/H — les deux cotations d'une société, comparées mois après mois
 
 Trois marchés : Chine A, Hong Kong et États-Unis. L'interface existe en 14 langues.
 
@@ -263,7 +270,7 @@ Nouveautés de cette version : une huitième page de graphiques, Chandeliers —
 
 - Vidéos d'animation de marché 9:16 verticales en un clic
 - Trois marchés : Chine A, Hong Kong et États-Unis
-- Neuf graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers
+- Dix graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers
 - Export MP4 H.264, prêt pour les plateformes de vidéos courtes
 - Interface disponible en 14 langues
 - Pas de compte, pas de télémétrie — vos données restent sur votre ordinateur
@@ -278,7 +285,7 @@ Trasforma gli indicatori di mercato in video animati verticali pronti da pubblic
 
 Market Motion Studio trasforma i dati di borsa in animazioni verticali 9:16, pensate per piattaforme verticali come TikTok, Shorts e Reels: scegli un mercato e un simbolo, l'app recupera i dati, li anima ed esporta un MP4 H.264 pronto da pubblicare.
 
-Nove pagine di grafici:  
+Dieci pagine di grafici:  
 • Volume degli scambi di mercato — una lunga carrellata storica del volume giornaliero di tutto il mercato (Cina A)  
 • Volume e rotazione — prezzo e volume di una azione insieme (Cina A/Hong Kong)  
 • Corsa dei settori — gli indici settoriali che salgono e scendono in gara  
@@ -288,6 +295,7 @@ Nove pagine di grafici:
 • Rendimento della posizione — comprato una volta, tenuto fino a oggi: valore e drawdown riprodotti giorno per giorno
 • Candele — uno strumento in giornaliero, settimanale o mensile, quattro tracciati, con medie mobili e pannello dei volumi
 • Corsa delle capitalizzazioni — le quindici maggiori società di un mercato in gara
+• Premio A/H — le due quotazioni di una società, confrontate mese per mese
 
 Tre mercati: Cina A, Hong Kong e Stati Uniti. L'interfaccia è disponibile in 14 lingue.
 
@@ -301,7 +309,7 @@ Novità di questa versione: un'ottava pagina di grafici, Candele — i prezzi di
 
 - Video di animazione di mercato verticali 9:16 con un clic
 - Tre mercati: Cina A, Hong Kong e Stati Uniti
-- Nove grafici: volume degli scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele
+- Dieci grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele
 - Esportazione MP4 H.264, pronta per le piattaforme di video brevi
 - Interfaccia disponibile in 14 lingue
 - Nessun account, nessuna telemetria — i tuoi dati restano sul tuo computer
@@ -316,7 +324,7 @@ Convierta los indicadores de mercado en vídeos animados verticales listos para 
 
 Market Motion Studio convierte los datos bursátiles en animaciones verticales 9:16, diseñado para plataformas verticales como TikTok, Shorts y Reels: elija un mercado y un símbolo, la app obtiene los datos, los anima y exporta un MP4 H.264 listo para publicar.
 
-Nueve páginas de gráficos:  
+Diez páginas de gráficos:  
 • Volumen negociado del mercado — un carrete histórico del volumen diario de todo el mercado (China A)  
 • Volumen y rotación — el precio y el volumen de una acción juntos (China A/Hong Kong)  
 • Carrera de sectores — los índices sectoriales subiendo y bajando en carrera  
@@ -326,6 +334,7 @@ Nueve páginas de gráficos:
 • Rentabilidad de cartera — comprado una vez, mantenido hasta hoy: valor y caída máxima reproducidos día a día
 • Velas — un instrumento en diario, semanal o mensual, con cuatro trazados, medias móviles y panel de volumen
 • Carrera de capitalización — las quince mayores compañías de un mercado en carrera
+• Prima A/H — las dos cotizaciones de una compañía, comparadas mes a mes
 
 Tres mercados: China A, Hong Kong y EE. UU. La interfaz está disponible en 14 idiomas.
 
@@ -339,7 +348,7 @@ Novedades de esta versión: una octava página de gráficos, Velas — los preci
 
 - Vídeos de animación de mercado 9:16 verticales con un clic
 - Tres mercados: China A, Hong Kong y EE. UU.
-- Nueve gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas
+- Diez gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas
 - Exportación a MP4 H.264, lista para plataformas de vídeo corto
 - Interfaz disponible en 14 idiomas
 - Sin cuenta, sin telemetría — sus datos se quedan en su equipo
@@ -353,7 +362,7 @@ Transforme indicadores de mercado em vídeos animados verticais prontos para pub
 
 O Market Motion Studio transforma dados do mercado de ações em animações verticais 9:16, criado para plataformas verticais como TikTok, Shorts e Reels: escolha um mercado e um símbolo, o app busca os dados, anima e exporta um MP4 H.264 pronto para publicar.
 
-Nove páginas de gráficos:  
+Dez páginas de gráficos:  
 • Volume financeiro do mercado — um carretel histórico do volume diário de todo o mercado (China A)  
 • Volume e giro — preço e volume de uma ação juntos (China A/Hong Kong)  
 • Corrida de setores — os índices setoriais subindo e caindo em corrida  
@@ -363,6 +372,7 @@ Nove páginas de gráficos:
 • Retorno de posição — comprou uma vez, segurou até hoje: valor e queda máxima reproduzidos dia a dia
 • Candlestick — um instrumento em diário, semanal ou mensal, com quatro traçados, médias móveis e painel de volume
 • Corrida de valor de mercado — as quinze maiores companhias de um mercado em corrida
+• Prêmio A/H — as duas cotações de uma companhia, comparadas mês a mês
 
 Três mercados: China A, Hong Kong e EUA. A interface vem em 14 idiomas.
 
@@ -376,7 +386,7 @@ Novidades desta versão: uma oitava página de gráficos, Candlestick — os pre
 
 - Vídeos de animação de mercado verticais 9:16 com um clique
 - Três mercados: China A, Hong Kong e EUA
-- Nove gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, matriz de retorno, calendário, plano DCA, retorno de posição, candles
+- Dez gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, candles
 - Exporta MP4 H.264, pronto para plataformas de vídeo curto
 - Interface disponível em 14 idiomas
 - Sem conta, sem telemetria — seus dados ficam no seu computador
@@ -391,7 +401,7 @@ Zamień wskaźniki rynkowe w pionowe filmy animowane gotowe do publikacji.
 
 Market Motion Studio zamienia dane giełdowe w pionowe animacje 9:16, stworzone dla pionowych platform jak TikTok, Shorts i Reels: wybierz rynek i symbol, aplikacja pobierze dane, zanimuje je i wyeksportuje plik MP4 H.264 gotowy do publikacji.
 
-Dziewięć stron wykresów:  
+Dziesięć stron wykresów:  
 • Obroty rynku — historyczna zwijanka dziennych obrotów całego rynku (Chiny A)  
 • Wolumen i obrót — cena i wolumen jednej akcji razem (Chiny A/Hongkong)  
 • Wyścig sektorów — indeksy branżowe w wyścigu w górę i w dół  
@@ -401,6 +411,7 @@ Dziewięć stron wykresów:
 • Zwrot z pozycji — kupione raz, trzymane do dziś: wartość i obsunięcie odtwarzane dzień po dniu
 • Świece — jeden instrument w ujęciu dziennym, tygodniowym lub miesięcznym, cztery sposoby, ze średnimi i panelem wolumenu
 • Wyścig kapitalizacji — piętnaście największych spółek rynku w wyścigu
+• Premia A/H — dwa notowania jednej spółki, porównywane miesiąc po miesiącu
 
 Trzy rynki: Chiny A, Hongkong i USA. Interfejs dostępny w 14 językach.
 
@@ -414,7 +425,7 @@ Co nowego w tej wersji: ósma strona wykresów, Świece — ceny jednego instrum
 
 - Pionowe filmy z animacją rynku 9:16 jednym kliknięciem
 - Trzy rynki: Chiny A, Hongkong i USA
-- Dziewięć wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece
+- Dziesięć wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece
 - Eksport MP4 H.264, gotowy dla platform krótkich filmów
 - Interfejs w 14 językach
 - Bez konta, bez telemetrii — Twoje dane zostają na Twoim komputerze
@@ -429,7 +440,7 @@ Převeďte tržní ukazatele na svislá animovaná videa připravená k publikov
 
 Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro vertikální platformy jako TikTok, Shorts a Reels: vyberte trh a symbol, aplikace stáhne data, zanimuje je a exportuje MP4 H.264 připravené k publikování.
 
-Devět stránek s grafy:  
+Deset stránek s grafy:  
 • Obrat trhu — historický svitek denních obratů celého trhu (Čína A)  
 • Objem a obrat — cena a objem jedné akcie společně (Čína A/Hongkong)  
 • Závod sektorů — odvětvové indexy závodící nahoru a dolů  
@@ -439,6 +450,7 @@ Devět stránek s grafy:
 • Výnos pozice — koupeno jednou, drženo do dneška: hodnota a pokles přehrávané den za dnem
 • Svíčky — jeden nástroj denně, týdně nebo měsíčně, čtyři způsoby, s průměry a panelem objemu
 • Závod tržních kapitalizací — patnáct největších společností trhu v závodě
+• Prémie A/H — dvě kotace jedné společnosti, srovnávané měsíc po měsíci
 
 Tři trhy: Čína A, Hongkong a USA. Rozhraní je ve 14 jazycích.
 
@@ -452,7 +464,7 @@ Co je nového v této verzi: osmá stránka s grafy, Svíčky — ceny jednoho n
 
 - Svislá tržní animovaná videa 9:16 na jedno kliknutí
 - Tři trhy: Čína A, Hongkong a USA
-- Devět grafů: obrat, objem, závod sektorů, závod kapitalizací, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky
+- Deset grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky
 - Export MP4 H.264, připravený pro platformy krátkých videí
 - Rozhraní ve 14 jazycích
 - Bez účtu, bez telemetrie — vaše data zůstávají na vašem počítači
@@ -467,7 +479,7 @@ Co je nového v této verzi: osmá stránka s grafy, Svíčky — ceny jednoho n
 
 Market Motion Studio превращает биржевые данные в вертикальные анимации 9:16, созданное для вертикальных платформ вроде TikTok, Shorts и Reels: выберите рынок и символ, приложение само загрузит данные, оживит их и экспортирует MP4 H.264, готовый к публикации.
 
-Девять страниц с графиками:  
+Десять страниц с графиками:  
 • Оборот рынка — историческая лента ежедневного оборота всего рынка (Китай, A-акции)  
 • Объём и оборачиваемость — цена и объём одной акции вместе (Китай A/Гонконг)  
 • Гонка секторов — отраслевые индексы в гонке вверх и вниз  
@@ -477,6 +489,7 @@ Market Motion Studio превращает биржевые данные в ве�
 • Доходность позиции — купил один раз, держал до сегодняшнего дня: стоимость и просадка, воспроизводимые день за днём
 • Свечи — один инструмент в дневном, недельном или месячном виде, четыре способа, со средними и панелью объёма
 • Гонка капитализаций — пятнадцать крупнейших компаний рынка в гонке
+• Премия A/H — две котировки одной компании, сравнение месяц за месяцем
 
 Три рынка: Китай (A-акции), Гонконг и США. Интерфейс доступен на 14 языках.
 
@@ -490,7 +503,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 - Вертикальные анимационные видео рынка 9:16 одним кликом
 - Три рынка: Китай (A-акции), Гонконг и США
-- Девять графиков: оборот, объём, гонка секторов, гонка капитализаций, матрица доходности, календарь, план DCA, доходность позиции, свечи
+- Десять графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, свечи
 - Экспорт MP4 H.264, готовый для платформ коротких видео
 - Интерфейс на 14 языках
 - Без аккаунта, без телеметрии — ваши данные остаются на вашем компьютере
@@ -505,7 +518,7 @@ Piyasa göstergelerini doğrudan yayınlanmaya hazır dikey animasyon videoları
 
 Market Motion Studio, borsa verilerini 9:16 dikey animasyonlara dönüştüren, TikTok, Shorts ve Reels gibi dikey platformlar için tasarlanmış bir Windows uygulamasıdır: bir piyasa ve sembol seçin, uygulama verileri çeker, animasyona dönüştürür ve yayınlanmaya hazır H.264 MP4 olarak dışa aktarır.
 
-Dokuz grafik sayfası:  
+On grafik sayfası:  
 • Piyasa işlem hacmi — tüm piyasanın günlük işlem hacminin tarihî şeridi (Çin A)  
 • Hacim ve devir — bir hissenin fiyat ve hacmi birlikte (Çin A/Hong Kong)  
 • Sektör yarışı — sektör endeksleri yukarı ve aşağı yarışıyor  
@@ -515,6 +528,7 @@ Dokuz grafik sayfası:
 • Pozisyon Getirisi — bir kez alındı, bugüne kadar tutuldu: değer ve düşüş gün gün oynatılır
 • Mumlar — bir enstrüman günlük, haftalık veya aylık, dört çizim biçimi, hareketli ortalamalar ve hacim paneliyle
 • Piyasa değeri yarışı — bir piyasanın en büyük on beş şirketi yarışta
+• A/H primi — bir şirketin iki kotasyonu, ay ay karşılaştırma
 
 Üç piyasa: Çin A, Hong Kong ve ABD. Arayüz 14 dilde mevcut.
 
@@ -528,7 +542,7 @@ Bu sürümdeki yenilikler: sekizinci grafik sayfası, Mumlar — bir enstrüman�
 
 - Tek tıkla 9:16 dikey piyasa animasyon videoları
 - Üç piyasa: Çin A, Hong Kong ve ABD
-- Dokuz grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar
+- On grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar
 - H.264 MP4 dışa aktarma, kısa video platformlarına hazır
 - 14 dilde arayüz
 - Hesap yok, telemetri yok — verileriniz kendi bilgisayarınızda kalır

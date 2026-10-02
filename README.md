@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **nine pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **ten pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -105,6 +105,7 @@ than assumed from the market's existence:
 | **Position Return** | same preset families as the plan, plus the blue-chip singles | same, plus the broad singles |
 | **Candles** | daily, weekly and monthly bars for indices and listings | same, with the venue tried in turn (`.OQ`, `.N`, `.AM`) |
 | **Market Cap Race** | today's top 200 by market value, plus an archive of companies that used to be up there | thirty-five, and forty-two — a fixed field, because neither venue has a ranking this app can reach |
+| **AH premium** | the Hong Kong leg of each pair — and the mainland leg, always both | not applicable: the page compares the two listings of one company, so it is the one page the market switch does not govern |
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what
@@ -130,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The nine pages
+## The ten pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -349,6 +350,43 @@ not cancelled**, because the adjusted series reinvests it, so a heavy payer's pa
 and it looks like it grew faster than it did. The manual says so, the settings panel says so, and
 the last frame's figure is the only one that came straight from the source.
 
+**AH premium** — the tenth page, and the one page that needs two markets at once: the same company
+listed on the mainland and in Hong Kong, ranked by how much dearer the mainland share is.
+
+**Nothing here is derived, which is the whole design.** A market-cap board multiplies today's value
+by an adjusted ratio because a share count's history is not served; a premium is two prices that
+were really paid, and the rate between their currencies. So this is the one page that must **not**
+use the adjusted series — and the reason `TencentKline.RawBarsAsync` exists. Backward adjustment
+anchors a listing's earliest price and inflates every later one: ICBC's A share sells at 8.28 and the
+adjusted series reports 13.34, which turns a +26% premium into +245%. **Two markets adjusted
+separately cannot be compared**, so both legs and the rate take the same raw call.
+
+**The frame draws the dearest fifteen, and on this market all fifteen are dear.** Across the field
+the premium ran from +194% (新华制药) down to −9% (药明康德) on 2026-09-30, and only two of the
+sixty-nine — 招商银行 and 药明康德 — have their Hong Kong line above their mainland one. At −6% and
+−9% those two sit at the bottom of the list, where a top-fifteen board never reaches, so every bar
+grows right from a zero axis at the left edge. The bars answer "how much dearer", not "which side",
+and the manual and the card say so rather than leaving the frame to imply otherwise.
+
+**The span decides how many companies are on it.** Sixty-nine pairs are candidates; a pair is drawn
+only if both legs cover the whole span, so one whose Hong Kong listing is younger than the span drops
+out — sixty-eight over three years, fifty-two over the longest. The count the page reports is the
+count it drew, and the card explains the trade rather than promising a number.
+
+**The longest span is about nine years, and the exchange rate is why.** `whHKDCNY` reaches back to
+2016 and the two legs reach much further. Monthly, because a spread that moves a few points a year
+does not need days, and because one request returns fifteen years of it. The three legs close their
+months on different days — the A share on its last trading day, the rate on its last banking day —
+so the axis is grouped by calendar month and dated on the month's own last day rather than
+intersected on the date: the same defect that once reported 139 periods for 120 months.
+
+**The pairs are written down, and the list is checkable.** Neither source answers "which mainland
+listings also have a Hong Kong listing", so the field is a literal — which is a liability the market
+cap board already paid for once. What keeps it honest is that every code was read back from the quote
+endpoint on 2026-10-02, and one did not answer: 海通证券, whose H shares were delisted after the
+merger into 国泰海通. A field of seventy less one, where the minus one would have been a lane that
+stayed empty for the whole video.
+
 **The axis is a union, not an intersection.** A listing that listed three years ago has no rows
 before that, and intersecting would quietly start the whole video on the day the youngest entrant
 listed — a ten-year board turned into a three-year one. With a union, and no value before the first
@@ -559,7 +597,8 @@ src/MarketMotionStudio/
                    HistoryWalk (years of closes, walked backwards a page at a time),
                    DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding),
                    CandleSeries (daily/weekly/monthly bars, and the two animations' shapes),
-                   MarketCaps (the fifteen-per-market field, and today's value turned into a history)
+                   MarketCaps (the fifteen-per-market field, and today's value turned into a history),
+                   AhPremium (the A+H pairs, and the one page that must not use adjusted prices)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
@@ -585,6 +624,7 @@ tools/
                          Port one feature's strings and help section from the sibling project
   port-store-listing.py  Rewrites the three paragraphs the Store listing repeats in fourteen
                          languages — the page list, what's new, the feature bullets
+  port-ahpremium-*.py    The same, for the A+H page — including the 40 A-leg names it needed
   port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
                          (the pool script carries the 93 candidates that only need zh + en)
   verify-*.py            Drive the UI and assert the feature behaves as documented
@@ -679,8 +719,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 598 keys
-with no encoding damage, and all fourteen help documents carry the same eighteen sections in the
+Every language carries the same keys in the same order. All fourteen currently report 651 keys
+with no encoding damage, and all fourteen help documents carry the same nineteen sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -694,7 +734,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all nine pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all ten pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -765,11 +805,16 @@ first export asks and then remembers.
   past three years — 726 buys; a ten-year plan of 2,429 buys fetched by hand the same day),
   one cover, one 1080p30 export with its boxes verified. Not the Hong Kong or US preset
   lists, not the weekly or monthly cadences, not another format. See NOTES.
-- **The Store screenshots show seven pages, not nine.** `tools/store-screenshots.py` predates
-  both the candle page and the market-cap board, so the listing's gallery has neither. The
-  listing copy says nine charts in all fourteen languages, so the copy and the gallery disagree
-  until the two captures are taken. The copy deliberately runs ahead of the package: it is
+- **The Store screenshots show seven pages, not ten.** `tools/store-screenshots.py` predates the
+  candle page, the market-cap board and the A+H page, so the listing's gallery has none of the
+  three. The listing copy says ten charts in all fourteen languages, so the copy and the gallery
+  disagree until all three captures are taken. The copy deliberately runs ahead of the package: it is
   written for the version being prepared, and it must not be uploaded before that package is.
+- **The A+H page has been fetched and read at two spans** (three years and the longest, twenty-two
+  checks), and its headline number was recomputed independently from the source — the dearest premium
+  matched the page to 0.04 of a percentage point, which is what proves the unadjusted prices, the
+  exchange rate and the month grouping all three. Its English interface has not been driven, no export
+  has been run at any format, and the custom span has not been exercised. See NOTES.
 - **The market-cap board has been fetched and read on one market, at two spans** (A-shares, one
   year and ten years, seventeen checks), and three moments of the ten-year run were captured to
   confirm membership changes. Hong Kong and New York have not been driven through the page; neither
