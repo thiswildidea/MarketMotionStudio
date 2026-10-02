@@ -1,0 +1,5 @@
+# Partner Center 导出的 listing CSV：行尾是 CRLF、字段内是 LF —— 两种换行各有各的
+# 意思（字段内的换行是多段说明文字的分段），不能被 core.autocrlf 统一成一种。
+# 仓库里 core.autocrlf=true，不加这条的话检出时字段内的 LF 也会变成 CRLF，
+# 下一次跑 port 脚本就会把这 336 个换行全改一遍。
+docs/listingData-*.csv -text
