@@ -1,19 +1,33 @@
 """改写商店文案里那十四条「此版本的新增功能」。
 
-为什么是**换掉**而不是接着往后加：说明段刚从十页补到十六页，而那十四条还在说
+为什么是**换掉**而不是接着往后加：说明段已经从十页补到十六页，而那十四条还在说
 「本版新增第八个图表页 K线」「本版新增第九个图表页 市值榜竞速」—— 一页一页数着加上去
 的旧版本说明，和「十六大图表页」并排放在一起是自相矛盾的。商店这一栏问的是本版，
 历史留在 CHANGELOG.md 里。
 
-本版要说两件事：十六页各有自己画的图标（此前三对页面共用同一个系统字形），以及
-四个页面的区间按接口实测重定（超长区间会被拒绝，因为悄悄截断丢的是开头）。
+本版要说的是**新页面优先**：第九到第十六页八个页面逐条列出，其余（自绘图标、共享自选、
+四页区间重定）各一句带过。那一栏有 **1500 字符**的上限，八个页面用德/法/意语写就顶到
+一千二，所以每条只留帮助手册那一章的**第一个分句**，不整句搬。
 
-定位：每个语言段里第二个 `###` 小标题之后的第一段正文。幂等：那一段已经以新文案
-开头就跳过。
+**说明从帮助手册里取，不另写**：每一页在 14 份 help-*.md 里早有一句是项目自己翻的、
+和界面一致的说法；再手写一遍只会得到 14 句各写各的。页面名从各语言的 resw 里取。
+
+定位：每个语言段里第二个 `###` 小标题之后的第一段正文。幂等：那一段已经与本次生成的
+字符串相同就跳过。
+
+用法：python tools/port-store-listing-whatsnew.py
 """
 
+import os
 import pathlib
+import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# 与 port-store-listing-pages.py 共用一套取词规则：同一段规则两个副本，就有一个副本会在
+# 某天被改对而另一个不会。（脚本名带连字符，不能当模块名 import。）
+from listingtext import first_sentence, page_name  # noqa: E402
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 LISTING = REPO / "docs" / "store-listing.md"
@@ -21,190 +35,152 @@ LISTING = REPO / "docs" / "store-listing.md"
 LANGS = ["zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de", "fr", "it",
          "es", "pt-BR", "pl", "cs", "ru", "tr"]
 
+# 第九到第十六页，按导航顺序；帮助手册里的章节序号（0 起，25 章在 14 种语言里同顺序）。
+PAGES = [
+    ("NavMarketCap", 6),
+    ("NavAhPremium", 7),
+    ("NavExtremeDays", 8),
+    ("NavFxCorridor", 9),
+    ("NavIndexRace", 10),
+    ("NavAssetRace", 11),
+    ("NavDrawdown", 12),
+    ("NavHoldOdds", 13),
+]
+
+# 每条说明最多留多少字符。整句照搬会让德/法/意语越过 1500 的上限，而那一栏是硬上限；
+# 截在**分句**上（下一个逗号/破折号），不留半句话。
+LIMIT = {"zh-Hans": 46, "zh-Hant": 46, "ja": 52, "ko": 52}
+
+# 列表开头的引导句。
+OPEN = {
+    "zh-Hans": "本版新增八个图表页：",
+    "zh-Hant": "本版新增八個圖表頁：",
+    "en-US": "Eight new chart pages:",
+    "ja": "このバージョンで八つのチャートページが加わりました：",
+    "ko": "이 버전에서 여덟 개의 차트 페이지가 추가되었습니다:",
+    "de": "Acht neue Diagrammseiten:",
+    "fr": "Huit nouvelles pages de graphiques :",
+    "it": "Otto nuove pagine di grafici:",
+    "es": "Ocho páginas de gráficos nuevas:",
+    "pt-BR": "Oito novas páginas de gráficos:",
+    "pl": "Osiem nowych stron wykresów:",
+    "cs": "Osm nových stránek s grafy:",
+    "ru": "Восемь новых страниц с графиками:",
+    "tr": "Sekiz yeni grafik sayfası:",
+}
+
+# 列表之后：图标、共享自选、四页区间各一句。
+ALSO = {
+    "zh-Hans": "另外：十六个页面各有自己画的图标（此前三对页面共用同一个系统字形）；"
+               "指数长跑、大类资产、回撤与修复、持有胜率四页共用一份自选，三个市场可混装；"
+               "四页的区间按接口实测重定——K线日线多了 5 年与 10 年，成交量换手率与行业板块竞速"
+               "多了 24 个月（自定义上限 900 天），市值榜多了「最长」（月线一次给满 180 期）。",
+    "zh-Hant": "另外：十六個頁面各有自己畫的圖示（此前三對頁面共用同一個系統字形）；"
+               "指數長跑、大類資產、回撤與修復、持有勝率四頁共用一份自選，三個市場可混裝；"
+               "四頁的區間按介面實測重定——K線日線多了 5 年與 10 年，成交量與換手率、行業板塊競速"
+               "多了 24 個月（自訂上限 900 天），市值榜多了「最長」（月線一次給滿 180 期）。",
+    "en-US": "Also: each of the sixteen pages now has an icon drawn for it (three pairs had been "
+             "sharing one system glyph); the index race, asset classes, drawdowns and hold odds "
+             "share one watchlist that may mix all three markets; and four range menus were "
+             "re-cut against what the endpoints return — daily candles gained 5 and 10 years, "
+             "Volume & Turnover and Sector Race gained 24 months (custom spans up to 900 days), "
+             "and Market Cap Race gained Longest, one request returning all 180 monthly periods.",
+    "ja": "また、十六のページすべてに専用のアイコンを用意しました（以前は三組のページが同じ"
+          "システム字形を共有していました）。指数レース・資産クラス・下落と回復・保有勝率の"
+          "四ページは一つのウォッチリストを共有し、三つの市場を混在できます。"
+          "四ページの期間は実際の API が返す量に合わせて見直し、ローソク足の日足に 5 年と 10 年、"
+          "出来高・回転率とセクターレースに 24 か月（カスタムは最大 900 日）、"
+          "時価総額レースに「最長」（月足 180 期）を追加しました。",
+    "ko": "또한 열여섯 개 페이지에 각각의 아이콘을 그렸습니다(이전에는 세 쌍이 같은 시스템 글리프를 "
+          "공유했습니다). 지수 경주·자산군·낙폭과 회복·보유 승률 네 페이지는 하나의 관심 목록을 "
+          "공유하며 세 시장을 섞을 수 있습니다. 네 페이지의 구간은 API가 실제로 돌려주는 양에 맞춰 "
+          "다시 정했습니다: 캔들 일간에 5년과 10년, 거래량·회전율과 업종 경주에 24개월(사용자 지정 "
+          "최대 900일), 시가총액 레이스에 「가장 긴 구간」(월간 180개 기간)을 추가했습니다.",
+    "de": "Außerdem: Jede der sechzehn Seiten hat nun ein eigenes Symbol; Index-Rennen, "
+          "Anlageklassen, Verluste und Erholung sowie Gewinnchancen nutzen eine gemeinsame "
+          "Watchlist, die alle drei Märkte mischen darf; und die Zeiträume von vier Seiten "
+          "wurden an das angepasst, was die Endpunkte liefern — Tageskerzen bekamen 5 und "
+          "10 Jahre, Volumen/Umschlag und Sektor-Rennen 24 Monate (eigene Zeiträume bis "
+          "900 Tage), das Marktkapitalisierungs-Rennen „Längster“ mit 180 Monatsperioden.",
+    "fr": "Par ailleurs : chacune des seize pages a désormais son icône ; la course des indices, "
+          "les classes d'actifs, les replis et les chances de détention partagent une liste de "
+          "suivi qui peut mêler les trois marchés ; et les plages de quatre pages ont été "
+          "recalées sur ce que renvoient les points d'accès — 5 et 10 ans sur le quotidien des "
+          "chandeliers, 24 mois sur Volume et rotation et la course de secteurs (plage "
+          "personnalisée jusqu'à 900 jours), « Maximale » sur la course des capitalisations, "
+          "180 périodes mensuelles en une requête.",
+    "it": "Inoltre: ognuna delle sedici pagine ha ora la sua icona; la corsa degli indici, le "
+          "classi di attività, i cali e i recuperi e le probabilità di detenzione condividono un "
+          "elenco che può mescolare i tre mercati; e gli intervalli di quattro pagine sono stati "
+          "rimisurati su ciò che restituiscono gli endpoint — 5 e 10 anni sul giornaliero delle "
+          "candele, 24 mesi su Volume e rotazione e sulla corsa dei settori (intervallo "
+          "personalizzato fino a 900 giorni), «Massimo» sulla corsa delle capitalizzazioni, "
+          "180 periodi mensili in una richiesta.",
+    "es": "Además: cada una de las dieciséis páginas tiene ya su icono (antes tres pares "
+          "compartían un glifo del sistema); la carrera de índices, las clases de activos, los "
+          "repliegues y las probabilidades de tenencia comparten una lista que puede mezclar los "
+          "tres mercados; y los rangos de cuatro páginas se reajustaron a lo que devuelven los "
+          "endpoints — 5 y 10 años en el diario de velas, 24 meses en Volumen y rotación y en la "
+          "carrera de sectores (personalizado hasta 900 días), «Máximo» en la carrera de "
+          "capitalización, 180 periodos mensuales en una petición.",
+    "pt-BR": "Além disso: cada uma das dezesseis páginas agora tem seu ícone (antes três pares "
+             "compartilhavam um glifo do sistema); a corrida de índices, as classes de ativos, os "
+             "recuos e as chances de manutenção compartilham uma lista que pode misturar os três "
+             "mercados; e os intervalos de quatro páginas foram reajustados ao que os endpoints "
+             "devolvem — 5 e 10 anos no diário do candlestick, 24 meses em Volume e giro e na "
+             "corrida de setores (personalizado até 900 dias), «Máximo» na corrida de valor de "
+             "mercado, 180 períodos mensais em um pedido.",
+    "pl": "Poza tym: każda z szesnastu stron ma teraz własną ikonę (wcześniej trzy pary dzieliły "
+          "jeden glif systemowy); wyścig indeksów, klasy aktywów, obsunięcia i szanse utrzymania "
+          "korzystają z jednej listy obserwowanych, która może mieszać trzy rynki; a zakresy "
+          "czterech stron przejrzano pod kątem tego, co zwracają endpointy — 5 i 10 lat na "
+          "interwale dziennym świec, 24 miesiące w Wolumenie i obrocie oraz w wyścigu sektorów "
+          "(własny zakres do 900 dni), „Najdłuższy“ w wyścigu kapitalizacji, 180 okresów "
+          "miesięcznych w jednym żądaniu.",
+    "cs": "Dále: každá z šestnácti stran má nyní vlastní ikonu (dříve tři dvojice sdílely jeden "
+          "systémový glyf); závod indexů, třídy aktiv, propady a šance držení sdílejí jeden "
+          "seznam, který může míchat všechny tři trhy; a rozsahy čtyř stran byly znovu změřeny "
+          "podle toho, co vracejí koncové body — 5 a 10 let u denního intervalu svíček, 24 měsíců "
+          "u Objemu a obratu a závodu sektorů (vlastní rozsah do 900 dnů), „Nejdelší“ u závodu "
+          "kapitalizací, 180 měsíčních období v jednom požadavku.",
+    "ru": "Кроме того: у каждой из шестнадцати страниц теперь своя иконка; гонка индексов, "
+          "классы активов, просадки и шансы удержания используют один список наблюдения, "
+          "который может смешивать все три рынка; "
+          "а диапазоны четырёх страниц пересчитаны по тому, что возвращают конечные точки — "
+          "5 и 10 лет на дневном интервале свечей, 24 месяца у «Объёма и оборачиваемости» и "
+          "гонки секторов (свой диапазон до 900 дней), «Максимальный» у гонки капитализаций, "
+          "180 месячных периодов за один запрос.",
+    "tr": "Ayrıca: on altı sayfanın her birinin artık kendi simgesi var (önceden üç çift aynı "
+          "sistem glifini paylaşıyordu); endeks yarışı, varlık sınıfları, düşüşler ve elde tutma "
+          "oranları üç pazarı karıştırabilen tek bir izleme listesi paylaşıyor; dört sayfanın "
+          "aralıkları da uç noktaların döndürdüğüne göre yeniden ayarlandı — günlük mumlarda 5 ve "
+          "10 yıl, Hacim ve devir ile sektör yarışında 24 ay (özel aralık 900 güne kadar), piyasa "
+          "değeri yarışında 「En uzun」, tek istekte 180 aylık dönem.",
+}
+
+
+def gloss(lang, index):
+    """帮助手册某一章的首句，截到第一个分句 —— 整句照搬会越过商店那一栏的 1500 字上限。"""
+    para = first_sentence(lang, index)
+    limit = LIMIT.get(lang, 118)
+
+    if len(para) <= limit:
+        return para
+
+    cut = max(para.rfind("，", 0, limit), para.rfind(", ", 0, limit),
+              para.rfind("；", 0, limit), para.rfind(" — ", 0, limit))
+
+    return para[:cut] if cut > limit * 0.4 else para[:limit].rstrip() + "…"
+
 
 def news(lang):
-    return {
-        "zh-Hans":
-            "本版为十六个页面各画了一个图标。此前有三对页面共用同一个系统字形——一个形状说不了两个页面。"
-            "十六个图标现在都是按页面意思画出来的矢量几何，跟着浅色或深色主题变色。 "
-            "另外，四个页面的数据区间按行情接口实际能返回的数量重新划定：K线的日线多了 5 年与 10 年两档"
-            "（日线会一页页往回翻，能到约十五年）；成交量换手率与行业板块竞速多了 24 个月一档，"
-            "自定义区间的上限从 640 天放到 900 天——那才是一次请求能取回的量；市值榜竞速多了「最长」一档，"
-            "月线一次请求就给满 180 期，约十五年。区间超出接口能给的范围会被直接拒绝，而不是悄悄截断："
-            "悄悄截断丢的是开头，而开头少了几年的图看起来完全正常。",
-        "zh-Hant":
-            "本版為十六個頁面各畫了一個圖示。此前有三對頁面共用同一個系統字形——一個形狀說不了兩個頁面。"
-            "十六個圖示現在都是按頁面意思畫出來的向量幾何，跟著淺色或深色主題變色。 "
-            "另外，四個頁面的資料區間按行情介面實際能回傳的數量重新劃定：K線的日線多了 5 年與 10 年兩檔"
-            "（日線會一頁頁往回翻，能到約十五年）；成交量與換手率、行業板塊競速多了 24 個月一檔，"
-            "自訂區間的上限從 640 天放到 900 天——那才是一次請求能取回的量；市值榜競速多了「最長」一檔，"
-            "月線一次請求就給滿 180 期，約十五年。區間超出介面能給的範圍會被直接拒絕，而不是悄悄截斷："
-            "悄悄截斷丟的是開頭，而開頭少了幾年的圖看起來完全正常。",
-        "en-US":
-            "Every page now has an icon drawn for it. Three pairs of pages had been sharing one "
-            "system glyph, and one shape cannot mean two pages. All sixteen are drawn as vector "
-            "geometry and take their colour from the light or dark theme. "
-            "The range menus of four pages were also re-cut against what the quote endpoints "
-            "actually return: daily candles gained 5 and 10 years, the page walking backwards a "
-            "page at a time for some fifteen years in all; Volume & Turnover and Sector Race "
-            "gained 24 months, and the ceiling on a custom span went from 640 to 900 days, which "
-            "is what one request really returns; Market Cap Race gained a Longest entry, one "
-            "request returning all 180 monthly periods, about fifteen years. A range beyond what "
-            "the source can give is refused rather than quietly truncated — truncating loses the "
-            "beginning, and a chart missing its first years is a shorter chart that looks entirely "
-            "correct.",
-        "ja":
-            "このバージョンでは、十六のページそれぞれにページのためのアイコンを描きました。"
-            "以前は三組のページが同じシステム字形を共有していました——ひとつの形で二つのページは表せません。"
-            "十六個のアイコンはすべてページの意味に合わせたベクター図形で、"
-            "ライトテーマとダークテーマで色が変わります。 "
-            "また、四つのページのデータ期間を、相場 API が実際に返す量に合わせて見直しました。"
-            "ローソク足の日足に 5 年と 10 年を追加（日足はページごとに遡るため、約十五年まで届きます）。"
-            "出来高・回転率とセクターレースには 24 か月を追加し、カスタム期間の上限を 640 日から 900 日"
-            "に広げました——それが一回のリクエストで取得できる量です。時価総額レースには「最長」を追加。"
-            "月足は一回のリクエストで 180 期、約十五年がすべて返ります。"
-            "ソースが返せる範囲を超える期間は、こっそり切り詰めるのではなく拒否します。"
-            "切り詰めると失われるのは冒頭で、最初の数年が抜けたグラフは短くなっただけで、"
-            "見た目はまったく普通だからです。",
-        "ko":
-            "이 버전에서는 열여섯 개 페이지에 각 페이지를 위해 그린 아이콘을 붙였습니다. "
-            "이전에는 세 쌍의 페이지가 같은 시스템 글리프를 공유했는데, 하나의 모양이 두 페이지를 뜻할 수는 "
-            "없습니다. 열여섯 개 모두 페이지의 뜻에 맞춘 벡터 도형으로 그렸으며, 밝은 테마와 어두운 테마에 "
-            "따라 색이 바뀝니다. "
-            "또한 네 페이지의 데이터 구간을 시세 API가 실제로 반환하는 양에 맞춰 다시 정했습니다. "
-            "캔들 차트의 일간에 5년과 10년을 추가했습니다(일간은 페이지 단위로 거슬러 올라가므로 "
-            "약 십오 년까지 닿습니다). 거래량·회전율과 업종 경주에는 24개월을 추가하고, 사용자 지정 구간의 "
-            "상한을 640일에서 900일로 넓혔습니다——한 번의 요청으로 가져올 수 있는 양입니다. "
-            "시가총액 레이스에는 「가장 긴 구간」을 추가했고, 월간은 한 번의 요청으로 180개 기간, "
-            "약 십오 년이 모두 돌아옵니다. 소스가 줄 수 있는 범위를 넘는 구간은 조용히 잘라내지 않고 "
-            "거부합니다. 잘라내면 사라지는 것은 앞부분이며, 첫 몇 년이 빠진 차트는 짧아졌을 뿐 "
-            "전혀 정상적으로 보이기 때문입니다.",
-        "de":
-            "In dieser Version hat jede der sechzehn Seiten ihr eigenes Symbol. Vorher teilten "
-            "sich drei Seitenpaare ein und dasselbe Systemzeichen — eine Form kann nicht zwei "
-            "Seiten bedeuten. Alle sechzehn sind nun als Vektorgeometrie gezeichnet und nehmen "
-            "ihre Farbe aus dem hellen oder dem dunklen Thema. "
-            "Außerdem wurden die Zeiträume von vier Seiten an das angepasst, was die "
-            "Kurs-Endpunkte wirklich liefern: Tageskerzen bekamen 5 und 10 Jahre, die Seite "
-            "blättert seitenweise zurück und erreicht damit etwa fünfzehn Jahre; Volumen und "
-            "Umschlag sowie das Sektor-Rennen bekamen 24 Monate, und die Obergrenze eines eigenen "
-            "Zeitraums stieg von 640 auf 900 Tage — so viel gibt eine Anfrage wirklich her; das "
-            "Marktkapitalisierungs-Rennen bekam einen Eintrag „Längster“, denn eine Anfrage "
-            "liefert alle 180 Monatsperioden, etwa fünfzehn Jahre. Ein Zeitraum jenseits dessen, "
-            "was die Quelle liefern kann, wird abgelehnt statt still gekürzt: Gekürzt wird nämlich "
-            "der Anfang, und ein Diagramm ohne seine ersten Jahre ist ein kürzeres Diagramm, das "
-            "völlig normal aussieht.",
-        "fr":
-            "Dans cette version, chacune des seize pages a son icône. Auparavant, trois paires de "
-            "pages partageaient le même glyphe système, et une forme ne peut pas désigner deux "
-            "pages. Les seize sont désormais dessinées en géométrie vectorielle et prennent la "
-            "couleur du thème clair ou sombre. "
-            "Les plages de quatre pages ont aussi été recalées sur ce que les endpoints de cotation "
-            "renvoient réellement : le quotidien des chandeliers gagne 5 et 10 ans, la page "
-            "remontant page par page sur une quinzaine d'années au total ; Volume et rotation "
-            "ainsi que la course de secteurs gagnent 24 mois, et le plafond d'une plage "
-            "personnalisée passe de 640 à 900 jours — ce qu'une requête ramène vraiment ; la course "
-            "des capitalisations gagne une entrée « Maximale », une requête ramenant les 180 "
-            "périodes mensuelles, soit une quinzaine d'années. Une plage au-delà de ce que la "
-            "source peut rendre est refusée plutôt que tronquée en silence : ce qui disparaît "
-            "alors, c'est le début, et un graphique amputé de ses premières années est un graphique "
-            "plus court qui a l'air parfaitement normal.",
-        "it":
-            "In questa versione ognuna delle sedici pagine ha la sua icona. Prima tre coppie di "
-            "pagine condividevano lo stesso glifo di sistema, e una forma non può significare due "
-            "pagine. Tutte e sedici sono ora disegnate come geometria vettoriale e prendono il "
-            "colore dal tema chiaro o scuro. "
-            "Anche gli intervalli di quattro pagine sono stati rimisurati su ciò che gli endpoint "
-            "delle quotazioni restituiscono davvero: il giornaliero di Candele guadagna 5 e 10 "
-            "anni, con la pagina che sfoglia indietro una pagina alla volta per circa quindici "
-            "anni in tutto; Volume e rotazione e la corsa dei settori guadagnano 24 mesi, e il "
-            "tetto di un intervallo personalizzato passa da 640 a 900 giorni — quanto restituisce "
-            "davvero una richiesta; la corsa delle capitalizzazioni guadagna una voce «Massimo», "
-            "perché una richiesta restituisce tutti i 180 periodi mensili, circa quindici anni. Un "
-            "intervallo oltre ciò che la fonte può dare viene rifiutato invece di essere troncato "
-            "in silenzio: a mancare sarebbe l'inizio, e un grafico senza i suoi primi anni è un "
-            "grafico più corto che sembra del tutto normale.",
-        "es":
-            "En esta versión cada una de las dieciséis páginas tiene su propio icono. Antes tres "
-            "pares de páginas compartían el mismo glifo del sistema, y una forma no puede "
-            "significar dos páginas. Las dieciséis están dibujadas ahora como geometría vectorial "
-            "y toman el color del tema claro u oscuro. "
-            "También se han reajustado los rangos de cuatro páginas a lo que los endpoints de "
-            "cotización devuelven de verdad: el diario de Velas gana 5 y 10 años, retrocediendo la "
-            "página página a página unos quince años en total; Volumen y rotación y la carrera de "
-            "sectores ganan 24 meses, y el techo de un intervalo personalizado sube de 640 a 900 "
-            "días — lo que una petición devuelve realmente; la carrera de capitalización gana una "
-            "entrada «Máximo», porque una petición devuelve los 180 periodos mensuales, unos quince "
-            "años. Un rango más allá de lo que la fuente puede dar se rechaza en lugar de "
-            "recortarse en silencio: lo que se pierde es el principio, y un gráfico sin sus primeros "
-            "años es un gráfico más corto que parece completamente normal.",
-        "pt-BR":
-            "Nesta versão cada uma das dezesseis páginas tem seu próprio ícone. Antes três pares de "
-            "páginas compartilhavam o mesmo glifo do sistema, e uma forma não pode significar duas "
-            "páginas. As dezesseis agora são desenhadas como geometria vetorial e assumem a cor do "
-            "tema claro ou escuro. "
-            "Os intervalos de quatro páginas também foram reajustados ao que os endpoints de "
-            "cotação realmente devolvem: o diário de Candlestick ganha 5 e 10 anos, com a página "
-            "voltando página por página ao longo de cerca de quinze anos; Volume e giro e a corrida "
-            "de setores ganham 24 meses, e o teto de um intervalo personalizado sobe de 640 para "
-            "900 dias — o que um pedido realmente devolve; a corrida de valor de mercado ganha uma "
-            "entrada «Máximo», porque um pedido devolve todos os 180 períodos mensais, cerca de "
-            "quinze anos. Um intervalo além do que a fonte pode dar é recusado em vez de cortado em "
-            "silêncio: o que se perde é o começo, e um gráfico sem seus primeiros anos é um gráfico "
-            "mais curto que parece inteiramente normal.",
-        "pl":
-            "W tej wersji każda z szesnastu stron ma własną ikonę. Wcześniej trzy pary stron "
-            "korzystały z tego samego glifu systemowego, a jeden kształt nie może oznaczać dwóch "
-            "stron. Wszystkie szesnaście narysowano teraz jako geometrię wektorową, która bierze "
-            "kolor z jasnego lub ciemnego motywu. "
-            "Przejrzano też zakresy czterech stron pod kątem tego, co endpointy notowań faktycznie "
-            "zwracają: interwał dzienny świec zyskał 5 i 10 lat, a strona cofa się strona po "
-            "stronie, łącznie około piętnastu lat; Wolumen i obrót oraz wyścig sektorów zyskały "
-            "24 miesiące, a limit własnego zakresu wzrósł z 640 do 900 dni — tyle naprawdę zwraca "
-            "jedno żądanie; wyścig kapitalizacji zyskał pozycję „Najdłuższy“, bo jedno żądanie "
-            "zwraca wszystkie 180 okresów miesięcznych, około piętnaście lat. Zakres większy niż "
-            "źródło może oddać jest odrzucany zamiast po cichu ucinany: ucięty zostaje początek, a "
-            "wykres bez pierwszych lat to po prostu krótszy wykres, który wygląda zupełnie normalnie.",
-        "cs":
-            "V této verzi má každá z šestnácti stran vlastní ikonu. Dříve tři dvojice stran "
-            "sdílely stejný systémový glyf a jeden tvar nemůže znamenat dvě strany. Všech šestnáct "
-            "je nyní nakresleno jako vektorová geometrie a bere barvu ze světlého nebo tmavého "
-            "motivu. "
-            "Rozsahy čtyř stran byly také znovu změřeny podle toho, co koncové body kurzů "
-            "skutečně vracejí: denní interval svíček získal 5 a 10 let, strana se vrací po "
-            "stránkách, celkem asi patnáct let; Objem a obrat a závod sektorů získaly 24 měsíců a "
-            "strop vlastního rozsahu stoupl z 640 na 900 dnů — tolik jeden požadavek skutečně "
-            "vrátí; závod kapitalizací získal položku „Nejdelší“, protože jeden požadavek vrátí "
-            "všech 180 měsíčních období, asi patnáct let. Rozsah větší, než může zdroj dát, je "
-            "odmítnut místo tichého zkrácení: chyběl by začátek, a graf bez prvních let je jen "
-            "kratší graf, který vypadá naprosto normálně.",
-        "ru":
-            "В этой версии у каждой из шестнадцати страниц своя иконка. Раньше три пары страниц "
-            "делили один системный глиф, а одна форма не может означать две страницы. Все "
-            "шестнадцать теперь нарисованы как векторная геометрия и берут цвет из светлой или "
-            "тёмной темы. "
-            "Диапазоны четырёх страниц тоже пересчитаны по тому, что реально возвращают конечные "
-            "точки котировок: дневной интервал свечей получил 5 и 10 лет — страница листает назад "
-            "по страницам, всего около пятнадцати лет; «Объём и оборачиваемость» и гонка секторов "
-            "получили 24 месяца, а предел пользовательского диапазона поднялся с 640 до 900 дней — "
-            "столько действительно возвращает один запрос; гонка капитализаций получила пункт "
-            "«Максимальный», потому что один запрос возвращает все 180 месячных периодов, около "
-            "пятнадцати лет. Диапазон больше того, что может дать источник, отклоняется, а не "
-            "обрезается молча: пропадает начало, а график без первых лет — это просто более "
-            "короткий график, который выглядит совершенно нормально.",
-        "tr":
-            "Bu sürümde on altı sayfanın her birinin kendine ait bir simgesi var. Önceden üç sayfa "
-            "çifti aynı sistem glifini paylaşıyordu ve bir şekil iki sayfayı anlatamaz. On altısı "
-            "da artık vektör geometrisi olarak çiziliyor ve rengini açık ya da koyu temadan alıyor. "
-            "Dört sayfanın aralıkları da kotasyon uç noktalarının gerçekten döndürdüğü miktara göre "
-            "yeniden ayarlandı: mum grafiğinin günlüğü 5 ve 10 yıl kazandı, sayfa sayfa geri "
-            "giderek toplamda yaklaşık on beş yıla ulaşıyor; Hacim ve devir ile sektör yarışı 24 ay "
-            "kazandı ve özel aralığın sınırı 640 günden 900 güne çıktı — bir isteğin gerçekten "
-            "döndürdüğü kadar; piyasa değeri yarışı 「En uzun」 seçeneğini kazandı, çünkü bir istek "
-            "180 aylık dönemin tamamını, yaklaşık on beş yılı döndürüyor. Kaynağın verebileceğinden "
-            "uzun bir aralık sessizce kısaltılmaz, reddedilir: eksilen kısım başlangıçtır ve ilk "
-            "yılları çıkmış bir grafik, tamamen normal görünen daha kısa bir grafiktir.",
-    }[lang]
+    dash = "——" if lang in ("zh-Hans", "zh-Hant") else " — "
+    sep = "；" if lang in ("zh-Hans", "zh-Hant", "ja", "ko") else "; "
+
+    items = [f"{page_name(lang, key)}{dash}{gloss(lang, index)}" for key, index in PAGES]
+
+    return OPEN[lang] + sep.join(items) + ("。" if lang in ("zh-Hans", "zh-Hant", "ja", "ko") else ". ") \
+        + ALSO[lang]
 
 
 def main():
@@ -240,24 +216,27 @@ def main():
         while at < end and not lines[at].strip():
             at += 1
 
-        line = news(lang)
+        text = news(lang)
 
-        if lines[at] == line:
+        if lines[at] == text:
             print(f"· {lang}: （已是本版）")
             continue
 
-        lines[at] = line
+        lines[at] = text
         changed += 1
         heads = [i for i, s in enumerate(lines) if s.startswith("## ")]
-        print(f"· {lang}: 「{lines[subs[1]][4:]}」改写（{len(line)} 字）")
+        print(f"· {lang}: 「{lines[subs[1]][4:]}」改写（{len(text)} 字）")
 
     LISTING.write_bytes(("\r\n" if crlf else "\n").join(lines).encode("utf-8"))
-    too_long = [l for l in LANGS if len(news(l)) > 1500]
 
-    if too_long:
-        print(f"\n！超过商店 1500 字上限：{too_long}")
+    long = [(l, len(news(l))) for l in LANGS if len(news(l)) > 1500]
 
-    print(f"\n改了 {changed} 条（跑第二遍应当是 0）")
+    if long:
+        print(f"\n！超过商店 1500 字上限：{long}")
+    else:
+        print(f"\n最长的语言 {max(len(news(l)) for l in LANGS)} 字，都在 1500 以内")
+
+    print(f"改了 {changed} 条（跑第二遍应当是 0）")
 
     return 0
 

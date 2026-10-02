@@ -12,14 +12,14 @@
 幂等：标题、列表、功能条三处各自先认一遍"已经改过了"再动手。
 """
 
+import os
 import pathlib
-import re
 import sys
 
-REPO = pathlib.Path(__file__).resolve().parent.parent
-LISTING = REPO / "docs" / "store-listing.md"
-HELP = REPO / "src" / "MarketMotionStudio" / "Assets" / "Help"
-STRINGS = REPO / "src" / "MarketMotionStudio" / "Strings"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# 取首句、取页面名、那条破折号 —— 与 port-store-listing-whatsnew.py 共用一份（listingtext.py）。
+from listingtext import HELP, LANGS, LISTING, STRINGS, dash_of, first_sentence, page_name  # noqa: E402,F401
 
 # 后加的六页，按导航顺序。前面十页的顺序是历史上一次次上架时追加出来的，不动。
 PAGES = ["NavExtremeDays", "NavFxCorridor", "NavIndexRace",
@@ -27,9 +27,6 @@ PAGES = ["NavExtremeDays", "NavFxCorridor", "NavIndexRace",
 
 # 帮助手册里的章节序号（0 起，25 章在 14 种语言里同顺序）。
 CHAPTERS = [8, 9, 10, 11, 12, 13]
-
-LANGS = ["zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de", "fr", "it",
-         "es", "pt-BR", "pl", "cs", "ru", "tr"]
 
 # 标题里的"十"→"十六"。各语言各自的词，改错了标题就变成"十六页图表十页"。
 HEADING = {
@@ -67,87 +64,11 @@ FEATURE = {
     "tr": ("On grafik", "On altı grafik"),
 }
 
-# 合并换行时不留空格的：中文与日文（韩文的词间有空格，换行处吞掉就粘成一团了）。
-NO_SPACE = ("zh-Hans", "zh-Hant", "ja")
-# 句号用「。」的：中文、日文、韩文之外都用 "."。
-CJK_STOP = ("zh-Hans", "zh-Hant", "ja", "ko")
 # 中文那条用双破折号、前后不留空；其余语言用一个破折号、前后各留一个空格 ——
 # 已有的十条就是这么写的，新加的六条不能看着像另一种文件。
 DASH = {"zh-Hans": "——", "zh-Hant": "——"}
 # 功能条里名字之间的分隔符。
 COMMA = {"zh-Hans": "、", "zh-Hant": "、", "ja": "、", "ko": "、"}
-
-
-def page_name(lang, key):
-    """这一页在界面上叫什么（resw 里导航项的名字）。"""
-    import xml.etree.ElementTree as ET
-
-    root = ET.parse(STRINGS / lang / "Resources.resw").getroot()
-
-    for entry in root.findall("data"):
-        if entry.get("name") == key + ".Content":
-            return entry.find("value").text or ""
-
-    raise KeyError(f"{lang}: 没有 {key}.Content")
-
-
-def first_sentence(lang, index):
-    """帮助手册某一章的第一句 —— 洗干净，当作这一页的说明。"""
-    text = (HELP / f"help-{lang}.md").read_text(encoding="utf-8-sig")
-    body = re.split(r"(?m)^## ", text)[1:][index]
-    lines = body.split("\n")[1:]
-    picked = []
-
-    for line in lines:
-        if not line.strip():
-            if picked:
-                break
-            continue
-        picked.append(line.strip())
-
-    joiner = "" if lang in NO_SPACE else " "
-    para = joiner.join(picked)
-    para = para.replace("**", "").replace("![", "").strip()
-
-    # 截到第一个句号。中日韩用「。」，其余用 ". " 或末尾的 "."。
-    if lang in CJK_STOP:
-        cut = para.find("。")
-
-        if cut > 0:
-            para = para[:cut + 1]
-    else:
-        hit = re.search(r"\.\s", para)
-
-        if hit:
-            para = para[:hit.start() + 1]
-        elif para.endswith("."):
-            pass
-        else:
-            cut = para.find(".")
-
-            if cut > 0:
-                para = para[:cut + 1]
-
-    # 已有的十条都不带句号，新加的六条也不带。
-    para = para.strip()
-
-    if para.endswith("。") or para.endswith("."):
-        para = para[:-1].strip()
-
-    return para
-
-
-def dash_of(sample):
-    """这一语言自己用的那条破折号。
-
-    德语那一段写的是 "–"（短），英文写的是 "—"（长）—— 抄哪一段的规矩由那段自己说了算，
-    所以从它已有的第一条里取，而不是替十四种语言挑一个。
-    """
-    for ch in sample:
-        if ch in "–—―−":
-            return ch
-
-    return "—"
 
 
 def main():

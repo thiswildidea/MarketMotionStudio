@@ -49,6 +49,40 @@ public static class Ink
     }
 
     /// <summary>
+    /// The ink to write *on* a filled shape, chosen from the shape's own colour.
+    ///
+    /// Asked where a label is drawn inside a bar rather than past its end: on the frame's own dark
+    /// background white is always right, and on a bar it depends entirely on which colour the bar
+    /// got. The palette runs from reds and indigos, where white is the only thing that reads, to an
+    /// amber and a lime where white is the worst choice available — white on the amber is 2.1:1,
+    /// and the floor for large text is 3:1.
+    ///
+    /// The rule is the WCAG relative luminance of the fill: white holds the contract while it
+    /// clears 3:1, which it does up to a luminance of 0.30, and past that the dark ink is the one
+    /// that reads. Stated as a threshold rather than as a list of colours so that a colour added to
+    /// the palette later gets an answer instead of an assumption.
+    /// </summary>
+    public static Color OnTopOf(Color fill)
+    {
+        static double Linear(byte channel)
+        {
+            var s = channel / 255.0;
+
+            return s <= 0.03928 ? s / 12.92 : Math.Pow((s + 0.055) / 1.055, 2.4);
+        }
+
+        var luminance = (0.2126 * Linear(fill.R)) + (0.7152 * Linear(fill.G)) + (0.0722 * Linear(fill.B));
+
+        return luminance > 0.30 ? LabelOnLight : Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF);
+    }
+
+    /// <summary>
+    /// The dark ink for a light bar. Near-black but not black, so a row's label and the frame's
+    /// own near-black background stay two different things.
+    /// </summary>
+    private static Color LabelOnLight => Color.FromArgb(0xFF, 0x14, 0x1A, 0x24);
+
+    /// <summary>
     /// How far the next run of a line starts after this one — the width of the text
     /// *including* the spaces it ends with.
     ///

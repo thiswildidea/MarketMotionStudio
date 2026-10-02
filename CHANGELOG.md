@@ -22,13 +22,169 @@ Entries run newest first. / 新版本在上。
 
 ## 1.0.4.0 — 2026-10-02（更新版 / update）
 
-本版的文案已经写好、版本号已经升上，**包尚未构建上传**——等发版时再构建。
-The copy for this version is written and the number is bumped; **the package has not been built
-or uploaded yet** — that happens when it is released.
+**1.0.3.0 已经提交商店、正在认证**，所以下面只列本版在它之上新增的改动。应用的完整能力仍见
+更下面的 0.0.0.0 条目。包已构建：`artifacts/MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload`
+（142.4 MB），拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.4.0`。
+Version 1.0.3.0 has been submitted to the Store and is in certification, so what follows is only what
+this version adds on top of it. The full feature set is still in the 0.0.0.0 entry below. The package
+is built — `artifacts/MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload` (142.4 MB) — and both
+inner packages, x64 and arm64, carry Identity `1.0.4.0`.
 
 ### 新增 / Added
 
+- **八个新页面：从第九页到第十六页 / eight new pages, the ninth through the sixteenth** — 1.0.3.0
+  停在第八页。这一版把导航里的十六页排满了：市值榜、AH 溢价、极端交易日、汇率走廊、指数长跑、
+  大类资产、回撤与修复、持有胜率。它们不是八个并列的功能，是三种问法：
+  Eight pages arrived between the eighth and the sixteenth. They are not eight parallel features but
+  three ways of asking a question.
+  - **市值榜竞速 / Market Cap Race** — 一个市场市值最大的十五家公司，按月排成横向条形，名次一路
+    变到最后一帧。候选池宽到两百只以上：A 股取当日榜单、再并上一份历史档案（万科、中国重工、
+    上汽这些今天不在前排、当年在的公司），港股与美股各有一份写死的池子，**并且只服务内地**的新浪
+    排行接口对它们返空。所以「谁上榜」是算出来的，不是写死的十五个。
+    One market's fifteen largest companies as horizontal bars, sampled monthly, the order changing to
+    the last frame. The field runs past two hundred names: on the mainland it is today's ranking plus
+    an archive of the companies that led in earlier windows, while Hong Kong and the United States
+    use a written list, because the ranking endpoint this app has is mainland-only and answers with
+    nothing for the other two.
+  - **AH 溢价 / AH premium** — 同一家公司在两地上市时，A 股相对 H 股贵多少，按月，名次一路变。
+    它比的是**两个 listing 的价格**，所以走的是不复权那一侧 —— 复权只在一侧生效会把两地价格
+    比成两件不同的事。
+    How much more a company's mainland listing costs than its Hong Kong one, for the firms listed on
+    both sides. It compares two listings' prices, so it uses the unadjusted series: adjusting one
+    side and not the other would compare two different things.
+  - **极端交易日 / Extreme days** — 一个标的历史上单日波动最大的那些天。**这一页的行是日子，不是
+    公司**，全应用只有它这样；排名按**幅度**而不是按涨跌符号，因为 −7.7% 应该和 +8.1% 并排坐着。
+    One instrument's biggest single-day moves, ranked by size. **Its rows are days, not companies**,
+    which no other page does, and it ranks by magnitude rather than by sign so that −7.7% sits beside
+    +8.1% instead of under every rise.
+  - **汇率走廊 / Currency corridors** — 一组货币一行，**行本身就是那条走廊**：一头是这组货币在
+    区间里到过的最便宜，另一头是最贵，游标是它现在的汇率。所以别处的条形长度在这里没有意义 ——
+    每一行都占满整行，动的是游标和走廊本身。
+    One row per pair, and the row *is* the corridor: one end the cheapest the pair has been in the
+    span, the other the dearest, the marker where the rate is now. Bar length means nothing here —
+    every row fills the width and what moves is the marker and the corridor.
+  - **指数长跑 / Index race** — 一行是一个指数，行是**这个指数从自己在区间里的第一个月起涨了多少**，
+    不是点位。上证指数的 3,800 和标普 500 的 5,700 不在同一把尺上。
+    One row per index, and the row is how far that index has come since its own first month in the
+    range — not its level. 3,800 on the Shanghai Composite and 5,700 on the S&P 500 are not two
+    points on one scale.
+  - **大类资产 / Asset classes** — 一行是一类资产，行是**持有它到今天赚了多少**。八档都是境内
+    交易所挂牌的基金，买它们的钱是同一种钱，所以能直接比。
+    One row per asset class, and the row is what holding it earned. All eight are funds on a mainland
+    exchange, bought with the same money, so they compare directly.
+  - **回撤与修复 / Drawdowns** — 一行是**它落在自己高点下方多远**：不是它赚了多少，而是赚到
+    这些要付出什么。跑的是和大类资产同样的八档，只是不互相比，而是各自比自己的高点。
+    A row is how far below its own high a holding sits — not what it earned, but what it cost to earn
+    it. The same eight holdings as the asset race, measured against themselves.
+  - **持有胜率 / Hold odds** — 一行是**已走完的持有中赚钱的那一部分**：在区间里每一个可以买进
+    并持有同样时长的月份中，最后是赚的占多少。打分的是「持有」这件事多常成立。
+    A row is the share of finished entries that gained — of all the months a holder could have bought
+    in and held for the same length of time, the share that ended up ahead.
+  - **后四页的数字走复权**，与第十三页之前那几页**相反**，因为问的问题相反：这一组问的是
+    「持有赚了多少」，而拆过份额的基金不复权价格曲线会断崖、货币基金的收益几乎全在分红里
+    （不复权十三年 +0.03%，复权 +18.76%，两者差着一整个数量级）。**源端对指数忽略复权参数**
+    ——十二个指数两路取回来的差值全是 0.0000 —— 所以指数那一行是价格回报，个股与基金那一行
+    是总回报，这一条写在页面的口径说明里。
+    The last four pages use the adjusted series, the opposite of the pages before them, because they
+    ask the opposite question: what holding it earned. Without adjustment a fund that split has a
+    cliff in its price and a money-market fund's return — which is nearly all in its distributions —
+    reads as +0.03% over thirteen years instead of +18.76%. The source ignores the adjustment
+    parameter for indices (all twelve come back identical on the two paths), so an index row is a
+    price return while a stock or fund row is a total return, and the page says so.
+- **四页清单板共用一份自选 / the four boards share one watchlist** — 指数长跑、大类资产、回撤与
+  修复、持有胜率用的是同一份清单，可以三个市场混装，改一处四页都看得到。换一组就丢掉已经取到
+  的数（留着会把上一组曲线的形状画在下一组的名字底下）；取数成功后清单里的名字会改成端点叫的
+  那一个。最少三只、最多十六只。
+  The index race, the asset race, the drawdown page and the hold-odds page read one shared list, and
+  it may mix all three markets. Changing it discards the data already fetched — keeping it would draw
+  the previous group's shape under the next group's names — and after a fetch the entries take the
+  names the endpoint calls them by.
+- **极端交易日的标的区改成和 K线页一样 / the extreme-days page takes any instrument** — 搜索框 +
+  一键预设 + 共享收藏，换标的连已取的数一起丢。此前它只能看一份固定名单里的标的。
+  A search box, one-tap presets and the shared favourites, replacing a fixed list.
 - **十六个页面各有各的图标 / an icon drawn for each of the sixteen pages** — 导航里原先有
+  **三对页面共用同一个系统字形**：K线与行业板块竞速（`E9E9`）、成交量换手率与持有胜率（`E9D2`）、
+  市场成交额与持仓收益（`E9D9`）。一个形状说不了两个页面，而 Segoe Fluent Icons 里能用的字形
+  就那么多，页面长大了装不下。现在十六幅都是画出来的：20×20 网格上的描边骨架（线、圆环、折线、
+  箭头）由 shapely 外扩求并成填充几何，落在 `Themes/Icons.xaml`，跟随深浅主题变色，包里不加
+  任何位图。每幅图都带两个定位点把包围盒钉成 `[2,18]²`——`PathIcon` 按包围盒等比缩放，没有它们
+  宽扁的会被撑高、瘦高的会被压扁。帮助与设置保留系统字形：问号和齿轮是这套菜单里唯一从来没有
+  歧义的两个。
+  Three pairs of pages had been sharing one system glyph: Candles with Sector Race (`E9E9`),
+  Volume & Turnover with Hold Odds (`E9D2`), Market Turnover with Position Replay (`E9D9`). One
+  shape cannot mean two pages, and there are only so many usable glyphs in Segoe Fluent Icons.
+  All sixteen are drawn instead: a stroke skeleton on a 20×20 grid — lines, rings, polylines,
+  arrowheads — expanded and unioned by shapely into the filled geometry a `PathIcon` needs, kept in
+  `Themes/Icons.xaml`, taking its colour from the light or dark theme and adding no bitmap to the
+  package. Each drawing carries two registration marks that pin its bounding box to `[2,18]²`,
+  because `PathIcon` scales by bounding box and, without them, a wide icon is stretched tall and a
+  tall one squashed flat. Help and settings keep their glyphs: a question mark and a gear are the
+  two shapes in this menu that were never ambiguous.
+- **条形榜的行内文字按条形定大小 / a bar board's row text is sized by its own bar** — 市值榜这一页
+  的字体比应用里任何一页都小，而且不是风格问题：行文字按**行距**算（`min(30, 行距 × 0.34)`），
+  行数越多字越小，而市值榜是全应用行数最多的榜。十五行算出来 27，**够不到那个 30 的上限** ——
+  应用里每一块榜都长在上限上，只有最需要空间的这一块没有；预览约按三分之一缩放，27 落在屏幕上
+  是 8 像素高的字，汉字在 8 像素上没有笔画可放。现在按**它自己那条条形**算（`min(36, 条形高 ×
+  0.72)`）：行距管的是两行隔多远，条形管的是每行多高，而文字是画在条形上或紧贴条形画的。名字栏
+  同步从 150 宽到 176，否则最长的那家（伯克希尔B）在更大的字号上装不下，而渲染器的做法是**缩
+  整列**——两个字的名字跟着一起缩。条内标注的墨色也改成从条形自己的颜色挑：白的在深色那一半
+  是对的，在浅色那一半读不出来（白字压在黄色条上是 2.1:1，而大字的底线是 3:1）。涨跌着色的
+  榜不跟着换 —— 那里的颜色就是意思，同尺寸的一涨一跌写两种墨色会读成两种标注。
+  名字能用的宽度也随之改成**画面左边到绘图区**，不再只是那条 176 的栏：名字右对齐贴着条形，
+  条形榜左边又没有 Y 轴，那条边距本来就是空的。只给栏宽时，港股榜最长的名字（中国石油化工股份，
+  八个字）要 261 基线像素而栏里只有 152，于是**整列被压到 19** —— 连腾讯控股和美团一起 ——
+  只为让一个名字留在一条它不必留在里面的带子里。最后，行名字一律改成**亮白**（此前只有夺冠
+  那一行是白的，其余是淡蓝 `#C9D8F5`，在预览的三分之一缩放下读成灰）：冠军行另有光晕，不靠
+  墨色。市场成交额页是时间轴柱状图、没有行名字，那边贴在柱子上的极值标注同样改成亮白，颜色
+  留在外框上 —— 最高与最低本就写着字。**回撤与修复页**（名字栏与条形榜是同一个元素，而它的
+  行数由自选清单决定）三条规则一并生效：它是旧规则的原样副本，十六个持仓的清单只问到 22 字号，
+  而三个持仓的清单问 50 拿 30 —— 同一批标的、两张清单、两种字号。
+  The market-cap board's type was the smallest in the app, and not by taste: row text was measured
+  against the **row pitch** (`min(30, pitch × 0.34)`), so it shrank as rows were added, and this is
+  the densest board in the app. Fifteen rows asked for 27 and got 27 — every other board reaches the
+  cap, and the one with the most to fit is the one that did not. On the preview, drawn at about a
+  third of the frame, 27 baseline pixels is a glyph eight screen pixels tall, and a CJK character has
+  no strokes left at eight pixels. It is measured against **its own bar** now (`min(36, bar ×
+  0.72)`): the pitch says how far apart two rows are, the bar says how tall each one is drawn, and
+  the text sits on the bar. The name column went from 150 to 176 with it — at the larger size the
+  longest name (伯克希尔B) no longer fits, and what the renderer does when a name does not fit is
+  shrink the *whole column*, two-character names included. The ink inside a bar now comes from that
+  bar's own colour: white is right on the dark half of the palette and unreadable on the light half —
+  white on the amber is 2.1:1, where large text needs 3:1. A sign-coloured board keeps white for both
+  signs, because there the colours are the meaning. A name may now use everything between the frame's
+  edge and the plot, not only the 176-pixel gutter: names are right-aligned against the plot and a
+  bar race has no Y axis, so that margin holds nothing. Against the gutter alone, Hong Kong's longest
+  name (中国石油化工股份, eight characters) asked for 261 baseline pixels and the gutter held 152, so
+  the fit shrank the column to 19 — every row, 腾讯控股 included — for the sake of one name. Finally,
+  row names are **white** for every row rather than only the champion's: the others were pale blue
+  (`#C9D8F5`), which reads as grey at the preview's scale, and the champion is already marked by its
+  glow. The market-turnover page is a column chart along a time axis and has no row names; there the
+  extreme callout on a bar is white too, with the colour kept on the box — the words 最高 and 最低
+  are the label. The drawdown page carries the same name column as the ranking boards and its row
+  count is set by the user's own list, so all three rules apply there as well — it was a verbatim
+  copy of the old rules, and sixteen holdings asked for 22 while three asked for 50 and got 30: the
+  same instruments at two different sizes.
+- **四页的区间按接口实测重定 / four range menus, re-cut against what the endpoints return** —
+  实测发现 `count` 是**根数不是天数**，源端从结束日往回数、忽略起始日：要 365 天回 365 根、要 640
+  回 640、要 1825 仍然只有 640 根。所以超长区间丢的是**头部**，回来的图短一截却完全正常——这正是
+  区间最不该给出的答案。据此：K线日线加了 **5 年与 10 年**两档（日线走分页，6 × 640 = 3840 根，
+  约 15 年；实测十年是 2462 根）；成交量换手率与行业板块竞速加了 **24 个月**一档，自定义区间的
+  上限从 640 天改到 **900 天**（旧阈值会把源端答得出来的两年拦下），日期选择器同步收窄；市值榜
+  加了「**最长**」与「**自定义**」，它的天花板是月线自己的 180 个月，而不是按日线算出来的三十五年。
+  新增 `TencentKline.MostDaysPerRequest = 900`（天），与既有的 `MostBarsPerRequest = 640`（根）
+  分开——拿根数去挡天数会拦下源端答得出来的区间。
+  Measured: `count` is a number of **bars**, not of days, and the source counts backwards from the
+  end date, ignoring the start — ask for 365 days and 365 bars come back, ask for 640 and 640 come
+  back, ask for 1825 and it is still 640. So a span past the ceiling loses its **head**, and a
+  chart with its first years missing is a shorter chart that looks entirely correct, which is the
+  one answer a span must not give. Accordingly: daily candles gained **5 and 10 years** (daily
+  pages backwards, 6 × 640 = 3840 bars, about fifteen years; ten years measured at 2,462 bars);
+  Volume & Turnover and Sector Race gained **24 months**, and the ceiling on a custom span went
+  from 640 to **900 days** — the old one refused two years the source answers happily — with the
+  date pickers narrowed to match; Market Cap Race gained **Longest** and **Custom**, its ceiling
+  being the monthly series' own 180 periods rather than the thirty-five years a daily walk would
+  suggest. `TencentKline.MostDaysPerRequest = 900` (days) now sits beside `MostBarsPerRequest =
+  640` (bars): using a bar count to police a number of days refuses spans the source will answer.
   **三对页面共用同一个系统字形**：K线与行业板块竞速（`E9E9`）、成交量换手率与持有胜率（`E9D2`）、
   市场成交额与持仓收益（`E9D9`）。一个形状说不了两个页面，而 Segoe Fluent Icons 里能用的字形
   就那么多，页面长大了装不下。现在十六幅都是画出来的：20×20 网格上的描边骨架（线、圆环、折线、
@@ -93,7 +249,20 @@ or uploaded yet** — that happens when it is released.
   fourteen "What's new" lines were rewritten for this version: they were still counting "an eighth
   chart page", which contradicts "Sixteen chart pages" sitting above it. The history lives here.
 
-### 已知限制 / Known limits（沿用 1.0.3.0 / unchanged from 1.0.3.0）
+### 修复 / Fixed
+
+- **十四份资源里那句方法说明说反过话 / the method note in fourteen resource files said the
+  opposite of what the code does** — 指数长跑那一句写着「月线，不调整」（英文 "Monthly bars,
+  unadjusted"），而代码早已改成走复权序列。页面上的这一行文字没有 UIA 节点（它画在预览面上），
+  所以改口径那次没有脚本能拦住它：数字全对、画面全对、状态行全对，只有那句说明在说反话。
+  `tools/port-indexrace-adjnote.py` 改掉 14 份，`verify-indexrace.py` 补了三条断言 —— 页面挂着
+  那句说明、14 份都不含各自语言的「不调整」、英文那句含 adjusted 且写明价格回报与总回报之别。
+  The index race said "Monthly bars, unadjusted" while the code had already moved to the adjusted
+  series. That line is drawn on the preview surface and has no automation node, so when the basis
+  changed nothing could catch it: the numbers were right, the frame was right, the status line was
+  right, and the sentence that describes the method said the reverse.
+
+### 已知限制 / Known limits（沿用 1.0.3.0，除下一条 / unchanged from 1.0.3.0 except the last）
 
 - 图标只换在导航里：设置与帮助仍是系统字形（问号与齿轮），工具条上的字形也没有重画。
   The new icons are in the navigation only; Settings and Help keep their glyphs, and the toolbar's
@@ -104,17 +273,26 @@ or uploaded yet** — that happens when it is released.
 - 美股没有日内模式（那个分时端点的 `data` 是 list 不是 object），日内只有最近几个交易日可选。
   There is no intraday mode on the United States (that endpoint returns a list, not an object), and
   intraday offers only the last few trading days.
+- 一块榜上的行内文字是**一个字号**：整块榜算一次，行与行不会各自缩放（逐行缩放看起来像一封剪贴
+  信，不像一份清单）。所以一块榜里最矮的那一行字体最小。
+  The row text on a board is **one size**: computed once for the board, never scaled per row — rows
+  scaled individually read as a ransom note rather than as a list. The shortest row on a board
+  therefore carries the smallest type.
 
 ### 商店文案同步 / Store listing
 
-`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份改写为本版
-的两个改动（图标、区间）；同一份文件里「说明」的图表页数与「产品功能」的图表条数从十改成十六，
-说明段补上六条。三处各由一个脚本按语言改（`tools/port-store-listing-pages.py`、
-`tools/port-store-listing-whatsnew.py`），幂等，且按整行精确匹配——某语言的措辞与脚本里的不一致
-时会报错而不是留下一个旧数字。这两个文件都是 CRLF，脚本读写都保持原样。
-The fourteen "What's new" lines now describe this version's two changes — the icons and the ranges;
-the description's page count and the features bullet went from ten to sixteen, with six entries
-added to the list. A script per edit does it per language
+`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份改成**新页面优先**
+的内容：第九到第十六页八个新页面逐条列出，共享自选、自绘图标、四页区间各一句带过（那一栏有
+1500 字符的上限，八个页面用德/法/意语写就已经顶到一千二）。同一份文件里「说明」的图表页数与
+「产品功能」的图表条数从十改成十六，说明段补上六条。三处各由一个脚本按语言改
+（`tools/port-store-listing-pages.py`、`tools/port-store-listing-whatsnew.py`），幂等，且按整行精确
+匹配——某语言的措辞与脚本里的不一致时会报错而不是留下一个旧数字。这两个文件都是 CRLF，脚本读写
+都保持原样。
+The fourteen "What's new" lines lead with the **new pages**: the eight that arrived between the
+ninth and the sixteenth, with the shared watchlist, the drawn icons and the four range menus in a
+sentence each — the field is capped at 1,500 characters, and eight pages already run past 1,200 in
+German, French and Italian. The description's page count and the features bullet went from ten to
+sixteen, with six entries added to the list. A script per edit does it per language
 (`tools/port-store-listing-pages.py`, `tools/port-store-listing-whatsnew.py`), idempotent and
 matching whole lines, so a language whose wording differs fails loudly instead of keeping a stale
 number. Both files are CRLF and the scripts keep them that way.

@@ -254,7 +254,12 @@ public sealed class BarRaceRenderer(TurnoverSeries series, AnimationPlan plan)
         using var strong = Ink.Format(context.Px(22), bold: true);
         using var plain = Ink.Format(context.Px(19));
 
-        Ink.Centred(session, label, x + (barWidth / 2), y - context.Px(18), strong, colour, a);
+        // White, with the colour left to the box around it. The word is the label of the bar
+        // underneath and is read the way a row's name is read on the ranking boards — which draw
+        // every name in white for the same reason. The two extremes are told apart by 最高 and
+        // 最低 themselves, so the ink is not carrying any meaning here; the outline still is.
+        Ink.Centred(session, label, x + (barWidth / 2), y - context.Px(18), strong,
+            Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), a);
 
         Ink.Centred(
             session,

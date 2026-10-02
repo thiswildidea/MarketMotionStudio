@@ -29,10 +29,34 @@ namespace MarketMotionStudio.Render;
 public sealed class SectorRaceRenderer : IFrameRenderer
 {
     /// <summary>The left gutter's name column, in baseline pixels.</summary>
-    private const double GutterLeft = 150;
+    private const double GutterLeft = 176;
 
     /// <summary>The right gutter's value-label column.</summary>
     private const double GutterRight = 130;
+
+    /// <summary>
+    /// The largest a row's text is allowed to be, in baseline pixels.
+    ///
+    /// This was 30, and 30 was a size the frame mostly never reached: the text used to be measured
+    /// against the **row** (34% of the pitch), so a board of eight rows asked for 50 and got the
+    /// cap, while a board of fifteen — the market-cap race, the densest in the app — asked for 27
+    /// and got 27. Every board in the app looked like the cap except the one with the most rows to
+    /// fit, which is the one whose text most needed the room. On the preview, drawn at about a
+    /// third of the frame, 27 baseline pixels is a glyph eight *screen* pixels tall, and a CJK
+    /// character has no strokes left at eight pixels: it reads as a grey smudge, while the sector
+    /// race next to it in the menu reads as words.
+    /// </summary>
+    private const double LabelCap = 36;
+
+    /// <summary>
+    /// What share of its own bar a row's text may take up.
+    ///
+    /// Against the bar rather than against the row, because the bar is what the text has to sit on
+    /// or beside: the row pitch sets how close two rows are, and the bar sets how tall each one is
+    /// drawn. Tying the text to the pitch made a row that draws a *thin* bar report the same size
+    /// as a row twice its height, which is why the dense board came out smallest of all.
+    /// </summary>
+    private const double LabelOfBar = 0.72;
 
     /// <summary>Baseline rows between the plot's bottom and the credit.</summary>
     private const double CreditGap = 74;
@@ -341,7 +365,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         var rows = Math.Min(_showTop, Math.Max(1, _series.Racers));
         var rowH = (bottom - top) / rows;
         var barH = Math.Min(rowH * 0.64, context.Px(96));
-        var nameSize = Math.Min(30, (rowH / context.Scale) * 0.34);
+        var nameSize = Math.Min(LabelCap, (barH / context.Scale) * LabelOfBar);
 
         var span = (state.AxisMax - state.AxisMin) is var s && s == 0 ? 1 : s;
         var zx = x0 + ((0 - state.AxisMin) / span) * plotW;
@@ -442,10 +466,16 @@ public sealed class SectorRaceRenderer : IFrameRenderer
             Bar(session);
 
             // The name sits in the left gutter, right-aligned against the plot.
-            var nameColour = champion ? Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF) : Rgb(0xC9, 0xD8, 0xF5);
+            //
+            // White for **every** row, not only the champion's. It used to be pale blue
+            // (#C9D8F5) with the leader in white, which made the one thing on this board that is
+            // not data the dimmest thing on it: at the preview's third of the frame the pale blue
+            // reads as grey, and a name is read before a bar is. The champion is marked by its
+            // glow instead — a mark that costs nobody else any contrast.
+            var nameColour = Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF);
 
             Ink.RightMiddle(session, _series.Entries[k].Name,
-                x0 - context.Px(14), yc, nameFormat, nameColour, intro);
+                x0 - context.Px(NameRightGap), yc, nameFormat, nameColour, intro);
 
             // The value follows the bar's end outside it; a bar long enough holds its own label
             // inside. Outside, the axis's proportional headroom cannot guarantee room for a label
@@ -455,8 +485,19 @@ public sealed class SectorRaceRenderer : IFrameRenderer
             var textWidth = Ink.Measure(session, text, valueFormat);
             var inside = w >= textWidth + context.Px(26);
 
-            Color valueColour = inside
+            // Inside, the label is written *on* the bar, so the ink has to be chosen from that bar's
+            // own colour and not from the frame. White is right on the dark half of the palette and
+            // unreadable on the light half — white on the amber this board hands out is 2.1:1,
+            // under the 3:1 floor even for large text — and the market-cap race is drawn entirely in
+            // the light half's company. A board coloured by sign keeps white for both signs: there
+            // the colours *are* the meaning, and a rise and a fall of the same size written in two
+            // different inks would read as two different kinds of label.
+            Color insideInk = ColourBySign
                 ? Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF)
+                : Ink.OnTopOf(colour);
+
+            Color valueColour = inside
+                ? insideInk
                 : _metric is RaceMetric.Return
                     ? (state.Values[k] >= 0 ? Palette.Emphasis : Rgb(0x4A, 0xDE, 0x80))
                     : colour;
@@ -503,13 +544,19 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     private double _namesFor = -1;
 
     /// <summary>
-    /// The left gutter's format, sized down until the longest name fits it.
+    /// The left gutter's format, sized down until the longest name fits the room it is given.
     ///
-    /// The gutter is 150 baseline pixels, which was plenty while the rows said 能源 and 材料 —
-    /// and is not, now that a roster can be fifteen companies: "Agricultural Bank of China" at
-    /// the row's own size runs off the left edge of the frame, and the renderer draws it there
-    /// without complaint, so the first frame that names a company is the first frame that is
-    /// visibly wrong.
+    /// The room used to be the gutter alone — 150 baseline pixels, less a 24-pixel inset. That is
+    /// the right room for a board whose rows say 能源 and 材料, and it is not the right room for
+    /// one whose rows say 中国石油化工股份: eight characters is about 261 baseline pixels at the
+    /// size a fifteen-row board draws at, so the fit shrank the **whole column** to 19 — every row,
+    /// including 腾讯 and 美团 — to keep one name inside a band that was drawn as a column but is
+    /// not one.
+    ///
+    /// It is not a column, because the names are right-aligned against the plot: they end at the
+    /// same x and reach left as far as each one needs. What they may use is therefore everything
+    /// between the frame's edge and the plot — the gutter **and** the frame's left margin, which on
+    /// a bar race holds nothing at all, there being no Y axis on this renderer. See NameRoom.
     ///
     /// **One size for the whole column**, not one per row: rows scaled individually read as a
     /// ransom note rather than as a list. And computed **once**, not per frame — a 2,700-frame
@@ -523,7 +570,9 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         }
 
         var (x0, _) = PlotColumns(context);
-        var room = x0 - context.Margins.Left - context.Px(GutterTextInset);
+
+        // Everything between the frame's edge and the plot, not only the gutter — see NameRoom.
+        var room = x0 - context.Px(NameRightGap) - context.Px(NameEdgeInset);
         var size = wanted;
 
         foreach (var entry in _series.Entries)
@@ -542,8 +591,18 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         return _names;
     }
 
-    /// <summary>Room the name column leaves between the text and the plot.</summary>
-    private const double GutterTextInset = 24;
+    /// <summary>How far a name's right edge stops short of the plot.</summary>
+    private const double NameRightGap = 14;
+
+    /// <summary>
+    /// How far the longest name may reach towards the frame's left edge.
+    ///
+    /// Small, and deliberately not the frame's left margin: the margin is how far the *nearest
+    /// content* sits from the edge, and on this renderer the title block is what sets it — a name
+    /// that runs past it is not overlapping anything, it is using empty frame. What this constant
+    /// guards against is a name touching the edge itself, which is the one place it cannot go.
+    /// </summary>
+    private const double NameEdgeInset = 16;
 
     private string ValueText(double value) =>
         (_metric is RaceMetric.Return && value > 0 ? "+" : string.Empty)

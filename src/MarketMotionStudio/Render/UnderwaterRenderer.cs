@@ -35,7 +35,34 @@ namespace MarketMotionStudio.Render;
 public sealed class UnderwaterRenderer : IFrameRenderer
 {
     /// <summary>The left gutter's name column, in baseline pixels.</summary>
-    private const double GutterLeft = 150;
+    private const double GutterLeft = 176;
+
+    /// <summary>
+    /// The largest a row's text is allowed to be, in baseline pixels — the same cap and the same
+    /// rule as <see cref="SectorRaceRenderer"/>, and this page needed them more.
+    ///
+    /// Its text was sized from the **row pitch** (34% of it), so it shrank as rows were added —
+    /// and this is the one board whose row count the user sets: a list of sixteen holdings asked
+    /// for 22 and never came near the 30 it was capped at, while a list of three asked for 50 and
+    /// got the cap. Two lists of the same instruments therefore drew their names at different
+    /// sizes. It is measured against the band the row's curve is drawn in now, which is this
+    /// page's equivalent of a bar.
+    /// </summary>
+    private const double LabelCap = 36;
+
+    /// <summary>
+    /// What share of its own band a row's text may take up.
+    ///
+    /// 0.62 of the 0.74-of-a-row band is 0.46 of the row — the ratio the bar boards land on, so the
+    /// two renderers agree about how big a name is next to the thing it names.
+    /// </summary>
+    private const double LabelOfBand = 0.62;
+
+    /// <summary>How far a name's right edge stops short of the plot.</summary>
+    private const double NameRightGap = 14;
+
+    /// <summary>How far the longest name may reach towards the frame's left edge. See SectorRaceRenderer.</summary>
+    private const double NameEdgeInset = 16;
 
     /// <summary>
     /// The right gutter, wider than a race's: a row carries three lines on it — where it is now,
@@ -210,7 +237,11 @@ public sealed class UnderwaterRenderer : IFrameRenderer
 
         var rows = Math.Max(1, _series.Racers);
         var rowH = (bottom - top) / rows;
-        var nameSize = Math.Min(30, (rowH / context.Scale) * 0.34);
+
+        // The band a row's curve is drawn in — this page's equivalent of a bar. Diagrammed in
+        // DepthY: the deepest fall on the board is drawn at 88% of this band.
+        var band = rowH * 0.74;
+        var nameSize = Math.Min(LabelCap, (band / context.Scale) * LabelOfBand);
 
         // Trailing rows first, so a row overtaking another passes over it.
         var order = Enumerable.Range(0, _series.Racers).OrderByDescending(k => state.Slots[k]).ToArray();
@@ -235,12 +266,11 @@ public sealed class UnderwaterRenderer : IFrameRenderer
 
             var yc = top + ((state.Slots[k] + 0.5) * rowH);
             var zeroY = yc - (rowH / 2) + context.Px(10);
-            var span = rowH * 0.74;
 
             // The depth scale is shared, so a row's own curve is clipped by its own row height:
             // the deepest fall on the board is drawn at 88% of a row, and every other fall is
             // shallower than it on the same ruler.
-            double DepthY(double value) => zeroY + ((value / state.Depth) * span);
+            double DepthY(double value) => zeroY + ((value / state.Depth) * band);
 
             var colour = Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)];
             var from = _starts[k];
@@ -307,7 +337,7 @@ public sealed class UnderwaterRenderer : IFrameRenderer
                         ])
                     {
                         StartPoint = new(0, (float)zeroY),
-                        EndPoint = new(0, (float)(zeroY + span)),
+                        EndPoint = new(0, (float)(zeroY + band)),
                     };
 
                     ds.FillGeometry(area, wash);
@@ -345,8 +375,11 @@ public sealed class UnderwaterRenderer : IFrameRenderer
                     (float)Math.Max(2, context.Px(4)), Ink.Fade(colour, 0.9 * intro));
             }
 
+            // White, like every name on the bar boards: a name is the one thing here that is not
+            // data, and it is read before the curve is.
             Ink.RightMiddle(session, _series.Entries[k].Name,
-                x0 - context.Px(14), yc, nameFormat, Rgb(0xC9, 0xD8, 0xF5), intro);
+                x0 - context.Px(NameRightGap), yc, nameFormat,
+                Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), intro);
 
             // Three lines in the right gutter: where the row is, how deep it got, how long it
             // took back. The last of the three is the one a single number cannot carry — a fall
@@ -413,7 +446,11 @@ public sealed class UnderwaterRenderer : IFrameRenderer
         }
 
         var (x0, _) = PlotColumns(context);
-        var room = x0 - context.Margins.Left - context.Px(24);
+
+        // Everything between the frame's edge and the plot, not only the gutter — this page can
+        // hold any instrument at all (a fund's name is not two characters), and against the gutter
+        // alone one long name shrinks the whole column. See SectorRaceRenderer.NameRoom.
+        var room = x0 - context.Px(NameRightGap) - context.Px(NameEdgeInset);
         var size = wanted;
 
         foreach (var entry in _series.Entries)

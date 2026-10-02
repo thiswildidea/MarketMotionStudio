@@ -11,11 +11,14 @@ Usage:  python tools/set-market.py 港股
         python tools/set-market.py A股
 """
 
-import subprocess
+import os
 import sys
 import time
 
 import uiautomation as auto
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import winui  # noqa: E402
 
 APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
 EXE = "MarketMotionStudio.exe"
@@ -45,35 +48,23 @@ def window():
     manual, so a window left showing help has none of the controls that identify it —
     and the script reported "no studio window" for an app that was running and
     visible, then went on to verify the market it had failed to change.
+
+    Owned by `winui`, not copied here. The copy that used to be here read `tasklist`
+    with `text=True`, which decodes as UTF-8 and raises **inside subprocess's reader
+    thread** — so it did not fail loudly, it returned `stdout = None` and blew up on
+    `.splitlines()`. `tasklist` writes its "no tasks match" line in the system code
+    page, so that landed exactly when the app was *not* running: the one case this
+    function exists to answer "no processes" to.
     """
-    pids = set()
-
-    for line in subprocess.run(["tasklist", "/FI", f"IMAGENAME eq {EXE}", "/NH", "/FO", "CSV"],
-                               capture_output=True, text=True).stdout.splitlines():
-        fields = [f.strip('"') for f in line.split('","')]
-
-        if len(fields) > 1 and fields[1].isdigit():
-            pids.add(int(fields[1]))
-
-    if not pids:
-        return None
-
-    for candidate in auto.GetRootControl().GetChildren():
-        if candidate.ProcessId in pids:
-            return candidate
-
-    return None
+    return winui.app_window(EXE)
 
 
 def kill():
-    subprocess.run(["taskkill", "/F", "/IM", EXE], capture_output=True, check=False)
-    time.sleep(2.0)
+    winui.kill(EXE)
 
 
 def launch():
-    subprocess.Popen(["cmd", "/c", "start", "", f"shell:AppsFolder\\{APPID}"], shell=False)
-    time.sleep(9.0)
-    return window()
+    return winui.launch(EXE, APPID)
 
 
 def market_value(win):

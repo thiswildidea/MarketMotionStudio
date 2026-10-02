@@ -1825,5 +1825,43 @@ German section was silently given the Korean section's dash. The symptom was a s
 character in one language.
 
 Version bumped to **1.0.4.0** (manifest plus a CHANGELOG entry, Chinese and English). The package
-has not been built or uploaded: store copy may run ahead of the package, but must never be uploaded
-before the package that matches it.
+was built at that version (`MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload`, 142.4 MB) and
+then rebuilt once more after the row-type change below — the same version number, because neither
+had been uploaded yet, and a package that does not match its own notes is worse than either.
+
+## 条形榜的行文字：三条规则，量出来的（2026-10-02）
+
+用户的话是「市值竞速这页字体没有之前版本清楚，按腾讯控股那一行的样子来」。这一页的字确实
+是全应用最小的，而且不是风格问题。三条规则各自独立，改完三个市场都落在同一个字号上。
+
+**一、字号挂在条形上，不挂在行距上。** 原先是 `min(30, (行距 / Scale) × 0.34)` —— 行数越多
+字越小。市值榜、极端交易日、AH 溢价三块都是十五行，算出来 27，**够不到那个 30 的上限**：应用里
+每一块榜都长在上限上，只有最需要空间的这几块没有。现在是 `min(36, (条形高 / Scale) × 0.72)`。
+行距管的是两行隔多远，条形管的是每行多高；把它挂在行距上，等于让一条画得细的条形和一条两倍
+高的条形报同一个字号。
+
+**二、名字能用的是「画面左边到绘图区」，不只是那条 176 的栏。** 名字是右对齐画在 `x0 − 14`
+左边的，而条形榜这个渲染器左边**没有 Y 轴** —— 那条边距是空的。原先只给 `176 − 24 = 152`，
+而港股榜最长的名字（中国石油化工股份，八个字）在 32.7 字号下要约 261，于是**整列被压到 19**，
+连腾讯控股和美团一起，只为让一个名字留在一条它不必留在里面的带子里。现在按
+`x0 − Px(NameRightGap=14) − Px(NameEdgeInset=16)` 算，八字的港股榜也不再缩。这是三条里
+最有用的一条：A 股榜与美股榜只涨了三成，港股榜涨了一倍。
+
+**三、名字一律亮白。** 原先只有夺冠那一行是白的，其余是淡蓝 `#C9D8F5`，在预览的三分之一
+缩放下读成灰 —— 一块榜上唯一不是数据的东西，成了最暗的东西。冠军行另有光晕，不靠墨色区分。
+市场成交额页是**时间轴柱状图、没有行名字**（那是另一套渲染器 `BarRaceRenderer`），那边对应
+的字是贴在柱子上的极值标注，同样改白，颜色留在外框上。
+
+**量法（`tools/verify-racelabel.py`，27 项）。** 字号不是控件属性，预览画布在 UIA 树里没有
+节点 —— 只能量像素，判据取**比值**（截图大小随窗口变，比值不随）：
+
+    旧规则        新规则      实测
+    字高/行距     0.275   0.373   0.417
+    字高/条形     0.43    0.583   0.625
+    名字墨色      201     255     255
+
+三个坑都踩过，都留在脚本的注释里：**窗口必须从条形往左数起**（按画面百分比开窗会把设置面板
+读成字），**reach 的上限是画布左缘而不是像素数**（探出画布就每行读到 24 个「墨迹像素」，十五
+行连成一段），**条内数值要跳过条形最左那 24 像素**（条形是 alpha 0.55 起的渐变，暗的一端在左，
+一路扫过去「字高」等于条形高）。另外**调色板里有一半是灰的**，灰不满足「鲜艳」——按条形数行
+会漏行（A 股榜十五行数出十三行，港股榜数出八行），所以行数按**名字**数。
