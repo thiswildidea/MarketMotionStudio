@@ -927,10 +927,24 @@ never sent to Partner Center, so its entry in the CHANGELOG — page navigation,
 basis across all three markets — describes something no user has. 1.0.3.0 carries it. If a
 1.0.2.0 upload ever happens, the next number has to clear 1.0.3.0.
 
-**The Store gallery is three pages short.** `tools/store-screenshots.py` walks the seven pages that
-existed when it was written, and the listing copy — bumped to ten at the user's instruction, ahead
-of the release that carries them — names all ten in all fourteen languages. Capturing the candle
-page, the market-cap board and the A+H page is what closes it; nothing else about the listing is owed.
+**The Store gallery is one page short.** `tools/store-screenshots.py` now walks **eight** pages — the
+six it had, plus the candle page and the market-cap board, captured full-screen (the window is
+maximised, not parked at 1720×1000) and stopped on the animation's last frame. The listing copy
+names more than that; the A+H premium page is the one still missing.
+
+Two things the gallery run forced into the script, both invisible in a log:
+
+* **A frame can be blank while the log says success.** The fetch-done signal is the play button
+  becoming enabled, and the preview redraws after that; a capture taken between the two is a light
+  background and almost nothing else — 0.6 % ink against 13 % for a real frame, one card in ninety-
+  nine. `capture()` now measures the ink and re-shoots (three tries, two seconds apart).
+* **A typed title is a persisted preference, shared by all fourteen languages.** `StudioPreferences`
+  keeps it in `LocalSettings` with no language in the key, so a title typed once on a page shows up
+  in that page's picture in every language. The market-cap page was carrying `过去15年美股市值排行
+  榜` — Chinese, in the middle of an English or Russian Store card, and saying US while the market
+  was A-shares. `tools/clear-frame-titles.py` reads every page's title box and clears the ones that
+  are not empty (read-only without `--clear`); the frame then falls back to the page's own
+  localised default.
 
 **And the copy now describes a build nobody has.** The market-cap board is unreleased: the
 `artifacts/` package is 1.0.3.0 and carries eight pages, so the listing and the newest package

@@ -25,8 +25,12 @@ AutomationId 定位（x:Name 即 AutomationId），因此不依赖当前界面�
   python tools\store-screenshots.py --langs=en-US --pages=06-position
                                                 # 只跑指定语言/页面（验证用）
 
+窗口**最大化后再抓**（商店要的是「应用全屏」的观感，不是缩在屏幕中间的窗口）；
+画面一律停在动画的**最后一帧**。
+
 产出：artifacts\store-screens\<语言>\<序号>-<页面>.png，逐行写 runlog.txt。
-截图尺寸要求 ≥1366×768，脚本会先把窗口 MoveWindow 到安全大小再抓。
+商店只要求截图 ≥1366×768；本屏 1920×1080，最大化后是 1920×1080（含标题栏）。
+跑之前确认主题是浅色——旧图库是浅色主题，深浅混着上传不好看。
 """
 import os
 import subprocess
@@ -34,6 +38,11 @@ import sys
 import time
 
 import uiautomation as auto
+
+try:
+    from PIL import Image
+except ImportError:  # 没装 PIL 就不查空白，只管截图
+    Image = None
 
 # ---- 常量 -----------------------------------------------------------------------
 APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
@@ -83,6 +92,8 @@ PAGES = [
     ("NavMatrix", "04-monthly-matrix", None),
     ("NavDcaPlan", "05-dca-plan", "FIRST"),
     ("NavPosition", "06-position", "FIRST"),
+    ("NavCandle", "07-candle", "FIRST"),
+    ("NavMarketCap", "08-market-cap", None),
 ]
 
 if SMOKE:
@@ -329,7 +340,25 @@ def item_key(c):
     return (c.Name, r.left, r.top)
 
 
-def search_instrument(win, query, timeout=12):
+def search_instrument(win, query, timeout=12, attempts=2):
+    """Search `query`, then retry once from an empty box if nothing came back.
+
+    Retried, because a suggestion list that never opened looks exactly like a query
+    that has no matches — and the honest cause is usually that the previous page's
+    fetch was still running when the keys went in. The retry clears the box first:
+    typing into it again appends, and "SPYSPY" finds nothing either.
+    """
+    for attempt in range(attempts):
+        if _search_once(win, query, timeout):
+            return True
+
+        if attempt + 1 < attempts:
+            say("    第 %d 次没出建议，清空重来" % (attempt + 1))
+
+    return False
+
+
+def _search_once(win, query, timeout=12):
     """往 InstrumentSearch 键入查询串，从弹出的建议列表里点第一项。
 
     程序化 SetValue 不触发 UserInput 的 TextChanged（建议列表不弹），必须
@@ -347,6 +376,9 @@ def search_instrument(win, query, timeout=12):
     try:
         edit.SetFocus()
         time.sleep(0.4)
+        # 先清空：重试时框里还留着上一次的串，再敲一遍就是 "SPYSPY"。
+        auto.SendKeys("{Ctrl}a{Delete}", waitTime=0.3)
+        time.sleep(0.3)
         auto.SendKeys(query, interval=0.06)
     except Exception as e:
         say("    SendKeys 失败: %r" % e)
@@ -391,8 +423,32 @@ def scrub(win, ratio=1.0):
         return False
 
 
-def ensure_window_size(win):
-    """Store 要求截图 ≥1366×768；把窗口放到安全大小（物理像素）。"""
+def maximize_window(win):
+    """把窗口最大化——商店截图要的是「应用全屏」的观感，不是缩在角落的窗口。
+
+    uiautomation 的 Control 没有 Maximize()，走 WindowPattern；WinUI 3 的窗口
+    有时不给这个 pattern，再退回 ShowWindow(SW_MAXIMIZE)。两条路都失败才
+    退回按尺寸摆放（≥1366×768 是商店硬下限）。
+    """
+    wp = pat(win, auto.PatternId.WindowPattern)
+    if wp is not None:
+        try:
+            wp.SetWindowVisualState(auto.WindowVisualState.Maximized)
+            time.sleep(1.2)
+            return
+        except Exception as e:
+            say("  WindowPattern 最大化失败: %r" % e)
+
+    try:
+        import ctypes
+
+        hwnd = win.NativeWindowHandle
+        if hwnd and ctypes.windll.user32.ShowWindow(hwnd, 3):  # SW_MAXIMIZE
+            time.sleep(1.2)
+            return
+    except Exception as e:
+        say("  ShowWindow 最大化失败: %r" % e)
+
     try:
         sw, sh = auto.GetScreenSize()
     except Exception:
@@ -408,15 +464,61 @@ def ensure_window_size(win):
         say("  MoveWindow failed: %r" % e)
 
 
-def capture(win, path):
+def log_window_rect(win, when):
+    """记下窗口矩形，好确认截图真的是全屏尺寸而不是上一次的大小。"""
     try:
-        win.SetFocus()
-        time.sleep(1)
+        r = win.BoundingRectangle
+        say("  窗口%s: %dx%d @(%d,%d)" % (when, r.width(), r.height(), r.left, r.top))
     except Exception:
         pass
-    ok = win.CaptureToImage(path)
-    time.sleep(0.5)
-    return ok and os.path.exists(path)
+
+
+def ink_ratio(path):
+    """画面上「有墨」的像素占比——用来认出一帧空白图。
+
+    为什么需要：取数完成的信号是播放按钮变可用，而预览的重绘在它之后才发生。
+    抓到中间态的画面是**浅色背景 + 几乎没有别的东西**，而日志对此一无所知：
+    「数据就绪」和「截图成功」两行照常打印，九十九张里唯独一张白板。有内容的图
+    暗像素占 13% 上下，空白的那张 0.6%。
+    """
+    if Image is None:
+        return 1.0
+
+    with Image.open(path) as im:
+        raw = im.convert("RGB").resize((im.width // 4, im.height // 4)).tobytes()
+
+    dark = sum(1 for i in range(0, len(raw), 3)
+               if (raw[i] + raw[i + 1] + raw[i + 2]) / 3 < 128)
+    return dark / (len(raw) / 3)
+
+
+def capture(win, path, min_ink=0.01, attempts=3):
+    """截图，并检查那一帧不是白板；是就等一会儿再抓。"""
+    ratio = 0.0
+
+    for attempt in range(attempts):
+        try:
+            win.SetFocus()
+            time.sleep(1)
+        except Exception:
+            pass
+
+        ok = win.CaptureToImage(path)
+        time.sleep(0.5)
+
+        if not (ok and os.path.exists(path)):
+            continue
+
+        ratio = ink_ratio(path)
+
+        if ratio >= min_ink:
+            return True
+
+        say("    截图几乎是空白（墨色 %.3f），等 2s 重抓" % ratio)
+        time.sleep(2)
+
+    say("    !! 连抓 %d 次都近乎空白（墨色 %.3f）" % (attempts, ratio))
+    return os.path.exists(path)
 
 
 # ---- 主流程 ---------------------------------------------------------------------
@@ -440,7 +542,8 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
         say("  首次启动：窗口未出现，跳过该语言")
         continue
     time.sleep(2)
-    ensure_window_size(win)
+    maximize_window(win)
+    log_window_rect(win, "启动后")
 
     # --- 切语言 + 切市场：设置页两项都选好 → 一次重启同时生效 ---
     nav = find_settings_nav(win, settings_name)
@@ -474,7 +577,8 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
     say("  重启后窗口标题: %r（期望 %r）%s" %
         (win.Name, title, "OK" if win.Name == title else "!! 不一致"))
     time.sleep(2)
-    ensure_window_size(win)
+    maximize_window(win)
+    log_window_rect(win, "重启后")
 
     outdir = os.path.join(OUTROOT, tag)
     os.makedirs(outdir, exist_ok=True)
