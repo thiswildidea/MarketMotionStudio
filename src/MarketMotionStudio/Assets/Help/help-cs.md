@@ -1,4 +1,4 @@
-﻿# Market Motion Studio
+# Market Motion Studio
 
 Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyberete období, prohlédnete si náhled, dokud se dobře nečte, a exportujete MP4. Nic dalšího instalovat netřeba.
 
@@ -57,7 +57,7 @@ Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhán
 - Dvě míry: procentní změna období a jeho objem v stovkách milionů juanů. Přepnutí míry jen přebarví stejná data; znovu se nenačítají.
 - Čtyři seznamy: odvětví Shenwan úrovně 1, populární témata, vlastní (zaškrtnout) a jednotlivé akcie (přidat hledáním). Vlastní seznam začíná naplněný odvětvími Shenwan úrovně 1.
 - Vestavěné seznamy se řídí trhem: obory Shenwan úrovně 1 a populární témata u A-akcií, čtyři subindexy Hang Seng u Hongkongu, deset sektorových ETF SPDR u USA. Vlastní seznam a seznam akcií jsou na každém trhu.
-- Období může být 1, 3, 6 nebo 12 měsíců, nebo vlastní počáteční a koncové datum.
+- Období může být 1, 3, 6, 12 nebo 24 měsíců, nebo vlastní počáteční a koncové datum. Vlastní rozsah sahá přibližně 900 dní — tolik zvládne jeden požadavek — a výběr dat tam končí.
 - Seznam má minimální a maximální počet položek — málo pruhů není závod, příliš mnoho se slije.
 
 

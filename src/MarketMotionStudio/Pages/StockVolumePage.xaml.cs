@@ -75,6 +75,7 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
         (3, "StudioRange3M"),
         (6, "StudioRange6M"),
         (12, "StudioRange12M"),
+        (24, "StudioRange24M"),
         (0, "StudioRangeCustom"),
     ];
 
@@ -100,6 +101,15 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddMonths(-3);
         ToDate.Date = today;
+
+        // The pickers stop where one request stops. A date someone can choose and a date the guard
+        // then refuses is a control arguing with itself, and the guard is the one that is right —
+        // see TencentKline.MostDaysPerRequest. Same shape as the plan and holding pages.
+        var oldest = today.AddDays(-TencentKline.MostDaysPerRequest);
+        FromDate.MinYear = oldest;
+        FromDate.MaxYear = today;
+        ToDate.MinYear = oldest;
+        ToDate.MaxYear = today;
 
         ChosenText.Text = Strings.Get("StockNoneChosen");
 
@@ -467,9 +477,13 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
                 return;
             }
 
-            if (end.DayNumber - start.DayNumber > TencentKline.MostBarsPerRequest)
+            // A count of days, and the ceiling is a count of bars. See
+            // TencentKline.MostDaysPerRequest for why the two are not the same number and why the
+            // day figure is the cautious one: 640 days was refusing a two-year span the endpoint
+            // would have answered in full.
+            if (end.DayNumber - start.DayNumber > TencentKline.MostDaysPerRequest)
             {
-                ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", TencentKline.MostBarsPerRequest));
+                ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", TencentKline.MostDaysPerRequest));
                 return;
             }
         }

@@ -43,14 +43,32 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
     /// this app, not two that happen to agree today, and a second set of keys for the same three
     /// words is how a translation drifts apart between two pages that meant the same thing.
     /// </summary>
+    /// <summary>
+    /// Ten years is the page's own name, and it is also a tenth of it: the field is today's largest
+    /// fifteen, so the further back the range starts the more of the board the company it names
+    /// today had not yet become. Longest reaches the endpoint's own fifteen — a hundred and eighty
+    /// months in one request.
+    ///
+    /// The longest entry carries <see cref="IndexRaceRangeMax"/> rather than the plan pages'
+    /// <c>DcaRangeMax</c>, and the difference is the number in it: that one reads "about thirteen
+    /// years" because the plan pages really do stop at thirteen. This page reaches fifteen, so it
+    /// wants the plain word.
+    /// </summary>
     private static readonly (int Months, string Key)[] Ranges =
     [
         (12, "StudioRange12M"),
         (36, "DcaRange3Y"),
         (60, "DcaRange5Y"),
         (120, "DcaRange10Y"),
-        (0, "StudioRangeCustom"),
+        (0, "IndexRaceRangeMax"),
+        (CustomMonths, "StudioRangeCustom"),
     ];
+
+    /// <summary>
+    /// Tags the custom entry. Zero is "as far back as the source goes" — the same convention the
+    /// candle page's monthly range uses — so the custom entry cannot also be zero.
+    /// </summary>
+    private const int CustomMonths = -1;
 
     public MarketCapPage()
     {
@@ -69,6 +87,14 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddYears(-10);
         ToDate.Date = today;
+
+        // The pickers stop where one request stops, so a date someone can choose is a date the
+        // guard will not then refuse. See MarketCapSeries.MonthsWanted.
+        var oldest = today.AddMonths(-MarketCapSeries.MonthsWanted);
+        FromDate.MinYear = oldest;
+        FromDate.MaxYear = today;
+        ToDate.MinYear = oldest;
+        ToDate.MaxYear = today;
 
         ListText.Text = Strings.Format("MarketCapCount", MarketCapLists.Board);
 
@@ -171,7 +197,7 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
             return;
         }
 
-        var custom = RangeCombo.SelectedItem is ComboBoxItem { Tag: 0 };
+        var custom = RangeCombo.SelectedItem is ComboBoxItem { Tag: CustomMonths };
         CustomRange.Visibility = custom ? Visibility.Visible : Visibility.Collapsed;
 
         SavePreferences();
@@ -179,10 +205,21 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
 
     private (DateOnly Start, DateOnly End) ChosenRange()
     {
-        if (RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } && months > 0)
+        if (RangeCombo.SelectedItem is ComboBoxItem { Tag: int months })
         {
             var today = DateOnly.FromDateTime(DateTime.Now);
-            return (today.AddMonths(-months), today);
+
+            return months switch
+            {
+                // "Longest" is the endpoint's own reach rather than a number picked to sound
+                // generous: one request carries at most this many months and it quietly serves
+                // fewer past it, so asking for more would be a shorter board, not a longer one.
+                0 => (today.AddMonths(-MarketCapSeries.MonthsWanted), today),
+                > 0 => (today.AddMonths(-months), today),
+                _ => (
+                    DateOnly.FromDateTime(FromDate.Date.DateTime),
+                    DateOnly.FromDateTime(ToDate.Date.DateTime)),
+            };
         }
 
         return (
@@ -202,11 +239,14 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
             return;
         }
 
-        // The walk's own ceiling rather than a number that sounds right: past it the walk runs out
-        // of requests before it runs out of range, and the series quietly starts later than asked.
-        if (end.DayNumber - start.DayNumber > HistoryWalk.MostDays)
+        // A count of days against a ceiling that is a count of months — see
+        // MarketCapSeries.MonthsWanted. The walk's own thirty-five years was the wrong ceiling for
+        // this page by twenty: a twenty-year span passed the guard and came back fifteen years of
+        // board with nothing said.
+        var most = (int)Math.Round(MarketCapSeries.MonthsWanted * 30.44);
+        if (end.DayNumber - start.DayNumber > most)
         {
-            ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", HistoryWalk.MostDays));
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", most));
             return;
         }
 

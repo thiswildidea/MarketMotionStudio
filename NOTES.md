@@ -1675,3 +1675,54 @@ driven through the picker; the sixteen-pick ceiling and the three-pick floor hav
 not at a frame height anybody has looked at; and a pick whose bars are shorter than a year has not
 been tried on the hold-odds board, where the sixth-entry threshold would leave it off the board
 entirely.
+
+## Four range menus, measured against their endpoints (2026-10-02)
+
+Four pages offer a span and four different paths serve them, so the menus were checked against the
+endpoints rather than against each other. `tools/probe-range-limits.py` is that check, and the
+first thing it settled is the one that matters:
+
+**One request is a count of bars, and the source answers from the end date backwards.** Ask for
+365 days and 365 bars come back (2025-04-03 .. 2026-09-30); ask for 640 and 640 come back; ask for
+1825 and it is still 640, with the oldest bar stuck at 2024-02-07 however far back the range
+reaches. So a span past the ceiling loses its **head** — and a chart with its first years missing is
+a shorter chart that looks entirely correct, which is the one answer a span must not give. The same
+probe measured the rest: daily candles paged reach 3840 bars (2010-12 on the mainland, 2011-02 in
+Hong Kong, 2011-06 in New York); weekly is 640 bars, about twelve years, in one request; monthly is
+430 for an index and 236–301 for a listing; the intraday endpoint holds **five** trading days and
+answers a US code with a list where the others answer with an object — which is what "no intraday
+mode on that market" actually is; and the market-cap board's 180 months arrive in one request.
+
+What that changed:
+
+- **Candles** daily gained five and ten years. The walk pages six times and one page is 640 bars, so
+  ten years is 2520 bars and four requests — inside the ceiling, and the page simply was not
+  offering it.
+- **Sector Race** and **Volume and Turnover** gained two years, and their guard moved from
+  `MostBarsPerRequest` — 640, compared against a span in **days** — to a new
+  `TencentKline.MostDaysPerRequest` of 900. The old figure turned away a two-year span the endpoint
+  answers in full: the page was arguing with its own data source, and the argument was invisible
+  because the refusal looks like a range that is too long. Their date pickers now stop at the same
+  line the guard does, so a date somebody can choose is a date a fetch will not then refuse.
+- **Market Cap** gained the longest entry and lost a guard that was twenty years too loose. It
+  compared against the walk's thirty-five years while one monthly request serves fifteen, so a
+  twenty-year span passed the guard and came back a fifteen-year board with nothing said. Ten years
+  stays the default because the field is *today's* largest fifteen: the further back the range
+  starts, the more of the board the company it names today had not yet become.
+- The intraday day-picker was already right — it was written before this pass — so the only thing
+  that changed for the volume page is its daily menu.
+
+**One line, not two.** The gain-loss calendar's help carries a nearly identical interval sentence,
+same four numbers, and it was deliberately left alone: that page wants every single day of its span
+and asks one request per instrument, so its own tighter 640-day ceiling is the right one and its
+menu is unchanged. Every replacement in `tools/port-sectorrace-help-range.py` is anchored to a whole
+line, so the calendar's sentence cannot be caught by accident — and the script prints the count of
+four-entry lines it left behind as its own proof.
+
+**A label with a number in it is a claim about one page.** `DcaRangeMax` reads "about thirteen
+years" in Chinese and not in the other twelve languages, and thirteen is exactly right: the plan and
+holding pages stop at `today.AddYears(-13)` on purpose. It is wrong on the candle page's monthly
+menu (whole history) and would be wrong here (fifteen years), so the market-cap entry uses
+`IndexRaceRangeMax` instead — the plain word, already translated fourteen ways.
+
+`StudioRange24M` is the only new key this added: 732 → 733.

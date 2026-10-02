@@ -1,4 +1,4 @@
-﻿# Market Motion Studio
+# Market Motion Studio
 
 Esta aplicación convierte indicadores del mercado de acciones A en vídeos verticales para el móvil. Elija un periodo, mire la vista previa hasta que se lea bien y exporte un MP4. No hace falta instalar nada más.
 
@@ -57,7 +57,7 @@ Un conjunto de sectores o acciones dibujado como barras horizontales que se adel
 - Dos medidas: la variación del periodo en % y su volumen en centenas de millones de yuanes. Cambiar de medida solo re-tiñe los mismos datos; no vuelve a consultar.
 - Cuatro listas: sectores Shenwan de nivel 1, temas de actualidad, personalizada (marcar casillas) y acciones individuales (añadir por búsqueda). La lista personalizada empieza rellena con los sectores Shenwan de nivel 1.
 - Las listas integradas siguen al mercado: sectores Shenwan de nivel 1 y temas de actualidad para acciones A, los cuatro subíndices Hang Seng para Hong Kong, diez ETF sectoriales SPDR para Estados Unidos. Las listas personalizada y de acciones existen en todos los mercados.
-- El periodo puede ser de 1, 3, 6 o 12 meses, o fechas de inicio y fin personalizadas.
+- El periodo puede ser de 1, 3, 6, 12 o 24 meses, o fechas de inicio y fin personalizadas. Un intervalo personalizado llega a unos 900 días — lo que abarca una solicitud — y los selectores de fecha terminan ahí.
 - Una lista tiene un mínimo y un máximo de elementos — pocas barras no es una carrera, demasiadas se amontonan.
 
 

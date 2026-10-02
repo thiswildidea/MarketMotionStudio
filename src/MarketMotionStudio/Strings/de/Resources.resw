@@ -74,6 +74,7 @@
   <data name="StudioRange3M"><value>Letzte 3 Monate</value></data>
   <data name="StudioRange6M"><value>Letzte 6 Monate</value></data>
   <data name="StudioRange12M"><value>Letzte 12 Monate</value></data>
+  <data name="StudioRange24M"><value>Letzte 2 Jahre</value></data>
   <data name="StudioRangeCustom"><value>Benutzerdefiniert</value></data>
   <data name="StudioRangeFrom.Header"><value>Von</value></data>
   <data name="StudioRangeTo.Header"><value>Bis</value></data>

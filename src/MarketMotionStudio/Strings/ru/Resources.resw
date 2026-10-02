@@ -74,6 +74,7 @@
   <data name="StudioRange3M"><value>Последние 3 месяца</value></data>
   <data name="StudioRange6M"><value>Последние 6 месяцев</value></data>
   <data name="StudioRange12M"><value>Последние 12 месяцев</value></data>
+  <data name="StudioRange24M"><value>Последние 2 года</value></data>
   <data name="StudioRangeCustom"><value>Свой</value></data>
   <data name="StudioRangeFrom.Header"><value>С</value></data>
   <data name="StudioRangeTo.Header"><value>По</value></data>

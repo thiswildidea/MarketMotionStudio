@@ -74,6 +74,7 @@
   <data name="StudioRange3M"><value>최근 3개월</value></data>
   <data name="StudioRange6M"><value>최근 6개월</value></data>
   <data name="StudioRange12M"><value>최근 12개월</value></data>
+  <data name="StudioRange24M"><value>최근 2년</value></data>
   <data name="StudioRangeCustom"><value>사용자 지정</value></data>
   <data name="StudioRangeFrom.Header"><value>시작일</value></data>
   <data name="StudioRangeTo.Header"><value>종료일</value></data>

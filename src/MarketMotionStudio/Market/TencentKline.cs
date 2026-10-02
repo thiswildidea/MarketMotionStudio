@@ -54,8 +54,31 @@ public sealed class TencentKline(HttpClient http)
     /// One request returns at most this many bars. Asking for more is not refused by
     /// the server — it simply returns this many, which would silently shorten the
     /// range, so the caller is told instead.
+    ///
+    /// It is a count of **bars**, not of days, and that is the trap. The request's own
+    /// <c>count</c> argument is clamped to this number, and a span is measured in calendar days, so
+    /// asking for five years and the source answering with the most recent six hundred and forty
+    /// bars is a chart missing its head — drawn perfectly, and short. Measured 2026-10-02: a request
+    /// for 365 days returns 365 bars (2025-04-03 .. 2026-09-30) and one for 640 returns 640
+    /// (2024-02-07 .. 2026-09-30); past 640 the oldest bars it returns stay at 2024-02-07 no matter
+    /// how far back the range asks.
     /// </summary>
     public const int MostBarsPerRequest = 640;
+
+    /// <summary>
+    /// How far back one request can reach, in calendar days, for the pages that ask once.
+    ///
+    /// Those six hundred and forty bars are worth about two and a half years — New York's two
+    /// hundred and fifty-two sessions a year reach back nine hundred and thirty days, Shanghai's
+    /// two hundred and forty-three reach back nine hundred and sixty, and a listing that halts for
+    /// a season fits fewer bars into the same span. Nine hundred is short of the thin end on
+    /// purpose: a page whose date pickers promise this many days must hold them for the listing
+    /// that traded least.
+    ///
+    /// The pages that walk (<see cref="CandleLoader"/>, <see cref="HistoryWalk"/>) do not need it —
+    /// they page, and their own ceilings are counts of requests.
+    /// </summary>
+    public const int MostDaysPerRequest = 900;
 
     /// <summary>
     /// Fetches one instrument's daily bars over a range.

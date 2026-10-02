@@ -281,8 +281,14 @@ public static class MarketCapSeries
     /// Months asked for in one request. The endpoint serves three hundred; a hundred and eighty is
     /// fifteen years, which is past every span this page offers and short of the point where a
     /// larger reply is worth its size.
+    ///
+    /// Public because the page has to name it: the monthly period's ceiling is a count of months
+    /// and the page's guard compares against a span in **days**, which is how the old guard — the
+    /// walk's own thirty-five years — sat loose enough to let a twenty-year span through and then
+    /// quietly draw fifteen. A range whose data stops early is a shorter picture that looks
+    /// correct, which is the one answer a custom span must not give.
     /// </summary>
-    private const int MonthsWanted = 180;
+    public const int MonthsWanted = 180;
 
     /// <summary>
     /// The period the field is measured on. Monthly, for the reason in the type's own note.

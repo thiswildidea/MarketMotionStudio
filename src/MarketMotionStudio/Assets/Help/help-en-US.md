@@ -1,4 +1,4 @@
-﻿# Market Motion Studio
+# Market Motion Studio
 
 This app turns A-share market indicators into vertical videos for phones. You pick a period, look at the preview until it reads well, and export an MP4. Nothing else has to be installed.
 
@@ -57,7 +57,7 @@ A set of sectors or stocks, drawn as horizontal bars that overtake one another, 
 - Two measures: the interval's gain/loss percentage, and its turnover in hundreds of millions of yuan. Switching is just a re-colour of the same data; it does not fetch again.
 - Four rosters: SW Level-1 industries, hot themes, custom (tick the boxes), and individual stocks (search to add). The custom roster starts filled with the SW Level-1 set.
 - The built-in rosters follow the market: SW Level-1 industries and hot themes for A-shares, the four Hang Seng sub-indices for Hong Kong, ten SPDR sector ETFs for the US. The custom and stock rosters exist on every market.
-- The interval can be 1, 3, 6 or 12 months, or a custom start and end date.
+- The interval can be 1, 3, 6, 12 or 24 months, or a custom start and end date. A custom span reaches about 900 days — one request's worth — and the date pickers stop there.
 - A roster has a minimum and a maximum size — too few bars is no race, too many crowd into a blur.
 
 

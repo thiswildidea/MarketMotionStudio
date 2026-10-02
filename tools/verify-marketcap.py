@@ -262,6 +262,81 @@ def maxed(win):
         pass
 
 
+SETTINGS_NAMES = ["设置", "Settings", "設定", "Einstellungen", "설정", "Настройки"]
+
+
+def open_settings(win):
+    for name in SETTINGS_NAMES:
+        item = winui.find(win, lambda c: c.ControlTypeName == "ListItemControl" and c.Name == name)
+
+        if item is None:
+            continue
+
+        try:
+            item.GetSelectionItemPattern().Select()
+        except Exception:  # noqa: BLE001 - a stale row only means the next name may fit
+            pass
+
+        time.sleep(2.0)
+
+        return True
+
+    return False
+
+
+def ensure_ashare(win):
+    """Puts the app back on the mainland market, restarting when it was not there.
+
+    The width of the field depends on the market: only the mainland one is asked of the
+    ranking endpoint, and Hong Kong and New York keep a hand-checked field of thirty-five
+    and forty-three — which is what this app has, because the ranking serves the mainland
+    and nothing else. The market is a remembered preference, so without this the "two
+    hundred candidates" check below is really asserting whichever market the last script
+    that ran happened to leave behind. It read thirty-five once, and the code was right.
+
+    Picked as the first entry rather than by name, so the script does not have to know
+    what "A 股" is called in whichever language the app is currently in.
+    """
+    if not open_settings(win):
+        print("· 设置页没找到，市场保持原样")
+        return win
+
+    combo = winui.find(win, lambda c: c.AutomationId == "MarketCombo")
+
+    if combo is None:
+        print("· 市场下拉没找到，市场保持原样")
+        return win
+
+    labels = winui.combo_labels(win, combo)
+
+    if not labels:
+        print("· 读不出市场下拉的内容，市场保持原样")
+        return win
+
+    current = winui.value(combo)
+
+    if current == labels[0]:
+        return win
+
+    picked = winui.combo_pick(win, combo, labels[0])
+    print(f"· 市场从 {current} 复位到 {picked}（改市场要重启）")
+
+    time.sleep(1.5)
+
+    winui.kill(winui.EXE)
+    time.sleep(2.0)
+
+    win = winui.launch(winui.EXE)
+
+    if win is None:
+        print("重启后窗口没起来")
+        return None
+
+    maxed(win)
+
+    return win
+
+
 def main():
     # `launch`, not `app_window`: the latter only waits for a window that is already up,
     # and the package is registered in place — an instance left running is the previous
@@ -273,6 +348,18 @@ def main():
         return 1
 
     maxed(win)
+
+    # ---- 0a) 市场复位到 A 股
+    #
+    # 池子宽度是「市场」的函数：只有 A 股会去问排名端点（新浪的排行只服务内地，
+    # 港美股拿的是写死清单，港 35 / 美 43），而市场是记住的偏好。不管它，下面那条
+    # "候选池宽到 200 只以上"验的就是「上一个跑脚本的人选了哪个市场」—— 它读出
+    # 35 那天，代码是对的。
+    win = ensure_ashare(win)
+
+    if win is None:
+        print("no studio window after market reset")
+        return 1
 
     # ---- 0) 画面表头说的是月，不是交易日
     #
@@ -292,6 +379,14 @@ def main():
     page = PAGE_SOURCE.read_text("utf-8")
     check("市值榜页面把月数交给渲染器", 'SpanWord = Strings.Get("MarketCapUnitMonths")' in page)
     check("市值榜页面把候选数交给渲染器", 'UnitWord = Strings.Get("MarketCapUnitCandidates")' in page)
+
+    # 「最长」的天花板必须是月线自己的 180 个月，而不是 walk 的三十五年：月线一次请求
+    # 就给这么多，而 walk 的边界是按日线算出来的。拿 walk 当上限，「最长」会一路走到
+    # 源端开始丢的地方 —— 而它丢的是**头部**（count 是根数，源端从 end 往回数），
+    # 回来的图短一截却完全正常，这正是区间最不该给出的答案。
+    check("「最长」的边界是月线自己的 180 个月，不是 walk 的日线上限",
+          "MarketCapSeries.MonthsWanted" in page and "HistoryWalk.MostDays" not in page,
+          "页面不该再提到 walk")
 
     for tag, months, candidates in resw_units():
         check(f"{tag}：周期量词是「月」不是「交易日」",
@@ -333,8 +428,11 @@ def main():
 
         # A set, and compared as one: the order is the code's business, and an extra
         # entry is what this is looking for — a missing year or a stray duplicate.
-        check("区间下拉是那五档",
-              set(options) == {"近 12 个月", "近 3 年", "近 5 年", "近 10 年", "自定义"},
+        # Six since the ranges were measured against the endpoint: 「最长」 is the
+        # monthly series' own one hundred and eighty months, which is further back than
+        # the ten-year entry and further than the walk's ceiling ever reached in practice.
+        check("区间下拉是那六档",
+              set(options) == {"近 12 个月", "近 3 年", "近 5 年", "近 10 年", "最长", "自定义"},
               " / ".join(options))
 
         # The first-run default is only visible on a first run. The page remembers the span
@@ -349,8 +447,8 @@ def main():
         else:
             print(f"· 区间记着上次的选择：{shown}（默认值是近 10 年，已在重装后确认）")
 
-            check("记住的档位仍在那五档里",
-                  shown in {"近 12 个月", "近 3 年", "近 5 年", "近 10 年", "自定义"},
+            check("记住的档位仍在那六档里",
+                  shown in {"近 12 个月", "近 3 年", "近 5 年", "近 10 年", "最长", "自定义"},
                   str(shown))
 
     # ---- 3) 近一年：先确认整条链路通，再花时间翻十年

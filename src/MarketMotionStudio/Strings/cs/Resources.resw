@@ -74,6 +74,7 @@
   <data name="StudioRange3M"><value>Poslední 3 měsíce</value></data>
   <data name="StudioRange6M"><value>Posledních 6 měsíců</value></data>
   <data name="StudioRange12M"><value>Posledních 12 měsíců</value></data>
+  <data name="StudioRange24M"><value>Poslední 2 roky</value></data>
   <data name="StudioRangeCustom"><value>Vlastní</value></data>
   <data name="StudioRangeFrom.Header"><value>Od</value></data>
   <data name="StudioRangeTo.Header"><value>Do</value></data>

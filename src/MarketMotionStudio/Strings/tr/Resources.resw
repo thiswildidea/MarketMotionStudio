@@ -74,6 +74,7 @@
   <data name="StudioRange3M"><value>Son 3 ay</value></data>
   <data name="StudioRange6M"><value>Son 6 ay</value></data>
   <data name="StudioRange12M"><value>Son 12 ay</value></data>
+  <data name="StudioRange24M"><value>Son 2 yıl</value></data>
   <data name="StudioRangeCustom"><value>Özel</value></data>
   <data name="StudioRangeFrom.Header"><value>Başlangıç</value></data>
   <data name="StudioRangeTo.Header"><value>Bitiş</value></data>

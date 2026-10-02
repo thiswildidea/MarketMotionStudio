@@ -65,6 +65,10 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         (3, "StudioRange3M"),
         (6, "StudioRange6M"),
         (12, "StudioRange12M"),
+
+        // Two years, which is what one request actually carries: 640 bars is about two and a half
+        // years of sessions, so this menu used to stop a year short of the endpoint's own answer.
+        (24, "StudioRange24M"),
         (0, "StudioRangeCustom"),
     ];
 
@@ -144,6 +148,14 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddMonths(-3);
         ToDate.Date = today;
+
+        // The pickers stop where one request stops, so a date someone can choose is a date the
+        // guard will not then refuse. See TencentKline.MostDaysPerRequest.
+        var oldest = today.AddDays(-TencentKline.MostDaysPerRequest);
+        FromDate.MinYear = oldest;
+        FromDate.MaxYear = today;
+        ToDate.MinYear = oldest;
+        ToDate.MaxYear = today;
 
         // The pool is what the market's lists and one-tap instruments name between them,
         // so every candidate in it is quotable — the reason the A-share lists were
@@ -543,9 +555,12 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
             return;
         }
 
-        if (end.DayNumber - start.DayNumber > TencentKline.MostBarsPerRequest)
+        // A count of days against a ceiling that is a count of bars — see
+        // TencentKline.MostDaysPerRequest. The old figure refused a two-year span the endpoint
+        // answers in full, and a race is the page where a span is most likely to be set by hand.
+        if (end.DayNumber - start.DayNumber > TencentKline.MostDaysPerRequest)
         {
-            ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", TencentKline.MostBarsPerRequest));
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("TurnoverRangeTooLong", TencentKline.MostDaysPerRequest));
             return;
         }
 

@@ -1,4 +1,4 @@
-﻿# Market Motion Studio
+# Market Motion Studio
 
 Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara dönüştürür. Bir dönem seçer, iyi okunana kadar ön izlemeye bakar ve MP4 olarak verirsiniz. Başka hiçbir şey kurmanız gerekmez.
 
@@ -57,7 +57,7 @@ Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini ge
 - İki ölçüt: dönemin yüzde değişimi ve yüz milyonlarca yuan cinsinden işlem hacmi. Ölçütü değiştirmek aynı veriyi yeniden renklendirir, tekrar veri çekmez.
 - Dört liste: Shenwan 1. seviye sektörler, popüler temalar, özel (kutucukları işaretle) ve tekil hisseler (arama ile ekle). Özel liste başlangıçta Shenwan 1. seviye sektörlerle dolar.
 - Yerleşik listeler piyasaya göre değişir: A hisseleri için Shenwan 1. düzey sektörler ve güncel temalar, Hong Kong için dört Hang Seng alt endeksi, ABD için on SPDR sektör ETF'i. Özel liste ve hisse listesi her piyasada vardır.
-- Dönem 1, 3, 6 veya 12 ay ya da özel başlangıç ve bitiş tarihi olabilir.
+- Dönem 1, 3, 6, 12 veya 24 ay ya da özel başlangıç ve bitiş tarihi olabilir. Kendi aralığınız yaklaşık 900 güne ulaşır — bir isteğin kapsadığı kadar — ve tarih seçiciler orada durur.
 - Bir listenin en az ve en fazla sayıda kalemi vardır — çok az çubuk yarış olmaz, çok fazlası yığılır.
 
 

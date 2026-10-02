@@ -79,6 +79,7 @@
   <data name="StudioRange3M"><value>近 3 个月</value></data>
   <data name="StudioRange6M"><value>近 6 个月</value></data>
   <data name="StudioRange12M"><value>近 12 个月</value></data>
+  <data name="StudioRange24M"><value>近 2 年</value></data>
   <data name="StudioRangeCustom"><value>自定义</value></data>
   <data name="StudioRangeFrom.Header"><value>起始日期</value></data>
   <data name="StudioRangeTo.Header"><value>结束日期</value></data>

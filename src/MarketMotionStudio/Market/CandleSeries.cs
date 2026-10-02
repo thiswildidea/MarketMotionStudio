@@ -169,6 +169,13 @@ public static class CandleLoader
         new(6, "StudioRange6M"),
         new(12, "StudioRange12M"),
         new(36, "DcaRange3Y"),
+
+        // Five and ten years, which the walk can actually reach: it pages six times and one request
+        // carries 640 bars, so 3840 daily bars — measured 2026-10-02, that is back to 2010-12 on the
+        // mainland, 2011-02 in Hong Kong and 2011-06 in New York. Ten years is 2520 bars and four
+        // requests, comfortably inside the six.
+        new(60, "DcaRange5Y"),
+        new(120, "DcaRange10Y"),
     ];
 
     public static readonly CandleRange[] WeeklyRanges =
