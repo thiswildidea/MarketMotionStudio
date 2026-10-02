@@ -168,6 +168,24 @@ kaplar; hareket eden işaret ve çevresindeki koridordur.
 - En uzun dönem yaklaşık yirmi yıldır; bu kaynağın aylık kapsamıdır. On iki aydan kısa dönemler
   reddedilir — bu bir koridor değil, birkaç haftalık harekettir.
 
+## Endeks yarışı
+
+Her endeks için bir satır ve satır, **o endeksin aralıktaki kendi ilk ayından bu yana ne kadar
+yol aldığıdır** — seviyesi değil. Shanghai Composite'ta 3.800 ile S&P 500'de 5.700 aynı ölçeğin iki
+noktası değildir; seviyeleri çizmek, hangi endeksin saymaya nereden başladığı üzerine bir tablo
+olurdu.
+
+- **Geç gelen bir endeks, gelene kadar tabloda yoktur.** S&P 1950'ye, Dow yalnızca 2009'a uzanır ve
+  Hang Seng Teknoloji endeksi 2020'de başlar. %0,00'de durmaz, hiç yoktur — orada dursaydı şimdiye
+  kadar düşmüş her endeksin üstünde sıralanır ve 'hiçbir şey olmayan bir piyasa' gibi okunurdu.
+- **Aylık mumlar, düzeltilmemiş.** Bir endeks temettü ödemez, ama asıl neden diğeridir: düzeltme bir
+  seriyi yeniden bazlar ve yan yana konan iki yeniden bazlanmış seri karşılaştırılamaz. Sayfa,
+  kaynağa AH sayfasının gittiği ham yoldan gider.
+- **Piyasa ayarı bu sayfayı yönetmez**: üç piyasayı birlikte okur, piyasa değişse de o değişmez.
+  Anakaranın altısı, Hong Kong'un üçü, New York'un üçü veya on ikisi birden seçilebilir.
+- En uzun dönem, kaynağın aylık tavanıyla sınırlıdır — 430 mum, yaklaşık otuz beş yıl; on iki aydan
+  kısa dönemler reddedilir: bu uzun koşu değil, kısa mesafedir.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

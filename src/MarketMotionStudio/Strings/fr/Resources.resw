@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Bougies mensuelles, non ajustées — une devise n'a ni dividende ni split à ajuster. Le couloir est le plus bas et le plus haut **jusqu'ici**, il s'élargit donc avec les mois, et une paire à 100 % est au plus cher qu'elle ait été, pas à une limite. La couverture diffère : USD/CNY remonte à 2005, les autres paires du renminbi à 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} paires · {1} mois · le plus haut dans son couloir {2} à {3} · le plus bas {4} à {5}</value></data>
   <data name="FxCorridorTooFew"><value>Trop peu de mois dans cette période pour un couloir. Essayez une période plus longue.</value></data>
+  <data name="NavIndexRace.Content"><value>Course des indices</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Course des indices</value></data>
+  <data name="IndexRaceStageTitle"><value>Course des indices</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Douze indices de trois marchés sur un même tableau. Chacun est mesuré à partir de son propre premier mois de la période : ce qui est comparé, c'est la variation, pas le niveau.</value></data>
+  <data name="IndexRaceList.Header"><value>Indices</value></data>
+  <data name="IndexRaceListAll"><value>Les douze</value></data>
+  <data name="IndexRaceListAShare"><value>Actions A continentales</value></data>
+  <data name="IndexRaceListHongKong"><value>Hong Kong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>États-Unis</value></data>
+  <data name="IndexRaceRangeMax"><value>Le plus long</value></data>
+  <data name="IndexRaceNote.Text"><value>Une ligne par indice. La ligne est la variation de cet indice depuis son propre premier mois dans la période — jamais son niveau, car 3 800 et 5 700 ne sont pas deux points d'une même échelle. Un indice dont l'historique commence plus tard n'est pas sur le tableau avant ce moment : il est absent, pas à zéro.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Bougies mensuelles, non ajustées — un indice ne verse pas de dividende, et un ajustement est un rebasage d'une série : deux séries rebasées côte à côte ne sont pas comparables. La couverture diffère : le S&amp;P remonte à 1950, le Dow à 2009 et l'indice Hang Seng Tech à 2020. Ce tableau ne dépend pas du réglage de marché : il lit trois marchés à la fois.</value></data>
+  <data name="IndexRaceFetched"><value>{0} indices · {1} mois · en tête {2} à {3} · dernier {4} à {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>indices</value></data>
+  <data name="IndexRaceTooFew"><value>Trop peu de mois dans cette période pour une course. Essayez une période plus longue.</value></data>
 </root>

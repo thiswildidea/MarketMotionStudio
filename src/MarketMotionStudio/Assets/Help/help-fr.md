@@ -175,6 +175,26 @@ le couloir autour de lui.
 - La période la plus longue est d'environ vingt ans, la couverture mensuelle de la source ; moins de
   douze mois est refusé — c'est quelques semaines de mouvement, pas un couloir.
 
+## Course des indices
+
+Une ligne par indice, et la ligne est **le chemin parcouru par cet indice depuis son propre
+premier mois dans la période** — pas son niveau. 3 800 au Shanghai Composite et 5 700 au S&P 500 ne
+sont pas deux points d'une même échelle ; dessiner des niveaux ferait un tableau sur l'endroit où
+chaque indice a commencé à compter.
+
+- **Un indice qui arrive tard n'est pas sur le tableau avant d'arriver.** Le S&P remonte à 1950, le
+  Dow seulement à 2009, et l'indice Hang Seng Tech commence en 2020. Il est absent, il ne stationne
+  pas à 0,00 % — à ce niveau il se classerait au-dessus de tout indice jamais baissier, et se lirait
+  comme un marché où rien ne s'est passé.
+- **Bougies mensuelles, non ajustées.** Un indice ne verse pas de dividende, mais la raison est
+  l'autre : un ajustement rebase une série, et deux séries rebasées côte à côte ne sont pas
+  comparables. La page prend le même chemin brut dans la source que la page A+H.
+- **Le réglage de marché ne gouverne pas cette page** : elle lit trois marchés à la fois, et changer
+  de marché ne la change pas. On peut prendre les six du continent, les trois de Hong Kong, les trois
+  de New York, ou les douze.
+- La période la plus longue est bornée par le plafond mensuel de la source — 430 bougies, environ
+  trente-cinq ans ; moins de douze mois est refusé : c'est un sprint, pas une course de fond.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

@@ -175,6 +175,26 @@ und der Korridor um sie herum.
 - Die längste Spanne ist etwa zwanzig Jahre — die Reichweite der Monatsreihe der Quelle. Weniger als
   zwölf Monate werden abgelehnt: das sind ein paar Wochen Bewegung, kein Korridor.
 
+## Index-Rennen
+
+Eine Zeile je Index, und die Zeile ist **wie weit dieser Index seit seinem eigenen ersten Monat
+im Zeitraum gekommen ist** — nicht sein Niveau. 3.800 beim Shanghai Composite und 5.700 beim S&P 500
+sind keine zwei Punkte auf einer Skala; Niveaus zu zeichnen wäre ein Bild darüber, wo welcher Index
+zufällig zu zählen begann.
+
+- **Ein Index, der später kommt, steht erst ab dann auf dem Bild.** Der S&P reicht bis 1950, der Dow
+  nur bis 2009, und der Hang-Seng-Tech-Index beginnt 2020. Er fehlt, statt bei 0,00% zu parken — dort
+  stünde er über jedem Index, der je gefallen ist, und man läse einen Markt, in dem nichts geschah.
+- **Monatskerzen, nicht bereinigt.** Ein Index zahlt keine Dividende, aber der Grund ist der andere:
+  eine Bereinigung basiert eine Reihe neu, und zwei neu basierte Reihen nebeneinander sind nicht
+  vergleichbar. Die Seite nimmt denselben unbereinigten Weg durch die Quelle wie die A+H-Seite.
+- **Die Markteinstellung gilt hier nicht**: die Seite liest drei Märkte zugleich, und ein Wechsel des
+  Marktes ändert sie nicht. Zur Wahl stehen die sechs des Festlands, die drei aus Hongkong, die drei
+  aus New York oder alle zwölf.
+- Die längste Spanne ist durch die Monatsgrenze der Quelle gedeckelt — 430 Kerzen, etwa
+  fünfunddreißig Jahre. Weniger als zwölf Monate werden abgelehnt: das ist ein Sprint, kein
+  Langstreckenlauf.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

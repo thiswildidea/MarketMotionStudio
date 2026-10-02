@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Monatskerzen, nicht bereinigt — eine Währung hat keine Dividende und keinen Split. Der Korridor ist das bisherige Tief und das bisherige Hoch, er weitet sich also mit den Monaten, und ein Paar bei 100% ist so teuer wie nie in der Spanne, nicht an einer Grenze. Die Reichweite ist unterschiedlich: USD/CNY reicht bis 2005 zurück, die anderen Renminbi-Paare bis 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} Paare · {1} Monate · am höchsten im eigenen Korridor {2} bei {3} · am niedrigsten {4} bei {5}</value></data>
   <data name="FxCorridorTooFew"><value>Zu wenige Monate in diesem Zeitraum für einen Korridor. Versuchen Sie einen längeren.</value></data>
+  <data name="NavIndexRace.Content"><value>Index-Rennen</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Index-Rennen</value></data>
+  <data name="IndexRaceStageTitle"><value>Index-Rennen</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Zwölf Indizes aus drei Märkten auf einem Board. Jeder wird ab seinem eigenen ersten Monat im Zeitraum gemessen, verglichen wird also die Veränderung, nicht das Niveau.</value></data>
+  <data name="IndexRaceList.Header"><value>Indizes</value></data>
+  <data name="IndexRaceListAll"><value>Alle zwölf</value></data>
+  <data name="IndexRaceListAShare"><value>Festland-Aktien</value></data>
+  <data name="IndexRaceListHongKong"><value>Hongkong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>USA</value></data>
+  <data name="IndexRaceRangeMax"><value>Längster</value></data>
+  <data name="IndexRaceNote.Text"><value>Eine Zeile je Index. Die Zeile ist die Veränderung, die dieser Index seit seinem eigenen ersten Monat im Zeitraum gemacht hat — nie sein Niveau, denn 3.800 und 5.700 sind keine zwei Punkte auf einer Skala. Ein Index, dessen Geschichte später beginnt, steht erst ab dann auf dem Board: er fehlt, statt null zu sein.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Monatskerzen, nicht bereinigt — ein Index zahlt keine Dividende, und eine Bereinigung ist eine Neubasierung einer Reihe; zwei neu basierte Reihen nebeneinander sind nicht vergleichbar. Die Reichweite ist unterschiedlich: der S&amp;P reicht bis 1950 zurück, der Dow bis 2009 und der Hang-Seng-Tech-Index bis 2020. Dieses Board richtet sich nicht nach der Markteinstellung: es liest drei Märkte zugleich.</value></data>
+  <data name="IndexRaceFetched"><value>{0} Indizes · {1} Monate · vorn {2} bei {3} · hinten {4} bei {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>Indizes</value></data>
+  <data name="IndexRaceTooFew"><value>Zu wenige Monate in diesem Zeitraum für ein Rennen. Versuchen Sie einen längeren.</value></data>
 </root>

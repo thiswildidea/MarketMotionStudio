@@ -172,6 +172,25 @@ ocupa todo el ancho en cada fotograma, y lo que se mueve es la marca, junto con 
 - El periodo más largo es de unos veinte años, la cobertura mensual de la fuente; menos de doce meses
   se rechaza — son unas semanas de movimiento, no un corredor.
 
+## Carrera de índices
+
+Una fila por índice, y la fila es **cuánto ha avanzado ese índice desde su propio primer mes en
+el periodo** — no su nivel. 3.800 en el Shanghai Composite y 5.700 en el S&P 500 no son dos puntos de
+una misma escala: dibujar niveles sería un tablero sobre dónde empezó a contar cada índice.
+
+- **Un índice que llega tarde no está en el tablero hasta que llega.** El S&P llega hasta 1950, el Dow
+  solo hasta 2009, y el índice Hang Seng Tech empieza en 2020. Está ausente, no aparcado en el 0,00%
+  — ahí se situaría por encima de todo índice que haya caído alguna vez, y se leería como un mercado
+  en el que no pasó nada.
+- **Velas mensuales, sin ajustar.** Un índice no paga dividendo, pero la razón es la otra: un ajuste
+  rebasó una serie, y dos series rebasadas una al lado de la otra no son comparables. La página toma
+  el mismo camino en crudo por la fuente que toma la página A+H.
+- **El ajuste de mercado no gobierna esta página**: lee tres mercados a la vez, y cambiar de mercado
+  no la cambia. Pueden tomarse las seis del continente, las tres de Hong Kong, las tres de Nueva York
+  o las doce.
+- El periodo más largo está limitado por el techo mensual de la fuente — 430 velas, unos treinta y
+  cinco años; menos de doce meses se rechaza: eso es un esprint, no una carrera de fondo.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

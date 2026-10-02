@@ -174,6 +174,25 @@ width in every frame; what moves is the marker, and the corridor around it.
 - The longest span is about twenty years, which is the source's monthly coverage; a range shorter
   than twelve months is refused — that is a few weeks of movement, not a corridor.
 
+## Index race
+
+One row per index, and the row is **how far that index has come since its own first month in the
+range** — not its level. 3,800 on the Shanghai Composite and 5,700 on the S&P 500 are not two points
+on one scale, and drawing levels would be a board about where each index happened to start counting.
+
+- **An index that arrives late is not on the board until it arrives.** The S&P reaches back to 1950,
+  the Dow only to 2009, and the Hang Seng Tech index starts in 2020. It is absent, not parked at
+  0.00% — parked there it would rank above every index that was ever down, and read as a market in
+  which nothing happened.
+- **Monthly bars, unadjusted.** An index pays no dividend, but the reason is the other one: an
+  adjustment rebases a series, and two rebased series side by side are not comparable. The page takes
+  the same raw path through the source that the A+H page takes.
+- **The market setting does not govern this page**: it reads three markets at once, and switching the
+  market does not change it. You can take the mainland's six, Hong Kong's three, New York's three, or
+  all twelve.
+- The longest span is held down by the source's monthly ceiling of 430 bars, about thirty-five years;
+  a range shorter than twelve months is refused — that is a sprint, not a long run.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

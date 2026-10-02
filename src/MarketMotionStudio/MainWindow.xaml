@@ -211,6 +211,14 @@
                 <mux:NavigationViewItem x:Name="NavFxCorridor" x:Uid="NavFxCorridor" Tag="FxCorridor">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE909;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Beside the A+H page and the currency corridor, because it is the third board
+                     the market setting does not govern: it reads two or three markets at once,
+                     so there is no single market it could be about. The row is an index, and
+                     every row is measured from its own first month rather than from the board's
+                     — a row joining late is absent until it joins, not sitting at zero. -->
+                <mux:NavigationViewItem x:Name="NavIndexRace" x:Uid="NavIndexRace" Tag="IndexRace">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE7FC;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

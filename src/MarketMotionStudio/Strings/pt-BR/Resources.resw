@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Velas mensais, sem ajuste — uma moeda não tem dividendo nem desdobramento a ajustar. O corredor é a mínima e a máxima **até agora**, então ele se alarga com os meses, e um par a 100% está no mais caro que já esteve, não em um limite. A cobertura varia: USD/CNY chega a 2005, os outros pares do renminbi a 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} pares · {1} meses · mais alto no próprio corredor {2} em {3} · mais baixo {4} em {5}</value></data>
   <data name="FxCorridorTooFew"><value>Meses demaisados poucos neste período para um corredor. Tente um período mais longo.</value></data>
+  <data name="NavIndexRace.Content"><value>Corrida de índices</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Corrida de índices</value></data>
+  <data name="IndexRaceStageTitle"><value>Corrida de índices</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Doze índices de três mercados em um mesmo quadro. Cada um é medido a partir do seu próprio primeiro mês no período, então o comparado é a variação, não o nível.</value></data>
+  <data name="IndexRaceList.Header"><value>Índices</value></data>
+  <data name="IndexRaceListAll"><value>Os doze</value></data>
+  <data name="IndexRaceListAShare"><value>Ações A do continente</value></data>
+  <data name="IndexRaceListHongKong"><value>Hong Kong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>Estados Unidos</value></data>
+  <data name="IndexRaceRangeMax"><value>Mais longo</value></data>
+  <data name="IndexRaceNote.Text"><value>Uma linha por índice. A linha é a variação que esse índice teve desde o seu próprio primeiro mês no período — nunca o seu nível, porque 3.800 e 5.700 não são dois pontos na mesma escala. Um índice cujo histórico começa depois não está no quadro até começar: ele está ausente, não em zero.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Velas mensais, sem ajuste — um índice não paga dividendo, e um ajuste é uma rebaseação de uma série, então duas séries rebaseadas lado a lado não são comparáveis. A cobertura varia: o S&amp;P chega a 1950, o Dow a 2009 e o índice Hang Seng Tech a 2020. Este quadro não depende da configuração de mercado: ele lê três mercados ao mesmo tempo.</value></data>
+  <data name="IndexRaceFetched"><value>{0} índices · {1} meses · na frente {2} com {3} · atrás {4} com {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>índices</value></data>
+  <data name="IndexRaceTooFew"><value>Meses demaisados poucos neste período para uma corrida. Tente um período mais longo.</value></data>
 </root>

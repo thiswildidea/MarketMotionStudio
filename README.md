@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **twelve pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **thirteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -131,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The twelve pages
+## The thirteen pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -472,6 +472,43 @@ and an adjustment on one side of a comparison compares two different things.
 board is the same whichever one is in force — the second page, after A+H, that sits outside the
 market switch's reach.
 
+**Index race** — the thirteenth page, and the first one that is not about a single market: twelve
+indices from Shanghai, Shenzhen, Hong Kong and New York, measured against one another.
+
+**The row is the change, never the level.** 3,800 on the Shanghai Composite and 5,700 on the
+S&P 500 are not two points on one scale, so each row is the cumulative change since *its own* first
+month inside the range, in per cent. Drawing levels would be a board about where each index
+happened to start counting.
+
+**An index that arrives late is not on the board until it arrives.** The S&P reaches back to 1950,
+the Dow only to 2009, the Hang Seng Tech index to 2020 — and on a shared axis that begins with the
+oldest of them, the honest picture is a board that fills in. Which means the rows cannot start
+together, and a row with no history yet is *absent* rather than zero: parked at 0.00% it would rank
+above every index that was ever down and read as a market in which nothing happened. Every other
+board here has every row from the first frame, so this is the first page that has to carry when
+each row joined — one number per racer, from the loader, out to the renderer, which both leaves
+the row out of the ranking and skips it when drawing. A row merely ranked last still holds its
+place, and twelve places with seven of them empty is a board full of holes.
+
+**Monthly, unadjusted.** One request per index carries 430 months — the source's ceiling — so
+"longest" costs twelve requests and about thirty-five years. Daily would be worse than slower: the
+three markets' holidays are not each other's, and a day any one of them lacked would either drop
+out of every row or be carried forward into a claim that nothing moved. Unadjusted because an
+adjustment rebases one series, and two rebased series side by side are not comparable — the
+`RawBarsAsync` path the A+H and currency-corridor pages already take.
+
+**The market setting does not apply here either.** This page reads three markets at once, so there
+is no single market it could be about; the group is chosen on the page — all twelve, the mainland's
+six, Hong Kong's three, or New York's three. It is the third page, after A+H and the currency
+corridors, that sits outside the market switch's reach.
+
+**A short fall's label moves out of the way.** The race renderer puts a value label outside the
+bar's end when the bar is too short to hold it. For a fall that means to the left — and the axis's
+proportional headroom puts the *most* negative value only about a sixth of the way into the plot,
+so the label ran back over the name column and the row read as one string, "恒生科技−40.55%".
+Where that would happen the label is drawn beyond the zero axis instead. It is not a rare frame:
+it is the bottom row of every frame of any board with a fall on it, which includes the A+H page.
+
 **The title is yours on every page.** Type one, or leave the box empty to get the default —
 a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
 A title too long for the frame is scaled down to fit rather than clipped or wrapped, to half
@@ -674,13 +711,15 @@ src/MarketMotionStudio/
                    MarketCaps (the fifteen-per-market field, and today's value turned into a history),
                    AhPremium (the A+H pairs, and the one page that must not use adjusted prices),
                    ExtremeDays (one instrument's largest single-day moves, rows that are days),
-                   FxRates (the pairs, their monthly bars, and the corridor's arithmetic)
+                   FxRates (the pairs, their monthly bars, and the corridor's arithmetic),
+                   IndexRace (twelve indices from three markets, each measured from its own first month)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
-                   SectorRaceRenderer (ranked bars, shared by the race and the market-cap board),
+                   SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
+                   the extreme-day board and the index race),
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
@@ -704,6 +743,7 @@ tools/
   port-ahpremium-*.py    The same, for the A+H page — including the 40 A-leg names it needed
   port-extremedays-*.py  The same, for the extreme-day board
   port-fxcorridor-*.py   The same, for the currency corridor
+  port-indexrace-*.py    The same, for the index race
   port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
                          (the pool script carries the 93 candidates that only need zh + en)
   verify-*.py            Drive the UI and assert the feature behaves as documented
@@ -798,8 +838,8 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 674 keys
-with no encoding damage, and all fourteen help documents carry the same twenty-one sections in the
+Every language carries the same keys in the same order. All fourteen currently report 689 keys
+with no encoding damage, and all fourteen help documents carry the same twenty-two sections in the
 same order — the equality the cross-language check rests on.
 
 ## Appearance
@@ -813,7 +853,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all twelve pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all thirteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -889,9 +929,15 @@ first export asks and then remembers.
   source's own bars and matching to two decimals), and its preferences survive a restart. It has not
   been exported at any format, its custom span has not been exercised, and Hong Kong and New York
   have not been driven through it. See NOTES.
-- **The Store screenshots show seven pages, not twelve.** `tools/store-screenshots.py` predates the
-  candle page, the market-cap board, the A+H page, the extreme-day board and the currency corridor,
-  so the gallery has none of the five. The listing copy says ten charts in all fourteen languages —
+- **The index race has been fetched and read on two groups, at one span** (all twelve and New York's
+  three, ten years, 37 checks: 120 months, and the leader and the loser of all twelve recomputed from
+  the source's own bars and matching to 0.01 of a percentage point). It has not been exported at any
+  format, its custom span has not been exercised, and no span long enough for a row to *join* late
+  has been driven through it — every group is complete inside a ten-year window, so the absence rule
+  is verified in the source and in the ranking, not yet on a frame. See NOTES.
+- **The Store screenshots show seven pages, not thirteen.** `tools/store-screenshots.py` predates the
+  candle page, the market-cap board, the A+H page, the extreme-day board, the currency corridor and
+  the index race, so the gallery has none of the six. The listing copy says ten charts in all fourteen languages —
   it predates the last two pages, and the listing is written at release time — so the copy and the
   gallery disagree until all five captures are taken. The copy deliberately runs ahead of the package: it is
   written for the version being prepared, and it must not be uploaded before that package is.

@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Świece miesięczne, bez korekty — waluta nie ma dywidendy ani podziału do skorygowania. Korytarz to najniższe i najwyższe **dotąd**, więc rozszerza się wraz z miesiącami, a para na 100% jest najdroższa, jaka była w tym zakresie, a nie przy jakimś limicie. Zasięg danych jest różny: USD/CNY sięga 2005, pozostałe pary renminbi — 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} par · {1} miesięcy · najwyżej w swoim korytarzu {2} przy {3} · najniżej {4} przy {5}</value></data>
   <data name="FxCorridorTooFew"><value>Za mało miesięcy w tym okresie, by utworzyć korytarz. Spróbuj dłuższego okresu.</value></data>
+  <data name="NavIndexRace.Content"><value>Wyścig indeksów</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Wyścig indeksów</value></data>
+  <data name="IndexRaceStageTitle"><value>Wyścig indeksów</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Dwanaście indeksów z trzech rynków na jednej tablicy. Każdy mierzony od własnego pierwszego miesiąca w okresie, więc porównywana jest zmiana, nie poziom.</value></data>
+  <data name="IndexRaceList.Header"><value>Indeksy</value></data>
+  <data name="IndexRaceListAll"><value>Wszystkie dwanaście</value></data>
+  <data name="IndexRaceListAShare"><value>Akcje A z kontynentu</value></data>
+  <data name="IndexRaceListHongKong"><value>Hongkong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>Stany Zjednoczone</value></data>
+  <data name="IndexRaceRangeMax"><value>Najdłuższy</value></data>
+  <data name="IndexRaceNote.Text"><value>Jeden wiersz na indeks. Wiersz to zmiana, jaką ten indeks zrobił od swojego pierwszego miesiąca w okresie — nigdy jego poziom, bo 3 800 i 5 700 to nie są dwa punkty na jednej skali. Indeks, którego historia zaczyna się później, nie ma go na tablicy, dopóki się nie zacznie: brakuje go, a nie jest zerem.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Świece miesięczne, bez korekty — indeks nie wypłaca dywidendy, a korekta to zmiana bazy jednej serii, więc dwie serie po zmianie bazy nie są porównywalne. Zasięg danych jest różny: S&amp;P sięga 1950, Dow 2009, a indeks Hang Seng Tech 2020. Ta tablica nie zależy od ustawienia rynku: czyta trzy rynki naraz.</value></data>
+  <data name="IndexRaceFetched"><value>{0} indeksów · {1} miesięcy · pierwszy {2} przy {3} · ostatni {4} przy {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>indeksów</value></data>
+  <data name="IndexRaceTooFew"><value>Za mało miesięcy w tym okresie na wyścig. Spróbuj dłuższego okresu.</value></data>
 </root>

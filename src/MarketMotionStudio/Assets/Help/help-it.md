@@ -174,6 +174,26 @@ occupa tutta la larghezza in ogni fotogramma, e a muoversi sono l'indicatore e i
 - Il periodo più lungo è di circa vent'anni, la copertura mensile della fonte; meno di dodici mesi
   viene rifiutato — sono poche settimane di movimento, non un corridoio.
 
+## Corsa degli indici
+
+Una riga per indice, e la riga è **quanto quell'indice ha percorso dal proprio primo mese
+nell'intervallo** — non il suo livello. 3.800 sullo Shanghai Composite e 5.700 sull'S&P 500 non sono
+due punti di una stessa scala: disegnare i livelli sarebbe un quadro su dove ogni indice ha iniziato
+a contare.
+
+- **Un indice che arriva tardi non è sulla tavola fino al suo arrivo.** L'S&P arriva al 1950, il Dow
+  solo al 2009 e l'indice Hang Seng Tech comincia nel 2020. È assente, non parcheggiato a 0,00%: lì
+  si classificherebbe sopra ogni indice mai sceso e si leggerebbe come un mercato in cui non è
+  successo niente.
+- **Candele mensili, non rettificate.** Un indice non paga dividendi, ma la ragione è l'altra: una
+  rettifica ribasa una serie, e due serie ribasate affiancate non sono confrontabili. La pagina
+  prende lo stesso percorso grezzo nella fonte della pagina A+H.
+- **L'impostazione del mercato non governa questa pagina**: legge tre mercati insieme e cambiare
+  mercato non la cambia. Si possono prendere le sei della Cina continentale, le tre di Hong Kong, le
+  tre di New York, o tutte e dodici.
+- Il periodo più lungo è limitato dal tetto mensile della fonte — 430 candele, circa trentacinque
+  anni; meno di dodici mesi viene rifiutato: è uno scatto, non una corsa lunga.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Měsíční svíčky, bez úprav — měna nemá dividendu ani rozdělení, které by se upravovalo. Koridor je nejnižší a nejvyšší **dosud**, takže se s měsíci rozšiřuje, a pár na 100% je nejdráž, jak kdy v rozpětí byl, ne na limitu. Pokrytí se liší: USD/CNY sahá do roku 2005, ostatní páry renminbi do roku 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} párů · {1} měsíců · nejvýše ve vlastním koridoru {2} na {3} · nejníže {4} na {5}</value></data>
   <data name="FxCorridorTooFew"><value>V tomto období je příliš málo měsíců pro koridor. Zkuste delší období.</value></data>
+  <data name="NavIndexRace.Content"><value>Závod indexů</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Závod indexů</value></data>
+  <data name="IndexRaceStageTitle"><value>Závod indexů</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Dvanáct indexů ze tří trhů na jedné tabuli. Každý se měří od svého prvního měsíce v rozmezí, takže se porovnává změna, ne úroveň.</value></data>
+  <data name="IndexRaceList.Header"><value>Indexy</value></data>
+  <data name="IndexRaceListAll"><value>Všech dvanáct</value></data>
+  <data name="IndexRaceListAShare"><value>Pevninské akcie A</value></data>
+  <data name="IndexRaceListHongKong"><value>Hongkong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>Spojené státy</value></data>
+  <data name="IndexRaceRangeMax"><value>Nejdelší</value></data>
+  <data name="IndexRaceNote.Text"><value>Jeden řádek na index. Řádek je změna, kterou ten index udělal od svého prvního měsíce v rozmezí — nikdy jeho úroveň, protože 3 800 a 5 700 nejsou dva body na jedné stupnici. Index, jehož historie začíná později, na tabuli není, dokud nezačne: chybí, není nulový.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Měsíční svíčky, bez úprav — index nevyplácí dividendu a úprava je přebázování jedné řady, takže dvě přebázované řady vedle sebe nejsou srovnatelné. Pokrytí se liší: S&amp;P sahá do roku 1950, Dow do 2009 a index Hang Seng Tech do 2020. Tato tabule se neřídí nastavením trhu: čte tři trhy najednou.</value></data>
+  <data name="IndexRaceFetched"><value>{0} indexů · {1} měsíců · první {2} na {3} · poslední {4} na {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>indexů</value></data>
+  <data name="IndexRaceTooFew"><value>V tomto období je příliš málo měsíců na závod. Zkuste delší období.</value></data>
 </root>

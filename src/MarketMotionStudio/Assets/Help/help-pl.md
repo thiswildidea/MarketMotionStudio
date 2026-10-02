@@ -171,6 +171,24 @@ szerokość, a porusza się znacznik wraz z korytarzem wokół niego.
 - Najdłuższy okres to około dwudziestu lat — tyle obejmują miesięczne dane źródła. Mniej niż
   dwanaście miesięcy jest odrzucane: to kilka tygodni ruchu, nie korytarz.
 
+## Wyścig indeksów
+
+Jeden wiersz na indeks, a wiersz to **jak daleko ten indeks zaszedł od swojego pierwszego
+miesiąca w okresie** — nie jego poziom. 3 800 na Shanghai Composite i 5 700 na S&P 500 to nie dwa
+punkty na jednej skali; rysowanie poziomów byłoby tablicą o tym, gdzie który indeks zaczął liczyć.
+
+- **Indeks, który przychodzi później, nie ma go na tablicy, dopóki nie przyjdzie.** S&P sięga 1950,
+  Dow tylko 2009, a indeks Hang Seng Tech zaczyna się w 2020. Brakuje go, a nie stoi na 0,00% — tam
+  znalazłby się nad każdym indeksem, który kiedykolwiek spadł, i czytałoby się to jako rynek, na
+  którym nic się nie wydarzyło.
+- **Świece miesięczne, bez korekty.** Indeks nie wypłaca dywidendy, ale powód jest inny: korekta
+  zmienia bazę serii, a dwie serie po zmianie bazy nie są porównywalne. Strona idzie tą samą surową
+  ścieżką do źródła co strona A+H.
+- **Ustawienie rynku tu nie rządzi**: strona czyta trzy rynki naraz, a zmiana rynku jej nie zmienia.
+  Można wziąć sześć z kontynentu, trzy z Hongkongu, trzy z Nowego Jorku albo wszystkie dwanaście.
+- Najdłuższy okres ogranicza miesięczny sufit źródła — 430 świec, około trzydziestu pięciu lat;
+  mniej niż dwanaście miesięcy jest odrzucane: to sprint, nie bieg długi.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

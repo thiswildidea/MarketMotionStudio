@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Месячные бары, без корректировки — у валюты нет ни дивиденда, ни сплита, которые нужно было бы корректировать. Коридор — это минимум и максимум **на данный момент**, поэтому он расширяется с месяцами, и пара на 100% находится на самом дорогом уровне в диапазоне, а не на границе. Охват различается: USD/CNY уходит в 2005, остальные пары с юанем — в 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} пар · {1} месяцев · выше всего в своём коридоре {2} на {3} · ниже всего {4} на {5}</value></data>
   <data name="FxCorridorTooFew"><value>В этом периоде слишком мало месяцев для коридора. Возьмите период длиннее.</value></data>
+  <data name="NavIndexRace.Content"><value>Гонка индексов</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Гонка индексов</value></data>
+  <data name="IndexRaceStageTitle"><value>Гонка индексов</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Двенадцать индексов с трёх рынков на одной доске. Каждый измеряется от своего первого месяца в диапазоне, поэтому сравнивается изменение, а не уровень.</value></data>
+  <data name="IndexRaceList.Header"><value>Индексы</value></data>
+  <data name="IndexRaceListAll"><value>Все двенадцать</value></data>
+  <data name="IndexRaceListAShare"><value>Материковые акции A</value></data>
+  <data name="IndexRaceListHongKong"><value>Гонконг</value></data>
+  <data name="IndexRaceListUnitedStates"><value>США</value></data>
+  <data name="IndexRaceRangeMax"><value>Самый длинный</value></data>
+  <data name="IndexRaceNote.Text"><value>Одна строка на индекс. Строка — это изменение индекса с его собственного первого месяца в диапазоне, но не его уровень: 3 800 и 5 700 — не две точки на одной шкале. Индекс, чья история начинается позже, не появляется на доске до своего начала: он отсутствует, а не стоит в нуле.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Месячные бары, без корректировки — у индекса нет дивидендов, а корректировка перебазирует ряд, поэтому два перебазированных ряда рядом не сравнимы. Охват различается: S&amp;P уходит в 1950, Dow — в 2009, а индекс Hang Seng Tech — в 2020. Эта доска не зависит от настройки рынка: она читает три рынка одновременно.</value></data>
+  <data name="IndexRaceFetched"><value>{0} индексов · {1} месяцев · впереди {2} с {3} · позади {4} с {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>индексов</value></data>
+  <data name="IndexRaceTooFew"><value>В этом периоде слишком мало месяцев для гонки. Возьмите период длиннее.</value></data>
 </root>

@@ -683,6 +683,7 @@ public sealed partial class MainWindow : Window
             "AhPremium" => typeof(AhPremiumPage),
             "ExtremeDays" => typeof(ExtremeDaysPage),
             "FxCorridor" => typeof(FxCorridorPage),
+            "IndexRace" => typeof(IndexRacePage),
             "Matrix" => typeof(MonthlyMatrixPage),
             "GainCalendar" => typeof(GainCalendarPage),
             "DcaPlan" => typeof(DcaPlanPage),

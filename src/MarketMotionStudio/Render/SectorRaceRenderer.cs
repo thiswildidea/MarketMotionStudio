@@ -46,6 +46,17 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     /// <summary>The per-day ranking: rank[k][i] is racer k's position on day i, 0 leading.</summary>
     private readonly int[][] _rank;
 
+    /// <summary>
+    /// Per racer, the first day it is on the board for; past the end for one that never is.
+    ///
+    /// A field whose rows do not all start together — the index race carries 1950 next to 2020 —
+    /// and the row has to be *out* of the ranking and not merely at the bottom of it: a racer
+    /// ranked last still holds a place, and a board of twelve that shows five would draw its five
+    /// rows with seven holes between them, because the holes are the places the absent ones are
+    /// keeping warm.
+    /// </summary>
+    private readonly int[] _starts;
+
     /// <summary>The axis range per day, precomputed with its headroom.</summary>
     private readonly double[] _axisMin;
 
@@ -88,24 +99,55 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
         _rank = new int[series.Racers][];
 
+        _starts = new int[series.Racers];
+
         for (var k = 0; k < series.Racers; k++)
         {
             _rank[k] = new int[series.Days];
+            _starts[k] = Math.Max(0, series.StartOf(k));
         }
 
+        var field = new List<int>(series.Racers);
         var order = new int[series.Racers];
 
         for (var i = 0; i < series.Days; i++)
         {
+            // Only the rows on the board are ranked. The rest are filed after them, in roster
+            // order, so that a row joining later does not disturb the order of the ones already
+            // racing — and so that their places are the ones below the frame's last row, where
+            // nothing is drawn anyway.
+            field.Clear();
+
             for (var k = 0; k < series.Racers; k++)
             {
-                order[k] = k;
+                if (i >= _starts[k])
+                {
+                    field.Add(k);
+                }
+            }
+
+            for (var n = 0; n < field.Count; n++)
+            {
+                order[n] = field[n];
             }
 
             // Magnitude, when the page asks for it: a board of the day's biggest moves either
             // way wants −7% beside +8%, and ranking the signed values would file every drop
             // below every rise however small the rise was.
-            Array.Sort(order, (a, b) => Rank(values[b][i]).CompareTo(Rank(values[a][i])));
+            Array.Sort(order, 0, field.Count, Comparer<int>.Create(
+                (a, b) => Rank(values[b][i]).CompareTo(Rank(values[a][i]))));
+
+            var absent = field.Count;
+
+            for (var k = 0; k < series.Racers; k++)
+            {
+                if (i >= _starts[k])
+                {
+                    continue;
+                }
+
+                order[absent++] = k;
+            }
 
             for (var pos = 0; pos < order.Length; pos++)
             {
@@ -130,7 +172,10 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
             for (var k = 0; k < series.Racers; k++)
             {
-                if (_rank[k][i] >= _showTop)
+                // Neither a row below the frame's last place nor one that has not joined yet:
+                // the first is off the bottom, the second is not on the board at all, and a zero
+                // from the second would pull the axis towards a value nobody drew.
+                if (_rank[k][i] >= _showTop || i < _starts[k])
                 {
                     continue;
                 }
@@ -316,6 +361,15 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
         foreach (var k in order)
         {
+            // Not on the board yet — see the note on `_starts`. This is the row the index race
+            // keeps leaving out: an index whose history begins after the board's first month has
+            // no change to show, and drawing it at 0.00% would rank it above every index that
+            // was ever down.
+            if (state.DayIndex < _starts[k])
+            {
+                continue;
+            }
+
             // A row whose day has not come yet is not on the board — see HideEmptyRows.
             if (HideEmptyRows && raw[k][state.DayIndex] == 0)
             {
@@ -423,6 +477,18 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                 if (inside)
                 {
                     Ink.LeftAt(session, text, bx + context.Px(13), yc, valueFormat, valueColour, intro);
+                }
+                else if (bx - context.Px(12) - textWidth < x0)
+                {
+                    // Outside, on the near side, there is no room: the bar points left and its left
+                    // end is close to the plot's own left edge, so a label right-aligned at that end
+                    // runs back over the name column and the row reads as one string —
+                    // "恒生科技−40.55%". The axis's 22% headroom puts the *most* negative value at
+                    // about 16% of the plot's width, which is 36 baseline pixels, and a label is
+                    // wider than that; so this is not a rare frame but the one row that is furthest
+                    // down in every frame of a board that has a fall on it. Put the label beyond
+                    // the zero axis instead, where a short fall has the frame to itself.
+                    Ink.LeftAt(session, text, zx + context.Px(12), yc, valueFormat, valueColour, intro);
                 }
                 else
                 {

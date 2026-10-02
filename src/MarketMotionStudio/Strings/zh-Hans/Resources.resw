@@ -732,4 +732,19 @@
   <data name="FxCorridorMethodNote.Text"><value>月线，不调整——货币没有股息也没有拆股需要调整。走廊是**截至目前**的最低与最高，所以它随月份推进而变宽；一组货币走到 100% 是它在这段区间里最贵的位置，不是撞到上限。数据起点各组不同：USD/CNY 可回溯到 2005 年，其他人民币组别到 2016 年。</value></data>
   <data name="FxCorridorFetched"><value>{0} 组货币 · {1} 个月 · 在自己走廊里位置最高的是 {2}，{3} · 最低的是 {4}，{5}</value></data>
   <data name="FxCorridorTooFew"><value>这段区间的月份太少，撑不起一条走廊。换长一点的区间试试。</value></data>
+  <data name="NavIndexRace.Content"><value>指数长跑</value></data>
+  <data name="IndexRacePageTitle.Text"><value>指数长跑</value></data>
+  <data name="IndexRaceStageTitle"><value>指数长跑</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>三个市场的十二个指数放在同一张榜上。每一个都从自己在区间里的第一个月起算，所以比的是变化，不是点位。</value></data>
+  <data name="IndexRaceList.Header"><value>指数</value></data>
+  <data name="IndexRaceListAll"><value>全部十二个</value></data>
+  <data name="IndexRaceListAShare"><value>A股</value></data>
+  <data name="IndexRaceListHongKong"><value>港股</value></data>
+  <data name="IndexRaceListUnitedStates"><value>美股</value></data>
+  <data name="IndexRaceRangeMax"><value>最长</value></data>
+  <data name="IndexRaceNote.Text"><value>每一个指数一行。那一行的长度是它从自己在区间里的第一个月起涨了多少——不是它的点位，因为 3,800 与 5,700 不是同一把尺上的两点。历史起步比较晚的指数，在它起步之前不会出现在榜上：那时它是缺席，不是零。</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>月线，不调整——指数不发股息，而调整是把一条序列重新定基，两条各自重新定基的序列放在一起并不能比。数据起点各不相同：标普 500 可回溯到 1950 年，道琼斯到 2009 年，恒生科技指数到 2020 年。这一页不受市场设置管辖：它同时读三个市场。</value></data>
+  <data name="IndexRaceFetched"><value>{0} 个指数 · {1} 个月 · 领先的是 {2}，{3} · 垫底的是 {4}，{5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>个指数</value></data>
+  <data name="IndexRaceTooFew"><value>这段区间的月份太少，跑不成一场比赛。换长一点的区间试试。</value></data>
 </root>

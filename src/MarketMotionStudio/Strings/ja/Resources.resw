@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>月足、調整なし — 通貨に配当も分割もありません。コリドーは**これまでの**最安値と最高値なので、月が進むほど広がり、100%のペアは上限に達したのではなく、その範囲で最も高かった位置にいます。データの範囲はペアごとに異なります。USD/CNYは2005年まで、他の人民元ペアは2016年までです。</value></data>
   <data name="FxCorridorFetched"><value>{0} ペア · {1} か月 · 自分のコリドーで最も高いのは {2}（{3}） · 最も低いのは {4}（{5}）</value></data>
   <data name="FxCorridorTooFew"><value>この期間では月数が少なすぎてコリドーになりません。もっと長い期間をお試しください。</value></data>
+  <data name="NavIndexRace.Content"><value>指数レース</value></data>
+  <data name="IndexRacePageTitle.Text"><value>指数レース</value></data>
+  <data name="IndexRaceStageTitle"><value>指数レース</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>三つの市場から12の指数を1つのボードに。それぞれ範囲内の自分の最初の月から測るので、比べるのは水準ではなく変化です。</value></data>
+  <data name="IndexRaceList.Header"><value>指数</value></data>
+  <data name="IndexRaceListAll"><value>12本すべて</value></data>
+  <data name="IndexRaceListAShare"><value>中国本土A株</value></data>
+  <data name="IndexRaceListHongKong"><value>香港</value></data>
+  <data name="IndexRaceListUnitedStates"><value>米国</value></data>
+  <data name="IndexRaceRangeMax"><value>最長</value></data>
+  <data name="IndexRaceNote.Text"><value>指数ごとに1行。行は、その指数が範囲内の自分の最初の月からどれだけ動いたか——水準ではありません。3,800と5,700は同じ物差しの上の2点ではないからです。歴史が後に始まる指数は、始まるまでボードに出ません。ゼロではなく、いないのです。</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>月足、調整なし — 指数に配当はなく、調整は系列の基準の付け替えなので、付け替えた二つの系列を並べても比較できません。データの範囲は異なります。S&amp;Pは1950年、ダウは2009年、ハンセンテック指数は2020年までです。このボードは市場設定に従いません。三つの市場を同時に読みます。</value></data>
+  <data name="IndexRaceFetched"><value>{0} 指数 · {1} か月 · 首位 {2}（{3}） · 最下位 {4}（{5}）</value></data>
+  <data name="IndexRaceUnitIndices"><value>指数</value></data>
+  <data name="IndexRaceTooFew"><value>この期間では月数が少なすぎてレースになりません。もっと長い期間をお試しください。</value></data>
 </root>

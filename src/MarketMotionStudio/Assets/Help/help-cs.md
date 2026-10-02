@@ -163,6 +163,23 @@ se značka spolu s koridorem kolem ní.
 - Nejdelší období je asi dvacet let, což je měsíční pokrytí zdroje; méně než dvanáct měsíců je
   odmítnuto — to je pár týdnů pohybu, ne koridor.
 
+## Závod indexů
+
+Jeden řádek na index a řádek je **jak daleko se ten index dostal od svého prvního měsíce
+v rozmezí** — ne jeho úroveň. 3 800 na Shanghai Composite a 5 700 na S&P 500 nejsou dva body na jedné
+stupnici; kreslit úrovně by byla tabule o tom, kde který index začal počítat.
+
+- **Index, který přijde později, na tabuli není, dokud nepřijde.** S&P sahá do roku 1950, Dow jen do
+  2009 a index Hang Seng Tech začíná v roce 2020. Chybí, nestojí na 0,00 % — tam by se zařadil nad
+  každý index, který kdy klesl, a četlo by se to jako trh, kde se nic nestalo.
+- **Měsíční svíčky, bez úprav.** Index nevyplácí dividendu, ale důvod je jiný: úprava přebazuje sérii
+  a dvě přebazované řady vedle sebe nejsou srovnatelné. Stránka jde stejnou neupravenou cestou ke
+  zdroji jako stránka A+H.
+- **Nastavení trhu tuto stránku neřídí**: čte tři trhy najednou a změna trhu ji nezmění. Lze vzít šest
+  z pevniny, tři z Hongkongu, tři z New Yorku nebo všech dvanáct.
+- Nejdelší období omezuje měsíční strop zdroje — 430 svíček, asi třicet pět let; méně než dvanáct
+  měsíců je odmítnuto: to je sprint, ne dlouhý běh.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

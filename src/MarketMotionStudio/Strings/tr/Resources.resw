@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Aylık mumlar, düzeltilmemiş — bir para biriminin düzeltilcek temettüsü veya bölünmesi yok. Koridor, **şimdiye kadarki** en düşük ve en yüksektir, bu yüzden aylar geçtikçe genişler ve %100'deki bir parite bir sınırda değil, aralıkta gördüğü en pahalı yerdedir. Kapsam farklı: USD/CNY 2005'e, diğer renminbi pariteleri 2016'ya kadar uzanır.</value></data>
   <data name="FxCorridorFetched"><value>{0} parite · {1} ay · kendi koridorunda en yüksek {2}, {3} · en düşük {4}, {5}</value></data>
   <data name="FxCorridorTooFew"><value>Bu aralıkta bir koridor için çok az ay var. Daha uzun bir aralık deneyin.</value></data>
+  <data name="NavIndexRace.Content"><value>Endeks yarışı</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Endeks yarışı</value></data>
+  <data name="IndexRaceStageTitle"><value>Endeks yarışı</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Üç piyasadan on iki endeks tek tabloda. Her biri, aralıktaki kendi ilk ayından itibaren ölçülür; karşılaştırılan değişimdir, seviye değil.</value></data>
+  <data name="IndexRaceList.Header"><value>Endeksler</value></data>
+  <data name="IndexRaceListAll"><value>On ikisi de</value></data>
+  <data name="IndexRaceListAShare"><value>Anakara A hisseleri</value></data>
+  <data name="IndexRaceListHongKong"><value>Hong Kong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>ABD</value></data>
+  <data name="IndexRaceRangeMax"><value>En uzun</value></data>
+  <data name="IndexRaceNote.Text"><value>Her endeks için bir satır. Satır, o endeksin aralıktaki kendi ilk ayından bu yana yaptığı değişimdir — seviyesi asla, çünkü 3.800 ile 5.700 aynı ölçeğin iki noktası değil. Geçmişi daha sonra başlayan bir endeks, başlayana kadar tabloda yoktur: sıfırda değil, hiç yoktur.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Aylık mumlar, düzeltilmemiş — bir endeks temettü ödemez ve düzeltme bir serinin yeniden bazlanmasıdır, bu yüzden yan yana konan iki yeniden bazlanmış seri karşılaştırılamaz. Kapsam farklı: S&amp;P 1950'ye, Dow 2009'a ve Hang Seng Teknoloji endeksi 2020'ye kadar uzanır. Bu tablo piyasa ayarına bağlı değildir: üç piyasayı birlikte okur.</value></data>
+  <data name="IndexRaceFetched"><value>{0} endeks · {1} ay · önde {2}, {3} · geride {4}, {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>endeks</value></data>
+  <data name="IndexRaceTooFew"><value>Bu aralıkta bir yarış için çok az ay var. Daha uzun bir aralık deneyin.</value></data>
 </root>

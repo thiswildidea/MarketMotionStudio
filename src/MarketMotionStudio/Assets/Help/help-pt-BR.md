@@ -169,6 +169,24 @@ largura em cada quadro, e o que se move é o marcador, junto com o corredor.
 - O período mais longo é de cerca de vinte anos, a cobertura mensal da fonte; menos de doze meses é
   recusado — são algumas semanas de movimento, não um corredor.
 
+## Corrida de índices
+
+Uma linha por índice, e a linha é **o quanto aquele índice avançou desde o seu próprio primeiro
+mês no período** — não o seu nível. 3.800 no Shanghai Composite e 5.700 no S&P 500 não são dois pontos
+de uma mesma escala: desenhar níveis seria um quadro sobre onde cada índice começou a contar.
+
+- **Um índice que chega tarde não está no quadro até chegar.** O S&P chega a 1950, o Dow apenas a
+  2009, e o índice Hang Seng Tech começa em 2020. Ele está ausente, não estacionado em 0,00% — aí se
+  colocaria acima de todo índice que já caiu e se leria como um mercado em que nada aconteceu.
+- **Velas mensais, sem ajuste.** Um índice não paga dividendo, mas a razão é a outra: um ajuste
+  rebaseia uma série, e duas séries rebaseadas lado a lado não são comparáveis. A página toma o mesmo
+  caminho bruto na fonte que a página A+H.
+- **A configuração de mercado não governa esta página**: ela lê três mercados ao mesmo tempo, e mudar
+  o mercado não a muda. Pode-se escolher as seis do continente, as três de Hong Kong, as três de Nova
+  York ou as doze.
+- O período mais longo é limitado pelo teto mensal da fonte — 430 velas, cerca de trinta e cinco anos;
+  menos de doze meses é recusado: isso é uma corrida curta, não uma de fundo.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

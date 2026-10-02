@@ -95,15 +95,32 @@ public enum RaceMetric
 /// <param name="Dates">Trading days every entrant has, ascending.</param>
 /// <param name="Returns">Per entrant, cumulative change in per cent from the first day.</param>
 /// <param name="Amounts">Per entrant, turnover in 亿元 accumulated day by day.</param>
+/// <param name="Starts">
+/// Per racer, the index of the first day it is *on the board* for; null when every racer is
+/// there from the first one.
+///
+/// Not every field starts together. The index race puts 1950 alongside 2020, and a racer with
+/// no history of its own in the range has no value — it has an absence. Carrying one per racer
+/// is what lets the frame leave the row out instead of drawing it at zero, and it is carried on
+/// the series rather than worked out by the renderer because only the loader knows which zeros
+/// are history and which are a month that truly went nowhere.
+/// </param>
 public sealed record SectorRaceSeries(
     IReadOnlyList<RaceEntry> Entries,
     IReadOnlyList<DateOnly> Dates,
     IReadOnlyList<double[]> Returns,
-    IReadOnlyList<double[]> Amounts)
+    IReadOnlyList<double[]> Amounts,
+    IReadOnlyList<int>? Starts = null)
 {
     public int Days => Dates.Count;
 
     public int Racers => Entries.Count;
+
+    /// <summary>
+    /// The first day racer <paramref name="k"/> is on the board for, or a day past the end when
+    /// it never is.
+    /// </summary>
+    public int StartOf(int k) => Starts is { } starts && k < starts.Count ? starts[k] : 0;
 
     public double[] Values(RaceMetric metric) => [.. (metric is RaceMetric.Return ? Returns : Amounts).SelectMany(v => v[^1..])];
 

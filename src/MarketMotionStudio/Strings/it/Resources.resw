@@ -723,4 +723,19 @@
   <data name="FxCorridorMethodNote.Text"><value>Candele mensili, non rettificate — una valuta non ha dividendi né frazionamenti da rettificare. Il corridoio è il minimo e il massimo **finora**, quindi si allarga con i mesi, e una coppia al 100% è al livello più caro che abbia avuto, non a un limite. La copertura differisce: USD/CNY arriva al 2005, le altre coppie del renminbi al 2016.</value></data>
   <data name="FxCorridorFetched"><value>{0} coppie · {1} mesi · la più alta nel proprio corridoio {2} a {3} · la più bassa {4} a {5}</value></data>
   <data name="FxCorridorTooFew"><value>Troppi pochi mesi in questo periodo per un corridoio. Provi un periodo più lungo.</value></data>
+  <data name="NavIndexRace.Content"><value>Corsa degli indici</value></data>
+  <data name="IndexRacePageTitle.Text"><value>Corsa degli indici</value></data>
+  <data name="IndexRaceStageTitle"><value>Corsa degli indici</value></data>
+  <data name="IndexRacePageSubtitle.Text"><value>Dodici indici di tre mercati su un'unica tavola. Ognuno è misurato dal proprio primo mese nell'intervallo, quindi si confronta la variazione, non il livello.</value></data>
+  <data name="IndexRaceList.Header"><value>Indici</value></data>
+  <data name="IndexRaceListAll"><value>Tutti e dodici</value></data>
+  <data name="IndexRaceListAShare"><value>Azioni A della Cina continentale</value></data>
+  <data name="IndexRaceListHongKong"><value>Hong Kong</value></data>
+  <data name="IndexRaceListUnitedStates"><value>Stati Uniti</value></data>
+  <data name="IndexRaceRangeMax"><value>Il più lungo</value></data>
+  <data name="IndexRaceNote.Text"><value>Una riga per indice. La riga è la variazione che quell'indice ha fatto dal proprio primo mese nell'intervallo — mai il suo livello, perché 3.800 e 5.700 non sono due punti di una stessa scala. Un indice la cui storia inizia dopo non è sulla tavola fino ad allora: è assente, non a zero.</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>Candele mensili, non rettificate — un indice non paga dividendi, e una rettifica è una rideterminazione della base di una serie: due serie ribasate affiancate non sono confrontabili. La copertura differisce: l'S&amp;P arriva al 1950, il Dow al 2009 e l'indice Hang Seng Tech al 2020. Questa tavola non dipende dall'impostazione del mercato: legge tre mercati insieme.</value></data>
+  <data name="IndexRaceFetched"><value>{0} indici · {1} mesi · primo {2} a {3} · ultimo {4} a {5}</value></data>
+  <data name="IndexRaceUnitIndices"><value>indici</value></data>
+  <data name="IndexRaceTooFew"><value>Troppi pochi mesi in questo periodo per una corsa. Provi un periodo più lungo.</value></data>
 </root>

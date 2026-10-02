@@ -1325,3 +1325,77 @@ against itself. `verify-fxcorridor.py` is 37 checks, 37 pass.
 code, the same in all fourteen languages, so there is no `INST*` key to miss — but the group names,
 the card and the status line have not been read in English); no export has been run at any format;
 the custom span has not been exercised; nor has the "longest" span been taken through either list.
+
+## The thirteenth page: the index long run
+
+**A row is a gain, not a level.** 3,800 on the Shanghai Composite and 5,700 on the S&P 500 are not
+two points on one scale, and a board of levels would be a board about where each index happened to
+start counting — so every row is how far its index has come since its own first month in the range.
+Twelve indices, three markets, one axis, and `SectorRaceRenderer` with `RaceMetric.Return`: the same
+renderer the sector race, the market-cap board and extreme days use, which is now four pages deep.
+
+**Each index is measured from its own first month, and that is what makes the board fill up.** The
+S&P reaches back to 1950, the Dow only to 2009, the Hang Seng Tech index starts in 2020. Measuring
+from the window's first month instead would leave every late index with decades of nothing before
+its first bar, which is a picture of when a source began quoting rather than of how the index did.
+
+**A row that has not joined is absent, not parked at 0.00%.** Parked there it would rank above every
+index that was ever down, and read as a market in which nothing happened. This is the one thing this
+page asks of the shared renderer that no page before it did, and it cost two small additions:
+
+- `SectorRaceSeries` grew an optional fifth slot, `Starts` — the month each row joins — and
+  `StartOf(k)`, defaulting to zero, so the twelve existing usages draw exactly as they did.
+- `SectorRaceRenderer` builds its ranking field from the rows that are on the board at that moment
+  and appends the rest behind them, keeps late rows out of the axis range, and skips them in
+  `DrawRows` before `HideEmptyRows` gets a say.
+
+Only the first is a data-layer fact; all three are needed, and the ordering is not decoration: build
+the field first, sort second. The comparison has to be wrapped — `Array.Sort(array, index, length,
+lambda)` does not compile, a lambda is not a `Comparer<int>` — and the eleventh page's rule still
+holds, that anything the ranking table depends on has to be a constructor argument, because the
+table is precomputed in the constructor and an object initialiser runs after it.
+
+**Six, three, three — and the list is a judgement, not a query.** The market-cap board taught that a
+hand-written pool is a mistake: the source can be asked for the top 200 by market capitalisation, and
+a list written by hand will be missing whatever listed last month. Nothing here can be asked. There
+is no index-ranking service, and a benchmark is not chosen by a formula — so the twelve are named in
+`WorldIndexLists` and the honest description is that they are the indices a Chinese viewer would
+name. That is a different kind of list from the market-cap board's, and it carries a different kind of
+debt: by headcount the all-twelve board is half mainland, which a viewer may read as a weighting.
+
+**Monthly, one request per index, unadjusted.** The same `RawBarsAsync` path the A+H and corridor
+pages take: an index pays no dividend, but the reason is the other one — an adjustment rebases a
+series, and two rebased series side by side are not comparable. The 430-month ceiling means the whole
+history comes back in one reply, so "as far back as there is" costs twelve requests and no paging.
+
+**Only `newfqkline` answers with the whole history.** Measured 2026-10-02: `usINX` returns 922 months
+from 1950-01, where `fqkline` returns ten months for the same code and one for `usDJI`. The rule is
+in `MEMORY.md` now (and in the skill), because it is a trap that looks like a thin index.
+
+**A defect in the shared renderer that this page found.** Every row draws its value at the end of its
+bar, right-aligned to it. When a bar ran to the left edge of the drawing area there was no room left
+of the bar either, so the label was placed to the left of it — over the name column. The frame read
+`恒生科技−40.55%` as one string, name and value glued together, and it only shows up on a board whose
+worst row is negative enough to reach that edge. The label now goes to the right of the zero axis in
+that case, which is where the eye already is. Fixed in the shared renderer, so the sector race, the
+market-cap board and extreme days inherit it.
+
+**Counting rows in the picture.** "The board has not filled up yet" is a fact about the frame and not
+about any string in the UI, so `verify-indexrace.py` counts bars from pixels: a scanline is inside a
+row when it holds a run of four or more saturated pixels, and rows are the bands of those scanlines
+within the canvas interior. Calibrated against four boards whose row count is known — the twelve, the
+Americas' three, AH premium's fifteen and extreme days' fifteen all come out exact. Where two rows'
+glows touch the bands merge, so a count can come out low and never high; that is why the assertions
+are "the last frame is full" and "the first frame is not", with only the three-row group asserted as
+an exact number. Both statements are the picture saying what the data layer says.
+
+**Measured 2026-10-02**, all twelve over ten years: 120 months (the index monthly coverage of a
+ten-year window is fuller than the currency one's 113–114), 纳斯达克 leading at +417.64%, 恒生科技 last
+at −40.55%; the first frame of the run draws ten or eleven rows because the Hang Seng Tech index has
+not joined. The Americas alone: 纳斯达克 +417.64%, 道琼斯 +180.59%, and the bottom of the board moves
+off 恒生科技. `verify-indexrace.py` is 39 checks, 39 pass.
+
+**Owed on this page:** the English interface has not been driven through it (the index names are the
+`INST*` keys the other pages already carry, the group names are new — none of it has been read in
+English); no export has been run at any format; neither the custom span nor the "longest" span has
+been exercised; and the twelve-index list is a judgement that nobody has reviewed.
