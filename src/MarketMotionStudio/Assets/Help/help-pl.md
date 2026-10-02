@@ -189,6 +189,26 @@ punkty na jednej skali; rysowanie poziomów byłoby tablicą o tym, gdzie który
 - Najdłuższy okres ogranicza miesięczny sufit źródła — 430 świec, około trzydziestu pięciu lat;
   mniej niż dwanaście miesięcy jest odrzucane: to sprint, nie bieg długi.
 
+## Klasy aktywów
+
+Jeden wiersz na klasę aktywów, a wiersz to **ile zarobiło trzymanie** — nie notowanie. Wszystkie
+osiem to fundusze notowane na giełdzie kontynentalnej, kupione za te same pieniądze, więc można je
+porównywać wprost.
+
+- **Dywidendy są wliczone, i podziały też.** Obligacja i fundusz rynku pieniężnego płacą prawie
+  wyłącznie dochodem: cena funduszu rynku pieniężnego przeszła w trzynaście lat ze 100,161 do
+  100,901, co bez korekty jest +0,0% — narysowałoby na dole tablicy jedyny wiersz, który nigdy nie
+  spadł. Fundusz po podziale jednostek jest bardziej jaskrawy: ETF Nasdaq ma bez korekty +136%,
+  podczas gdy indeks, który naśladuje, w tej samej dekadzie wzrósł sześciokrotnie.
+- **Celowo odwrotność wyścigu indeksów.** Indeks nie płaci dywidend, więc tamta strona zostaje
+  nietknięta; fundusz płaci, więc tę trzeba korygować. Tych dwóch dróg się nie miesza.
+- **Dwa zagraniczne wiersze niosą kurs.** ETF-y Nasdaq i Hang Seng są notowane w juanach, więc
+  waluta jest już w środku — to właśnie dostał posiadacz z kontynentu.
+- **Początki się różnią.** Najwcześniejszy wiersz zaczyna się w 2012, a fundusz towarowy dopiero w
+  2019. Wiersza, który jeszcze nie wszedł, nie ma — nie stoi na 0,00%.
+- **Ustawienie rynku tu nie rządzi**: wszystkie osiem jest notowanych na kontynencie. Mniej niż
+  dwanaście miesięcy jest odrzucane.
+
 ## Macierz stóp zwrotu
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/monthly-matrix.png)

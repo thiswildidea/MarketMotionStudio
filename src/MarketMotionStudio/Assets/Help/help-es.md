@@ -191,6 +191,27 @@ una misma escala: dibujar niveles sería un tablero sobre dónde empezó a conta
 - El periodo más largo está limitado por el techo mensual de la fuente — 430 velas, unos treinta y
   cinco años; menos de doce meses se rechaza: eso es un esprint, no una carrera de fondo.
 
+## Clases de activos
+
+Una fila por clase de activo, y la fila es **lo que ganó mantenerlo** — no su cotización. Las ocho
+son fondos cotizados en una bolsa continental, comprados con el mismo dinero, así que se pueden
+comparar directamente.
+
+- **Los dividendos se reintegran, y también los splits.** Un bono y un fondo monetario pagan casi
+  por completo en rentas: el precio del ETF monetario pasó de 100,161 a 100,901 en trece años, lo
+  que sin ajuste es +0,0 % — y dibujaría al final del tablero la única fila de aquí que nunca cayó.
+  Un fondo que dividió sus participaciones es aún más claro: el ETF Nasdaq da +136 % sin ajuste,
+  mientras que el índice que sigue se sextuplicó en la misma década.
+- **Deliberadamente lo contrario de la carrera de índices.** Un índice no paga dividendos, así que
+  aquella página se deja intacta; un fondo sí paga, así que esta debe ajustarse. Los dos caminos no
+  se mezclan.
+- **Las dos filas extranjeras llevan el tipo de cambio.** Los ETF de Nasdaq y Hang Seng cotizan en
+  yuanes, así que la divisa ya está dentro — que es lo que un tenedor continental recibió de verdad.
+- **Los inicios difieren.** La fila más antigua empieza en 2012 y el fondo de materias primas solo
+  en 2019. Una fila que aún no ha entrado está ausente, no en 0,00 %.
+- **El ajuste de mercado no gobierna esta página**: las ocho cotizan en el continente. Menos de doce
+  meses se rechaza.
+
 ## Matriz de rentabilidad
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/monthly-matrix.png)

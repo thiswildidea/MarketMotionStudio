@@ -180,6 +180,25 @@ stupnici; kreslit úrovně by byla tabule o tom, kde který index začal počít
 - Nejdelší období omezuje měsíční strop zdroje — 430 svíček, asi třicet pět let; méně než dvanáct
   měsíců je odmítnuto: to je sprint, ne dlouhý běh.
 
+## Třídy aktiv
+
+Jeden řádek na třídu aktiv a řádek je **co držení vyneslo** — ne kotace. Všech osm jsou fondy
+kotované na kontinentální burze, koupené za stejné peníze, takže je lze srovnávat přímo.
+
+- **Dividendy jsou zpět započteny, a štěpení také.** Dluhopis a fond peněžního trhu platí téměř
+  celou výnosem: cena fondu peněžního trhu šla za třináct let ze 100,161 na 100,901, což je bez
+  úpravy +0,0 % — a nakreslilo by na konec tabule jediný řádek, který nikdy neklesl. Fond po
+  štěpení podílů je ještě výraznější: ETF Nasdaq má bez úpravy +136 %, zatímco index, který sleduje,
+  ve stejném desetiletí vzrostl šestinásobně.
+- **Záměrně opak závodu indexů.** Index nevyplácí dividendu, takže tamta stránka zůstává bez úprav;
+  fond vyplácí, takže tato se upravovat musí. Ty dvě cesty se nemíchají.
+- **Dva zahraniční řádky nesou kurz.** ETF Nasdaq a Hang Seng jsou kotovány v jüanech, takže měna je
+  už uvnitř — přesně to, co držitel z pevniny skutečně dostal.
+- **Začátky se liší.** Nejstarší řádek začíná v roce 2012 a komoditní fond až v roce 2019. Řádek,
+  který ještě nenastoupil, chybí — nestojí na 0,00 %.
+- **Nastavení trhu tuto stránku neřídí**: všech osm je kotováno na pevnině. Méně než dvanáct měsíců
+  je odmítnuto.
+
 ## Matice výnosů
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/monthly-matrix.png)

@@ -195,6 +195,29 @@ zufällig zu zählen begann.
   fünfunddreißig Jahre. Weniger als zwölf Monate werden abgelehnt: das ist ein Sprint, kein
   Langstreckenlauf.
 
+## Anlageklassen
+
+Eine Zeile pro Anlageklasse, und die Zeile ist **was das Halten eingebracht hat** — nicht die
+Notierung. Alle acht sind an einer Festlandbörse notierte Fonds, mit demselben Geld gekauft, also
+direkt vergleichbar.
+
+- **Ausschüttungen sind eingerechnet, Aktiensplits ebenfalls.** Eine Anleihe und ein Geldmarktfonds
+  zahlen fast vollständig in Erträgen: Der Kurs des Geldmarkt-ETF ging in dreizehn Jahren von
+  100,161 auf 100,901 — unadjustiert +0,0 %, was die einzige Zeile hier, die nie fiel, als Letzte
+  der Tafel zeichnen würde. Ein Fonds, der seine Anteile gesplittet hat, ist drastischer: Der
+  Nasdaq-ETF liegt unadjustiert bei +136 %, während der Index, dem er folgt, sich im selben
+  Jahrzehnt versechsfacht hat.
+- **Mit Absicht das Gegenteil des Index-Rennens.** Ein Index zahlt keine Dividende, jene Seite
+  bleibt also unangetastet; ein Fonds zahlt, diese muss adjustiert werden. Die beiden Wege
+  mischen sich nicht.
+- **Die beiden ausländischen Zeilen tragen den Wechselkurs.** Der Nasdaq- und der Hang-Seng-ETF
+  werden in Yuan notiert, die Währungsbewegung steckt also schon darin — genau das, was ein
+  Festland-Anleger tatsächlich bekommen hat.
+- **Die Anfänge unterscheiden sich.** Die früheste Zeile beginnt 2012, der Rohstofffonds erst 2019.
+  Eine Zeile, die noch nicht dabei ist, fehlt, statt bei 0,00 % zu stehen.
+- **Die Markteinstellung regiert diese Seite nicht**: alle acht sind auf dem Festland notiert.
+  Weniger als zwölf Monate werden abgelehnt.
+
 ## Renditematrix
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/monthly-matrix.png)

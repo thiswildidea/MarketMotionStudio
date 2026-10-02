@@ -195,6 +195,29 @@ chaque indice a commencé à compter.
 - La période la plus longue est bornée par le plafond mensuel de la source — 430 bougies, environ
   trente-cinq ans ; moins de douze mois est refusé : c'est un sprint, pas une course de fond.
 
+## Classes d'actifs
+
+Une ligne par classe d'actifs, et la ligne est **ce que la détention a rapporté** — pas le cours.
+Les huit sont des fonds cotés sur une place continentale, achetés avec le même argent, donc
+directement comparables.
+
+- **Les dividendes sont réintégrés, et les scissions aussi.** Une obligation et un fonds monétaire
+  paient presque entièrement en revenus : le cours du fonds monétaire est passé de 100,161 à
+  100,901 en treize ans, soit +0,0 % sans ajustement — ce qui dessinerait en bas du tableau la seule
+  ligne ici qui n'a jamais baissé. Un fonds ayant divisé ses parts est plus net encore : l'ETF
+  Nasdaq affiche +136 % sans ajustement, alors que l'indice qu'il suit a sextuplé sur la même
+  décennie.
+- **Volontairement l'inverse de la course des indices.** Un indice ne verse pas de dividende, cette
+  page-là est donc laissée telle quelle ; un fonds en verse, celle-ci doit être ajustée. Les deux
+  voies ne se mélangent pas.
+- **Les deux lignes étrangères portent le change.** Les ETF Nasdaq et Hang Seng sont cotés en yuan :
+  la devise est déjà dedans — c'est ce qu'un détenteur continental a réellement obtenu.
+- **Les débuts diffèrent.** La ligne la plus ancienne commence en 2012 et le fonds matières
+  premières seulement en 2019. Une ligne qui n'a pas encore rejoint la course est absente, pas à
+  0,00 %.
+- **Le réglage de marché ne régit pas cette page** : les huit sont cotés sur le continent. Moins de
+  douze mois est refusé.
+
 ## Matrice des rendements
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/monthly-matrix.png)

@@ -186,6 +186,26 @@ olurdu.
 - En uzun dönem, kaynağın aylık tavanıyla sınırlıdır — 430 mum, yaklaşık otuz beş yıl; on iki aydan
   kısa dönemler reddedilir: bu uzun koşu değil, kısa mesafedir.
 
+## Varlık sınıfları
+
+Her varlık sınıfı için bir satır ve satır, **onu tutmanın kazandırdığıdır** — kotasyonu değil.
+Sekizi de anakara borsasında işlem gören fonlar ve aynı parayla alınır, bu yüzden doğrudan
+karşılaştırılabilir.
+
+- **Temettüler geri konur, pay bölünmeleri de.** Bir tahvil ve bir para piyasası fonu neredeyse
+  tamamen getiri öder: para piyasası ETF'sinin fiyatı on üç yılda 100,161'den 100,901'e gitti ve
+  düzeltilmezse bu +0,0%'dir — burada hiç düşmemiş tek satırı tablonun dibine çizerdi. Payını bölen
+  bir fon daha da çarpıcıdır: Nasdaq ETF düzeltilmeden +136%, oysa izlediği endeks aynı on yılda
+  altı katına çıktı.
+- **Bilerek endeks yarışının tersi.** Bir endeks temettü ödemez, o sayfa olduğu gibi bırakılır; bir
+  fon öder, bu sayfanın düzeltilmesi gerekir. İki yol karışmaz.
+- **İki yabancı satır kuru taşır.** Nasdaq ve Hang Seng ETF'leri yuan cinsindendir, yani kur zaten
+  içindedir — anakara yatırımcısının gerçekten aldığı budur.
+- **Başlangıçlar farklı.** En eski satır 2012'de başlar, emtia fonu ancak 2019'da. Henüz katılmamış
+  bir satır yoktur, %0,00'de durmaz.
+- **Piyasa ayarı bu sayfayı yönetmez**: sekizi de anakarada işlem görür. On iki aydan kısa dönemler
+  reddedilir.
+
 ## Getiri matrisi
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/monthly-matrix.png)

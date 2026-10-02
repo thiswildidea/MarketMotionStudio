@@ -310,6 +310,43 @@ public sealed class TencentKline(HttpClient http)
         return await CandlesFromAsync(Endpoint, string.Empty, code, period, start, end, count, cancellation);
     }
 
+    /// <summary>
+    /// Bars as a holder earned them: every dividend and every share split put back into the
+    /// series, so that a ratio taken between two months is what a holder's money did.
+    ///
+    /// The counterpart to <see cref="RawBarsAsync"/>, and the two answer different questions.
+    /// Raw is the price that was paid, which is what a board comparing two listings against each
+    /// other has to use. This one is what a board comparing two *holdings* has to use, because
+    /// the ways a holding pays are invisible in the price:
+    ///
+    /// **A bond or a cash fund pays almost entirely in income.** The money-market fund's price
+    /// series goes from 100.161 to 100.901 over thirteen years — three-tenths of one per cent —
+    /// while a holder earned a third. A board drawn on the raw prices would put cash at +0.0%
+    /// and call it the worst thing anyone could have done, when in fact it was the one asset in
+    /// the race that never went down.
+    ///
+    /// **A fund that splits is a cliff in the price series.** A Nasdaq ETF quoted at 0.998 in
+    /// 2013 and 2.352 today looks like it gained 136% in thirteen years, and the raw series says
+    /// exactly that; the index it tracks went up sixfold over the same decade. The holder's
+    /// shares were multiplied by the same factor the price was divided by, so nothing was lost —
+    /// but only the adjusted series knows that.
+    ///
+    /// Which adjustment a code gets is <see cref="TotalReturn"/>'s answer, not this method's: a
+    /// Hong Kong code has no backward-adjusted series on this endpoint and a US one has only the
+    /// forward-adjusted kind, and both differ from the backward-adjusted series by one constant
+    /// factor, which cancels in every ratio these boards draw.
+    /// </summary>
+    public async Task<List<CandleBar>> TotalReturnBarsAsync(
+        string code, string period, DateOnly start, DateOnly end, int count, CancellationToken cancellation)
+    {
+        if (start > end)
+        {
+            throw new ArgumentException("The start date must fall on or before the end date.", nameof(start));
+        }
+
+        return await FetchCandlesAsync(code, period, start, end, count, cancellation);
+    }
+
     private async Task<List<CandleBar>> FetchCandlesAsync(
         string code, string period, DateOnly start, DateOnly end, int count, CancellationToken cancellation)
     {

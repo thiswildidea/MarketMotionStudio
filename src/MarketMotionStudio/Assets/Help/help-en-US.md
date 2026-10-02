@@ -193,6 +193,26 @@ on one scale, and drawing levels would be a board about where each index happene
 - The longest span is held down by the source's monthly ceiling of 430 bars, about thirty-five years;
   a range shorter than twelve months is refused — that is a sprint, not a long run.
 
+## Asset classes
+
+One row per asset class, and the row is **what holding it earned** — not its quote. All eight are
+funds listed on a mainland exchange, bought with the same money, so they can be compared directly.
+
+- **Dividends are put back in, and share splits too.** A bond and a cash fund pay almost entirely in
+  income: the money-market ETF's price went from 100.161 to 100.901 across thirteen years, which
+  unadjusted is +0.0% — and would draw the one row here that never fell as the bottom of the board.
+  A fund that split its units is starker still: the Nasdaq ETF is +136% unadjusted, while the index
+  it tracks rose sixfold over the same decade.
+- **Deliberately the opposite of the index race.** An index pays no dividend, so that page is left
+  alone; a fund does pay, so this one has to be adjusted. The two paths do not mix.
+- **The two overseas rows carry the exchange rate.** The Nasdaq and Hang Seng ETFs are quoted in
+  yuan, so the currency's moves are already inside them — which is what a mainland holder actually
+  got.
+- **Start dates differ.** The earliest row begins in 2012 and the commodity fund only in 2019. A row
+  that has not joined yet is absent, not 0.00%.
+- **The market setting does not govern this page**: all eight are listed on the mainland. Fewer than
+  twelve months is refused.
+
 ## Return Matrix
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/monthly-matrix.png)

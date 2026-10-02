@@ -187,6 +187,27 @@ de uma mesma escala: desenhar níveis seria um quadro sobre onde cada índice co
 - O período mais longo é limitado pelo teto mensal da fonte — 430 velas, cerca de trinta e cinco anos;
   menos de doze meses é recusado: isso é uma corrida curta, não uma de fundo.
 
+## Classes de ativos
+
+Uma linha por classe de ativos, e a linha é **o que a manutenção rendeu** — não a cotação. Todas as
+oito são fundos listados em uma bolsa continental, comprados com o mesmo dinheiro, então podem ser
+comparadas diretamente.
+
+- **Os dividendos são reintegrados, e também os desdobramentos.** Um título e um fundo de mercado
+  monetário pagam quase inteiramente em renda: o preço do ETF de mercado monetário foi de 100,161 a
+  100,901 em treze anos, o que sem ajuste é +0,0% — e desenharia no fim do quadro a única linha daqui
+  que nunca caiu. Um fundo que desdobrou cotas é ainda mais claro: o ETF Nasdaq dá +136% sem ajuste,
+  enquanto o índice que ele segue subiu seis vezes na mesma década.
+- **Deliberadamente o oposto da corrida de índices.** Um índice não paga dividendos, então aquela
+  página fica como está; um fundo paga, então esta precisa ser ajustada. Os dois caminhos não se
+  misturam.
+- **As duas linhas estrangeiras carregam o câmbio.** Os ETFs de Nasdaq e Hang Seng são cotados em
+  yuan, então a moeda já está dentro — que é o que um detentor continental realmente recebeu.
+- **Os inícios diferem.** A linha mais antiga começa em 2012 e o fundo de commodities apenas em
+  2019. Uma linha que ainda não entrou está ausente, não em 0,00%.
+- **A configuração de mercado não rege esta página**: todas as oito são listadas no continente.
+  Menos de doze meses é recusado.
+
 ## Matriz de retorno
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/monthly-matrix.png)

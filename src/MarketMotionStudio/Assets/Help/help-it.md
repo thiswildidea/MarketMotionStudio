@@ -194,6 +194,28 @@ a contare.
 - Il periodo più lungo è limitato dal tetto mensile della fonte — 430 candele, circa trentacinque
   anni; meno di dodici mesi viene rifiutato: è uno scatto, non una corsa lunga.
 
+## Classi di attività
+
+Una riga per classe di attività, e la riga è **ciò che la detenzione ha reso** — non la
+quotazione. Tutti e otto sono fondi quotati su una borsa continentale, comprati con lo stesso
+denaro, quindi direttamente confrontabili.
+
+- **I dividendi sono reinseriti, e anche i frazionamenti.** Un'obbligazione e un fondo monetario
+  pagano quasi interamente in reddito: il prezzo dell'ETF monetario è passato da 100,161 a 100,901
+  in tredici anni, che non aggiustato è +0,0% — e disegnerebbe in fondo alla tavola l'unica riga
+  qui che non è mai scesa. Un fondo che ha frazionato le quote è ancora più netto: l'ETF Nasdaq
+  segna +136% non aggiustato, mentre l'indice che replica è salito di sei volte nello stesso
+  decennio.
+- **Volutamente l'opposto della corsa degli indici.** Un indice non paga dividendi, quindi quella
+  pagina è lasciata com'è; un fondo li paga, quindi questa va aggiustata. Le due strade non si
+  mescolano.
+- **Le due righe estere portano il cambio.** Gli ETF Nasdaq e Hang Seng sono quotati in yuan, quindi
+  la valuta è già dentro — che è ciò che un detentore continentale ha davvero ottenuto.
+- **Le partenze differiscono.** La riga più antica inizia nel 2012 e il fondo su materie prime solo
+  nel 2019. Una riga non ancora entrata è assente, non a 0,00%.
+- **L'impostazione di mercato non governa questa pagina**: tutti e otto sono quotati sul continente.
+  Meno di dodici mesi è rifiutato.
+
 ## Matrice dei rendimenti
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/monthly-matrix.png)

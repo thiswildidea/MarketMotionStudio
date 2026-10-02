@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **thirteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **fourteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -131,7 +131,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The thirteen pages
+## The fourteen pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -502,6 +502,37 @@ is no single market it could be about; the group is chosen on the page — all t
 six, Hong Kong's three, or New York's three. It is the third page, after A+H and the currency
 corridors, that sits outside the market switch's reach.
 
+**Asset classes** — the fourteenth page, and the index race's other half: eight asset classes you
+could actually have held, one fund each, measured against one another. That board races published
+numbers; this one races money.
+
+**Adjusted, where the index race is unadjusted — and that is the reason the two do not share a
+loader despite having the same arithmetic.** An index pays no dividend, so leaving its series alone
+costs nothing there. A fund does pay, and most of what it pays is invisible in its price:
+
+* the money-market fund's price goes from 100.161 to 100.901 across thirteen years. Unadjusted that
+  is +0.0%, which draws cash — the one row here that has never fallen — as the bottom of the board,
+  and tells the reader that holding cash was the worst available choice. Adjusted, it is +18.76%
+  over the last ten years;
+* a Nasdaq fund quoted at 0.998 in 2013 and 2.352 today looks, unadjusted, like +136% over thirteen
+  years. The index it tracks rose sixfold over the last decade alone; the difference is a share
+  split, which multiplied the holder's units by exactly what it divided their price by.
+
+Both are wrong in the same direction and by a lot, so this is not a matter of taste. It is also why
+the two boards cannot share a loader: the reason has to be readable where the call is made.
+
+**The row is the change, never the level, and a row that has not joined yet is absent** — the same
+two rules the index race established, for the same two reasons. The commodity fund only starts in
+2019, so a ten-year board opens with seven rows and fills in as the years pass.
+
+**All eight are quoted on a mainland exchange**, so every row is bought with the same money, and the
+two overseas rows carry the exchange rate inside them — which is what a mainland holder's return
+actually was. That is also why the market setting does not apply here: the board is chosen on the
+page — all eight, the four share funds, or the four that are not shares.
+
+Measured 2026-10-02 over ten years: 120 months, the Nasdaq fund ahead at +578.20%, the gold fund at
++209.59%, and the money-market fund behind at +18.76%.
+
 **A short fall's label moves out of the way.** The race renderer puts a value label outside the
 bar's end when the bar is too short to hold it. For a fall that means to the left — and the axis's
 proportional headroom puts the *most* negative value only about a sixth of the way into the plot,
@@ -712,14 +743,15 @@ src/MarketMotionStudio/
                    AhPremium (the A+H pairs, and the one page that must not use adjusted prices),
                    ExtremeDays (one instrument's largest single-day moves, rows that are days),
                    FxRates (the pairs, their monthly bars, and the corridor's arithmetic),
-                   IndexRace (twelve indices from three markets, each measured from its own first month)
+                   IndexRace (twelve indices from three markets, each measured from its own first month),
+                   AssetRace (eight asset classes as funds, and the one page that must use adjusted prices)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
-                   the extreme-day board and the index race),
+                   the extreme-day board, the index race and the asset-class board),
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
@@ -838,9 +870,9 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 689 keys
-with no encoding damage, and all fourteen help documents carry the same twenty-two sections in the
-same order — the equality the cross-language check rests on.
+Every language carries the same keys in the same order. All fourteen currently report 707 keys
+with no encoding damage, and all fourteen help documents carry the same twenty-three sections in
+the same order — the equality the cross-language check rests on.
 
 ## Appearance
 
@@ -853,7 +885,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all thirteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all fourteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -935,10 +967,17 @@ first export asks and then remembers.
   format, its custom span has not been exercised, and no span long enough for a row to *join* late
   has been driven through it — every group is complete inside a ten-year window, so the absence rule
   is verified in the source and in the ranking, not yet on a frame. See NOTES.
-- **The Store screenshots show seven pages, not thirteen.** `tools/store-screenshots.py` predates the
-  candle page, the market-cap board, the A+H page, the extreme-day board, the currency corridor and
-  the index race, so the gallery has none of the six. The listing copy says ten charts in all fourteen languages —
-  it predates the last two pages, and the listing is written at release time — so the copy and the
+- **The asset-class board has been fetched and read on two groups, at one span** (all eight and the
+  four share funds, ten years, 41 checks: 120 months, and the leader and the loser of all eight
+  recomputed from the source's own **adjusted** bars and matching to 0.01 of a percentage point —
+  which is what proves the adjustment, since unadjusted the loser would read 0.00% and the leader
+  would read one fifth of what it earned). It has not been exported at any format, its custom span
+  has not been exercised, and the English interface has not been driven. See NOTES.
+- **The Store screenshots show seven pages, not fourteen.** `tools/store-screenshots.py` predates
+  the candle page, the market-cap board, the A+H page, the extreme-day board, the currency corridor,
+  the index race and the asset-class board, so the gallery has none of the seven. The listing copy
+  says ten charts in all fourteen languages — it predates the last three pages, and the listing is
+  written at release time — so the copy and the
   gallery disagree until all five captures are taken. The copy deliberately runs ahead of the package: it is
   written for the version being prepared, and it must not be uploaded before that package is.
 - **The A+H page has been fetched and read at two spans** (three years and the longest, twenty-two

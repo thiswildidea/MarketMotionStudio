@@ -219,6 +219,15 @@
                 <mux:NavigationViewItem x:Name="NavIndexRace" x:Uid="NavIndexRace" Tag="IndexRace">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE7FC;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Right after the index race, because the two are one argument seen from both
+                     ends: that board races published numbers, this one races things you could
+                     actually have held, and the price of holding them is invisible in the price —
+                     a bond and a cash fund pay in income, a fund that split its units is a cliff
+                     in its own chart. So this one is drawn from the adjusted series and that one
+                     is not, which is the only respect in which they differ. -->
+                <mux:NavigationViewItem x:Name="NavAssetRace" x:Uid="NavAssetRace" Tag="AssetRace">
+                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8B9;" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
                     <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

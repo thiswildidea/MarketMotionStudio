@@ -1399,3 +1399,56 @@ off 恒生科技. `verify-indexrace.py` is 39 checks, 39 pass.
 `INST*` keys the other pages already carry, the group names are new — none of it has been read in
 English); no export has been run at any format; neither the custom span nor the "longest" span has
 been exercised; and the twelve-index list is a judgement that nobody has reviewed.
+
+## The fourteenth page: asset classes, and the adjustment that cannot go the other way
+
+**What is raced here is money, not a number.** The index race puts twelve published numbers on one
+axis; this one puts eight things a mainland account can actually buy — a fund per asset class. That
+single difference decides the one thing that matters:
+
+**Adjusted, where the index race is unadjusted.** Same arithmetic, opposite series, and therefore no
+shared loader: the reason has to sit where the call is made. Two measurements say why it cannot go
+the other way:
+
+- The money-market fund's price goes from 100.161 to 100.901 across thirteen years — +0.0%
+  unadjusted. Cash is the one row on this board that has never fallen, and unadjusted it would be
+  drawn last: the board would say that holding cash was the worst available choice. Adjusted it is
+  +18.76% over the last ten years.
+- A Nasdaq fund quoted at 0.998 in 2013 and 2.352 today reads, unadjusted, as +136% over thirteen
+  years. The index it tracks rose sixfold over the last decade alone. The gap is a share split, which
+  multiplied the holder's units by exactly what it divided their price by.
+
+Both are wrong in the same direction and by a lot, which is why this is not a matter of taste.
+
+**The adjusted series was checked, because an adjustment is wrong plausibly.** A fund that split its
+units is exactly the case where a factor can be off by a multiple without looking odd, so the one
+number nobody can eyeball was put against its own index: over the same ten years the Nasdaq-100 rose
++600.4% and the dollar gained +3.6% on the yuan — +625.4% converted — against the fund's +681.4%.
+Nine per cent apart, which is dividends and a cross-border premium, and the same order of magnitude,
+which is what rules out the factor error that would make the whole row nonsense.
+
+**Eight funds, all quoted on a mainland exchange.** Same money, same broker, and the two overseas rows
+carry the exchange rate inside them — which is what a mainland holder's return actually was. The
+roster is a judgement, as the index list is: there is no service that ranks asset classes. It carries
+one debt of its own — the commodity fund only starts in 2019, so the ten-year board opens with seven
+rows and fills in.
+
+**Four of the eight already had `INST*` names.** sh510300, sh510500, sh518880 and sh513100 are in the
+`Markets.cs` presets the plan, holding and candle pages offer, so those keys belong to that line. The
+first port run rewrote them, which would have moved three other pages' preset labels; they were put
+back from `HEAD` and verified value by value in all fourteen files. One key, one owner — the port
+script now writes only the four new ones and says why in a comment.
+
+**Verified 41 ways** (`tools/verify-assetrace.py`), including recomputing the leader and the loser
+from the source's own *adjusted* bars: they match to 0.01 of a percentage point, which is what proves
+the adjustment rather than merely asserting it. One assertion is written against the call rather than
+the name, because this page's own comment names `RawBarsAsync` on purpose — to explain why it is not
+used — so "the string appears" does not mean "the wrong path was taken". The index race was re-run
+afterwards and still passes 39.
+
+Measured 2026-10-02, ten years: 120 months, the Nasdaq fund +578.20%, gold +209.59%, the CSI 300 fund
++49.02%, and the money-market fund +18.76% behind.
+
+**Owed on this page:** no export at any format; the custom span and the longest span have not been
+exercised; the English interface has not been driven through it; and nobody has checked the roster
+against anything but the judgement that wrote it.
