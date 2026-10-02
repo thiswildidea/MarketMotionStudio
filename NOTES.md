@@ -1824,6 +1824,18 @@ before `bullets` existed for that iteration — Python keeps the previous iterat
 German section was silently given the Korean section's dash. The symptom was a single wrong
 character in one language.
 
+**The Partner Center export sits downstream of this file.** `docs/listingData-*.csv` is what
+Partner Center imports and exports — one row per field, one column per language — and it carries
+the store's own limits: description 10,000 characters, what's-new 1,500, product features
+20 × 200. `tools/port-listing-csv.py` writes the three text fields into it from the markdown,
+splitting a list that runs past 200 characters rather than shortening it (the sixteen-chart list
+is 208–298 characters in eleven languages), and leaves the title, the screenshot URLs and the
+logo switch alone. `tools/verify-listing-csv.py` compares every cell back against the markdown,
+because the one time this was filled in by hand the Chinese column still said 八种图表 while the
+markdown said 十六种. The language code is taken from the parentheses in `## 简体中文（zh-Hans）`
+— **full-width** ones, which is why a half-width-only pattern silently skipped three sections and
+left their columns on the old copy.
+
 Version bumped to **1.0.4.0** (manifest plus a CHANGELOG entry, Chinese and English). The package
 was built at that version (`MarketMotionStudio_1.0.4.0_x64_arm64_bundle.msixupload`, 149.3 MB / 142.4 MiB) and
 then rebuilt once more after the row-type change below — the same version number, because neither
