@@ -1726,3 +1726,62 @@ menu (whole history) and would be wrong here (fifteen years), so the market-cap 
 `IndexRaceRangeMax` instead — the plain word, already translated fourteen ways.
 
 `StudioRange24M` is the only new key this added: 732 → 733.
+
+## The navigation's sixteen icons (2026-10-02)
+
+**The complaint was not aesthetic — it was a collision.** Three pairs of pages had been given the
+same glyph: the candle page and the sector race both drew `E9E9`, volume-and-turnover and hold-odds
+both drew `E9D2`, market turnover and position both drew `E9D9`. A glyph is not a word: one shape
+cannot mean two pages, and the menu was quietly saying that those pairs were the same thing. There
+are only so many glyphs in Segoe Fluent Icons, and the pages outgrew them.
+
+So the set was drawn rather than borrowed. Every icon is a **stroke skeleton** — lines, rings,
+polylines, arrowheads — on a shared 20×20 grid, and `tools/make-icons.py` turns each one into the
+filled geometry a `PathIcon` needs. That is not a convenience: `PathIcon` fills, it does not stroke,
+and converting a stroke to a fill by hand means offsetting every curve and filling every round join
+by hand. Shapely does it in one call (`buffer(w/2, cap_style="round", join_style="round")`), and the
+drawing code stays in the shape it is easiest to read: coordinates.
+
+**Every icon is nailed into the same square.** `PathIcon` scales its geometry through a `Viewbox`,
+which measures the **bounding box** — so a wide, flat icon comes back smaller than a tall one and two
+neighbours stop looking like one type size. Each drawing therefore carries two extra 0.03-unit marks
+at `(2,2)` and `(18,18)`: invisible (a fiftieth of a pixel at 16px), real enough not to be dropped as
+degenerate, and enough to pin every bounding box to `[2,18]²`. The design area is then, for the whole
+set, the middle 16×16 with a two-unit margin. `tools/verify-nav-icons.py` asserts that box per icon,
+because a forgotten mark is exactly the defect that screenshots do not show.
+
+**What the marks buy is honest sizing.** A gauge is wide and short, a bullseye is square, a wallet is
+wide — each keeps its own proportions inside the common box instead of being stretched to fill it.
+
+**What changed after looking at the drawings.**
+- Drawdown was first a polyline that dipped and recovered. At 16px that is a **check mark**, and a
+  check mark says success — the opposite of the page. It is now the page's own picture: a water line
+  with a filled valley hanging below it.
+- The DCA plan was a calendar with a plus inside, which made it a near-twin of the gain-loss
+  calendar. Distinguishing two silhouettes *in the same family* by an interior mark asks people to
+  lean in; the two menus sit next to each other. It is a staircase now, and the set is drawn so that
+  no two icons share a silhouette at all.
+- The turnover ring is drawn larger than the drawing looked like it wanted: at 16px a ring whose hole
+  is one pixel is a smudge, and a smudge says nothing.
+
+**One XAML trap, worth remembering.** A path's mini-language can be written on `PathIcon.Data` (the
+documented example does exactly that) but **not** on `PathGeometry.Figures` — the WinUI XAML compiler
+rejects it with `WMC0055 Cannot assign text value ... into property 'Figures' of type
+'PathFigureCollection'`. The first version of `Themes/Icons.xaml` was a dictionary of
+`PathGeometry`; it did not build. The geometries are stored as `<x:String>` entries and the `Data`
+attribute converts them, which keeps the whole set in one file, referenced by key from
+`MainWindow.xaml`:
+`<mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconCandle}" /></mux:NavigationViewItem.Icon>`
+
+**Help and settings keep their glyphs** (`E897`, `E713`). A question mark and a gear are the two
+shapes in this menu that were never ambiguous, and a hand-drawn gear at 16px is worse than the one
+Microsoft drew.
+
+`tools/port-nav-icons.py` does the sixteen replacements, anchored **by item name** rather than by
+glyph — which is the point, since the glyphs it removes are duplicated. It is idempotent, and
+`tools/make-icons.py --check` fails if any two icons ever come out identical again.
+
+Verification: `tools/verify-nav-icons.py` — 16 items carry their own geometry, no two paths match,
+every bounding box is `[2,18]²`, every drawing carries its two marks, and on the real machine all
+sixteen items are present and selectable, captured in the current theme and in both explicit ones.
+No new resource keys: the labels did not change, only the shapes beside them.

@@ -166,27 +166,27 @@
                  built once and then pared back rather than assembled per market. -->
             <mux:NavigationView.MenuItems>
                 <mux:NavigationViewItem x:Name="NavMarketTurnover" x:Uid="NavMarketTurnover" Tag="MarketTurnover">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconTurnover}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- Directly under the market's own turnover, because the two answer the
                      same question at two scales: the whole market's day, and one
                      instrument's day. It used to sit seventh, which put the two readings
                      of "what did today do" five items apart. -->
                 <mux:NavigationViewItem x:Name="NavCandle" x:Uid="NavCandle" Tag="Candle">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9E9;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconCandle}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavStockVolume" x:Uid="NavStockVolume" Tag="StockVolume">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconVolume}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavSectorRace" x:Uid="NavSectorRace" Tag="SectorRace">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9E9;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconSectorRace}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- The race's twin, and next to it for the same reason the candle page sits
                      under the turnover page: two pages that answer one question by two measures
                      belong together. This one ranks the same way, on scale rather than on
                      return. -->
                 <mux:NavigationViewItem x:Name="NavMarketCap" x:Uid="NavMarketCap" Tag="MarketCap">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8CB;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMarketCap}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- Beside the market-cap board, because both rank companies rather than days:
                      that one asks which firm is largest, this one asks which firm's mainland
@@ -194,14 +194,14 @@
                      market's structure, and the only page here that needs a second market to
                      mean anything at all. -->
                 <mux:NavigationViewItem x:Name="NavAhPremium" x:Uid="NavAhPremium" Tag="AhPremium">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8AB;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconAhPremium}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- Beside the market-cap board and the A+H page, because all three rank things
                      rather than span time: those two ask which company is largest and which is
                      dearest, this one asks which single day moved the most. The row is a day,
                      which no other page here has. -->
                 <mux:NavigationViewItem x:Name="NavExtremeDays" x:Uid="NavExtremeDays" Tag="ExtremeDays">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8D5;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconExtremeDays}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- Beside the extreme-day board, because both read one number against the range
                      it has lived in: that one asks how large a day was next to the largest day,
@@ -209,7 +209,7 @@
                      been. The row is a range, which no other page here has — and unlike every
                      other board, it is not the market that decides whether it is offered. -->
                 <mux:NavigationViewItem x:Name="NavFxCorridor" x:Uid="NavFxCorridor" Tag="FxCorridor">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE909;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconFxCorridor}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- Beside the A+H page and the currency corridor, because it is the third board
                      the market setting does not govern: it reads two or three markets at once,
@@ -217,7 +217,7 @@
                      every row is measured from its own first month rather than from the board's
                      — a row joining late is absent until it joins, not sitting at zero. -->
                 <mux:NavigationViewItem x:Name="NavIndexRace" x:Uid="NavIndexRace" Tag="IndexRace">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE7FC;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconIndexRace}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <!-- Right after the index race, because the two are one argument seen from both
                      ends: that board races published numbers, this one races things you could
@@ -226,25 +226,25 @@
                      in its own chart. So this one is drawn from the adjusted series and that one
                      is not, which is the only respect in which they differ. -->
                 <mux:NavigationViewItem x:Name="NavAssetRace" x:Uid="NavAssetRace" Tag="AssetRace">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8B9;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconAssetRace}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavDrawdown" x:Uid="NavDrawdown" Tag="Drawdown">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE74B;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconDrawdown}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavHoldOdds" x:Uid="NavHoldOdds" Tag="HoldOdds">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconHoldOdds}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavMatrix" x:Uid="NavMatrix" Tag="Matrix">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMatrix}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavGainCalendar" x:Uid="NavGainCalendar" Tag="GainCalendar">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE787;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconGainCalendar}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavDcaPlan" x:Uid="NavDcaPlan" Tag="DcaPlan">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE8C7;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconDcaPlan}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavPosition" x:Uid="NavPosition" Tag="Position">
-                    <mux:NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" /></mux:NavigationViewItem.Icon>
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPosition}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 
