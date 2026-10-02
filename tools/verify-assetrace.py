@@ -435,28 +435,43 @@ def clear_watch(win):
     return False
 
 
-def add_watch(win, code):
-    """在自选的搜索框里填一个代码并提交。
+def add_watch(win, code, name, tries=3):
+    """在自选的搜索框里填一个代码并提交 —— **提交完还得数一遍**。
 
-    代码走剪贴板而不是按键，回车提交而不是点建议：建议弹层是另一个顶层窗口。
+    代码走剪贴板而不是按键，回车提交而不是点建议：建议弹层是另一个顶层窗口。而正是那个弹层
+    会把回车吃掉：上一轮留下的弹层还开着时，这一下 Enter 落在弹层上而不是提交上，于是这一只
+    静静地没进去 —— 不报错、不失败，只是那一排 chip 少一个；后面「至少选 3 只才能竞速」又把
+    这笔账算到应用头上。所以提交后数一遍 chip：那只没出现就关掉弹层重来。
     """
-    box = winui.find(win, lambda c: c.AutomationId == "Search")
-    edit = None if box is None else winui.find(box, lambda c: c.AutomationId == "TextBox", limit=6)
+    for _ in range(tries):
+        box = winui.find(win, lambda c: c.AutomationId == "Search")
+        edit = None if box is None else winui.find(
+            box, lambda c: c.AutomationId == "TextBox", limit=6)
 
-    if edit is None:
-        return False
+        if edit is None:
+            return False
 
-    edit.SetFocus()
-    time.sleep(0.3)
-    edit.SendKeys("{Ctrl}a", waitTime=0.3)
-    auto.SetClipboardText(code)
-    edit.SendKeys("{Ctrl}v", waitTime=0.5)
-    time.sleep(1.0)
-    edit.SendKeys("{Enter}", waitTime=0.5)
-    time.sleep(2.0)
+        # 键盘只发给前台窗口。连着跑几个脚本时，上一个脚本刚把应用重启过，新窗口未必在前台，
+        # 于是三个 SendKeys 一个都没落地 —— 表现同样是「这一只静静地没进去」。
+        try:
+            win.SetActive()
+        except Exception:  # noqa: BLE001
+            pass
 
-    return True
+        edit.SetFocus()
+        time.sleep(0.3)
+        edit.SendKeys("{Esc}", waitTime=0.3)
+        edit.SendKeys("{Ctrl}a", waitTime=0.3)
+        auto.SetClipboardText(code)
+        edit.SendKeys("{Ctrl}v", waitTime=0.5)
+        time.sleep(1.2)
+        edit.SendKeys("{Enter}", waitTime=0.5)
+        time.sleep(2.0)
 
+        if any(n.strip() == name for _, n in watch_chips(win)):
+            return True
+
+    return False
 
 def scrub(win, progress):
     """Puts the preview at one moment. The slider is the page's only way in, and a scrub is an
@@ -739,8 +754,8 @@ def main():
 
         check("清空上一次跑脚本留下的自选（这份清单是跨会话共享的）", clear_watch(win))
 
-        for code, _ in WATCH:
-            if not add_watch(win, code):
+        for code, name in WATCH:
+            if not add_watch(win, code, name):
                 check(f"加进自选：{code}", False)
 
         chips = watch_chips(win)

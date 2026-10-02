@@ -738,7 +738,7 @@
   <data name="IndexRaceListUnitedStates"><value>美股</value></data>
   <data name="IndexRaceRangeMax"><value>最长</value></data>
   <data name="IndexRaceNote.Text"><value>每一个指数一行。那一行的长度是它从自己在区间里的第一个月起涨了多少——不是它的点位，因为 3,800 与 5,700 不是同一把尺上的两点。历史起步比较晚的指数，在它起步之前不会出现在榜上：那时它是缺席，不是零。</value></data>
-  <data name="IndexRaceMethodNote.Text"><value>月线，不调整——指数不发股息，而调整是把一条序列重新定基，两条各自重新定基的序列放在一起并不能比。数据起点各不相同：标普 500 可回溯到 1950 年，道琼斯到 2009 年，恒生科技指数到 2020 年。这一页不受市场设置管辖：它同时读三个市场。</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>月线，复权——源端对指数忽略复权参数，所以这一页已发布的数字一个都没变；但个股是另一回事：分红是一道断崖、拆股是一次腰斩，持有人谁也没亏这笔钱。因此指数行是价格回报，个股行是总回报。数据起点各不相同：标普 500 可回溯到 1950 年，道琼斯到 2009 年，恒生科技指数到 2020 年。这一页不受市场设置管辖：它同时读三个市场。</value></data>
   <data name="IndexRaceFetched"><value>{0} 个指数 · {1} 个月 · 领先的是 {2}，{3} · 垫底的是 {4}，{5}</value></data>
   <data name="IndexRaceUnitIndices"><value>个指数</value></data>
   <data name="IndexRaceTooFew"><value>这段区间的月份太少，跑不成一场比赛。换长一点的区间试试。</value></data>

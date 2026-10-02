@@ -472,25 +472,43 @@ def clear_watch(win):
     return False
 
 
-def add_watch(win, code):
-    """在自选的搜索框里填一个代码并提交（剪贴板 + 回车，与其它页同一条路）。"""
-    box = winui.find(win, lambda c: c.AutomationId == "Search")
-    edit = None if box is None else winui.find(box, lambda c: c.AutomationId == "TextBox", limit=6)
+def add_watch(win, code, name, tries=3):
+    """在自选的搜索框里填一个代码并提交 —— **提交完还得数一遍**。
 
-    if edit is None:
-        return False
+    代码走剪贴板而不是按键，回车提交而不是点建议：建议弹层是另一个顶层窗口。而正是那个弹层
+    会把回车吃掉：上一轮留下的弹层还开着时，这一下 Enter 落在弹层上而不是提交上，于是这一只
+    静静地没进去 —— 不报错、不失败，只是那一排 chip 少一个；后面「至少选 3 只才能竞速」又把
+    这笔账算到应用头上。所以提交后数一遍 chip：那只没出现就关掉弹层重来。
+    """
+    for _ in range(tries):
+        box = winui.find(win, lambda c: c.AutomationId == "Search")
+        edit = None if box is None else winui.find(
+            box, lambda c: c.AutomationId == "TextBox", limit=6)
 
-    edit.SetFocus()
-    time.sleep(0.3)
-    edit.SendKeys("{Ctrl}a", waitTime=0.3)
-    auto.SetClipboardText(code)
-    edit.SendKeys("{Ctrl}v", waitTime=0.5)
-    time.sleep(1.0)
-    edit.SendKeys("{Enter}", waitTime=0.5)
-    time.sleep(2.0)
+        if edit is None:
+            return False
 
-    return True
+        # 键盘只发给前台窗口。连着跑几个脚本时，上一个脚本刚把应用重启过，新窗口未必在前台，
+        # 于是三个 SendKeys 一个都没落地 —— 表现同样是「这一只静静地没进去」。
+        try:
+            win.SetActive()
+        except Exception:  # noqa: BLE001
+            pass
 
+        edit.SetFocus()
+        time.sleep(0.3)
+        edit.SendKeys("{Esc}", waitTime=0.3)
+        edit.SendKeys("{Ctrl}a", waitTime=0.3)
+        auto.SetClipboardText(code)
+        edit.SendKeys("{Ctrl}v", waitTime=0.5)
+        time.sleep(1.2)
+        edit.SendKeys("{Enter}", waitTime=0.5)
+        time.sleep(2.0)
+
+        if any(n.strip() == name for _, n in watch_chips(win)):
+            return True
+
+    return False
 
 def maxed(win):
     win.SetActive()
@@ -525,6 +543,46 @@ def main():
           "kline.TotalReturnBarsAsync(" in source)
     check("这一页不再走空复权那条路", "kline.RawBarsAsync(" not in source)
     check("月线，一次拿全历史（不需要分页回溯）", '"month"' in source and "HistoryWalk" not in source)
+
+    # 页面上还有一句话在说这些数字是怎么算的。脚本断的是调用，断不到那句话 —— 上一轮把调用
+    # 从 RawBarsAsync 改成 TotalReturnBarsAsync、把帮助第十四章也改了，唯独漏了 resw 里这一
+    # 句，于是页面在十四种语言里说着与代码相反的话，而这一页五十八条断言一条没红。**只有读
+    # 那句话本身才抓得到**，所以这里读它。
+    xaml = open(os.path.join(REPO, "src/MarketMotionStudio/Pages/IndexRacePage.xaml"),
+                encoding="utf-8").read()
+    check("页面上确实写着一句方法说明（读者看得到）", 'x:Uid="IndexRaceMethodNote"' in xaml)
+
+    STALE = {
+        "en-US": "unadjusted", "de": "nicht bereinigt", "es": "sin ajustar",
+        "fr": "non ajustées", "it": "non rettificate", "pl": "bez korekty",
+        "pt-BR": "sem ajuste", "cs": "bez úprav", "tr": "düzeltilmemiş",
+        "ru": "без корректировки", "ja": "調整なし", "ko": "조정 없음",
+        "zh-Hans": "不调整", "zh-Hant": "不調整",
+    }
+    stale = []
+
+    for folder, word in STALE.items():
+        resw = open(os.path.join(REPO, f"src/MarketMotionStudio/Strings/{folder}/Resources.resw"),
+                    encoding="utf-8-sig").read()
+        said = re.search(r'<data name="IndexRaceMethodNote\.Text"[^>]*>\s*<value>(.*?)</value>',
+                         resw, re.S)
+
+        if said is None or word in said.group(1):
+            stale.append(folder)
+
+    check("十四份资源里那句说明都不再说「不调整」", not stale, " / ".join(stale) or "-")
+
+    english = open(os.path.join(REPO, "src/MarketMotionStudio/Strings/en-US/Resources.resw"),
+                   encoding="utf-8-sig").read()
+    said = re.search(r'<data name="IndexRaceMethodNote\.Text"[^>]*>\s*<value>(.*?)</value>',
+                     english, re.S)
+    said = said.group(1) if said else ""
+
+    # 那一句得说清两件事，缺一件就是另一种错：改成复权了，以及随之而来的口径差别（指数行是
+    # 价格回报，个股行是总回报）。只写「复权」会让读者以为已发布的数字变了。
+    check("英文那句说明了是复权", "adjusted" in said and "unadjusted" not in said)
+    check("英文那句写明了口径差别（价格回报 vs 总回报）",
+          "price return" in said and "total return" in said)
 
     kline = open(os.path.join(REPO, "src/MarketMotionStudio/Market/TencentKline.cs"),
                  encoding="utf-8").read()
@@ -709,8 +767,8 @@ def main():
               winui.find(win, lambda c: c.AutomationId == "Search") is not None)
         check("清空上一次跑脚本留下的自选", clear_watch(win))
 
-        for code, _ in WATCH:
-            if not add_watch(win, code):
+        for code, name in WATCH:
+            if not add_watch(win, code, name):
                 check(f"加进自选：{code}", False)
 
         chips = watch_chips(win)

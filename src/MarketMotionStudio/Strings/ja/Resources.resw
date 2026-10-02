@@ -729,7 +729,7 @@
   <data name="IndexRaceListUnitedStates"><value>米国</value></data>
   <data name="IndexRaceRangeMax"><value>最長</value></data>
   <data name="IndexRaceNote.Text"><value>指数ごとに1行。行は、その指数が範囲内の自分の最初の月からどれだけ動いたか——水準ではありません。3,800と5,700は同じ物差しの上の2点ではないからです。歴史が後に始まる指数は、始まるまでボードに出ません。ゼロではなく、いないのです。</value></data>
-  <data name="IndexRaceMethodNote.Text"><value>月足、調整なし — 指数に配当はなく、調整は系列の基準の付け替えなので、付け替えた二つの系列を並べても比較できません。データの範囲は異なります。S&amp;Pは1950年、ダウは2009年、ハンセンテック指数は2020年までです。このボードは市場設定に従いません。三つの市場を同時に読みます。</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>月足、調整済み — ソースは指数に対して調整を無視するため、このボードで既に公開されている数字はすべて変わりません。しかし個別株は別の話です。配当は断崖、分割は半減であり、どちらも保有者が失ったものではありません。したがって指数の行は価格リターン、個別株の行はトータルリターンです。データの範囲は異なります。S&amp;Pは1950年、ダウは2009年、ハンセンテック指数は2020年まで遡れます。このボードは市場設定に支配されません。三つの市場を同時に読みます。</value></data>
   <data name="IndexRaceFetched"><value>{0} 指数 · {1} か月 · 首位 {2}（{3}） · 最下位 {4}（{5}）</value></data>
   <data name="IndexRaceUnitIndices"><value>指数</value></data>
   <data name="IndexRaceTooFew"><value>この期間では月数が少なすぎてレースになりません。もっと長い期間をお試しください。</value></data>

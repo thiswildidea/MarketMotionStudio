@@ -728,7 +728,7 @@
   <data name="IndexRaceListUnitedStates"><value>美股</value></data>
   <data name="IndexRaceRangeMax"><value>最長</value></data>
   <data name="IndexRaceNote.Text"><value>每一個指數一行。那一行的長度是它從自己在區間裡的第一個月起漲了多少——不是它的點位，因為 3,800 與 5,700 不是同一把尺上的兩點。歷史起步比較晚的指數，在它起步之前不會出現在榜上：那時它是缺席，不是零。</value></data>
-  <data name="IndexRaceMethodNote.Text"><value>月線，不調整——指數不發股息，而調整是把一條序列重新定基，兩條各自重新定基的序列放在一起並不能比。資料起點各不相同：標普 500 可回溯到 1950 年，道瓊斯到 2009 年，恆生科技指數到 2020 年。這一頁不受市場設定管轄：它同時讀三個市場。</value></data>
+  <data name="IndexRaceMethodNote.Text"><value>月線，復權——源頭對指數忽略復權參數，所以這一頁已發佈的數字一個都沒變；但個股是另一回事：分紅是一道斷崖、拆股是一次腰斬，持有人誰也沒虧這筆錢。因此指數列是價格回報，個股列是總回報。資料起點各不相同：標普 500 可回溯到 1950 年，道瓊斯到 2009 年，恒生科技指數到 2020 年。這一頁不受市場設定管轄：它同時讀三個市場。</value></data>
   <data name="IndexRaceFetched"><value>{0} 個指數 · {1} 個月 · 領先的是 {2}，{3} · 墊底的是 {4}，{5}</value></data>
   <data name="IndexRaceUnitIndices"><value>個指數</value></data>
   <data name="IndexRaceTooFew"><value>這段區間的月份太少，跑不成一場比賽。換長一點的區間試試。</value></data>
