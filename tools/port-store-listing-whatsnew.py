@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # 与 port-store-listing-pages.py 共用一套取词规则：同一段规则两个副本，就有一个副本会在
 # 某天被改对而另一个不会。（脚本名带连字符，不能当模块名 import。）
-from listingtext import first_sentence, page_name  # noqa: E402
+from listingtext import chapter_of, first_sentence, page_name  # noqa: E402
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 LISTING = REPO / "docs" / "store-listing.md"
@@ -35,17 +35,18 @@ LISTING = REPO / "docs" / "store-listing.md"
 LANGS = ["zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de", "fr", "it",
          "es", "pt-BR", "pl", "cs", "ru", "tr"]
 
-# 第九到第十六页，按导航顺序；帮助手册里的章节序号（0 起，25 章在 14 种语言里同顺序）。
-PAGES = [
-    ("NavMarketCap", 6),
-    ("NavAhPremium", 7),
-    ("NavExtremeDays", 8),
-    ("NavFxCorridor", 9),
-    ("NavIndexRace", 10),
-    ("NavAssetRace", 11),
-    ("NavDrawdown", 12),
-    ("NavHoldOdds", 13),
-]
+# 第九到第十六页，按导航顺序。括号里那个数字原来是写死的章节序号，插进一章就整体错位
+# （第十七页插在大类资产之后，回撤与修复、持有胜率各后移一位），现在从导航顺序推。
+PAGES = [(key, chapter_of(key)) for key in (
+    "NavMarketCap",
+    "NavAhPremium",
+    "NavExtremeDays",
+    "NavFxCorridor",
+    "NavIndexRace",
+    "NavAssetRace",
+    "NavDrawdown",
+    "NavHoldOdds",
+)]
 
 # 每条说明最多留多少字符。整句照搬会让德/法/意语越过 1500 的上限，而那一栏是硬上限；
 # 截在**分句**上（下一个逗号/破折号），不留半句话。

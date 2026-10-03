@@ -19,14 +19,17 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # 取首句、取页面名、那条破折号 —— 与 port-store-listing-whatsnew.py 共用一份（listingtext.py）。
-from listingtext import HELP, LANGS, LISTING, STRINGS, dash_of, first_sentence, page_name  # noqa: E402,F401
+from listingtext import (  # noqa: E402,F401
+    HELP, LANGS, LISTING, STRINGS, chapter_of, dash_of, first_sentence, page_name)
 
 # 后加的六页，按导航顺序。前面十页的顺序是历史上一次次上架时追加出来的，不动。
 PAGES = ["NavExtremeDays", "NavFxCorridor", "NavIndexRace",
          "NavAssetRace", "NavDrawdown", "NavHoldOdds"]
 
 # 帮助手册里的章节序号（0 起，25 章在 14 种语言里同顺序）。
-CHAPTERS = [8, 9, 10, 11, 12, 13]
+# 章节序号从导航顺序推出来，不写死：往导航中间插一页，后面每一章的序号都会后移，
+# 写死的列表不会跟着动，于是说明会挂到错的那章头上。见 listingtext.chapter_of。
+CHAPTERS = [chapter_of(key) for key in PAGES]
 
 # 标题里的"十"→"十六"。各语言各自的词，改错了标题就变成"十六页图表十页"。
 HEADING = {

@@ -159,6 +159,39 @@ def help_checks():
               data[-1][:40] if data else "（没有 bullet）")
 
 
+def chapter_index_checks():
+    """章节序号必须是**推出来的**，不是抄下来的。
+
+    插进第十七页之后，`port-store-listing-pages.py` 里那行 `CHAPTERS = [8, 9, 10, 11, 12, 13]`
+    和 whatsnew 里那八个括号里的数字全体错位一位 —— 商店文案会把「债市固收」的首句挂到
+    「回撤与修复」头上，14 种语言全错，而每一句单独看都通顺。所以这里钉住两件事：
+    导航里每一个页面项都解得出来，且解出来的序号是**连续的一段**，从领头章节之后开始。
+    """
+    sys.path.insert(0, str(REPO / "tools"))
+    import listingtext
+
+    order = listingtext.nav_order()
+    got = [listingtext.chapter_of(key) for key in order]
+
+    # 不写「手册正好 26 章」—— 末尾那些非页面的章随时会加。要断的是页面章都落在手册里。
+    chapters = len(sections((HELP / "help-en-US.md").read_text(encoding="utf-8-sig")))
+    check("最后一页的章节仍落在手册里", got[-1] < chapters,
+          f"末页第 {got[-1]} 章 / 共 {chapters} 章")
+
+    check("每一页解出的章节序号是连续的一段",
+          got == list(range(listingtext.LEADING_CHAPTERS,
+                            listingtext.LEADING_CHAPTERS + len(order))),
+          str(got))
+
+    check("第十七页接在大类资产之后",
+          listingtext.chapter_of("NavBondRace") == listingtext.chapter_of("NavAssetRace") + 1)
+
+    # 那两个商店脚本的清单本身也得还指得着真页面（写错 AutomationId 时 chapter_of 会抛）。
+    for key in ("NavMarketCap", "NavAhPremium", "NavExtremeDays", "NavFxCorridor",
+                "NavIndexRace", "NavAssetRace", "NavDrawdown", "NavHoldOdds"):
+        check(f"商店文案还指得着 {key}", listingtext.chapter_of(key) >= 0)
+
+
 def readme_checks():
     text = README.read_text(encoding="utf-8")
 
@@ -176,6 +209,7 @@ def main():
     version_checks()
     listing_checks()
     help_checks()
+    chapter_index_checks()
     readme_checks()
     print(f"\n通过 {len(PASSED)} 项，失败 {len(FAILED)} 项")
 

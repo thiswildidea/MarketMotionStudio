@@ -94,6 +94,11 @@ PAGES = [
     ("NavPosition", "06-position", "FIRST"),
     ("NavCandle", "07-candle", "FIRST"),
     ("NavMarketCap", "08-market-cap", None),
+    # 债市固收是固定清单的榜，没有预置标的按钮 → 传 None，与板块竞速、市值榜一样。
+    # 它是月线页、不受市场设置管辖，三个市场下都在，不会被当成「未找到」跳过，所以每语言
+    # 都多出一张（历史上 zh-hans 八张、其余十三种各七张，差的那一张是只在 A股 存在的
+    # 成交额页 —— 那一轮跑完市场被留在港股）。
+    ("NavBondRace", "09-bond-race", None),
 ]
 
 if SMOKE:
