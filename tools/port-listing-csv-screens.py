@@ -92,6 +92,12 @@ def copy_shots(code, src):
     return names
 
 
+def check(name, ok, detail=""):
+    print("%s %s%s" % ("·" if ok else "×", name, " —— " + detail if detail else ""))
+
+    return ok
+
+
 def main():
     raw = io.open(CSV_PATH, "rb").read()
     rows = list(csv.reader(io.StringIO(raw.decode("utf-8-sig").replace("\r\n", "\n"))))
@@ -154,7 +160,25 @@ def main():
     bad = sum(report)
     print("\n%s" % ("截图与磁盘一致" if bad == 0 else "%d 个文件对不上" % bad))
 
-    return 0 if bad == 0 else 1
+    # 导入前能查的都在这儿查掉：上传一次要等好几分钟，而报错只有「您提供的值无效」四个字，
+    # 不说差在哪一格。这三条是文档写明的前提，错过任何一条都是 99 格全拒。
+    folder = os.path.join(REPO, ROOT)
+    csvs = [n for n in os.listdir(folder) if n.lower().endswith(".csv")]
+    print()
+    check("导入文件夹里只有一个 csv", len(csvs) == 1, "，".join(csvs))
+    check("每一条路径都能在磁盘上找到", bad == 0, "%d 个对不上" % bad)
+    check("每条路径都以根文件夹名开头",
+          all(s.startswith(ROOT + "/") for shots in wanted.values() for s in shots), ROOT)
+
+    # 这条最容易踩：相对路径只有「导入文件夹」认，「导入 .csv」那一栏只认已上传的
+    # listingassets URL —— 走错入口，99 格全被拒，报错一字不差。
+    print("\n上传：Partner Center → 应用概述页 → 导入列表 → **导入文件夹**")
+    print("      选中这一个文件夹：%s" % folder)
+    print("      （不是「导入 .csv」——那条路不认相对路径。）")
+    print("      导入成功后再导出一次，路径会被换成 listingassets URL；那个 URL 可抄回")
+    print("      来复用，之后就能走「导入 .csv」了。")
+
+    return 0 if bad == 0 and len(csvs) == 1 else 1
 
 
 if __name__ == "__main__":
