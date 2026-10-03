@@ -228,6 +228,16 @@
                 <mux:NavigationViewItem x:Name="NavAssetRace" x:Uid="NavAssetRace" Tag="AssetRace">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconAssetRace}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Right after the asset race, because that board is where the bond market was
+                     left as one row among eight — a single government-bond ETF, on a board about
+                     what can be held. This one is the market itself: nine bond indices, rates and
+                     credit and convertibles, on a board of their own. Drawn unadjusted where the
+                     asset race is adjusted, because every row here is an index and an index has
+                     no coupon to put back — which is why the bar is a price change and the note
+                     says so. -->
+                <mux:NavigationViewItem x:Name="NavBondRace" x:Uid="NavBondRace" Tag="BondRace">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconBondRace}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <mux:NavigationViewItem x:Name="NavDrawdown" x:Uid="NavDrawdown" Tag="Drawdown">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconDrawdown}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>

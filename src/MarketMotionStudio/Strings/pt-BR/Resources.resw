@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 anos</value></data>
   <data name="HoldOddsFetched"><value>Obtidos {0} ativos · {1} meses · mantidos {2} meses · com mais frequência no positivo: {3} {4} · com menos frequência: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>Meses insuficientes nesse período para que as entradas terminem — escolha um período mais longo ou uma manutenção mais curta.</value></data>
+  <data name="INSTSH000012"><value>Índice de títulos do Tesouro</value></data>
+  <data name="INSTSH000013"><value>Índice de bônus corporativos</value></data>
+  <data name="INSTSH000022"><value>Bônus corporativo de Xangai</value></data>
+  <data name="INSTSZ399301"><value>Bônus de crédito de Shenzhen</value></data>
+  <data name="INSTSZ399302"><value>Bônus corporativo de Shenzhen</value></data>
+  <data name="INSTSH000061"><value>Bônus corporativo 30 de Xangai</value></data>
+  <data name="INSTSH000832"><value>Bônus conversível CSI</value></data>
+  <data name="INSTSH000139"><value>Bônus conversível SSE</value></data>
+  <data name="INSTSZ399307"><value>Bônus conversível SZSE</value></data>
+  <data name="NavBondRace.Content"><value>Mercado de títulos</value></data>
+  <data name="BondRacePageTitle.Text"><value>Corrida do mercado de títulos</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Nove índices de títulos — governo, crédito e conversíveis — cada um medido a partir do seu próprio primeiro mês no período: compara-se o movimento, não o nível.</value></data>
+  <data name="BondRaceNote.Text"><value>Uma linha por índice. A barra é uma variação de preço: o cupom — a maior parte do que um título paga — nunca aparece em sua cotação, então quem o manteve ganhou mais, e em cada linha por um valor diferente.</value></data>
+  <data name="BondRaceList.Header"><value>Grupo de títulos</value></data>
+  <data name="BondRaceListAll"><value>Todos os nove</value></data>
+  <data name="BondRaceListPure"><value>Títulos simples</value></data>
+  <data name="BondRaceListConvert"><value>Conversíveis</value></data>
+  <data name="BondRaceRangeMax"><value>Mais longo</value></data>
+  <data name="BondRaceUnitBonds"><value>índices de títulos</value></data>
+  <data name="BondRaceStageTitle"><value>Mercado de títulos</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Mensal e sem ajuste — o oposto da corrida de fundos: um índice não paga cupom em sua própria cotação, então não há nada a reintegrar, enquanto um fundo tem. As datas de início diferem: a mais antiga começa em 2003-02 e o índice conversível de Shenzhen apenas em 2014-08, então ele entra num quadro de dez anos com cinco anos de atraso. Esta página não depende da configuração de mercado.</value></data>
+  <data name="BondRaceFetched"><value>{0} índices · {1} meses · na frente {2}, {3} · atrás {4}, {5}</value></data>
 </root>

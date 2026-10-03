@@ -781,4 +781,26 @@
   <data name="HoldOddsHold5Y"><value>5 年</value></data>
   <data name="HoldOddsFetched"><value>取到 {0} 檔 · {1} 個月 · 持有 {2} 個月 · 最常賺：{3} {4} · 最不常賺：{5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>這個區間的月份不夠讓持有走完——請選長一點的區間，或短一點的持有期。</value></data>
+  <data name="INSTSH000012"><value>國債指數</value></data>
+  <data name="INSTSH000013"><value>企債指數</value></data>
+  <data name="INSTSH000022"><value>滬公司債</value></data>
+  <data name="INSTSZ399301"><value>深信用債</value></data>
+  <data name="INSTSZ399302"><value>深公司債</value></data>
+  <data name="INSTSH000061"><value>滬企債30</value></data>
+  <data name="INSTSH000832"><value>中證轉債</value></data>
+  <data name="INSTSH000139"><value>上證轉債</value></data>
+  <data name="INSTSZ399307"><value>深證轉債</value></data>
+  <data name="NavBondRace.Content"><value>債市固收</value></data>
+  <data name="BondRacePageTitle.Text"><value>債市固收競速</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>九條債券指數——國債、信用債、可轉債——各自從自己在區間內的第一個月起算，所以比的是變動，不是點位。</value></data>
+  <data name="BondRaceNote.Text"><value>一條指數一行。條形是價格變動：債券付出的大部分是票息，而票息永遠不出現在報價裡——所以持有者真正賺到的比這個數字多，而且每一行差得不一樣多。</value></data>
+  <data name="BondRaceList.Header"><value>債券分組</value></data>
+  <data name="BondRaceListAll"><value>全部九條</value></data>
+  <data name="BondRaceListPure"><value>純債</value></data>
+  <data name="BondRaceListConvert"><value>可轉債</value></data>
+  <data name="BondRaceRangeMax"><value>最長</value></data>
+  <data name="BondRaceUnitBonds"><value>個債券指數</value></data>
+  <data name="BondRaceStageTitle"><value>債市固收</value></data>
+  <data name="BondRaceMethodNote.Text"><value>月線、未復權——與大類資產那一榜相反：指數不會把票息算進自己的報價，所以沒有東西需要加回去，基金則不然。起點各不相同：最早從 2003-02 開始，深圳的可轉債指數要到 2014-08 才有，所以在十年榜上它晚了五年才進場。本頁不受市場設定影響。</value></data>
+  <data name="BondRaceFetched"><value>{0} 條指數 · {1} 個月 · 領先的是 {2}，{3} · 墊底的是 {4}，{5}</value></data>
 </root>

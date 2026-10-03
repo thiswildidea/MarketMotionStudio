@@ -791,4 +791,26 @@
   <data name="HoldOddsHold5Y"><value>5 年</value></data>
   <data name="HoldOddsFetched"><value>取到 {0} 档 · {1} 个月 · 持有 {2} 个月 · 最常赚：{3} {4} · 最不常赚：{5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>这个区间的月份不够让持有走完——请选长一点的区间，或短一点的持有期。</value></data>
+  <data name="INSTSH000012"><value>国债指数</value></data>
+  <data name="INSTSH000013"><value>企债指数</value></data>
+  <data name="INSTSH000022"><value>沪公司债</value></data>
+  <data name="INSTSZ399301"><value>深信用债</value></data>
+  <data name="INSTSZ399302"><value>深公司债</value></data>
+  <data name="INSTSH000061"><value>沪企债30</value></data>
+  <data name="INSTSH000832"><value>中证转债</value></data>
+  <data name="INSTSH000139"><value>上证转债</value></data>
+  <data name="INSTSZ399307"><value>深证转债</value></data>
+  <data name="NavBondRace.Content"><value>债市固收</value></data>
+  <data name="BondRacePageTitle.Text"><value>债市固收竞速</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>九条债券指数——国债、信用债、可转债——各自从自己在区间内的第一个月起算，所以比的是变动，不是点位。</value></data>
+  <data name="BondRaceNote.Text"><value>一条指数一行。条形是价格变动：债券付出的大部分是票息，而票息永远不出现在报价里——所以持有者真正赚到的比这个数字多，而且每一行差得不一样多。</value></data>
+  <data name="BondRaceList.Header"><value>债券分组</value></data>
+  <data name="BondRaceListAll"><value>全部九条</value></data>
+  <data name="BondRaceListPure"><value>纯债</value></data>
+  <data name="BondRaceListConvert"><value>可转债</value></data>
+  <data name="BondRaceRangeMax"><value>最长</value></data>
+  <data name="BondRaceUnitBonds"><value>个债券指数</value></data>
+  <data name="BondRaceStageTitle"><value>债市固收</value></data>
+  <data name="BondRaceMethodNote.Text"><value>月线、未复权——与大类资产那一榜相反：指数不会把票息算进自己的报价，所以没有东西需要加回去，基金则不然。起点各不相同：最早从 2003-02 开始，深圳的可转债指数要到 2014-08 才有，所以在十年榜上它晚了五年才进场。本页不受市场设置影响。</value></data>
+  <data name="BondRaceFetched"><value>{0} 条指数 · {1} 个月 · 领先的是 {2}，{3} · 垫底的是 {4}，{5}</value></data>
 </root>

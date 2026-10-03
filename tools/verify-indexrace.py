@@ -292,41 +292,6 @@ def scrub(win, progress):
     return True
 
 
-def canvas_box(whole):
-    """The canvas rectangle, found by colour.
-
-    Not by a proportion of the window: the crop that used to be here ("the canvas is 39%–62%
-    across") counted one row on this page's frames, because the window layout is not a fixed
-    fraction and the preview has no automation node to measure. Saturation is what the canvas
-    and the window around it really differ in: grey chrome has none, whatever its brightness,
-    and every canvas in this app has a lot.
-    """
-    pixels = whole.load()
-    width, height = whole.size
-
-    def vivid(x, y):
-        r, g, b = pixels[x, y]
-        return max(r, g, b) - min(r, g, b) > 60 and max(r, g, b) > 60
-
-    columns = [sum(1 for y in range(0, height, 4) if vivid(x, y)) for x in range(width)]
-    widest = max(columns)
-    band = [x for x, count in enumerate(columns) if count > widest * 0.5]
-
-    if not band:
-        return None
-
-    left, right = band[0], band[-1]
-
-    across = [sum(1 for x in range(left, right, 4) if vivid(x, y)) for y in range(height)]
-    tallest = max(across)
-    band = [y for y, count in enumerate(across) if count > tallest * 0.5]
-
-    if not band:
-        return None
-
-    return left, right, band[0], band[-1]
-
-
 def drawn_rows(win, name):
     """Counts the rows a frame actually draws, from its pixels.
 
@@ -344,7 +309,7 @@ def drawn_rows(win, name):
     whole = Image.open(path).convert("RGB")
     pixels = whole.load()
 
-    box = canvas_box(whole)
+    box = winui.canvas_box(whole)
 
     if box is None:
         return -1

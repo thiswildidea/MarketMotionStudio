@@ -28,7 +28,11 @@ LANGS = ["zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de", "fr", "it",
          "es", "pt-BR", "pl", "cs", "ru", "tr"]
 
 # 帮助手册章节序号（0 起）。25 章在 14 种语言里同顺序。
-CH_CANDLE, CH_VOLUME, CH_CAP, CH_DATA = 3, 4, 6, 22
+# Chapter positions, which is to say positions in the navigation: the seventeenth page went in
+# after the asset race, so every chapter after it — and every constant below that points at one —
+# moved down by one. The headings are in fourteen languages, so a position is the only thing that
+# can be asserted on.
+CH_CANDLE, CH_VOLUME, CH_CAP, CH_DATA = 3, 4, 6, 23
 
 PASSED = []
 FAILED = []
@@ -100,6 +104,10 @@ def listing_checks():
         _, start, end = secs[n]
         items = bullets(lines, start, end)
         last = page_name(lang, "NavHoldOdds")
+
+        # 一页一条，所以这个数字**跟着页数走**：第十七页「债市固收」落地之后这一版应当是
+        # 十七条，而商店文案按惯例要等发版时才写（见 marketmotion-store-release），所以
+        # 现在仍是十六。改动这一页时它不会红——它就是发版时要改的那个提醒点。
         check(f"{lang} 说明段是十六条", len(items) == 16, f"{len(items)} 条")
 
         if items:
@@ -153,7 +161,13 @@ def help_checks():
 
 def readme_checks():
     text = README.read_text(encoding="utf-8")
-    check("README 说到 sixteen pages", "sixteen" in text)
+
+    # 断「页数」而不是「出现过 sixteen 这个词」——自选上限也有十六（`three to sixteen racers`），
+    # 所以旧写法在页数改成十七之后照样绿。加一页就要回来改这里，那正是它该有的摩擦。
+    check("README 说清了共十七页", "seventeen pages" in text)
+    check("README 的页数清单标题是十七", "## The seventeen pages" in text)
+    check("README 里不再有「十六页」的说法", "sixteen pages" not in text and
+          "The sixteen pages" not in text)
     check("README 说到 make-icons.py", "make-icons.py" in text)
     check("README 说到 PathIcon 的包围盒", "bounding box" in text)
 

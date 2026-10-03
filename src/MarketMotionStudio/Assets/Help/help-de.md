@@ -238,6 +238,35 @@ direkt vergleichbar.
   wieder; geholt wird sie ajustiert, genau wie die acht Fonds, also mit Dividenden und
   Anteilssplits in der Zahl. Unter dreien wird das Holen verweigert.
 
+## Anleihemarkt
+
+Eine Zeile pro Anleiheindex, und der Balken ist eine **Kursänderung** — nicht dasselbe wie das,
+was das Halten eingebracht hat.
+
+- **Der Kupon steckt nicht in der Zahl.** Alle neun Zeilen sind Indizes, und die Quelle ignoriert
+  den Adjustierungsparameter bei einem Index, also kommt die Notierung zurück. Eine Anleihe zahlt
+  den Großteil ihrer Rendite als Kupon, und ein Kupon erscheint nie in einer Notierung: Wer sie
+  hielt, hat mehr verdient, als diese Tafel zeigt — auf jeder Zeile um einen anderen Betrag.
+- **Mit Absicht das Gegenteil des Anlageklassen-Rennens.** Jene Tafel wird aus der adjustierten
+  Reihe gezeichnet, weil ein Fonds ausschüttet; diese bleibt unangetastet, weil ein Index das nicht
+  tut. Die beiden Tafeln sind nicht gegeneinander lesbar.
+- **Neun Zeilen, und die Liste ist eingebaut** statt eine, die man selbst pflegt. Ein
+  CSI-Gesamtanleiheindex war gewünscht und existiert auf dieser Quelle nicht: Der Code, der so
+  aussieht, ist der Shanghai-Abspaltungsanleihen-Index, dessen Monatsreihe im August 2015 endet,
+  und eine Durchsuchung des gesamten Index-Coderaums fand überhaupt keinen Gesamtanleiheindex.
+  Die Plätze gingen an die tiefsten Kreditindizes, die die Quelle beantwortet.
+- **Die Anfänge unterscheiden sich.** Die früheste Zeile beginnt 2003-02, der Shenzhen-Wandlerindex
+  erst 2014-08 — auf einer Zehn-Jahres-Tafel stößt er also fünf Jahre später dazu. Eine Zeile, die
+  noch nicht begonnen hat, fehlt, statt bei 0,00 % zu stehen.
+- **Monatlich**, ein Balken pro Monat, und die Markteinstellung regiert diese Seite nicht. Weniger
+  als zwölf Monate werden abgelehnt.
+- **Beginnt mit dem ersten vollen Monat im Zeitraum.** Die Quelle antwortet nur in ganzen Monaten,
+  und ein Monatsbalken *ist* dieser ganze Monat. Beginnt ein Zeitraum mitten in einem Monat, zählt
+  dieser unvollständige Monat nicht — der Kurs startet mit dem nächsten vollen Monat. Deshalb
+  zeichnet „letzte 10 Jahre" 119 statt 120 Monate: Der fehlende liegt außerhalb des Zeitraums. Die
+  beiden Daten in der Kopfzeile sind die echten Daten.
+- **Drei Gruppen**: alle neun, die sechs klassischen Anleihen ohne Wandler, und die drei Wandler.
+
 ## Rücksetzer
 
 Eine Zeile ist, **wie weit unter dem eigenen Hoch eine Anlage steht** — nicht was sie verdient

@@ -291,3 +291,75 @@ def value(combo):
         return picked[0].Name if picked else None
     except Exception:  # noqa: BLE001
         return None
+
+
+def canvas_box(whole):
+    """The preview canvas inside a captured window, as (left, right, top, bottom).
+
+    Shared, because three scripts had their own copy of this and all three copies were
+    wrong in the same way at the same time.
+
+    Not by a proportion of the window: the crop that used to be here ("the canvas is
+    39%–62% across") counted one row on a frame, because the window layout is not a fixed
+    fraction and the preview has no automation node to measure.
+
+    And no longer by saturation, which is what stood in two of the three copies. Saturation
+    was right about the chrome (grey has none) and wrong about the canvas: the canvas is
+    near-black, and the only *vivid* things in a frame are the bars. A column-first
+    saturation pass therefore answered "the bars" — the columns they cover are vivid top to
+    bottom and beat every column that is mostly canvas — and returned a 32-pixel stripe
+    holding no name column at all. Three row-count checks failed on frames that were
+    perfectly drawn, while every check that compared numbers passed.
+
+    What separates the two is **brightness**, and the field is found by walking out from the
+    canvas's own centre: the chrome is near-white, the canvas is near-black, and the walk
+    only stops when the light has run on for a stretch — which is what makes it immune to
+    the light glyphs and gold dates *inside* the canvas, the thing a per-pixel threshold
+    cannot survive.
+
+    Returns None when the picture does not look like a captured canvas.
+    """
+    width, height = whole.size
+    pixels = whole.load()
+
+    def light(x, y):
+        r, g, b = pixels[x, y]
+
+        return (r + g + b) / 3 > 200
+
+    # 5% of the height: no canvas is 50 pixels of unbroken light, and the chrome always is.
+    edge = max(12, height // 20)
+
+    def walk(x, y, dx, dy):
+        last = x if dx else y
+        streak = 0
+
+        while 0 <= x < width and 0 <= y < height:
+            if light(x, y):
+                streak += 1
+
+                if streak >= edge:
+                    break
+            else:
+                streak = 0
+                last = x if dx else y
+
+            x += dx
+            y += dy
+
+        return last
+
+    centre_x, centre_y = width // 2, height // 2
+
+    if light(centre_x, centre_y):
+        return None
+
+    left = walk(centre_x, centre_y, -1, 0)
+    right = walk(centre_x, centre_y, 1, 0)
+    top = walk(centre_x, centre_y, 0, -1)
+    bottom = walk(centre_x, centre_y, 0, 1)
+
+    if right - left < 40 or bottom - top < 40:
+        return None
+
+    return left, right, top, bottom

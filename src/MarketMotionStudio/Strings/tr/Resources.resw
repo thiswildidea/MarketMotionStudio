@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 yıl</value></data>
   <data name="HoldOddsFetched"><value>{0} varlık alındı · {1} ay · {2} ay tutuldu · en sık kârda: {3} {4} · en az: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>Girişlerin tamamlanması için bu aralıkta yeterince ay yok — daha uzun bir aralık ya da daha kısa bir tutma süresi seçin.</value></data>
+  <data name="INSTSH000012"><value>Hazine tahvili endeksi</value></data>
+  <data name="INSTSH000013"><value>Kurumsal tahvil endeksi</value></data>
+  <data name="INSTSH000022"><value>Şanghay kurumsal tahvili</value></data>
+  <data name="INSTSZ399301"><value>Shenzhen kredi tahvili</value></data>
+  <data name="INSTSZ399302"><value>Shenzhen kurumsal tahvili</value></data>
+  <data name="INSTSH000061"><value>Şanghay kurumsal tahvil 30</value></data>
+  <data name="INSTSH000832"><value>CSI dönüştürülebilir tahvil</value></data>
+  <data name="INSTSH000139"><value>SSE dönüştürülebilir tahvil</value></data>
+  <data name="INSTSZ399307"><value>SZSE dönüştürülebilir tahvil</value></data>
+  <data name="NavBondRace.Content"><value>Tahvil piyasası</value></data>
+  <data name="BondRacePageTitle.Text"><value>Tahvil piyasası yarışı</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Dokuz tahvil endeksi — hazine, kredi ve dönüştürülebilir — her biri dönemdeki kendi ilk ayından ölçülür; karşılaştırılan hareket, seviye değil.</value></data>
+  <data name="BondRaceNote.Text"><value>Her endeks bir satır. Çubuk fiyat değişimi: kupon — bir tahvilin ödediğinin çoğu — fiyatında hiç görünmez, dolayısıyla elinde tutanın kazancı bundan fazlaydı ve her satırda farklı bir tutarla.</value></data>
+  <data name="BondRaceList.Header"><value>Tahvil grubu</value></data>
+  <data name="BondRaceListAll"><value>Dokuzu da</value></data>
+  <data name="BondRaceListPure"><value>Düz tahviller</value></data>
+  <data name="BondRaceListConvert"><value>Dönüştürülebilirler</value></data>
+  <data name="BondRaceRangeMax"><value>En uzun</value></data>
+  <data name="BondRaceUnitBonds"><value>tahvil endeksi</value></data>
+  <data name="BondRaceStageTitle"><value>Tahvil piyasası</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Aylık ve düzeltilmemiş — fon yarışının tersi: bir endeks kendi fiyatına kupon ödemez, yani geri eklenecek bir şey yoktur; fon ise öder. Başlangıç tarihleri farklı: en eskisi 2003-02'de, Shenzhen dönüştürülebilir endeksi ise ancak 2014-08'de başlar, yani on yıllık tabloya beş yıl sonra katılır. Bu sayfa pazar ayarından etkilenmez.</value></data>
+  <data name="BondRaceFetched"><value>{0} endeks · {1} ay · önde {2}, {3} · arkada {4}, {5}</value></data>
 </root>

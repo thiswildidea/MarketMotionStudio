@@ -235,6 +235,36 @@ denaro, quindi direttamente confrontabili.
   esattamente come gli otto fondi, quindi dividendi e frazionamenti sono nel numero. Sotto tre il
   recupero è rifiutato.
 
+## Mercato obbligazionario
+
+Una riga per indice obbligazionario, e la barra è una **variazione di prezzo** — che non è la
+stessa cosa di ciò che ha reso la detenzione.
+
+- **La cedola non è nel numero.** Tutte e nove le righe sono indici, e la fonte ignora il parametro
+  di rettifica per un indice, quindi ciò che torna è la quotazione. Un'obbligazione paga la
+  maggior parte del suo rendimento come cedola, e una cedola non compare mai in una quotazione:
+  chi l'ha detenuta ha guadagnato più di quanto mostra questo tabellone, e in misura diversa su
+  ogni riga.
+- **Volutamente l'opposto della corsa delle classi di attività.** Quel tabellone è disegnato sulla
+  serie rettificata perché un fondo distribuisce; questo è lasciato com'è perché un indice non
+  distribuisce. I due tabelloni non si leggono l'uno contro l'altro.
+- **Nove righe, e la rosa è incorporata** invece di essere un elenco che mantieni tu. Un indice CSI
+  «totale obbligazionario» era richiesto e non esiste su questa fonte: il codice che gli somiglia è
+  l'indice delle obbligazioni staccabili di Shanghai, la cui serie mensile si ferma ad agosto 2015,
+  e una scansione di tutto lo spazio dei codici indice non ha trovato alcun indice obbligazionario
+  totale. Quei posti sono andati agli indici creditizi più profondi a cui la fonte risponde.
+- **Le partenze differiscono.** La riga più antica inizia nel 2003-02 e l'indice convertibile di
+  Shenzhen solo nel 2014-08, quindi su un tabellone decennale entra con cinque anni di ritardo. Una
+  riga non ancora iniziata è assente, non a 0,00%.
+- **Mensile**, una barra per mese, e l'impostazione di mercato non governa questa pagina. Meno di
+  dodici mesi è rifiutato.
+- **Inizia dal primo mese intero dell'intervallo.** La fonte risponde solo in mesi interi, e una
+  barra mensile *è* quel mese intero: se l'intervallo inizia a metà mese, quel mese incompleto non
+  conta — il quadro parte dal mese intero successivo. Ecco perché «ultimi 10 anni» disegna 119
+  mesi invece di 120: quello mancante è fuori intervallo. Le due date in intestazione sono quelle
+  reali di inizio e fine.
+- **Tre gruppi**: tutte e nove, le sei obbligazioni pure senza convertibili, e le tre convertibili.
+
 ## Ribassi
 
 Una riga è **quanto sotto il proprio massimo si trova uno strumento** — non quanto ha guadagnato,

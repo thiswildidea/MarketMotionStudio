@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 年</value></data>
   <data name="HoldOddsFetched"><value>{0} 銘柄を取得 · {1} か月 · 保有 {2} か月 · プラスで終わった割合が最も高い: {3} {4} · 最も低い: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>この期間ではエントリーが完了するだけの月数が足りません——もっと長い期間か、もっと短い保有期間を選んでください。</value></data>
+  <data name="INSTSH000012"><value>国債指数</value></data>
+  <data name="INSTSH000013"><value>企業債指数</value></data>
+  <data name="INSTSH000022"><value>滬公司債</value></data>
+  <data name="INSTSZ399301"><value>深信用債</value></data>
+  <data name="INSTSZ399302"><value>深公司債</value></data>
+  <data name="INSTSH000061"><value>滬企業債30</value></data>
+  <data name="INSTSH000832"><value>中証転債</value></data>
+  <data name="INSTSH000139"><value>上証転債</value></data>
+  <data name="INSTSZ399307"><value>深証転債</value></data>
+  <data name="NavBondRace.Content"><value>債券市場</value></data>
+  <data name="BondRacePageTitle.Text"><value>債券市場レース</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>国債・社債・転換債の 9 本の債券指数を、それぞれ期間内で自分自身の最初の月から計測します。比較するのは水準ではなく動きです。</value></data>
+  <data name="BondRaceNote.Text"><value>指数 1 本につき 1 行。バーは価格の変動です。債券が支払う額の大部分であるクーポンは気配値に現れないため、保有者が実際に得たものはこれより多く、しかも行ごとに差があります。</value></data>
+  <data name="BondRaceList.Header"><value>債券グループ</value></data>
+  <data name="BondRaceListAll"><value>9 本すべて</value></data>
+  <data name="BondRaceListPure"><value>普通債</value></data>
+  <data name="BondRaceListConvert"><value>転換債</value></data>
+  <data name="BondRaceRangeMax"><value>最長</value></data>
+  <data name="BondRaceUnitBonds"><value>債券指数</value></data>
+  <data name="BondRaceStageTitle"><value>債券市場</value></data>
+  <data name="BondRaceMethodNote.Text"><value>月次・未調整——ファンド競速とは逆です。指数は自らの気配値にクーポンを支払わないため、戻し入れるものがありません（ファンドにはあります）。開始月はまちまちで、最古は2003-02、深センの転換債指数は 2014-08 からなので、十年の盤面には 5 年遅れて登場します。このページは市場設定に左右されません。</value></data>
+  <data name="BondRaceFetched"><value>{0} 指数 · {1} か月 · 首位は {2}、{3} · 最下位は {4}、{5}</value></data>
 </root>

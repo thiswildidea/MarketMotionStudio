@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 Jahre</value></data>
   <data name="HoldOddsFetched"><value>{0} Anlagen geladen · {1} Monate · {2} Monate gehalten · am häufigsten im Plus: {3} {4} · am seltensten: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>Zu wenige Monate in diesem Zeitraum, als dass Einstiege enden könnten – wählen Sie einen längeren Zeitraum oder eine kürzere Haltedauer.</value></data>
+  <data name="INSTSH000012"><value>Staatsanleihen-Index</value></data>
+  <data name="INSTSH000013"><value>Unternehmensanleihen-Index</value></data>
+  <data name="INSTSH000022"><value>Shanghai-Unternehmensanleihe</value></data>
+  <data name="INSTSZ399301"><value>Shenzhen-Kreditobligation</value></data>
+  <data name="INSTSZ399302"><value>Shenzhen-Unternehmensanleihe</value></data>
+  <data name="INSTSH000061"><value>Shanghai-Unternehmensanleihe 30</value></data>
+  <data name="INSTSH000832"><value>CSI-Wandelanleihe</value></data>
+  <data name="INSTSH000139"><value>SSE-Wandelanleihe</value></data>
+  <data name="INSTSZ399307"><value>SZSE-Wandelanleihe</value></data>
+  <data name="NavBondRace.Content"><value>Anleihemarkt</value></data>
+  <data name="BondRacePageTitle.Text"><value>Anleihemarkt-Rennen</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Neun Anleiheindizes — Staatsanleihen, Unternehmensanleihen und Wandler — jeder ab seinem eigenen ersten Monat im Zeitraum gemessen, also wird die Bewegung verglichen, nicht das Niveau.</value></data>
+  <data name="BondRaceNote.Text"><value>Eine Zeile pro Anleiheindex. Der Balken ist eine Kursänderung: der Kupon — das meiste, was eine Anleihe zahlt — taucht in ihrer Notierung nie auf. Was ein Halter verdient hat, war also mehr, und auf jeder Zeile um einen anderen Betrag.</value></data>
+  <data name="BondRaceList.Header"><value>Anleihegruppe</value></data>
+  <data name="BondRaceListAll"><value>Alle neun</value></data>
+  <data name="BondRaceListPure"><value>Klassische Anleihen</value></data>
+  <data name="BondRaceListConvert"><value>Wandler</value></data>
+  <data name="BondRaceRangeMax"><value>Längster</value></data>
+  <data name="BondRaceUnitBonds"><value>Anleiheindizes</value></data>
+  <data name="BondRaceStageTitle"><value>Anleihemarkt</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Monatlich und nicht bereinigt — das Gegenteil des Anleihe-Fonds-Rennens: ein Index zahlt keinen Kupon in seine eigene Notierung, also gibt es nichts zurückzurechnen, bei einem Fonds schon. Die Starttermine unterscheiden sich: der früheste beginnt 2003-02, der Shenzhen-Wandlerindex erst 2014-08 — er stößt also fünf Jahre später dazu. Diese Seite richtet sich nicht nach der Markteinstellung.</value></data>
+  <data name="BondRaceFetched"><value>{0} Indizes · {1} Monate · vorn liegt {2}, {3} · hinten {4}, {5}</value></data>
 </root>

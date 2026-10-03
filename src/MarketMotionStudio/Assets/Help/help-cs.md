@@ -217,6 +217,31 @@ kotované na kontinentální burze, koupené za stejné peníze, takže je lze s
   přidanou zde najdete i na dalších třech; stahuje se ajustovaně, přesně jako osm fondů, takže
   dividendy a dělení jsou v čísle. Pod tři se stahování odmítne.
 
+## Trh dluhopisů
+
+Jeden řádek na dluhopisový index a pruh je **změna ceny** — co není totéž co to, co držení vyneslo.
+
+- **Kupón v čísle není.** Všech devět řádků jsou indexy a zdroj u indexu ignoruje parametr úpravy,
+  takže se vrací kotace. Dluhopis vyplácí většinu výnosu jako kupón a kupón se v kotaci nikdy
+  neobjeví: držitel si vydělal víc, než tato tabule ukazuje, a na každém řádku o jinou částku.
+- **Záměrně opak závodu tříd aktiv.** Tamtato tabule se kreslí z upravené řady, protože fond
+  vyplácí; tato zůstává netknutá, protože index nevyplácí. Obě tabule nelze číst jednu proti druhé.
+- **Devět řádků a seznam je vestavěný**, ne takový, který si udržujete sami. Chtěl se index CSI
+  „všech dluhopisů“ a na tomto zdroji neexistuje: kód, který se mu podobá, je index oddělených
+  dluhopisů Šanghaj, jehož měsíční řada končí v srpnu 2015, a prohledání celého prostoru kódů
+  indexů nenašlo žádný celkový dluhopisový index. Tato místa připadla nejhlubším úvěrovým indexům,
+  na které zdroj odpovídá.
+- **Začátky se liší.** Nejstarší řádek začíná 2003-02 a konvertibilní index Šen-čen až 2014-08, takže
+  na desetiletou tabuli nastupuje o pět let později. Řádek, který ještě nezačal, chybí — nestojí na
+  0,00 %.
+- **Měsíčně**, jeden pruh na měsíc, a nastavení trhu tuto stránku neřídí. Méně než dvanáct měsíců je
+  odmítnuto.
+- **Začíná prvním celým měsícem v rozsahu.** Zdroj odpovídá jen v celých měsících a měsíční
+  sloupec *je* ten celý měsíc: začne-li rozsah uprostřed měsíce, tento neúplný měsíc se nepočítá —
+  přehled startuje od následujícího celého měsíce. Proto „posledních 10 let" kreslí 119 měsíců
+  místo 120: ten chybějící leží mimo rozsah. Dvě data v záhlaví jsou skutečný začátek a konec.
+- **Tři skupiny**: všech devět, šest klasických dluhopisů bez konvertibilních a tři konvertibilní.
+
 ## Poklesy
 
 Řádek je **jak hluboko pod vlastním maximem se nástroj nachází** — ne kolik vydělal, ale co stálo

@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 lat</value></data>
   <data name="HoldOddsFetched"><value>Pobrano {0} instrumentów · {1} miesięcy · trzymane {2} miesięcy · najczęściej na plusie: {3} {4} · najrzadziej: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>Za mało miesięcy w tym okresie, by wejścia zdążyły się zakończyć — wybierz dłuższy okres albo krótszy czas trzymania.</value></data>
+  <data name="INSTSH000012"><value>Indeks obligacji skarbowych</value></data>
+  <data name="INSTSH000013"><value>Indeks obligacji przedsiębiorstw</value></data>
+  <data name="INSTSH000022"><value>Obligacja korporacyjna Shanghai</value></data>
+  <data name="INSTSZ399301"><value>Obligacja kredytowa Shenzhen</value></data>
+  <data name="INSTSZ399302"><value>Obligacja korporacyjna Shenzhen</value></data>
+  <data name="INSTSH000061"><value>Obligacja przedsiębiorstw 30 Shanghai</value></data>
+  <data name="INSTSH000832"><value>Obligacja zamienna CSI</value></data>
+  <data name="INSTSH000139"><value>Obligacja zamienna SSE</value></data>
+  <data name="INSTSZ399307"><value>Obligacja zamienna SZSE</value></data>
+  <data name="NavBondRace.Content"><value>Rynek obligacji</value></data>
+  <data name="BondRacePageTitle.Text"><value>Wyścig rynku obligacji</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Dziewięć indeksów obligacji — skarbowe, kredytowe i zamienne — każdy liczony od własnego pierwszego miesiąca w okresie, więc porównywany jest ruch, nie poziom.</value></data>
+  <data name="BondRaceNote.Text"><value>Jeden wiersz na indeks. Słupek to zmiana ceny: kupon — większość tego, co obligacja wypłaca — nigdy nie pojawia się w jej notowaniu, więc posiadacz zarobił więcej, a na każdym wierszu o inną kwotę.</value></data>
+  <data name="BondRaceList.Header"><value>Grupa obligacji</value></data>
+  <data name="BondRaceListAll"><value>Wszystkie dziewięć</value></data>
+  <data name="BondRaceListPure"><value>Zwykłe obligacje</value></data>
+  <data name="BondRaceListConvert"><value>Zamienne</value></data>
+  <data name="BondRaceRangeMax"><value>Najdłuższy</value></data>
+  <data name="BondRaceUnitBonds"><value>indeksów obligacji</value></data>
+  <data name="BondRaceStageTitle"><value>Rynek obligacji</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Miesięcznie i bez korekty — odwrotnie niż w wyścigu funduszy: indeks nie wypłaca kuponu do własnego notowania, więc nie ma czego doliczać, fundusz — owszem. Daty początkowe różnią się: najwcześniejsza to 2003-02, a indeks konwertowalny Shenzhen dopiero 2014-08, więc na dziesięcioletniej tablicy dołącza po pięciu latach. Ta strona nie zależy od ustawienia rynku.</value></data>
+  <data name="BondRaceFetched"><value>{0} indeksów · {1} miesięcy · z przodu {2}, {3} · z tyłu {4}, {5}</value></data>
 </root>

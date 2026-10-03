@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **sixteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **seventeen pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -36,17 +36,18 @@ instrument's prices as candles — daily, weekly or monthly — drawn four ways 
 closing line, a closing area) with MA5/10/20 and a volume panel, arriving one candle at a time
 across the whole range or walking forward inside a window of it.
 
-**Eight more pages followed**, and the navigation now numbers sixteen: **Market Cap Race** (a
+**Nine more pages followed**, and the navigation now numbers seventeen: **Market Cap Race** (a
 market's fifteen largest by total value, the field asked for at fetch time so members really come
 and go), **AH premium** (one company's two listings priced against each other), **Extreme Days**
 (one instrument's biggest moves ranked — the only board whose rows are days, not companies),
 **Currency Corridors** (a pair per row, and the row *is* the corridor), **Index Race** (how far each
 index has come since its own first month, never its level), **Asset Classes** (eight
-mainland-listed funds — what holding them earned), **Drawdowns** (how far below its own high each
+mainland-listed funds — what holding them earned), **Bond Market** (nine bond indices, measured on
+the quote because an index pays no coupon), **Drawdowns** (how far below its own high each
 sits, and how long the way back took), and **Hold Odds** (of every entry that finished, the share
 that gained). The last three share one watchlist that mixes all three markets.
 
-**The sixteen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
+**The seventeen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
 Fluent glyph — Candles with Sector Race, Volume & Turnover with Hold Odds, Market Turnover with
 Position Replay — and one shape cannot mean two pages; the menu was quietly saying those pairs were
 the same thing. Each is now a stroke skeleton on a shared 20×20 grid (lines, rings, polylines,
@@ -150,7 +151,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The sixteen pages
+## The seventeen pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -563,8 +564,40 @@ two overseas rows carry the exchange rate inside them — which is what a mainla
 actually was. That is also why the market setting does not apply here: the board is chosen on the
 page — all eight, the four share funds, the four that are not shares, or **a list of your own**.
 
-Measured 2026-10-02 over ten years: 120 months, the Nasdaq fund ahead at +578.20%, the gold fund at
-+209.59%, and the money-market fund behind at +18.76%.
+Measured 2026-10-03 over ten years: 119 months, the Nasdaq fund ahead at +556.98%, the gold fund at
++225.67%, and the money-market fund behind at +18.55%.
+
+**Bond market** — the seventeenth page, and the bond world the asset race left as a single row: nine
+exchange bond indices, each measured from its own first month in the range. The asset race keeps the
+bond market down to one government-bond fund among eight; this page is the bond market itself.
+
+**Deliberately the opposite of the asset race, and the two cannot be read against each other.** Every
+row here is an index, and the source ignores the adjustment parameter for an index, so what is drawn
+is the quote. A bond pays most of its return as coupon and a coupon never appears in a quote: a
+holder earned more than this board shows, by a different amount on every row. That board is drawn on
+the adjusted series because a fund does pay out; this one is left alone because an index does not.
+
+**The roster is built in, not a list you keep.** A CSI total-bond index was wanted and does not exist
+on this source: the code that looks like it is the Shanghai detachable-bond index, whose monthly
+series stops in August 2015, and a sweep of the whole index code space — `sh000001`–`sh000999` and
+`sz399001`–`sz399999`, every code the source answers a name for — found no total-bond index at all.
+It is a CSI Index Company code (`H11001`) and sits outside the exchange code space entirely. Those
+seats went to the deepest credit indices the source does answer, and two bond ETFs were considered
+and rejected: dividends and unit splits put a cliff or a collapse into their price series
+(`sh511220` reads −89.6% over ten years, `sh511030` +949% over five), so a fund and an index cannot
+share a board.
+
+**The range is snapped to whole months at both ends.** The source answers this period only in whole
+months and labels each row with that month's *last day*. Asked for a window opening on the 3rd, it
+still answers the month containing the 3rd — a month that began before the window did — and measuring
+from it would start every row on a date nobody chose. So the board begins on the first month lying
+wholly inside the range, which is why "past 10 years" draws 119 months rather than 120. The two
+dates in the header are the dates it really begins and ends on. Snapping the start single-handedly
+moved every row, and by most on the volatile convertible indices at the top: the Shenzhen
+convertible index reads +62.26% where the un-snapped arithmetic said +63.04%.
+
+Measured 2026-10-03 over ten years: 119 months, the Shenzhen convertible index ahead at +62.26%, the
+CSI convertible index at +56.15%, and the Shanghai enterprise bond 30 behind at +28.78%.
 
 **Drawdowns** — the fifteenth page, and the asset race's other half: the same eight holdings, on the
 same loader, over the same months, measured against their own highs instead of against each other.
@@ -853,6 +886,7 @@ src/MarketMotionStudio/
                    FxRates (the pairs, their monthly bars, and the corridor's arithmetic),
                    IndexRace (twelve indices from three markets, each measured from its own first month),
                    AssetRace (eight asset classes as funds, and the one page that must use adjusted prices),
+                   BondRace (nine bond indices, the opposite ruling on adjustment, and the whole-month snap),
                    Drawdown (the same eight funds measured against their own highs: depth and the climb back),
                    HoldOdds (every entry in the range, each held the same length of time, and the share that gained)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
@@ -861,7 +895,8 @@ src/MarketMotionStudio/
                    with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
-                   the extreme-day board, the index race, the asset-class board and the hold-odds board),
+                   the extreme-day board, the index race, the asset-class board, the bond board
+                   and the hold-odds board),
                    UnderwaterRenderer (ranked curves, one depth scale for the whole board),
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    FrameExporter (one frame to PNG)
@@ -996,7 +1031,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all sixteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all seventeen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed

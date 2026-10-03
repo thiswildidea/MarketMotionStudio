@@ -226,6 +226,35 @@ porównywać wprost.
   dodaną tu znajdziesz też na trzech pozostałych; pobiera się ją z korektą, dokładnie jak osiem
   funduszy, więc dywidendy i podziały są w liczbie. Poniżej trzech pobieranie jest odrzucane.
 
+## Rynek obligacji
+
+Jeden wiersz na indeks obligacji, a słupek to **zmiana ceny** — co nie jest tym samym co zarobek
+z trzymania.
+
+- **Kuponu nie ma w liczbie.** Wszystkie dziewięć wierszy to indeksy, a źródło ignoruje parametr
+  korekty dla indeksu, więc wraca notowanie. Obligacja wypłaca większość zwrotu jako kupon, a kupon
+  nigdy nie pojawia się w notowaniu: posiadacz zarobił więcej, niż pokazuje ta tablica, i na każdym
+  wierszu o inną kwotę.
+- **Celowo odwrotność wyścigu klas aktywów.** Tamta tablica jest rysowana na serii skorygowanej, bo
+  fundusz wypłaca; ta zostaje nietknięta, bo indeks nie wypłaca. Obu tablic nie można czytać
+  względem siebie.
+- **Dziewięć wierszy, a lista jest wbudowana**, nie jest to lista, którą prowadzisz sam. Chciano
+  indeksu CSI „wszystkich obligacji” i nie ma go w tym źródle: przypominający go kod to indeks
+  obligacji wydzielonych z Shanghai, którego seria miesięczna kończy się w sierpniu 2015, a
+  przejrzenie całej przestrzeni kodów indeksów nie znalazło żadnego indeksu całościowego. Miejsca
+  te przypadły najgłębszym indeksom kredytowym, na które źródło odpowiada.
+- **Początki się różnią.** Najwcześniejszy wiersz zaczyna się 2003-02, a indeks konwertowalny
+  Shenzhen dopiero 2014-08, więc na dziesięcioletniej tablicy wchodzi pięć lat później. Wiersza,
+  który jeszcze się nie zaczął, nie ma — nie stoi na 0,00%.
+- **Miesięcznie**, jeden słupek na miesiąc, a ustawienie rynku tu nie rządzi. Mniej niż dwanaście
+  miesięcy jest odrzucane.
+- **Zaczyna się od pierwszego pełnego miesiąca w zakresie.** Źródło odpowiada wyłącznie pełnymi
+  miesiącami, a słupek miesięczny *to* ten pełny miesiąc: gdy zakres zaczyna się w połowie
+  miesiąca, ten niepełny się nie liczy — wykres rusza od następnego pełnego miesiąca. Dlatego
+  „ostatnie 10 lat" rysuje 119, a nie 120 miesięcy: brakujący leży poza zakresem. Dwie daty
+  w nagłówku to rzeczywisty początek i koniec.
+- **Trzy grupy**: wszystkie dziewięć, sześć zwykłych obligacji bez zamiennych i trzy zamienne.
+
 ## Obsunięcia
 
 Wiersz to **jak daleko poniżej własnego szczytu jest instrument** — nie ile zarobił, lecz ile

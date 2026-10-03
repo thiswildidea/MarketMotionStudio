@@ -126,6 +126,19 @@ public static class AssetRace
         DateOnly start, DateOnly end,
         IProgress<string> progress, CancellationToken cancellation)
     {
+        // A window that opens mid-month cannot be drawn from a source that only speaks in whole
+        // months — see `BondRace.FirstWholeMonth`, which is where the arithmetic and the numbers
+        // behind it live. This board had the same defect, being the board the bond race was
+        // copied from: a ten-year board started on 2016-10-31 and measured every row from a month
+        // that began before its own window did.
+        start = BondRace.FirstWholeMonth(start);
+        end = MonthEnd(end.Year, end.Month);
+
+        if (start > end)
+        {
+            throw new InvalidOperationException(Strings.Get("AssetRaceTooFew"));
+        }
+
         var perAsset = new List<Dictionary<DateOnly, double>>(assets.Count);
 
         for (var i = 0; i < assets.Count; i++)

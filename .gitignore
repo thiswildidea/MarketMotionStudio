@@ -18,6 +18,11 @@ artifacts/
 # running a script — which nobody discovers they needed until packaging fails on
 # a missing logo. The script stays for regenerating them after a palette change.
 
+# Python bytecode left by the tools
+tools/__pycache__/
+__pycache__/
+*.pyc
+
 # Session-local: agent working memory and UI-automation residue
 .workbuddy/
 @AutomationLog.txt

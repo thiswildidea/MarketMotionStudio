@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 лет</value></data>
   <data name="HoldOddsFetched"><value>Получено инструментов: {0} · месяцев: {1} · удерживались {2} мес. · чаще всего в плюсе: {3} {4} · реже всего: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>В этом диапазоне слишком мало месяцев, чтобы входы успели завершиться, — выберите диапазон подлиннее или срок удержания покороче.</value></data>
+  <data name="INSTSH000012"><value>Индекс государственных облигаций</value></data>
+  <data name="INSTSH000013"><value>Индекс корпоративных облигаций</value></data>
+  <data name="INSTSH000022"><value>Корпоративная облигация Шанхая</value></data>
+  <data name="INSTSZ399301"><value>Кредитная облигация Шэньчжэня</value></data>
+  <data name="INSTSZ399302"><value>Корпоративная облигация Шэньчжэня</value></data>
+  <data name="INSTSH000061"><value>Корпоративная облигация 30 Шанхая</value></data>
+  <data name="INSTSH000832"><value>Конвертируемая облигация CSI</value></data>
+  <data name="INSTSH000139"><value>Конвертируемая облигация SSE</value></data>
+  <data name="INSTSZ399307"><value>Конвертируемая облигация SZSE</value></data>
+  <data name="NavBondRace.Content"><value>Рынок облигаций</value></data>
+  <data name="BondRacePageTitle.Text"><value>Гонка рынка облигаций</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Девять индексов облигаций — государственных, кредитных и конвертируемых — каждый измеряется от своего первого месяца в периоде, поэтому сравнивается движение, а не уровень.</value></data>
+  <data name="BondRaceNote.Text"><value>Одна строка на индекс. Полоса — это изменение цены: купон — большая часть того, что платит облигация — никогда не появляется в её котировке, поэтому держатель заработал больше, и на каждой строке — на разную величину.</value></data>
+  <data name="BondRaceList.Header"><value>Группа облигаций</value></data>
+  <data name="BondRaceListAll"><value>Все девять</value></data>
+  <data name="BondRaceListPure"><value>Обычные облигации</value></data>
+  <data name="BondRaceListConvert"><value>Конвертируемые</value></data>
+  <data name="BondRaceRangeMax"><value>Самый длинный</value></data>
+  <data name="BondRaceUnitBonds"><value>индексов облигаций</value></data>
+  <data name="BondRaceStageTitle"><value>Рынок облигаций</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Ежемесячно и без корректировки — противоположность гонке фондов: индекс не выплачивает купон в собственную котировку, так что возвращать нечего, а у фонда — есть. Даты начала различаются: самая ранняя — 2003-02, а конвертируемый индекс Шэньчжэня — только 2014-08, то есть на десятилетнюю доску он выходит через пять лет. Эта страница не зависит от настройки рынка.</value></data>
+  <data name="BondRaceFetched"><value>{0} индексов · {1} мес. · впереди {2}, {3} · позади {4}, {5}</value></data>
 </root>

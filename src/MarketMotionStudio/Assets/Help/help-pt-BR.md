@@ -227,6 +227,35 @@ comparadas diretamente.
   ajustada, exatamente como os oito fundos, de modo que dividendos e desdobramentos estão no
   número. Abaixo de três, a busca é recusada.
 
+## Mercado de títulos
+
+Uma linha por índice de títulos, e a barra é uma **variação de preço** — que não é o mesmo que o
+que a manutenção rendeu.
+
+- **O cupom não está no número.** As nove linhas são índices, e a fonte ignora o parâmetro de ajuste
+  para um índice, então o que volta é a cotação. Um título paga a maior parte do seu retorno como
+  cupom, e um cupom nunca aparece numa cotação: quem o manteve ganhou mais do que este quadro
+  mostra, e em cada linha por um valor diferente.
+- **Deliberadamente o oposto da corrida de classes de ativos.** Aquele quadro é desenhado na série
+  ajustada porque um fundo distribui; este fica como está porque um índice não distribui. Os dois
+  quadros não podem ser lidos um contra o outro.
+- **Nove linhas, e a lista é incorporada**, não uma lista que você mantém. Queria-se um índice CSI de
+  «todos os títulos» e ele não existe nesta fonte: o código parecido é o índice de títulos
+  desmembrados de Xangai, cuja série mensal para em agosto de 2015, e uma varredura de todo o
+  espaço de códigos de índice não achou nenhum índice de títulos total. As vagas foram para os
+  índices de crédito mais profundos que a fonte responde.
+- **Os inícios diferem.** A linha mais antiga começa em 2003-02 e o índice conversível de Shenzhen
+  apenas em 2014-08, então num quadro de dez anos ele entra com cinco anos de atraso. Uma linha que
+  ainda não começou está ausente, não em 0,00%.
+- **Mensal**, uma barra por mês, e a configuração de mercado não rege esta página. Menos de doze
+  meses é recusado.
+- **Começa no primeiro mês inteiro do intervalo.** A fonte só responde em meses inteiros, e uma
+  barra mensal *é* esse mês inteiro: se o intervalo começa no meio de um mês, esse mês incompleto
+  não conta — o quadro parte do mês inteiro seguinte. É por isso que «últimos 10 anos» desenha 119
+  meses em vez de 120: o que falta fica fora do intervalo. As duas datas do cabeçalho são as de
+  início e fim reais.
+- **Três grupos**: as nove, os seis títulos simples sem conversíveis, e os três conversíveis.
+
 ## Quedas
 
 Uma linha é **a distância entre um ativo e sua própria máxima** — não o que ele rendeu, mas o que

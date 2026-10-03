@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 let</value></data>
   <data name="HoldOddsFetched"><value>Načteno {0} nástrojů · {1} měsíců · drženo {2} měsíců · nejčastěji v plusu: {3} {4} · nejméně často: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>V tomto období je příliš málo měsíců na to, aby vstupy skončily — zvolte delší období nebo kratší dobu držení.</value></data>
+  <data name="INSTSH000012"><value>Index státních dluhopisů</value></data>
+  <data name="INSTSH000013"><value>Index podnikových dluhopisů</value></data>
+  <data name="INSTSH000022"><value>Podnikový dluhopis Šanghaj</value></data>
+  <data name="INSTSZ399301"><value>Úvěrový dluhopis Šen-čen</value></data>
+  <data name="INSTSZ399302"><value>Podnikový dluhopis Šen-čen</value></data>
+  <data name="INSTSH000061"><value>Podnikový dluhopis 30 Šanghaj</value></data>
+  <data name="INSTSH000832"><value>Konvertibilní dluhopis CSI</value></data>
+  <data name="INSTSH000139"><value>Konvertibilní dluhopis SSE</value></data>
+  <data name="INSTSZ399307"><value>Konvertibilní dluhopis SZSE</value></data>
+  <data name="NavBondRace.Content"><value>Trh dluhopisů</value></data>
+  <data name="BondRacePageTitle.Text"><value>Závod dluhopisových trhů</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Devět dluhopisových indexů — státní, úvěrové a konvertibilní — každý měřený od svého vlastního prvního měsíce v období, takže se porovnává pohyb, nikoli úroveň.</value></data>
+  <data name="BondRaceNote.Text"><value>Jeden řádek na index. Pruh je změna ceny: kupón — většina toho, co dluhopis vyplácí — se v jeho kotaci nikdy neobjeví, takže držitel vydělal více, a na každém řádku o jinou částku.</value></data>
+  <data name="BondRaceList.Header"><value>Skupina dluhopisů</value></data>
+  <data name="BondRaceListAll"><value>Všech devět</value></data>
+  <data name="BondRaceListPure"><value>Klasické dluhopisy</value></data>
+  <data name="BondRaceListConvert"><value>Konvertibilní</value></data>
+  <data name="BondRaceRangeMax"><value>Nejdelší</value></data>
+  <data name="BondRaceUnitBonds"><value>dluhopisových indexů</value></data>
+  <data name="BondRaceStageTitle"><value>Trh dluhopisů</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Měsíčně a neupraveno — opak závodu fondů: index nevyplácí kupón do vlastní kotace, takže není co připočítat, u fondu ano. Počáteční data se liší: nejstarší začíná 2003-02 a konvertibilní index Šen-čen až 2014-08, takže na desetiletou tabuli nastupuje po pěti letech. Tato stránka se neřídí nastavením trhu.</value></data>
+  <data name="BondRaceFetched"><value>{0} indexů · {1} měsíců · v čele {2}, {3} · na konci {4}, {5}</value></data>
 </root>

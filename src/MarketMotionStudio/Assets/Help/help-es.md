@@ -231,6 +231,35 @@ comparar directamente.
   ajustada, exactamente como los ocho fondos, de modo que dividendos y desdoblamientos están en la
   cifra. Con menos de tres se rechaza la descarga.
 
+## Renta fija
+
+Una fila por índice de bonos, y la barra es una **variación de precio** — que no es lo mismo que
+lo que ganó mantenerlo.
+
+- **El cupón no está en el número.** Las nueve filas son índices, y la fuente ignora el parámetro
+  de ajuste para un índice, así que lo que vuelve es la cotización. Un bono paga la mayor parte de
+  su renta como cupón, y un cupón nunca aparece en una cotización: quien lo mantuvo ganó más de lo
+  que muestra este tablero, y en cada fila por un importe distinto.
+- **Deliberadamente lo contrario de la carrera de clases de activo.** Aquel tablero se dibuja con la
+  serie ajustada porque un fondo reparte; este se deja intacto porque un índice no reparte. Los dos
+  tableros no se pueden leer uno contra otro.
+- **Nueve filas, y la lista viene incorporada**, no es una lista que mantengas tú. Se quería un
+  índice CSI de «todos los bonos» y no existe en esta fuente: el código que se le parece es el
+  índice de bonos desgajados de Shanghái, cuya serie mensual se detiene en agosto de 2015, y un
+  barrido de todo el espacio de códigos de índice no encontró ningún índice de bonos total. Esas
+  plazas fueron a los índices de crédito más profundos que la fuente sí responde.
+- **Los inicios difieren.** La fila más antigua empieza en 2003-02 y el índice convertible de
+  Shenzhen solo en 2014-08, así que en un tablero de diez años entra con cinco años de retraso. Una
+  fila que aún no ha empezado está ausente, no en 0,00 %.
+- **Mensual**, una barra por mes, y el ajuste de mercado no gobierna esta página. Menos de doce
+  meses se rechaza.
+- **Empieza en el primer mes completo del rango.** La fuente solo responde en meses completos, y
+  una barra mensual *es* ese mes completo: si el rango empieza a mitad de mes, ese mes incompleto
+  no cuenta — el cuadro arranca en el mes completo siguiente. Por eso «últimos 10 años» dibuja 119
+  meses y no 120: el que falta queda fuera del rango. Las dos fechas de la cabecera son las de
+  inicio y fin reales.
+- **Tres grupos**: las nueve, los seis bonos simples sin convertibles, y los tres convertibles.
+
 ## Caídas
 
 Una fila es **cuánto por debajo de su propio máximo está una inversión** — no lo que ganó, sino

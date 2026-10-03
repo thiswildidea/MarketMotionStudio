@@ -685,6 +685,7 @@ public sealed partial class MainWindow : Window
             "FxCorridor" => typeof(FxCorridorPage),
             "IndexRace" => typeof(IndexRacePage),
             "AssetRace" => typeof(AssetRacePage),
+            "BondRace" => typeof(BondRacePage),
             "Drawdown" => typeof(DrawdownPage),
             "HoldOdds" => typeof(HoldOddsPage),
             "Matrix" => typeof(MonthlyMatrixPage),

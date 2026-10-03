@@ -27,6 +27,7 @@ import re
 import sys
 import time
 import urllib.request
+from calendar import monthrange
 from datetime import date
 
 import uiautomation as auto
@@ -99,16 +100,37 @@ def endpoint_for(code):
     return "https://web.ifzq.gtimg.cn/appstock/app/newfqkline/get", "hfq"
 
 
+def first_whole_month(day):
+    """应用那条规则：窗口从月中开始时不拿残月当第一行。
+
+    源端只说整月、并以「该月最后一天」命名那一行，所以从 3 号起的窗口若照收 10 月那根，
+    等于从一个窗口之前的日期起算。应用把它对齐到下一个整月（`BondRace.FirstWholeMonth`），
+    脚本必须照做——不照做就会像 2026-10 那次一样，两边一个用 10 月末、一个用 11 月末，
+    差出一整个月的涨跌（纳指ETF 21 个百分点）。
+    """
+    if day.day == 1:
+        return day
+
+    month = day.month + 1
+    year = day.year + (1 if month > 12 else 0)
+
+    return date(year, 1 if month > 12 else month, 1)
+
+
 def monthly(code, start, end):
     """源端的月线，**后复权**——和应用里 TotalReturnBarsAsync 用的是同一条路径。
 
     这是这一页与指数长跑唯一的分岔口，脚本必须站在同一边：取 `hfqmonth` 块，
     取不到才退回 `month`。拿 raw 去比对复权的结果，差的是倍数而不是小数点。
 
-    两条清洗规则一起复刻，否则两边差一个月：
+    三条清洗规则一起复刻，否则两边差一个月：
       - `CandlesFromAsync` 丢掉还没走完的月（`IsSettledFor`），十月初取数末月是九月；
+      - 两端对齐到整月，残月不当第一行（`BondRace.FirstWholeMonth` 与 `MonthEnd`）；
       - 同一条调用还按 start/end 裁一遍，因为源端对月线的 start 并不总是买账。
     """
+    start = first_whole_month(start)
+    end = date(end.year, end.month, monthrange(end.year, end.month)[1])
+
     base, adj = endpoint_for(code)
 
     url = f"{base}?param={code},month,{start},{end},430,{adj}"
@@ -294,41 +316,6 @@ def frame_pixels(win, name):
     return coloured
 
 
-def canvas_box(whole):
-    """The canvas rectangle, found by colour.
-
-    Not by a proportion of the window: the crop that used to be here ("the canvas is 39%–62%
-    across") counted one row on this page's frames, because the window layout is not a fixed
-    fraction and the preview has no automation node to measure. Saturation is what the canvas
-    and the window around it really differ in: grey chrome has none, whatever its brightness,
-    and every canvas in this app has a lot.
-    """
-    pixels = whole.load()
-    width, height = whole.size
-
-    def vivid(x, y):
-        r, g, b = pixels[x, y]
-        return max(r, g, b) - min(r, g, b) > 60 and max(r, g, b) > 60
-
-    columns = [sum(1 for y in range(0, height, 4) if vivid(x, y)) for x in range(width)]
-    widest = max(columns)
-    band = [x for x, count in enumerate(columns) if count > widest * 0.5]
-
-    if not band:
-        return None
-
-    left, right = band[0], band[-1]
-
-    across = [sum(1 for x in range(left, right, 4) if vivid(x, y)) for y in range(height)]
-    tallest = max(across)
-    band = [y for y, count in enumerate(across) if count > tallest * 0.5]
-
-    if not band:
-        return None
-
-    return left, right, band[0], band[-1]
-
-
 def drawn_rows(win, name):
     """Counts the rows a frame actually draws, from its pixels.
 
@@ -346,7 +333,7 @@ def drawn_rows(win, name):
     whole = Image.open(path).convert("RGB")
     pixels = whole.load()
 
-    box = canvas_box(whole)
+    box = winui.canvas_box(whole)
 
     if box is None:
         return -1
@@ -563,6 +550,17 @@ def main():
     check("取数走 TotalReturnBarsAsync（复权）", "kline.TotalReturnBarsAsync(" in source)
     check("这一页没有走不复权那条路", "kline.RawBarsAsync(" not in source)
     check("月线，一次拿全历史（不需要分页回溯）", '"month"' in source and "HistoryWalk" not in source)
+
+    # 区间两端对齐到整月。这一页是那条规则的**发源地**（债券榜照抄了它，所以两处都得断）：
+    # 源端只以整月作答、并以「该月最后一天」命名那一行，窗口从月中开始时那半截月就被当成
+    # 第一行——于是画出来的每行都从窗口之前起算。改坏了画面完全正常，只有数字少一个月的
+    # 涨跌，所以这条是源码级断言，断的是调用不是名字。
+    check("起点对齐到整月（窗口从月中开始也不拿残月当第一行）",
+          "BondRace.FirstWholeMonth(start)" in source)
+    check("终点拉到月末", "MonthEnd(end.Year, end.Month)" in source)
+    check("对齐规则对已经是整月的起点不动手", "start.Day == 1 ? start :" in
+          open(os.path.join(REPO, "src/MarketMotionStudio/Market/BondRace.cs"),
+               encoding="utf-8").read())
 
     kline = open(os.path.join(REPO, "src/MarketMotionStudio/Market/TencentKline.cs"),
                  encoding="utf-8").read()

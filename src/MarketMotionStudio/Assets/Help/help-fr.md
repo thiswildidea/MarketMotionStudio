@@ -238,6 +238,36 @@ directement comparables.
   chargée ajustée, exactement comme les huit fonds, si bien que dividendes et divisions sont dans
   le chiffre. En dessous de trois, le chargement est refusé.
 
+## Marché obligataire
+
+Une ligne par indice obligataire, et la barre est une **variation de cours** — ce qui n'est pas
+la même chose que ce que la détention a rapporté.
+
+- **Le coupon n'est pas dans le chiffre.** Les neuf lignes sont des indices, et la source ignore le
+  paramètre d'ajustement pour un indice : ce qui revient est donc la cotation. Une obligation paie
+  l'essentiel de son rendement en coupon, et un coupon n'apparaît jamais dans une cotation : le
+  détenteur a gagné plus que ce que montre ce tableau, et d'un montant différent sur chaque ligne.
+- **Volontairement l'inverse de la course des classes d'actifs.** Ce tableau-là est tracé sur la
+  série ajustée parce qu'un fonds distribue ; celui-ci est laissé tel quel parce qu'un indice ne
+  distribue pas. Les deux tableaux ne se lisent pas l'un contre l'autre.
+- **Neuf lignes, et la liste est intégrée** plutôt qu'entretenue par vous. Un indice CSI « toutes
+  obligations » était souhaité et n'existe pas sur cette source : le code qui y ressemble est
+  l'indice des obligations détachables de Shanghai, dont la série mensuelle s'arrête en août 2015,
+  et un balayage de tout l'espace de codes d'indices n'a trouvé aucun indice obligataire global.
+  Ces places sont allées aux indices de crédit les plus profonds que la source répond.
+- **Les débuts diffèrent.** La ligne la plus ancienne commence en 2003-02 et l'indice convertible de
+  Shenzhen seulement en 2014-08 : sur un tableau de dix ans, il arrive donc cinq ans plus tard. Une
+  ligne qui n'a pas commencé est absente, pas à 0,00 %.
+- **Mensuel**, une barre par mois, et le réglage de marché ne régit pas cette page. Moins de douze
+  mois est refusé.
+- **Commence au premier mois entier de la plage.** La source ne répond qu'en mois entiers, et une
+  barre mensuelle *est* ce mois entier : lorsqu'une plage commence au milieu d'un mois, ce mois
+  incomplet ne compte pas — le tableau démarre au mois entier suivant. C'est pourquoi « 10 ans »
+  trace 119 mois et non 120 : le mois manquant se trouve hors plage. Les deux dates de l'en-tête
+  sont celles du début et de la fin réels.
+- **Trois groupes** : les neuf, les six obligations simples sans convertibles, et les trois
+  convertibles.
+
 ## Reculs
 
 Une ligne, c'est **la distance entre une position et son propre sommet** — pas ce qu'elle a

@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5년</value></data>
   <data name="HoldOddsFetched"><value>{0}개 종목 조회 · {1}개월 · {2}개월 보유 · 가장 자주 플러스: {3} {4} · 가장 드물게: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>진입이 끝나기에 이 구간의 개월 수가 부족합니다—더 긴 구간이나 더 짧은 보유 기간을 고르세요.</value></data>
+  <data name="INSTSH000012"><value>국채지수</value></data>
+  <data name="INSTSH000013"><value>기업채지수</value></data>
+  <data name="INSTSH000022"><value>상하이 회사채</value></data>
+  <data name="INSTSZ399301"><value>선전 신용채</value></data>
+  <data name="INSTSZ399302"><value>선전 회사채</value></data>
+  <data name="INSTSH000061"><value>상하이 기업채30</value></data>
+  <data name="INSTSH000832"><value>중정 전환채</value></data>
+  <data name="INSTSH000139"><value>상증 전환채</value></data>
+  <data name="INSTSZ399307"><value>심증 전환채</value></data>
+  <data name="NavBondRace.Content"><value>채권시장</value></data>
+  <data name="BondRacePageTitle.Text"><value>채권시장 레이스</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>국채·신용채·전환채 등 9개 채권 지수를 각각 기간 내 자신의 첫 달부터 측정합니다. 비교하는 것은 수준이 아니라 움직임입니다.</value></data>
+  <data name="BondRaceNote.Text"><value>지수당 한 행. 막대는 가격 변동입니다. 채권이 지급하는 대부분인 쿠폰은 호가에 나타나지 않으므로 보유자가 실제로 얻은 것은 이보다 많고, 그 차이는 행마다 다릅니다.</value></data>
+  <data name="BondRaceList.Header"><value>채권 그룹</value></data>
+  <data name="BondRaceListAll"><value>전체 9개</value></data>
+  <data name="BondRaceListPure"><value>일반채</value></data>
+  <data name="BondRaceListConvert"><value>전환채</value></data>
+  <data name="BondRaceRangeMax"><value>가장 긴</value></data>
+  <data name="BondRaceUnitBonds"><value>채권 지수</value></data>
+  <data name="BondRaceStageTitle"><value>채권시장</value></data>
+  <data name="BondRaceMethodNote.Text"><value>월간·무조정——펀드 레이스와 반대입니다. 지수는 자기 호가에 쿠폰을 지급하지 않으므로 되돌려 넣을 것이 없지만(펀드는 있음), 시작월은 제각각입니다. 가장 이른 것은 2003-02,선전 전환채 지수는 2014-08부터라 10년 보드에는 5년 늦게 합류합니다. 이 페이지는 시장 설정의 영향을 받지 않습니다.</value></data>
+  <data name="BondRaceFetched"><value>{0}개 지수 · {1}개월 · 선두 {2}, {3} · 최하위 {4}, {5}</value></data>
 </root>

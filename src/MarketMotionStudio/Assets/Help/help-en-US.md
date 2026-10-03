@@ -231,6 +231,36 @@ funds listed on a mainland exchange, bought with the same money, so they can be 
   eight funds, so dividends and share splits are in the number. Fewer than three and the fetch is
   refused.
 
+## Bond market
+
+One row per bond index, and the bar is a **price change** — which is not the same thing as what
+holding it earned.
+
+- **A coupon is not in the number.** All nine rows are indices, and the source ignores the
+  adjustment parameter for an index, so what comes back is the quote. A bond pays most of its
+  return as coupon, and a coupon never appears in a quote: a holder earned more than this board
+  shows, and by different amounts on different rows.
+- **Deliberately the opposite of the asset race.** That board is drawn on the adjusted series
+  because a fund pays out; this one is left alone because an index does not. The two boards
+  cannot be read against each other.
+- **Nine rows, and the roster is built in** rather than a list you keep. A CSI total-bond index
+  was wanted and does not exist on this source: the code that looks like it is the Shanghai
+  detachable-bond index, whose monthly series stops in August 2015, and a sweep of the entire
+  index code space found no total-bond index at all. Those seats went to the deepest credit
+  indices the source does answer.
+- **Start dates differ.** The earliest row begins in 2003-02 and the Shenzhen convertible index
+  only in 2014-08, so on a ten-year board it joins five years in. A row that has not started is
+  absent, not 0.00%.
+- **Monthly**, one bar per month, and the market setting does not govern this page. Fewer than
+  twelve months is refused.
+- **Begins on the first whole month in the range.** The source answers only in whole months and a
+  monthly bar *is* that whole month, so when a window opens in the middle of one that partial
+  month does not count — the board starts on the next whole month after it. That is why "past 10
+  years" draws 119 months rather than 120: the missing one lies outside the window. The two dates
+  in the header are the dates it really begins and ends on.
+- **Three groups**: all nine, the six straight bonds without convertibles, and the three
+  convertibles.
+
 ## Drawdowns
 
 A row is **how far below its own high a holding sits** — not what it earned, but what it cost to

@@ -330,7 +330,26 @@ public sealed class TencentKline(HttpClient http)
             throw new ArgumentException("The start date must fall on or before the end date.", nameof(start));
         }
 
-        return await CandlesFromAsync(Endpoint, string.Empty, code, period, start, end, count, cancellation);
+        // Retried like the adjusted path, and for the same reason: one dropped request is one
+        // row missing from a board, and a board of nine rows that silently arrives with six is
+        // indistinguishable from a roster that only ever had six. Seen exactly once — a run of
+        // the bond board's verification came back "9 of 9" on the second try after reporting six
+        // on the first, with no code change in between.
+        //
+        // No fallback endpoint here, unlike the adjusted path: this call *is* the plainest
+        // endpoint, so there is nothing plainer to fall back to. A series that is refused twice
+        // is refused, and the board counts one row fewer.
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                return await CandlesFromAsync(Endpoint, string.Empty, code, period, start, end, count, cancellation);
+            }
+            catch (Exception ex) when (attempt < AdjustedAttempts && IsTransient(ex))
+            {
+                await Task.Delay(TransientPause * attempt, cancellation);
+            }
+        }
     }
 
     /// <summary>

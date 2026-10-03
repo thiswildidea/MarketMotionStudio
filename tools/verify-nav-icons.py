@@ -7,14 +7,15 @@
 
 四类断言，前三类是源码级的：
 
-1. **十六项都换成了 PathIcon**，而且每一项挂的是**它自己的那幅图**（项名 → 键的
-   对应关系写死在脚本里，与 port-nav-icons.py 同表）。
+1. **十七项都换成了 PathIcon**，而且每一项挂的是**它自己的那幅图**（项名 → 键的
+   对应关系写死在脚本里，与 port-nav-icons.py 同表）。数量从那张表推，不写死：
+   加一页就该让这张表多一行，而不是让四处「十六」变红。
 2. **没有两条路径是完全一样的。** 这是这次改动的全部理由，也是最容易被一次
    复制粘贴毁掉的东西。
 3. **每幅图的包围盒都是 [2,18]²。** PathIcon 用等比缩放填满图标格，量的是包围盒：
    一幅忘了带定位点的图会与邻座不一样大，而"大小不一样"在截图里几乎看不出来
    ——两边都"有个图标"。这里是唯一抓得住它的地方。
-4. **真机上应用起得来、导航里十六项都在、还能一项一项点过去。** 这条不是走过场：
+4. **真机上应用起得来、导航里十七项都在、还能一项一项点过去。** 这条不是走过场：
    `PathGeometry` 当资源用（`Data="{StaticResource ...}"`）在 WinUI 里是能用但
    少见的写法，写错就是启动即崩 —— 而崩在启动时，正是源码级断言看不见的那种坏。
 
@@ -52,6 +53,7 @@ ITEMS = [
     ("NavFxCorridor", "FxCorridor", "汇率走廊"),
     ("NavIndexRace", "IndexRace", "指数长跑"),
     ("NavAssetRace", "AssetRace", "大类资产"),
+    ("NavBondRace", "BondRace", "债市固收"),
     ("NavDrawdown", "Drawdown", "回撤与修复"),
     ("NavHoldOdds", "HoldOdds", "持有胜率"),
     ("NavMatrix", "Matrix", "收益矩阵"),
@@ -141,10 +143,14 @@ def source_checks():
         check("Icons.xaml 里读得到几何", False)
         return
 
-    check("Icons.xaml 里有十六幅图", len(geoms) == 16, f"{len(geoms)} 幅")
+    # 数量从 ITEMS 推：写死「十六」的断言在加了第十七页之后必然变红，而红的理由跟图标
+    # 好不好看毫无关系 —— 那种红只会教人把数字往上改一次，然后在下一页再红一次。
+    want = len(ITEMS)
+
+    check(f"Icons.xaml 里有 {want} 幅图", len(geoms) == want, f"{len(geoms)} 幅")
 
     used = {f"Icon{key}" for _, key, _ in ITEMS}
-    check("十六幅图正好被用到十六处",
+    check(f"{want} 幅图正好被用到 {want} 处",
           used == set(geoms), f"差集 {sorted(used ^ set(geoms))}")
 
     # 第 2 类：没有两条路径一样 —— 这次改动的全部理由
@@ -157,7 +163,7 @@ def source_checks():
 
         seen[geoms[key]] = key
     else:
-        check("十六幅图两两不同（原来的毛病就是三对同形）", True)
+        check(f"{want} 幅图两两不同（原来的毛病就是三对同形）", True)
 
     # 第 3 类：包围盒
     for name, key, label in ITEMS:
@@ -357,7 +363,7 @@ def live_checks():
 
         rows = nav_rows(win)
 
-    check("导航里十六项都在", len(rows) == 16,
+    check(f"导航里 {len(ITEMS)} 项都在", len(rows) == len(ITEMS),
           f"数到 {len(rows)} 项：{' / '.join(rows)}")
 
     missing = [l for l in labels if l not in rows]
@@ -380,7 +386,7 @@ def live_checks():
         except Exception as ex:  # noqa: BLE001
             print(f"· {label} 点不动：{ex}")
 
-    check("十六项都点得动", len(went) == 16, f"{len(went)} 项")
+    check(f"{len(ITEMS)} 项都点得动", len(went) == len(ITEMS), f"{len(went)} 项")
 
     OUT.mkdir(parents=True, exist_ok=True)
     capture(win, "nav-real.png")

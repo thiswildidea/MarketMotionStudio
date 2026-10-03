@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 anni</value></data>
   <data name="HoldOddsFetched"><value>Recuperati {0} strumenti · {1} mesi · detenuti {2} mesi · più spesso in guadagno: {3} {4} · meno spesso: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>Non abbastanza mesi in questo intervallo perché le entrate finiscano: scegliete un intervallo più lungo o un periodo di detenzione più breve.</value></data>
+  <data name="INSTSH000012"><value>Indice dei titoli di Stato</value></data>
+  <data name="INSTSH000013"><value>Indice delle obbligazioni societarie</value></data>
+  <data name="INSTSH000022"><value>Obbligazione societaria di Shanghai</value></data>
+  <data name="INSTSZ399301"><value>Obbligazione creditizia di Shenzhen</value></data>
+  <data name="INSTSZ399302"><value>Obbligazione societaria di Shenzhen</value></data>
+  <data name="INSTSH000061"><value>Obbligazione societaria 30 di Shanghai</value></data>
+  <data name="INSTSH000832"><value>Obbligazione convertibile CSI</value></data>
+  <data name="INSTSH000139"><value>Obbligazione convertibile SSE</value></data>
+  <data name="INSTSZ399307"><value>Obbligazione convertibile SZSE</value></data>
+  <data name="NavBondRace.Content"><value>Mercato obbligazionario</value></data>
+  <data name="BondRacePageTitle.Text"><value>Corsa del mercato obbligazionario</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Nove indici obbligazionari — governativi, creditizi e convertibili — ciascuno misurato dal proprio primo mese nel periodo: si confronta il movimento, non il livello.</value></data>
+  <data name="BondRaceNote.Text"><value>Una riga per indice. La barra è una variazione di prezzo: la cedola — la maggior parte di ciò che paga un'obbligazione — non compare mai nella sua quotazione, quindi chi l'ha detenuta ha guadagnato di più, e in misura diversa su ogni riga.</value></data>
+  <data name="BondRaceList.Header"><value>Gruppo obbligazioni</value></data>
+  <data name="BondRaceListAll"><value>Tutti e nove</value></data>
+  <data name="BondRaceListPure"><value>Obbligazioni pure</value></data>
+  <data name="BondRaceListConvert"><value>Convertibili</value></data>
+  <data name="BondRaceRangeMax"><value>Il più lungo</value></data>
+  <data name="BondRaceUnitBonds"><value>indici obbligazionari</value></data>
+  <data name="BondRaceStageTitle"><value>Mercato obbligazionario</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Mensile e non rettificato — l'opposto della corsa dei fondi: un indice non paga cedole nella propria quotazione, quindi non c'è nulla da reintegrare, mentre un fondo sì. Le date di inizio differiscono: la più antica parte dal 2003-02 e l'indice convertibile di Shenzhen solo dal 2014-08, quindi entra in un tabellone decennale con cinque anni di ritardo. Questa pagina non dipende dall'impostazione del mercato.</value></data>
+  <data name="BondRaceFetched"><value>{0} indici · {1} mesi · in testa {2}, {3} · in coda {4}, {5}</value></data>
 </root>

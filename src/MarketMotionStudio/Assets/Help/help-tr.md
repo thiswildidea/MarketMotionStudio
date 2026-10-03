@@ -222,6 +222,32 @@ karşılaştırılabilir.
   bir hisse diğer üçünde de sunulur; sekiz fonla tamamen aynı şekilde düzeltilmiş çekilir, yani
   temettüler ve pay bölünmeleri sayının içindedir. Üçün altında çekme reddedilir.
 
+## Tahvil piyasası
+
+Her tahvil endeksi için bir satır ve çubuk bir **fiyat değişimi** — bu, elde tutmanın kazandırdığı
+ile aynı şey değil.
+
+- **Kupon sayıda yok.** Dokuz satır da endeks ve kaynak bir endeks için düzeltme parametresini
+  yoksayıyor, dolayısıyla dönen şey kotasyon. Bir tahvil getirisinin çoğunu kupon olarak öder ve
+  kupon hiçbir zaman kotasyonda görünmez: elinde tutan, bu tablonun gösterdiğinden fazlasını
+  kazandı, hem de her satırda farklı bir tutarla.
+- **Bilerek varlık sınıfı yarışının tersi.** O tablo, fon dağıttığı için düzeltilmiş seriden
+  çizilir; bu tabloya dokunulmaz, çünkü endeks dağıtmaz. İki tablo birbirine karşı okunamaz.
+- **Dokuz satır ve liste yerleşik**, sizin tuttuğunuz bir liste değil. CSI «tüm tahviller» endeksi
+  istendi ve bu kaynakta yok: ona benzeyen kod Şanghay ayrılabilir tahvil endeksi ve aylık serisi
+  Ağustos 2015'te duruyor; tüm endeks kod uzayının taranması da hiçbir toplam tahvil endeksi
+  bulamadı. Bu yerler kaynağın yanıt verdiği en derin kredi endekslerine gitti.
+- **Başlangıçlar farklı.** En eski satır 2003-02'de başlıyor, Shenzhen dönüştürülebilir endeksi ise
+  ancak 2014-08'de; yani on yıllık tabloya beş yıl geç katılıyor. Henüz başlamamış bir satır yoktur,
+  %0,00'de durmaz.
+- **Aylık**, ayda bir çubuk, ve pazar ayarı bu sayfayı yönetmez. On iki aydan kısa dönemler
+  reddedilir.
+- **Aralıktaki ilk tam ayla başlar.** Kaynak yalnızca tam aylarla yanıt verir ve aylık çubuk *o* tam
+  aydır: aralık ayın ortasında başlarsa bu eksik ay sayılmaz — tablo ondan sonraki tam ayla başlar.
+  «Son 10 yıl»ın 120 değil 119 ay çizmesinin nedeni budur: eksik olan aralığın dışındadır.
+  Başlıktaki iki tarih, gerçek başlangıç ve bitiş tarihleridir.
+- **Üç grup**: dokuzu da, dönüştürülebilirler olmadan altı düz tahvil ve üç dönüştürülebilir.
+
 ## Düşüşler
 
 Bir satır, **bir varlığın kendi zirvesinin ne kadar altında olduğudur** — ne kazandığı değil, onu

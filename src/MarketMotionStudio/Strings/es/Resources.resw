@@ -782,4 +782,26 @@
   <data name="HoldOddsHold5Y"><value>5 años</value></data>
   <data name="HoldOddsFetched"><value>Obtenidas {0} inversiones · {1} meses · mantenidas {2} meses · más a menudo en ganancia: {3} {4} · menos a menudo: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>No hay suficientes meses en ese periodo para que terminen las entradas: elija un periodo más largo o una tenencia más corta.</value></data>
+  <data name="INSTSH000012"><value>Índice de bonos del Estado</value></data>
+  <data name="INSTSH000013"><value>Índice de bonos de empresa</value></data>
+  <data name="INSTSH000022"><value>Bono corporativo de Shanghái</value></data>
+  <data name="INSTSZ399301"><value>Bono de crédito de Shenzhen</value></data>
+  <data name="INSTSZ399302"><value>Bono corporativo de Shenzhen</value></data>
+  <data name="INSTSH000061"><value>Bono corporativo 30 de Shanghái</value></data>
+  <data name="INSTSH000832"><value>Bono convertible CSI</value></data>
+  <data name="INSTSH000139"><value>Bono convertible SSE</value></data>
+  <data name="INSTSZ399307"><value>Bono convertible SZSE</value></data>
+  <data name="NavBondRace.Content"><value>Renta fija</value></data>
+  <data name="BondRacePageTitle.Text"><value>Carrera de renta fija</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Nueve índices de bonos — Estado, crédito y convertibles — cada uno medido desde su propio primer mes en el periodo: se compara el movimiento, no el nivel.</value></data>
+  <data name="BondRaceNote.Text"><value>Una fila por índice. La barra es una variación de precio: el cupón — la mayor parte de lo que paga un bono — nunca aparece en su cotización, así que lo que ganó quien lo mantuvo fue más, y en cada fila por un importe distinto.</value></data>
+  <data name="BondRaceList.Header"><value>Grupo de bonos</value></data>
+  <data name="BondRaceListAll"><value>Los nueve</value></data>
+  <data name="BondRaceListPure"><value>Bonos simples</value></data>
+  <data name="BondRaceListConvert"><value>Convertibles</value></data>
+  <data name="BondRaceRangeMax"><value>Más largo</value></data>
+  <data name="BondRaceUnitBonds"><value>índices de bonos</value></data>
+  <data name="BondRaceStageTitle"><value>Renta fija</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Mensual y sin ajustar — lo contrario de la carrera de fondos: un índice no paga cupón en su propia cotización, así que no hay nada que reincorporar, mientras que un fondo sí. Las fechas de inicio difieren: la más temprana empieza en 2003-02 y el índice convertible de Shenzhen solo en 2014-08, así que entra en un tablero de diez años con cinco años de retraso. Esta página no depende del ajuste de mercado.</value></data>
+  <data name="BondRaceFetched"><value>{0} índices · {1} meses · delante va {2}, {3} · detrás {4}, {5}</value></data>
 </root>

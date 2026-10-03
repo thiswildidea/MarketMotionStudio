@@ -793,4 +793,26 @@
   <data name="HoldOddsHold5Y"><value>5 years</value></data>
   <data name="HoldOddsFetched"><value>Fetched {0} holdings · {1} months · held {2} months · most often ahead: {3} {4} · least often: {5} {6}</value></data>
   <data name="HoldOddsTooFew"><value>Not enough months in that range for entries to finish — pick a longer range or a shorter holding period.</value></data>
+  <data name="INSTSH000012"><value>Treasury bond index</value></data>
+  <data name="INSTSH000013"><value>Enterprise bond index</value></data>
+  <data name="INSTSH000022"><value>Shanghai corporate bond</value></data>
+  <data name="INSTSZ399301"><value>Shenzhen credit bond</value></data>
+  <data name="INSTSZ399302"><value>Shenzhen corporate bond</value></data>
+  <data name="INSTSH000061"><value>Shanghai enterprise bond 30</value></data>
+  <data name="INSTSH000832"><value>CSI convertible bond</value></data>
+  <data name="INSTSH000139"><value>SSE convertible bond</value></data>
+  <data name="INSTSZ399307"><value>SZSE convertible bond</value></data>
+  <data name="NavBondRace.Content"><value>Bond market</value></data>
+  <data name="BondRacePageTitle.Text"><value>Bond Market Race</value></data>
+  <data name="BondRacePageSubtitle.Text"><value>Nine bond indices — government, credit and convertibles — each measured from its own first month in the range, so what is compared is the move, not the level.</value></data>
+  <data name="BondRaceNote.Text"><value>One row per bond index. The bar is a price change: a bond's coupon — most of what a bond pays — never appears in its quote, so what a holder earned was more than this, and by different amounts on different rows.</value></data>
+  <data name="BondRaceList.Header"><value>Bond group</value></data>
+  <data name="BondRaceListAll"><value>All nine</value></data>
+  <data name="BondRaceListPure"><value>Straight bonds</value></data>
+  <data name="BondRaceListConvert"><value>Convertibles</value></data>
+  <data name="BondRaceRangeMax"><value>Longest</value></data>
+  <data name="BondRaceUnitBonds"><value>bond indices</value></data>
+  <data name="BondRaceStageTitle"><value>Bond market</value></data>
+  <data name="BondRaceMethodNote.Text"><value>Monthly and unadjusted — the opposite of the asset race: an index pays no coupon into its own quote, so there is nothing to put back, while a fund does. Start dates differ: the earliest begins in 2003-02 and the Shenzhen convertible index only in 2014-08, so it joins a ten-year board five years in. This page is not governed by the market setting.</value></data>
+  <data name="BondRaceFetched"><value>{0} indices · {1} months · ahead is {2}, {3} · behind is {4}, {5}</value></data>
 </root>
