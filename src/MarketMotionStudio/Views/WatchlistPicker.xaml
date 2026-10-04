@@ -6,6 +6,49 @@
     xmlns:mux="using:Microsoft.UI.Xaml.Controls"
     xmlns:market="using:MarketMotionStudio.Market">
 
+    <UserControl.Resources>
+        <!-- The plain chip: the whole chip is one button, and clicking it takes the pick off the
+             list. This is what every ranking board uses, and what it has always done. -->
+        <DataTemplate x:Key="PlainChip" x:DataType="market:RaceEntry">
+            <Button Click="OnRemove"
+                    Padding="10,5"
+                    CornerRadius="10"
+                    Tag="{x:Bind Code}">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="{x:Bind Name}" />
+                    <TextBlock Text="×"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+
+        <!-- The pickable chip, for the one board that adds its picks up. Clicking the name
+             includes that pick in the total or drops it out; the × still takes it off the shared
+             list. Two buttons rather than one because the two actions are not the same act:
+             dropping a pick *here* would drop it from four other boards as well, and a reader
+             hiding one line should not be editing their holdings. -->
+        <DataTemplate x:Key="PickChip" x:DataType="market:RaceEntry">
+            <StackPanel Orientation="Horizontal" Spacing="2">
+                <ToggleButton Loaded="OnChipLoaded"
+                              Click="OnToggle"
+                              AutomationProperties.Name="{x:Bind Name}"
+                              Padding="10,5"
+                              CornerRadius="10,0,0,10"
+                              Tag="{x:Bind Code}">
+                    <TextBlock Text="{x:Bind Name}" />
+                </ToggleButton>
+                <Button Click="OnRemove"
+                        AutomationProperties.Name="{x:Bind Name}"
+                        Padding="9,5"
+                        CornerRadius="0,10,10,0"
+                        Tag="{x:Bind Code}">
+                    <TextBlock Text="×"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <!-- One's own list, as chips. Bound to the shared collection, so a pick made on one roster
          board is on every other one without this control or that page doing anything about it. -->
     <StackPanel Spacing="8">
@@ -19,26 +62,12 @@
                       HorizontalScrollMode="Auto"
                       VerticalScrollMode="Disabled"
                       VerticalScrollBarVisibility="Hidden">
-            <ItemsControl x:Name="Chips">
+            <ItemsControl x:Name="Chips" ItemTemplate="{StaticResource PlainChip}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" Spacing="6" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="market:RaceEntry">
-                        <Button Click="OnRemove"
-                                Padding="10,5"
-                                CornerRadius="10"
-                                Tag="{x:Bind Code}">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock Text="{x:Bind Name}" />
-                                <TextBlock Text="×"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
     </StackPanel>

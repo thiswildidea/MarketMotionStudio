@@ -817,6 +817,8 @@
   <data name="TurnoverBasketEmpty"><value>请先在清单中加入至少一只标的。</value></data>
   <data name="TurnoverBasketSkipped"><value>清单里有 {0} 只不是 A 股，已略过——成交额是各市场各报各的币种。</value></data>
   <data name="TurnoverBasketLabel"><value>自选</value></data>
+  <data name="TurnoverPickNote.Text"><value>点一下名称，把它加进或移出合计。</value></data>
+  <data name="TurnoverPickNone"><value>没有勾选任何标的。点一下名称，把它加进合计。</value></data>
   <data name="TurnoverViewIntraday"><value>日内</value></data>
   <data name="TurnoverIntradayStageTitle"><value>当日成交额</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · 单位：{1}</value></data>

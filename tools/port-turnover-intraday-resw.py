@@ -102,6 +102,43 @@ PAGE = [
         "z mojej listy", "da minha lista", "z mého seznamu", "listemdeki",
         "из моего списка", "マイリストの", "내 목록의", "自選", "自选"]),
 
+    # ---- 自选：挑哪几只进合计 ------------------------------------------------------
+    # 选择器下面那行说明。这一页是唯一把自选加成一个数的榜，而清单常常是给排名榜建的
+    # （十几只是常态）—— 十几只加在一起，是一个谁的账也不是的数。
+    ("TurnoverPickNote.Text", [
+        "Click a name to include it in the total or leave it out.",
+        "Klicken Sie auf einen Namen, um ihn in die Summe aufzunehmen oder herauszulassen.",
+        "Haga clic en un nombre para incluirlo en el total o dejarlo fuera.",
+        "Cliquez sur un nom pour l'inclure dans le total ou l'en retirer.",
+        "Faccia clic su un nome per includerlo nel totale o escluderlo.",
+        "Kliknij nazwę, aby dodać ją do sumy lub pominąć.",
+        "Clique em um nome para incluí-lo no total ou deixá-lo de fora.",
+        "Kliknutím na název jej přidáte do součtu, nebo jej vynecháte.",
+        "Bir adı toplama eklemek veya dışarıda bırakmak için üzerine tıklayın.",
+        "Нажмите на название, чтобы включить его в сумму или исключить.",
+        "名前をクリックすると合計に含めたり外したりできます。",
+        "이름을 클릭하면 합계에 넣거나 뺄 수 있습니다.",
+        "點一下名稱，把它加進或移出合計。",
+        "点一下名称，把它加进或移出合计。"]),
+
+    # 一只都没勾时说的。和「清单是空的」是两回事：那个要往里加标的，这个只要点回来。
+    ("TurnoverPickNone", [
+        "No instrument is switched on. Click a name to add it to the total.",
+        "Kein Instrument ist eingeschaltet. Klicken Sie auf einen Namen, um ihn zur Summe "
+        "hinzuzufügen.",
+        "Ningún instrumento está activado. Haga clic en un nombre para añadirlo al total.",
+        "Aucun instrument n'est activé. Cliquez sur un nom pour l'ajouter au total.",
+        "Nessuno strumento è attivo. Faccia clic su un nome per aggiungerlo al totale.",
+        "Żaden instrument nie jest włączony. Kliknij nazwę, aby dodać ją do sumy.",
+        "Nenhum instrumento está ativado. Clique em um nome para adicioná-lo ao total.",
+        "Není zapnut žádný nástroj. Kliknutím na název jej přidáte do součtu.",
+        "Hiçbir enstrüman açık değil. Toplama eklemek için bir adı tıklayın.",
+        "Ни один инструмент не включён. Нажмите на название, чтобы добавить его в сумму.",
+        "どの銘柄も選ばれていません。名前をクリックすると合計に加えられます。",
+        "선택된 종목이 없습니다. 이름을 클릭하면 합계에 넣을 수 있습니다.",
+        "沒有勾選任何標的。點一下名稱，把它加進合計。",
+        "没有勾选任何标的。点一下名称，把它加进合计。"]),
+
     # ---- 日内：View 下拉的第三项 ----------------------------------------------------
     ("TurnoverViewIntraday", [
         "Intraday", "Intraday", "Intradía", "Séance", "Intraday", "W ciągu dnia",

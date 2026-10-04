@@ -35,7 +35,10 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
   status line says how many. A day is on the axis if *any* member traded; a member with no row
   for that day — halted, or not yet listed — contributes nothing. That is deliberately the
   opposite of the rule the boards above use: an index never halts, a share does, and dropping the
-  day would make a halt look like a day on which nothing traded anywhere.
+  day would make a halt look like a day on which nothing traded anywhere. This board **adds its
+  picks up**, so clicking a name includes it in the total or leaves it out — and it opens on the
+  **first** pick alone. The list is usually the one kept for the ranking boards, where a dozen
+  names is an ordinary list; a dozen names added together is a total about nobody in particular.
 - **The change under a basket** is the equal-weighted average of the members' own daily changes,
   each measured against its own previous close. Equal-weighted because a list is not a portfolio:
   there is no holding size to weight by.

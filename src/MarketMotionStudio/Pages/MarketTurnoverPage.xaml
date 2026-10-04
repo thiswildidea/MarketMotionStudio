@@ -105,10 +105,26 @@
                     <!-- One's own list, shown when the board menu names it. Shared with the
                          roster boards — a pick made here is on them too. Indices and stocks
                          side by side, because the amount each contributes is a sum of money
-                         and the source reports it for both. -->
+                         and the source reports it for both.
+
+                         Selectable, unlike on the ranking boards: this is the one board that adds
+                         its picks into a single number, and a total of five holdings answers no
+                         question about any of them. Clicking a chip includes or drops it. -->
                     <views:WatchlistPicker x:Name="Watch"
+                                           Selectable="True"
                                            Visibility="Collapsed"
                                            Changed="OnWatchChanged" />
+
+                    <!-- Shown and hidden with the picker above, because it describes chips that
+                         are not on screen otherwise. It is not in the help document: whether a
+                         click adds or drops a name is not something a reader can guess from a row
+                         of chips that look exactly like the ones on the ranking boards. -->
+                    <TextBlock x:Uid="TurnoverPickNote"
+                               x:Name="PickNote"
+                               Visibility="Collapsed"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
                     <!-- The caveat is beside the selector, not in the help document.
                          Two of these choices change what the number means rather than how

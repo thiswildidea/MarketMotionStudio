@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Ajoutez d'abord au moins un instrument à votre liste.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} de votre liste ne sont pas des actions A et ont été ignorées — les transactions sont publiées dans la devise de chaque marché.</value></data>
   <data name="TurnoverBasketLabel"><value>de ma liste</value></data>
+  <data name="TurnoverPickNote.Text"><value>Cliquez sur un nom pour l'inclure dans le total ou l'en retirer.</value></data>
+  <data name="TurnoverPickNone"><value>Aucun instrument n'est activé. Cliquez sur un nom pour l'ajouter au total.</value></data>
   <data name="TurnoverViewIntraday"><value>Séance</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Transactions minute par minute</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · unité : {1}</value></data>

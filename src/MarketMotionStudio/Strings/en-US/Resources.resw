@@ -819,6 +819,8 @@
   <data name="TurnoverBasketEmpty"><value>Add at least one instrument to your list first.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} on your list are not A-shares and were left out — turnover is reported in each market's own currency.</value></data>
   <data name="TurnoverBasketLabel"><value>of my own</value></data>
+  <data name="TurnoverPickNote.Text"><value>Click a name to include it in the total or leave it out.</value></data>
+  <data name="TurnoverPickNone"><value>No instrument is switched on. Click a name to add it to the total.</value></data>
   <data name="TurnoverViewIntraday"><value>Intraday</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Turnover by minute</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · unit: {1}</value></data>

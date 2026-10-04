@@ -35,7 +35,10 @@ Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen 
   stanu mówi, ile. Dzień jest na osi, gdy *ktokolwiek* z członków handlował; członek bez wiersza
   za ten dzień — zawieszony albo jeszcze nienotowany — wnosi zero. To celowo odwrotność reguły
   tablic powyżej: indeks nigdy nie zostaje zawieszony, akcja tak, a usunięcie dnia sprawiłoby, że
-  zawieszenie wygląda jak dzień, w którym nigdzie nie handlowano.
+  zawieszenie wygląda jak dzień, w którym nigdzie nie handlowano. Ta tablica **sumuje swoje
+  pozycje**, więc kliknięcie nazwy dolicza ją do sumy lub pomija, a otwiera się tylko z **pierwszą**.
+  Lista bywa budowana pod rankingi, gdzie kilkanaście nazw to norma; kilkanaście zsumowanych to
+  liczba o nikim.
 - **Zmiana pod koszykiem** to średnia ważona równo dziennych zmian poszczególnych członków,
   każda wobec własnego poprzedniego zamknięcia. Ważona równo, bo lista to nie portfel: nie ma
   wielkości pozycji, według której można by ważyć.

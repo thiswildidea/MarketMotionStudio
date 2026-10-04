@@ -36,7 +36,10 @@ Der tägliche Umsatz des gesamten Markts: die Beträge der Composite-Indizes von
   *irgend ein* Mitglied gehandelt hat; ein Mitglied ohne Zeile für diesen Tag — ausgesetzt oder
   noch nicht gelistet — steuert nichts bei. Das ist absichtlich das Gegenteil der Regel der
   Boards oben: Ein Index wird nie ausgesetzt, eine Aktie schon, und ein gestrichener Tag ließe
-  eine Aussetzung wie einen Tag aussehen, an dem nirgends gehandelt wurde.
+  eine Aussetzung wie einen Tag aussehen, an dem nirgends gehandelt wurde. Dieses Board
+  **addiert seine Einträge**, ein Klick auf einen Namen nimmt ihn also in die Summe auf oder lässt
+  ihn heraus — und es öffnet mit dem **ersten** Eintrag allein. Die Liste ist meist die für die
+  Ranglisten, wo ein Dutzend Namen normal ist; ein Dutzend addiert ist eine Zahl über niemanden.
 - **Die Veränderung unter einem Korb** ist der gleich gewichtete Mittelwert der täglichen
   Veränderungen der Mitglieder, jeweils gegen den eigenen Vortagesschluss. Gleich gewichtet, weil
   eine Liste kein Portfolio ist — es gibt keine Positionsgröße, nach der sich gewichten ließe.

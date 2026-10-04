@@ -36,7 +36,10 @@ Le montant échangé chaque jour sur tout le marché : les montants des indices 
   l'axe dès que *n'importe quel* membre a traité ; un membre sans ligne ce jour-là — suspendu, ou
   pas encore coté — n'apporte rien. C'est délibérément l'inverse de la règle des tableaux
   ci-dessus : un indice n'est jamais suspendu, une action si, et supprimer le jour ferait
-  ressembler une suspension à un jour sans aucune transaction nulle part.
+  ressembler une suspension à un jour sans aucune transaction nulle part. Ce tableau **additionne
+  ses entrées** : cliquer sur un nom l'inclut dans le total ou l'en retire, et il s'ouvre sur la
+  **première** seulement. La liste est souvent celle des classements, où une douzaine de noms est
+  courant ; une douzaine additionnée est un chiffre sur personne.
 - **La variation sous un panier** est la moyenne équipondérée des variations quotidiennes propres
   à chaque membre, mesurée contre sa propre clôture précédente. Équipondérée parce qu'une liste
   n'est pas un portefeuille : il n'y a aucune taille de position par laquelle pondérer.

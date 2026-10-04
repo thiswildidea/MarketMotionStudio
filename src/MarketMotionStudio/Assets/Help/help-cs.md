@@ -35,7 +35,9 @@ Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu s
   Den je na ose, pokud *někdo* z členů obchodoval; člen bez řádku pro tento den — pozastavený,
   nebo ještě nekótovaný — nepřidá nic. Je to záměrně opak pravidla tabulí výše: index se nikdy
   nepozastaví, akcie ano, a vypuštění dne by způsobilo, že pozastavení vypadá jako den, kdy se
-  neobchodovalo nikde.
+  neobchodovalo nikde. Tato tabule své položky **sčítá**, takže kliknutím na název jej do součtu
+  přidáte nebo vynecháte, a otevírá se pouze s **první**. Seznam bývá stavěný pro žebříčky, kde je
+  tucet názvů běžný; tucet sečtený je číslo o nikom.
 - **Změna pod košem** je rovnoměrně vážený průměr denních změn jednotlivých členů, každá proti
   vlastní předchozí zavírací ceně. Rovnoměrně vážený proto, že seznam není portfolio: není zde
   velikost pozice, podle které by se dalo vážit.

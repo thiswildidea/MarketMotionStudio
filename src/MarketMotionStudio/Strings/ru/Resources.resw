@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Сначала добавьте в список хотя бы один инструмент.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} в списке — не акции A, они пропущены: оборот указывается в валюте каждого рынка.</value></data>
   <data name="TurnoverBasketLabel"><value>из моего списка</value></data>
+  <data name="TurnoverPickNote.Text"><value>Нажмите на название, чтобы включить его в сумму или исключить.</value></data>
+  <data name="TurnoverPickNone"><value>Ни один инструмент не включён. Нажмите на название, чтобы добавить его в сумму.</value></data>
   <data name="TurnoverViewIntraday"><value>Внутри дня</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Оборот по минутам</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · единица: {1}</value></data>

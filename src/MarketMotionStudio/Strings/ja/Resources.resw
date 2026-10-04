@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>まずリストに銘柄を 1 件以上追加してください。</value></data>
   <data name="TurnoverBasketSkipped"><value>リストの {0} 件は A 株ではないため除外しました。売買代金は各市場の通貨で報告されます。</value></data>
   <data name="TurnoverBasketLabel"><value>マイリストの</value></data>
+  <data name="TurnoverPickNote.Text"><value>名前をクリックすると合計に含めたり外したりできます。</value></data>
+  <data name="TurnoverPickNone"><value>どの銘柄も選ばれていません。名前をクリックすると合計に加えられます。</value></data>
   <data name="TurnoverViewIntraday"><value>日中</value></data>
   <data name="TurnoverIntradayStageTitle"><value>分足売買代金</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · 単位: {1}</value></data>

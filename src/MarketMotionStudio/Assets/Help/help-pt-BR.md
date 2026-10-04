@@ -35,7 +35,10 @@ O volume financeiro de cada dia em todo o mercado: os valores dos índices compo
   fora e a linha de estado diz quantos. Um dia entra no eixo se *algum* membro negociou; um membro
   sem linha naquele dia — suspenso, ou ainda não listado — não contribui. É deliberadamente o
   oposto da regra das tabelas acima: um índice nunca é suspenso, uma ação sim, e remover o dia
-  faria uma suspensão parecer um dia em que nada foi negociado em lugar algum.
+  faria uma suspensão parecer um dia em que nada foi negociado em lugar algum. Esta tabela **soma
+  as suas entradas**: clicar em um nome o inclui no total ou o deixa de fora, e abre apenas com a
+  **primeira**. A lista costuma ser a das classificações, onde uma dúzia de nomes é normal; uma
+  dúzia somada é um número sobre ninguém.
 - **A variação sob uma cesta** é a média equiponderada das variações diárias próprias de cada
   membro, medida contra seu próprio fechamento anterior. Equiponderada porque uma lista não é uma
   carteira: não há tamanho de posição para ponderar.

@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Fügen Sie zuerst mindestens ein Instrument zu Ihrer Liste hinzu.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} Ihrer Liste sind keine A-Aktien und wurden weggelassen — der Umsatz wird in der jeweiligen Währung des Marktes gemeldet.</value></data>
   <data name="TurnoverBasketLabel"><value>aus eigener Liste</value></data>
+  <data name="TurnoverPickNote.Text"><value>Klicken Sie auf einen Namen, um ihn in die Summe aufzunehmen oder herauszulassen.</value></data>
+  <data name="TurnoverPickNone"><value>Kein Instrument ist eingeschaltet. Klicken Sie auf einen Namen, um ihn zur Summe hinzuzufügen.</value></data>
   <data name="TurnoverViewIntraday"><value>Intraday</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Umsatz Minute für Minute</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · Einheit: {1}</value></data>

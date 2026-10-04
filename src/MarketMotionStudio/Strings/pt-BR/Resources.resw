@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Adicione primeiro pelo menos um instrumento à sua lista.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} da lista não são ações A e ficaram de fora — o giro é informado na moeda de cada mercado.</value></data>
   <data name="TurnoverBasketLabel"><value>da minha lista</value></data>
+  <data name="TurnoverPickNote.Text"><value>Clique em um nome para incluí-lo no total ou deixá-lo de fora.</value></data>
+  <data name="TurnoverPickNone"><value>Nenhum instrumento está ativado. Clique em um nome para adicioná-lo ao total.</value></data>
   <data name="TurnoverViewIntraday"><value>Intradiário</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Giro minuto a minuto</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · unidade: {1}</value></data>

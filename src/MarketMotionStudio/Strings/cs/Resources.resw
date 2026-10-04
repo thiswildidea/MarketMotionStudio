@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Nejprve přidejte alespoň jeden nástroj do svého seznamu.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} ze seznamu nejsou akcie A a byly vynechány — obrat je uváděn v měně každého trhu.</value></data>
   <data name="TurnoverBasketLabel"><value>z mého seznamu</value></data>
+  <data name="TurnoverPickNote.Text"><value>Kliknutím na název jej přidáte do součtu, nebo jej vynecháte.</value></data>
+  <data name="TurnoverPickNone"><value>Není zapnut žádný nástroj. Kliknutím na název jej přidáte do součtu.</value></data>
   <data name="TurnoverViewIntraday"><value>V průběhu dne</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Obrat po minutách</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · jednotka: {1}</value></data>

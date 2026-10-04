@@ -169,6 +169,13 @@ keep only the days every code has, which never bit while every code was an index
 halted share would remove the day from the chart entirely while the picture carried on looking
 exactly like a day on which nothing traded anywhere.
 
+Because this page adds its picks into one number, its chips are **switches**: clicking a name
+includes it in the total or leaves it out, and it opens on the **first** pick alone. The list is
+usually the one kept for the ranking boards, where a dozen names is an ordinary list — a dozen
+names added together is a total about nobody in particular. The × still takes a pick off the shared
+list, which is why the two actions are two buttons and not one: dropping a pick *here* would drop
+it from four other boards as well, and hiding a line should not be editing a portfolio.
+
 It draws in **three forms**. The **bar race** and the **turnover calendar** are switchable at any
 time without re-fetching, because they answer different questions about one fetch: the race puts time
 on the horizontal axis, so a run of heavy days reads as a run, and closes with the mean line and the

@@ -36,7 +36,9 @@ Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerini
   yer alır; o güne ait satırı olmayan üye — işleme kapatılmış ya da henüz listelenmemiş — hiçbir
   şey eklemez. Bu, yukarıdaki tabloların kuralının kasıtlı olarak tersidir: bir endeks asla
   kapatılmaz, bir hisse kapatılır ve günü atmak, kapatılmayı hiçbir yerde işlem olmayan bir gün
-  gibi gösterirdi.
+  gibi gösterirdi. Bu tablo girdilerini **toplar**; bir adı tıklamak onu toplama katar ya da
+  dışarıda bırakır ve yalnızca **ilk** girdiyle açılır. Liste genellikle sıralama tabloları için
+  kurulur; orada bir düzine ad olağandır ve toplamları kimseye dair bir sayı değildir.
 - **Sepetin altındaki değişim**, her üyenin kendi önceki kapanışına göre ölçülen günlük
   değişimlerinin eşit ağırlıklı ortalamasıdır. Eşit ağırlıklıdır, çünkü bir liste portföy değildir:
   ağırlıklandıracak bir pozisyon büyüklüğü yoktur.

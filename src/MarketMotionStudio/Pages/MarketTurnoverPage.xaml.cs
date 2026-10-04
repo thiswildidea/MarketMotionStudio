@@ -270,7 +270,10 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         // Shown only for the one entry it feeds. Done even while a restore is running, so a
         // remembered choice of one's own list comes back with the list under it rather than as a
         // bare combo box.
-        Watch.Visibility = ChosenScope == MarketScope.Watchlist ? Visibility.Visible : Visibility.Collapsed;
+        var mine = ChosenScope == MarketScope.Watchlist;
+
+        Watch.Visibility = mine ? Visibility.Visible : Visibility.Collapsed;
+        PickNote.Visibility = mine ? Visibility.Visible : Visibility.Collapsed;
 
         // A different board is a different answer, so whatever was fetched no longer describes
         // the panel. Dropped rather than left standing: a frame still drawn from the whole market
@@ -309,7 +312,22 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
             {
                 var basket = ChosenBasket();
 
-                await NameBasketAsync(basket.Select(entry => entry.Code), cancellation);
+                // Nothing switched on is not the same as nothing on the list, and the two want
+                // different sentences: one is a list to fill in, the other a switch to turn back on.
+                if (basket.Count == 0)
+                {
+                    ShowStatus(InfoBarSeverity.Error, Strings.Get(
+                        Watchlist.Picks.Count == 0 ? "TurnoverBasketEmpty" : "TurnoverPickNone"));
+
+                    return;
+                }
+
+                // Named from the whole list rather than from the basket: a chip reads its code
+                // until a fetch names it, and this board's chips now include the picks that are
+                // switched off — they are on the screen too, and would otherwise keep reading
+                // `SH688981` for as long as nobody switches them on. One snapshot names them all,
+                // and the list is shared, so the four roster boards get the names as well.
+                await NameBasketAsync([.. Watch.Entries.Select(entry => entry.Code)], cancellation);
 
                 _series = await BasketTurnover.LoadAsync(
                     Services.Quotes, basket, start, end, progress, cancellation);
@@ -345,17 +363,18 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     }
 
     /// <summary>
-    /// The reader's own codes, as the basket loader wants them.
+    /// The picks this board draws: the ones switched on, as the basket loader wants them.
     ///
     /// Read from the picker rather than from <see cref="Watchlist.Picks"/> directly, because the
-    /// picker is what is bound to that collection: a chip removed a moment ago is gone from it,
-    /// and a second list held here would be a second thing to keep in step.
+    /// picker is both what is bound to that collection and what holds the switching — a chip
+    /// removed a moment ago is gone from it, and a second list held here would be a second thing
+    /// to keep in step.
     /// </summary>
     private IReadOnlyList<(string Code, string Name)> ChosenBasket() =>
         [.. MainlandPicks().Select(entry => (entry.Code, entry.Name))];
 
     /// <summary>
-    /// The picks this page can actually add up: the ones quoted on a mainland exchange.
+    /// The picks this page can actually add up: the switched-on ones quoted on a mainland exchange.
     ///
     /// The shared list is cross-market, and turnover is the one measure here that cannot be —
     /// each venue reports it in its own currency, so a Hong Kong name in this basket would be
@@ -367,7 +386,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// </summary>
     private IReadOnlyList<RaceEntry> MainlandPicks()
     {
-        var all = Watch.Entries;
+        var all = Watch.SelectedEntries;
         var mainland = all.Where(entry => Markets.IsMainland(entry.Code)).ToArray();
 
         if (mainland.Length < all.Count)
@@ -449,9 +468,13 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
             var (adds, subtracts, label) = SessionRecipe();
 
+            // Same distinction as the daily basket: an empty list and an empty selection are
+            // different states with different fixes.
             if (adds.Length == 0)
             {
-                ShowStatus(InfoBarSeverity.Error, Strings.Get("TurnoverBasketEmpty"));
+                ShowStatus(InfoBarSeverity.Error, Strings.Get(
+                    Watchlist.Picks.Count == 0 ? "TurnoverBasketEmpty" : "TurnoverPickNone"));
+
                 return;
             }
 

@@ -36,7 +36,10 @@ Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli ind
   *qualunque* membro ha trattato; un membro senza riga per quel giorno — sospeso, o non ancora
   quotato — non contribuisce. È deliberatamente il contrario della regola delle tavole sopra: un
   indice non viene mai sospeso, un'azione sì, e togliere il giorno farebbe sembrare una sospensione
-  un giorno in cui non si è trattato da nessuna parte.
+  un giorno in cui non si è trattato da nessuna parte. Questa tavola **somma le sue voci**: un clic
+  su un nome lo include nel totale o lo esclude, e si apre sulla **prima** soltanto. La lista è di
+  solito quella delle classifiche, dove una dozzina di nomi è normale; una dozzina sommata è un
+  numero su nessuno.
 - **La variazione sotto un paniere** è la media equal-ponderata delle variazioni giornaliere
   proprie di ogni membro, misurata contro la propria chiusura precedente. Equal-ponderata perché
   una lista non è un portafoglio: non c'è una dimensione della posizione con cui ponderare.

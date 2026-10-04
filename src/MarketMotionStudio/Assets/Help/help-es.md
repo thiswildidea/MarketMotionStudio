@@ -36,7 +36,10 @@ El importe negociado cada día en todo el mercado: los importes de los índices 
   si *algún* miembro negoció; un miembro sin fila ese día — suspendido, o aún sin cotizar — no
   aporta nada. Es deliberadamente lo contrario de la regla de las tablas de arriba: un índice
   nunca se suspende, una acción sí, y eliminar el día haría que una suspensión pareciera un día
-  sin negociación en ninguna parte.
+  sin negociación en ninguna parte. Esta tabla **suma sus entradas**: al hacer clic en un nombre se
+  incluye en el total o se deja fuera, y se abre solo con la **primera**. La lista suele ser la de
+  las clasificaciones, donde una docena de nombres es normal; una docena sumada es una cifra sobre
+  nadie.
 - **La variación bajo una cesta** es el promedio equiponderado de las variaciones diarias propias
   de cada miembro, medidas contra su cierre anterior. Equiponderado porque una lista no es una
   cartera: no hay tamaño de posición con el que ponderar.

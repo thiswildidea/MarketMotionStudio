@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Önce listenize en az bir enstrüman ekleyin.</value></data>
   <data name="TurnoverBasketSkipped"><value>Listenizdeki {0} kalem A hissesi değil ve dahil edilmedi — işlem hacmi her piyasanın kendi para biriminde bildirilir.</value></data>
   <data name="TurnoverBasketLabel"><value>listemdeki</value></data>
+  <data name="TurnoverPickNote.Text"><value>Bir adı toplama eklemek veya dışarıda bırakmak için üzerine tıklayın.</value></data>
+  <data name="TurnoverPickNone"><value>Hiçbir enstrüman açık değil. Toplama eklemek için bir adı tıklayın.</value></data>
   <data name="TurnoverViewIntraday"><value>Gün içi</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Dakika dakika işlem hacmi</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · birim: {1}</value></data>

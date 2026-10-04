@@ -808,6 +808,8 @@
   <data name="TurnoverBasketEmpty"><value>Dodaj najpierw co najmniej jeden instrument do swojej listy.</value></data>
   <data name="TurnoverBasketSkipped"><value>{0} z listy to nie są akcje A i zostały pominięte — obroty są podawane w walucie każdego rynku.</value></data>
   <data name="TurnoverBasketLabel"><value>z mojej listy</value></data>
+  <data name="TurnoverPickNote.Text"><value>Kliknij nazwę, aby dodać ją do sumy lub pominąć.</value></data>
+  <data name="TurnoverPickNone"><value>Żaden instrument nie jest włączony. Kliknij nazwę, aby dodać ją do sumy.</value></data>
   <data name="TurnoverViewIntraday"><value>W ciągu dnia</value></data>
   <data name="TurnoverIntradayStageTitle"><value>Obroty minuta po minucie</value></data>
   <data name="TurnoverIntradaySubtitle"><value>{0} · jednostka: {1}</value></data>

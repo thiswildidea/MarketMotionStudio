@@ -39,6 +39,15 @@ SERIES = os.path.join(REPO, "src", "MarketMotionStudio", "Market", "TurnoverSeri
 INTRADAY = os.path.join(REPO, "src", "MarketMotionStudio", "Market", "TurnoverIntraday.cs")
 RENDER = os.path.join(REPO, "src", "MarketMotionStudio", "Render", "IntradayRenderer.cs")
 
+CONTROLS = os.path.join(REPO, "src", "MarketMotionStudio", "Views", "WatchlistPicker.xaml.cs")
+CONTROLS_XAML = os.path.join(REPO, "src", "MarketMotionStudio", "Views", "WatchlistPicker.xaml")
+TURNOVER_XAML = os.path.join(REPO, "src", "MarketMotionStudio", "Pages", "MarketTurnoverPage.xaml")
+PAGES_DIR = os.path.join(REPO, "src", "MarketMotionStudio", "Pages")
+
+# 四个排名榜。它们画的是**整份**清单，没开勾选：清单只有一份，被一处改小，四处都少一行，
+# 而榜单少一行看起来像"名次里漏了一个参赛者"，不像"有人改了个设置"。
+ROSTER_PAGES = ("AssetRacePage.xaml", "DrawdownPage.xaml", "HoldOddsPage.xaml", "IndexRacePage.xaml")
+
 FAIL = re.compile(r"失败|错误|无法|不可用|异常|没有返回|不属于|过长|failed|error")
 
 # {0} · {1} · {2} 分钟 · 收盘 {3} {4} —— 例：沪深全市场 · 2026-09-30 · 241 分钟 · 收盘 14,436 亿元
@@ -207,11 +216,13 @@ def expected_basket(codes, start, end):
 
 
 def watch_chips(win):
-    """The watchlist's chips, as (button, name).
+    """The watchlist's chips, as (delete button, name).
 
-    A chip *is* its own delete button, and the button's own `Name` is empty — the name sits in a
-    child text, so matching on the button's name counts zero chips over a row of three that are
-    plainly on screen.
+    A chip *is* its own delete button on the ranking boards, and the button's own `Name` is empty
+    there — the name sits in a child text, so matching on the button's name counts zero chips over
+    a row of three that are plainly on screen. On the board that adds its picks up the chip is a
+    switch plus a × button, and the name rides on both of them as `AutomationProperties.Name`
+    (a button whose only child is the × would otherwise have no name at all).
     """
     out = []
 
@@ -220,10 +231,67 @@ def watch_chips(win):
             button, lambda c: c.ControlTypeName == "TextControl", limit=6)]
 
         if any(k.strip() in ("×", "✕") for k in kids):
-            name = next((k for k in kids if k.strip() not in ("×", "✕")), "")
+            name = button.Name or next((k for k in kids if k.strip() not in ("×", "✕")), "")
             out.append((button, name))
 
     return out
+
+
+def pick_chips(win):
+    """The pickable chips, as (name, switched-on, control).
+
+    A chip that can be switched on carries a toggle pattern and a ranking board's chip does not,
+    so reading that pattern is how this script tells the two chips apart. The × button inside a
+    pickable chip has no pattern either, which keeps it out of this list by the same test.
+
+    The page's *other* switches are toggles too — the title and safe-area switches in the export
+    panel — and they are not chips. They are kept out by name: a chip's name is one this script
+    already found on a chip, which is exactly the set `watch_chips` collects.
+    """
+    names = {name.strip() for _, name in watch_chips(win)}
+    out = []
+
+    for button in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+        try:
+            pattern = button.GetTogglePattern()
+        except Exception:  # noqa: BLE001
+            continue
+
+        if pattern is None:
+            continue
+
+        name = button.Name or next(
+            (t.Name for t in winui.find_all(
+                button, lambda c: c.ControlTypeName == "TextControl", limit=6)), "")
+
+        if name.strip() not in names:
+            continue
+
+        out.append((name.strip(), int(pattern.ToggleState) == 1, button))
+
+    return out
+
+
+def toggle_pick(win, index):
+    """Clicks one chip in or out of the board's total.
+
+    Through the toggle pattern and not the invoke one: these are switches, and `Invoke` on a
+    switch does not move it — the run that used it fetched the same one-pick total twice while
+    reporting that three were switched on.
+    """
+    chips = pick_chips(win)
+
+    if index >= len(chips):
+        return False
+
+    try:
+        chips[index][2].GetTogglePattern().Toggle()
+    except Exception:  # noqa: BLE001
+        return False
+
+    time.sleep(1.5)
+
+    return True
 
 
 def clear_watch(win):
@@ -365,6 +433,9 @@ def main():
     series = open(SERIES, encoding="utf-8").read()
     intraday = open(INTRADAY, encoding="utf-8").read()
     render = open(RENDER, encoding="utf-8").read()
+    controls = open(CONTROLS, encoding="utf-8").read()
+    controls_xaml = open(CONTROLS_XAML, encoding="utf-8-sig").read()
+    turnover_xaml = open(TURNOVER_XAML, encoding="utf-8-sig").read()
 
     # ---- 源码级：这两条错了画面完全正常 ----------------------------------------------
 
@@ -403,6 +474,24 @@ def main():
     # 悄悄少几只，画面照样漂亮，只有合计数是错的。
     check("非 A 股的被挡在篮子外", "Markets.IsMainland(entry.Code)" in page)
     check("挡掉的几只说出来不是悄悄丢", "TurnoverBasketSkipped" in page)
+
+    # 自选还能挑其中几只来画。这一页是唯一把自选**加成一个数**的榜，而那份清单常常是给排名榜
+    # 建的：十几只加在一起，是一个谁的账也不是的数。挑的只能是"这一页画什么"——
+    # 让 chip 变成"删掉一只"，另外四个榜会跟着少一行，而榜单少一行看起来像名次漏了人。
+    check("自选是挑其中几只，不是整份清单相加", "Watch.SelectedEntries" in page)
+    check("挑的是这一页画什么，不是从共享清单里删",
+          "Watchlist.Remove" not in page and "Watchlist.Remove" in controls)
+    check("默认只画第一只，且第一次点击先把当前状态显式化",
+          "[picks[0]]" in controls and "_on.Clear()" in controls)
+    check("未勾任何一只时说「没勾选」，不是「清单是空的」",
+          "TurnoverPickNone" in page and "TurnoverBasketEmpty" in page)
+    check("勾选只开在成交额页（四个排名榜仍然画整份清单）",
+          all("Selectable" not in open(os.path.join(PAGES_DIR, name), encoding="utf-8-sig").read()
+              for name in ROSTER_PAGES)
+          and 'Selectable="True"' in turnover_xaml)
+    check("可勾选的 chip 是另一个模板（四个榜的 chip 仍是一点即删）",
+          "PickChip" in controls_xaml and "PlainChip" in controls_xaml
+          and "ToggleButton" in controls_xaml)
 
     # 曲线推进是线性的：这是一根钟，缓动会把上午挤到头几秒、然后在收盘附近磨蹭，
     # 而累计曲线慢下来会被读成"没人交易了"。
@@ -469,9 +558,16 @@ def main():
 
     # 自选：Scope 里最后一项是自己的清单，而且清单是共享的那一份。
     check("板块菜单里多了一项自选", '(MarketScope.Watchlist, "TurnoverScopeWatchlist")' in page)
-    check("自选取的是那一份共享清单", "ChosenBasket()" in page and "Watch.Entries" in page)
+    check("自选取的是那一份共享清单（勾选只决定这一页画哪几行）",
+          "Watch.SelectedEntries" in page and "Watchlist.Picks" in page)
     check("换了板块就把已取的数丢掉", "!_prefs.Restoring" in page and "            _series = null;" in page)
-    check("空篮子不给取数也不静默出图", 'Strings.Get("TurnoverBasketEmpty")' in page)
+    check("空篮子不给取数也不静默出图（空清单与没勾选分开说）",
+          '"TurnoverBasketEmpty"' in page and '"TurnoverPickNone"' in page)
+
+    # 改名覆盖**整份清单**，不只是参与合计的那几只：关掉的 chip 也在屏幕上，只给参与的那只
+    # 改名，剩下的会一直显示代码（这一条是实测踩出来的）。
+    check("取数时给整份清单改名，不只是篮子里那几只",
+          "Watch.Entries.Select(entry => entry.Code)" in page)
 
     scope = winui.find(win, lambda c: c.AutomationId == "ScopeCombo")
 
@@ -518,23 +614,74 @@ def main():
             winui.combo_pick(win, range_combo, RANGE)
             time.sleep(0.8)
 
+        # ---- 默认那一版：只画第一只 --------------------------------------------------
+        #
+        # 这是这一页与四个排名榜分道的地方。清单只有一份、常常是按排名榜的需要建的（十几只
+        # 是常态），而这一页会把它们加成一个数 —— 默认加上十几只，画的是谁的账也不是的数。
+        picks = pick_chips(win)
+
+        check("三只都带开关（可勾选的 chip）", len(picks) == len(WATCH),
+              " / ".join(f"{n}{'✓' if on else '✗'}" for n, on, _ in picks))
+        check("默认只有第一只被勾上",
+              [on for _, on, _ in picks] == [True] + [False] * (len(picks) - 1),
+              " / ".join(f"{n}{'✓' if on else '✗'}" for n, on, _ in picks))
+
         run, status = fetch_daily(win)
 
         check("自选篮取数成功", run is not None, str(status)[:110])
 
+        first_mean = 0.0
+
         if run is not None:
             check("自选篮状态行没有失败字样", not FAIL.search(run["status"]))
 
-            end = date.fromisoformat(run["end"])
             start = date.fromisoformat(run["start"])
+            end = date.fromisoformat(run["end"])
+
+            _, first_mean = expected_basket([WATCH[0][0]], start, end)
+
+            # 数字是脚本自己打源端算的，不是抄页面的。这一条同时钉住两件事：默认只画了一只，
+            # 且画的是**第一只**（画第二只也会得到一只的数，但不是这个数）。
+            check("默认那一版画的正是第一只，不是三只的和",
+                  abs(first_mean - run["mean"]) <= max(1.0, run["mean"] * 0.01),
+                  f"页面 {run['mean']} / 脚本(只第一只) {first_mean:.0f}")
+
+            shot(win, "verify-turnover-default-one.png")
+
+        # ---- 勾上另外两只：同一份清单、同一段区间，画面应当变成三只合计 ----------------
+        for index in (1, 2):
+            toggle_pick(win, index)
+
+        picks = pick_chips(win)
+
+        check("点上另外两只后三只都勾上",
+              [on for _, on, _ in picks] == [True] * len(picks),
+              " / ".join(f"{n}{'✓' if on else '✗'}" for n, on, _ in picks))
+
+        run, status = fetch_daily(win)
+
+        check("勾上三只后取数成功", run is not None, str(status)[:110])
+
+        if run is not None:
+            check("勾上三只后没有失败字样", not FAIL.search(run["status"]))
+
+            start = date.fromisoformat(run["start"])
+            end = date.fromisoformat(run["end"])
 
             days, mean = expected_basket([c for c, _ in WATCH], start, end)
 
             check("自选篮的交易日数与脚本独立算的一致（并集，不是交集）",
                   abs(days - run["days"]) <= 1, f"页面 {run['days']} / 脚本 {days}")
-            check("自选篮的日均与脚本独立算的一致（容差 1%）",
+            check("三只勾上后画的是三只合计（容差 1%）",
                   abs(mean - run["mean"]) <= max(1.0, run["mean"] * 0.01),
                   f"页面 {run['mean']} / 脚本 {mean:.0f}")
+
+            # 这一段的核心：同样一份清单、同样一段区间，两次取数差着一倍以上。少了这条，
+            # "默认一只"与"勾三只"都只各自核对了一遍数字，而一个画错的开关（比如切换之后
+            # 没重新取数、画面还是上一版）会让两条都过。
+            check("勾一只与勾三只差着一倍以上（说明开关真的改变了画什么）",
+                  first_mean > 0 and mean > first_mean * 1.5,
+                  f"三只 {mean:.0f} / 一只 {first_mean:.0f} 亿元")
 
             # 三只的合计不该等于全市场：全市场是万亿量级，三只龙头加起来是百亿量级。
             # 这条能抓住"篮子没生效、画的是上一个板块的数"。
@@ -543,15 +690,21 @@ def main():
 
             # 取数时那一次快照把 chip 上的代码换成真名 —— 只敲代码没点建议的那只最能说明
             # 问题（中芯国际进来时是 SH688981）。清单是共享的，所以另外四页也跟着变好。
-            named = [n.strip() for _, n in watch_chips(win)]
+            named = [n.strip() for n, _, _ in pick_chips(win)]
 
             check("取数后自选的名字换成真名（不是代码）",
                   all(not re.fullmatch(r"(SH|SZ|BJ|HK|US)[0-9A-Z.]+", n) for n in named),
                   " / ".join(named))
 
+            check("取数后删除按钮上也是真名（清空时靠它认出 chip）",
+                  all(not re.fullmatch(r"(SH|SZ|BJ|HK|US)[0-9A-Z.]+", n.strip())
+                      for _, n in watch_chips(win)),
+                  " / ".join(n for _, n in watch_chips(win)))
+
             shot(win, "verify-turnover-watchlist.png")
 
-        # 复位：偏好会持久化，自选是共享清单 —— 脚本动了哪个偏好就要改回原样。
+        # 复位：偏好会持久化，自选是共享清单，勾选状态也一样 —— 脚本动了哪个就要改回原样，
+        # 否则下一次跑时"默认只勾第一只"那一条会从"还勾着上一次的三只"开始。
         clear_watch(win)
         winui.combo_pick(win, scope, "沪深全市场")
 

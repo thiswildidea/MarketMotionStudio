@@ -31,7 +31,10 @@ BODIES = {
   status line says how many. A day is on the axis if *any* member traded; a member with no row
   for that day — halted, or not yet listed — contributes nothing. That is deliberately the
   opposite of the rule the boards above use: an index never halts, a share does, and dropping the
-  day would make a halt look like a day on which nothing traded anywhere.
+  day would make a halt look like a day on which nothing traded anywhere. This board **adds its
+  picks up**, so clicking a name includes it in the total or leaves it out — and it opens on the
+  **first** pick alone. The list is usually the one kept for the ranking boards, where a dozen
+  names is an ordinary list; a dozen names added together is a total about nobody in particular.
 - **The change under a basket** is the equal-weighted average of the members' own daily changes,
   each measured against its own previous close. Equal-weighted because a list is not a portfolio:
   there is no holding size to weight by.
@@ -48,7 +51,9 @@ BODIES = {
   共用一份。只有境内代码能进这个篮子——成交额是各市场各报各的币种，港股美股会被挡下，状态行
   会说挡了几只。只要**有一只**交易，那一天就在轴上；某只那天没有行情（停牌，或还没上市）就
   贡献 0。这与上面那些板块的规则**故意相反**：指数不会停牌，个股会，而把那天丢掉会让停牌看起来
-  像"那天哪儿都没成交"。
+  像"那天哪儿都没成交"。这个篮子会**把标的相加**，所以点一下名称就能把它加进或移出合计；
+  而打开时只画清单里的**第一只**——这份清单通常是给排名榜建的，十几只加在一起是一个谁的账
+  也不是的数。
 - **篮子下面的涨跌**是各成员自己日涨跌的等权平均，各自对照自己的前一根收盘。等权是因为一份
   清单不是一个组合——没有持仓市值可以拿来加权。
 - **一个交易日，一分钟一分钟地走。** 第三种形态是另一次取数：某一天从开盘到收盘的累计成交额。
@@ -61,7 +66,9 @@ BODIES = {
   共用一份。只有境內代碼能進這個籃子——成交額是各市場各報各的幣別，港股美股會被擋下，狀態列
   會說擋了幾支。只要**有一支**交易，那一天就在軸上；某支那天沒有行情（停牌，或還沒上市）就
   貢獻 0。這與上面那些板塊的規則**故意相反**：指數不會停牌，個股會，而把那天丟掉會讓停牌看起來
-  像「那天哪兒都沒成交」。
+  像「那天哪兒都沒成交」。這個籃子會**把標的相加**，所以點一下名稱就能把它加進或移出合計；
+  而打開時只畫清單裡的**第一檔**——這份清單通常是給排名榜建的，十幾檔加在一起是一個誰的帳
+  也不是的數。
 - **籃子下面的漲跌**是各成員自己日漲跌的等權平均，各自對照自己的前一根收盤。等權是因為一份
   清單不是一個組合——沒有持倉市值可以拿來加權。
 - **一個交易日，一分鐘一分鐘地走。** 第三種形態是另一次取數：某一天從開盤到收盤的累計成交額。
@@ -76,7 +83,9 @@ BODIES = {
   その数が表示されます。軸に載る日は**いずれか 1 件でも**取引された日です。その日の行がない
   銘柄（売買停止、あるいは未上場）は 0 を加えます。これは上のボードとは**意図的に逆**の規則
   です。指数は売買停止になりませんが個株はなり、日を落とせば停止が「どこでも取引のなかった
-  日」に見えてしまいます。
+  日」に見えてしまいます。このボードはリストの銘柄を**合計する**ため、名前をクリックすると
+  合計に加えたり外したりできます。開いた時点では**最初の 1 件**だけを描きます。リストは
+  ランキング用に作られることが多く、十数件の合計は誰の数字でもないからです。
 - **バスケットの騰落率**は、各銘柄が自分の前日の終値と比べた日次変化の等加重平均です。
   リストはポートフォリオではないため、加重に使える保有残高がありません。
 - **1 日を 1 分ずつ。** 3 つ目の形態は別の取得です。ある一日の寄り付きから大引けまでの累計
@@ -92,7 +101,9 @@ BODIES = {
   표시됩니다. 축에 올라오는 날은 **하나라도** 거래된 날입니다. 그날 행이 없는 종목(거래정지,
   또는 미상장)은 0을 더합니다. 이는 위 보드들과 **의도적으로 반대**인 규칙입니다. 지수는
   거래정지되지 않지만 종목은 그렇게 되고, 날을 빼면 정지가 "아무 데서도 거래가 없었던 날"처럼
-  보이기 때문입니다.
+  보이기 때문입니다. 이 보드는 목록의 종목을 **합산**하므로 이름을 클릭하면 합계에 넣거나 뺄
+  수 있고, 열 때는 **첫 번째** 하나만 그립니다. 목록은 순위표용으로 만들어지는 경우가 많아
+  여러 개를 더한 값은 누구의 숫자도 아니기 때문입니다.
 - **바스켓의 등락률**은 각 종목이 자기 직전 종가와 견준 일간 변화의 동일가중 평균입니다.
   목록은 포트폴리오가 아니므로 가중에 쓸 보유 규모가 없습니다.
 - **하루를 1분씩.** 세 번째 형태는 별도의 조회입니다. 어느 하루의 개장부터 종가까지의 누적
@@ -110,7 +121,10 @@ BODIES = {
   *irgend ein* Mitglied gehandelt hat; ein Mitglied ohne Zeile für diesen Tag — ausgesetzt oder
   noch nicht gelistet — steuert nichts bei. Das ist absichtlich das Gegenteil der Regel der
   Boards oben: Ein Index wird nie ausgesetzt, eine Aktie schon, und ein gestrichener Tag ließe
-  eine Aussetzung wie einen Tag aussehen, an dem nirgends gehandelt wurde.
+  eine Aussetzung wie einen Tag aussehen, an dem nirgends gehandelt wurde. Dieses Board
+  **addiert seine Einträge**, ein Klick auf einen Namen nimmt ihn also in die Summe auf oder lässt
+  ihn heraus — und es öffnet mit dem **ersten** Eintrag allein. Die Liste ist meist die für die
+  Ranglisten, wo ein Dutzend Namen normal ist; ein Dutzend addiert ist eine Zahl über niemanden.
 - **Die Veränderung unter einem Korb** ist der gleich gewichtete Mittelwert der täglichen
   Veränderungen der Mitglieder, jeweils gegen den eigenen Vortagesschluss. Gleich gewichtet, weil
   eine Liste kein Portfolio ist — es gibt keine Positionsgröße, nach der sich gewichten ließe.
@@ -131,7 +145,10 @@ BODIES = {
   l'axe dès que *n'importe quel* membre a traité ; un membre sans ligne ce jour-là — suspendu, ou
   pas encore coté — n'apporte rien. C'est délibérément l'inverse de la règle des tableaux
   ci-dessus : un indice n'est jamais suspendu, une action si, et supprimer le jour ferait
-  ressembler une suspension à un jour sans aucune transaction nulle part.
+  ressembler une suspension à un jour sans aucune transaction nulle part. Ce tableau **additionne
+  ses entrées** : cliquer sur un nom l'inclut dans le total ou l'en retire, et il s'ouvre sur la
+  **première** seulement. La liste est souvent celle des classements, où une douzaine de noms est
+  courant ; une douzaine additionnée est un chiffre sur personne.
 - **La variation sous un panier** est la moyenne équipondérée des variations quotidiennes propres
   à chaque membre, mesurée contre sa propre clôture précédente. Équipondérée parce qu'une liste
   n'est pas un portefeuille : il n'y a aucune taille de position par laquelle pondérer.
@@ -152,7 +169,10 @@ BODIES = {
   *qualunque* membro ha trattato; un membro senza riga per quel giorno — sospeso, o non ancora
   quotato — non contribuisce. È deliberatamente il contrario della regola delle tavole sopra: un
   indice non viene mai sospeso, un'azione sì, e togliere il giorno farebbe sembrare una sospensione
-  un giorno in cui non si è trattato da nessuna parte.
+  un giorno in cui non si è trattato da nessuna parte. Questa tavola **somma le sue voci**: un clic
+  su un nome lo include nel totale o lo esclude, e si apre sulla **prima** soltanto. La lista è di
+  solito quella delle classifiche, dove una dozzina di nomi è normale; una dozzina sommata è un
+  numero su nessuno.
 - **La variazione sotto un paniere** è la media equal-ponderata delle variazioni giornaliere
   proprie di ogni membro, misurata contro la propria chiusura precedente. Equal-ponderata perché
   una lista non è un portafoglio: non c'è una dimensione della posizione con cui ponderare.
@@ -172,7 +192,10 @@ BODIES = {
   si *algún* miembro negoció; un miembro sin fila ese día — suspendido, o aún sin cotizar — no
   aporta nada. Es deliberadamente lo contrario de la regla de las tablas de arriba: un índice
   nunca se suspende, una acción sí, y eliminar el día haría que una suspensión pareciera un día
-  sin negociación en ninguna parte.
+  sin negociación en ninguna parte. Esta tabla **suma sus entradas**: al hacer clic en un nombre se
+  incluye en el total o se deja fuera, y se abre solo con la **primera**. La lista suele ser la de
+  las clasificaciones, donde una docena de nombres es normal; una docena sumada es una cifra sobre
+  nadie.
 - **La variación bajo una cesta** es el promedio equiponderado de las variaciones diarias propias
   de cada miembro, medidas contra su cierre anterior. Equiponderado porque una lista no es una
   cartera: no hay tamaño de posición con el que ponderar.
@@ -191,7 +214,10 @@ BODIES = {
   fora e a linha de estado diz quantos. Um dia entra no eixo se *algum* membro negociou; um membro
   sem linha naquele dia — suspenso, ou ainda não listado — não contribui. É deliberadamente o
   oposto da regra das tabelas acima: um índice nunca é suspenso, uma ação sim, e remover o dia
-  faria uma suspensão parecer um dia em que nada foi negociado em lugar algum.
+  faria uma suspensão parecer um dia em que nada foi negociado em lugar algum. Esta tabela **soma
+  as suas entradas**: clicar em um nome o inclui no total ou o deixa de fora, e abre apenas com a
+  **primeira**. A lista costuma ser a das classificações, onde uma dúzia de nomes é normal; uma
+  dúzia somada é um número sobre ninguém.
 - **A variação sob uma cesta** é a média equiponderada das variações diárias próprias de cada
   membro, medida contra seu próprio fechamento anterior. Equiponderada porque uma lista não é uma
   carteira: não há tamanho de posição para ponderar.
@@ -210,7 +236,10 @@ BODIES = {
   stanu mówi, ile. Dzień jest na osi, gdy *ktokolwiek* z członków handlował; członek bez wiersza
   za ten dzień — zawieszony albo jeszcze nienotowany — wnosi zero. To celowo odwrotność reguły
   tablic powyżej: indeks nigdy nie zostaje zawieszony, akcja tak, a usunięcie dnia sprawiłoby, że
-  zawieszenie wygląda jak dzień, w którym nigdzie nie handlowano.
+  zawieszenie wygląda jak dzień, w którym nigdzie nie handlowano. Ta tablica **sumuje swoje
+  pozycje**, więc kliknięcie nazwy dolicza ją do sumy lub pomija, a otwiera się tylko z **pierwszą**.
+  Lista bywa budowana pod rankingi, gdzie kilkanaście nazw to norma; kilkanaście zsumowanych to
+  liczba o nikim.
 - **Zmiana pod koszykiem** to średnia ważona równo dziennych zmian poszczególnych członków,
   każda wobec własnego poprzedniego zamknięcia. Ważona równo, bo lista to nie portfel: nie ma
   wielkości pozycji, według której można by ważyć.
@@ -229,7 +258,9 @@ BODIES = {
   Den je na ose, pokud *někdo* z členů obchodoval; člen bez řádku pro tento den — pozastavený,
   nebo ještě nekótovaný — nepřidá nic. Je to záměrně opak pravidla tabulí výše: index se nikdy
   nepozastaví, akcie ano, a vypuštění dne by způsobilo, že pozastavení vypadá jako den, kdy se
-  neobchodovalo nikde.
+  neobchodovalo nikde. Tato tabule své položky **sčítá**, takže kliknutím na název jej do součtu
+  přidáte nebo vynecháte, a otevírá se pouze s **první**. Seznam bývá stavěný pro žebříčky, kde je
+  tucet názvů běžný; tucet sečtený je číslo o nikom.
 - **Změna pod košem** je rovnoměrně vážený průměr denních změn jednotlivých členů, každá proti
   vlastní předchozí zavírací ceně. Rovnoměrně vážený proto, že seznam není portfolio: není zde
   velikost pozice, podle které by se dalo vážit.
@@ -247,7 +278,10 @@ BODIES = {
   состояния говорит, сколько. День попадает на ось, если торговал *любой* участник; участник без
   строки за этот день — приостановленный или ещё не торгуемый — не добавляет ничего. Это
   намеренно обратно правилу таблиц выше: индекс никогда не приостанавливают, акцию — да, и
-  удаление дня сделало бы приостановку похожей на день, когда нигде не торговали.
+  удаление дня сделало бы приостановку похожей на день, когда нигде не торговали. Эта таблица
+  **суммирует свои позиции**: нажатие на название включает его в сумму или исключает, и
+  открывается она только с **первой**. Список часто ведут для рейтингов, где дюжина названий
+  обычна; дюжина в сумме — число ни о ком.
 - **Изменение под корзиной** — равновзвешенное среднее собственных дневных изменений участников,
   каждое к своей предыдущей цене закрытия. Равновзвешенное, потому что список — это не портфель:
   нет размера позиции, по которому можно было бы взвешивать.
@@ -267,7 +301,9 @@ BODIES = {
   yer alır; o güne ait satırı olmayan üye — işleme kapatılmış ya da henüz listelenmemiş — hiçbir
   şey eklemez. Bu, yukarıdaki tabloların kuralının kasıtlı olarak tersidir: bir endeks asla
   kapatılmaz, bir hisse kapatılır ve günü atmak, kapatılmayı hiçbir yerde işlem olmayan bir gün
-  gibi gösterirdi.
+  gibi gösterirdi. Bu tablo girdilerini **toplar**; bir adı tıklamak onu toplama katar ya da
+  dışarıda bırakır ve yalnızca **ilk** girdiyle açılır. Liste genellikle sıralama tabloları için
+  kurulur; orada bir düzine ad olağandır ve toplamları kimseye dair bir sayı değildir.
 - **Sepetin altındaki değişim**, her üyenin kendi önceki kapanışına göre ölçülen günlük
   değişimlerinin eşit ağırlıklı ortalamasıdır. Eşit ağırlıklıdır, çünkü bir liste portföy değildir:
   ağırlıklandıracak bir pozisyon büyüklüğü yoktur.

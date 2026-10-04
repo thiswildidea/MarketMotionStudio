@@ -7,6 +7,7 @@ using MarketMotionStudio.Market;
 using MarketMotionStudio.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace MarketMotionStudio.Views;
 
@@ -46,12 +47,23 @@ public sealed partial class WatchlistPicker : UserControl
 
     private WatchSuggestion? _pendingChoice;
 
+    /// <summary>The picks this board is drawing, when <see cref="Selectable"/> is on.</summary>
+    private readonly HashSet<string> _on = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Whether the reader has switched anything, and so which rule answers "what is drawn".</summary>
+    private bool _touched;
+
     public WatchlistPicker()
     {
         InitializeComponent();
 
         Watchlist.EnsureLoaded();
         Chips.ItemsSource = Watchlist.Picks;
+
+        // Applied here and again on load: the page writes `Selectable` in XAML, which lands after
+        // this constructor has run and after the chips have been built from the default template.
+        ApplyChipTemplate();
+        Loaded += (_, _) => ApplyChipTemplate();
 
         _searchDebounce.Tick += async (_, _) =>
         {
@@ -62,6 +74,46 @@ public sealed partial class WatchlistPicker : UserControl
 
     /// <summary>What is on the list, as the board can draw it.</summary>
     public IReadOnlyList<RaceEntry> Entries => [.. Watchlist.Picks];
+
+    /// <summary>
+    /// Whether the chips can be switched on and off, so that choosing a pick is a decision about
+    /// this board rather than about the shared list.
+    ///
+    /// Off by default, and pointedly so: a ranking board draws the whole list, and a chip there
+    /// that could be quietly switched off would be a board silently missing a row — which reads
+    /// as a ranking that left an entrant out rather than as a setting someone changed. The one
+    /// board that adds its picks into a single total turns it on, because the sum of five holdings
+    /// is not the number anyone is looking for when they are asking about one of them.
+    /// </summary>
+    public bool Selectable { get; set; }
+
+    /// <summary>
+    /// The picks that board is drawing: the ones switched on — or, until the reader has switched
+    /// anything, the first one alone.
+    ///
+    /// **One, not all, by default.** This list is shared with the ranking boards, where a dozen
+    /// names is an ordinary list; on a board that adds them up, a dozen names added together is a
+    /// total about nobody in particular. Opening on the first pick shows a real answer at once,
+    /// and each further pick is one click. It also never draws an empty frame: an empty selection
+    /// is only reachable by switching the first pick off as well, and that is reported when fetch
+    /// is pressed rather than rendered as a blank chart.
+    /// </summary>
+    public IReadOnlyList<RaceEntry> SelectedEntries
+    {
+        get
+        {
+            var picks = Watchlist.Picks;
+
+            if (picks.Count == 0)
+            {
+                return [];
+            }
+
+            return _touched
+                ? [.. picks.Where(p => _on.Contains(p.Code))]
+                : [picks[0]];
+        }
+    }
 
     private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
@@ -169,6 +221,73 @@ public sealed partial class WatchlistPicker : UserControl
         }
 
         Watchlist.Remove(code);
+        Changed?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>Swaps in the chip the board asked for.</summary>
+    private void ApplyChipTemplate() =>
+        Chips.ItemTemplate = (DataTemplate)Resources[Selectable ? "PickChip" : "PlainChip"];
+
+    /// <summary>Whether one pick is part of what is being drawn, under whichever rule is in force.</summary>
+    private bool IsOn(string code)
+    {
+        var picks = Watchlist.Picks;
+
+        return _touched
+            ? _on.Contains(code)
+            : picks.Count > 0 && string.Equals(picks[0].Code, code, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Puts a chip's switch where the board actually is.
+    ///
+    /// Hung on the template rather than pushed from here, because containers for a bound collection
+    /// appear when they appear — a switch written from the picker would have to be written at a
+    /// moment nobody can name, and would miss every chip rebuilt after a rename.
+    /// </summary>
+    private void OnChipLoaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is ToggleButton chip && chip.Tag is string code)
+        {
+            chip.IsChecked = IsOn(code);
+        }
+    }
+
+    /// <summary>
+    /// Switches one pick in or out of this board's total.
+    ///
+    /// The first switch touched turns the standing rule into an explicit set: until then "what is
+    /// drawn" is the first pick, and a rule is not something that can be added to or taken from.
+    /// The state it is showing is carried over, so the first click does what it looks like it does
+    /// rather than clearing the board.
+    /// </summary>
+    private void OnToggle(object sender, RoutedEventArgs e)
+    {
+        if (sender is not ToggleButton chip || chip.Tag is not string code)
+        {
+            return;
+        }
+
+        if (!_touched)
+        {
+            _touched = true;
+            _on.Clear();
+
+            if (Watchlist.Picks.Count > 0)
+            {
+                _on.Add(Watchlist.Picks[0].Code);
+            }
+        }
+
+        if (chip.IsChecked == true)
+        {
+            _on.Add(code);
+        }
+        else
+        {
+            _on.Remove(code);
+        }
+
         Changed?.Invoke(this, EventArgs.Empty);
     }
 }
