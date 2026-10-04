@@ -833,4 +833,13 @@
   <data name="TurnoverIntradayNone"><value>来源没有 {0} 的分时数据。</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} 有分时数据但没有成交额栏，不能加进金额——这不是 0。</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} 的分钟太少，不足以构成一个交易日——当天可能还在进行中。</value></data>
+  <data name="CandlePeriodMinute1"><value>1 分钟</value></data>
+  <data name="CandlePeriodMinute5"><value>5 分钟</value></data>
+  <data name="CandlePeriodMinute15"><value>15 分钟</value></data>
+  <data name="CandleDayLabel.Header"><value>交易日</value></data>
+  <data name="CandleMinuteNote.Text"><value>来源只保留最近几个交易日的分钟 K 线——这里列出的是它现在还留着的日子。</value></data>
+  <data name="CandleMinuteFetched"><value>{0} · {1} · {2} 根 · 还有 {3} 个完整交易日可选</value></data>
+  <data name="CandleMinuteNone"><value>来源没有 {0}（{1}）的分钟 K 线——只有沪深两市有。</value></data>
+  <data name="CandleMinuteNoWhole"><value>取回来的几天都不是完整的交易日——最新那天可能还在盘中。</value></data>
+  <data name="CandleMinuteMarketNone"><value>这个市场没有分钟 K 线——来源只为沪深两市保留。</value></data>
 </root>

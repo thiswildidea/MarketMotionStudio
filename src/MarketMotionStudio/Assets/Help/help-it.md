@@ -54,9 +54,10 @@ Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli ind
 
 ## Candele
 
-Le candele di uno strumento: giornaliere, settimanali o mensili, disegnate in quattro modi, con le medie e il volume sotto.
+Le candele di uno strumento: giornaliere, settimanali o mensili — o al minuto per una singola giornata di borsa — disegnate in quattro modi, con le medie e il volume sotto.
 
 - **Intervallo** decide quanto tempo di mercato copre una candela: un giorno, una settimana o un mese. Cambiarlo ricarica i dati, perché sulla fonte le tre sono serie distinte.
+- **1, 5 e 15 minuti** disegnano una giornata di borsa: la seduta dall'apertura alla chiusura, con l'asse distribuito secondo l'orologio e la pausa pranzo lasciata come il vuoto che è. La fonte conserva le candele al minuto solo per Shanghai e Shenzhen, e solo per le ultime sedute — circa quattro giorni a un minuto, diciassette a cinque, cinquanta a quindici — quindi **Giornata di borsa** è un elenco dei giorni ancora disponibili, non un calendario. Sceglierne un altro ridisegna soltanto.
 - **Tipo di disegno** decide come vengono disegnati gli stessi quattro prezzi: candele, barre OHLC, linea di chiusura o area di chiusura. Passare dall'uno all'altro non ricarica nulla.
 - **Animazione** è l'arrivo delle candele una dopo l'altra finché tutto l'intervallo è tracciato, oppure una finestra fissa che avanza. La seconda è ciò che mantiene la candela abbastanza larga da leggersi su un intervallo lungo, e quella ampiezza è l'impostazione **Finestra**.
 - Le medie mobili MA5, MA10 e MA20 possono essere sovrapposte alle candele; il pannello del volume sotto può essere spento, e il pannello del prezzo riprende lo spazio.

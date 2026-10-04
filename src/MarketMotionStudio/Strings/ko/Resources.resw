@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>소스에 {0}의 분별 데이터가 없습니다.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0}는 분별 데이터는 있지만 거래대금 열이 없어 금액에 더할 수 없습니다. 0이 아닙니다.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0}는 하루치로 보기엔 분이 너무 적습니다. 장이 진행 중일 수 있습니다.</value></data>
+  <data name="CandlePeriodMinute1"><value>1분</value></data>
+  <data name="CandlePeriodMinute5"><value>5분</value></data>
+  <data name="CandlePeriodMinute15"><value>15분</value></data>
+  <data name="CandleDayLabel.Header"><value>거래일</value></data>
+  <data name="CandleMinuteNote.Text"><value>소스는 최근 몇 세션의 분봉만 보관합니다. 아래에 있는 날짜가 현재 남아 있는 날입니다.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} {1} · {2}개 봉 · 선택 가능한 온전한 세션 {3}개</value></data>
+  <data name="CandleMinuteNone"><value>소스에 {0}({1})의 분봉이 없습니다. 분봉이 있는 곳은 상하이와 선전뿐입니다.</value></data>
+  <data name="CandleMinuteNoWhole"><value>받아온 세션 중 하루치가 온전한 것이 없습니다. 마지막 날은 아직 거래 중일 수 있습니다.</value></data>
+  <data name="CandleMinuteMarketNone"><value>이 시장에는 분봉이 없습니다. 소스가 분봉을 보관하는 곳은 상하이와 선전뿐입니다.</value></data>
 </root>

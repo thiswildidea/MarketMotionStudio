@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>La source n'a pas de données par minute pour {0}.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} indique des minutes mais aucune colonne de transactions ; impossible de l'ajouter à un montant — ce n'est pas un zéro.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} n'a pas assez de minutes pour être une séance — la journée est peut-être en cours.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 minute</value></data>
+  <data name="CandlePeriodMinute5"><value>5 minutes</value></data>
+  <data name="CandlePeriodMinute15"><value>15 minutes</value></data>
+  <data name="CandleDayLabel.Header"><value>Jour de bourse</value></data>
+  <data name="CandleMinuteNote.Text"><value>La source ne conserve les bougies par minute que pour les dernières séances — voici les jours qu'elle a encore.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} le {1} · {2} bougies · {3} séances complètes au choix</value></data>
+  <data name="CandleMinuteNone"><value>La source n'a pas de bougies par minute pour {0} ({1}) — seules Shanghai et Shenzhen en ont.</value></data>
+  <data name="CandleMinuteNoWhole"><value>Aucune des séances renvoyées n'est une journée complète — la dernière est peut-être en cours.</value></data>
+  <data name="CandleMinuteMarketNone"><value>Ce marché n'a pas de bougies par minute — la source ne les conserve que pour Shanghai et Shenzhen.</value></data>
 </root>

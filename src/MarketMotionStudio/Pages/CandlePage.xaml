@@ -157,6 +157,25 @@
                         <DatePicker x:Name="ToDate" x:Uid="StudioRangeTo" HorizontalAlignment="Stretch" />
                     </StackPanel>
 
+                    <!-- Which session, in place of the span, while the period is a minute
+                         one. Filled from what the source came back with rather than from a
+                         calendar: the minute endpoint takes no dates and keeps the last
+                         few sessions, so a date picker here would offer days it cannot
+                         answer. Choosing one redraws without fetching — every day on the
+                         list arrived in the same request. -->
+                    <ComboBox x:Name="DayCombo"
+                              x:Uid="CandleDayLabel"
+                              HorizontalAlignment="Stretch"
+                              Visibility="Collapsed"
+                              SelectionChanged="OnDayChanged" />
+
+                    <TextBlock x:Name="DayNote"
+                               x:Uid="CandleMinuteNote"
+                               Visibility="Collapsed"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
                     <!-- How the four prices are drawn. Four ways of reading the same bars,
                          so this one re-fetches nothing. -->
                     <ComboBox x:Name="StyleCombo"

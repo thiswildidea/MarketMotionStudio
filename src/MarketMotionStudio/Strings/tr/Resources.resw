@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>Kaynakta {0} için dakika verisi yok.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} dakika verisi veriyor ama işlem hacmi sütunu yok, bu yüzden bir tutara eklenemez — bu sıfır değildir.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} bir seans için çok az dakika içeriyor — gün henüz bitmemiş olabilir.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 dakika</value></data>
+  <data name="CandlePeriodMinute5"><value>5 dakika</value></data>
+  <data name="CandlePeriodMinute15"><value>15 dakika</value></data>
+  <data name="CandleDayLabel.Header"><value>İşlem günü</value></data>
+  <data name="CandleMinuteNote.Text"><value>Kaynak dakika mumlarını yalnızca son birkaç seans için tutuyor — bunlar elinde kalan günler.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} · {1} · {2} mum · seçilebilir {3} tam seans</value></data>
+  <data name="CandleMinuteNone"><value>Kaynakta {0} ({1}) için dakika mumu yok — yalnızca Şanghay ve Shenzhen'de var.</value></data>
+  <data name="CandleMinuteNoWhole"><value>Dönen seansların hiçbiri tam bir gün değil — sonuncusu hâlâ işlem görüyor olabilir.</value></data>
+  <data name="CandleMinuteMarketNone"><value>Bu piyasada dakika mumu yok — kaynak bunları yalnızca Şanghay ve Shenzhen için tutuyor.</value></data>
 </root>

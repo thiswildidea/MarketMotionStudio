@@ -53,9 +53,10 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
 
 ## Candles
 
-One instrument's prices as candles: daily, weekly or monthly, drawn four ways, with its averages and its volume underneath.
+One instrument's prices as candles: daily, weekly or monthly, or minute candles for one named trading day — drawn four ways, with its averages and its volume underneath.
 
 - **Period** decides how much market time one candle covers — a day, a week or a month. Changing it fetches again, because the three are separate series on the source.
+- **1, 5 and 15 minutes** draw one trading day: the session from the open to the close, with the axis laid out on the clock and the lunch break left as the gap it is. The source keeps minute candles for Shanghai and Shenzhen only, and only for the last few sessions — about four days at one minute, seventeen at five, fifty at fifteen — so **trading day** is a list of the days it still has rather than a calendar. Picking another of them only draws it again.
 - **Style** decides how the same four prices are drawn: candles, OHLC bars, a closing line, or a closing area. Switching between them re-fetches nothing.
 - **Motion** is either candles arriving one after another until the whole range is laid out, or a fixed window of them walking forward. The second is what keeps a candle wide enough to read on a long range, and how wide is the **window** setting.
 - Moving averages MA5, MA10 and MA20 can be laid over the candles; the volume panel underneath can be turned off, and the price panel takes the room back.

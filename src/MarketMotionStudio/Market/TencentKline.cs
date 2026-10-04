@@ -215,8 +215,17 @@ public sealed class TencentKline(HttpClient http)
     /// return a holder earned, and converting first would only put a constant in
     /// the way of every division.
     /// </summary>
+    /// <param name="Clock">
+    /// Where in the session the candle falls, `1500` style, and empty on a daily,
+    /// weekly or monthly bar. An intraday chart lays its bars out by this rather
+    /// than by their order, because the lunch break is an hour and a half of real
+    /// clock during which nothing traded and the axis says so; see
+    /// <see cref="CandleRenderer"/>. Empty is not zero-o'clock: it is "this bar
+    /// covers a whole day or more", which is every bar the other periods have.
+    /// </param>
     public sealed record CandleBar(
-        DateOnly Date, double Open, double High, double Low, double Close, double Volume);
+        DateOnly Date, double Open, double High, double Low, double Close, double Volume,
+        string Clock = "");
 
     /// <summary>
     /// One instrument's candles over a range, on the venue's own adjusted series.
@@ -304,6 +313,134 @@ public sealed class TencentKline(HttpClient http)
         }
 
         return await FetchCandlesAsync(code, period, start, end, count, cancellation);
+    }
+
+    /// <summary>
+    /// The minute endpoint: `m1`, `m5`, `m15` and the rest.
+    ///
+    /// A different host from the three above, and the only one that answers it: measured
+    /// 2026-10-04, `web.ifzq.gtimg.cn` answers 301 and `web.ifzqgtimg.com` does not resolve,
+    /// while the bare `ifzq.gtimg.cn` returns the block.
+    ///
+    /// **Mainland only.** Hong Kong, New York and the BSE 50 (`bj899050`) come back with
+    /// `data` as an empty list — the same shape the source uses for a code it has never
+    /// heard of, so there is no telling those two apart, and no minutes for any of them.
+    /// </summary>
+    private const string MinuteEndpoint = "https://ifzq.gtimg.cn/appstock/app/kline/mkline";
+
+    /// <summary>
+    /// How many minute candles one request carries.
+    ///
+    /// Eight hundred, measured 2026-10-04: `sh600519,m5,,800` returns eight hundred rows
+    /// reaching back seventeen trading days, and `,,850` — or anything past eight hundred —
+    /// does not return eight hundred and fifty, it returns the default three hundred and
+    /// twenty. A silent step back to a shorter window is exactly the trap the daily walk
+    /// refuses, so the number is named here and the caller asks for no more than it.
+    ///
+    /// It is a count of bars, so how many *days* it reaches is the period's own business:
+    /// one day is 241 one-minute bars, 48 five-minute ones and 16 fifteen-minute ones, so
+    /// the same request buys four days at the finest grain and fifty at the coarsest.
+    /// </summary>
+    public const int MostMinuteBarsPerRequest = 800;
+
+    /// <summary>
+    /// One instrument's minute candles, newest last, as far back as one request reaches.
+    ///
+    /// Not asked for a range: the endpoint takes a start and an end in its parameter and
+    /// then answers with no block at all — `sh600519,m5,2026-09-30,2026-09-30,320` comes back
+    /// with the quote and the precision and nothing else, measured 2026-10-04. The window
+    /// is therefore whatever the source still holds, and picking one day out of it happens
+    /// after the rows are in; see <see cref="CandleMinutes"/>.
+    ///
+    /// Rows are `["202609301500", open, close, high, low, volume, {}, amount]` — the same
+    /// five numbers in the same places as a daily row, with the minute appended to the
+    /// date. A settled day's last row is 15:00, and the after-hours fixed-price half hour
+    /// the daily endpoint pads to 15:30 is not here at all.
+    /// </summary>
+    public async Task<List<CandleBar>> MinuteCandlesAsync(
+        string code, string period, int count, CancellationToken cancellation)
+    {
+        if (!IsStockCode(code))
+        {
+            throw new ArgumentException($"Not a stock code: {code}", nameof(code));
+        }
+
+        var iso = CultureInfo.InvariantCulture;
+        var wanted = Math.Clamp(count, 5, MostMinuteBarsPerRequest);
+        var parameter = $"{code},{period},,{wanted.ToString(iso)}";
+        var uri = $"{MinuteEndpoint}?param={Uri.EscapeDataString(parameter)}";
+
+        using var response = await http.GetAsync(uri, cancellation);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
+        using var json = await JsonDocument.ParseAsync(stream, cancellationToken: cancellation);
+
+        var root = json.RootElement;
+
+        if (!root.TryGetProperty("code", out var status) || status.GetInt32() != 0)
+        {
+            var message = root.TryGetProperty("msg", out var msg) ? msg.GetString() : null;
+            throw new InvalidOperationException($"{code}: {message ?? "the quote source reported a failure"}");
+        }
+
+        if (!root.TryGetProperty("data", out var data) || data.ValueKind != JsonValueKind.Object ||
+            !data.TryGetProperty(code, out var node) ||
+            !node.TryGetProperty(period, out var bars) || bars.ValueKind != JsonValueKind.Array)
+        {
+            // An empty list rather than a failure: Toronto does not have minutes either,
+            // and "this venue has none for you" is an answer the caller reports, not an
+            // error it throws.
+            return [];
+        }
+
+        var series = new List<CandleBar>();
+
+        foreach (var bar in bars.EnumerateArray())
+        {
+            if (bar.ValueKind != JsonValueKind.Array || bar.GetArrayLength() < 6)
+            {
+                continue;
+            }
+
+            var stamp = bar[0].GetString();
+
+            if (stamp is not { Length: 12 } ||
+                !DateOnly.TryParseExact(stamp[..8], "yyyyMMdd", out var day) ||
+                !int.TryParse(stamp[8..10], NumberStyles.Integer, iso, out var hour) ||
+                !int.TryParse(stamp[10..12], NumberStyles.Integer, iso, out var minute))
+            {
+                continue;
+            }
+
+            // 15:00 is the last minute of the session. Anything later belongs to the
+            // after-hours fixed-price trading, which is not part of the day a candle
+            // chart of the day is drawing.
+            if ((hour * 100) + minute > 1500)
+            {
+                continue;
+            }
+
+            if (!double.TryParse(bar[1].GetString(), NumberStyles.Float, iso, out var open) ||
+                !double.TryParse(bar[2].GetString(), NumberStyles.Float, iso, out var close) ||
+                !double.TryParse(bar[3].GetString(), NumberStyles.Float, iso, out var high) ||
+                !double.TryParse(bar[4].GetString(), NumberStyles.Float, iso, out var low))
+            {
+                continue;
+            }
+
+            if (open <= 0 || close <= 0 || high <= 0 || low <= 0)
+            {
+                continue;
+            }
+
+            var top = Math.Max(Math.Max(open, close), high);
+            var foot = Math.Min(Math.Min(open, close), low);
+
+            series.Add(new CandleBar(day, open, top, foot, close, Field(bar, 5, iso), stamp[8..]));
+        }
+
+        return series;
     }
 
     /// <summary>

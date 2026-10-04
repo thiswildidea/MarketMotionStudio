@@ -42,6 +42,19 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
     private CandleSeries? _fetched;
 
+    /// <summary>
+    /// Every session the minute endpoint returned, while the period is a minute one.
+    ///
+    /// Kept because the day control is filled from it: the source answers with the last
+    /// several sessions and takes no dates, so the days on offer are only knowable from
+    /// the one request — and choosing another of them is then a redraw rather than a
+    /// second fetch.
+    /// </summary>
+    private MinuteSession? _minutes;
+
+    /// <summary>Which of those sessions is drawn, as the source names it, `20260930`.</summary>
+    private string _day = string.Empty;
+
     /// <summary>The market in force: it names the presets, it is what the search is
     /// filtered to, and its venue decides where the candles come from.</summary>
     private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
@@ -75,9 +88,25 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                      (CandlePeriod.Daily, "CandlePeriodDaily"),
                      (CandlePeriod.Weekly, "CandlePeriodWeekly"),
                      (CandlePeriod.Monthly, "CandlePeriodMonthly"),
+                     (CandlePeriod.Minute1, "CandlePeriodMinute1"),
+                     (CandlePeriod.Minute5, "CandlePeriodMinute5"),
+                     (CandlePeriod.Minute15, "CandlePeriodMinute15"),
                  })
         {
-            PeriodCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)period });
+            var item = new ComboBoxItem { Content = Strings.Get(key), Tag = (int)period };
+
+            // Switched off, on the markets where the source keeps no minute candles at
+            // all — Hong Kong and New York among them. Not left out: a list that changes
+            // length between markets asks "where did the others go", and three entries
+            // that can only ever fail are worse than three that say why they are off.
+            if (CandleLoader.IsMinute(period) && !_market.MinuteCandles)
+            {
+                item.IsEnabled = false;
+
+                ToolTipService.SetToolTip(item, Strings.Get("CandleMinuteMarketNone"));
+            }
+
+            PeriodCombo.Items.Add(item);
         }
 
         foreach (var (style, key) in new[]
@@ -206,6 +235,22 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     {
         var months = ChosenMonths();
         var ranges = CandleLoader.Ranges(ChosenPeriod());
+        var minute = CandleLoader.IsMinute(ChosenPeriod());
+
+        // How far back, and which session, are the same question asked of two kinds of
+        // period: the daily ones are asked for a span and the minute ones for a day,
+        // because the minute endpoint takes no dates and keeps the last few sessions.
+        // Swapped by visibility rather than by emptying a list, so no empty control is
+        // left standing on the panel.
+        RangeCombo.Visibility = minute ? Visibility.Collapsed : Visibility.Visible;
+        DayCombo.Visibility = minute ? Visibility.Visible : Visibility.Collapsed;
+        DayNote.Visibility = DayCombo.Visibility;
+        CustomRange.Visibility = Visibility.Collapsed;
+
+        if (minute)
+        {
+            return;
+        }
 
         // Filling the list moves its selection, which raises SelectionChanged — and
         // that handler fetches. Without this the period change would start two
@@ -237,6 +282,87 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     /// <summary>The two dates in the pickers. The span in force only when custom is chosen.</summary>
     private (DateOnly From, DateOnly To) CustomSpan() =>
         (DateOnly.FromDateTime(FromDate.Date.DateTime), DateOnly.FromDateTime(ToDate.Date.DateTime));
+
+    /// <summary>
+    /// Fills the day control from the sessions that came back, keeping the one being
+    /// drawn where the new list still has it.
+    ///
+    /// Only whole sessions are offered. A part-day is a chart missing its own opening,
+    /// and it would sit in the list as an ordinary date: nothing about the entry would
+    /// say it starts at ten to eleven.
+    /// </summary>
+    private void FillDays()
+    {
+        if (_minutes is not { } session)
+        {
+            return;
+        }
+
+        _filling = true;
+
+        DayCombo.Items.Clear();
+
+        foreach (var day in session.Whole)
+        {
+            DayCombo.Items.Add(new ComboBoxItem
+            {
+                Content = CandleLoader.Iso(day.Date),
+                Tag = day.Id,
+            });
+        }
+
+        var at = session.Whole.ToList().FindIndex(d => d.Id == _day);
+
+        // The newest, when the one being drawn is not among them: a preference saved
+        // on another day is a preference for a day the source has since dropped, and
+        // the latest session is the nearest thing to it.
+        DayCombo.SelectedIndex = at >= 0 ? at : DayCombo.Items.Count - 1;
+
+        _filling = false;
+    }
+
+    /// <summary>The session chosen in the control, or null when there is none.</summary>
+    private MinuteDay? ChosenDay() =>
+        _minutes is { } session && DayCombo.SelectedItem is ComboBoxItem { Tag: string id }
+            ? session.Find(id)
+            : null;
+
+    /// <summary>
+    /// Draws the session chosen, or the latest whole one.
+    ///
+    /// Not a fetch: every day in the list arrived in the same request, so moving between
+    /// them costs a redraw and the preview follows the control as it is used.
+    /// </summary>
+    private void ApplyDay()
+    {
+        if (_minutes is null)
+        {
+            return;
+        }
+
+        var day = ChosenDay() ?? _minutes.Latest;
+
+        _day = day.Id;
+        _fetched = CandleMinutes.ForDay(_minutes, day);
+
+        ApplyPreviewSettings();
+    }
+
+    private void OnDayChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_ready || _filling || _minutes is null)
+        {
+            return;
+        }
+
+        ApplyDay();
+
+        // Parked on the last frame, as a fresh fetch is: the day's closing figures are
+        // what someone looks at before deciding whether to export.
+        ShowMoment(1);
+
+        SavePreferences();
+    }
 
     /// <summary>Whether <see cref="FillRanges"/> is rebuilding the list; see there.</summary>
     private bool _filling;
@@ -462,8 +588,14 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
         // The candles in the frame belong to the instrument they were fetched for. A
         // new pick drops them rather than leaving them standing under a title that no
-        // longer names them.
+        // longer names them — and drops the sessions with them, because the day list is
+        // one instrument's days.
         _fetched = null;
+        _minutes = null;
+        _day = string.Empty;
+
+        DayCombo.Items.Clear();
+
         ApplyPreviewSettings();
 
         Fetch();
@@ -568,6 +700,39 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
             // whole walk already runs on the UI thread, so there is nothing to marshal.
             var progress = new Immediate<string>(
                 message => ShowStatus(InfoBarSeverity.Informational, message));
+
+            if (CandleLoader.IsMinute(period))
+            {
+                var session = await CandleMinutes.LoadAsync(
+                    Services.Quotes, _instrumentCode, display, period, progress, cancellation);
+
+                if (session.Whole.Count == 0)
+                {
+                    // Nothing came back whole: the sessions the source still holds are
+                    // the one running now, or one cut in half by the request's own
+                    // length. Drawing either would be a day missing its own opening,
+                    // presented as a day.
+                    ShowStatus(InfoBarSeverity.Error, Strings.Get("CandleMinuteNoWhole"));
+                    return;
+                }
+
+                _minutes = session;
+
+                FillDays();
+                ApplyDay();
+                ShowMoment(1);
+
+                var drawn = _fetched!;
+
+                ShowStatus(InfoBarSeverity.Success, Strings.Format(
+                    "CandleMinuteFetched",
+                    drawn.Name,
+                    CandleLoader.Iso(drawn.Start),
+                    drawn.Count,
+                    session.Whole.Count));
+
+                return;
+            }
 
             var fetched = custom
                 ? await CandleLoader.LoadAsync(
@@ -754,6 +919,17 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         Select(StyleCombo, _prefs.GetInt("Style", 0));
         Select(MotionCombo, _prefs.GetInt("Motion", 0));
 
+        // A minute period remembered from a market that has minute candles, on a market
+        // that does not: the preference is this page's, the market is the whole app's, and
+        // the two are chosen independently. Falls back to the daily period rather than
+        // fetching nothing for ever.
+        if (CandleLoader.IsMinute(ChosenPeriod()) && !_market.MinuteCandles)
+        {
+            Select(PeriodCombo, (int)CandlePeriod.Daily);
+        }
+
+        _day = _prefs.GetString("Day", string.Empty);
+
         // The span list belongs to the period, so it is filled from the restored
         // period and then the restored span is looked for among what it offers.
         FillRanges();
@@ -810,6 +986,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("Window", ChosenWindow());
+        _prefs.Save("Day", _day);
         _prefs.Save("Averages", AveragesCheck.IsChecked is true ? 1 : 0);
         _prefs.Save("Volume", VolumeCheck.IsChecked is true ? 1 : 0);
         _prefs.Save("Code", _instrumentCode);

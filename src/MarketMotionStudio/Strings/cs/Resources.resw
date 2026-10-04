@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>Zdroj nemá minutová data pro {0}.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} uvádí minuty, ale žádný sloupec obratu, nelze jej tedy přičíst k částce — to není nula.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} má příliš málo minut na celý den — den možná ještě neskončil.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 minuta</value></data>
+  <data name="CandlePeriodMinute5"><value>5 minut</value></data>
+  <data name="CandlePeriodMinute15"><value>15 minut</value></data>
+  <data name="CandleDayLabel.Header"><value>Obchodní den</value></data>
+  <data name="CandleMinuteNote.Text"><value>Zdroj uchovává minutové svíčky jen pro poslední seance — toto jsou dny, které ještě má.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} {1} · {2} svíček · {3} celé seance na výběr</value></data>
+  <data name="CandleMinuteNone"><value>Zdroj nemá minutové svíčky pro {0} ({1}) — mají je jen Šanghaj a Šen-čen.</value></data>
+  <data name="CandleMinuteNoWhole"><value>Žádná z vrácených seancí není celý den — ta poslední možná ještě probíhá.</value></data>
+  <data name="CandleMinuteMarketNone"><value>Tento trh nemá minutové svíčky — zdroj je uchovává jen pro Šanghaj a Šen-čen.</value></data>
 </root>

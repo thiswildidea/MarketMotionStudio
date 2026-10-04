@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>У источника нет минутных данных по {0}.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} выдаёт минуты, но нет колонки оборота, поэтому его нельзя прибавить к сумме — это не ноль.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} слишком мало минут для сессии — возможно, день ещё идёт.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 минута</value></data>
+  <data name="CandlePeriodMinute5"><value>5 минут</value></data>
+  <data name="CandlePeriodMinute15"><value>15 минут</value></data>
+  <data name="CandleDayLabel.Header"><value>Торговый день</value></data>
+  <data name="CandleMinuteNote.Text"><value>Источник хранит минутные свечи только за последние несколько сессий — это дни, которые у него ещё есть.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} {1} · {2} свечей · полных сессий на выбор: {3}</value></data>
+  <data name="CandleMinuteNone"><value>У источника нет минутных свечей для {0} ({1}) — они есть только для Шанхая и Шэньчжэня.</value></data>
+  <data name="CandleMinuteNoWhole"><value>Ни одна из полученных сессий не является полным днём — последняя, возможно, ещё идёт.</value></data>
+  <data name="CandleMinuteMarketNone"><value>У этого рынка нет минутных свечей — источник хранит их только для Шанхая и Шэньчжэня.</value></data>
 </root>

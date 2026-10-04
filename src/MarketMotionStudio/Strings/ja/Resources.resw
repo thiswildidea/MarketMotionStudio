@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>ソースに {0} の分足データはありません。</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} は分足を返しますが売買代金の列がないため、金額に加算できません。ゼロではありません。</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} は 1 日分として分が少なすぎます。取引時間中の可能性があります。</value></data>
+  <data name="CandlePeriodMinute1"><value>1 分</value></data>
+  <data name="CandlePeriodMinute5"><value>5 分</value></data>
+  <data name="CandlePeriodMinute15"><value>15 分</value></data>
+  <data name="CandleDayLabel.Header"><value>取引日</value></data>
+  <data name="CandleMinuteNote.Text"><value>ソースが分足を保持しているのは直近数セッションだけです。ここに並ぶのは、いま残っている日です。</value></data>
+  <data name="CandleMinuteFetched"><value>{0} {1} · {2} 本 · 選べる完全なセッション {3} 日分</value></data>
+  <data name="CandleMinuteNone"><value>ソースに {0}（{1}）の分足はありません。分足があるのは上海と深圳だけです。</value></data>
+  <data name="CandleMinuteNoWhole"><value>返ってきたセッションに 1 日分としてそろっているものがありません。最新の日はまだ取引中の可能性があります。</value></data>
+  <data name="CandleMinuteMarketNone"><value>この市場に分足はありません。ソースが分足を保持しているのは上海と深圳だけです。</value></data>
 </root>

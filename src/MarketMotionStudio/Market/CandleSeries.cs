@@ -8,6 +8,18 @@ public enum CandlePeriod
     Daily = 0,
     Weekly = 1,
     Monthly = 2,
+
+    /// <summary>One candle a minute: the finest grain the source serves, and the shortest reach —
+    /// one request buys about four trading days of them.</summary>
+    Minute1 = 3,
+
+    /// <summary>One candle every five minutes: forty-eight to a session, which is the grain a
+    /// day reads best at, and about seventeen days of reach.</summary>
+    Minute5 = 4,
+
+    /// <summary>One candle every quarter of an hour: sixteen to a session, and about fifty
+    /// days of reach — the furthest back the intraday periods go.</summary>
+    Minute15 = 5,
 }
 
 /// <summary>
@@ -148,6 +160,9 @@ public static class CandleLoader
     {
         CandlePeriod.Weekly => "week",
         CandlePeriod.Monthly => "month",
+        CandlePeriod.Minute1 => "m1",
+        CandlePeriod.Minute5 => "m5",
+        CandlePeriod.Minute15 => "m15",
         _ => "day",
     };
 
@@ -156,7 +171,39 @@ public static class CandleLoader
     {
         CandlePeriod.Weekly => "CandlePeriodWeekly",
         CandlePeriod.Monthly => "CandlePeriodMonthly",
+        CandlePeriod.Minute1 => "CandlePeriodMinute1",
+        CandlePeriod.Minute5 => "CandlePeriodMinute5",
+        CandlePeriod.Minute15 => "CandlePeriodMinute15",
         _ => "CandlePeriodDaily",
+    };
+
+    /// <summary>
+    /// Whether a period is served by the minute endpoint rather than by the daily one.
+    ///
+    /// The two are not the same series drawn differently: they come from different
+    /// endpoints, they carry different fields, and the minute one has no month spans
+    /// to offer — which is why the page swaps the span control for a day one when this
+    /// is true.
+    /// </summary>
+    public static bool IsMinute(CandlePeriod period) =>
+        period is CandlePeriod.Minute1 or CandlePeriod.Minute5 or CandlePeriod.Minute15;
+
+    /// <summary>
+    /// How many candles a whole mainland session is, for one of the minute periods.
+    ///
+    /// Counted, not derived: 09:30 to 11:30 and 13:00 to 15:00 is two hundred and forty
+    /// minutes of trading, and the source reports the minute *ending* each candle, so a
+    /// one-minute day is 241 rows (09:30 … 15:00), a five-minute one is 48 and a
+    /// quarter-hour one is 16. Measured 2026-10-04 on 贵州茅台, 上证综指 and 沪深300.
+    /// A day short of this is a day the source only partly holds — the oldest one in the
+    /// window, or a session still running — and is not offered as a day to draw.
+    /// </summary>
+    public static int BarsPerSession(CandlePeriod period) => period switch
+    {
+        CandlePeriod.Minute1 => 241,
+        CandlePeriod.Minute5 => 48,
+        CandlePeriod.Minute15 => 16,
+        _ => 1,
     };
 
     /// <summary>
@@ -198,6 +245,11 @@ public static class CandleLoader
     {
         CandlePeriod.Weekly => WeeklyRanges,
         CandlePeriod.Monthly => MonthlyRanges,
+
+        // A span counted in months is not a question the minute endpoint can be asked:
+        // it takes no dates and no start, and answers with the last N candles it holds.
+        // The page replaces the span with the list of days that came back.
+        CandlePeriod.Minute1 or CandlePeriod.Minute5 or CandlePeriod.Minute15 => [],
         _ => DailyRanges,
     };
 
@@ -423,6 +475,140 @@ public static class CandleLoader
             ? day.ToString("MM-dd", CultureInfo.InvariantCulture)
             : day.ToString("yyyy-MM", CultureInfo.InvariantCulture);
 
+    /// <summary>
+    /// A candle's label on the axis: the clock for an intraday bar, the date otherwise.
+    ///
+    /// Taken from the bar rather than from the period so that the two cannot disagree.
+    /// A minute bar carries the minute it ended (`1500`) and everything else carries
+    /// nothing, and an intraday chart that labelled its bars with the day would print
+    /// the same date two hundred and forty-one times.
+    /// </summary>
+    public static string Label(TencentKline.CandleBar bar, CandlePeriod period) =>
+        bar.Clock.Length == 4 ? bar.Clock[..2] + ":" + bar.Clock[2..] : Label(bar.Date, period);
+
     /// <summary>A date the same way in every locale, for the header and for file names.</summary>
     public static string Iso(DateOnly day) => day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+}
+
+/// <summary>
+/// One session's minute candles.
+/// </summary>
+/// <param name="Id">The day as the source names it, `20260930`.</param>
+/// <param name="Date">The same day.</param>
+/// <param name="Bars">Its candles, oldest first.</param>
+/// <param name="Settled">
+/// Whether it is a whole session. The oldest day in the window is only partly there — the
+/// request holds the last eight hundred bars, so it starts whenever eight hundred bars
+/// ago was, mid-morning — and a session still running is shorter still. Neither is a day
+/// to offer as "this day": the first would draw a chart missing its own opening, and the
+/// second would stop two thirds across the frame with nothing saying why.
+/// </param>
+public sealed record MinuteDay(
+    string Id, DateOnly Date, IReadOnlyList<TencentKline.CandleBar> Bars, bool Settled)
+{
+    public int Count => Bars.Count;
+}
+
+/// <summary>
+/// What the minute endpoint gave back for one instrument: several sessions, of which one
+/// is drawn.
+///
+/// Kept whole rather than reduced to the day that was asked for, because the picker is a
+/// list of the days the source still holds and those are only knowable from one request —
+/// and because choosing another day is then a redraw, not another fetch.
+/// </summary>
+public sealed record MinuteSession(
+    string Code, string Name, CandlePeriod Period, IReadOnlyList<MinuteDay> Days)
+{
+    /// <summary>The whole sessions, oldest first: the ones the day picker offers.</summary>
+    public IReadOnlyList<MinuteDay> Whole { get; } = [.. Days.Where(d => d.Settled)];
+
+    /// <summary>How many days came back but are not whole, and are therefore not offered.</summary>
+    public int PartialDays => Days.Count - Whole.Count;
+
+    public MinuteDay? Find(string id) => Days.FirstOrDefault(d => d.Id == id);
+
+    /// <summary>
+    /// The day to draw when none has been chosen: the latest whole one, which is the
+    /// last session that finished. Falls back to the latest day of any kind, because a
+    /// listing whose every session came back short still has something to show, and
+    /// refusing it would read as "this instrument has no data" — which is not what was
+    /// found.
+    /// </summary>
+    public MinuteDay Latest => Whole.Count > 0 ? Whole[^1] : Days[^1];
+}
+
+/// <summary>
+/// The intraday periods' loading: one request, several sessions, one of them drawn.
+///
+/// A different shape from <see cref="CandleLoader"/>'s walk, and for a reason. The daily
+/// endpoint answers "the bars between two dates" and is walked backwards because one
+/// request is shorter than a decade; the minute one answers "the last N bars I still
+/// have" and nothing else — it takes dates in its parameter and then returns no block at
+/// all. So there is no range to walk, no start to fall short of, and no way to be asked
+/// for a day the source has dropped: the days on offer are the days that came back, and
+/// the picker is filled from them.
+/// </summary>
+public static class CandleMinutes
+{
+    public static async Task<MinuteSession> LoadAsync(
+        TencentKline kline, string code, string name, CandlePeriod period,
+        IProgress<string> progress, CancellationToken cancellation)
+    {
+        // The turnover page's intraday progress line, not a new key: it is the same
+        // sentence about the same request, and a second one would be fourteen more
+        // translations of it to keep in step.
+        progress.Report(Localization.Strings.Format("TurnoverIntradayFetching", name));
+
+        var bars = await kline.MinuteCandlesAsync(
+            code, CandleLoader.Slug(period), TencentKline.MostMinuteBarsPerRequest, cancellation);
+
+        if (bars.Count == 0)
+        {
+            // Names the code, because which listings have minutes is not guessable: an
+            // index has them, the BSE 50 does not, and neither Hong Kong nor New York
+            // does at all.
+            throw new InvalidOperationException(Localization.Strings.Format(
+                "CandleMinuteNone", name, code.ToUpperInvariant()));
+        }
+
+        var grouped = new List<(DateOnly Date, List<TencentKline.CandleBar> Rows)>();
+
+        foreach (var bar in bars)
+        {
+            if (grouped.Count == 0 || grouped[^1].Date != bar.Date)
+            {
+                grouped.Add((bar.Date, []));
+            }
+
+            grouped[^1].Rows.Add(bar);
+        }
+
+        var whole = CandleLoader.BarsPerSession(period) - 1;
+        var days = new List<MinuteDay>(grouped.Count);
+
+        foreach (var (date, rows) in grouped)
+        {
+            // A whole session ends at 15:00 and holds its period's count. One bar of
+            // slack, because the opening minute is reported by some listings and not by
+            // others, and the difference is one row rather than a part of the day.
+            days.Add(new MinuteDay(
+                date.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
+                date,
+                rows,
+                rows.Count >= whole && rows[^1].Clock == "1500"));
+        }
+
+        return new MinuteSession(code, name, period, days);
+    }
+
+    /// <summary>
+    /// One day of a session as a chartable series.
+    ///
+    /// The series is the day and nothing else: its range return is the day's, its high and
+    /// low are the day's, and the file names it hands to the exporter name one day twice
+    /// rather than a range — which is what a video of one session is.
+    /// </summary>
+    public static CandleSeries ForDay(MinuteSession session, MinuteDay day) =>
+        new(session.Code, session.Name, session.Period, day.Bars);
 }

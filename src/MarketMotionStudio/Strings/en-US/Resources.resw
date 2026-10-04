@@ -835,4 +835,13 @@
   <data name="TurnoverIntradayNone"><value>The source has no minute data for {0}.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} reports minutes but no turnover column, so it cannot be added to an amount — this is not a zero.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} has too few minutes to be a session — the day may still be in progress.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 minute</value></data>
+  <data name="CandlePeriodMinute5"><value>5 minutes</value></data>
+  <data name="CandlePeriodMinute15"><value>15 minutes</value></data>
+  <data name="CandleDayLabel.Header"><value>Trading day</value></data>
+  <data name="CandleMinuteNote.Text"><value>The source keeps minute candles for the last few sessions only — these are the days it still has.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} on {1} · {2} candles · {3} whole sessions to choose from</value></data>
+  <data name="CandleMinuteNone"><value>The source keeps no minute candles for {0} ({1}) — only Shanghai and Shenzhen have them.</value></data>
+  <data name="CandleMinuteNoWhole"><value>None of the sessions that came back is a whole day — the latest one may still be trading.</value></data>
+  <data name="CandleMinuteMarketNone"><value>This market has no minute candles — the source keeps them for Shanghai and Shenzhen only.</value></data>
 </root>

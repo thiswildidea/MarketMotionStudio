@@ -191,6 +191,19 @@ def main():
     item.GetSelectionItemPattern().Select()
     time.sleep(2.5)
 
+    # ---- 0. 周期先复位到日线
+    #
+    # 区间列表是**周期自己的**：日线给 3/6/12 个月与 3/5/10 年，月线给 3/5/10 年与「最长」，
+    # 中间没有「近 12 个月」这一项。而周期是持久偏好 —— 上一个脚本（verify-candle.py）停在
+    # 月线，这里就会找不到「近 12 个月」，报出来的样子像 K 线页坏了。偏好会持久化，所以
+    # 脚本动手前先显式复位。
+
+    period = winui.find(win, lambda c: c.AutomationId == "PeriodCombo")
+
+    if period is None or combo_pick(win, period, 0, name="日K") is None:
+        print("周期下拉里没有「日K」")
+        return 1
+
     # ---- 1. 区间下拉里有「自定义」
 
     combo = winui.find(win, lambda c: c.AutomationId == "RangeCombo")

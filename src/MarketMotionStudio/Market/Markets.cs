@@ -103,6 +103,19 @@ public sealed record MarketProfile(
     public bool AmountInWan => AmountToYi is 10_000;
 
     /// <summary>
+    /// Whether the minute-*candle* endpoint serves this market, which is not the same
+    /// question <see cref="Intraday"/> answers.
+    ///
+    /// That one is about `day/query`, which carries a price, a cumulative volume and a
+    /// cumulative amount and does serve Hong Kong. This one is about `kline/mkline`,
+    /// which carries open, high, low and close and serves Shanghai and Shenzhen alone:
+    /// measured 2026-10-04, `hk00700` and `hkHSI` come back with `"data": []`, exactly as
+    /// a US code does. So the K-line page can offer minute candles on the A-share market
+    /// and nowhere else, and a Hong Kong daily chart cannot be drilled into.
+    /// </summary>
+    public bool MinuteCandles => Id is MarketId.AShare;
+
+    /// <summary>
     /// Whether a code belongs to this market. Tested on the venue prefix, which is
     /// the only part of a code that says where it is quoted: a six-digit number
     /// carries its venue nowhere a reader can see it.

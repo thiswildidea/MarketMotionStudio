@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>Die Quelle hat keine Minutendaten für {0}.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} meldet Minuten, aber keine Umsatzspalte, und kann daher keinem Betrag hinzugefügt werden — das ist keine Null.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} hat zu wenige Minuten für einen Handelstag — der Tag läuft vielleicht noch.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 Minute</value></data>
+  <data name="CandlePeriodMinute5"><value>5 Minuten</value></data>
+  <data name="CandlePeriodMinute15"><value>15 Minuten</value></data>
+  <data name="CandleDayLabel.Header"><value>Handelstag</value></data>
+  <data name="CandleMinuteNote.Text"><value>Die Quelle hält Minutenkerzen nur für die letzten Sitzungen — dies sind die Tage, die sie noch hat.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} am {1} · {2} Kerzen · {3} vollständige Sitzungen zur Auswahl</value></data>
+  <data name="CandleMinuteNone"><value>Die Quelle hat keine Minutenkerzen für {0} ({1}) — nur Shanghai und Shenzhen führen sie.</value></data>
+  <data name="CandleMinuteNoWhole"><value>Keine der zurückgegebenen Sitzungen ist ein ganzer Tag — die letzte läuft vielleicht noch.</value></data>
+  <data name="CandleMinuteMarketNone"><value>Dieser Markt hat keine Minutenkerzen — die Quelle führt sie nur für Shanghai und Shenzhen.</value></data>
 </root>

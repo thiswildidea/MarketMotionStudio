@@ -167,6 +167,20 @@ public sealed class CandleRenderer : IFrameRenderer
     /// <summary>The three averages, aligned with the bars and computed once.</summary>
     private readonly double?[][] _averages;
 
+    /// <summary>
+    /// Where each bar sits along the axis, as a fraction of the session's own clock — or
+    /// null when the bars carry no clock at all.
+    ///
+    /// 09:30 is nought and 15:00 is one, so the morning session fills the first third of
+    /// the frame, the afternoon the last third, and the ninety minutes between them stand
+    /// empty. That gap is the point: an intraday chart whose bars were spaced evenly
+    /// would put the 11:30 close next to the 13:00 open and read as one continuous
+    /// three-hour move, when two hours of trading and an hour and a half of nothing
+    /// happened. Nothing on a daily, weekly or monthly chart changes — those bars are
+    /// evenly spaced, as they always were.
+    /// </summary>
+    private readonly double[]? _stamps;
+
     /// <summary>The lengths the averages are taken over, in the order they are drawn.</summary>
     private static readonly int[] AverageLengths = [5, 10, 20];
 
@@ -189,6 +203,46 @@ public sealed class CandleRenderer : IFrameRenderer
         _showVolume = showVolume;
 
         _averages = [.. AverageLengths.Select(series.Average)];
+        _stamps = Stamps(series.Bars);
+    }
+
+    /// <summary>
+    /// The session's first and last minute, as minutes past midnight: 09:30 and 15:00 on
+    /// the mainland venues, which are the only ones with minute bars at all.
+    /// </summary>
+    private const int OpeningMinute = (9 * 60) + 30;
+
+    private const int ClosingMinute = 15 * 60;
+
+    /// <summary>
+    /// Each bar's place on the clock axis, or null for a series with no clocks.
+    ///
+    /// Null rather than a spread of evenly spaced fractions, so that the callers read
+    /// "these bars are laid out by their order" from the same thing they read the
+    /// fractions from. A series with the clock on some bars and not on others is a series
+    /// this chart cannot place, and answering null for it keeps every bar in the order
+    /// they came rather than dropping the unplaced ones into the gap.
+    /// </summary>
+    private static double[]? Stamps(IReadOnlyList<TencentKline.CandleBar> bars)
+    {
+        var span = ClosingMinute - OpeningMinute;
+        var stamps = new double[bars.Count];
+
+        for (var i = 0; i < bars.Count; i++)
+        {
+            var clock = bars[i].Clock;
+
+            if (clock.Length != 4 ||
+                !int.TryParse(clock[..2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var hour) ||
+                !int.TryParse(clock[2..], NumberStyles.Integer, CultureInfo.InvariantCulture, out var minute))
+            {
+                return null;
+            }
+
+            stamps[i] = Math.Clamp((((hour * 60) + minute) - OpeningMinute) / (double)span, 0, 1);
+        }
+
+        return stamps;
     }
 
     public void Draw(CanvasDrawingSession session, FrameContext context)
@@ -213,6 +267,7 @@ public sealed class CandleRenderer : IFrameRenderer
             DrawAverages(session, context, view);
         }
 
+        DrawLunch(session, context, view);
         DrawXLabels(session, context, view);
         DrawLegend(session, context, view);
         DrawHeader(session, context, view);
@@ -312,9 +367,41 @@ public sealed class CandleRenderer : IFrameRenderer
             context.ChartLeft, context.ChartWidth);
     }
 
-    /// <summary>Where candle <paramref name="i"/> sits horizontally.</summary>
-    private double X(Frame view, int i) =>
-        view.Left + (view.Width * (i - view.First) / Math.Max(1, view.Count - 1));
+    /// <summary>
+    /// Where candle <paramref name="i"/> sits horizontally.
+    ///
+    /// By its place in the session when the bars carry a clock, by its place in the
+    /// series otherwise; see <see cref="_stamps"/>. Either way the window in view is
+    /// stretched across the whole width, so a scrolling chart of the last hour fills
+    /// the frame the way a scrolling chart of the last sixty days does.
+    /// </summary>
+    private double X(Frame view, int i) => _stamps is null
+        ? view.Left + (view.Width * (i - view.First) / Math.Max(1, view.Count - 1))
+        : Where(view, _stamps[i]);
+
+    /// <summary>Where a place on the clock axis falls, over the stretch of it in view.</summary>
+    private double Where(Frame view, double stamp)
+    {
+        var from = At(view, view.First);
+        var span = Math.Max(1e-6, At(view, view.First + view.Count - 1) - from);
+
+        return view.Left + (view.Width * ((stamp - from) / span));
+    }
+
+    /// <summary>
+    /// The clock axis at a possibly fractional bar index.
+    ///
+    /// Interpolated, because the head of a growing or scrolling chart sits partway
+    /// between two bars and the window's edges are measured against it.
+    /// </summary>
+    private double At(Frame view, double index)
+    {
+        var last = _stamps!.Length - 1;
+        var low = (int)Math.Clamp(Math.Floor(index), 0, last);
+        var high = (int)Math.Clamp(Math.Ceiling(index), 0, last);
+
+        return _stamps[low] + ((_stamps[high] - _stamps[low]) * (index - low));
+    }
 
     /// <summary>Where price <paramref name="value"/> sits vertically in the price panel.</summary>
     private double Y(Frame view, double value) =>
@@ -649,9 +736,54 @@ public sealed class CandleRenderer : IFrameRenderer
                 continue;
             }
 
-            Ink.Centred(session, CandleLoader.Label(_series.Bars[i].Date, _series.Period),
+            Ink.Centred(session, CandleLoader.Label(_series.Bars[i], _series.Period),
                 X(view, i), y, format, Palette.DateLabel, 1);
         }
+    }
+
+    /// <summary>
+    /// The lunch break, drawn as the gap it is.
+    ///
+    /// A line rather than a filled band, and only on a series whose bars carry a clock:
+    /// on every other period the axis is a line of dates and there is nothing between
+    /// them to mark. The label is the same word the turnover page's intraday curve puts
+    /// on its noon line, because it is the same fact.
+    /// </summary>
+    private void DrawLunch(CanvasDrawingSession session, FrameContext context, Frame view)
+    {
+        if (_stamps is null)
+        {
+            return;
+        }
+
+        var resumed = -1;
+
+        for (var i = 1; i < _series.Bars.Count; i++)
+        {
+            if (string.CompareOrdinal(_series.Bars[i].Clock, "1300") >= 0 &&
+                string.CompareOrdinal(_series.Bars[i - 1].Clock, "1300") < 0)
+            {
+                resumed = i;
+                break;
+            }
+        }
+
+        if (resumed < 0)
+        {
+            return;
+        }
+
+        var x = (float)Where(view, (At(view, resumed - 1) + At(view, resumed)) / 2);
+
+        session.DrawLine(
+            new Vector2(x, (float)view.Top),
+            new Vector2(x, (float)view.Bottom),
+            Ink.Fade(Palette.Grid, 0.9), (float)Math.Max(1, context.Px(1.5)));
+
+        using var format = Ink.Format(context.Px(19));
+
+        Ink.Centred(session, Strings.Get("TurnoverIntradayNoon"), x, view.Top + context.Px(26),
+            format, Palette.AxisLabel, 1);
     }
 
     /// <summary>

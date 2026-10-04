@@ -53,9 +53,10 @@ O volume financeiro de cada dia em todo o mercado: os valores dos índices compo
 
 ## Candlestick
 
-Os candles de um instrumento: diários, semanais ou mensais, desenhados de quatro formas, com médias e volume abaixo.
+Os candles de um instrumento: diários, semanais ou mensais — ou de minuto para um único dia de negociação — desenhados de quatro formas, com médias e volume abaixo.
 
 - **Intervalo** decide quanto tempo de mercado um candle cobre: um dia, uma semana ou um mês. Mudá-lo busca os dados de novo, porque na fonte as três são séries distintas.
+- **1, 5 e 15 minutos** desenham um dia de negociação: o pregão da abertura ao fechamento, com o eixo distribuído pelo relógio e o intervalo do almoço deixado como a lacuna que é. A fonte mantém candles de minuto apenas para Xangai e Shenzhen, e só das últimas sessões — cerca de quatro dias a um minuto, dezessete a cinco, cinquenta a quinze — então **Dia de negociação** é uma lista dos dias que ainda tem, não um calendário. Escolher outro apenas redesenha.
 - **Tipo de desenho** decide como os mesmos quatro preços são desenhados: candles, barras OHLC, linha de fechamento ou área de fechamento. Trocar de um para outro não busca nada.
 - **Animação** é a chegada dos candles um após o outro até traçar todo o período, ou uma janela fixa que avança. A segunda é o que mantém o candle largo o bastante para ser lido num período longo, e essa largura é o ajuste **Janela**.
 - As médias móveis MA5, MA10 e MA20 podem ser sobrepostas aos candles; o painel de volume abaixo pode ser desligado, e o painel de preço recupera o espaço.

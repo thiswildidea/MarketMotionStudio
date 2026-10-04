@@ -824,4 +824,13 @@
   <data name="TurnoverIntradayNone"><value>La fuente no tiene datos por minuto de {0}.</value></data>
   <data name="TurnoverIntradayNoAmount"><value>{0} informa minutos pero ninguna columna de contratación, así que no puede sumarse a un importe — esto no es un cero.</value></data>
   <data name="TurnoverIntradayTooFew"><value>{0} tiene demasiados pocos minutos para ser una sesión — el día puede seguir en curso.</value></data>
+  <data name="CandlePeriodMinute1"><value>1 minuto</value></data>
+  <data name="CandlePeriodMinute5"><value>5 minutos</value></data>
+  <data name="CandlePeriodMinute15"><value>15 minutos</value></data>
+  <data name="CandleDayLabel.Header"><value>Día de negociación</value></data>
+  <data name="CandleMinuteNote.Text"><value>La fuente conserva velas por minuto solo para las últimas sesiones — estos son los días que aún tiene.</value></data>
+  <data name="CandleMinuteFetched"><value>{0} el {1} · {2} velas · {3} sesiones completas para elegir</value></data>
+  <data name="CandleMinuteNone"><value>La fuente no tiene velas por minuto de {0} ({1}) — solo las tienen Shanghái y Shenzhen.</value></data>
+  <data name="CandleMinuteNoWhole"><value>Ninguna de las sesiones devueltas es un día completo — la última puede seguir cotizando.</value></data>
+  <data name="CandleMinuteMarketNone"><value>Este mercado no tiene velas por minuto — la fuente solo las tiene para Shanghái y Shenzhen.</value></data>
 </root>

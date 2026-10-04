@@ -55,9 +55,10 @@ Der tägliche Umsatz des gesamten Markts: die Beträge der Composite-Indizes von
 
 ## Kerzenchart
 
-Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich, auf vier Arten gezeichnet, mit Durchschnitten und Volumen darunter.
+Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich — oder Minutenkerzen für einen einzelnen Handelstag — auf vier Arten gezeichnet, mit Durchschnitten und Volumen darunter.
 
 - **Intervall** entscheidet, wie viel Marktzeit eine Kerze abdeckt — ein Tag, eine Woche oder ein Monat. Eine Änderung lädt neu, denn die drei sind auf der Quelle getrennte Reihen.
+- **1, 5 und 15 Minuten** zeichnen einen Handelstag: die Sitzung von der Eröffnung bis zum Schluss, mit einer nach der Uhr aufgeteilten Achse und der Mittagspause als der Lücke, die sie ist. Die Quelle führt Minutenkerzen nur für Shanghai und Shenzhen und nur für die letzten Sitzungen — etwa vier Tage bei einer Minute, siebzehn bei fünf, fünfzig bei fünfzehn — daher ist **Handelstag** eine Liste der noch vorhandenen Tage und kein Kalender. Eine andere Auswahl zeichnet nur neu.
 - **Darstellung** entscheidet, wie dieselben vier Preise gezeichnet werden: Kerzen, OHLC-Balken, Schlusskurslinie oder Schlusskursfläche. Umschalten lädt nichts neu.
 - **Ablauf** ist entweder das Eintreffen der Kerzen nacheinander, bis der ganze Zeitraum steht, oder ein festes Fenster, das weiterwandert. Das zweite hält die Kerze auf einem langen Zeitraum breit genug zum Lesen, und wie breit ist die Einstellung **Fenster**.
 - Gleitende Durchschnitte MA5, MA10 und MA20 können über die Kerzen gelegt werden; das Volumenfeld darunter lässt sich abschalten, und das Preisfeld nimmt den Platz zurück.
