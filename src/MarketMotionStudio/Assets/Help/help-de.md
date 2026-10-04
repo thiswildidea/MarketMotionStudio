@@ -29,6 +29,27 @@ Der tägliche Umsatz des gesamten Markts: die Beträge der Composite-Indizes von
 - Oder ein Segment allein betrachten: jede der Börsen, jeden Hauptmarkt, STAR, ChiNext. Hauptmärkte werden als Börsenwert minus Wachstumssegment hergeleitet; der BSE 50 bleibt eine Kennzahl der Indexmitglieder.
 - Nur der A-Aktienmarkt liefert eine Summe für den ganzen Markt. Bei Hongkong oder USA wird die Seite aus der Navigation entfernt.
 
+- **Eigene Liste.** Der letzte Eintrag im Board-Menü ist Ihre eigene Liste — Indizes und Aktien
+  nebeneinander, gemeinsam mit den vier Roster-Boards. Addiert werden nur Festlandcodes: Der
+  Umsatz wird in der Währung des jeweiligen Marktes gemeldet, daher bleiben Hongkong- und
+  US-Namen außen vor, und die Statuszeile sagt, wie viele. Ein Tag steht auf der Achse, wenn
+  *irgend ein* Mitglied gehandelt hat; ein Mitglied ohne Zeile für diesen Tag — ausgesetzt oder
+  noch nicht gelistet — steuert nichts bei. Das ist absichtlich das Gegenteil der Regel der
+  Boards oben: Ein Index wird nie ausgesetzt, eine Aktie schon, und ein gestrichener Tag ließe
+  eine Aussetzung wie einen Tag aussehen, an dem nirgends gehandelt wurde.
+- **Die Veränderung unter einem Korb** ist der gleich gewichtete Mittelwert der täglichen
+  Veränderungen der Mitglieder, jeweils gegen den eigenen Vortagesschluss. Gleich gewichtet, weil
+  eine Liste kein Portfolio ist — es gibt keine Positionsgröße, nach der sich gewichten ließe.
+- **Eine Sitzung, Minute für Minute.** Die dritte Form ist ein eigener Abruf: die laufende Summe
+  vom Opening bis zum Schluss eines einzigen Tages. Die Quelle hält nur die letzten fünf Sitzungen,
+  daher wird kein Zeitraum angeboten — das Bild nennt den Tag, den es gezeichnet hat. Die Kurve
+  endet um 15:00, denn die halbe Stunde, die der Endpunkt danach anhängt, ist nachbörslicher
+  Handel, den auch die Tageszahl nicht enthält. Die vier Karten sind die Tagessumme und die
+  Anteile von Vormittag, Nachmittag und der letzten halben Stunde — eine Grafik darüber, *wann*
+  Geld floss, weshalb drei der vier Karten Anteile sind und keine Beträge. Der BSE 50 ist das
+  einzige Board, das Minuten ohne Umsatzspalte meldet, und wird abgelehnt statt als nichts
+  gezählt.
+
 ## Kerzenchart
 
 Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich, auf vier Arten gezeichnet, mit Durchschnitten und Volumen darunter.

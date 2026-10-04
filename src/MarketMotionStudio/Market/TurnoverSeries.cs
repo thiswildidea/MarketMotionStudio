@@ -298,6 +298,24 @@ public static class MarketTurnover
     /// </summary>
     private const int FewestDays = 3;
 
+    /// <summary>
+    /// The codes a board is made of, as the recipe that produces it: what is added and what is
+    /// taken away.
+    ///
+    /// Offered rather than duplicated because the intraday board needs the same answer about the
+    /// same slice, and a second copy of the table above would be a second place for "the Shanghai
+    /// main board" to mean two different things. The derived boards are the reason this returns a
+    /// subtraction rather than a flat list: the main board is the exchange less its growth board on
+    /// *every* time axis this app draws, and a minute-by-minute chart that forgot that would show
+    /// the whole exchange while its title said the main board.
+    /// </summary>
+    public static (string[] Adds, string[] Subtracts) Codes(MarketScope scope)
+    {
+        var board = Boards[(int)scope];
+
+        return (board.Adds, board.Subtracts);
+    }
+
     public static async Task<TurnoverSeries> LoadAsync(
         TencentKline kline,
         MarketScope scope,

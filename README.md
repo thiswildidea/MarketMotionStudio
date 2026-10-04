@@ -160,13 +160,31 @@ an unfinished day holds only its opening auction. The Beijing option adds the BS
 covers its constituents rather than the whole exchange — a different measure, and a smaller one,
 so it is off by default.
 
-It draws in **two forms, switchable at any time without re-fetching**, because they answer
-different questions about one fetch. The **bar race** puts time on the horizontal axis, so a run of
-heavy days reads as a run, and closes with the mean line and the two extremes boxed. The **turnover
-calendar** gives one block per month with cells lighting up day by day, so a busy fortnight is a
-patch of colour you can point at — which a time axis spreads out. The gain/loss calendar that once
-completed this trio is its own page now (below): two places producing the same video is a choice
-nobody needs, and the whole-market copy could only ever name one index.
+The last entry on that menu is **your own list** — the one the four roster boards share, indices
+and shares side by side. Two rules change when it is the basket, and both because a share is not an
+index. Only mainland codes can be added up: turnover is reported in each market's own currency, so a
+Hong Kong or New York name is left out and the status line says how many. And a day stays on the axis
+if *any* member traded, with a member that has no row for it contributing nothing — the boards above
+keep only the days every code has, which never bit while every code was an index, and which under a
+halted share would remove the day from the chart entirely while the picture carried on looking
+exactly like a day on which nothing traded anywhere.
+
+It draws in **three forms**. The **bar race** and the **turnover calendar** are switchable at any
+time without re-fetching, because they answer different questions about one fetch: the race puts time
+on the horizontal axis, so a run of heavy days reads as a run, and closes with the mean line and the
+two extremes boxed; the calendar gives one block per month with cells lighting up day by day, so a
+busy fortnight is a patch of colour you can point at — which a time axis spreads out. The gain/loss
+calendar that once completed this trio is its own page now (below): two places producing the same
+video is a choice nobody needs, and the whole-market copy could only ever name one index.
+
+The third, **intraday**, is a fetch of its own: one session's turnover accumulating from the opening
+bell to the close, drawn as a curve that can only rise. The source keeps five sessions and no more,
+so no range is offered and the frame names the day it drew. It stops at 15:00, because the half hour
+the endpoint adds after that is after-hours trading, which the daily figure leaves out too — measured
+on 贵州茅台 2026-09-30, ¥47.97 亿 at 15:00 against ¥48.02 亿 at 15:30, while the daily row says
+¥47.97 亿. Its four closing cards are the day's total and what share of it fell in the morning, the
+afternoon and the last half hour, because a chart of *when* money moved should answer with shares and
+not restate the same total four times.
 
 **Turnover and daily change are not summed the same way, and that asymmetry decides the design.**
 Turnover is a quantity, so Shanghai plus Shenzhen is a whole-market figure. A percentage change is a
@@ -892,7 +910,9 @@ src/MarketMotionStudio/
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
-                   with BarRaceRenderer and CalendarHeatmapRenderer, StageRenderer,
+                   with BarRaceRenderer, CalendarHeatmapRenderer and IntradayRenderer
+                   (one session's cumulative curve — a clock, so it advances linearly),
+                   StageRenderer,
                    DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
                    the extreme-day board, the index race, the asset-class board, the bond board

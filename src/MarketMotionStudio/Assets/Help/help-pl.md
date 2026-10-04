@@ -29,6 +29,25 @@ Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen 
 - Albo patrzeć na jeden segment: każdą giełdę, każdy rynek główny, STAR, ChiNext. Rynki główne wyliczono jako sumę giełdową minus rynek wzrostu; BSE 50 pozostaje miarą składników.
 - Sumę dla całego rynku daje tylko rynek akcji A. Po wyborze Hongkongu lub USA strona znika z nawigacji.
 
+- **Twoja lista.** Ostatnia pozycja menu to lista, którą prowadzisz — indeksy i akcje obok siebie,
+  współdzielona z czterema tablicami roster. Sumować można tylko kody z kontynentu: obroty są
+  podawane w walucie każdego rynku, więc nazwa z Hongkongu lub Nowego Jorku wypada, a wiersz
+  stanu mówi, ile. Dzień jest na osi, gdy *ktokolwiek* z członków handlował; członek bez wiersza
+  za ten dzień — zawieszony albo jeszcze nienotowany — wnosi zero. To celowo odwrotność reguły
+  tablic powyżej: indeks nigdy nie zostaje zawieszony, akcja tak, a usunięcie dnia sprawiłoby, że
+  zawieszenie wygląda jak dzień, w którym nigdzie nie handlowano.
+- **Zmiana pod koszykiem** to średnia ważona równo dziennych zmian poszczególnych członków,
+  każda wobec własnego poprzedniego zamknięcia. Ważona równo, bo lista to nie portfel: nie ma
+  wielkości pozycji, według której można by ważyć.
+- **Jedna sesja, minuta po minucie.** Trzecia forma to osobne pobranie: narastająca suma od
+  otwarcia do zamknięcia jednego dnia. Źródło trzyma tylko pięć ostatnich sesji, więc nie ma
+  wyboru zakresu — obraz podaje dzień, który narysował. Krzywa kończy się o 15:00, bo pół godziny
+  dodane potem przez endpoint to handel po sesji, którego nie ma też w liczbie dziennej. Cztery
+  karty to suma dnia oraz udziały przedpołudnia, popołudnia i ostatnich trzydziestu minut — wykres
+  tego, *kiedy* pieniądz się poruszył, więc trzy z czterech kart to udziały, a nie kwoty. BSE 50
+  to jedyna tablica zwracająca minuty bez kolumny obrotu i jest odrzucana, a nie liczona jako
+  zero.
+
 ## Wykres świecowy
 
 Świece jednego instrumentu: dzienne, tygodniowe lub miesięczne, rysowane na cztery sposoby, ze średnimi i wolumenem poniżej.

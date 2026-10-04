@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Mercado de títulos</value></data>
   <data name="BondRaceMethodNote.Text"><value>Mensal e sem ajuste — o oposto da corrida de fundos: um índice não paga cupom em sua própria cotação, então não há nada a reintegrar, enquanto um fundo tem. As datas de início diferem: a mais antiga começa em 2003-02 e o índice conversível de Shenzhen apenas em 2014-08, então ele entra num quadro de dez anos com cinco anos de atraso. Esta página não depende da configuração de mercado.</value></data>
   <data name="BondRaceFetched"><value>{0} índices · {1} meses · na frente {2}, {3} · atrás {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Minha lista</value></data>
+  <data name="TurnoverBasketEmpty"><value>Adicione primeiro pelo menos um instrumento à sua lista.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} da lista não são ações A e ficaram de fora — o giro é informado na moeda de cada mercado.</value></data>
+  <data name="TurnoverBasketLabel"><value>da minha lista</value></data>
+  <data name="TurnoverViewIntraday"><value>Intradiário</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Giro minuto a minuto</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · unidade: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} minutos</value></data>
+  <data name="TurnoverIntradayNoon"><value>Intervalo</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Total do dia</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Antes do intervalo</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Após o intervalo</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Últimos 30 min</value></data>
+  <data name="TurnoverIntradayFetching"><value>Obtendo {0} minuto a minuto…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} em {1} · {2} minutos · {3} {4} no fechamento</value></data>
+  <data name="TurnoverIntradayNone"><value>A fonte não tem dados por minuto de {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} informa minutos, mas nenhuma coluna de giro, então não pode ser somado a um valor — isso não é zero.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} tem poucos minutos para ser um pregão — o dia pode estar em andamento.</value></data>
 </root>

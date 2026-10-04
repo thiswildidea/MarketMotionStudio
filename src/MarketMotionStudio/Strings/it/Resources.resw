@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Mercato obbligazionario</value></data>
   <data name="BondRaceMethodNote.Text"><value>Mensile e non rettificato — l'opposto della corsa dei fondi: un indice non paga cedole nella propria quotazione, quindi non c'è nulla da reintegrare, mentre un fondo sì. Le date di inizio differiscono: la più antica parte dal 2003-02 e l'indice convertibile di Shenzhen solo dal 2014-08, quindi entra in un tabellone decennale con cinque anni di ritardo. Questa pagina non dipende dall'impostazione del mercato.</value></data>
   <data name="BondRaceFetched"><value>{0} indici · {1} mesi · in testa {2}, {3} · in coda {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>La mia lista</value></data>
+  <data name="TurnoverBasketEmpty"><value>Aggiunga prima almeno uno strumento alla sua lista.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} della lista non sono azioni A e sono stati esclusi — gli scambi sono espressi nella valuta di ogni mercato.</value></data>
+  <data name="TurnoverBasketLabel"><value>dalla mia lista</value></data>
+  <data name="TurnoverViewIntraday"><value>Intraday</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Scambi minuto per minuto</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · unità: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} minuti</value></data>
+  <data name="TurnoverIntradayNoon"><value>Pausa</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Totale giornata</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Mattina</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Pomeriggio</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Ultimi 30 min</value></data>
+  <data name="TurnoverIntradayFetching"><value>Recupero di {0} minuto per minuto…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} il {1} · {2} minuti · {3} {4} alla chiusura</value></data>
+  <data name="TurnoverIntradayNone"><value>La fonte non ha dati minuto per minuto per {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} riporta minuti ma nessuna colonna di scambi, quindi non può essere sommato a un importo — non è uno zero.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} ha troppo pochi minuti per essere una seduta — la giornata potrebbe essere ancora in corso.</value></data>
 </root>

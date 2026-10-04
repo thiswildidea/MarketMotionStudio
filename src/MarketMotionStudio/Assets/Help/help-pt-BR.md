@@ -29,6 +29,25 @@ O volume financeiro de cada dia em todo o mercado: os valores dos índices compo
 - Ou olhar só um segmento: cada bolsa, cada quadro principal, STAR, ChiNext. Os quadros principais são derivados do total da bolsa menos o seu quadro de crescimento; o BSE 50 continua sendo uma medida de componentes.
 - Só o mercado de ações A dá um total do mercado inteiro. Com Hong Kong ou Estados Unidos a página é removida da navegação.
 
+- **Sua lista.** A última entrada do menu é a lista que você mantém — índices e ações lado a
+  lado, compartilhada com as quatro tabelas de roster. Só códigos continentais podem ser somados:
+  o giro é informado na moeda de cada mercado, então um nome de Hong Kong ou Nova York fica de
+  fora e a linha de estado diz quantos. Um dia entra no eixo se *algum* membro negociou; um membro
+  sem linha naquele dia — suspenso, ou ainda não listado — não contribui. É deliberadamente o
+  oposto da regra das tabelas acima: um índice nunca é suspenso, uma ação sim, e remover o dia
+  faria uma suspensão parecer um dia em que nada foi negociado em lugar algum.
+- **A variação sob uma cesta** é a média equiponderada das variações diárias próprias de cada
+  membro, medida contra seu próprio fechamento anterior. Equiponderada porque uma lista não é uma
+  carteira: não há tamanho de posição para ponderar.
+- **Um pregão, minuto a minuto.** A terceira forma é outra consulta: o acumulado da abertura ao
+  fechamento de um único dia. A fonte guarda apenas as últimas cinco sessões, portanto nenhum
+  intervalo é oferecido — o quadro nomeia o dia que desenhou. A curva para às 15:00, porque a meia
+  hora que o endpoint acrescenta depois é negociação após o pregão, que o número diário também não
+  inclui. Os quatro cartões são o total do dia e a fatia da manhã, da tarde e dos últimos trinta
+  minutos — um gráfico de *quando* o dinheiro se moveu, então três dos quatro são fatias e não
+  valores. O BSE 50 é a única tabela que devolve minutos sem coluna de giro, e é recusada em vez
+  de contada como nada.
+
 ## Candlestick
 
 Os candles de um instrumento: diários, semanais ou mensais, desenhados de quatro formas, com médias e volume abaixo.

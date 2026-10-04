@@ -29,6 +29,26 @@ El importe negociado cada día en todo el mercado: los importes de los índices 
 - O mirar solo un segmento: cada bolsa, cada board principal, STAR, ChiNext. Los boards principales se derivan del total de la bolsa menos su board de crecimiento; el BSE 50 sigue siendo una medida de componentes.
 - Solo el mercado de acciones A da un total de todo el mercado. Con Hong Kong o Estados Unidos la página se retira de la navegación.
 
+- **Su lista.** La última entrada del menú es la lista que usted mantiene — índices y acciones
+  juntos, compartida con las cuatro tablas de roster. Solo se pueden sumar los códigos
+  continentales: la contratación se publica en la divisa de cada mercado, así que un nombre de
+  Hong Kong o de Nueva York queda fuera y la línea de estado dice cuántos. Un día está en el eje
+  si *algún* miembro negoció; un miembro sin fila ese día — suspendido, o aún sin cotizar — no
+  aporta nada. Es deliberadamente lo contrario de la regla de las tablas de arriba: un índice
+  nunca se suspende, una acción sí, y eliminar el día haría que una suspensión pareciera un día
+  sin negociación en ninguna parte.
+- **La variación bajo una cesta** es el promedio equiponderado de las variaciones diarias propias
+  de cada miembro, medidas contra su cierre anterior. Equiponderado porque una lista no es una
+  cartera: no hay tamaño de posición con el que ponderar.
+- **Una sesión, minuto a minuto.** La tercera forma es otra consulta: el acumulado desde la
+  apertura hasta el cierre de un solo día. La fuente solo guarda las últimas cinco sesiones, así
+  que no se ofrece ningún rango — el cuadro nombra el día que dibujó. La curva se detiene a las
+  15:00, porque la media hora que añade el endpoint después es negociación fuera de horario, que
+  la cifra diaria tampoco incluye. Las cuatro tarjetas son el total del día y la parte que
+  correspondió a la mañana, la tarde y la última media hora — un gráfico de *cuándo* se movió el
+  dinero, así que tres de las cuatro son proporciones y no importes. El BSE 50 es la única tabla
+  que devuelve minutos sin columna de contratación, y se rechaza en lugar de contarse como nada.
+
 ## Velas
 
 Las velas de un instrumento: diarias, semanales o mensuales, dibujadas de cuatro formas, con sus medias y su volumen debajo.

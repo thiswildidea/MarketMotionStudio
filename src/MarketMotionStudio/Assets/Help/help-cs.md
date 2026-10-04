@@ -29,6 +29,24 @@ Denní obrat celého trhu: částky souhrnných indexů Šanghaje a Šen-čenu s
 - Nebo se dívat jen na jeden segment: každou burzu, každý hlavní trh, STAR, ChiNext. Hlavní trhy se počítají jako součet burzy minus růstový trh; BSE 50 zůstává měrou podle složek.
 - Součet za celý trh dává jen trh A-akcií. Při volbě Hongkongu nebo USA se stránka z navigace odstraní.
 
+- **Váš seznam.** Poslední položka menu je seznam, který si vedete — indexy a akcie vedle sebe,
+  sdílený se čtyřmi roster tabulemi. Sčítat lze pouze pevninské kódy: obrat je uváděn v měně
+  každého trhu, takže název z Hongkongu nebo New Yorku zůstane venku a stavový řádek řekne kolik.
+  Den je na ose, pokud *někdo* z členů obchodoval; člen bez řádku pro tento den — pozastavený,
+  nebo ještě nekótovaný — nepřidá nic. Je to záměrně opak pravidla tabulí výše: index se nikdy
+  nepozastaví, akcie ano, a vypuštění dne by způsobilo, že pozastavení vypadá jako den, kdy se
+  neobchodovalo nikde.
+- **Změna pod košem** je rovnoměrně vážený průměr denních změn jednotlivých členů, každá proti
+  vlastní předchozí zavírací ceně. Rovnoměrně vážený proto, že seznam není portfolio: není zde
+  velikost pozice, podle které by se dalo vážit.
+- **Jeden den, minutu po minutě.** Třetí forma je samostatné načtení: průběžný součet od otevření
+  do zavření jediného dne. Zdroj drží jen posledních pět seancí, takže žádný rozsah nenabízí —
+  obraz pojmenuje den, který nakreslil. Křivka končí v 15:00, protože půlhodina, kterou endpoint
+  přidává poté, je after-hours obchodování, které denní číslo také neobsahuje. Čtyři karty jsou
+  celkový součet dne a podíly dopoledne, odpoledne a poslední půlhodiny — graf toho, *kdy* se
+  peníze pohybovaly, takže tři ze čtyř kart jsou podíly, ne částky. BSE 50 je jediná tabule, která
+  vrací minuty bez sloupce obratu, a je odmítnuta, nikoli započtena jako nic.
+
 ## Svíčkový graf
 
 Svíčky jednoho nástroje: denní, týdenní nebo měsíční, kreslené čtyřmi způsoby, s průměry a objemem pod nimi.

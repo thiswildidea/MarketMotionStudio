@@ -406,6 +406,28 @@ public static class Markets
             : code.ToLowerInvariant();
 
     /// <summary>
+    /// Whether a code is quoted on a mainland exchange — `sh`, `sz` or `bj`.
+    ///
+    /// The watchlist is deliberately cross-market: a Shanghai share, a Hong Kong one and a New
+    /// York one can sit on it together, because the four roster boards that read it are not
+    /// governed by the market setting. **Turnover is the exception.** It is a sum of money, and
+    /// each venue reports it in its own unit — 万元 in Shanghai, 万港元 in Hong Kong, dollars in
+    /// New York — so adding a Hong Kong name into an A-share turnover basket is adding a
+    /// different currency to a total the frame will label 亿元 without saying anything.
+    ///
+    /// Not a conversion: there is no rate on hand that would make the sum honest, and a total
+    /// converted at today's rate is a different number from a total converted at each day's.
+    /// </summary>
+    public static bool IsMainland(string code)
+    {
+        var canon = Canonize(code);
+
+        return canon.StartsWith("sh", StringComparison.Ordinal)
+            || canon.StartsWith("sz", StringComparison.Ordinal)
+            || canon.StartsWith("bj", StringComparison.Ordinal);
+    }
+
+    /// <summary>
     /// Every entrant a market's rosters offer, deduplicated and in order: the
     /// custom picker's candidate pool.
     /// </summary>

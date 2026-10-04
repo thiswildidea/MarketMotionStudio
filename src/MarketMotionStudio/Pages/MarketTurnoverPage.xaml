@@ -102,6 +102,14 @@
                               HorizontalAlignment="Stretch"
                               SelectionChanged="OnScopeChanged" />
 
+                    <!-- One's own list, shown when the board menu names it. Shared with the
+                         roster boards — a pick made here is on them too. Indices and stocks
+                         side by side, because the amount each contributes is a sum of money
+                         and the source reports it for both. -->
+                    <views:WatchlistPicker x:Name="Watch"
+                                           Visibility="Collapsed"
+                                           Changed="OnWatchChanged" />
+
                     <!-- The caveat is beside the selector, not in the help document.
                          Two of these choices change what the number means rather than how
                          it looks, and someone picking them is deciding whether a different

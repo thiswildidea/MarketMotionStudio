@@ -43,7 +43,14 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// shifts the header block and the plot together, and a hidden title lifts both by one row;
     /// a renderer that multiplied here would leave the plot behind when either happened.
     /// </summary>
-    protected const double PlotTopFraction = 0.377;
+    /// <remarks>
+    /// Public because the intraday form draws on the same frame: a session's curve and a year's
+    /// bars are two answers to the same question, and a reader switching between them must see the
+    /// lower stack — the cards and the credit — land on the same lines. A second copy of this
+    /// constant is a second place for the two forms to drift apart by a few pixels, which is
+    /// invisible in a still and obvious in a cut.
+    /// </remarks>
+    public const double PlotTopFraction = 0.377;
 
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;

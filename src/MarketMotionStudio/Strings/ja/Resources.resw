@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>債券市場</value></data>
   <data name="BondRaceMethodNote.Text"><value>月次・未調整——ファンド競速とは逆です。指数は自らの気配値にクーポンを支払わないため、戻し入れるものがありません（ファンドにはあります）。開始月はまちまちで、最古は2003-02、深センの転換債指数は 2014-08 からなので、十年の盤面には 5 年遅れて登場します。このページは市場設定に左右されません。</value></data>
   <data name="BondRaceFetched"><value>{0} 指数 · {1} か月 · 首位は {2}、{3} · 最下位は {4}、{5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>マイリスト</value></data>
+  <data name="TurnoverBasketEmpty"><value>まずリストに銘柄を 1 件以上追加してください。</value></data>
+  <data name="TurnoverBasketSkipped"><value>リストの {0} 件は A 株ではないため除外しました。売買代金は各市場の通貨で報告されます。</value></data>
+  <data name="TurnoverBasketLabel"><value>マイリストの</value></data>
+  <data name="TurnoverViewIntraday"><value>日中</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>分足売買代金</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · 単位: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} 分</value></data>
+  <data name="TurnoverIntradayNoon"><value>昼休み</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>1 日の合計</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>前場</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>後場</value></data>
+  <data name="TurnoverIntradayStatClose"><value>終盤 30 分</value></data>
+  <data name="TurnoverIntradayFetching"><value>{0} を分足で取得中…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} {1} · {2} 分 · 大引け {3} {4}</value></data>
+  <data name="TurnoverIntradayNone"><value>ソースに {0} の分足データはありません。</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} は分足を返しますが売買代金の列がないため、金額に加算できません。ゼロではありません。</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} は 1 日分として分が少なすぎます。取引時間中の可能性があります。</value></data>
 </root>

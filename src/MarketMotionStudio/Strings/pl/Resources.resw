@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Rynek obligacji</value></data>
   <data name="BondRaceMethodNote.Text"><value>Miesięcznie i bez korekty — odwrotnie niż w wyścigu funduszy: indeks nie wypłaca kuponu do własnego notowania, więc nie ma czego doliczać, fundusz — owszem. Daty początkowe różnią się: najwcześniejsza to 2003-02, a indeks konwertowalny Shenzhen dopiero 2014-08, więc na dziesięcioletniej tablicy dołącza po pięciu latach. Ta strona nie zależy od ustawienia rynku.</value></data>
   <data name="BondRaceFetched"><value>{0} indeksów · {1} miesięcy · z przodu {2}, {3} · z tyłu {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Moja lista</value></data>
+  <data name="TurnoverBasketEmpty"><value>Dodaj najpierw co najmniej jeden instrument do swojej listy.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} z listy to nie są akcje A i zostały pominięte — obroty są podawane w walucie każdego rynku.</value></data>
+  <data name="TurnoverBasketLabel"><value>z mojej listy</value></data>
+  <data name="TurnoverViewIntraday"><value>W ciągu dnia</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Obroty minuta po minucie</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · jednostka: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} minut</value></data>
+  <data name="TurnoverIntradayNoon"><value>Przerwa</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Suma dnia</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Przed południem</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Po południu</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Ostatnie 30 min</value></data>
+  <data name="TurnoverIntradayFetching"><value>Pobieram {0} minuta po minucie…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} {1} · {2} minut · {3} {4} na zamknięciu</value></data>
+  <data name="TurnoverIntradayNone"><value>Źródło nie ma danych minutowych dla {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} podaje minuty, ale nie ma kolumny obrotu, więc nie można dodać tego do kwoty — to nie jest zero.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} ma za mało minut, by być sesją — dzień może jeszcze trwać.</value></data>
 </root>

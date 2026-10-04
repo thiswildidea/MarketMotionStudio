@@ -29,6 +29,27 @@ Le montant échangé chaque jour sur tout le marché : les montants des indices 
 - Ou regarder un seul segment : chaque bourse, chaque marché principal, STAR, ChiNext. Les marchés principaux sont déduits du total de la bourse moins son marché de croissance ; le BSE 50 reste une mesure de composantes.
 - Seul le marché des actions A donne un total pour l'ensemble du marché. Avec Hong Kong ou les États-Unis, la page est retirée de la navigation.
 
+- **Votre liste.** La dernière entrée du menu est la liste que vous tenez — indices et actions
+  côte à côte, partagée avec les quatre tableaux à roster. Seuls les codes continentaux peuvent
+  être additionnés : les transactions sont publiées dans la devise de chaque marché, donc un nom
+  de Hong Kong ou de New York est écarté, et la ligne d'état dit combien. Un jour figure sur
+  l'axe dès que *n'importe quel* membre a traité ; un membre sans ligne ce jour-là — suspendu, ou
+  pas encore coté — n'apporte rien. C'est délibérément l'inverse de la règle des tableaux
+  ci-dessus : un indice n'est jamais suspendu, une action si, et supprimer le jour ferait
+  ressembler une suspension à un jour sans aucune transaction nulle part.
+- **La variation sous un panier** est la moyenne équipondérée des variations quotidiennes propres
+  à chaque membre, mesurée contre sa propre clôture précédente. Équipondérée parce qu'une liste
+  n'est pas un portefeuille : il n'y a aucune taille de position par laquelle pondérer.
+- **Une séance, minute par minute.** La troisième forme est une autre requête : le total cumulé
+  de l'ouverture à la clôture d'un seul jour. La source ne garde que les cinq dernières séances,
+  donc aucun intervalle n'est proposé — l'image nomme le jour qu'elle a tracé. La courbe s'arrête
+  à 15:00, car la demi-heure ajoutée ensuite par le point d'accès est du hors-séance, que le
+  chiffre quotidien exclut également. Les quatre cartes sont le total du jour et la part du
+  matin, de l'après-midi et de la dernière demi-heure — un graphique de *quand* l'argent a
+  circulé, donc trois cartes sur quatre sont des parts et non des montants. Le BSE 50 est le seul
+  tableau à renvoyer des minutes sans colonne de transactions ; il est refusé plutôt que compté
+  pour rien.
+
 ## Chandeliers
 
 Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels, dessinés de quatre façons, avec ses moyennes et son volume en dessous.

@@ -29,6 +29,25 @@ The whole market's daily turnover: the Shanghai and Shenzhen composite amounts a
 - Or look at one slice alone: either exchange, either main board, STAR, ChiNext. Main boards are derived as the exchange total less its growth board; the BSE 50 remains a constituent measure.
 - Only the A-share market yields a whole-market total. On Hong Kong or the United States the page is taken out of the navigation.
 
+- **Your own list.** The last entry on the board menu is the list you keep — indices and shares
+  side by side, shared with the four roster boards. Only mainland codes can be added up: turnover
+  is reported in each market's own currency, so a Hong Kong or New York name is left out, and the
+  status line says how many. A day is on the axis if *any* member traded; a member with no row
+  for that day — halted, or not yet listed — contributes nothing. That is deliberately the
+  opposite of the rule the boards above use: an index never halts, a share does, and dropping the
+  day would make a halt look like a day on which nothing traded anywhere.
+- **The change under a basket** is the equal-weighted average of the members' own daily changes,
+  each measured against its own previous close. Equal-weighted because a list is not a portfolio:
+  there is no holding size to weight by.
+- **One session, minute by minute.** The third form is a separate fetch: the running total from
+  the opening bell to the close on a single day. The source keeps the last five sessions and no
+  more, so no range is offered — the frame names the day it drew. The curve stops at 15:00,
+  because the half hour the endpoint adds after that is after-hours trading, which the daily
+  figure leaves out too. The four closing cards are the day's total and what share of it fell in
+  the morning, the afternoon, and the last half hour — a chart of *when* money moved, so three of
+  the four are shares rather than amounts. The BSE 50 is the one board that reports minutes with
+  no amount column at all, and it is refused rather than counted as nothing.
+
 ## Candles
 
 One instrument's prices as candles: daily, weekly or monthly, drawn four ways, with its averages and its volume underneath.

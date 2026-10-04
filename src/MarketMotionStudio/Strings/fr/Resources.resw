@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Marché obligataire</value></data>
   <data name="BondRaceMethodNote.Text"><value>Mensuel et non ajusté — l'inverse de la course des fonds : un indice ne verse aucun coupon dans sa propre cotation, il n'y a donc rien à réintégrer, alors qu'un fonds si. Les dates de début diffèrent : la plus ancienne commence en 2003-02 et l'indice convertible de Shenzhen seulement en 2014-08, qui rejoint donc un tableau de dix ans avec cinq ans de retard. Cette page ne dépend pas du réglage de marché.</value></data>
   <data name="BondRaceFetched"><value>{0} indices · {1} mois · en tête {2}, {3} · en queue {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Ma liste</value></data>
+  <data name="TurnoverBasketEmpty"><value>Ajoutez d'abord au moins un instrument à votre liste.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} de votre liste ne sont pas des actions A et ont été ignorées — les transactions sont publiées dans la devise de chaque marché.</value></data>
+  <data name="TurnoverBasketLabel"><value>de ma liste</value></data>
+  <data name="TurnoverViewIntraday"><value>Séance</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Transactions minute par minute</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · unité : {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} minutes</value></data>
+  <data name="TurnoverIntradayNoon"><value>Pause déjeuner</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Total du jour</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Matinée</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Après-midi</value></data>
+  <data name="TurnoverIntradayStatClose"><value>30 dernières min</value></data>
+  <data name="TurnoverIntradayFetching"><value>Récupération de {0} minute par minute…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} le {1} · {2} minutes · {3} {4} à la clôture</value></data>
+  <data name="TurnoverIntradayNone"><value>La source n'a pas de données par minute pour {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} indique des minutes mais aucune colonne de transactions ; impossible de l'ajouter à un montant — ce n'est pas un zéro.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} n'a pas assez de minutes pour être une séance — la journée est peut-être en cours.</value></data>
 </root>

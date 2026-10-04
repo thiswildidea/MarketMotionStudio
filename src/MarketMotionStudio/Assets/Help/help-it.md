@@ -29,6 +29,26 @@ Il controvalore scambiato ogni giorno sull'intero mercato: gli importi degli ind
 - Oppure guardare un solo segmento: ciascuna borsa, ciascun mercato principale, STAR, ChiNext. I mercati principali sono ricavati dal totale della borsa meno il suo mercato di crescita; il BSE 50 resta una misura a componenti.
 - Solo il mercato delle azioni A dà un totale per l'intero mercato. Con Hong Kong o Stati Uniti la pagina viene rimossa dalla navigazione.
 
+- **La vostra lista.** L'ultima voce del menu è la lista che gestite voi — indici e azioni
+  fianco a fianco, condivisa con le quattro tavole a roster. Si possono sommare solo i codici
+  continentali: gli scambi sono pubblicati nella valuta di ogni mercato, quindi un nome di Hong
+  Kong o di New York resta fuori e la riga di stato dice quanti. Un giorno è sull'asse se
+  *qualunque* membro ha trattato; un membro senza riga per quel giorno — sospeso, o non ancora
+  quotato — non contribuisce. È deliberatamente il contrario della regola delle tavole sopra: un
+  indice non viene mai sospeso, un'azione sì, e togliere il giorno farebbe sembrare una sospensione
+  un giorno in cui non si è trattato da nessuna parte.
+- **La variazione sotto un paniere** è la media equal-ponderata delle variazioni giornaliere
+  proprie di ogni membro, misurata contro la propria chiusura precedente. Equal-ponderata perché
+  una lista non è un portafoglio: non c'è una dimensione della posizione con cui ponderare.
+- **Una seduta, minuto per minuto.** La terza forma è una richiesta separata: il totale
+  progressivo dall'apertura alla chiusura di un solo giorno. La fonte conserva solo le ultime
+  cinque sedute, quindi non si offre alcun intervallo — il quadro nomina il giorno che ha
+  disegnato. La curva si ferma alle 15:00, perché la mezz'ora che l'endpoint aggiunge dopo è
+  after-hours, che anche il dato giornaliero esclude. Le quattro schede sono il totale del giorno
+  e la quota di mattina, pomeriggio e ultima mezz'ora — un grafico di *quando* il denaro si è
+  mosso, quindi tre schede su quattro sono quote e non importi. Il BSE 50 è l'unica tavola che
+  riporta minuti senza colonna degli scambi, e viene rifiutata invece di essere contata come nulla.
+
 ## Candele
 
 Le candele di uno strumento: giornaliere, settimanali o mensili, disegnate in quattro modi, con le medie e il volume sotto.

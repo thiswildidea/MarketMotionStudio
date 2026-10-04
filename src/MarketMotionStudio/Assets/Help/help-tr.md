@@ -29,6 +29,25 @@ Tüm piyasanın günlük işlem hacmi: Şanghay ve Şenzen bileşik endekslerini
 - Ya da yalnızca bir pazara bakın: her iki borsa, her ana pazar, STAR, ChiNext. Ana pazarlar borsa toplamından büyüme pazarının düşülmesiyle bulunur; BSE 50 hâlâ bileşen bazlı bir ölçüdür.
 - Tüm piyasa için toplamı yalnızca A hisseleri verir. Hong Kong veya ABD seçildiğinde sayfa gezinmeden çıkarılır.
 
+- **Kendi listeniz.** Menünün son girdisi, sizin tuttuğunuz listedir — endeksler ve hisseler yan
+  yana, dört roster tablosuyla paylaşılır. Yalnızca anakara kodları toplanabilir: işlem hacmi her
+  piyasanın kendi para biriminde bildirilir, bu yüzden Hong Kong veya New York adı dışarıda kalır
+  ve durum satırı kaç tane olduğunu söyler. Bir gün, *herhangi bir* üye işlem gördüyse eksende
+  yer alır; o güne ait satırı olmayan üye — işleme kapatılmış ya da henüz listelenmemiş — hiçbir
+  şey eklemez. Bu, yukarıdaki tabloların kuralının kasıtlı olarak tersidir: bir endeks asla
+  kapatılmaz, bir hisse kapatılır ve günü atmak, kapatılmayı hiçbir yerde işlem olmayan bir gün
+  gibi gösterirdi.
+- **Sepetin altındaki değişim**, her üyenin kendi önceki kapanışına göre ölçülen günlük
+  değişimlerinin eşit ağırlıklı ortalamasıdır. Eşit ağırlıklıdır, çünkü bir liste portföy değildir:
+  ağırlıklandıracak bir pozisyon büyüklüğü yoktur.
+- **Tek bir seans, dakika dakika.** Üçüncü biçim ayrı bir sorgudur: tek bir günün açılıştan
+  kapanışa kadar biriken toplamı. Kaynak yalnızca son beş seansı saklar, bu yüzden aralık
+  sunulmaz — kare, çizdiği günü adlandırır. Eğri 15:00'te durur, çünkü uç noktanın sonra eklediği
+  yarım saat, günlük rakamın da içermediği seans sonrası işlemlerdir. Dört kart, günün toplamı ile
+  sabah, öğleden sonra ve son yarım saatin payıdır — para*ın ne zaman* hareket ettiğinin grafiği,
+  bu yüzden dörtten üçü tutar değil paydır. BSE 50, işlem hacmi sütunu olmadan dakika bildiren tek
+  tablodur ve hiç sayılmak yerine reddedilir.
+
 ## Mum grafiği
 
 Bir enstrümanın mumları: günlük, haftalık veya aylık, dört farklı şekilde çizilir; altında ortalamaları ve hacmi.

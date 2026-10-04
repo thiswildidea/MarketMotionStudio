@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Рынок облигаций</value></data>
   <data name="BondRaceMethodNote.Text"><value>Ежемесячно и без корректировки — противоположность гонке фондов: индекс не выплачивает купон в собственную котировку, так что возвращать нечего, а у фонда — есть. Даты начала различаются: самая ранняя — 2003-02, а конвертируемый индекс Шэньчжэня — только 2014-08, то есть на десятилетнюю доску он выходит через пять лет. Эта страница не зависит от настройки рынка.</value></data>
   <data name="BondRaceFetched"><value>{0} индексов · {1} мес. · впереди {2}, {3} · позади {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Мой список</value></data>
+  <data name="TurnoverBasketEmpty"><value>Сначала добавьте в список хотя бы один инструмент.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} в списке — не акции A, они пропущены: оборот указывается в валюте каждого рынка.</value></data>
+  <data name="TurnoverBasketLabel"><value>из моего списка</value></data>
+  <data name="TurnoverViewIntraday"><value>Внутри дня</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Оборот по минутам</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · единица: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} мин</value></data>
+  <data name="TurnoverIntradayNoon"><value>Обед</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Итого за день</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>До обеда</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>После обеда</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Последние 30 мин</value></data>
+  <data name="TurnoverIntradayFetching"><value>Получаю {0} по минутам…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} {1} · {2} мин · {3} {4} на закрытии</value></data>
+  <data name="TurnoverIntradayNone"><value>У источника нет минутных данных по {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} выдаёт минуты, но нет колонки оборота, поэтому его нельзя прибавить к сумме — это не ноль.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} слишком мало минут для сессии — возможно, день ещё идёт.</value></data>
 </root>

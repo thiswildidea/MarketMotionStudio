@@ -803,4 +803,22 @@
   <data name="BondRaceStageTitle"><value>債市固收</value></data>
   <data name="BondRaceMethodNote.Text"><value>月線、未復權——與大類資產那一榜相反：指數不會把票息算進自己的報價，所以沒有東西需要加回去，基金則不然。起點各不相同：最早從 2003-02 開始，深圳的可轉債指數要到 2014-08 才有，所以在十年榜上它晚了五年才進場。本頁不受市場設定影響。</value></data>
   <data name="BondRaceFetched"><value>{0} 條指數 · {1} 個月 · 領先的是 {2}，{3} · 墊底的是 {4}，{5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>自選清單</value></data>
+  <data name="TurnoverBasketEmpty"><value>請先在清單中加入至少一檔標的。</value></data>
+  <data name="TurnoverBasketSkipped"><value>清單裡有 {0} 檔不是 A 股，已略過——成交額是各市場各報各的幣別。</value></data>
+  <data name="TurnoverBasketLabel"><value>自選</value></data>
+  <data name="TurnoverViewIntraday"><value>日內</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>當日成交額</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · 單位：{1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} 分鐘</value></data>
+  <data name="TurnoverIntradayNoon"><value>午休</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>全天成交</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>上午</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>下午</value></data>
+  <data name="TurnoverIntradayStatClose"><value>尾盤 30 分</value></data>
+  <data name="TurnoverIntradayFetching"><value>正在取 {0} 的分時資料…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} · {1} · {2} 分鐘 · 收盤 {3} {4}</value></data>
+  <data name="TurnoverIntradayNone"><value>來源沒有 {0} 的分時資料。</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} 有分時資料但沒有成交額欄，不能加進金額——這不是 0。</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} 的分鐘太少，不足以構成一個交易日——當天可能還在進行中。</value></data>
 </root>

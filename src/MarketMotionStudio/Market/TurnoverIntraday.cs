@@ -22,13 +22,78 @@ namespace MarketMotionStudio.Market;
 /// </summary>
 /// <param name="Code">The instrument, `sh600519` style.</param>
 /// <param name="Name">Its name, for a legend and a file name.</param>
+/// <param name="Day">Which session this is, `yyyy-MM-dd`. The endpoint keeps five and no date
+/// picker is offered, so the frame has to say which of them it is showing.</param>
 /// <param name="Labels">Clock labels, `09:30` … `15:00`.</param>
 /// <param name="CumulativeYi">Running turnover in 亿元, same length as <paramref name="Labels"/>.</param>
 public sealed record IntradayTurnover(
-    string Code, string Name, IReadOnlyList<string> Labels, IReadOnlyList<double> CumulativeYi)
+    string Code, string Name, string Day, IReadOnlyList<string> Labels, IReadOnlyList<double> CumulativeYi)
 {
     /// <summary>The day's total, which is the last running total — not a sum of the minutes.</summary>
     public double TotalYi => CumulativeYi.Count > 0 ? CumulativeYi[^1] : 0;
+
+    /// <summary>How many minutes the session is drawn across.</summary>
+    public int Count => Labels.Count;
+
+    /// <summary>The clock label where the afternoon resumes — the lunch break's right edge.</summary>
+    public string NoonLabel => "13:00";
+
+    /// <summary>The clock label where the morning ends — the lunch break's left edge.</summary>
+    public string MorningLabel => "11:30";
+
+    /// <summary>Where the last half hour starts, which is the part of the day traders mean by 尾盘.</summary>
+    public string CloseLabel => "14:30";
+
+    /// <summary>
+    /// The running total as at a clock label, taking the last minute at or before it.
+    ///
+    /// "At or before" because these labels are minutes that were *reported*, and a session
+    /// need not report the exact minute being asked about — asking for 11:30 on a day whose
+    /// last morning minute is 11:29 must answer with 11:29's total, not with zero.
+    /// </summary>
+    public double AsAt(string clock)
+    {
+        var last = 0.0;
+
+        for (var i = 0; i < Labels.Count; i++)
+        {
+            if (string.CompareOrdinal(Labels[i], clock) > 0)
+            {
+                break;
+            }
+
+            last = CumulativeYi[i];
+        }
+
+        return last;
+    }
+
+    /// <summary>Traded in the morning session — everything up to the lunch break.</summary>
+    public double MorningYi => AsAt(MorningLabel);
+
+    /// <summary>Traded after the lunch break. The day's total less the morning, so the two add up
+    /// to the whole rather than each being rounded on its own.</summary>
+    public double AfternoonYi => Math.Max(0, TotalYi - MorningYi);
+
+    /// <summary>Traded in the last half hour, which is the part of a session traders mean by 尾盘.</summary>
+    public double CloseRunYi => Math.Max(0, TotalYi - AsAt(CloseLabel));
+
+    /// <summary>A part as a percentage of the day, or zero on a day that traded nothing.</summary>
+    public double Share(double part) => TotalYi > 0 ? (part / TotalYi) * 100 : 0;
+
+    /// <summary>The first index at or after a clock label, or -1 if the day ends before it.</summary>
+    public int IndexAtOrAfter(string clock)
+    {
+        for (var i = 0; i < Labels.Count; i++)
+        {
+            if (string.CompareOrdinal(Labels[i], clock) >= 0)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }
 
 /// <summary>Why an instrument could not be drawn on the intraday board.</summary>
@@ -82,7 +147,8 @@ public static class TurnoverIntraday
         string code,
         string? wantedDay,
         IProgress<string>? progress,
-        CancellationToken cancellation)
+        CancellationToken cancellation,
+        string? name = null)
     {
         progress?.Report(Strings.Format("TurnoverIntradayFetching", code.ToUpperInvariant()));
 
@@ -177,7 +243,140 @@ public static class TurnoverIntraday
             throw new IntradayUnavailableException(IntradayDenial.TooFew, code);
         }
 
-        return new IntradayTurnover(code, code.ToUpperInvariant(), labels, amounts);
+        // The endpoint names the day as 20260930 and the frame prints 2026-09-30 in every
+        // locale — see TurnoverRenderer.Iso for why a date here is never left to the culture.
+        var stamp = chosen.Id.Length == 8
+            ? $"{chosen.Id[..4]}-{chosen.Id[4..6]}-{chosen.Id[6..]}"
+            : chosen.Id;
+
+        return new IntradayTurnover(code, name ?? code.ToUpperInvariant(), stamp, labels, amounts);
+    }
+
+    /// <summary>
+    /// Adds several instruments into one running total, minute by minute.
+    ///
+    /// **The axis is the longest series, not the intersection of them all.** A cumulative curve
+    /// must never fall, and an instrument whose minute is missing has not traded *nothing* in that
+    /// minute — it has simply not reported one since the minute before. Its last known running
+    /// total is therefore carried forward, which keeps the sum monotonic. Intersecting would drop
+    /// the minutes only one of them had, and on a board whose whole subject is the shape of a
+    /// session, silently removing minutes is silently removing the shape.
+    ///
+    /// <para>
+    /// Subtraction is carried rather than applied by the caller, because the main boards are
+    /// derived — the Shanghai main board is the exchange less its STAR board — and doing that
+    /// difference after the curves were drawn would be a second, differently-rounded answer to a
+    /// question this one already answers exactly.
+    /// </para>
+    /// </summary>
+    /// <param name="label">What the combined curve is, for its title and its file name.</param>
+    /// <param name="adds">Instruments whose amounts are added.</param>
+    /// <param name="subtracts">Instruments whose amounts are taken away.</param>
+    public static IntradayTurnover Combine(
+        string label,
+        IReadOnlyList<IntradayTurnover> adds,
+        IReadOnlyList<IntradayTurnover> subtracts)
+    {
+        var axis = adds.Concat(subtracts).MaxBy(s => s.Labels.Count)
+            ?? throw new ArgumentException("an empty basket has no session to draw", nameof(adds));
+
+        var summed = new List<double>(axis.Labels.Count);
+
+        for (var i = 0; i < axis.Labels.Count; i++)
+        {
+            var total = 0.0;
+
+            foreach (var part in adds)
+            {
+                total += At(part, axis.Labels[i]);
+            }
+
+            foreach (var part in subtracts)
+            {
+                total -= At(part, axis.Labels[i]);
+            }
+
+            summed.Add(Math.Max(0, total));
+        }
+
+        return new IntradayTurnover(axis.Code, label, axis.Day, axis.Labels, summed);
+    }
+
+    /// <summary>
+    /// One series' running total at a minute, carrying the last known one forward.
+    ///
+    /// Not <c>TryGetValue</c>: a minute this series does not carry is a minute it has not
+    /// reported, and the honest thing to plot is where it last stood, not zero.
+    /// </summary>
+    private static double At(IntradayTurnover series, string label)
+    {
+        var at = -1;
+
+        for (var i = 0; i < series.Labels.Count; i++)
+        {
+            if (string.Equals(series.Labels[i], label, StringComparison.Ordinal))
+            {
+                at = i;
+                break;
+            }
+        }
+
+        if (at >= 0)
+        {
+            return series.CumulativeYi[at];
+        }
+
+        // Walked backwards rather than binary-searched: the axis is in clock order and the
+        // minute wanted is nearly always the next one along, so the first comparison usually
+        // answers it — and a bisection here would need the axis to be sorted, which is an
+        // assumption about the source that nothing else in this file makes.
+        for (var i = series.Labels.Count - 1; i >= 0; i--)
+        {
+            if (string.CompareOrdinal(series.Labels[i], label) < 0)
+            {
+                return series.CumulativeYi[i];
+            }
+        }
+
+        return 0;
+    }
+
+    /// <summary>
+    /// A whole board's or basket's session, fetched one instrument at a time and then added.
+    ///
+    /// **One instrument failing fails the batch.** A combined total that quietly left a member out
+    /// is a plausible number that is wrong, and nothing in the frame would say so — the same trap
+    /// as a daily board that comes back a row short, where "nine rows answered" and "the list only
+    /// ever had six" look identical on screen. The exception names the code and the reason, so the
+    /// reader is told which member to drop rather than being shown a smaller total.
+    /// </summary>
+    public static async Task<IntradayTurnover> LoadBasketAsync(
+        HttpClient http,
+        IReadOnlyList<string> adds,
+        IReadOnlyList<string> subtracts,
+        string label,
+        IProgress<string>? progress,
+        CancellationToken cancellation)
+    {
+        if (adds.Count == 0)
+        {
+            throw new InvalidOperationException(Strings.Get("TurnoverBasketEmpty"));
+        }
+
+        var positive = new List<IntradayTurnover>(adds.Count);
+        var negative = new List<IntradayTurnover>(subtracts.Count);
+
+        foreach (var code in adds)
+        {
+            positive.Add(await LoadAsync(http, code, null, progress, cancellation));
+        }
+
+        foreach (var code in subtracts)
+        {
+            negative.Add(await LoadAsync(http, code, null, progress, cancellation));
+        }
+
+        return Combine(label, positive, negative);
     }
 }
 

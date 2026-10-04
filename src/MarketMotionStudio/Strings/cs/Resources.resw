@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Trh dluhopisů</value></data>
   <data name="BondRaceMethodNote.Text"><value>Měsíčně a neupraveno — opak závodu fondů: index nevyplácí kupón do vlastní kotace, takže není co připočítat, u fondu ano. Počáteční data se liší: nejstarší začíná 2003-02 a konvertibilní index Šen-čen až 2014-08, takže na desetiletou tabuli nastupuje po pěti letech. Tato stránka se neřídí nastavením trhu.</value></data>
   <data name="BondRaceFetched"><value>{0} indexů · {1} měsíců · v čele {2}, {3} · na konci {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Můj seznam</value></data>
+  <data name="TurnoverBasketEmpty"><value>Nejprve přidejte alespoň jeden nástroj do svého seznamu.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} ze seznamu nejsou akcie A a byly vynechány — obrat je uváděn v měně každého trhu.</value></data>
+  <data name="TurnoverBasketLabel"><value>z mého seznamu</value></data>
+  <data name="TurnoverViewIntraday"><value>V průběhu dne</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Obrat po minutách</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · jednotka: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} minut</value></data>
+  <data name="TurnoverIntradayNoon"><value>Polední přestávka</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Celkem za den</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Dopoledne</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Odpoledne</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Posledních 30 min</value></data>
+  <data name="TurnoverIntradayFetching"><value>Načítám {0} po minutách…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} {1} · {2} minut · {3} {4} na závěr</value></data>
+  <data name="TurnoverIntradayNone"><value>Zdroj nemá minutová data pro {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} uvádí minuty, ale žádný sloupec obratu, nelze jej tedy přičíst k částce — to není nula.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} má příliš málo minut na celý den — den možná ještě neskončil.</value></data>
 </root>

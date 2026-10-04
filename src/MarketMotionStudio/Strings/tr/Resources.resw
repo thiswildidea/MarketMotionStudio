@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Tahvil piyasası</value></data>
   <data name="BondRaceMethodNote.Text"><value>Aylık ve düzeltilmemiş — fon yarışının tersi: bir endeks kendi fiyatına kupon ödemez, yani geri eklenecek bir şey yoktur; fon ise öder. Başlangıç tarihleri farklı: en eskisi 2003-02'de, Shenzhen dönüştürülebilir endeksi ise ancak 2014-08'de başlar, yani on yıllık tabloya beş yıl sonra katılır. Bu sayfa pazar ayarından etkilenmez.</value></data>
   <data name="BondRaceFetched"><value>{0} endeks · {1} ay · önde {2}, {3} · arkada {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Listem</value></data>
+  <data name="TurnoverBasketEmpty"><value>Önce listenize en az bir enstrüman ekleyin.</value></data>
+  <data name="TurnoverBasketSkipped"><value>Listenizdeki {0} kalem A hissesi değil ve dahil edilmedi — işlem hacmi her piyasanın kendi para biriminde bildirilir.</value></data>
+  <data name="TurnoverBasketLabel"><value>listemdeki</value></data>
+  <data name="TurnoverViewIntraday"><value>Gün içi</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Dakika dakika işlem hacmi</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · birim: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} dakika</value></data>
+  <data name="TurnoverIntradayNoon"><value>Öğle arası</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Gün toplamı</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Öğle öncesi</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Öğle sonrası</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Son 30 dk</value></data>
+  <data name="TurnoverIntradayFetching"><value>{0} dakika dakika alınıyor…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} · {1} · {2} dakika · kapanışta {3} {4}</value></data>
+  <data name="TurnoverIntradayNone"><value>Kaynakta {0} için dakika verisi yok.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} dakika verisi veriyor ama işlem hacmi sütunu yok, bu yüzden bir tutara eklenemez — bu sıfır değildir.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} bir seans için çok az dakika içeriyor — gün henüz bitmemiş olabilir.</value></data>
 </root>

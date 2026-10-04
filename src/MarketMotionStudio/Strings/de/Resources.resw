@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>Anleihemarkt</value></data>
   <data name="BondRaceMethodNote.Text"><value>Monatlich und nicht bereinigt — das Gegenteil des Anleihe-Fonds-Rennens: ein Index zahlt keinen Kupon in seine eigene Notierung, also gibt es nichts zurückzurechnen, bei einem Fonds schon. Die Starttermine unterscheiden sich: der früheste beginnt 2003-02, der Shenzhen-Wandlerindex erst 2014-08 — er stößt also fünf Jahre später dazu. Diese Seite richtet sich nicht nach der Markteinstellung.</value></data>
   <data name="BondRaceFetched"><value>{0} Indizes · {1} Monate · vorn liegt {2}, {3} · hinten {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>Eigene Liste</value></data>
+  <data name="TurnoverBasketEmpty"><value>Fügen Sie zuerst mindestens ein Instrument zu Ihrer Liste hinzu.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} Ihrer Liste sind keine A-Aktien und wurden weggelassen — der Umsatz wird in der jeweiligen Währung des Marktes gemeldet.</value></data>
+  <data name="TurnoverBasketLabel"><value>aus eigener Liste</value></data>
+  <data name="TurnoverViewIntraday"><value>Intraday</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Umsatz Minute für Minute</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · Einheit: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} Minuten</value></data>
+  <data name="TurnoverIntradayNoon"><value>Mittagspause</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Tagessumme</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Vormittag</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>Nachmittag</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Letzte 30 Min.</value></data>
+  <data name="TurnoverIntradayFetching"><value>Rufe {0} Minute für Minute ab…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} am {1} · {2} Minuten · {3} {4} zum Schlusskurs</value></data>
+  <data name="TurnoverIntradayNone"><value>Die Quelle hat keine Minutendaten für {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} meldet Minuten, aber keine Umsatzspalte, und kann daher keinem Betrag hinzugefügt werden — das ist keine Null.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} hat zu wenige Minuten für einen Handelstag — der Tag läuft vielleicht noch.</value></data>
 </root>

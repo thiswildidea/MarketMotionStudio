@@ -37,16 +37,24 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// A-share stock or index rather than this page's fixed composite — the same renderer, a
     /// wider choice behind it. Two places producing the same video is a choice nobody needs.
     /// </summary>
+    /// <remarks>
+    /// <c>Intraday</c> is the one form that is not a different picture of the same numbers: the
+    /// daily forms both read the series already fetched, where this one has to go and get a
+    /// session of its own. That is why switching to it drops what is here rather than redrawing
+    /// it — see <see cref="OnViewChanged"/>.
+    /// </remarks>
     private enum View
     {
         Bars,
         Calendar,
+        Intraday,
     }
 
     private static readonly (View View, string Key)[] Views =
     [
         (View.Bars, "TurnoverViewBars"),
         (View.Calendar, "TurnoverViewCalendar"),
+        (View.Intraday, "TurnoverViewIntraday"),
     ];
 
     /// <summary>
@@ -64,6 +72,12 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         (MarketScope.ShenzhenMain, "TurnoverScopeShenzhenMain"),
         (MarketScope.ChiNext, "TurnoverScopeChiNext"),
         (MarketScope.WithBeijing, "TurnoverScopeWithBeijing"),
+
+        // Last, and the only one that is not a board: what is raced here is whatever the reader
+        // put on the list. It is one entry in the same menu because the frame does not care
+        // whether the codes it sums describe a board or a person's holdings — every one of these
+        // options is the same addition over a different set of codes.
+        (MarketScope.Watchlist, "TurnoverScopeWatchlist"),
     ];
 
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
@@ -93,6 +107,13 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         }
 
         ScopeCombo.SelectedIndex = 0;
+
+        // The picker has no panel of its own to write into, so what it has to say is said here.
+        Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
+
+        // Idempotent, and needed: the shared list is read once for the whole process, and this
+        // page can be the first one to ask for it.
+        Watchlist.EnsureLoaded();
 
         var today = DateTimeOffset.Now;
         FromDate.Date = today.AddMonths(-3);
@@ -149,6 +170,13 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// </summary>
     private TurnoverSeries? _series;
 
+    /// <summary>
+    /// The session behind the intraday form, or null before one has been fetched. Separate from
+    /// <see cref="_series"/> because it is a different thing: one day minute by minute, fetched
+    /// from a different endpoint, and no amount of redrawing will turn one into the other.
+    /// </summary>
+    private IntradayTurnover? _session;
+
     private void ApplyPreviewSettings()
     {
         Preview.Format = VideoSettings.Format;
@@ -160,13 +188,20 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         // naming the market, the return calendar to naming the index.
         var title = VideoSettings.TitleText;
         var showTitle = VideoSettings.ShowTitle;
+        var intraday = Chosen == View.Intraday;
 
-        if (_series is { } series)
+        if (intraday && _session is { } session)
         {
             // Rebuilt rather than mutated, because the plan is derived from the duration and the
             // bar count together. A renderer holding a stale plan would animate at the old pacing
             // while the read-out said the new length — the kind of disagreement that is invisible
             // until someone times an export.
+            var plan = AnimationPlan.For(VideoSettings.Duration, session.Count, session.TotalYi);
+
+            Preview.Renderer = new IntradayRenderer(session, plan) { Title = title, ShowTitle = showTitle };
+        }
+        else if (!intraday && _series is { } series)
+        {
             var plan = AnimationPlan.For(VideoSettings.Duration, series.Count, series.Peak);
 
             Preview.Renderer = Chosen switch
@@ -178,19 +213,22 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         }
         else
         {
-            _stage.Title = title.Length > 0 ? title : Metric.Turnover.DefaultTitle();
+            _stage.Title = title.Length > 0
+                ? title
+                : intraday ? Strings.Get("TurnoverIntradayStageTitle") : Metric.Turnover.DefaultTitle();
             _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 
         // The placeholder follows the form, so an empty box always shows the title that would
         // actually be used rather than one of the two.
-        VideoSettings.TitlePlaceholder = Metric.Turnover.DefaultTitle();
+        VideoSettings.TitlePlaceholder =
+            intraday ? Strings.Get("TurnoverIntradayStageTitle") : Metric.Turnover.DefaultTitle();
 
         // Everything that needs a series is enabled and disabled together, in the one place that
         // knows whether there is one. Three buttons each deciding for themselves is three chances
         // for one of them to be live over an empty frame.
-        var ready = _series is not null;
+        var ready = intraday ? _session is not null : _series is not null;
 
         CoverButton.IsEnabled = ready;
         ExportButton.IsEnabled = ready;
@@ -227,13 +265,39 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// next fetch asks for, not what the last one returned. Redrawing with a subtitle that named a
     /// market the numbers do not include would be worse than leaving it until the next fetch.
     /// </summary>
-    private void OnScopeChanged(object sender, SelectionChangedEventArgs e) => SavePreferences();
+    private void OnScopeChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Shown only for the one entry it feeds. Done even while a restore is running, so a
+        // remembered choice of one's own list comes back with the list under it rather than as a
+        // bare combo box.
+        Watch.Visibility = ChosenScope == MarketScope.Watchlist ? Visibility.Visible : Visibility.Collapsed;
+
+        // A different board is a different answer, so whatever was fetched no longer describes
+        // the panel. Dropped rather than left standing: a frame still drawn from the whole market
+        // under a caption reading one's own list is a plausible picture of the wrong thing, and
+        // the numbers on it give no hint that it is.
+        if (!_prefs.Restoring)
+        {
+            _series = null;
+            _session = null;
+        }
+
+        SavePreferences();
+    }
 
     private MarketScope ChosenScope =>
         ScopeCombo.SelectedItem is ComboBoxItem { Tag: MarketScope scope } ? scope : MarketScope.Whole;
 
     private async void OnFetch(object sender, RoutedEventArgs e)
     {
+        // The intraday form is a fetch of its own: it reads a different endpoint, it has no range
+        // to apply, and what comes back is not the series the other two draw.
+        if (Chosen == View.Intraday)
+        {
+            await FetchSessionAsync();
+            return;
+        }
+
         var (start, end) = ChosenRange();
         var scope = ChosenScope;
 
@@ -241,10 +305,23 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         {
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
-            var series = await MarketTurnover.LoadAsync(
-                Services.Quotes, scope, start, end, progress, cancellation);
+            if (scope == MarketScope.Watchlist)
+            {
+                var basket = ChosenBasket();
 
-            _series = series;
+                await NameBasketAsync(basket.Select(entry => entry.Code), cancellation);
+
+                _series = await BasketTurnover.LoadAsync(
+                    Services.Quotes, basket, start, end, progress, cancellation);
+            }
+            else
+            {
+                _series = await MarketTurnover.LoadAsync(
+                    Services.Quotes, scope, start, end, progress, cancellation);
+            }
+
+            var series = _series;
+
             ApplyPreviewSettings();
 
             // Parked on the last frame, the way the source tool does: the closing statistics
@@ -265,6 +342,195 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
                 TurnoverRenderer.Round(series.Peak),
                 TurnoverRenderer.Round(series.Low)));
         }, TimeSpan.FromMinutes(2));
+    }
+
+    /// <summary>
+    /// The reader's own codes, as the basket loader wants them.
+    ///
+    /// Read from the picker rather than from <see cref="Watchlist.Picks"/> directly, because the
+    /// picker is what is bound to that collection: a chip removed a moment ago is gone from it,
+    /// and a second list held here would be a second thing to keep in step.
+    /// </summary>
+    private IReadOnlyList<(string Code, string Name)> ChosenBasket() =>
+        [.. MainlandPicks().Select(entry => (entry.Code, entry.Name))];
+
+    /// <summary>
+    /// The picks this page can actually add up: the ones quoted on a mainland exchange.
+    ///
+    /// The shared list is cross-market, and turnover is the one measure here that cannot be —
+    /// each venue reports it in its own currency, so a Hong Kong name in this basket would be
+    /// added to a total the frame labels 亿元. Dropped rather than converted, because the rate
+    /// that would make the sum honest is a different rate on every day in the range.
+    ///
+    /// **Said out loud when anything is dropped.** A silently smaller basket is the failure this
+    /// whole page is built to avoid: the frame stays plausible and only the total is wrong.
+    /// </summary>
+    private IReadOnlyList<RaceEntry> MainlandPicks()
+    {
+        var all = Watch.Entries;
+        var mainland = all.Where(entry => Markets.IsMainland(entry.Code)).ToArray();
+
+        if (mainland.Length < all.Count)
+        {
+            ShowStatus(
+                InfoBarSeverity.Informational,
+                Strings.Format("TurnoverBasketSkipped", all.Count - mainland.Length));
+        }
+
+        return mainland;
+    }
+
+    /// <summary>
+    /// Which codes one session is the sum of, and what to call it.
+    ///
+    /// The boards' recipes are borrowed from the daily loader rather than restated — the Shanghai
+    /// main board is the exchange less its STAR board on *every* axis this page draws, and a
+    /// minute-by-minute chart with its own idea of that would show the whole exchange under a
+    /// title saying the main board.
+    /// </summary>
+    private (string[] Adds, string[] Subtracts, string Label) SessionRecipe()
+    {
+        if (ChosenScope != MarketScope.Watchlist)
+        {
+            var (adds, subtracts) = MarketTurnover.Codes(ChosenScope);
+
+            return (adds, subtracts, Strings.Get(Scopes.First(s => s.Scope == ChosenScope).Key));
+        }
+
+        // The same filter the daily basket uses, for the same reason: a session's running total
+        // is money, and the Hong Kong and New York minute series count it in their own currency.
+        var picks = MainlandPicks();
+
+        return (
+            [.. picks.Select(entry => entry.Code)],
+            [],
+            Strings.Format("TurnoverBasketLabel", picks.Count));
+    }
+
+    /// <summary>
+    /// Puts the picks' real names on the shared list.
+    ///
+    /// A code typed into the picker without choosing a suggestion has no name yet, so its chip
+    /// reads `SH688981` — and the list is shared with the four roster boards, so they read it too.
+    /// One snapshot per fetch names all of them at once, which is what those boards do after their
+    /// own fetch and why a name corrected here shows up there.
+    ///
+    /// Wrapped, and swallowed: a name is worth one request and not worth failing a fetch over.
+    /// </summary>
+    private async Task NameBasketAsync(IEnumerable<string> codes, CancellationToken cancellation)
+    {
+        try
+        {
+            var shots = await Services.Stocks.SnapshotsAsync([.. codes], cancellation);
+
+            foreach (var (code, shot) in shots)
+            {
+                Watchlist.Rename(code, InstrumentNames.Display(code, shot.Name));
+            }
+        }
+        catch (Exception)
+        {
+            // Ignored on purpose — see the note above.
+        }
+    }
+
+    /// <summary>
+    /// Fetches one session and puts it on the stage.
+    ///
+    /// No range is applied, and that is not an oversight: the minute endpoint keeps the last five
+    /// sessions and no more, so the only choice on offer is which of those five — and the frame
+    /// names the one it drew rather than leaving it to be inferred.
+    /// </summary>
+    private async Task FetchSessionAsync()
+    {
+        await RunAsync(FetchButton, async cancellation =>
+        {
+            var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
+
+            var (adds, subtracts, label) = SessionRecipe();
+
+            if (adds.Length == 0)
+            {
+                ShowStatus(InfoBarSeverity.Error, Strings.Get("TurnoverBasketEmpty"));
+                return;
+            }
+
+            if (ChosenScope == MarketScope.Watchlist)
+            {
+                await NameBasketAsync(adds, cancellation);
+            }
+
+            IntradayTurnover session;
+
+            try
+            {
+                session = await TurnoverIntraday.LoadBasketAsync(
+                    Services.Http, adds, subtracts, label, progress, cancellation);
+            }
+            catch (IntradayUnavailableException gone)
+            {
+                // Said here rather than left to the runner's own reporting, which would put the
+                // code and an English enum name on a status line otherwise in the reader's
+                // language — and would not say whether the instrument will ever work.
+                ShowStatus(InfoBarSeverity.Error, Strings.Format(DenialKey(gone.Denial), gone.Code.ToUpperInvariant()));
+                return;
+            }
+
+            _session = session;
+            ApplyPreviewSettings();
+
+            ShowMoment(1);
+
+            // The unit is passed rather than written into the string, because it is the same word
+            // the frame prints under the figure and the same word the daily status line uses —
+            // three translations of "亿元" is three chances for one of them to be a different
+            // unit.
+            ShowStatus(InfoBarSeverity.Success, Strings.Format(
+                "TurnoverIntradayFetched",
+                session.Name,
+                session.Day,
+                session.Count,
+                TurnoverRenderer.Round(session.TotalYi),
+                Strings.Get("TurnoverUnit")));
+        }, TimeSpan.FromMinutes(2));
+    }
+
+    /// <summary>Which string says why an instrument could not be drawn minute by minute.</summary>
+    private static string DenialKey(IntradayDenial denial) => denial switch
+    {
+        IntradayDenial.NoAmount => "TurnoverIntradayNoAmount",
+        IntradayDenial.TooFew => "TurnoverIntradayTooFew",
+        _ => "TurnoverIntradayNone",
+    };
+
+    /// <summary>
+    /// Hides the range controls on the intraday form, where they would be a promise the page
+    /// cannot keep: the source holds five sessions and a picker offering dates beyond them
+    /// answers with a day that has already been dropped.
+    /// </summary>
+    private void SyncRangeVisibility()
+    {
+        var intraday = Chosen == View.Intraday;
+
+        RangeCombo.Visibility = intraday ? Visibility.Collapsed : Visibility.Visible;
+
+        CustomRange.Visibility = !intraday && RangeCombo.SelectedItem is ComboBoxItem { Tag: 0 }
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+
+    /// <summary>
+    /// The list changed, so whatever is on the stage no longer describes it.
+    ///
+    /// Dropped rather than left standing: a board drawn from five codes under a caption saying
+    /// four is a plausible picture of the wrong basket, and nothing on the frame would say so.
+    /// </summary>
+    private void OnWatchChanged(object sender, EventArgs e)
+    {
+        _series = null;
+        _session = null;
+
+        ApplyPreviewSettings();
     }
 
     /// <summary>
@@ -293,8 +559,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
             return;
         }
 
-        var custom = RangeCombo.SelectedItem is ComboBoxItem { Tag: 0 };
-        CustomRange.Visibility = custom ? Visibility.Visible : Visibility.Collapsed;
+        SyncRangeVisibility();
 
         SavePreferences();
     }
@@ -312,6 +577,23 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         {
             return;
         }
+
+        // Bars and calendar are two pictures of one series, so switching between them redraws
+        // from what is already here. The intraday form is not: it reads a different endpoint, so
+        // moving onto or off it drops what is in hand instead of drawing the wrong axis over it.
+        if (!_prefs.Restoring)
+        {
+            if (Chosen == View.Intraday)
+            {
+                _series = null;
+            }
+            else
+            {
+                _session = null;
+            }
+        }
+
+        SyncRangeVisibility();
 
         ApplyPreviewSettings();
         SavePreferences();
@@ -387,9 +669,34 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// <summary>
     /// Renders and encodes the whole animation to an MP4.
     /// </summary>
+    /// <summary>
+    /// The first and last day of whatever is on the stage, whichever form is showing.
+    ///
+    /// One method because three places need it and each of them would otherwise have to know
+    /// that the intraday form keeps its day as text while the daily forms keep theirs as dates —
+    /// and a file name built from the wrong one is a file that sorts into the wrong year.
+    /// </summary>
+    private (DateOnly From, DateOnly To)? SeriesRange()
+    {
+        if (Chosen == View.Intraday)
+        {
+            return _session is { } session && DateOnly.TryParse(session.Day, out var day)
+                ? (day, day)
+                : null;
+        }
+
+        return _series is { } series ? (series.Dates[0], series.Dates[^1]) : null;
+    }
+
+    /// <summary>What the frame is called when no title has been typed, on whichever form.</summary>
+    private string DefaultLabel() =>
+        Chosen == View.Intraday
+            ? Strings.Get("TurnoverIntradayStageTitle")
+            : Metric.Turnover.DefaultTitle();
+
     private async void OnExport(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _series is not { } series || App.Window is not { } window)
+        if (Preview.Renderer is not { } renderer || SeriesRange() is not { } range || App.Window is not { } window)
         {
             return;
         }
@@ -400,7 +707,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
         // Read before the work starts. Everything the encoder needs is captured up front so that
         // touching a slider mid-export cannot change the format halfway through the file.
-        var label = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : Metric.Turnover.DefaultTitle();
+        var label = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : DefaultLabel();
 
         CancelButton.IsEnabled = true;
 
@@ -431,7 +738,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
             var file = await VideoExporter.EncodeAsync(
                 renderer, format, margins, duration, folder,
-                VideoExporter.VideoName(label, series.Dates[0], series.Dates[^1], format),
+                VideoExporter.VideoName(label, range.From, range.To, format),
                 report, cancellation);
 
             clock.Stop();
@@ -458,7 +765,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
     /// </summary>
     private async void OnSaveCover(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _series is not { } series || App.Window is not { } window)
+        if (Preview.Renderer is not { } renderer || SeriesRange() is not { } range || App.Window is not { } window)
         {
             return;
         }
@@ -475,15 +782,13 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
                 return;
             }
 
-            var label = VideoSettings.TitleText.Length > 0
-                ? VideoSettings.TitleText
-                : Metric.Turnover.DefaultTitle();
+            var label = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : DefaultLabel();
 
             var format = VideoSettings.Format;
 
             var file = await FrameExporter.SavePngAsync(
                 renderer, format, VideoSettings.Margins, Preview.Progress, folder,
-                FrameExporter.CoverName(label, series.Dates[0], series.Dates[^1], format),
+                FrameExporter.CoverName(label, range.From, range.To, format),
                 cancellation);
 
             ShowStatus(InfoBarSeverity.Success, Strings.Format(

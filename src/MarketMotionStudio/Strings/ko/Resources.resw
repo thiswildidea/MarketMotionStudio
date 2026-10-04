@@ -804,4 +804,22 @@
   <data name="BondRaceStageTitle"><value>채권시장</value></data>
   <data name="BondRaceMethodNote.Text"><value>월간·무조정——펀드 레이스와 반대입니다. 지수는 자기 호가에 쿠폰을 지급하지 않으므로 되돌려 넣을 것이 없지만(펀드는 있음), 시작월은 제각각입니다. 가장 이른 것은 2003-02,선전 전환채 지수는 2014-08부터라 10년 보드에는 5년 늦게 합류합니다. 이 페이지는 시장 설정의 영향을 받지 않습니다.</value></data>
   <data name="BondRaceFetched"><value>{0}개 지수 · {1}개월 · 선두 {2}, {3} · 최하위 {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>내 목록</value></data>
+  <data name="TurnoverBasketEmpty"><value>먼저 목록에 종목을 하나 이상 추가하세요.</value></data>
+  <data name="TurnoverBasketSkipped"><value>목록의 {0}개는 A주가 아니라 제외했습니다. 거래대금은 각 시장의 통화로 보고됩니다.</value></data>
+  <data name="TurnoverBasketLabel"><value>내 목록의</value></data>
+  <data name="TurnoverViewIntraday"><value>장중</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>분별 거래대금</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · 단위: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1}분</value></data>
+  <data name="TurnoverIntradayNoon"><value>점심시간</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>하루 합계</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>오전</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>오후</value></data>
+  <data name="TurnoverIntradayStatClose"><value>마지막 30분</value></data>
+  <data name="TurnoverIntradayFetching"><value>{0} 분별 데이터를 가져오는 중…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} {1} · {2}분 · 종가 기준 {3} {4}</value></data>
+  <data name="TurnoverIntradayNone"><value>소스에 {0}의 분별 데이터가 없습니다.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0}는 분별 데이터는 있지만 거래대금 열이 없어 금액에 더할 수 없습니다. 0이 아닙니다.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0}는 하루치로 보기엔 분이 너무 적습니다. 장이 진행 중일 수 있습니다.</value></data>
 </root>

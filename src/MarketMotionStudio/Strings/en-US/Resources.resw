@@ -815,4 +815,22 @@
   <data name="BondRaceStageTitle"><value>Bond market</value></data>
   <data name="BondRaceMethodNote.Text"><value>Monthly and unadjusted — the opposite of the asset race: an index pays no coupon into its own quote, so there is nothing to put back, while a fund does. Start dates differ: the earliest begins in 2003-02 and the Shenzhen convertible index only in 2014-08, so it joins a ten-year board five years in. This page is not governed by the market setting.</value></data>
   <data name="BondRaceFetched"><value>{0} indices · {1} months · ahead is {2}, {3} · behind is {4}, {5}</value></data>
+  <data name="TurnoverScopeWatchlist"><value>My list</value></data>
+  <data name="TurnoverBasketEmpty"><value>Add at least one instrument to your list first.</value></data>
+  <data name="TurnoverBasketSkipped"><value>{0} on your list are not A-shares and were left out — turnover is reported in each market's own currency.</value></data>
+  <data name="TurnoverBasketLabel"><value>of my own</value></data>
+  <data name="TurnoverViewIntraday"><value>Intraday</value></data>
+  <data name="TurnoverIntradayStageTitle"><value>Turnover by minute</value></data>
+  <data name="TurnoverIntradaySubtitle"><value>{0} · unit: {1}</value></data>
+  <data name="TurnoverIntradayLine"><value>{0} · {1} minutes</value></data>
+  <data name="TurnoverIntradayNoon"><value>Lunch</value></data>
+  <data name="TurnoverIntradayStatTotal"><value>Day total</value></data>
+  <data name="TurnoverIntradayStatMorning"><value>Before lunch</value></data>
+  <data name="TurnoverIntradayStatAfternoon"><value>After lunch</value></data>
+  <data name="TurnoverIntradayStatClose"><value>Last 30 min</value></data>
+  <data name="TurnoverIntradayFetching"><value>Fetching {0} minute by minute…</value></data>
+  <data name="TurnoverIntradayFetched"><value>{0} on {1} · {2} minutes · {3} {4} by the close</value></data>
+  <data name="TurnoverIntradayNone"><value>The source has no minute data for {0}.</value></data>
+  <data name="TurnoverIntradayNoAmount"><value>{0} reports minutes but no turnover column, so it cannot be added to an amount — this is not a zero.</value></data>
+  <data name="TurnoverIntradayTooFew"><value>{0} has too few minutes to be a session — the day may still be in progress.</value></data>
 </root>
