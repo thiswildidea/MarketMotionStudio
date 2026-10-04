@@ -125,6 +125,128 @@ public enum MarketScope
 
     /// <summary>Both exchanges plus the BSE 50 — the widest figure the source can offer.</summary>
     WithBeijing,
+
+    /// <summary>
+    /// One person's own basket — indices and stocks side by side. Not a board, so none of the
+    /// recipes above apply: there is nothing to add up to and nothing to subtract, only the rows
+    /// the reader put there.
+    /// </summary>
+    Watchlist,
+}
+
+/// <summary>
+/// Sums a basket of the reader's own instruments into the same series a board produces.
+///
+/// **A missing day is a zero, not a dropped day.** Every board above is built from indices, and
+/// an index trades on every session, so the rule "keep only the days every code has" never bit —
+/// it was a cheap way of being safe. A stock halts. Under that rule one halted name out of
+/// sixteen would remove the day from the chart entirely, and a day missing from this chart looks
+/// exactly like a day on which nothing traded: the picture stays plausible and the number in the
+/// header stops matching the number of bars. Halted means no turnover, which is a zero, so the
+/// day stays and that instrument contributes nothing to it.
+///
+/// **The return is the equal-weighted average of the members' own daily changes**, and each
+/// member's change is measured against *its own* previous close rather than the previous row of
+/// the combined axis — a halted name has no change to contribute and counts as zero.
+///
+/// <para>
+/// Equal-weighted because the basket is a list, not a portfolio: there is no holding size to
+/// weight by, and weighting by turnover would quietly redefine it as "the average yuan traded",
+/// which is a different question. The daily closes come from the same forward-adjusted series the
+/// amounts do, which costs nothing extra — the backward-adjusted series differs from it by one
+/// constant factor, and a factor cancels in every ratio drawn here.
+/// </para>
+/// </summary>
+public static class BasketTurnover
+{
+    /// <summary>The same floor the boards use: three days is the least that shows a trend.</summary>
+    private const int FewestDays = 3;
+
+    public static async Task<TurnoverSeries> LoadAsync(
+        TencentKline kline,
+        IReadOnlyList<(string Code, string Name)> basket,
+        DateOnly start,
+        DateOnly end,
+        IProgress<string>? progress,
+        CancellationToken cancellation)
+    {
+        if (basket.Count == 0)
+        {
+            throw new InvalidOperationException(Strings.Get("TurnoverBasketEmpty"));
+        }
+
+        if (end.DayNumber - start.DayNumber > TencentKline.MostBarsPerRequest)
+        {
+            throw new InvalidOperationException(
+                Strings.Format("TurnoverRangeTooLong", TencentKline.MostBarsPerRequest));
+        }
+
+        if (start >= end)
+        {
+            throw new InvalidOperationException(Strings.Get("TurnoverRangeReversed"));
+        }
+
+        var fetched = new List<(string Code, Dictionary<DateOnly, DailyBar> Bars)>();
+
+        foreach (var (code, _) in basket)
+        {
+            progress?.Report(Strings.Format("TurnoverFetching", code.ToUpperInvariant()));
+
+            fetched.Add((code, await kline.DailyBarsAsync(code, start, end, cancellation)));
+        }
+
+        // The union, not the intersection — see the class note. A day is on the axis if *any*
+        // member traded on it, which is what "the basket's trading days" means.
+        var dates = fetched
+            .SelectMany(f => f.Bars.Keys)
+            .Distinct()
+            .OrderBy(d => d)
+            .ToList();
+
+        if (dates.Count < FewestDays)
+        {
+            throw new InvalidOperationException(Strings.Get("TurnoverTooFewDays"));
+        }
+
+        var lastClose = new Dictionary<string, double>();
+        var previous = new Dictionary<string, DateOnly>();
+        var totals = new List<double>(dates.Count);
+        var returns = new List<double>(dates.Count);
+
+        foreach (var day in dates)
+        {
+            var total = 0.0;
+            var change = 0.0;
+
+            foreach (var (code, bars) in fetched)
+            {
+                if (!bars.TryGetValue(day, out var bar))
+                {
+                    // Halted, or not yet listed: no turnover, and no change to average in.
+                    continue;
+                }
+
+                total += bar.TurnoverYi;
+
+                if (lastClose.TryGetValue(code, out var prior) && prior > 0)
+                {
+                    change += ((bar.Close / prior) - 1) * 100;
+                }
+
+                lastClose[code] = bar.Close;
+                previous[code] = day;
+            }
+
+            totals.Add(total);
+            returns.Add(change / fetched.Count);
+        }
+
+        _ = previous;
+
+        return new TurnoverSeries(
+            dates, totals, returns,
+            [Strings.Format("TurnoverBasketLabel", basket.Count)]);
+    }
 }
 
 /// <summary>
