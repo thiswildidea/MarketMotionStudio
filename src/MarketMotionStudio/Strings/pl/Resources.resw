@@ -863,4 +863,8 @@
   <data name="SettingsWatermarkText.Header"><value>Co mówi</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Domyślnie włączone: wideo trafia w miejsce, które nic nie mówi o tym, gdzie powstało. Puste wraca do nazwy powyżej; wyłączone — klatki nie niosą niczego.</value></data>
+  <data name="SettingsWatermarkFont.Header"><value>Czcionka</value></data>
+  <data name="SettingsWatermarkColour.Text"><value>Kolor</value></data>
+  <data name="SettingsWatermarkStrength.Text"><value>Intensywność</value></data>
+  <data name="SettingsWatermarkStrengthNote.Text"><value>Ile wybranej barwy zostanie użyte. Wyżej — wyraźniej; nawet przy najwyższym ustawieniu znak jest rysowany pod danymi.</value></data>
 </root>

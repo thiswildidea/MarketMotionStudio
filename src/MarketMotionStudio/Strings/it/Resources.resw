@@ -863,4 +863,8 @@
   <data name="SettingsWatermarkText.Header"><value>Cosa dice</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Attivo per impostazione predefinita: un video finisce dove nulla dice da dove viene. Lasciato vuoto torna al nome sopra; disattivato, i fotogrammi non portano nulla.</value></data>
+  <data name="SettingsWatermarkFont.Header"><value>Carattere</value></data>
+  <data name="SettingsWatermarkColour.Text"><value>Colore</value></data>
+  <data name="SettingsWatermarkStrength.Text"><value>Intensità</value></data>
+  <data name="SettingsWatermarkStrengthNote.Text"><value>Quanto del colore scelto viene usato. Più alto, più visibile; anche al massimo il segno è disegnato sotto i dati.</value></data>
 </root>

@@ -1,10 +1,12 @@
 using MarketMotionStudio.Render;
 using Windows.Storage;
+using Windows.UI;
 
 namespace MarketMotionStudio;
 
 /// <summary>
-/// Whether every exported frame carries the watermark, and what it says.
+/// Whether every exported frame carries the watermark, what it says, and how it
+/// is set: the font, the colour and how strongly it is drawn.
 ///
 /// One setting for every page, and on by default: a video leaves the app as a
 /// file and is posted somewhere that shows no sign of where it was made, so the
@@ -19,6 +21,9 @@ public static class WatermarkSettings
 {
     private const string OnKey = "FrameWatermarkOn";
     private const string TextKey = "FrameWatermarkText";
+    private const string FontKey = "FrameWatermarkFont";
+    private const string ColourKey = "FrameWatermarkColour";
+    private const string StrengthKey = "FrameWatermarkStrength";
 
     /// <summary>
     /// Whether the frames carry the mark. On unless it has been turned off.
@@ -57,6 +62,60 @@ public static class WatermarkSettings
         }
     }
 
+    /// <summary>
+    /// Which font it is set in, as the name Windows calls it.
+    ///
+    /// A stored name this machine does not have is not checked against the fonts
+    /// it does have: that would be a read that enumerates several hundred fonts
+    /// every time a frame is drawn, and a name that has gone missing is a font
+    /// the drawing falls back from anyway — the mark still says what it says,
+    /// which is the half that matters. Blank falls back to the default font, as
+    /// the text does to the default name, so that clearing a control is never
+    /// how you turn the mark off.
+    /// </summary>
+    public static string Family
+    {
+        get => Settings.Values[FontKey] is string font && font.Trim().Length > 0
+            ? font
+            : Watermark.DefaultFamily;
+        set
+        {
+            Settings.Values[FontKey] = (value ?? string.Empty).Trim();
+            Announce();
+        }
+    }
+
+    /// <summary>
+    /// Its colour. Stored as one integer; see <see cref="StoredColour"/>.
+    /// </summary>
+    public static Color Colour
+    {
+        get => StoredColour.Read(Settings, ColourKey, Watermark.DefaultColour);
+        set
+        {
+            Settings.Values[ColourKey] = StoredColour.Pack(value);
+            Announce();
+        }
+    }
+
+    /// <summary>
+    /// How strongly it is drawn, in percent — the one number behind "how visible
+    /// is it", which the colour alone cannot answer: at the default tenth, white,
+    /// amber and blue all come out as the same faint wash.
+    /// </summary>
+    public static int Strength
+    {
+        get => Settings.Values[StrengthKey] is int strength
+            ? Math.Clamp(strength, Watermark.MinOpacity, Watermark.MaxOpacity)
+            : Watermark.DefaultOpacity;
+        set
+        {
+            Settings.Values[StrengthKey] =
+                Math.Clamp(value, Watermark.MinOpacity, Watermark.MaxOpacity);
+            Announce();
+        }
+    }
+
     /// <summary>The longest name the text box accepts, in characters.</summary>
     public static int MaxLength => Watermark.MaxLength;
 
@@ -84,7 +143,8 @@ public static class WatermarkSettings
 
     private static ApplicationDataContainer Settings => ApplicationData.Current.LocalSettings;
 
-    private static Watermark? Resolve() => Enabled ? new Watermark(Text) : null;
+    private static Watermark? Resolve() =>
+        Enabled ? new Watermark(Text, Family, Colour, Watermark.AlphaOf(Strength)) : null;
 
     private static void Announce()
     {

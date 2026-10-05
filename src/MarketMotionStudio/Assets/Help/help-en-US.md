@@ -441,6 +441,8 @@ The Settings page can change what the animation is drawn on: the built-in gradie
 
 - **Every frame also carries a name across its backdrop: the watermark.** It is on by default, reads “周期留白” until you change it, and the wording is yours to edit. It is repeated on a slant over the whole frame, drawn **under** the data, so it covers nothing; the preview, the exported video and the cover image all carry it. Left blank it falls back to the default name — to carry nothing at all, switch it off. The switch is on by default because a video is posted somewhere that shows nothing of where it was made.
 
+
+- **How the mark looks is yours too.** The font is any font installed on this machine — each entry in the list is drawn in the font it names —, the colour is whatever the picker gives, and the strength is how much of that colour is used: 10% by default, up to 40%, and even at its strongest it is drawn under the data. All three reach the preview, the exported video and the cover image alike.
 - The default wording does not follow the interface language: a watermark is a signature, and a signature that changed with the language would be a different one on every machine.
 
 ## Data, and what it will not tell you

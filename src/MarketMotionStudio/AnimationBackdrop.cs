@@ -90,7 +90,7 @@ public static class AnimationBackdrop
         get => Read(TopKey, Palette.Background[0].Colour);
         set
         {
-            Settings.Values[TopKey] = Pack(value);
+            Settings.Values[TopKey] = StoredColour.Pack(value);
             Announce();
         }
     }
@@ -101,7 +101,7 @@ public static class AnimationBackdrop
         get => Read(BottomKey, Palette.Background[^1].Colour);
         set
         {
-            Settings.Values[BottomKey] = Pack(value);
+            Settings.Values[BottomKey] = StoredColour.Pack(value);
             Announce();
         }
     }
@@ -183,20 +183,5 @@ public static class AnimationBackdrop
         Changed?.Invoke(null, EventArgs.Empty);
     }
 
-    private static Color Read(string key, Color fallback) =>
-        Settings.Values[key] is int packed ? Unpack(packed) : fallback;
-
-    /// <summary>
-    /// A colour as one integer. Stored as a number rather than as
-    /// <c>#RRGGBB</c>: a string is parsed at every read, and a value nobody
-    /// edits by hand gains nothing from being readable in a file.
-    /// </summary>
-    private static int Pack(Color colour) =>
-        (colour.A << 24) | (colour.R << 16) | (colour.G << 8) | colour.B;
-
-    private static Color Unpack(int packed) => Color.FromArgb(
-        (byte)((packed >> 24) & 0xFF),
-        (byte)((packed >> 16) & 0xFF),
-        (byte)((packed >> 8) & 0xFF),
-        (byte)(packed & 0xFF));
+    private static Color Read(string key, Color fallback) => StoredColour.Read(Settings, key, fallback);
 }

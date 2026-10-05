@@ -862,4 +862,8 @@
   <data name="SettingsWatermarkText.Header"><value>寫什麼</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>預設開啟：影片會被發到一個完全看不出它是在哪裡做出來的地方。留空會回到上面的名字；關掉則畫面上什麼都不加。</value></data>
+  <data name="SettingsWatermarkFont.Header"><value>字型</value></data>
+  <data name="SettingsWatermarkColour.Text"><value>顏色</value></data>
+  <data name="SettingsWatermarkStrength.Text"><value>濃度</value></data>
+  <data name="SettingsWatermarkStrengthNote.Text"><value>用多少所選的顏色。越高越明顯；即使拉到最高，浮水印仍然畫在數據之下。</value></data>
 </root>

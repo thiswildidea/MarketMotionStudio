@@ -863,4 +863,8 @@
   <data name="SettingsWatermarkText.Header"><value>표시할 이름</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>기본적으로 켜져 있습니다. 영상은 어디서 만들어졌는지 아무것도 알려주지 않는 곳에 올라가기 때문입니다. 비워 두면 위의 이름으로 돌아가고, 끄면 프레임에 아무것도 들어가지 않습니다.</value></data>
+  <data name="SettingsWatermarkFont.Header"><value>글꼴</value></data>
+  <data name="SettingsWatermarkColour.Text"><value>색상</value></data>
+  <data name="SettingsWatermarkStrength.Text"><value>진하기</value></data>
+  <data name="SettingsWatermarkStrengthNote.Text"><value>선택한 색을 얼마나 쓸지. 높을수록 더 잘 보입니다. 가장 높여도 워터마크는 데이터 아래에 그려집니다.</value></data>
 </root>

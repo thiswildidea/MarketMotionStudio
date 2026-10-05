@@ -863,4 +863,8 @@
   <data name="SettingsWatermarkText.Header"><value>Co říká</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Ve výchozím stavu zapnuto: video končí někde, kde nic neříká, kde vzniklo. Prázdné se vrací k výše uvedenému jménu; vypnuto — snímky nenesou nic.</value></data>
+  <data name="SettingsWatermarkFont.Header"><value>Písmo</value></data>
+  <data name="SettingsWatermarkColour.Text"><value>Barva</value></data>
+  <data name="SettingsWatermarkStrength.Text"><value>Síla</value></data>
+  <data name="SettingsWatermarkStrengthNote.Text"><value>Kolik zvolené barvy se použije. Vyšší je viditelnější; i na maximum je značka kreslena pod daty.</value></data>
 </root>

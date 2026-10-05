@@ -57,6 +57,9 @@ public sealed partial class SettingsPage : Page
         (BackdropKind.Picture, "SettingsFrameBackdropPicture"),
     ];
 
+    /// <summary>The fonts this machine has, once they have been asked for.</summary>
+    private static IReadOnlyList<string>? _fonts;
+
     private bool _loading = true;
 
     /// <summary>
@@ -145,6 +148,11 @@ public sealed partial class SettingsPage : Page
         WatermarkText.MaxLength = WatermarkSettings.MaxLength;
         WatermarkToggle.IsOn = WatermarkSettings.Enabled;
         WatermarkText.Text = WatermarkSettings.Text;
+        FillWatermarkFonts();
+        WatermarkColour.Color = WatermarkSettings.Colour;
+        WatermarkStrengthSlider.Minimum = Watermark.MinOpacity;
+        WatermarkStrengthSlider.Maximum = Watermark.MaxOpacity;
+        WatermarkStrengthSlider.Value = WatermarkSettings.Strength;
         SettleWatermarkControls();
 
         _loading = false;
@@ -480,6 +488,136 @@ public sealed partial class SettingsPage : Page
         PaintSwatches();
     }
 
+    /// <summary>
+    /// Every font on this machine, into the combo, each item drawn in the font it
+    /// names.
+    ///
+    /// Set in the font it names rather than in a sample word beside it: a list of
+    /// font names all set in the page's own font is a list where choosing one
+    /// tells you nothing until a frame is exported, and the frames are on another
+    /// page. A name with a comma in it is shown in the default font, for the
+    /// reason <see cref="Ink.Format"/> refuses such a name outright.
+    /// </summary>
+    private void FillWatermarkFonts()
+    {
+        foreach (var font in Fonts())
+        {
+            WatermarkFontCombo.Items.Add(new ComboBoxItem
+            {
+                Content = font,
+                Tag = font,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily(
+                    font.Contains(',') ? Ink.Family : font),
+            });
+        }
+
+        var wanted = WatermarkSettings.Family;
+
+        WatermarkFontCombo.SelectedIndex = Math.Max(
+            0, WatermarkFontCombo.Items
+                .Select(item => (item as ComboBoxItem)?.Tag as string)
+                .ToList()
+                .FindIndex(name => string.Equals(name, wanted, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    /// <summary>
+    /// The fonts Windows knows about, sorted, asked once.
+    ///
+    /// Kept rather than re-read: the list is several hundred names and this page
+    /// is opened again and again while a look is being settled on. A machine
+    /// that will not say what fonts it has gets the one font the frames are
+    /// drawn in, which is not an error worth stopping a settings page for.
+    /// </summary>
+    private static IReadOnlyList<string> Fonts()
+    {
+        if (_fonts is { } fonts)
+        {
+            return fonts;
+        }
+
+        try
+        {
+            // Every face on the machine rather than every family: Windows knows
+            // families only through the faces that carry them. Duplicates go,
+            // because the same family arrives once per face it has — Regular,
+            // Bold, and so on — and a list of four hundred entries that is
+            // really sixty fonts is not a list anyone can choose from.
+            var set = Microsoft.Graphics.Canvas.Text.CanvasFontSet.GetSystemFontSet();
+
+            _fonts = set.Fonts
+                .Select(FamilyName)
+                .Where(name => name.Length > 0)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(name => name, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray();
+
+            // Both numbers, because a short list has two very different causes:
+            // a machine that reports few faces, and faces whose name could not be
+            // read — the second is this code's to fix, the first is not.
+            Diagnostics.CrashLog.Note($"watermark: {set.Fonts.Count} faces, {_fonts.Count} families");
+        }
+        catch (Exception ex)
+        {
+            Diagnostics.CrashLog.Note($"watermark: fonts could not be listed, {ex.GetType().Name}");
+            _fonts = [Ink.Family];
+        }
+
+        return _fonts;
+    }
+
+    /// <summary>
+    /// The name to offer for a face: the English one where it has one, and
+    /// otherwise whichever name it answers with first.
+    ///
+    /// Asked for by locale rather than taken as "the first name it has", because
+    /// a face can carry a name for every language it was published in and the
+    /// order they come back in is not promised — on a Chinese machine several
+    /// hundred families would otherwise be listed under whichever localisation
+    /// happened to be first, and a list of names in six languages is a list
+    /// nobody can search.
+    /// </summary>
+    private static string FamilyName(Microsoft.Graphics.Canvas.Text.CanvasFontFace face) =>
+        face.FamilyNames.TryGetValue("en-US", out var english) && english.Length > 0
+            ? english
+            : face.FamilyNames.Values.FirstOrDefault(name => name.Length > 0) ?? string.Empty;
+
+    /// <summary>Which font the mark is set in.</summary>
+    private void OnWatermarkFontChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading || WatermarkFontCombo.SelectedItem is not ComboBoxItem { Tag: string font })
+        {
+            return;
+        }
+
+        WatermarkSettings.Family = font;
+        SettleWatermarkControls();
+    }
+
+    /// <summary>Its colour.</summary>
+    private void OnWatermarkColourChanged(ColorPicker sender, ColorChangedEventArgs args)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        WatermarkSettings.Colour = args.NewColor;
+        SettleWatermarkControls();
+    }
+
+    /// <summary>How much of that colour is used, in percent.</summary>
+    private void OnWatermarkStrengthChanged(
+        object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        WatermarkSettings.Strength = (int)Math.Round(e.NewValue);
+        SettleWatermarkControls();
+    }
+
     /// <summary>Whether the exported frames carry the mark at all.</summary>
     private void OnWatermarkToggled(object sender, RoutedEventArgs e)
     {
@@ -508,7 +646,7 @@ public sealed partial class SettingsPage : Page
     }
 
     /// <summary>
-    /// What the watermark card shows, given the two controls on it.
+    /// What the watermark card shows, given the controls on it.
     ///
     /// The strip is given the resolved watermark rather than the typed text:
     /// blank falls back to the default name and off resolves to nothing, and
@@ -518,7 +656,20 @@ public sealed partial class SettingsPage : Page
     /// </summary>
     private void SettleWatermarkControls()
     {
-        WatermarkText.IsEnabled = WatermarkToggle.IsOn;
+        // Everything that decides what the mark looks like is dead while the mark
+        // is off: a font chosen for a mark that is not drawn is a setting with no
+        // answer anywhere, and the strip below is then the only thing on the page
+        // that would still be drawing it.
+        var on = WatermarkToggle.IsOn;
+
+        WatermarkText.IsEnabled = on;
+        WatermarkFontCombo.IsEnabled = on;
+        WatermarkColourButton.IsEnabled = on;
+        WatermarkStrengthSlider.IsEnabled = on;
+
+        WatermarkSwatch.Fill =
+            new Microsoft.UI.Xaml.Media.SolidColorBrush(WatermarkSettings.Colour);
+
         WatermarkSample.Watermark = WatermarkSettings.Current;
     }
 

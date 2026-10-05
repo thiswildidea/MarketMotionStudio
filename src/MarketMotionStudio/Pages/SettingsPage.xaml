@@ -254,11 +254,61 @@
                              HorizontalAlignment="Left"
                              TextChanged="OnWatermarkTextChanged" />
 
+                    <!-- Every font Windows knows about, each one drawn in itself:
+                         a list of font names in the page's own font is a list
+                         where picking one tells you nothing until a frame is
+                         exported, and the frames are on another page. -->
+                    <ComboBox x:Name="WatermarkFontCombo"
+                              x:Uid="SettingsWatermarkFont"
+                              MinWidth="280"
+                              SelectionChanged="OnWatermarkFontChanged" />
+
+                    <!-- In a dropdown, like the frame's own two colours: a
+                         colour picker is a large control and this card sits
+                         above three more.
+
+                         Alpha is switched off on purpose. How strongly the mark
+                         is drawn is the slider below, and a picker that also
+                         offered it would be two controls for one number, each
+                         able to contradict the other. -->
+                    <DropDownButton x:Name="WatermarkColourButton">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <!-- Outlined, unlike the two on the backdrop card: the
+                                 mark's colour starts out white, and a white square
+                                 on a white card is a swatch that says nothing about
+                                 the thing it is there to show. -->
+                            <Rectangle x:Name="WatermarkSwatch" Width="18" Height="18" RadiusX="3" RadiusY="3"
+                                       Stroke="{ThemeResource CardStrokeColorDefaultBrush}"
+                                       StrokeThickness="1" />
+                            <TextBlock x:Uid="SettingsWatermarkColour" />
+                        </StackPanel>
+                        <DropDownButton.Flyout>
+                            <Flyout>
+                                <mux:ColorPicker x:Name="WatermarkColour"
+                                                 IsAlphaEnabled="False"
+                                                 ColorChanged="OnWatermarkColourChanged" />
+                            </Flyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+
+                    <!-- How much of that colour is used. The one number behind
+                         "can you see it": at the default tenth every colour
+                         comes out as the same faint wash, so a colour chosen
+                         without this is a choice that cannot be seen. -->
+                    <TextBlock x:Uid="SettingsWatermarkStrength"
+                               Margin="0,4,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <Slider x:Name="WatermarkStrengthSlider"
+                            Width="320"
+                            HorizontalAlignment="Left"
+                            StepFrequency="2"
+                            ValueChanged="OnWatermarkStrengthChanged" />
+
                     <!-- The mark as it will be laid across the frame, on the
                          frame's own backdrop. Not decoration: the strip is the
                          only place on this page where a name just typed becomes
                          visible, and the frames themselves are on another page
-                         entirely. -->
+                         entirely. The three controls above all land on it. -->
                     <views:WatermarkPreview x:Name="WatermarkSample" Height="72" />
 
                     <TextBlock x:Uid="SettingsWatermarkHint"

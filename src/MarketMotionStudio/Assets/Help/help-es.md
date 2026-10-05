@@ -442,6 +442,8 @@ En la página de configuración puedes cambiar sobre qué se dibuja la animació
 
 - **Cada fotograma lleva además un nombre sobre su fondo: la marca de agua.** Está activada por defecto, dice «周期留白» hasta que la cambies, y la redacción es tuya. Se repite en diagonal por todo el cuadro, dibujada **bajo** los datos, de modo que no tapa nada; la vista previa, el vídeo exportado y la imagen de portada la llevan igual. Si se deja vacía vuelve al nombre por defecto — para que no aparezca nada, desactívala. El interruptor está activado por defecto porque un vídeo se publica en un lugar que no dice nada de dónde se hizo.
 
+
+- **El aspecto de la marca también es tuyo.** La fuente es cualquier fuente instalada en este equipo —cada entrada de la lista está escrita en la fuente que nombra—, el color es el que dé el selector, y la intensidad es cuánto de ese color se usa: 10% por defecto, hasta 40%, e incluso en su punto máximo se dibuja debajo de los datos. Las tres afectan igual a la vista previa, al vídeo exportado y a la imagen de portada.
 - La redacción por defecto no sigue el idioma de la interfaz: una marca de agua es una firma, y una firma que cambiara con el idioma sería una distinta en cada equipo.
 
 ## Los datos, y lo que no le dirán

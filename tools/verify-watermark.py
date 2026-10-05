@@ -47,6 +47,19 @@ _spec.loader.exec_module(vfb)
 
 DEFAULT_TEXT = "周期留白"
 
+# 默认字体（`Ink.Family`），复位时用它。
+DEFAULT_FONT = "Microsoft YaHei"
+
+# 换过去的那一款。**一串候选，不是一款**：下拉在 UIA 里只暴露它当前可见的那一段（实测滚
+# 动设置页之前 157 项、之后 151 项，Georgia 只在其中一种情况下露出来），所以只认一款的
+# 脚本换个窗口位置就选不上。候选都选含中文的、与默认那款形状差得远的 —— 一款不含中文
+# 字形的字体会把「周期留白」交给回退字体去画，画出来还是默认那副样子，画面就不变了。
+OTHER_FONTS = ["KaiTi", "Georgia", "Impact"]
+
+# 默认浓度 10%（水印那一层 alpha 26/255），以及浓度滑条的上界。
+DEFAULT_STRENGTH = 10
+MAX_STRENGTH = 40
+
 # 水印是白 alpha 26 打在近黑的底上，抬起来约 21 一通道、三通道和约 63。所以只数「比所在行
 # 中位数亮出 24~140」的像素 —— 上界是这一条最要紧的地方：画面上还有标题、进度条、卡片边框，
 # 它们比水印亮得多（实测关掉时那些像素的中位亮度是 449，水印是 63 上下）。不设上界时关掉的
@@ -82,6 +95,9 @@ def source():
     watermark = read(os.path.join("Render", "Watermark.cs"))
     settings = read("WatermarkSettings.cs")
     surface = read(os.path.join("Views", "PreviewSurface.cs"))
+    page = read(os.path.join("Pages", "SettingsPage.xaml.cs"))
+    markup = read(os.path.join("Pages", "SettingsPage.xaml"))
+    ink = read(os.path.join("Render", "Ink.cs"))
     frame = read(os.path.join("Render", "FrameExporter.cs"))
     video = read(os.path.join("Render", "VideoExporter.cs"))
 
@@ -117,7 +133,47 @@ def source():
           'Settings.Values[TextKey] is string text && text.Trim().Length > 0' in settings)
 
     check("关掉时解析为 null（渲染器「没有」而不是「画一个空的」）",
-          "Resolve() => Enabled ? new Watermark(Text) : null" in settings)
+          "Enabled ? new Watermark(Text, Family, Colour, Watermark.AlphaOf(Strength)) : null"
+          in settings)
+
+    print("源码（长什么样）：")
+
+    check("画的时候用的是所选字体（`Ink.Format` 带上 family）",
+          "Ink.Format(fontSize, family: Family)" in watermark)
+
+    check("颜色是所选的颜色、浓度是所选的浓度（不是写死的白）",
+          "Color.FromArgb(Alpha, Colour.R, Colour.G, Colour.B)" in watermark)
+
+    # 这一层是按设备缓存的整层。键里少一样，换那样就只在预览上看不出来 —— 导出用的是
+    # 另一份缓存，那一份还会是新的。所以这三样一个都不能少，而少了的那一格画面完全正常。
+    check("缓存那一层把字体 / 颜色 / 浓度一起当键（否则改了不重画）",
+          'string.Equals(entry.Family, Family, StringComparison.Ordinal)' in watermark
+          and "entry.Colour.Equals(Colour)" in watermark
+          and "entry.Alpha == Alpha" in watermark)
+
+    check("浓度的上界不是 100（拉满仍然画在数据之下）",
+          "public const int MaxOpacity = 40;" in watermark)
+
+    check("取色器不给 alpha（那是浓度滑条的事）",
+          'x:Name="WatermarkColour"' in markup and 'IsAlphaEnabled="False"' in markup)
+
+    check("三项都落到设置里（下拉 / 取色器 / 滑条各写各的）",
+          "WatermarkSettings.Family = font;" in page
+          and "WatermarkSettings.Colour = args.NewColor;" in page
+          and "WatermarkSettings.Strength = (int)Math.Round(e.NewValue);" in page)
+
+    check("关掉时三个控件一起灰掉（不是只有输入框）",
+          "WatermarkFontCombo.IsEnabled = on;" in page
+          and "WatermarkColourButton.IsEnabled = on;" in page
+          and "WatermarkStrengthSlider.IsEnabled = on;" in page)
+
+    check("没存过时回落到默认字体与默认颜色",
+          ": Watermark.DefaultFamily" in settings
+          and "Watermark.DefaultColour" in settings)
+
+    # 字体名里带逗号的，DirectWrite 会当成「两个字体」，画出来的就不是用户点的那一个。
+    check("带逗号的字体名被拒（退回默认字体）",
+          "family.Contains(',')" in ink)
 
     check("按设备缓存整层（每帧上百个字只画一次）",
           "ConditionalWeakTable<CanvasDevice, Entry> Painted" in watermark)
@@ -262,35 +318,48 @@ def shot(window, name):
 
 
 def show_strip(window):
-    """把设置页那条反馈预览弄进视口，返回文本框的屏幕矩形。
+    """把设置页那条反馈预览弄进视口，返回锚点（浓度滑条）的屏幕矩形。
 
-    滚动容器是文本框的**直接父级**那个 `PaneControl` —— 这一页按 `ScrollViewerControl`
+    锚点是**预览条上面那一个控件**，现在它是浓度滑条 —— 这一轮在文本框与预览条之间插进了
+    字体下拉与取色器，还拿文本框当锚点的话，往下那 220 像素采到的全是新控件：卡片与预览条
+    底色不同，扫不到就说「没扫到那一条」，而预览条好端端画着。
+
+    滚动容器是锚点的**直接父级**那个 `PaneControl` —— 这一页按 `ScrollViewerControl`
     一个都找不到（`verify-framebackdrop` 里的 `scroll_settings` 因此只是安静地什么都不做），
-    所以这里从文本框往上问一句「你会滚吗」。
+    所以这里从锚点往上问一句「你会滚吗」。
 
-    45% 那个位置是量出来的：文本框落到 y 611..685，它下面那一条正好整条在窗口里。再多滚
-    一点（60%）这一条就跑到卡片上方去了，又采不到。
+    滚动百分比**试出来**而不是写死：卡片每加一行控件，写死的那个数就把预览条推出窗口下沿，
+    而推出去的表现同样是「没扫到那一条」。所以按「滑条整个在窗口里、下面还留得下预览条」
+    依次试几个位置。
     """
-    box = vfb.require(window, "WatermarkText")
-    scroller = vfb.pat(box.GetParentControl(), auto.PatternId.ScrollPattern)
+    anchor = vfb.require(window, "WatermarkStrengthSlider")
+    scroller = vfb.pat(anchor.GetParentControl(), auto.PatternId.ScrollPattern)
 
-    if scroller is not None:
-        try:
-            if scroller.VerticallyScrollable:
-                scroller.SetScrollPercent(-1, 45)
-                time.sleep(1.2)
-        except Exception:  # noqa: BLE001 - a page that will not scroll is read where it is
-            pass
+    frame = window.BoundingRectangle
 
-    return box.BoundingRectangle
+    for percent in (45, 55, 65, 75):
+        if scroller is not None:
+            try:
+                if scroller.VerticallyScrollable:
+                    scroller.SetScrollPercent(-1, percent)
+                    time.sleep(1.2)
+            except Exception:  # noqa: BLE001 - a page that will not scroll is read where it is
+                pass
+
+        rect = anchor.BoundingRectangle
+
+        if rect.top > frame.top and rect.bottom < frame.bottom - 120:
+            break
+
+    return anchor.BoundingRectangle
 
 
-def strip_band(window, name):
-    """设置页那条反馈预览的水印纹理比例，扫不到就是 None。
+def strip_crop(window, name):
+    """设置页那条反馈预览的像素，扫不到就是 None。
 
     它**不是 UIA 里的一个控件**：`WatermarkPreview` 是 `Grid` 的子类，而 Grid 在 UIA 里没有
-    自己的节点（实测按 AutomationId 找它，一个都找不到）。所以位置从**它上面那个文本框**
-    往下扫：卡片底色是浅灰、这一条是深色渐变，行均值一眼分得开。
+    自己的节点（实测按 AutomationId 找它，一个都找不到）。所以位置从**它上面那个控件**往下
+    扫：卡片底色是浅灰、这一条是深色渐变，行均值一眼分得开。
 
     偏移量不写死：截图坐标与 UIA 坐标差着窗口边框那几十像素，写死就采到卡片空白处，看上去
     像「这条根本没画」。
@@ -304,13 +373,111 @@ def strip_band(window, name):
     right = min(image.size[0], rect.right - frame.left)
     top = max(0, rect.bottom - frame.top)
 
-    dark = [y for y in range(top, min(image.size[1], top + 220))
-            if a[y, left:right].mean() < 100]
+    found = [y for y in range(top, min(image.size[1], top + 220))
+             if a[y, left:right].mean() < 100]
 
-    if len(dark) < 20:
+    if len(found) < 20:
         return None
 
-    return grain_array(a[dark[0]:dark[-1] + 1, left:right])
+    # 只取**连着**的那一段。暗行不止预览条：截图比窗口矮几十行，往下扫会扫到窗口下沿
+    # 之外的那一片，它同样是暗的。按 `首行..末行` 框进来，那一块亮度不均，关掉的画面
+    # 就量出 0.59%（阈值 0.5%）—— 而预览条本身实测是 0.0000%。
+    dark = [found[0]]
+
+    for y in found[1:]:
+        if y - dark[-1] > 2:
+            break
+
+        dark.append(y)
+
+    # 上下各缩进几行再取：卡片那一圈边框和预览条自己的边也在这一段里。
+    upper = dark[0] + 2
+    lower = dark[-1] - 1
+
+    if lower - upper < 20:
+        return None
+
+    return a[upper:lower, left:right]
+
+
+def strip_band(window, name):
+    """那条预览上的水印纹理比例，扫不到就是 None。见 `strip_crop`。"""
+    crop = strip_crop(window, name)
+
+    return None if crop is None else grain_array(crop)
+
+
+def crop_diff(one, other):
+    """两幅预览条有多少比例的像素不同。"""
+    height = min(one.shape[0], other.shape[0])
+    width = min(one.shape[1], other.shape[1])
+
+    return float((np.abs(one[:height, :width] - other[:height, :width]).max(axis=2) > 6).mean())
+
+
+def pick_font(window, name):
+    """在字体下拉里选一款，返回有没有选上。
+
+    下拉展开后到**根级窗口**找 ListItem（`verify-position` 那一轮量出来的）：这一页的下拉
+    有几百项，展开后的列表不是组合框的子树。按名字找而不是按序号，因为选到哪一款决定了
+    画面变多少 —— Georgia 与默认那款差得远，一眼看得出。
+    """
+    combo = vfb.require(window, "WatermarkFontCombo")
+
+    combo.SetFocus()
+    time.sleep(0.3)
+
+    expand = vfb.pat(combo, auto.PatternId.ExpandCollapsePattern)
+
+    if expand is None:
+        print("      （下拉不支持 ExpandCollapsePattern）")
+        return False
+
+    for _ in range(3):
+        if expand.ExpandCollapseState == auto.ExpandCollapseState.Expanded:
+            break
+
+        expand.Expand()
+        time.sleep(1.2)
+
+    # 展开之后按名字找。列表长（这一台机器上 129 个族），找名字而不是找序号：序号换一台
+    # 机器就是另一款字体，而选到哪一款决定了画面变多少。
+    items = vfb.find_all(
+        lambda c: c.ControlTypeName == "ListItemControl", window)
+
+    if not items:
+        items = vfb.find_all(
+            lambda c: c.ControlTypeName == "ListItemControl",
+            auto.GetRootControl(), limit=12)
+
+    seen = {c.Name for c in items}
+
+    if name not in seen:
+        print("      （下拉里 {} 项，没有 {}）".format(len(items), name))
+        return False
+
+    item = next(c for c in items if c.Name == name)
+
+    select = vfb.pat(item, auto.PatternId.SelectionItemPattern)
+
+    if select is None:
+        return False
+
+    select.Select()
+    time.sleep(1.0)
+
+    return True
+
+
+def set_strength(window, percent):
+    """把浓度滑条摆到某个位置。"""
+    slider = vfb.require(window, "WatermarkStrengthSlider")
+    value = vfb.pat(slider, auto.PatternId.RangeValuePattern)
+
+    assert value is not None, "浓度滑条不支持 RangeValuePattern"
+
+    value.SetValue(percent)
+    time.sleep(0.8)
 
 
 def device():
@@ -398,9 +565,75 @@ def device():
     check("留空回到默认那句话（不是变成没水印）", diff_ratio(base, blank) < 0.002,
           "与默认那句差 {:.3%}".format(diff_ratio(base, blank)))
 
+    # ---- 5b) 浓度：拉满之后整条预览更亮，拉回来又是原来那一条
+    #
+    # 不看 `grain_array`：那个判据数的是「比行底色亮出 24~140」的像素，浓度拉到 40% 时
+    # 水印自己比 140 还亮，全落进上界之外 —— 拉满反倒量出 0，看上去像「拉满没画」。所以
+    # 这里比的是**整条的亮度**，它是单调的：浓度越高，铺满画面的那一层越亮。
+    vfb.goto_settings(window)
+    settle(window, True, DEFAULT_TEXT)
+    plain = strip_crop(window, "verify-watermark-plain.png")
+
+    assert plain is not None, "没扫到那条预览"
+
+    set_strength(window, MAX_STRENGTH)
+    strong = strip_crop(window, "verify-watermark-strong.png")
+
+    assert strong is not None, "浓度拉满后没扫到那条预览"
+
+    check("浓度拉满，整条预览更亮",
+          strong.mean() > plain.mean() + 2,
+          "亮度 {:.1f} -> {:.1f}".format(plain.mean(), strong.mean()))
+
+    check("浓度拉满与默认是两幅不同的画面", crop_diff(plain, strong) > 0.05,
+          "差异 {:.2%}".format(crop_diff(plain, strong)))
+
+    set_strength(window, DEFAULT_STRENGTH)
+    settled = strip_crop(window, "verify-watermark-strength-back.png")
+
+    assert settled is not None, "浓度拉回后没扫到那条预览"
+
+    check("浓度拉回默认，预览条回到原样", crop_diff(plain, settled) < 0.01,
+          "与默认浓度差 {:.3%}".format(crop_diff(plain, settled)))
+
+    # ---- 5c) 字体：换一款预览条就变，重启之后还是那一款
+    #
+    # 字体是唯一一项「换了之后画面变、但界面上一个字都不会说」的：下拉里选了 Georgia，
+    # UIA 读不出选中项的名字（`MarketCombo` 那类的 ValuePattern 是空的），所以判据只能是
+    # 那一幅画面 —— 重启之后还是同一幅，就是记着。
+    chosen = next((name for name in OTHER_FONTS if pick_font(window, name)), None)
+
+    check("字体下拉里选得到另一款字体", chosen is not None, str(chosen))
+
+    other = strip_crop(window, "verify-watermark-font.png")
+
+    assert other is not None, "换字体后没扫到那条预览"
+
+    check("换了字体，预览条就变了", crop_diff(plain, other) > 0.01,
+          "与默认字体差 {:.2%}".format(crop_diff(plain, other)))
+
+    window = restart()
+    vfb.goto_settings(window)
+
+    kept = strip_crop(window, "verify-watermark-font-kept.png")
+
+    assert kept is not None, "重启后没扫到那条预览"
+
+    check("换过的字体记着（重启后还是那一幅）", crop_diff(other, kept) < 0.01,
+          "与重启前差 {:.3%}".format(crop_diff(other, kept)))
+
+    pick_font(window, DEFAULT_FONT)
+    restored = strip_crop(window, "verify-watermark-font-back.png")
+
+    check("换回默认字体，预览条回到原样",
+          restored is not None and crop_diff(plain, restored) < 0.01,
+          "与默认字体差 {:.3%}".format(crop_diff(plain, restored) if restored is not None else -1))
+
     # ---- 6) 收尾：不留痕迹
     vfb.goto_settings(window)
     settle(window, True, DEFAULT_TEXT)
+    set_strength(window, DEFAULT_STRENGTH)
+    pick_font(window, DEFAULT_FONT)
 
     on, text = state_of(window)
     check("收尾复位：开 + 默认那句话", on and text == DEFAULT_TEXT,

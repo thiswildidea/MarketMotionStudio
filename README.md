@@ -1180,8 +1180,9 @@ has its path remembered anyway, or a 2,700-frame export retries it 2,700 times.
 
 Every exported frame carries a name across its backdrop — slanted at 45° and repeated, drawn
 **under** the data rather than over it, faint enough (a tenth of the way to white) that nothing
-drawn on top of it changes colour. It is on until it is switched off, and it says `周期留白` until
-someone types their own.
+drawn on top of it changes colour. It is on until it is switched off, it says `周期留白` until
+someone types their own, and how it is set is theirs to choose: any font this machine has, any
+colour, and how much of that colour is used.
 
 On by default, because opting in is the wrong default here: a video leaves the app as a file and is
 posted somewhere that shows nothing of where it was made, so the alternative is that nearly every
@@ -1193,7 +1194,18 @@ is the one call every renderer fills its frame through: putting it in each rende
 be twenty-odd copies of the same line, where the one that is forgotten is the page whose videos go
 out unsigned and nobody notices until one is posted. And the pattern is cached **as one layer per
 device**: tiling a 1080×1920 frame is over a hundred pieces of text, and an export is thousands of
-frames.
+frames. The font, the colour and the strength are part of that layer's key as much as the wording
+is: a layer keyed on the text alone keeps the old colour when a new one is picked, and the frame
+redraws with nothing different on it, which reads as a picker that does nothing.
+
+How it looks is chosen on the Settings page, next to a strip of the frame's own backdrop showing the
+mark as it will be laid. The font is any font installed on the machine, listed with every entry
+drawn in the font it names — a list of font names all set in the page's own font tells you nothing
+until a frame is exported, and the frames are on another page. The colour is any colour, and the
+strength is the one number behind "can you see it": at the default tenth, white, amber and blue all
+come out as the same wash, so a colour chosen without it is a choice that cannot be seen. The
+ceiling is 40% rather than 100 — the mark is drawn under the data on purpose, and a mark at full
+strength is a second subject in the frame.
 
 Blank does not mean off — it falls back to the default wording, because "deleted" and "switched
 off" would otherwise be the same control asking the same question twice. Off resolves to `null`, so

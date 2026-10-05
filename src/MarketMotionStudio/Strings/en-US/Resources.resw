@@ -874,4 +874,8 @@
   <data name="SettingsWatermarkText.Header"><value>What it says</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>On by default: a video is posted somewhere that shows nothing of where it was made. Left blank it falls back to the name above; switched off, the frames carry nothing.</value></data>
+  <data name="SettingsWatermarkFont.Header"><value>Font</value></data>
+  <data name="SettingsWatermarkColour.Text"><value>Colour</value></data>
+  <data name="SettingsWatermarkStrength.Text"><value>Strength</value></data>
+  <data name="SettingsWatermarkStrengthNote.Text"><value>How much of the chosen colour is used. Higher is more visible; even at its strongest the mark is drawn under the data.</value></data>
 </root>

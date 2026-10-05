@@ -25,7 +25,21 @@ namespace MarketMotionStudio.Render;
 /// of them, including the empty frame a page shows before anything is fetched.
 /// </summary>
 /// <param name="Text">What it says. Never blank; see <see cref="DefaultText"/>.</param>
-public sealed record Watermark(string Text)
+/// <param name="Family">
+/// Which font it is set in. A name this machine has; one it has not is drawn in
+/// the default, because a mark is not the place for a fallback to be visible
+/// — see <see cref="Ink.Format"/>.
+/// </param>
+/// <param name="Colour">
+/// Its colour, as chosen. Drawn at <paramref name="Alpha"/>, so a colour is a
+/// hue here rather than an appearance: at the default strength even white comes
+/// out as the faintest of washes.
+/// </param>
+/// <param name="Alpha">
+/// How opaque one repetition is, out of 255. See <see cref="AlphaOf"/>: what is
+/// chosen is a percentage, and this is it as the drawing needs it.
+/// </param>
+public sealed record Watermark(string Text, string Family, Color Colour, byte Alpha)
 {
     /// <summary>
     /// What it says before anybody has changed it.
@@ -62,16 +76,48 @@ public sealed record Watermark(string Text)
     private const double GapDown = 3.4;
 
     /// <summary>
-    /// How opaque one repetition is, out of 255.
+    /// How opaque one repetition is, in percent, before anybody has changed it.
     ///
-    /// Low enough that nothing drawn over it — a bar, a line, a caption — keeps
-    /// its own colour, and high enough to still be there when a still of the
-    /// video is lifted out of it. Measured against the frame's own backdrop,
-    /// which is near-black: this lifts a pixel by about a tenth of the way to
-    /// the title's white, so it reads as part of the backdrop rather than as
-    /// writing on it.
+    /// A tenth: enough to still be there when a still of the video is lifted out
+    /// of it, and low enough that nothing drawn over it — a bar, a line, a
+    /// caption — loses its own colour. The ceiling is what keeps the choice a
+    /// matter of taste rather than of whether the numbers can be read: at full
+    /// strength a mark behind the data is no longer *behind* anything.
     /// </summary>
-    private const byte Alpha = 26;
+    public const int DefaultOpacity = 10;
+
+    /// <summary>The faintest it can be made, in percent. Below this it is not a mark.</summary>
+    public const int MinOpacity = 2;
+
+    /// <summary>
+    /// The strongest it can be made, in percent.
+    ///
+    /// Not 100: the mark is drawn under the data on purpose, and a mark at full
+    /// strength is a second subject in the frame. Two fifths is as far as it can
+    /// be pushed before it starts competing with the numbers it sits behind.
+    /// </summary>
+    public const int MaxOpacity = 40;
+
+    /// <summary>The font it is set in before anybody has changed it.</summary>
+    public static string DefaultFamily => Ink.Family;
+
+    /// <summary>
+    /// Its colour before anybody has changed it: the title's, which is the
+    /// lightest ink in the frame and so the one that reads against the backdrop.
+    /// </summary>
+    public static Color DefaultColour => Palette.Title;
+
+    /// <summary>
+    /// A chosen strength, as the alpha the drawing needs.
+    ///
+    /// Percentage in, byte out: what a slider carries is a percentage and what
+    /// <see cref="Color"/> takes is a byte, and putting that conversion in the
+    /// page would mean two places agreeing about it — the slider's range and the
+    /// mark's opacity, which is a range and a colour asked the same question in
+    /// two different units.
+    /// </summary>
+    public static byte AlphaOf(int percent) =>
+        (byte)Math.Clamp(Math.Round(percent * 255.0 / 100.0), 0, 255);
 
     /// <summary>The slant: 45°, the way a mark like this is usually laid.</summary>
     private const double Radians = -Math.PI / 4;
@@ -117,9 +163,15 @@ public sealed record Watermark(string Text)
             return;
         }
 
-        using var format = Ink.Format(fontSize);
+        // The font and the colour as chosen: one mark, one format. A second
+        // format measured for width and another drawn with would put the
+        // repetitions at a spacing that is right for neither.
+        using var format = Ink.Format(fontSize, family: Family);
 
-        var colour = Color.FromArgb(Alpha, Palette.Title.R, Palette.Title.G, Palette.Title.B);
+        // The chosen colour at the chosen strength. The alpha is not the
+        // colour's: the picker is asked for a hue and the slider for how much of
+        // it, which is why the picker has no alpha channel of its own.
+        var colour = Color.FromArgb(Alpha, Colour.R, Colour.G, Colour.B);
         var across = Ink.Measure(session, Text, format) + (fontSize * GapAcross);
         var down = fontSize * GapDown;
 
@@ -191,8 +243,15 @@ public sealed record Watermark(string Text)
 
         lock (entry)
         {
+            // Everything the layer is made of, compared — the font and the colour
+            // as much as the words. A cache keyed on the text alone keeps the old
+            // colour after a new one is picked, and the whole frame redraws with
+            // nothing different on it, which reads as "the picker does nothing".
             if (entry.Tile is { } tile
                 && string.Equals(entry.Text, Text, StringComparison.Ordinal)
+                && string.Equals(entry.Family, Family, StringComparison.Ordinal)
+                && entry.Colour.Equals(Colour)
+                && entry.Alpha == Alpha
                 && Math.Abs(entry.Width - width) < 0.5
                 && Math.Abs(entry.Height - height) < 0.5
                 && Math.Abs(entry.Size - fontSize) < 0.5)
@@ -207,6 +266,9 @@ public sealed record Watermark(string Text)
             // Held even when the build failed, so a size that cannot be
             // allocated is not retried once per frame for the whole export.
             entry.Text = Text;
+            entry.Family = Family;
+            entry.Colour = Colour;
+            entry.Alpha = Alpha;
             entry.Width = width;
             entry.Height = height;
             entry.Size = fontSize;
@@ -244,6 +306,12 @@ public sealed record Watermark(string Text)
     private sealed class Entry
     {
         public string Text = string.Empty;
+
+        public string Family = string.Empty;
+
+        public Color Colour;
+
+        public byte Alpha;
 
         public double Width;
 

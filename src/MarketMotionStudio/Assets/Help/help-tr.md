@@ -422,6 +422,8 @@ Ayarlar sayfasında animasyonun neyin üzerine çizileceğini değiştirebilirsi
 
 - **Her kare, fonunda bir ad daha taşır: filigran.** Varsayılan olarak açıktır, siz değiştirene kadar „周期留白“ yazar ve metin sizindir. Tüm kare boyunca eğik olarak yinelenir, verilerin **altına** çizilir, yani hiçbir şeyi kapatmaz; önizleme, dışa aktarılan video ve kapak görseli de onu taşır. Boş bırakılırsa varsayılan ada döner — hiçbir şey taşınmasın isterseniz kapatmanız gerekir. Anahtar varsayılan olarak açıktır, çünkü bir video nerede üretildiğini hiç göstermeyen bir yerde yayımlanır.
 
+
+- **İşaretin nasıl göründüğü de sizin.** Yazı tipi bu makinede yüklü herhangi bir yazı tipidir — listedeki her girdi, adını verdiği yazı tipiyle yazılır —, renk seçicinin verdiği renktir ve yoğunluk, o rengin ne kadarının kullanıldığıdır: varsayılan %10, en fazla %40 ve en yüksek değerde bile verilerin altına çizilir. Üçü de önizleme, dışa aktarılan video ve kapak görseli için aynı şekilde geçerlidir.
 - Varsayılan metin, arayüz dilini takip etmez: bir filigran bir imzadır ve dille birlikte değişen bir imza her makinede farklı bir imza olurdu.
 
 ## Veri ve söylemeyecekleri

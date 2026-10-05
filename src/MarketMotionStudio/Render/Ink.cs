@@ -31,15 +31,36 @@ public static class Ink
     /// </summary>
     public const string Family = "Microsoft YaHei";
 
-    public static CanvasTextFormat Format(double sizeInPixels, bool bold = false) => new()
+    /// <summary>
+    /// A format to draw in.
+    /// </summary>
+    /// <param name="sizeInPixels">Its size, in the frame's own pixels.</param>
+    /// <param name="bold">Whether it is set bold.</param>
+    /// <param name="family">
+    /// Which font, by the name Windows calls it. Left out means <see cref="Family"/>.
+    ///
+    /// A name with a comma in it is refused and the default used: DirectWrite reads
+    /// a family string as a comma-separated *list*, so "Foo, Bar" is two fonts —
+    /// the first that matches, then a fallback. A font whose name really does
+    /// contain a comma would therefore be drawn as another font altogether, and the
+    /// one thing a choice of font must not do is silently pick a different one.
+    /// </param>
+    public static CanvasTextFormat Format(double sizeInPixels, bool bold = false, string? family = null) => new()
     {
-        FontFamily = Family,
+        FontFamily = Chosen(family),
         FontSize = (float)sizeInPixels,
         FontWeight = bold ? Microsoft.UI.Text.FontWeights.Bold : Microsoft.UI.Text.FontWeights.Normal,
         WordWrapping = CanvasWordWrapping.NoWrap,
         HorizontalAlignment = CanvasHorizontalAlignment.Left,
         VerticalAlignment = CanvasVerticalAlignment.Top,
     };
+
+    /// <summary>
+    /// The font a format is really set in, given the one asked for. See
+    /// <paramref name="family"/> on <see cref="Format"/>.
+    /// </summary>
+    private static string Chosen(string? family) =>
+        string.IsNullOrWhiteSpace(family) || family.Contains(',') ? Family : family;
 
     /// <summary>Natural width of a string in a format, for centring and fitting.</summary>
     public static double Measure(ICanvasResourceCreator target, string text, CanvasTextFormat format)
