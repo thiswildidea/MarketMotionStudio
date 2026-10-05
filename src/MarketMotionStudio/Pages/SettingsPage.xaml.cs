@@ -153,6 +153,12 @@ public sealed partial class SettingsPage : Page
         WatermarkStrengthSlider.Minimum = Watermark.MinOpacity;
         WatermarkStrengthSlider.Maximum = Watermark.MaxOpacity;
         WatermarkStrengthSlider.Value = WatermarkSettings.Strength;
+
+        // Read once, when the page opens. There is no live subscription to this
+        // on purpose: nothing else changes the answer while this page is in front
+        // — subscribing passes through a dialog owned by whichever page asked —
+        // and every action here refreshes the card on its own afterwards.
+        _ = RefreshSubscriptionAsync();
         SettleWatermarkControls();
 
         _loading = false;
@@ -489,6 +495,150 @@ public sealed partial class SettingsPage : Page
     }
 
     /// <summary>
+    /// Asks again whether this machine has paid, and settles both cards after it.
+    ///
+    /// Refreshed every time rather than once, because the licence can be granted
+    /// elsewhere — the Store's own window is a different window — and this page
+    /// answers from whatever the last answer was. Nothing subscribes to the
+    /// <see cref="StoreSubscription.Changed"/> event on purpose: subscribing
+    /// passes through a dialog owned by whichever page asked, so by the time this
+    /// page is in front again the answer is one it already read.
+    /// </summary>
+    private async Task RefreshSubscriptionAsync()
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        await AppServices.Current.Subscription.RefreshAsync(
+            WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        SettleSubscription();
+    }
+
+    /// <summary>
+    /// What the card says, given what the licence said.
+    ///
+    /// The renewal line and Manage appear only once there is something to renew
+    /// or cancel. Before that they would be an empty date and a link to a page
+    /// listing nothing, and someone reading the card would be left to work out
+    /// that the absence meant "not yet" rather than "broken".
+    /// </summary>
+    private void SettleSubscription()
+    {
+        var subscription = AppServices.Current.Subscription;
+
+        SubscriptionCard.Visibility =
+            subscription.Known ? Visibility.Visible : Visibility.Collapsed;
+
+        SubscriptionState.Text = Strings.Get(subscription.Subscribed
+            ? "SettingsSubscriptionActive"
+            : "SettingsSubscriptionInactive");
+
+        var renews = subscription.RenewsOn;
+
+        SubscriptionRenews.Visibility = renews is null ? Visibility.Collapsed : Visibility.Visible;
+        SubscriptionRenews.Text = renews is { } when ? Strings.Format("SettingsSubscriptionRenews", Day(when)) : string.Empty;
+
+        SubscriptionPrice.Text = subscription.Price is { Length: > 0 } price
+            ? Strings.Format("SettingsSubscriptionPrice", price)
+            : string.Empty;
+
+        SubscribeButton.IsEnabled = !subscription.Busy && !subscription.Subscribed;
+        RestoreButton.IsEnabled = !subscription.Busy;
+        ManageButton.Visibility = subscription.Subscribed ? Visibility.Visible : Visibility.Collapsed;
+
+        // One of the two things this unlocks is answered elsewhere in this card,
+        // and by the renderer rather than by the switch: what the switch has to
+        // say about it changes with every answer here.
+        SettleWatermarkControls();
+    }
+
+    /// <summary>
+    /// The day itself, in the reader's own order rather than the ISO one every
+    /// frame inside a video uses: this is a sentence about a payment, not a row
+    /// of data, and Windows already knows how the reader writes dates.
+    /// </summary>
+    private static string Day(DateTimeOffset when) => when.LocalDateTime.ToString("d", Strings.Culture);
+
+    private async void OnSubscribe(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var outcome = await AppServices.Current.Subscription.SubscribeAsync(
+            WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        ExplainSubscription(outcome);
+        SettleSubscription();
+    }
+
+    private async void OnRestoreSubscription(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var subscribed = AppServices.Current.Subscription.Subscribed;
+
+        await AppServices.Current.Subscription.RestoreAsync(
+            WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        SettleSubscription();
+
+        // The ordinary answer here is "there is nothing under this account", and
+        // it is not worth announcing to somebody who never subscribed in the
+        // first place. It is only news to the person who came here because a
+        // paid-for page would not open — so it is said only when the licence
+        // still says no, and not softened into "restored" otherwise, because the
+        // card changing under them is already that answer.
+        if (!AppServices.Current.Subscription.Subscribed || !subscribed)
+        {
+            Note("SettingsSubscriptionRestoreMissing");
+        }
+    }
+
+    /// <summary>The page where a Store subscription is cancelled, outside this app.</summary>
+    private async void OnManageSubscription(object sender, RoutedEventArgs e) =>
+        await StoreSubscription.ManageAsync();
+
+    /// <summary>
+    /// Says how an attempt ended, when there is something to say.
+    ///
+    /// Success and dismissal are both silent: one is self-evident from the card
+    /// changing under it, and one is what pressing Cancel means. Only the two
+    /// failures speak — a purchase that could not even be offered, and a purchase
+    /// the Store says went through without granting anything.
+    /// </summary>
+    private void ExplainSubscription(SubscribeOutcome outcome)
+    {
+        var key = outcome switch
+        {
+            SubscribeOutcome.Unavailable => "SettingsSubscriptionUnavailable",
+            SubscribeOutcome.Failed => "SettingsSubscriptionFailed",
+            _ => null,
+        };
+
+        if (key is not null)
+        {
+            Note(key);
+        }
+    }
+
+    /// <summary>The page's own strip, for something worth telling but not stopping anything.</summary>
+    private void Note(string key)
+    {
+        Status.Severity = InfoBarSeverity.Warning;
+        Status.Message = Strings.Get(key);
+        RestartButton.Visibility = Visibility.Collapsed;
+        Status.IsOpen = true;
+    }
+
+    /// <summary>
     /// Every font on this machine, into the combo, each item drawn in the font it
     /// names.
     ///
@@ -660,6 +810,21 @@ public sealed partial class SettingsPage : Page
         // is off: a font chosen for a mark that is not drawn is a setting with no
         // answer anywhere, and the strip below is then the only thing on the page
         // that would still be drawing it.
+        // Taking the mark off is one of the two things the subscription buys, so
+        // while there is none the switch answers for itself: it shows the frames
+        // as they will be written — marked — and refuses the question. The rest
+        // of the controls follow the switch as they always did, which is why the
+        // whole card reads as it does rather than only its switch.
+        WatermarkToggle.IsEnabled = WatermarkSettings.Optional;
+
+        if (!WatermarkSettings.Optional)
+        {
+            WatermarkToggle.IsOn = WatermarkSettings.Enabled;
+        }
+
+        WatermarkLockedNote.Visibility =
+            WatermarkSettings.Optional ? Visibility.Collapsed : Visibility.Visible;
+
         var on = WatermarkToggle.IsOn;
 
         WatermarkText.IsEnabled = on;

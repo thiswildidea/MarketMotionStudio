@@ -393,6 +393,8 @@ Záběr je vždy 9:16. Všechno ostatní určujete vy.
 - Vodítka bezpečné oblasti vyznačují, co aplikace v telefonu zakryje vlastním rozhraním. Kreslí se v náhledu a nikdy do souboru.
 - Titulek může být na více řádcích: v poli titulku stiskněte Enter a zlomte ho tam, kde chcete. Když se nevejde na jeden řádek, zalomí se sám na druhý, nejvýše na dva; teprve když ani dva nestačí, ustoupí velikost písma. Druhý řádek posune vše pod ním o jeden řádek dolů, takže graf je o tolik nižší.
 
+- Vše až do posledního kroku je zdarma: načtení dat, přehrání animace, uložení titulního obrázku. **Export** je jediné místo, které žádá měsíční předplatné, a po stisku vysvětlí, co kupuje a kolik stojí. Obnovuje se, dokud ho v Microsoft Storu nezrušíte.
+
 ## Kam se videa ukládají
 
 Exporty se zapisují do složky, kterou vyberete dialogem. Dokud žádná není vybrána, první export se zeptá a pak si odpověď zapamatuje; v nastavení ji lze změnit nebo zapomenout.
@@ -420,6 +422,8 @@ Na stránce nastavení můžete změnit, na co se animace kreslí: vestavěný p
 - Posuvník ztmavení určuje, jak silně se obrázek vrací k vlastnímu pozadí stránky: 20 % až 95 %.
 
 - **Každý snímek nese také jméno na svém pozadí: vodoznak.** Je ve výchozím stavu zapnutý, říká „周期留白“, dokud ho nezměníte, a znění je vaše. Opakuje se šikmo přes celý obraz, kreslený **pod** daty, takže nic nezakrývá; náhled, exportované video i titulní obrázek ho nesou stejně. Prázdný se vrací k výchozímu jménu — aby se neslo nic, je třeba ho vypnout. Přepínač je zapnutý ve výchozím stavu, protože video končí někde, kde nic neříká, kde vzniklo.
+
+- Odebrání vodoznaku je jedna ze dvou věcí, které předplatné kupuje. Dokud neexistuje, přepínač zůstává zapnutý a nejde s ním pohnout — a přesně to ponese každý snímek, takže se náhled a soubor nikdy nerozejdou.
 
 
 - **Jak značka vypadá, je také vaše.** Písmo je jakékoli písmo nainstalované v tomto počítači — každá položka seznamu je napsána písmem, které uvádí —, barva je ta, kterou dá výběrník, a síla je, kolik z té barvy se použije: ve výchozím stavu 10%, nejvíce 40%, a i na maximum je značka kreslena pod daty. Všechny tři platí pro náhled, exportované video i titulní obrázek stejně.

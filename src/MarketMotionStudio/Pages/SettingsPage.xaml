@@ -225,6 +225,62 @@
                 </StackPanel>
             </Border>
 
+            <!-- What the subscription buys, and the way to take it up.
+
+                 Hidden rather than shown empty when the Microsoft Store cannot be
+                 reached — a sideloaded build, a machine whose Store is switched
+                 off, an add-on not published yet — for the same reason the update
+                 button disappears instead of sitting there greyed out: there is
+                 nothing to offer, and a card saying so helps nobody.
+
+                 Placed directly above the other thing the subscription unlocks,
+                 because that card is where somebody will first wonder why a
+                 switch will not move. -->
+            <Border x:Name="SubscriptionCard"
+                    Padding="16" CornerRadius="4"
+                    Visibility="Collapsed"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsSubscriptionLabel"
+                               Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsSubscriptionNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- Read back from the licence rather than remembered, so
+                         what these say is what the Store said. -->
+                    <TextBlock x:Name="SubscriptionState" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Name="SubscriptionRenews"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Name="SubscriptionPrice"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- Restore is a button of its own rather than a footnote:
+                         somebody reading this card and believing they have
+                         already paid needs one thing, and it is not Subscribe.
+                         Manage appears the other way round, once the subscription
+                         exists — until then there is nothing to cancel. -->
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="SubscribeButton"
+                                x:Uid="SubscriptionSubscribe"
+                                Style="{StaticResource AccentButtonStyle}"
+                                Click="OnSubscribe" />
+                        <Button x:Name="RestoreButton"
+                                x:Uid="SubscriptionRestore"
+                                Click="OnRestoreSubscription" />
+                        <HyperlinkButton x:Name="ManageButton"
+                                         x:Uid="SubscriptionManage"
+                                         Click="OnManageSubscription" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
             <!-- The name carried across the backdrop of every frame.
 
                  Its own card rather than another row on the backdrop's: that one
@@ -247,6 +303,16 @@
                     <ToggleSwitch x:Name="WatermarkToggle"
                                   x:Uid="SettingsWatermarkToggle"
                                   Toggled="OnWatermarkToggled" />
+
+                    <!-- Present while nobody is subscribed, and then the switch
+                         above cannot be moved. The explanation belongs next to
+                         the control that looks like it decides the thing. -->
+                    <TextBlock x:Name="WatermarkLockedNote"
+                               x:Uid="SettingsWatermarkLockedNote"
+                               TextWrapping="Wrap"
+                               Visibility="Collapsed"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
                     <TextBox x:Name="WatermarkText"
                              x:Uid="SettingsWatermarkText"

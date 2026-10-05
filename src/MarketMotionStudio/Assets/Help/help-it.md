@@ -426,6 +426,8 @@ L'inquadratura è sempre 9:16. Tutto il resto lo decidi tu.
 - Le guide dell'area sicura delimitano ciò che un'app per telefono copre con la propria interfaccia. Sono disegnate nell'anteprima e mai in un file.
 - Il titolo può stare su più righe: premi Invio nel campo del titolo per spezzarlo dove vuoi. Se non entra in una riga va a capo da solo su una seconda, due al massimo; solo quando nemmeno due bastano cede la dimensione del carattere. Una seconda riga sposta di una riga tutto ciò che sta sotto, e il grafico si accorcia di conseguenza.
 
+- Tutto fino all'ultimo passaggio è gratuito: scaricare i dati, riprodurre l'animazione, salvare l'immagine di copertina. **Esporta** è il solo punto che chiede un abbonamento mensile, e premendolo si legge cosa compra e quanto costa. Si rinnova finché non lo annulli nel Microsoft Store.
+
 ## Dove finiscono i video
 
 Le esportazioni vengono scritte in una cartella che scegli con un selettore. Finché non ne è stata scelta una, la prima esportazione la chiede e poi la ricorda; le impostazioni permettono di cambiarla o dimenticarla.
@@ -453,6 +455,8 @@ Nella pagina Impostazioni puoi cambiare ciò su cui viene disegnata l'animazione
 - Il cursore di attenuazione decide quanto l'immagine viene riportata verso lo sfondo proprio della pagina, dal 20% al 95%.
 
 - **Ogni fotogramma porta anche un nome sul proprio sfondo: la filigrana.** È attiva per impostazione predefinita, dice «周期留白» finché non la cambi, e la formulazione è tua. Si ripete in diagonale su tutto il quadro, disegnata **sotto** i dati, quindi non copre nulla; anteprima, video esportato e immagine di copertina la portano allo stesso modo. Lasciata vuota torna al nome predefinito — per non portare nulla, va disattivata. L'interruttore è acceso per default perché un video finisce dove nulla dice da dove viene.
+
+- Togliere il marchio è una delle due cose che compra l'abbonamento. Finché non c'è, l'interruttore resta acceso e non si muove — ed è esattamente ciò che porterà ogni fotogramma, così anteprima e file non sono mai in disaccordo.
 
 
 - **Anche l'aspetto del segno è vostro.** Il carattere è qualsiasi carattere installato su questa macchina — ogni voce dell'elenco è scritta nel carattere che nomina —, il colore è quello che dà il selettore, e l'intensità è quanto di quel colore viene usato: 10% per impostazione predefinita, fino al 40%, e anche al massimo è disegnato sotto i dati. Tutte e tre valgono per anteprima, video esportato e immagine di copertina.

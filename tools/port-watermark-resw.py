@@ -120,58 +120,79 @@ PLACEHOLDER = ["周期留白"] * 14
 
 # ---- 末尾提示 -------------------------------------------------------------------
 #
-# 三件事：为什么默认开、留空会怎样、关掉会怎样。前两件不说，用户会把「清空」当成「删掉水印」，
-# 而它其实是回到默认名；第三件不说，用户会以为关掉只是变淡。
+# 四件事：为什么默认开、留空会怎样、关掉会怎样，以及**关掉要订阅**。前两件不说，用户会把
+# 「清空」当成「删掉水印」，而它其实是回到默认名；第三件不说，用户会以为关掉只是变淡；
+# 第四件是 1.0.5.0 加的 —— 这一句旁边那个开关在订阅之前**搬不动**，而在「关掉则画面上什么都
+# 不加」后面接一句「订阅之前这个开关搬不动」，正是「每句单独看都通顺、拼在一起就把用户引向
+# 一个不存在的开关」那种失效。所以「需要订阅」说在「关掉会发生什么」**之前**。
+#
+# 这个键的主人就是这个脚本，别再在别的 port 脚本里也写一遍（曾经这么干过：订阅那一版脚本
+# 顺手改了这一句，而这个脚本每次运行都会把它改回旧话 —— 两个脚本抢一个键，谁最后跑谁赢）。
 
 HINT = [
     "On by default: a video is posted somewhere that shows nothing of where it was "
-    "made. Left blank it falls back to the name above; switched off, the frames carry "
-    "nothing.",
+    "made. Left blank it falls back to the name above. Taking it off is part of what a "
+    "subscription buys, so until then this switch stays where it is; off, the frames "
+    "carry nothing.",
 
     "Standardmäßig an: Ein Video landet irgendwo, das nichts darüber verrät, wo es "
-    "entstanden ist. Leer gelassen gilt wieder der Name darüber; ausgeschaltet tragen "
-    "die Bilder nichts.",
+    "entstanden ist. Leer gelassen gilt wieder der Name darüber. Es abzuschalten gehört "
+    "zu dem, was ein Abonnement kauft, deshalb bleibt der Schalter bis dahin stehen; "
+    "ausgeschaltet tragen die Bilder nichts.",
 
     "Activado por defecto: un vídeo se publica en un lugar que no dice nada de dónde se "
-    "hizo. Si se deja vacío, vuelve al nombre de arriba; desactivado, los fotogramas no "
-    "llevan nada.",
+    "hizo. Si se deja vacío, vuelve al nombre de arriba. Quitarlo forma parte de lo que "
+    "compra la suscripción, así que hasta entonces este interruptor se queda donde está; "
+    "desactivado, los fotogramas no llevan nada.",
 
     "Activé par défaut : une vidéo est publiée quelque part qui ne dit rien d'où elle a "
-    "été faite. Laissé vide, il reprend le nom ci-dessus ; désactivé, les images ne "
-    "portent rien.",
+    "été faite. Laissé vide, il reprend le nom ci-dessus. Le retirer fait partie de ce "
+    "que l'abonnement achète : jusque-là, cet interrupteur reste où il est ; désactivé, "
+    "les images ne portent rien.",
 
     "Attivo per impostazione predefinita: un video finisce dove nulla dice da dove "
-    "viene. Lasciato vuoto torna al nome sopra; disattivato, i fotogrammi non portano "
-    "nulla.",
+    "viene. Lasciato vuoto torna al nome sopra. Toglierlo fa parte di ciò che compra "
+    "l'abbonamento, quindi fino ad allora questo interruttore resta dov'è; disattivato, "
+    "i fotogrammi non portano nulla.",
 
     "Domyślnie włączone: wideo trafia w miejsce, które nic nie mówi o tym, gdzie "
-    "powstało. Puste wraca do nazwy powyżej; wyłączone — klatki nie niosą niczego.",
+    "powstało. Puste wraca do nazwy powyżej. Wyłączenie go należy do tego, co kupuje "
+    "subskrypcja, więc do tego czasu przełącznik zostaje tam, gdzie jest; wyłączone — "
+    "klatki nie niosą niczego.",
 
     "Ativado por padrão: um vídeo é publicado em algum lugar que não diz nada sobre onde "
-    "foi feito. Deixado em branco, volta ao nome acima; desligado, os quadros não levam "
-    "nada.",
+    "foi feito. Deixado em branco, volta ao nome acima. Desligá-lo faz parte do que a "
+    "assinatura compra, então até lá este interruptor fica onde está; desligado, os "
+    "quadros não levam nada.",
 
     "Ve výchozím stavu zapnuto: video končí někde, kde nic neříká, kde vzniklo. Prázdné "
-    "se vrací k výše uvedenému jménu; vypnuto — snímky nenesou nic.",
+    "se vrací k výše uvedenému jménu. Vypnutí patří k tomu, co kupuje předplatné, takže "
+    "do té doby přepínač zůstává tam, kde je; vypnuto — snímky nenesou nic.",
 
     "Varsayılan olarak açık: bir video, nerede üretildiğini hiç göstermeyen bir yerde "
-    "yayımlanır. Boş bırakılırsa yukarıdaki ada döner; kapatıldığında kareler hiçbir şey "
-    "taşımaz.",
+    "yayımlanır. Boş bırakılırsa yukarıdaki ada döner. Kapatmak, aboneliğin satın aldığı "
+    "şeylerden biri olduğu için o zamana kadar bu anahtar olduğu yerde kalır; "
+    "kapatıldığında kareler hiçbir şey taşımaz.",
 
     "Включено по умолчанию: видео попадает туда, где ничто не говорит, где оно сделано. "
-    "Если оставить пустым, вернётся имя выше; при выключении кадры не несут ничего.",
+    "Если оставить пустым, вернётся имя выше. Отключение входит в то, что покупает "
+    "подписка, поэтому до её оформления переключатель остаётся на месте; при выключении "
+    "кадры не несут ничего.",
 
     "既定でオンです。動画は、どこで作られたかを何も示さない場所に投稿されるものだからです。"
-    "空にすれば上の名前に戻り、オフにすればフレームには何も入りません。",
+    "空にすれば上の名前に戻ります。オフにすることはサブスクリプションで購入する対象のひとつ"
+    "なので、購入まではこのスイッチは動きません。オフにすればフレームには何も入りません。",
 
     "기본적으로 켜져 있습니다. 영상은 어디서 만들어졌는지 아무것도 알려주지 않는 곳에 올라가기 "
-    "때문입니다. 비워 두면 위의 이름으로 돌아가고, 끄면 프레임에 아무것도 들어가지 않습니다.",
+    "때문입니다. 비워 두면 위의 이름으로 돌아갑니다. 워터마크를 끄는 것은 구독으로 구매하는 "
+    "대상 중 하나이므로, 구독 전까지는 이 스위치를 움직일 수 없습니다. 끄면 프레임에 아무것도 "
+    "들어가지 않습니다.",
 
-    "預設開啟：影片會被發到一個完全看不出它是在哪裡做出來的地方。留空會回到上面的名字；關掉則"
-    "畫面上什麼都不加。",
+    "預設開啟：影片會被發到一個完全看不出它是在哪裡做出來的地方。留空會回到上面的名字。關掉它"
+    "屬於訂閱買下的東西之一，所以訂閱之前這個開關搬不動；關掉則畫面上什麼都不加。",
 
-    "默认开启：视频会被发到一个完全看不出它是在哪里做出来的地方。留空会回到上面的名字；关掉则"
-    "画面上什么都不加。",
+    "默认开启：视频会被发到一个完全看不出它是在哪里做出来的地方。留空会回到上面的名字。关掉它"
+    "属于订阅买下的东西之一，所以订阅之前这个开关搬不动；关掉则画面上什么都不加。",
 ]
 
 ROWS = [

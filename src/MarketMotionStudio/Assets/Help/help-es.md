@@ -418,6 +418,8 @@ El encuadre es siempre 9:16. Todo lo demás lo decide usted.
 - Las guías de zona segura marcan lo que una aplicación de móvil tapa con su propia interfaz. Se dibujan en la vista previa y nunca en un archivo.
 - El título puede ocupar varias líneas: pulsa Intro en el campo del título para partirlo donde quieras. Si no cabe en una línea, se ajusta solo a una segunda, dos como máximo; solo cuando dos tampoco bastan cede el tamaño de letra. Una segunda línea empuja hacia abajo una fila todo lo que hay debajo, así que el gráfico se acorta en esa medida.
 
+- Todo hasta el último paso es gratis: descargar datos, reproducir la animación, guardar la portada. **Exportar** es el único sitio que pide una suscripción mensual, y al pulsarlo se dice qué compra y cuánto cuesta. Se renueva hasta que la canceles en Microsoft Store.
+
 ## Dónde van los vídeos
 
 Las exportaciones se escriben en una carpeta que usted elige con un selector. Mientras no haya ninguna, la primera exportación la pide y luego la recuerda; la configuración permite cambiarla u olvidarla.
@@ -445,6 +447,8 @@ En la página de configuración puedes cambiar sobre qué se dibuja la animació
 - El control de atenuación decide cuánto se retira la imagen hacia el fondo propio de la página, del 20 % al 95 %.
 
 - **Cada fotograma lleva además un nombre sobre su fondo: la marca de agua.** Está activada por defecto, dice «周期留白» hasta que la cambies, y la redacción es tuya. Se repite en diagonal por todo el cuadro, dibujada **bajo** los datos, de modo que no tapa nada; la vista previa, el vídeo exportado y la imagen de portada la llevan igual. Si se deja vacía vuelve al nombre por defecto — para que no aparezca nada, desactívala. El interruptor está activado por defecto porque un vídeo se publica en un lugar que no dice nada de dónde se hizo.
+
+- Quitar la marca de agua es una de las dos cosas que compra la suscripción. Mientras no la haya, el interruptor se queda encendido y no se puede mover — y eso es exactamente lo que llevará cada fotograma, así que la vista previa y el archivo nunca discrepan.
 
 
 - **El aspecto de la marca también es tuyo.** La fuente es cualquier fuente instalada en este equipo —cada entrada de la lista está escrita en la fuente que nombra—, el color es el que dé el selector, y la intensidad es cuánto de ese color se usa: 10% por defecto, hasta 40%, e incluso en su punto máximo se dibuja debajo de los datos. Las tres afectan igual a la vista previa, al vídeo exportado y a la imagen de portada.

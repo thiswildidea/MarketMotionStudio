@@ -417,6 +417,8 @@ The frame is always 9:16. Everything else is yours to set.
 - The safe-area guides outline what a phone app covers with its own interface. They are drawn in the preview and never in a file.
 - The title can be more than one line: press Enter in the title box to break it where you want. A title too wide for one line wraps onto a second, two lines at most; only when two still will not hold it does the size give way. A second line pushes everything below it down by one row, so the chart is that much shorter.
 
+- Everything up to the last step is free: fetching data, playing the animation, saving a cover image. **Export** is the one place that asks for a monthly subscription, and pressing it says what that buys and what it costs. It renews until you cancel it in Microsoft Store.
+
 ## Where videos go
 
 Exports are written to a folder you choose through a picker. Until one is chosen the first export asks, then remembers; Settings can change it or forget it.
@@ -444,6 +446,8 @@ The Settings page can change what the animation is drawn on: the built-in gradie
 - The dimming slider sets how far the picture is pushed back towards the frame's own backdrop, from 20% to 95%.
 
 - **Every frame also carries a name across its backdrop: the watermark.** It is on by default, reads “周期留白” until you change it, and the wording is yours to edit. It is repeated on a slant over the whole frame, drawn **under** the data, so it covers nothing; the preview, the exported video and the cover image all carry it. Left blank it falls back to the default name — to carry nothing at all, switch it off. The switch is on by default because a video is posted somewhere that shows nothing of where it was made.
+
+- Taking the mark off is one of the two things a subscription buys. Until one exists the switch stays on and cannot be moved — which is also exactly what every frame will carry, so the preview and the file never disagree.
 
 
 - **How the mark looks is yours too.** The font is any font installed on this machine — each entry in the list is drawn in the font it names —, the colour is whatever the picker gives, and the strength is how much of that colour is used: 10% by default, up to 40%, and even at its strongest it is drawn under the data. All three reach the preview, the exported video and the cover image alike.

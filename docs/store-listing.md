@@ -10,7 +10,7 @@
 
 把行情指标变成能直接发布的竖屏动画视频。
 
-MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9:16 竖屏动画，专为抖音、视频号、快手等竖屏平台设计：选择市场与标的，应用自动抓取行情、生成动画，一键导出 H.264 MP4，开箱即发。
+MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9:16 竖屏动画，专为抖音、视频号、快手等竖屏平台设计：选择市场与标的，应用自动抓取行情、生成动画，一键导出 H.264 MP4，开箱即发。所有图表页都免费：取数、预览、保存封面图都不收费。导出视频与去掉水印需要按月订阅，可随时取消。
 
 十七大图表页：  
 • 市场成交额——全市场每日成交额的历史长卷（A股）  
@@ -56,7 +56,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 把行情指標變成能直接發布的直式動畫影片。
 
-MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shorts、Reels 等直式平台設計：選擇市場與標的，應用程式自動抓取行情、生成動畫，一鍵匯出 H.264 MP4，開箱即發。
+MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shorts、Reels 等直式平台設計：選擇市場與標的，應用程式自動抓取行情、生成動畫，一鍵匯出 H.264 MP4，開箱即發。所有圖表頁都免費：取數、預覽、儲存封面圖都不收費。匯出影片與移除浮水印需要按月訂閱，可隨時取消。
 
 十七大圖表頁：  
 • 市場成交額——全市場每日成交額的歷史長卷（陸股）  
@@ -102,7 +102,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 Turn stock-market indicators into ready-to-post vertical animated videos.
 
-Market Motion Studio turns stock-market data into 9:16 vertical animations, built for vertical platforms like TikTok, Shorts and Reels: pick a market and a symbol, the app fetches the data, animates it, and exports an H.264 MP4 ready to post.
+Market Motion Studio turns stock-market data into 9:16 vertical animations, built for vertical platforms like TikTok, Shorts and Reels: pick a market and a symbol, the app fetches the data, animates it, and exports an H.264 MP4 ready to post. Every chart page is free: fetching data, previewing and saving a cover image cost nothing. Exporting the video — and taking the watermark off it — takes a monthly subscription that can be cancelled at any time.
 
 Seventeen chart pages:  
 • Market turnover — a historical reel of whole-market daily turnover (A-share)  
@@ -148,7 +148,7 @@ One new chart page, and three pages that gained something new: Bond market — O
 
 相場指標を、そのまま投稿できる縦型アニメーション動画に。
 
-Market Motion Studio は株式市場データを 9:16 の縦型アニメーションに変換する、TikTok・ショート動画・リール向けの Windows アプリです。市場と銘柄を選ぶだけで、アプリが自動で相場データを取得し、アニメーションを生成、H.264 MP4 で書き出します。
+Market Motion Studio は株式市場データを 9:16 の縦型アニメーションに変換する、TikTok・ショート動画・リール向けの Windows アプリです。市場と銘柄を選ぶだけで、アプリが自動で相場データを取得し、アニメーションを生成、H.264 MP4 で書き出します。どのチャートページも無料で使えます。データの取得、プレビュー、カバー画像の保存には費用がかかりません。動画の書き出しとウォーターマークの解除には、いつでも解約できる月額サブスクリプションが必要です。
 
 17 つのチャートページ：  
 • 市場の売買代金 — 全市場の売買代金の歴史ロングリール（中国A株）  
@@ -194,7 +194,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 시장 지표를 바로 게시할 수 있는 세로형 애니메이션 영상으로.
 
-Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이션으로 바꿔주는 Windows 앱입니다. 틱톡, 쇼츠, 릴스 같은 세로형 플랫폼을 위해 설계되었으며, 시장과 종목만 선택하면 앱이 자동으로 시세를 가져오고 애니메이션을 만들어 H.264 MP4로 내보냅니다.
+Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이션으로 바꿔주는 Windows 앱입니다. 틱톡, 쇼츠, 릴스 같은 세로형 플랫폼을 위해 설계되었으며, 시장과 종목만 선택하면 앱이 자동으로 시세를 가져오고 애니메이션을 만들어 H.264 MP4로 내보냅니다.모든 차트 페이지는 무료입니다. 데이터 불러오기, 미리보기, 커버 이미지 저장에는 비용이 들지 않습니다. 동영상 내보내기와 워터마크 제거에는 언제든 해지할 수 있는 월간 구독이 필요합니다.
 
 17가지 차트 페이지:  
 • 시장 거래대금 — 전체 시장 일별 거래대금의 히스토리 릴 (중국 A주식)  
@@ -240,7 +240,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 Verwandeln Sie Marktindikatoren in direkt veröffentlichbare vertikale Animationsvideos.
 
-Market Motion Studio macht aus Börsendaten 9:16-Animationen im Hochformat – gebaut für vertikale Plattformen wie TikTok, Shorts und Reels: Markt und Symbol wählen, die App ruft die Kurse ab, animiert sie und exportiert eine H.264-MP4, bereit zum Posten.
+Market Motion Studio macht aus Börsendaten 9:16-Animationen im Hochformat – gebaut für vertikale Plattformen wie TikTok, Shorts und Reels: Markt und Symbol wählen, die App ruft die Kurse ab, animiert sie und exportiert eine H.264-MP4, bereit zum Posten. Jede Diagrammseite ist kostenlos: Daten laden, Vorschau und Titelbild speichern kosten nichts. Das Video zu exportieren — und das Wasserzeichen zu entfernen — verlangt ein monatliches Abonnement, das jederzeit kündbar ist.
 
 Siebzehn Diagrammseiten:  
 • Marktumsatz – ein historischer Reel des täglichen Gesamtmarktumsatzes (China A-Aktien)  
@@ -286,7 +286,7 @@ Eine neue Diagrammseite, und drei Seiten, die etwas Neues bekamen: Anleihemarkt 
 
 Transformez les indicateurs de marché en vidéos animées verticales, prêtes à publier.
 
-Market Motion Studio transforme les données boursières en animations 9:16 verticales, conçu pour les plateformes verticales comme TikTok, Shorts et Reels : choisissez un marché et un symbole, l'application récupère les cours, les anime et exporte un MP4 H.264 prêt à publier.
+Market Motion Studio transforme les données boursières en animations 9:16 verticales, conçu pour les plateformes verticales comme TikTok, Shorts et Reels : choisissez un marché et un symbole, l'application récupère les cours, les anime et exporte un MP4 H.264 prêt à publier. Chaque page de graphiques est gratuite : charger les données, prévisualiser et enregistrer une image de couverture ne coûtent rien. Exporter la vidéo — et retirer le filigrane — demande un abonnement mensuel, résiliable à tout moment.
 
 Dix-sept pages de graphiques :  
 • Volume d'échanges du marché — un long format historique du volume quotidien de tout le marché (Chine A)  
@@ -332,7 +332,7 @@ Une nouvelle page de graphiques, et trois pages qui gagnent quelque chose de nou
 
 Trasforma gli indicatori di mercato in video animati verticali pronti da pubblicare.
 
-Market Motion Studio trasforma i dati di borsa in animazioni verticali 9:16, pensate per piattaforme verticali come TikTok, Shorts e Reels: scegli un mercato e un simbolo, l'app recupera i dati, li anima ed esporta un MP4 H.264 pronto da pubblicare.
+Market Motion Studio trasforma i dati di borsa in animazioni verticali 9:16, pensate per piattaforme verticali come TikTok, Shorts e Reels: scegli un mercato e un simbolo, l'app recupera i dati, li anima ed esporta un MP4 H.264 pronto da pubblicare. Ogni pagina di grafici è gratuita: scaricare i dati, l'anteprima e il salvataggio della copertina non costano nulla. Esportare il video — e togliere il marchio — richiede un abbonamento mensile, annullabile in qualsiasi momento.
 
 Diciassette pagine di grafici:  
 • Volume degli scambi di mercato — una lunga carrellata storica del volume giornaliero di tutto il mercato (Cina A)  
@@ -378,7 +378,7 @@ Una nuova pagina di grafici, e tre pagine che guadagnano qualcosa di nuovo: Merc
 
 Convierta los indicadores de mercado en vídeos animados verticales listos para publicar.
 
-Market Motion Studio convierte los datos bursátiles en animaciones verticales 9:16, diseñado para plataformas verticales como TikTok, Shorts y Reels: elija un mercado y un símbolo, la app obtiene los datos, los anima y exporta un MP4 H.264 listo para publicar.
+Market Motion Studio convierte los datos bursátiles en animaciones verticales 9:16, diseñado para plataformas verticales como TikTok, Shorts y Reels: elija un mercado y un símbolo, la app obtiene los datos, los anima y exporta un MP4 H.264 listo para publicar. Todas las páginas de gráficos son gratuitas: descargar datos, previsualizar y guardar una portada no cuestan nada. Exportar el vídeo —y quitarle la marca de agua— requiere una suscripción mensual que puedes cancelar cuando quieras.
 
 Diecisiete páginas de gráficos:  
 • Volumen negociado del mercado — un carrete histórico del volumen diario de todo el mercado (China A)  
@@ -423,7 +423,7 @@ Una página de gráficos nueva, y tres páginas que ganan algo nuevo: Renta fija
 
 Transforme indicadores de mercado em vídeos animados verticais prontos para publicar.
 
-O Market Motion Studio transforma dados do mercado de ações em animações verticais 9:16, criado para plataformas verticais como TikTok, Shorts e Reels: escolha um mercado e um símbolo, o app busca os dados, anima e exporta um MP4 H.264 pronto para publicar.
+O Market Motion Studio transforma dados do mercado de ações em animações verticais 9:16, criado para plataformas verticais como TikTok, Shorts e Reels: escolha um mercado e um símbolo, o app busca os dados, anima e exporta um MP4 H.264 pronto para publicar. Todas as páginas de gráficos são gratuitas: buscar dados, pré-visualizar e salvar uma capa não custam nada. Exportar o vídeo — e tirar a marca d'água — exige uma assinatura mensal, que pode ser cancelada a qualquer momento.
 
 Dezessete páginas de gráficos:  
 • Volume financeiro do mercado — um carretel histórico do volume diário de todo o mercado (China A)  
@@ -469,7 +469,7 @@ Uma nova página de gráficos, e três páginas que ganham algo novo: Mercado de
 
 Zamień wskaźniki rynkowe w pionowe filmy animowane gotowe do publikacji.
 
-Market Motion Studio zamienia dane giełdowe w pionowe animacje 9:16, stworzone dla pionowych platform jak TikTok, Shorts i Reels: wybierz rynek i symbol, aplikacja pobierze dane, zanimuje je i wyeksportuje plik MP4 H.264 gotowy do publikacji.
+Market Motion Studio zamienia dane giełdowe w pionowe animacje 9:16, stworzone dla pionowych platform jak TikTok, Shorts i Reels: wybierz rynek i symbol, aplikacja pobierze dane, zanimuje je i wyeksportuje plik MP4 H.264 gotowy do publikacji. Każda strona wykresów jest darmowa: pobieranie danych, podgląd i zapisanie okładki nic nie kosztują. Zapisanie filmu — i zdjęcie znaku wodnego — wymaga miesięcznej subskrypcji, którą można anulować w każdej chwili.
 
 Siedemnaście stron wykresów:  
 • Obroty rynku — historyczna zwijanka dziennych obrotów całego rynku (Chiny A)  
@@ -515,7 +515,7 @@ Jedna nowa strona wykresów i trzy strony, które zyskały coś nowego: Rynek ob
 
 Převeďte tržní ukazatele na svislá animovaná videa připravená k publikování.
 
-Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro vertikální platformy jako TikTok, Shorts a Reels: vyberte trh a symbol, aplikace stáhne data, zanimuje je a exportuje MP4 H.264 připravené k publikování.
+Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro vertikální platformy jako TikTok, Shorts a Reels: vyberte trh a symbol, aplikace stáhne data, zanimuje je a exportuje MP4 H.264 připravené k publikování. Každá stránka s grafy je zdarma: načtení dat, náhled i uložení titulního obrázku nic nestojí. Zápis videa — a odebrání vodoznaku — vyžaduje měsíční předplatné, které lze kdykoli zrušit.
 
 Sedmnáct stránek s grafy:  
 • Obrat trhu — historický svitek denních obratů celého trhu (Čína A)  
@@ -561,7 +561,7 @@ Jedna nová stránka s grafy a tři stránky, které získaly něco nového: Trh
 
 Превратите рыночные индикаторы в вертикальные анимированные видео, готовые к публикации.
 
-Market Motion Studio превращает биржевые данные в вертикальные анимации 9:16, созданное для вертикальных платформ вроде TikTok, Shorts и Reels: выберите рынок и символ, приложение само загрузит данные, оживит их и экспортирует MP4 H.264, готовый к публикации.
+Market Motion Studio превращает биржевые данные в вертикальные анимации 9:16, созданное для вертикальных платформ вроде TikTok, Shorts и Reels: выберите рынок и символ, приложение само загрузит данные, оживит их и экспортирует MP4 H.264, готовый к публикации. Каждая страница с графиками бесплатна: загрузка данных, предпросмотр и сохранение обложки ничего не стоят. Экспорт видео — и снятие водяного знака — требуют ежемесячной подписки, которую можно отменить в любой момент.
 
 Семнадцать страниц с графиками:  
 • Оборот рынка — историческая лента ежедневного оборота всего рынка (Китай, A-акции)  
@@ -607,7 +607,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 Piyasa göstergelerini doğrudan yayınlanmaya hazır dikey animasyon videolarına dönüştürün.
 
-Market Motion Studio, borsa verilerini 9:16 dikey animasyonlara dönüştüren, TikTok, Shorts ve Reels gibi dikey platformlar için tasarlanmış bir Windows uygulamasıdır: bir piyasa ve sembol seçin, uygulama verileri çeker, animasyona dönüştürür ve yayınlanmaya hazır H.264 MP4 olarak dışa aktarır.
+Market Motion Studio, borsa verilerini 9:16 dikey animasyonlara dönüştüren, TikTok, Shorts ve Reels gibi dikey platformlar için tasarlanmış bir Windows uygulamasıdır: bir piyasa ve sembol seçin, uygulama verileri çeker, animasyona dönüştürür ve yayınlanmaya hazır H.264 MP4 olarak dışa aktarır. Her grafik sayfası ücretsizdir: veri çekmek, önizleme ve kapak görselini kaydetmek hiçbir ücrete tabi değildir. Videoyu dışa aktarmak — ve filigranı kaldırmak — her zaman iptal edilebilen aylık bir abonelik gerektirir.
 
 On yedi grafik sayfası:  
 • Piyasa işlem hacmi — tüm piyasanın günlük işlem hacminin tarihî şeridi (Çin A)  

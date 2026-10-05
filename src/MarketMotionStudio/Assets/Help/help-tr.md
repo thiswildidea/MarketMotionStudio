@@ -398,6 +398,8 @@ Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.
 - Güvenli alan kılavuzları, bir telefon uygulamasının kendi arayüzüyle kapattığı yeri gösterir. Ön izlemede çizilir, dosyaya hiç girmez.
 - Başlık birden çok satır olabilir: başlık kutusunda Enter'a basarak istediğiniz yerden kırın. Tek satıra sığmazsa kendiliğinden ikinci satıra kayar, en fazla iki satır; iki satır da yetmezse yazı boyutu küçülür. İkinci satır altındaki her şeyi bir satır aşağı iter, grafik de o kadar kısalır.
 
+- Son adıma kadar her şey ücretsiz: veri çekmek, animasyonu oynatmak, kapak görselini kaydetmek. **Dışa aktar**, aylık abonelik isteyen tek yerdir; düğmeye basıldığında ne satın aldığı ve ne kadara mal olduğu söylenir. Microsoft Store'da iptal edene kadar yenilenir.
+
 ## Videolar nereye gider
 
 Dışa verilenler, seçiciyle belirlediğiniz bir klasöre yazılır. Belirlenmediği sürece ilk dışa verme sorar ve sonra hatırlar; ayarlardan değiştirilebilir ya da unutturulabilir.
@@ -425,6 +427,8 @@ Ayarlar sayfasında animasyonun neyin üzerine çizileceğini değiştirebilirsi
 - Karartma sürgüsü, resmin sayfanın kendi arka planına ne kadar geri çekileceğini belirler: %20 ile %95 arası.
 
 - **Her kare, fonunda bir ad daha taşır: filigran.** Varsayılan olarak açıktır, siz değiştirene kadar „周期留白“ yazar ve metin sizindir. Tüm kare boyunca eğik olarak yinelenir, verilerin **altına** çizilir, yani hiçbir şeyi kapatmaz; önizleme, dışa aktarılan video ve kapak görseli de onu taşır. Boş bırakılırsa varsayılan ada döner — hiçbir şey taşınmasın isterseniz kapatmanız gerekir. Anahtar varsayılan olarak açıktır, çünkü bir video nerede üretildiğini hiç göstermeyen bir yerde yayımlanır.
+
+- Filigranı kaldırmak, aboneliğin satın aldığı iki şeyden biridir. Abonelik olmadığı sürece anahtar açık kalır ve oynatılamaz — ki bu, her karenin taşıdığı şeyle de aynıdır; önizleme ile dosya hiçbir zaman çelişmez.
 
 
 - **İşaretin nasıl göründüğü de sizin.** Yazı tipi bu makinede yüklü herhangi bir yazı tipidir — listedeki her girdi, adını verdiği yazı tipiyle yazılır —, renk seçicinin verdiği renktir ve yoğunluk, o rengin ne kadarının kullanıldığıdır: varsayılan %10, en fazla %40 ve en yüksek değerde bile verilerin altına çizilir. Üçü de önizleme, dışa aktarılan video ve kapak görseli için aynı şekilde geçerlidir.

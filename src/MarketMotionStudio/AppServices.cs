@@ -53,6 +53,14 @@ public sealed class AppServices
     /// </summary>
     public StoreUpdates Updates { get; } = new();
 
+    /// <summary>
+    /// Whether this machine has paid for the month. Process-wide rather than the
+    /// window's, for the same reason as <see cref="Work"/>: the question is
+    /// asked by eleven pages and by the watermark itself, and one answer has to
+    /// serve all of them.
+    /// </summary>
+    public StoreSubscription Subscription { get; } = new();
+
     /// <summary>The one route to a quote source.</summary>
     public TencentKline Quotes { get; }
 

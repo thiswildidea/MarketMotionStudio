@@ -1196,9 +1196,10 @@ has its path remembered anyway, or a 2,700-frame export retries it 2,700 times.
 
 Every exported frame carries a name across its backdrop — slanted at 45° and repeated, drawn
 **under** the data rather than over it, faint enough (a tenth of the way to white) that nothing
-drawn on top of it changes colour. It is on until it is switched off, it says `周期留白` until
-someone types their own, and how it is set is theirs to choose: any font this machine has, any
-colour, and how much of that colour is used.
+drawn on top of it changes colour. It is on by default, it says `周期留白` until someone types
+their own, and how it is set is theirs to choose: any font this machine has, any colour, and how
+much of that colour is used. Switching it off is one of the two things the subscription buys (see
+below), so until then it is on and the switch cannot be moved.
 
 On by default, because opting in is the wrong default here: a video leaves the app as a file and is
 posted somewhere that shows nothing of where it was made, so the alternative is that nearly every
@@ -1226,6 +1227,47 @@ strength is a second subject in the frame.
 Blank does not mean off — it falls back to the default wording, because "deleted" and "switched
 off" would otherwise be the same control asking the same question twice. Off resolves to `null`, so
 a renderer with no watermark is one with nothing to draw rather than one that has to be asked.
+
+## The subscription, and the two things it buys
+
+Exporting a video and taking the watermark off it take a monthly subscription. Everything else
+stays free on all seventeen pages — fetching data, playing the animation, saving a cover image —
+and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
+two are the ends that leave home, and the seventeen pages of live market animation are what
+somebody came for.
+
+The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
+out button states that something is unavailable and stops there; somebody who has already decided
+they want the file has nothing to do with it. The dialog answers the two questions a locked button
+leaves open — what do I get, and what does it cost — in the same breath as the offer, and carries
+**Restore purchase** as well, because the person reading it is precisely the person who believes
+they have already paid.
+
+Three decisions worth stating.
+
+**The answer is asked for in one place.** Seventeen pages have an Export button and seventeen have
+their own handler, each written out in full — that duplication already exists and is not this
+feature's to fix. What must not be duplicated is the answer to "may this be done": two answers
+written twice is one page that gives the video away. So every handler asks
+`Views/SubscriptionOffer.PermitAsync` in its first line, before anything is read for the encode,
+and `verify-subscription.py` counts them (17/17, plus the cover-image path at 0 — saving a PNG
+stays free, and that the script can prove it is what keeps the manual's sentence true).
+
+**The watermark is decided at the source, not at the switch.** `WatermarkSettings.Enabled` returns
+true while nobody is subscribed, whatever the stored preference says, and `Optional` is the same
+fact read by the control. Disabling the switch in XAML would only disable the switch: the renderers
+ask `WatermarkSettings.Current`, and there are a dozen paths into it. The stored answer is kept
+anyway, so subscribing restores the frame somebody was trying to make rather than pretending the
+switch was never touched.
+
+**The licence is read, never remembered.** No copy of "someone paid" is kept beyond the process: a
+copy would have to be kept fresh, and it would either expire on its own schedule or be believed
+forever, and both are worse than asking the Store again. Every failure to ask — a sideloaded build,
+a Store switched off by policy, an add-on not yet published — is treated as **not** subscribed,
+because treating any of those as paid gives the thing away, while treating them as unpaid costs
+whoever it hits exactly one dialog. The debug build can be told otherwise through
+`LocalState\simulate-subscription.txt`, since a Store-installed package is the only one that can
+complete a purchase and this one is registered from `bin`.
 
 ## Settings are remembered, results are not
 
@@ -1295,6 +1337,12 @@ first export asks and then remembers.
   which is what proves the adjustment, since unadjusted the loser would read 0.00% and the leader
   would read one fifth of what it earned). It has not been exported at any format, its custom span
   has not been exercised, and the English interface has not been driven. See NOTES.
+- **The subscription has never been bought for real.** The two states — locked and unlocked — were
+  both driven on a machine, but the unlocked one through the debug file described above: a purchase
+  needs a Store-installed package and an add-on published in Partner Center, and neither exists yet.
+  So what is verified is the gate, its placement, the licence read, and the watermark's dependency
+  on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
+  is finally there.
 - **The Store screenshots show seven pages, not fourteen.** `tools/store-screenshots.py` predates
   the candle page, the market-cap board, the A+H page, the extreme-day board, the currency corridor,
   the index race and the asset-class board, so the gallery has none of the seven. The listing copy

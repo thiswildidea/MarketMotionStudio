@@ -410,6 +410,8 @@ Kadr jest zawsze 9:16. Wszystko inne ustalasz sam.
 - Linie bezpiecznego obszaru obrysowują to, co aplikacja na telefonie zakrywa własnym interfejsem. Rysują się w podglądzie i nigdy w pliku.
 - Tytuł może mieć więcej niż jedną linię: w polu tytułu naciśnij Enter, aby złamać go tam, gdzie chcesz. Jeśli nie mieści się w jednej linii, sam przechodzi do drugiej — najwyżej dwóch; dopiero gdy i dwie nie wystarczą, maleje stopień pisma. Druga linia przesuwa wszystko poniżej o jeden wiersz, więc wykres jest o tyle niższy.
 
+- Wszystko aż do ostatniego kroku jest darmowe: pobieranie danych, odtwarzanie animacji, zapisanie okładki. **Eksport** to jedyne miejsce, które prosi o miesięczną subskrypcję; po kliknięciu wyjaśnia, co ona kupuje i ile kosztuje. Odnawia się, dopóki nie anulujesz jej w Microsoft Store.
+
 ## Gdzie trafiają filmy
 
 Eksporty zapisują się do folderu, który wybierasz w okienku. Dopóki żaden nie został wybrany, pierwszy eksport zapyta i potem zapamięta; ustawienia pozwalają to zmienić albo zapomnieć.
@@ -437,6 +439,8 @@ Na stronie ustawień możesz zmienić to, na czym rysowana jest animacja: wbudow
 - Suwak przyciemnienia decyduje, jak mocno obraz jest cofany do własnego tła strony: od 20% do 95%.
 
 - **Każda klatka niesie też nazwę na swoim tle: znak wodny.** Jest domyślnie włączony, głosi „周期留白”, dopóki go nie zmienisz, a treść jest twoja. Powtarza się ukośnie po całym obrazie, rysowany **pod** danymi, więc niczego nie zasłania; podgląd, eksportowane wideo i okładka niosą go tak samo. Pusty wraca do nazwy domyślnej — żeby nie było go wcale, trzeba go wyłączyć. Przełącznik jest domyślnie włączony, bo wideo trafia w miejsce, które nic nie mówi o tym, gdzie powstało.
+
+- Zdjęcie znaku wodnego to jedna z dwóch rzeczy, które kupuje subskrypcja. Dopóki jej nie ma, przełącznik zostaje włączony i nie da się go ruszyć — i dokładnie to będzie nosić każda klatka, więc podgląd i plik nigdy się nie różnią.
 
 
 - **Wygląd znaku też jest twój.** Font to dowolny font zainstalowany na tym komputerze — każda pozycja na liście jest napisana fontem, który wymienia —, kolor to ten, który da próbnik, a moc to, ile tego koloru zostanie użyte: domyślnie 10%, najwyżej 40%, i nawet przy najwyższym znak jest rysowany pod danymi. Wszystkie trzy dotyczą podglądu, eksportowanego wideo i okładki tak samo.

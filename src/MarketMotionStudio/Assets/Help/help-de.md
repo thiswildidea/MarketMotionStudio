@@ -427,6 +427,8 @@ Das Bild ist immer 9:16. Alles andere bestimmen Sie.
 - Die Hilfslinien für den sicheren Bereich umreißen, was eine Telefon-App mit ihrer eigenen Oberfläche verdeckt. Sie werden in der Vorschau gezeichnet und niemals in einer Datei.
 - Der Titel darf mehrzeilig sein: Mit der Eingabetaste im Titelfeld brechen Sie ihn dort, wo er brechen soll. Passt er nicht in eine Zeile, läuft er automatisch in eine zweite um – höchstens zwei Zeilen; erst wenn auch zwei nicht reichen, gibt die Schriftgröße nach. Eine zweite Zeile schiebt alles darunter um eine Zeile nach unten, das Diagramm wird entsprechend kürzer.
 
+- Alles bis zum letzten Schritt ist kostenlos: Daten laden, Animation abspielen, Titelbild speichern. **Exportieren** ist die eine Stelle, die ein monatliches Abonnement verlangt, und ein Klick darauf sagt, was das kauft und was es kostet. Es verlängert sich, bis Sie es im Microsoft Store kündigen.
+
 ## Wohin die Videos gehen
 
 Exporte werden in einen Ordner geschrieben, den Sie über einen Dialog wählen. Solange keiner gewählt ist, fragt der erste Export und merkt sich die Antwort; in den Einstellungen lässt sie sich ändern oder vergessen.
@@ -454,6 +456,8 @@ Auf der Einstellungsseite lässt sich ändern, worauf die Animation gezeichnet w
 - Der Regler für die Abdunklung bestimmt, wie weit das Bild zum eigenen Hintergrund der Seite zurückgenommen wird: 20 % bis 95 %.
 
 - **Jedes Bild trägt außerdem einen Namen über seinem Hintergrund: das Wasserzeichen.** Es ist standardmäßig an, steht auf „周期留白“, bis Sie es ändern, und der Wortlaut gehört Ihnen. Es wird schräg über das ganze Bild wiederholt, **unter** den Daten gezeichnet, also überdeckt es nichts; Vorschau, exportiertes Video und Titelbild tragen es gleichermaßen. Leer gelassen gilt wieder der Standardname — damit gar nichts erscheint, schalten Sie es ab. Der Schalter ist standardmäßig an, weil ein Video irgendwo landet, das nichts darüber verrät, wo es entstanden ist.
+
+- Das Wasserzeichen abzuschalten ist eines der beiden Dinge, die ein Abonnement kauft. Solange keines besteht, bleibt der Schalter an und lässt sich nicht bewegen — und genau das trägt dann auch jedes Bild, damit Vorschau und Datei niemals widersprechen.
 
 
 - **Wie das Zeichen aussieht, ist ebenfalls Ihres.** Die Schriftart ist jede auf diesem Rechner installierte — jeder Eintrag in der Liste ist in der Schrift gesetzt, die er nennt —, die Farbe jede, die der Wähler hergibt, und die Stärke ist, wie viel von dieser Farbe verwendet wird: standardmäßig 10%, bis zu 40%, und selbst am stärksten wird es unter den Daten gezeichnet. Alle drei gelten für Vorschau, exportiertes Video und Titelbild gleichermaßen.

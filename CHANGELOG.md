@@ -26,18 +26,54 @@ Entries run newest first. / 新版本在上。
 下面只列本版在 1.0.4.0 之上新增的改动；应用的完整能力仍见更下面的 0.0.0.0 条目。包已构建：
 `artifacts/MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload`（149.6 MB / 142.6 MiB），
 拆包核验包内六个内包的 Identity 都是 `1.0.5.0`、DisplayName 都是预留字面值。此后源码又动过
-（标题折成两行这一版），**提交商店之前要按惯例删掉 `Upload`、`ForBundle` 与 `*.appxrecipe` 重编
-同一个包** —— 商店文案不能先于与它匹配的那个包上传。
+（标题折成两行这一版，以及导出与去水印改为订阅这一版），**提交商店之前要按惯例删掉 `Upload`、
+`ForBundle` 与 `*.appxrecipe` 重编同一个包** —— 商店文案不能先于与它匹配的那个包上传。订阅还要
+**先在合作伙伴中心把那个加载项建出来**（其标识符是 `MarketMotionStudioMonthly`，按月计费），
+否则包里的 `StoreSubscription` 在商店里找不到任何可买的东西，登录用户看到的将是一张隐藏的卡片。
 Version 1.0.4.0's package was built but never sent to Partner Center, so this version carries it and
 1.0.4.0 will not be submitted on its own. What follows is only what this version adds on top of
 1.0.4.0; the full feature set is still in the 0.0.0.0 entry below. The package is built —
 `artifacts/MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload` (149.6 MB / 142.6 MiB) — and all
 six inner packages carry Identity `1.0.5.0` and the reserved literal DisplayName. The source has
-moved on since it was built — this is the version that added two-line titles — so the package has to
-be rebuilt the usual way before it goes up (drop `Upload`, `ForBundle` and `*.appxrecipe` first): the
-listing copy must never arrive ahead of the package it describes.
+moved on since it was built — this is the version that added two-line titles and put exporting
+behind a subscription — so the package has to be rebuilt the usual way before it goes up (drop
+`Upload`, `ForBundle` and `*.appxrecipe` first): the listing copy must never arrive ahead of the
+package it describes. The subscription also needs **the add-on created in Partner Center first**
+(identifier `MarketMotionStudioMonthly`, billed monthly); without it `StoreSubscription` finds
+nothing to sell in the Store, and a signed-in user would be shown a card that stays hidden.
 
 ### 新增 / Added
+
+- **导出视频与去掉水印改为按月订阅 / exporting a video and removing the watermark now take a
+  monthly subscription** —— 这是本版对**已经在用的人**影响最大的一处，所以写在这里最前面：
+  这两件事以前是免费的。改的是这两件，不是应用：十七个图表页的取数、播放动画、保存封面图
+  **一律照旧免费**，也不打算收费。未订阅时点「导出」**不是把按钮置灰**，而是弹一个说明
+  「订阅买下什么、每月多少」并带「订阅」与「恢复购买」两个动作的对话框 —— 灰按钮只说「不行」，
+  而已经想拿文件的人对着它无事可做。水印那个开关在订阅之前**固定为开且搬不动**，下面挂一句
+  原因：画面里带的那一层就是文件里会有的那一层，不做「预览干净、导出有标记」这种失信的事。
+  判断只有一处（`Views/SubscriptionOffer.cs`），**十七个页面的导出都问它、且都在编码之前问**；
+  **封面 PNG 那条路径上一个闸口也没有**（`verify-subscription.py` 数出 17 / 17 与 0）。许可证
+  一律**从源端读**、不自己记一笔「付过了」：记一笔就要自己保鲜，那样要么自己过期、要么永远
+  算数。读不到（侧载、商店被策略关掉、加载项还没上架）**一律按未订阅处理** —— 按已付费处理
+  等于白送。设置页有一张卡片（月价、续订日、订阅 / 恢复购买 / 管理订阅），在商店够不着的
+  机器上整张隐藏而不是显示成空的。
+  This is the change that touches people who already use the app, so it goes first: both of these
+  used to be free. What changed is those two things, not the app — fetching data, playing the
+  animation and saving a cover image stay free on all seventeen pages, and are meant to. Pressing
+  **Export** without a subscription **does not grey the button out**; it opens a dialog saying what
+  the subscription buys and what it costs, with **Subscribe** and **Restore purchase** on it. A grey
+  button only states "no", and somebody who has already decided they want the file has nothing to do
+  with that. The watermark switch is **on and immovable** until then, with the reason underneath:
+  what the preview carries is what the file carries, rather than a clean preview over a marked
+  export. The decision lives in exactly one place (`Views/SubscriptionOffer.cs`); **all seventeen
+  export handlers ask it, and ask before anything is read for the encode**, while the **cover PNG
+  path has no gate at all** (`verify-subscription.py` counts 17 / 17 and 0). The licence is always
+  **read from the Store** rather than remembered as "someone paid": a copy would have to be kept
+  fresh, and it would either expire on its own schedule or be believed forever. Anything that cannot
+  be read — sideloaded build, Store switched off by policy, add-on not published yet — counts as
+  **not subscribed**, because counting it as paid is giving the thing away. Settings carries a card
+  (price, renewal date, Subscribe / Restore / Manage) that is hidden entirely where the Store cannot
+  be reached rather than shown empty.
 
 - **第十七页：债市固收竞速 / the seventeenth page: bond indices** — 九条债券指数一行，条形是
   **价格变动，不是持有回报**：源端对指数忽略复权参数，而债券回报的大半在票息里，票息永远
@@ -178,7 +214,10 @@ listing copy must never arrive ahead of the package it describes.
 幂等，且按整行精确匹配 —— 某语言的措辞与脚本里的不一致时会报错，而不是留下一个旧数字。
 标题那一条**不手写**：商店文案里那句话直接取自 14 份帮助手册「视频」章里那一句（`port-title-wrap-help.py`
 是它唯一的事实来源），免得同一件事在两处各写一遍、慢慢讲成两种意思。加上它以后最长的一语种落到
-1229 字符，仍在商店 1500 的硬上限之内。
+1229 字符，仍在商店 1500 的硬上限之内。**订阅那句写在「说明」段（长期成立的事实），不只写在
+「新增功能」（只说一次）** —— 把原本免费的导出与去水印改成订阅，商店里不说、用户装完才发现，
+是差评的写法。四处改动都在同一个脚本里（`port-store-listing-1050.py`），CSV 由 `port-listing-csv.py`
+跟一次、`verify-listing-csv.py` 逐格比对（43 项）。
 The fourteen "What's new" lines now describe 1.0.5.0: the bond page, the turnover basket, one named
 candles day, six holdings at once, **and titles that wrap onto a second line**. The description's page
 count and the features bullet went from sixteen to seventeen — the bond page sits **after Asset
@@ -186,8 +225,11 @@ Classes**, has been in the app all along and had never reached the listing. One 
 idempotent and matching whole lines, so a language whose wording differs fails loudly instead of
 keeping a stale number. The title sentence is not hand-written for the store: it comes straight out of
 the sentence already sitting in the Video chapter of the fourteen manuals, because two places telling
-the same thing eventually tell it differently. With it added, the longest language lands at 1,229
-characters, still inside the 1,500 ceiling.
+the same thing eventually tell it differently. **The subscription sentence goes into the description**
+— a standing fact — **rather than only into "What's new"**, which says it once: turning two formerly
+free things into a paid subscription without saying so in the listing is how one-star reviews are
+written. All four edits live in one script (`port-store-listing-1050.py`), and the CSV is regenerated
+by `port-listing-csv.py` and compared cell by cell by `verify-listing-csv.py` (43 checks).
 
 ---
 

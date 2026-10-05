@@ -16,9 +16,23 @@ namespace MarketMotionStudio;
 ///
 /// It reaches the preview, the video and the cover image, because all three are
 /// drawn by the same renderer — there is no second path to update.
+///
+/// **Taking it off now costs a subscription, and that is decided here rather
+/// than in the control that looks like it decides it.** This is the one place
+/// every renderer asks; a switch that merely refuses to be clicked leaves every
+/// other caller free to draw an unmarked frame, and the app is one XAML file
+/// away from having one. What the switch does is ask this, not hold the answer.
 /// </summary>
 public static class WatermarkSettings
 {
+    static WatermarkSettings()
+    {
+        // A frame already drawn does not redraw itself, and the mark is baked
+        // into the frame rather than laid over it. Nothing else knows when the
+        // answer changes, so nothing else can be relied on to invalidate it.
+        AppServices.Current.Subscription.Changed += (_, _) => Announce();
+    }
+
     private const string OnKey = "FrameWatermarkOn";
     private const string TextKey = "FrameWatermarkText";
     private const string FontKey = "FrameWatermarkFont";
@@ -26,21 +40,43 @@ public static class WatermarkSettings
     private const string StrengthKey = "FrameWatermarkStrength";
 
     /// <summary>
-    /// Whether the frames carry the mark. On unless it has been turned off.
+    /// Whether the frames carry the mark. On unless it has been turned off, and
+    /// **on regardless of what was asked for while nobody is subscribed** —
+    /// taking the mark off is one of the two things the subscription buys.
     ///
     /// Read as "on when the key is missing" rather than as "off": the setting
     /// was added to an app that has already been used, and an absent key is a
-    /// machine that has never been asked, not one that answered no.
+    /// machine that has never been asked, not one that answered no. The stored
+    /// answer is still kept while unpaid, so subscribing restores the frame
+    /// somebody was trying to make rather than pretending the switch was never
+    /// touched.
     /// </summary>
     public static bool Enabled
     {
-        get => Settings.Values[OnKey] is not bool on || on;
+        get
+        {
+            if (PaidFor)
+            {
+                return Settings.Values[OnKey] is not bool on || on;
+            }
+
+            return true;
+        }
         set
         {
             Settings.Values[OnKey] = value;
             Announce();
         }
     }
+
+    /// <summary>
+    /// Whether the switch is anybody's to move. Read by the control rather than
+    /// baked into it, so that "greyed out" and "ignored" are the same fact in
+    /// one place and cannot drift the way a duplicated rule would.
+    /// </summary>
+    public static bool Optional => PaidFor;
+
+    private static bool PaidFor => AppServices.Current.Subscription.Subscribed;
 
     /// <summary>
     /// What the mark says.

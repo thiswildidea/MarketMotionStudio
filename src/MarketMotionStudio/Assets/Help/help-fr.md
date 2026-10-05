@@ -432,6 +432,8 @@ L'image est toujours en 9:16. Tout le reste vous appartient.
 - Les repères de zone sûre délimitent ce qu'une application mobile recouvre de sa propre interface. Ils sont tracés dans l'aperçu et jamais dans un fichier.
 - Le titre peut tenir sur plusieurs lignes : appuyez sur Entrée dans le champ du titre pour le couper où vous voulez. S'il ne tient pas sur une ligne, il se replie sur une deuxième, deux au maximum ; ce n'est que si deux ne suffisent pas que la taille cède. Une deuxième ligne décale d'une ligne tout ce qui suit, et le graphique raccourcit d'autant.
 
+- Tout est gratuit jusqu'à la dernière étape : charger les données, lire l'animation, enregistrer une image de couverture. **Exporter** est le seul endroit qui demande un abonnement mensuel, et un clic dit ce qu'il achète et ce qu'il coûte. Il se renouvelle jusqu'à ce que vous le résiliiez dans le Microsoft Store.
+
 ## Où vont les vidéos
 
 Les exports sont écrits dans un dossier que vous choisissez par un sélecteur. Tant qu'aucun n'est choisi, le premier export le demande puis le retient ; les paramètres permettent de le changer ou de l'oublier.
@@ -459,6 +461,8 @@ La page Paramètres permet de changer ce sur quoi l'animation est dessinée : le
 - Le curseur d'assombrissement règle à quel point l'image est ramenée vers le fond propre à la page, de 20 % à 95 %.
 
 - **Chaque image porte aussi un nom sur son fond : le filigrane.** Il est activé par défaut, il dit « 周期留白 » jusqu'à ce que vous le changiez, et le libellé vous appartient. Il se répète en diagonale sur toute l'image, dessiné **sous** les données, donc il ne cache rien ; l'aperçu, la vidéo exportée et l'image de couverture le portent également. Laissé vide, il reprend le nom par défaut — pour ne rien porter du tout, désactivez-le. L'interrupteur est activé par défaut parce qu'une vidéo est publiée quelque part qui ne dit rien d'où elle a été faite.
+
+- Retirer le filigrane est l'une des deux choses que l'abonnement achète. Tant qu'il n'y en a pas, l'interrupteur reste activé et ne peut pas être déplacé — et c'est exactement ce que portera chaque image, si bien que l'aperçu et le fichier ne se contredisent jamais.
 
 
 - **L'aspect de la marque vous appartient aussi.** La police est n'importe quelle police installée sur cette machine — chaque entrée de la liste est écrite dans la police qu'elle nomme —, la couleur est celle que donne le sélecteur, et l'intensité est la part de cette couleur utilisée : 10% par défaut, jusqu'à 40%, et même au maximum elle est dessinée sous les données. Ces trois réglages valent pour l'aperçu, la vidéo exportée et l'image de couverture.

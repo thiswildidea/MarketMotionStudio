@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 """把商店文案（docs/store-listing.md，14 语言）改到 1.0.5.0。
 
-三处改动，每处都照 `port-store-listing-pages.py` / `port-store-listing-whatsnew.py` 已经
+四处改动，每处都照 `port-store-listing-pages.py` / `port-store-listing-whatsnew.py` 已经
 定下的做法：
 
 1. **说明段的图表页清单补上第十七页（债市固收）**，标题与功能条从十六改成十七。这一页在
    应用里早已在、排在**大类资产之后**，只是从来没进过商店文案 —— 它不是本版才有的，但既然
    文案要写「十七页」，那一页就不能缺。清单是历史上一次次上架时追加出来的顺序，所以新的一
    页**追加在末尾**，不动前面的顺序。
-2. **「此版本的新增功能」换掉**（这一栏是**换**不是加，历史留在 CHANGELOG.md）。1.0.5.0 要
+3. **说明段的引言句补上订阅那一句**。本版起「导出视频」与「去掉水印」要按月订阅，而**这两件
+   事以前是免费的** —— 对已经在用的人这是变化，商店里不说，等他们装了才发现，是最容易被一星
+   的那种做法。所以那句话写在**说明段**（长期成立的事实），不只写在「新增功能」（本版说一次）。
+4. **「此版本的新增功能」换掉**（这一栏是**换**不是加，历史留在 CHANGELOG.md）。1.0.5.0 要
    说的五件事：债市固收这一页、成交额页的自选篮、K线指定某一个交易日、持仓页最多六只对比，
    以及**所有页面的标题可以折成两行**。
 
@@ -156,6 +159,49 @@ BASKET = {
 DASH = {"zh-Hans": "——", "zh-Hant": "——"}
 # 功能条里名字之间的分隔符。
 COMMA = {"zh-Hans": "、", "zh-Hant": "、", "ja": "、", "ko": "、"}
+
+# 说明段的引言句后面接的那一句。**这一句必须写**：把原本免费的导出与去水印改成订阅之后，
+# 商店里不说，用户是装完才发现 —— 那是差评的写法。写在说明段（长期成立），不只写在
+# 「新增功能」（只说一次）。
+SUBSCRIPTION = {
+    "zh-Hans": "所有图表页都免费：取数、预览、保存封面图都不收费。导出视频与去掉水印需要按月订阅，可随时取消。",
+    "zh-Hant": "所有圖表頁都免費：取數、預覽、儲存封面圖都不收費。匯出影片與移除浮水印需要按月訂閱，可隨時取消。",
+    "en-US": "Every chart page is free: fetching data, previewing and saving a cover image cost "
+             "nothing. Exporting the video — and taking the watermark off it — takes a monthly "
+             "subscription that can be cancelled at any time.",
+    "ja": "どのチャートページも無料で使えます。データの取得、プレビュー、カバー画像の保存には費用が"
+          "かかりません。動画の書き出しとウォーターマークの解除には、いつでも解約できる月額"
+          "サブスクリプションが必要です。",
+    "ko": "모든 차트 페이지는 무료입니다. 데이터 불러오기, 미리보기, 커버 이미지 저장에는 비용이 들지 "
+          "않습니다. 동영상 내보내기와 워터마크 제거에는 언제든 해지할 수 있는 월간 구독이 필요합니다.",
+    "de": "Jede Diagrammseite ist kostenlos: Daten laden, Vorschau und Titelbild speichern kosten "
+          "nichts. Das Video zu exportieren — und das Wasserzeichen zu entfernen — verlangt ein "
+          "monatliches Abonnement, das jederzeit kündbar ist.",
+    "fr": "Chaque page de graphiques est gratuite : charger les données, prévisualiser et enregistrer "
+          "une image de couverture ne coûtent rien. Exporter la vidéo — et retirer le filigrane — "
+          "demande un abonnement mensuel, résiliable à tout moment.",
+    "it": "Ogni pagina di grafici è gratuita: scaricare i dati, l'anteprima e il salvataggio della "
+          "copertina non costano nulla. Esportare il video — e togliere il marchio — richiede un "
+          "abbonamento mensile, annullabile in qualsiasi momento.",
+    "es": "Todas las páginas de gráficos son gratuitas: descargar datos, previsualizar y guardar una "
+          "portada no cuestan nada. Exportar el vídeo —y quitarle la marca de agua— requiere una "
+          "suscripción mensual que puedes cancelar cuando quieras.",
+    "pt-BR": "Todas as páginas de gráficos são gratuitas: buscar dados, pré-visualizar e salvar uma "
+             "capa não custam nada. Exportar o vídeo — e tirar a marca d'água — exige uma assinatura "
+             "mensal, que pode ser cancelada a qualquer momento.",
+    "pl": "Każda strona wykresów jest darmowa: pobieranie danych, podgląd i zapisanie okładki nic nie "
+          "kosztują. Zapisanie filmu — i zdjęcie znaku wodnego — wymaga miesięcznej subskrypcji, "
+          "którą można anulować w każdej chwili.",
+    "cs": "Každá stránka s grafy je zdarma: načtení dat, náhled i uložení titulního obrázku nic "
+          "nestojí. Zápis videa — a odebrání vodoznaku — vyžaduje měsíční předplatné, které lze "
+          "kdykoli zrušit.",
+    "ru": "Каждая страница с графиками бесплатна: загрузка данных, предпросмотр и сохранение обложки "
+          "ничего не стоят. Экспорт видео — и снятие водяного знака — требуют ежемесячной подписки, "
+          "которую можно отменить в любой момент.",
+    "tr": "Her grafik sayfası ücretsizdir: veri çekmek, önizleme ve kapak görselini kaydetmek hiçbir "
+          "ücrete tabi değildir. Videoyu dışa aktarmak — ve filigranı kaldırmak — her zaman iptal "
+          "edilebilen aylık bir abonelik gerektirir.",
+}
 
 # 商店「此版本的新增功能」的硬上限。
 MOST = 1500
@@ -322,6 +368,29 @@ def main():
             lines[at] = text
             changed += 1
             done.append(f"新增功能（{len(text)} 字）")
+
+        # 5) 说明段的引言句后面接上订阅那一句。**这里是说明段，不是「新增功能」**：
+        #    这两件事以前免费，现在要订阅，是一件长期成立的事实，不是本版的花边。
+        #    引言句就是图表页标题往上数第一段正文 —— 按标题回找，不按行号。
+        #
+        #    标题这时候可能已经是「十七大图表页」了，所以两个词都认一下。
+        title_line = [i for i in range(start, end)
+                      if HEADING[lang][1] in lines[i] or HEADING[lang][0] in lines[i]]
+
+        if len(title_line) != 1:
+            print(f"× {lang}: 图表页标题行数到 {len(title_line)} 行")
+            return 1
+
+        at = title_line[0] - 1
+
+        while at > start and not lines[at].strip():
+            at -= 1
+
+        if SUBSCRIPTION[lang] not in lines[at]:
+            gap = "" if lang in ("zh-Hans", "zh-Hant", "ja", "ko") else " "
+            lines[at] = lines[at].rstrip() + gap + SUBSCRIPTION[lang]
+            changed += 1
+            done.append("说明段订阅句")
 
         # 段号会因为插入而位移，所以按标题重新定位一次。
         heads = [i for i, s in enumerate(lines) if s.startswith("## ")]

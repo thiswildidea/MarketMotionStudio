@@ -413,6 +413,8 @@ O quadro é sempre 9:16. Todo o resto é você que decide.
 - As guias de área segura delimitam o que um aplicativo de celular cobre com a própria interface. São desenhadas na prévia e nunca em um arquivo.
 - O título pode ter mais de uma linha: pressione Enter no campo do título para quebrá-lo onde quiser. Se não couber em uma linha, ele quebra sozinho em uma segunda, no máximo duas; só quando duas também não bastam é que o tamanho cede. Uma segunda linha empurra uma linha para baixo tudo o que vem depois, e o gráfico fica mais baixo na mesma medida.
 
+- Tudo até o último passo é gratuito: buscar dados, reproduzir a animação, salvar a imagem de capa. **Exportar** é o único lugar que pede uma assinatura mensal, e ao tocá-lo ele diz o que compra e quanto custa. Ela renova até você cancelá-la na Microsoft Store.
+
 ## Para onde vão os vídeos
 
 As exportações são gravadas em uma pasta que você escolhe por um seletor. Enquanto nenhuma tiver sido escolhida, a primeira exportação pergunta e depois lembra; as configurações permitem trocar ou esquecer.
@@ -440,6 +442,8 @@ Na página de configurações você pode mudar sobre o que a animação é desen
 - O controle de escurecimento define o quanto a imagem volta para o fundo próprio da página, de 20% a 95%.
 
 - **Cada quadro também carrega um nome no seu fundo: a marca d'água.** Ela vem ativada por padrão, diz «周期留白» até você mudar, e a redação é sua. Repete-se na diagonal por todo o quadro, desenhada **abaixo** dos dados, portanto não cobre nada; a pré-visualização, o vídeo exportado e a imagem de capa a levam igual. Deixada em branco volta ao nome padrão — para não levar nada, desligue-a. O interruptor vem ligado por padrão porque um vídeo é publicado num lugar que não diz nada sobre onde foi feito.
+
+- Tirar a marca d'água é uma das duas coisas que a assinatura compra. Enquanto não houver uma, o interruptor fica ligado e não se move — e é exatamente isso que cada quadro levará, então a prévia e o arquivo nunca discordam.
 
 
 - **A aparência da marca também é sua.** A fonte é qualquer fonte instalada nesta máquina — cada item da lista é escrito na fonte que nomeia —, a cor é a que o seletor der, e a intensidade é quanto dessa cor é usado: 10% por padrão, até 40%, e mesmo no máximo ela é desenhada abaixo dos dados. As três valem para a pré-visualização, o vídeo exportado e a imagem de capa igualmente.

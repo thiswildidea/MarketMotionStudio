@@ -604,6 +604,14 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             return;
         }
 
+        // One gate, asked by every page. Writing the file — as opposed to
+        // drawing it — is what the subscription buys, and the one place allowed
+        // to answer that is asked before anything is read for the encode.
+        if (!await MarketMotionStudio.Views.SubscriptionOffer.PermitAsync(XamlRoot, window))
+        {
+            return;
+        }
+
         // Read before the work starts, so touching a slider mid-export cannot change the
         // format halfway through the file.
         var format = VideoSettings.Format;

@@ -374,6 +374,14 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
             return;
         }
 
+        // One gate, asked by every page. Writing the file — as opposed to
+        // drawing it — is what the subscription buys, and the one place allowed
+        // to answer that is asked before anything is read for the encode.
+        if (!await MarketMotionStudio.Views.SubscriptionOffer.PermitAsync(XamlRoot, window))
+        {
+            return;
+        }
+
         var format = VideoSettings.Format;
         var margins = VideoSettings.Margins;
         var duration = VideoSettings.Duration;

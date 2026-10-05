@@ -141,6 +141,14 @@ public sealed partial class MainWindow : Window
         _updateCheck.Tick += async (_, _) => await CheckForUpdatesAsync();
         _updateCheck.Start();
         _ = CheckForUpdatesAsync();
+
+        // Asked here rather than at each gate. The answer changes twice a month
+        // at most — when somebody subscribes, and when the month runs out — and
+        // a Store round trip between a click and the dialog that answers it would
+        // be felt, while a stale answer can be corrected by the dialog itself:
+        // it offers to re-read the licence to anybody whose app thinks they have
+        // not paid.
+        _ = _services.Subscription.RefreshAsync(WindowHandle);
     }
 
     /// <summary>
