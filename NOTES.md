@@ -2385,12 +2385,17 @@ int window, int span, double reached, double t)`，三页各调一次。
 
 **许可证一律现读，绝不自己记一笔。** 记一笔就要自己保鲜，那样要么自己过期、要么永远算数。
 读不到（侧载包、商店被策略关掉、加载项还没上架）**一律按未订阅**：按已付费处理等于白送，按未
-订阅处理最多让那个人多看到一个对话框。加载项按 **offer token**（`MarketMotionStudioMonthly`）
+订阅处理最多让那个人多看到一个对话框。加载项按 **offer token**（`MarketMotionStudio`）
 认，不按 `StoreId` —— 后者由商店按产品、按账号发，测试通道与正式列表各一个，写不下来。
+而 token 这个值本身**以合作伙伴中心那一头为准**：add-on 的 product ID **一旦发布就既改不了也删不掉**
+（还没提交的草稿若要改，只能删掉重建），所以永远是代码跟着商店走，倒过来的代价是无谓地重开一次提交。
 
-**「是不是按月」在运行时无法自证**：`Windows.Services.Store` 的 WinRT 投影里**没有**
-`StoreProduct.SubscriptionInfo`（编译期就报 CS0234）。所以它靠 token 的名字与合作伙伴中心那条配置
-保证，**界面上每一句关于周期与续订的话都必须与那处配置一致**，而不是与任何运行时读到的东西一致。
+**账单周期在 SKU 上，不在产品上**：写在 `StoreProduct` 上是 CS0234，编译都过不去 ——
+`StoreProduct.SubscriptionInfo` 这个成员根本不存在；它挂在 `StoreSku.SubscriptionInfo` 上，编译能过，
+还能读到 `BillingPeriod` / `BillingPeriodUnit` / `HasTrialPeriod`。所以「是不是按月」其实是读得出来的，
+只是**不拿它做判定**：界面上每一句关于周期与续订的话都写死在 resw 里，必须与合作伙伴中心那处配置
+一致；SKU 读到的值只落一行日志（`StoreSubscription.Period`），配置配错了能在日志里看见，而不是让
+一句已经说出去的话显得像错话。
 
 **登不进去的机器上整张卡片隐藏，而不是显示成空的**（与更新按钮同一个理由：没有东西可卖时，
 一张说自己没有东西可卖的卡片帮不了任何人）。**恢复购买**必须做，而且不只放在设置页 —— 那个对话框
@@ -2402,5 +2407,5 @@ int window, int span, double reached, double t)`，三页各调一次。
 `Subscribed` 才作数。
 
 **提交前必须做、而且只有你能做的一件事**：到合作伙伴中心把那个加载项建出来（标识符
-`MarketMotionStudioMonthly`，按月计费）。没有它，`StoreSubscription` 在商店里找不到任何可买的
+`MarketMotionStudio`，按月计费）。没有它，`StoreSubscription` 在商店里找不到任何可买的
 东西，登录用户会看到一张隐藏的卡片。

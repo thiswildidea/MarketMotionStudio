@@ -54,7 +54,7 @@ public sealed class StoreSubscription
     /// it cannot be written down here. The token is the one thing that survives
     /// both, and the offer is looked up by it every time.
     /// </summary>
-    private const string OfferToken = "MarketMotionStudioMonthly";
+    private const string OfferToken = "MarketMotionStudio";
 
     /// <summary>
     /// Subscription add-ons come back from the Store alongside durable ones, so
@@ -291,13 +291,13 @@ public sealed class StoreSubscription
 
             Price = offer.Price?.FormattedPrice;
 
-            // That it is billed *monthly* cannot be checked from here: the
-            // WinRT projection does not carry the add-on's billing period, only
-            // whether something is subscribed and how long it runs. So it is
-            // asserted where it can be — in the key above and in the Partner
-            // Center entry it names — and every sentence shown to the user about
-            // periods and renewal has to agree with that configuration rather
-            // than with anything read back at runtime.
+            // Whether it really renews every month is written off the SKU below,
+            // for the log rather than for a decision: the words on screen come
+            // from resources that have to agree with Partner Center whether or
+            // not anything is read back here. Noted either way, so the two
+            // disagreeing is something a log can show instead of a claim the
+            // interface would have to retract afterwards.
+            CrashLog.Note($"subscribe: {offer.InAppOfferToken} {Period(offer)}");
 
             return offer;
         }
@@ -308,6 +308,22 @@ public sealed class StoreSubscription
             return null;
         }
     }
+
+    /// <summary>
+    /// How often the offer renews, as its SKU describes it, for a log line.
+    ///
+    /// The period lives on the SKU, not on the product — there is no billing
+    /// period on <see cref="StoreProduct"/> itself — and whether the Store sends
+    /// a SKU at all for an add-on it is not selling yet is its business. None of
+    /// this decides anything: the sentences shown to the reader about months and
+    /// renewal are written once and have to match Partner Center regardless.
+    /// </summary>
+    private static string Period(StoreProduct offer) =>
+        offer.Skus.Count == 0
+            ? "sku=none"
+            : offer.Skus[0].SubscriptionInfo is { } info
+                ? $"subscription every {info.BillingPeriod} {info.BillingPeriodUnit}, trial={info.HasTrialPeriod}"
+                : $"sku={offer.Skus[0].StoreId}, not marked as a subscription";
 
     // ---- Debug-only simulation -------------------------------------------
     //

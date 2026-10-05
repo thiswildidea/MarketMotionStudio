@@ -28,7 +28,7 @@ Entries run newest first. / 新版本在上。
 拆包核验包内六个内包的 Identity 都是 `1.0.5.0`、DisplayName 都是预留字面值。此后源码又动过
 （标题折成两行这一版，以及导出与去水印改为订阅这一版），**提交商店之前要按惯例删掉 `Upload`、
 `ForBundle` 与 `*.appxrecipe` 重编同一个包** —— 商店文案不能先于与它匹配的那个包上传。订阅还要
-**先在合作伙伴中心把那个加载项建出来**（其标识符是 `MarketMotionStudioMonthly`，按月计费），
+**先在合作伙伴中心把那个加载项建出来**（其标识符是 `MarketMotionStudio`，按月计费），
 否则包里的 `StoreSubscription` 在商店里找不到任何可买的东西，登录用户看到的将是一张隐藏的卡片。
 Version 1.0.4.0's package was built but never sent to Partner Center, so this version carries it and
 1.0.4.0 will not be submitted on its own. What follows is only what this version adds on top of
@@ -39,7 +39,7 @@ moved on since it was built — this is the version that added two-line titles a
 behind a subscription — so the package has to be rebuilt the usual way before it goes up (drop
 `Upload`, `ForBundle` and `*.appxrecipe` first): the listing copy must never arrive ahead of the
 package it describes. The subscription also needs **the add-on created in Partner Center first**
-(identifier `MarketMotionStudioMonthly`, billed monthly); without it `StoreSubscription` finds
+(identifier `MarketMotionStudio`, billed monthly); without it `StoreSubscription` finds
 nothing to sell in the Store, and a signed-in user would be shown a card that stays hidden.
 
 ### 新增 / Added

@@ -180,7 +180,7 @@ def source():
           and "return Subscribed" in subscription)
 
     check("认加载项按 token 而不是 StoreId（两个部分换环境就换）",
-          'private const string OfferToken = "MarketMotionStudioMonthly";' in subscription)
+          'private const string OfferToken = "MarketMotionStudio";' in subscription)
 
     print("源码（水印那一半）：")
 
