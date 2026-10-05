@@ -84,99 +84,112 @@ INTRO = {
 # 新条目，插在「周期」那条之后。
 MINUTE = {
     "en-US": "- **1, 5 and 15 minutes** draw one trading day: the session from the open to the "
-             "close, with the axis laid out on the clock and the lunch break left as the gap "
-             "it is. The source keeps minute candles for Shanghai and Shenzhen only, and only "
-             "for the last few sessions — about four days at one minute, seventeen at five, "
-             "fifty at fifteen — so **trading day** is a list of the days it still has rather "
-             "than a calendar. Picking another of them only draws it again.",
+             "close, laid out on an axis that runs by the clock and leaves the ninety minutes "
+             "nobody traded off it, so the morning and the afternoon meet across a hairline "
+             "where the break was. The source keeps minute candles for Shanghai and Shenzhen "
+             "only, and only for the last few sessions — about four days at one minute, "
+             "seventeen at five, fifty at fifteen — so **trading day** is a list of the days it "
+             "still has rather than a calendar. Picking another of them only draws it again.",
 
     "de": "- **1, 5 und 15 Minuten** zeichnen einen Handelstag: die Sitzung von der Eröffnung "
-          "bis zum Schluss, mit einer nach der Uhr aufgeteilten Achse und der Mittagspause "
-          "als der Lücke, die sie ist. Die Quelle führt Minutenkerzen nur für Shanghai und "
-          "Shenzhen und nur für die letzten Sitzungen — etwa vier Tage bei einer Minute, "
+          "bis zum Schluss, auf einer Achse nach der Uhr, die die neunzig Minuten ohne Handel "
+          "auslässt, sodass sich Vormittag und Nachmittag an einer Haarlinie treffen, statt ein "
+          "Drittel des Bildes leer zu lassen. Die Quelle führt Minutenkerzen nur für Shanghai "
+          "und Shenzhen und nur für die letzten Sitzungen — etwa vier Tage bei einer Minute, "
           "siebzehn bei fünf, fünfzig bei fünfzehn — daher ist **Handelstag** eine Liste der "
           "noch vorhandenen Tage und kein Kalender. Eine andere Auswahl zeichnet nur neu.",
 
-    "es": "- **1, 5 y 15 minutos** dibujan un día de negociación: la sesión desde la apertura "
-          "hasta el cierre, con el eje repartido según el reloj y el descanso del mediodía "
-          "como el hueco que es. La fuente solo conserva velas por minuto de Shanghái y "
-          "Shenzhen, y solo de las últimas sesiones —unos cuatro días a un minuto, diecisiete "
-          "a cinco, cincuenta a quince—, así que **día de negociación** es una lista de los "
-          "días que aún tiene, no un calendario. Elegir otro solo vuelve a dibujar.",
+    "es": "- **1, 5 y 15 minutos** dibujan un día de negociación: la sesión de la apertura al "
+          "cierre, en un eje que sigue el reloj y deja fuera los noventa minutos sin "
+          "negociación, de modo que la mañana y la tarde se encuentran en una línea fina en vez "
+          "de dejar vacío un tercio del dibujo. La fuente solo conserva velas por minuto de "
+          "Shanghái y Shenzhen, y solo de las últimas sesiones —unos cuatro días a un minuto, "
+          "diecisiete a cinco, cincuenta a quince—, así que **día de negociación** es una lista "
+          "de los días que aún tiene, no un calendario. Elegir otro solo vuelve a dibujar.",
 
-    "fr": "- **1, 5 et 15 minutes** dessinent une journée de bourse : la séance de l'ouverture "
-          "à la clôture, avec un axe réparti selon l'horloge et la pause déjeuner laissée "
-          "comme le trou qu'elle est. La source ne conserve les bougies par minute que pour "
-          "Shanghai et Shenzhen, et seulement pour les dernières séances — environ quatre "
+    "fr": "- **1, 5 et 15 minutes** dessinent une journée de bourse : la séance de l'ouverture à "
+          "la clôture, sur un axe qui suit l'horloge et retire les quatre-vingt-dix minutes sans "
+          "cotation, si bien que le matin et l'après-midi se rejoignent sur un filet plutôt que "
+          "de laisser un tiers du cadre vide. La source ne conserve les bougies par minute que "
+          "pour Shanghai et Shenzhen, et seulement pour les dernières séances — environ quatre "
           "jours à une minute, dix-sept à cinq, cinquante à quinze — donc **Jour de bourse** "
           "est une liste des jours encore disponibles, pas un calendrier. En choisir un autre "
           "ne fait que redessiner.",
 
     "it": "- **1, 5 e 15 minuti** disegnano una giornata di borsa: la seduta dall'apertura alla "
-          "chiusura, con l'asse distribuito secondo l'orologio e la pausa pranzo lasciata "
-          "come il vuoto che è. La fonte conserva le candele al minuto solo per Shanghai e "
+          "chiusura, su un asse che segue l'orologio ed esclude i novanta minuti senza scambi, "
+          "così che mattina e pomeriggio si incontrano su una linea sottile invece di lasciare "
+          "vuoto un terzo del quadro. La fonte conserva le candele al minuto solo per Shanghai e "
           "Shenzhen, e solo per le ultime sedute — circa quattro giorni a un minuto, "
           "diciassette a cinque, cinquanta a quindici — quindi **Giornata di borsa** è un "
           "elenco dei giorni ancora disponibili, non un calendario. Sceglierne un altro "
           "ridisegna soltanto.",
 
-    "pl": "- **1, 5 i 15 minut** rysują jeden dzień sesji: notowania od otwarcia do "
-          "zamknięcia, z osią rozłożoną według zegara i przerwą południową pozostawioną jako "
-          "lukę, którą jest. Źródło trzyma świece minutowe tylko dla Szanghaju i Shenzhen i "
-          "tylko za ostatnie sesje — około czterech dni przy jednej minucie, siedemnastu przy "
-          "pięciu, pięćdziesięciu przy piętnastu — więc **Dzień sesji** to lista dni, które "
-          "jeszcze ma, a nie kalendarz. Wybór innego dnia tylko przerysowuje.",
+    "pl": "- **1, 5 i 15 minut** rysują jeden dzień sesji: od otwarcia do zamknięcia, na osi "
+          "według zegara, która pomija dziewięćdziesiąt minut bez handlu, więc przedpołudnie i "
+          "popołudnie stykają się na cienkiej linii zamiast zostawiać pustą jedną trzecią obrazu. "
+          "Źródło trzyma świece minutowe tylko dla Szanghaju i Shenzhen i tylko za ostatnie "
+          "sesje — około czterech dni przy jednej minucie, siedemnastu przy pięciu, "
+          "pięćdziesięciu przy piętnastu — więc **Dzień sesji** to lista dni, które jeszcze ma, "
+          "a nie kalendarz. Wybór innego dnia tylko przerysowuje.",
 
     "pt-BR": "- **1, 5 e 15 minutos** desenham um dia de negociação: o pregão da abertura ao "
-             "fechamento, com o eixo distribuído pelo relógio e o intervalo do almoço deixado "
-             "como a lacuna que é. A fonte mantém candles de minuto apenas para Xangai e "
-             "Shenzhen, e só das últimas sessões — cerca de quatro dias a um minuto, dezessete "
-             "a cinco, cinquenta a quinze — então **Dia de negociação** é uma lista dos dias "
-             "que ainda tem, não um calendário. Escolher outro apenas redesenha.",
+             "fechamento, num eixo que segue o relógio e deixa fora os noventa minutos sem "
+             "negócios, de modo que a manhã e a tarde se encontram numa linha fina em vez de "
+             "deixar um terço do quadro vazio. A fonte mantém candles de minuto apenas para "
+             "Xangai e Shenzhen, e só das últimas sessões — cerca de quatro dias a um minuto, "
+             "dezessete a cinco, cinquenta a quinze — então **Dia de negociação** é uma lista "
+             "dos dias que ainda tem, não um calendário. Escolher outro apenas redesenha.",
 
-    "cs": "- **1, 5 a 15 minut** kreslí jeden obchodní den: seanci od otevření do závěru, s "
-          "osou rozloženou podle hodin a polední přestávkou ponechanou jako mezeru, kterou "
-          "je. Zdroj uchovává minutové svíčky jen pro Šanghaj a Šen-čen a jen za poslední "
-          "seance — zhruba čtyři dny při jedné minutě, sedmnáct při pěti, padesát při "
-          "patnácti — takže **Obchodní den** je seznam dnů, které ještě má, a ne kalendář. "
-          "Výběr jiného dne jen překreslí.",
+    "cs": "- **1, 5 a 15 minut** kreslí jeden obchodní den: seanci od otevření do závěru na ose "
+          "podle hodin, která vynechává devadesát minut bez obchodování, takže dopoledne a "
+          "odpoledne se potkají na tenké čáře, místo aby třetina obrázku zůstala prázdná. Zdroj "
+          "uchovává minutové svíčky jen pro Šanghaj a Šen-čen a jen za poslední seance — zhruba "
+          "čtyři dny při jedné minutě, sedmnáct při pěti, padesát při patnácti — takže "
+          "**Obchodní den** je seznam dnů, které ještě má, a ne kalendář. Výběr jiného dne jen "
+          "překreslí.",
 
-    "tr": "- **1, 5 ve 15 dakika**, tek bir işlem gününü çizer: açılıştan kapanışa seans; "
-          "eksen saate göre bölünür ve öğle arası olduğu gibi boşluk kalır. Kaynak dakika "
-          "mumlarını yalnızca Şanghay ve Shenzhen için ve yalnızca son birkaç seans için "
-          "tutar — bir dakikada yaklaşık dört gün, beşte on yedi, on beşte elli — bu yüzden "
-          "**İşlem günü** bir takvim değil, hâlâ elinde olan günlerin listesidir. Başka bir "
-          "günü seçmek yalnızca yeniden çizer.",
+    "tr": "- **1, 5 ve 15 dakika** tek bir işlem gününü çizer: açılıştan kapanışa seans, saate "
+          "göre kurulan ve hiç işlem geçmeyen doksan dakikayı dışarıda bırakan bir eksende; "
+          "öğleden önce ve sonra, resmin üçte birini boş bırakmak yerine ince bir çizgide "
+          "buluşur. Kaynak dakika mumlarını yalnızca Şanghay ve Shenzhen için ve yalnızca son "
+          "birkaç seans için tutar — bir dakikada yaklaşık dört gün, beşte on yedi, on beşte "
+          "elli — bu yüzden **İşlem günü** bir takvim değil, hâlâ elinde olan günlerin "
+          "listesidir. Başka bir günü seçmek yalnızca yeniden çizer.",
 
-    "ru": "- **1, 5 и 15 минут** рисуют один торговый день: сессию от открытия до закрытия, с "
-          "осью, разложенной по часам, и обеденным перерывом, оставленным тем промежутком, "
-          "которым он является. Источник хранит минутные свечи только для Шанхая и "
-          "Шэньчжэня и только за последние сессии — около четырёх дней на минутных, "
-          "семнадцати на пятиминутных, пятидесяти на пятнадцатиминутных, — поэтому "
-          "**Торговый день** это список ещё имеющихся дней, а не календарь. Выбор другого "
-          "дня только перерисовывает.",
+    "ru": "- **1, 5 и 15 минут** рисуют один торговый день: сессию от открытия до закрытия на "
+          "оси по часам, из которой убраны девяносто минут без торговли, поэтому утро и день "
+          "сходятся на тонкой линии вместо того, чтобы треть картинки пустовала. Источник хранит "
+          "минутные свечи только для Шанхая и Шэньчжэня и только за последние сессии — около "
+          "четырёх дней на минутных, семнадцати на пятиминутных, пятидесяти на "
+          "пятнадцатиминутных, — поэтому **Торговый день** это список ещё имеющихся дней, а не "
+          "календарь. Выбор другого дня только перерисовывает.",
 
-    "ja": "- **1・5・15 分**は1取引日を描きます。寄り付きから引けまでの1日で、横軸は時計どおりに"
-          "配置し、昼休みはそのまま空けます。ソースが分足を保持しているのは上海と深圳だけで、"
-          "しかも直近数セッションのみ（1分で約4日、5分で約17日、15分で約50日）です。"
+    "ja": "- **1・5・15 分**は1取引日を描きます。寄り付きから引けまでの1日を時計どおりの横軸に"
+          "置きますが、取引のなかった90分は軸から外すため、午前と午後は細い線を挟んで接し、"
+          "画面の3分の1が空白になることはありません。ソースが分足を保持しているのは上海と深圳"
+          "だけで、しかも直近数セッションのみ（1分で約4日、5分で約17日、15分で約50日）です。"
           "そのため**取引日**はカレンダーではなく、いま残っている日の一覧です。"
           "別の日を選んでも再取得せず、描き直すだけです。",
 
-    "ko": "- **1·5·15분**은 하루치 거래일을 그립니다. 시가부터 종가까지의 하루이며, 가로축은 "
-          "시계대로 배치하고 점심시간은 빈 구간으로 남깁니다. 소스가 분봉을 보관하는 곳은 "
+    "ko": "- **1·5·15분**은 하루치 거래일을 그립니다. 시가부터 종가까지의 하루를 시계대로 둔 "
+          "가로축에 그리되, 거래가 없었던 90분은 축에서 빼기 때문에 오전과 오후는 가는 선을 "
+          "사이에 두고 맞닿고 화면의 3분의 1이 비지 않습니다. 소스가 분봉을 보관하는 곳은 "
           "상하이와 선전뿐이고 최근 몇 세션만입니다(1분 약 4일, 5분 약 17일, 15분 약 50일). "
           "그래서 **거래일**은 달력이 아니라 아직 남아 있는 날의 목록입니다. 다른 날을 골라도 "
           "다시 가져오지 않고 다시 그릴 뿐입니다.",
 
-    "zh-Hans": "- **1／5／15 分钟**画的是**某一个交易日**：从开盘到收盘的那一天，横轴按钟点铺、"
-               "午休留成空档。来源只为沪深两市保留分钟 K 线，而且只留最近几个交易日"
-               "（1 分钟约 4 天、5 分钟约 17 天、15 分钟约 50 天），所以**交易日**是它现在"
-               "还留着的那些日子，不是日历。换一天只重画，不重新取数。",
+    "zh-Hans": "- **1／5／15 分钟**画的是**某一个交易日**：从开盘到收盘的那一天，横轴按钟点铺，"
+               "但没人交易的 90 分钟不计入轴上，上下午隔着一条细缝相接，画面不再有三分之一是空的。"
+               "来源只为沪深两市保留分钟 K 线，而且只留最近几个交易日（1 分钟约 4 天、5 分钟约 "
+               "17 天、15 分钟约 50 天），所以**交易日**是它现在还留着的那些日子，不是日历。"
+               "换一天只重画，不重新取数。",
 
-    "zh-Hant": "- **1／5／15 分鐘**畫的是**某一個交易日**：從開盤到收盤的那一天，橫軸按鐘點鋪、"
-               "午休留成空檔。來源只為滬深兩市保留分鐘 K 線，而且只留最近幾個交易日"
-               "（1 分鐘約 4 天、5 分鐘約 17 天、15 分鐘約 50 天），所以**交易日**是它現在"
-               "還留著的那些日子，不是日曆。換一天只重畫，不重新取數。",
+    "zh-Hant": "- **1／5／15 分鐘**畫的是**某一個交易日**：從開盤到收盤的那一天，橫軸按鐘點鋪，"
+               "但沒人交易的 90 分鐘不計入軸上，上下午隔著一條細縫相接，畫面不再有三分之一是空的。"
+               "來源只為滬深兩市保留分鐘 K 線，而且只留最近幾個交易日（1 分鐘約 4 天、5 分鐘約 "
+               "17 天、15 分鐘約 50 天），所以**交易日**是它現在還留着的那些日子，不是日曆。"
+               "換一天只重畫，不重新取數。",
 }
 
 
@@ -195,6 +208,18 @@ def bullets_start(tag):
     files, and the diff looked like an ordinary edit.
     """
     return sum(1 for line in SECTIONS[tag].split("\n") if line.startswith("- "))
+
+
+def marker_for(tag):
+    """The bullet's own "- **X**" head — fourteen different ways to say "1, 5 and 15 minutes".
+
+    Cut off the text after the bold head rather than hardcoding fourteen heads twice: editing
+    the sentence above once may not be the last time it is edited, and the head is what says
+    which bullet this script owns when the sentence behind it has changed.
+    """
+    line = MINUTE[tag]
+
+    return line[:line.index("**", line.index("**") + 2) + 2]
 
 
 def main() -> int:
@@ -227,8 +252,8 @@ def main() -> int:
 
         chapter = lines[start + 1:end]
 
-        # 幂等：这一条已经在里面了就整章不动。少了这一道，第二次跑会把同一条再插一遍 ——
-        # 而重复的一条在渲染出来的帮助页上只是多了一行，截图与逐章校验都看不出来。
+        # 幂等：这一条已经是一字不差的当前文案就整章不动。少了这一道，第二次跑会把同一条
+        # 再插一遍 —— 而重复的一条在渲染出来的帮助页上只是多了一行，截图与逐章校验都看不出来。
         if any(line.strip() == MINUTE[tag] for line in chapter):
             print(f"{tag:9} already there")
             continue
@@ -244,9 +269,19 @@ def main() -> int:
             print(f"{tag}: {len(bullets)} bullets in the file, {bullets_start(tag)} expected")
             return 1
 
-        chapter = (
-            chapter[:intro] + [INTRO[tag]] + chapter[intro + 1:bullets[0] + 1]
-            + [MINUTE[tag]] + chapter[bullets[0] + 1:])
+        # 已经在里面的**旧版**那一句要就地换掉，不能再来一条。午休从轴上剔掉之后这句话
+        # 变了，而它的抬头十四种语言各写各的（"1, 5 and 15 minutes" / "1・5・15 分" …）——
+        # 按抬头认这条谁属于我，不去碰同一章里别的条目。
+        owned = [i for i in bullets if chapter[i].startswith(marker_for(tag))]
+
+        if owned:
+            chapter = (
+                chapter[:intro] + [INTRO[tag]] + chapter[intro + 1:owned[0]]
+                + [MINUTE[tag]] + chapter[owned[0] + 1:])
+        else:
+            chapter = (
+                chapter[:intro] + [INTRO[tag]] + chapter[intro + 1:bullets[0] + 1]
+                + [MINUTE[tag]] + chapter[bullets[0] + 1:])
 
         lines = lines[:start + 1] + chapter + lines[end:]
 

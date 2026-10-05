@@ -338,8 +338,11 @@ once for the widest window it will serve — 800 bars, which is about four 1-min
 fifty 15-minute ones — and offers back only the days it returned **whole**, judged by how many bars
 they carry and whether the last one is stamped 15:00, so neither today's unfinished session nor a
 day cut in half by the request limit can be drawn as though it were complete. Changing the day
-redraws the frame without fetching anything again, and the x-axis runs on clock time rather than bar
-order, which leaves the lunch break the gap it actually was.
+redraws the frame without fetching anything again. The x-axis runs on clock time rather than bar
+order — with the ninety minutes nobody traded **taken off it**: counting the wall clock from 09:30
+to 15:00 handed the break nearly a third of the width, and a third of the picture bought nothing
+but empty space. The two halves are two hours each, so each gets half the axis and they meet across
+a hairline labelled for what it is.
 
 It is also the first page with **two animations**, because a candle series raises a question the
 others do not. **Growing** draws one more candle per step until the whole range is on screen —

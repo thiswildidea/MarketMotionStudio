@@ -207,12 +207,22 @@ public sealed class CandleRenderer : IFrameRenderer
     }
 
     /// <summary>
-    /// The session's first and last minute, as minutes past midnight: 09:30 and 15:00 on
-    /// the mainland venues, which are the only ones with minute bars at all.
+    /// The session's landmarks, as minutes past midnight, on the mainland venues — the only
+    /// ones with minute bars at all. Two hours are traded before the noon break and two
+    /// after it, and nothing at all is traded between 11:30 and 13:00.
     /// </summary>
     private const int OpeningMinute = (9 * 60) + 30;
 
+    private const int NoonMinute = (11 * 60) + 30;
+
+    private const int AfternoonMinute = 13 * 60;
+
     private const int ClosingMinute = 15 * 60;
+
+    /// <summary>
+    /// The share of the axis left standing for the break itself. See <see cref="Stamps"/>.
+    /// </summary>
+    private const double LunchSeam = 0.02;
 
     /// <summary>
     /// Each bar's place on the clock axis, or null for a series with no clocks.
@@ -222,10 +232,20 @@ public sealed class CandleRenderer : IFrameRenderer
     /// fractions from. A series with the clock on some bars and not on others is a series
     /// this chart cannot place, and answering null for it keeps every bar in the order
     /// they came rather than dropping the unplaced ones into the gap.
+    ///
+    /// **The ninety minutes nobody traded are not on the axis.** Counting the wall clock
+    /// from 09:30 to 15:00 gave the break a third of the width, which bought a third of
+    /// the picture with nothing drawn in it: the two halves are two hours each, so they
+    /// get half the axis each and meet where the break was. What stands for it is this
+    /// seam — a hairline, and enough of one that the morning is not read as running into
+    /// the afternoon. Inside each half the clock stays honest, so a sparse morning still
+    /// looks sparse and each bar sits where its own minute does.
     /// </summary>
     private static double[]? Stamps(IReadOnlyList<TencentKline.CandleBar> bars)
     {
-        var span = ClosingMinute - OpeningMinute;
+        var half = (1 - LunchSeam) / 2;
+        var morning = NoonMinute - OpeningMinute;
+        var afternoon = ClosingMinute - AfternoonMinute;
         var stamps = new double[bars.Count];
 
         for (var i = 0; i < bars.Count; i++)
@@ -239,7 +259,12 @@ public sealed class CandleRenderer : IFrameRenderer
                 return null;
             }
 
-            stamps[i] = Math.Clamp((((hour * 60) + minute) - OpeningMinute) / (double)span, 0, 1);
+            var minutes = (hour * 60) + minute;
+            var into = minutes <= NoonMinute
+                ? (minutes - OpeningMinute) / (double)morning
+                : (minutes - AfternoonMinute) / (double)afternoon;
+
+            stamps[i] = Math.Clamp(into, 0, 1) * half + (minutes <= NoonMinute ? 0 : half + LunchSeam);
         }
 
         return stamps;
@@ -742,12 +767,15 @@ public sealed class CandleRenderer : IFrameRenderer
     }
 
     /// <summary>
-    /// The lunch break, drawn as the gap it is.
+    /// The lunch break, drawn as the line it is now worth.
     ///
     /// A line rather than a filled band, and only on a series whose bars carry a clock:
     /// on every other period the axis is a line of dates and there is nothing between
-    /// them to mark. The label is the same word the turnover page's intraday curve puts
-    /// on its noon line, because it is the same fact.
+    /// them to mark. It stands in the seam the <see cref="LunchSeam"/> leaves between the
+    /// two halves, which is all the width the break gets: the label then says what it is,
+    /// because nothing about a hairline says "nothing traded here". The label is the same
+    /// word the turnover page's intraday curve puts on its noon line, because it is the
+    /// same fact.
     /// </summary>
     private void DrawLunch(CanvasDrawingSession session, FrameContext context, Frame view)
     {

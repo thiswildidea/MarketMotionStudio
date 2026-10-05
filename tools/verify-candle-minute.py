@@ -376,6 +376,15 @@ def main():
     # 横轴按钟点铺。均匀排列会把午休抹掉，而这是唯一能从画面外看出来的那条规矩。
     check("横轴按钟点铺（09:30=0，15:00=1）",
           "OpeningMinute = (9 * 60) + 30" in render and "ClosingMinute = 15 * 60" in render)
+
+    # 90 分钟没人交易不该占掉三分之一的画面：上下午各占半个轴，中间只留一条缝。
+    # 断的是「不是按墙上那口钟从 09:30 拉到 15:00」——留着旧算式就是留着那段空档。
+    check("午休被从轴上剔掉（上下午各一半，中间一条缝）",
+          "NoonMinute = (11 * 60) + 30" in render and
+          "AfternoonMinute = 13 * 60" in render and
+          "LunchSeam = 0.02" in render and
+          "- OpeningMinute) / (double)span" not in render)
+
     check("有钟点的蜡烛按钟点定位，没有的仍按次序",
           "_stamps is null\n        ? view.Left + (view.Width * (i - view.First)" in render)
     check("午休画成一条线并标出来", "DrawLunch(session, context, view)" in render
@@ -555,16 +564,25 @@ def main():
     else:
         check(f"挑到 {target}", False)
 
-    # ---- 午休是真空档 ----------------------------------------------------------------
+    # ---- 午休已从轴上剔掉 --------------------------------------------------------
+    #
+    # 这条以前是反的：断言「空档要够宽」。改轴之后反过来了 —— 90 分钟没人交易原本吃掉画面
+    # 的 27%，现在上下午各占一半，中间只剩一条缝（LunchSeam = 2%）。缝必须还在，否则上午
+    # 会被读成直接连着下午。
     columns = candle_columns(Image.open(shot(win, "verify-candle-minute-5m-final.png")))
     widest, at, span = gap(columns)
 
-    check("画面中间有一段没有蜡烛的列（午休没有被抹平）",
-          widest > span * 0.12, f"最宽空档 {widest} 列 / 绘制区 {span} 列 = {widest / span:.0%}")
+    check("画面里不再有那一大片没交易的空档",
+          widest < span * 0.10, f"最宽空档 {widest} 列 / 绘制区 {span} 列 = {widest / span:.1%}")
 
-    # 上午占钟点的 0~36%、下午占 64%~100%，所以空档的起点应当落在绘制区的三成半左右。
-    check("空档落在画面中段（上午与下午之间）",
-          at >= 0 and 0.28 < (at / span) < 0.55, f"起点在 {at / span:.0%}" if at >= 0 else "没找到空档")
+    drawn = [i for i, count in enumerate(columns) if count > 0]
+    inner = columns[drawn[0]:drawn[-1] + 1]
+    wide = max(1, int(len(inner) * 0.04))
+    band = inner[max(0, (len(inner) // 2) - wide):(len(inner) // 2) + wide]
+    seam = sum(1 for count in band if count == 0)
+
+    check("午休还在，只是变成正中的一条缝（上下午没有连成一段）",
+          seam > 0, f"正中 ±4% 里有 {seam}/{len(band)} 列是空的")
 
     # ---- 另外两档 ----------------------------------------------------------------
     #
