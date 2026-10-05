@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>소스에 {0}({1})의 분봉이 없습니다. 분봉이 있는 곳은 상하이와 선전뿐입니다.</value></data>
   <data name="CandleMinuteNoWhole"><value>받아온 세션 중 하루치가 온전한 것이 없습니다. 마지막 날은 아직 거래 중일 수 있습니다.</value></data>
   <data name="CandleMinuteMarketNone"><value>이 시장에는 분봉이 없습니다. 소스가 분봉을 보관하는 곳은 상하이와 선전뿐입니다.</value></data>
+  <data name="PositionVsTitle"><value>{0} vs {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} 외 {1}개</value></data>
+  <data name="PositionCompareSubtitle"><value>각각 {0}{1}, {2}부터 · 후복권 종가 · 배당은 재투자로 반영</value></data>
+  <data name="PositionLeaderLine"><value>{0} · 현재까지 누적 수익</value></data>
+  <data name="PositionBoardFetched"><value>{0}개 종목 · {1}거래일({2} ~ {3})</value></data>
+  <data name="PositionSkipped"><value>기간 안에 가격이 없던 {0}개는 제외했습니다: {1}</value></data>
+  <data name="PositionTooMany"><value>동시에 비교할 수 있는 종목은 최대 {0}개입니다. 지금 {1}개가 켜져 있습니다</value></data>
+  <data name="PositionNoMarketPicks"><value>내 목록에 {0} 시장 종목이 없습니다</value></data>
 </root>

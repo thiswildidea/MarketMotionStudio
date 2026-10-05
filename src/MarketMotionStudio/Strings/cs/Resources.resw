@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>Zdroj nemá minutové svíčky pro {0} ({1}) — mají je jen Šanghaj a Šen-čen.</value></data>
   <data name="CandleMinuteNoWhole"><value>Žádná z vrácených seancí není celý den — ta poslední možná ještě probíhá.</value></data>
   <data name="CandleMinuteMarketNone"><value>Tento trh nemá minutové svíčky — zdroj je uchovává jen pro Šanghaj a Šen-čen.</value></data>
+  <data name="PositionVsTitle"><value>{0} versus {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} a další {1}</value></data>
+  <data name="PositionCompareSubtitle"><value>{0}{1} do každé, od {2} · očištěné závěry · dividendy reinvestovány</value></data>
+  <data name="PositionLeaderLine"><value>{0} · zisk zatím</value></data>
+  <data name="PositionBoardFetched"><value>{0} nástrojů za {1} obchodních dnů ({2} – {3})</value></data>
+  <data name="PositionSkipped"><value>{0} neměly v rozsahu žádný kurz a byly vynechány: {1}</value></data>
+  <data name="PositionTooMany"><value>Porovnat lze nejvýše {0} nástrojů; zapnuto je {1}</value></data>
+  <data name="PositionNoMarketPicks"><value>Žádný nástroj ze seznamu nepatří na trh {0}</value></data>
 </root>

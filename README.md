@@ -31,7 +31,10 @@ cadence — daily, weekly or monthly — over years of closes, and animates what
 the shares became worth, in whichever currency that market quotes. **Position Return** is the
 seventh and the mirror image of the plan: one purchase, once — 2015, a million, 中国平安 —
 and nothing but the mark-to-market after that, with the drawdown promoted to a headline figure
-because a holding's worst moment is the price of its whole story. **Candles** is the eighth: one
+because a holding's worst moment is the price of its whole story. It is also the one page that
+answers *which of these was the better buy*: up to six holdings on one frame, each in a colour
+of its own, each carrying its gain in money at the end of its own line as the line grows.
+**Candles** is the eighth: one
 instrument's prices as candles — daily, weekly or monthly, and down to **1, 5 or 15 minutes** when
 the page is asked for one single trading day — drawn four ways (candles, OHLC bars, a
 closing line, a closing area) with MA5/10/20 and a volume panel, arriving one candle at a time
@@ -46,7 +49,8 @@ index has come since its own first month, never its level), **Asset Classes** (e
 mainland-listed funds — what holding them earned), **Bond Market** (nine bond indices, measured on
 the quote because an index pays no coupon), **Drawdowns** (how far below its own high each
 sits, and how long the way back took), and **Hold Odds** (of every entry that finished, the share
-that gained). The last three share one watchlist that mixes all three markets.
+that gained). The last three share one watchlist that mixes all three markets — and Position
+Return reads the same list, where every pick is a line of its own rather than a row.
 
 **The seventeen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
 Fluent glyph — Candles with Sector Race, Volume & Turnover with Hold Odds, Market Turnover with
@@ -123,7 +127,7 @@ than assumed from the market's existence:
 | **Return Matrix** | monthly bars for indices and listings | monthly bars for indices and listings |
 | **Gain-loss Calendar** | daily bars for indices and listings | daily bars for indices and listings |
 | **DCA Plan** | the Tracker Fund, the Hang Seng China Enterprises and tech trackers, and the two indices themselves | SPY, QQQ, DIA, IWM and the gold trust |
-| **Position Return** | same preset families as the plan, plus the blue-chip singles | same, plus the broad singles |
+| **Position Return** | same preset families as the plan, plus the blue-chip singles — four, and a press puts them on the shared watchlist | same, plus the broad singles — five, likewise |
 | **Candles** | daily, weekly and monthly bars for indices and listings | same, with the venue tried in turn (`.OQ`, `.N`, `.AM`) |
 | **Candles at 1/5/15 minutes** | nothing — the minute endpoint answers every Hong Kong code with an empty body | the same empty body, whichever venue suffix is tried |
 | **Market Cap Race** | today's top 200 by market value, plus an archive of companies that used to be up there | thirty-five, and forty-two — a fixed field, because neither venue has a ranking this app can reach |
@@ -322,6 +326,40 @@ adjusted closes, no fees, and the frame says what it is not.
 
 Its range selector defaults to **as far back as the source goes**, because a holding's story
 starts where the holder says it did, and "since 2015" is a span no fixed choice covers.
+
+**It is also the one page that answers "which of these was the better buy"**, and that is a
+different page rather than a setting on the first one. Up to **six holdings** share the frame,
+read off the same watchlist every other per-instrument page uses, each in a colour of its own
+— assigned by the order the reader listed them in, because a hashed colour is stable but not
+*distinct*, and two of six coming out identical is a comparison of one line with itself. Each
+carries its own capsule at the end of its own line, naming the instrument and the money it
+made, riding the line as it grows so the number is always the one for *this* frame rather than
+a caption that only becomes true at the end. One holding keeps the ratio as its headline and
+gains that label; several swap the headline for the leader's amount and name, because "up
+34.55%" is a fact about one thing and "+345,505" is the same fact in the unit two holdings are
+being compared in. The fill goes away when there are several — it would be six overlapping
+fills — and the closing cards become one card per holding, in its own colour: its name, the
+money it made, and its ratio. Six is the ceiling because six labels, six card values and six
+curves are still a comparison and a dozen is a barcode with its labels on top of one another —
+a limit read off the frame, not off the data.
+
+Three decisions a comparison has to make, and each has a wrong answer that looks right:
+
+- **The axis is the union of their trading days, not their common ones.** Intersecting is what
+  a race does, and it would quietly cut a ten-year comparison down to the youngest holding's
+  span — a frame that has answered a question nobody asked, while every number on it still
+  looks like an answer. A listing that began later simply begins later and is *not drawn*
+  before it existed; pulling it flat along the capital instead would draw a holding losing
+  money for years it could not have been bought in.
+- **Each buys the same capital on its own first day in the range.** Two holdings bought on
+  different days are not comparable as ratios, and what each is worth at the end is the only
+  figure the frame can honestly put side by side. A suspended day carries the last price
+  forward, which is what the holder's statement does.
+- **A seventh is refused, not drawn six-deep.** A frame that silently dropped the extra picks
+  is indistinguishable from one the reader failed to add them to, so the page says how many
+  are ticked and how many it will draw. A pick belonging to another market is dropped the same
+  visible way, because its amount is in a currency the frame is not quoting, and a line drawn
+  in the wrong money is worse than no line.
 
 **Candles** — one instrument's prices as candles, and the only page where the period is a choice
 of its own: **daily, weekly or monthly**, each served by the endpoint rather than aggregated from

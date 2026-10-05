@@ -832,4 +832,12 @@
   <data name="CandleMinuteNone"><value>來源沒有 {0}（{1}）的分鐘 K 線——只有滬深兩市有。</value></data>
   <data name="CandleMinuteNoWhole"><value>取回來的幾天都不是完整的交易日——最新那天可能還在盤中。</value></data>
   <data name="CandleMinuteMarketNone"><value>這個市場沒有分鐘 K 線——來源只為滬深兩市保留。</value></data>
+  <data name="PositionVsTitle"><value>{0} vs {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} 等 {1} 隻</value></data>
+  <data name="PositionCompareSubtitle"><value>各投入 {0}{1}，自 {2} 起 · 後復權收盤價 · 分紅按再投計入</value></data>
+  <data name="PositionLeaderLine"><value>{0} · 累計收益</value></data>
+  <data name="PositionBoardFetched"><value>已取 {0} 隻標的 · {1} 個交易日（{2} 至 {3}）</value></data>
+  <data name="PositionSkipped"><value>區間內沒有數據的 {0} 隻已跳過：{1}</value></data>
+  <data name="PositionTooMany"><value>最多同時對比 {0} 隻，現在勾了 {1} 隻</value></data>
+  <data name="PositionNoMarketPicks"><value>自選清單裡沒有{0}的標的</value></data>
 </root>

@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>La source n'a pas de bougies par minute pour {0} ({1}) — seules Shanghai et Shenzhen en ont.</value></data>
   <data name="CandleMinuteNoWhole"><value>Aucune des séances renvoyées n'est une journée complète — la dernière est peut-être en cours.</value></data>
   <data name="CandleMinuteMarketNone"><value>Ce marché n'a pas de bougies par minute — la source ne les conserve que pour Shanghai et Shenzhen.</value></data>
+  <data name="PositionVsTitle"><value>{0} face à {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} et {1} autres</value></data>
+  <data name="PositionCompareSubtitle"><value>{0}{1} sur chacune, depuis le {2} · clôtures ajustées · dividendes réinvestis</value></data>
+  <data name="PositionLeaderLine"><value>{0} · gain à ce jour</value></data>
+  <data name="PositionBoardFetched"><value>{0} supports sur {1} jours de bourse ({2} à {3})</value></data>
+  <data name="PositionSkipped"><value>{0} n'avaient pas de cours sur la période et ont été écartés : {1}</value></data>
+  <data name="PositionTooMany"><value>{0} supports au maximum ; {1} sont activés</value></data>
+  <data name="PositionNoMarketPicks"><value>Aucun support de votre liste n'appartient au marché {0}</value></data>
 </root>

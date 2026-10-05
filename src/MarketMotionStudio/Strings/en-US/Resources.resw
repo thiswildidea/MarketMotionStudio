@@ -844,4 +844,12 @@
   <data name="CandleMinuteNone"><value>The source keeps no minute candles for {0} ({1}) — only Shanghai and Shenzhen have them.</value></data>
   <data name="CandleMinuteNoWhole"><value>None of the sessions that came back is a whole day — the latest one may still be trading.</value></data>
   <data name="CandleMinuteMarketNone"><value>This market has no minute candles — the source keeps them for Shanghai and Shenzhen only.</value></data>
+  <data name="PositionVsTitle"><value>{0} vs {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} and {1} more</value></data>
+  <data name="PositionCompareSubtitle"><value>{0}{1} into each, from {2} · adjusted closes · dividends reinvested</value></data>
+  <data name="PositionLeaderLine"><value>{0} · profit so far</value></data>
+  <data name="PositionBoardFetched"><value>{0} holdings over {1} trading days ({2} to {3})</value></data>
+  <data name="PositionSkipped"><value>{0} had no price in the range and was left out: {1}</value></data>
+  <data name="PositionTooMany"><value>At most {0} holdings can be compared; {1} are switched on</value></data>
+  <data name="PositionNoMarketPicks"><value>None of your list is on the {0} market</value></data>
 </root>

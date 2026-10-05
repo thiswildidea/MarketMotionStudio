@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>ソースに {0}（{1}）の分足はありません。分足があるのは上海と深圳だけです。</value></data>
   <data name="CandleMinuteNoWhole"><value>返ってきたセッションに 1 日分としてそろっているものがありません。最新の日はまだ取引中の可能性があります。</value></data>
   <data name="CandleMinuteMarketNone"><value>この市場に分足はありません。ソースが分足を保持しているのは上海と深圳だけです。</value></data>
+  <data name="PositionVsTitle"><value>{0} vs {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} ほか {1} 銘柄</value></data>
+  <data name="PositionCompareSubtitle"><value>各 {0}{1}、{2} から · 後復権終値 · 配当は再投資で計上</value></data>
+  <data name="PositionLeaderLine"><value>{0} · 現時点の累計収益</value></data>
+  <data name="PositionBoardFetched"><value>{0} 銘柄・{1} 営業日（{2} 〜 {3}）</value></data>
+  <data name="PositionSkipped"><value>期間内に価格がなかった {0} 銘柄は除外しました：{1}</value></data>
+  <data name="PositionTooMany"><value>同時に比較できるのは最大 {0} 銘柄です。いま {1} 銘柄が選ばれています</value></data>
+  <data name="PositionNoMarketPicks"><value>マイリストに{0}市場の銘柄がありません</value></data>
 </root>

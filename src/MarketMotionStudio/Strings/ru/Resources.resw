@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>У источника нет минутных свечей для {0} ({1}) — они есть только для Шанхая и Шэньчжэня.</value></data>
   <data name="CandleMinuteNoWhole"><value>Ни одна из полученных сессий не является полным днём — последняя, возможно, ещё идёт.</value></data>
   <data name="CandleMinuteMarketNone"><value>У этого рынка нет минутных свечей — источник хранит их только для Шанхая и Шэньчжэня.</value></data>
+  <data name="PositionVsTitle"><value>{0} против {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} и ещё {1}</value></data>
+  <data name="PositionCompareSubtitle"><value>{0}{1} на каждую, с {2} · скорректированные закрытия · дивиденды реинвестируются</value></data>
+  <data name="PositionLeaderLine"><value>{0} · прибыль на сейчас</value></data>
+  <data name="PositionBoardFetched"><value>{0} инструментов за {1} торговых дней ({2} – {3})</value></data>
+  <data name="PositionSkipped"><value>{0} не имели цены в диапазоне и были пропущены: {1}</value></data>
+  <data name="PositionTooMany"><value>Сравнить можно не более {0} инструментов; включено {1}</value></data>
+  <data name="PositionNoMarketPicks"><value>Ни одного инструмента из списка нет на рынке {0}</value></data>
 </root>

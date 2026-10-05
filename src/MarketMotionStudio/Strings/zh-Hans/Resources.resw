@@ -842,4 +842,12 @@
   <data name="CandleMinuteNone"><value>来源没有 {0}（{1}）的分钟 K 线——只有沪深两市有。</value></data>
   <data name="CandleMinuteNoWhole"><value>取回来的几天都不是完整的交易日——最新那天可能还在盘中。</value></data>
   <data name="CandleMinuteMarketNone"><value>这个市场没有分钟 K 线——来源只为沪深两市保留。</value></data>
+  <data name="PositionVsTitle"><value>{0} vs {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} 等 {1} 只</value></data>
+  <data name="PositionCompareSubtitle"><value>各投入 {0}{1}，自 {2} 起 · 后复权收盘价 · 分红按再投计入</value></data>
+  <data name="PositionLeaderLine"><value>{0} · 累计收益</value></data>
+  <data name="PositionBoardFetched"><value>已取 {0} 只标的 · {1} 个交易日（{2} 至 {3}）</value></data>
+  <data name="PositionSkipped"><value>区间内没有数据的 {0} 只已跳过：{1}</value></data>
+  <data name="PositionTooMany"><value>最多同时对比 {0} 只，现在勾了 {1} 只</value></data>
+  <data name="PositionNoMarketPicks"><value>自选清单里没有{0}的标的</value></data>
 </root>

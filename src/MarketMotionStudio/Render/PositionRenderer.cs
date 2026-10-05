@@ -4,22 +4,32 @@ using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
+using Microsoft.Graphics.Canvas.Text;
 using Windows.Foundation;
 using Windows.UI;
 
 namespace MarketMotionStudio.Render;
 
 /// <summary>
-/// A holding, drawn as two lines on one axis: the flat capital that went in once,
-/// and what the shares it bought are worth, which is the whole story — every rise
-/// and fall on this chart is the price's doing, nothing was added and nothing
-/// removed.
+/// One or more holdings, drawn as lines on one axis: the flat capital that went in once, and
+/// what the shares it bought are worth, which is the whole story — every rise and fall on this
+/// chart is the price's doing, nothing was added and nothing removed.
 ///
-/// The space between the lines is filled, warm while the holding is ahead and cool
-/// while it is behind, the same convention as the plan page; the headline figure is
-/// the ratio between them, and the closing cards add the drawdown, because "it
-/// ended up X% ahead" and "it was once Y% down" are both true and only one of them
-/// is on the line.
+/// The space between the capital and the value is filled, warm while the holding is ahead and
+/// cool while it is behind, the same convention as the plan page. That fill is a **single
+/// holding's** picture: it is a statement about one line's distance from one other, and six
+/// overlapping fills are a mud that says nothing about any of them. A comparison frame leaves it
+/// out and lets the lines speak, which is also why the legend shrinks to the capital alone —
+/// with more than one holding every curve is named where a reader is already looking, at its own
+/// leading end.
+///
+/// **Each holding's figure rides its own line.** With one holding that is an addition to what
+/// this frame always said — the headline in the middle is still the return, and the label at the
+/// end of the line is the money it comes to. With several, the labels are the only thing that can
+/// say which curve is which *and* how far ahead it is at the moment being shown, so the headline
+/// moves to the leader's own figure: a single percentage in the middle of a six-curve frame would
+/// have to pick one holding to be about, and picking the first would make the frame a statement
+/// about the order the list happened to be in.
 ///
 /// Stateless with respect to time per <c>one-render-path.mdc</c>: every frame comes
 /// from <see cref="FrameContext.Progress"/> alone.
@@ -46,7 +56,35 @@ public sealed class PositionRenderer : IFrameRenderer
     /// should read as absence of gain, not as a different measurement.</summary>
     private static readonly Color Loss = Rgb(0x34, 0xD3, 0x99);
 
-    private readonly PositionSeries _series;
+    // ---- the end label ------------------------------------------------------------------
+    //
+    // A rounded box riding each line's leading end, carrying the holding's name and what it is
+    // worth over what went in, at the moment being drawn. Sized in frame pixels like everything
+    // else here, so a preview and an export of a different format put it in the same place.
+
+    /// <summary>How far the label's right edge stays clear of the point it belongs to.</summary>
+    private const double LabelGap = 12;
+
+    /// <summary>Its own padding, and the room two stacked labels keep between them.</summary>
+    private const double LabelPadX = 14;
+
+    private const double LabelPadY = 8;
+
+    private const double LabelBetween = 8;
+
+    /// <summary>The label's type size. Smaller than a card's value and larger than its caption.</summary>
+    private const double LabelSize = 22;
+
+    /// <summary>
+    /// How thick the label's outline is, and why it is not the hairline the cards use.
+    ///
+    /// A label sits on top of a line of its own colour, so the outline is the only thing
+    /// separating the two — and these frames are watched as video, at whatever size the player
+    /// happens to be. At a hairline the box reads as a smudge of the curve it is over.
+    /// </summary>
+    private const double LabelEdge = 3;
+
+    private readonly PositionBoard _board;
 
     private readonly AnimationPlan _plan;
 
@@ -65,15 +103,27 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </summary>
     public string CurrencyKey { get; set; } = "DcaCurrencyCny";
 
-    public PositionRenderer(PositionSeries series, AnimationPlan plan)
+    public PositionRenderer(PositionBoard board, AnimationPlan plan)
     {
-        _series = series;
+        _board = board;
         _plan = plan;
 
-        // One axis for both lines: they are the same quantity in the same currency, and
+        // One axis for every line: they are the same quantity in the same currency, and
         // the whole point of the picture is the distance between them.
-        _scale = AnimationPlan.NiceScale(Math.Max(series.Peak, 0.0001) * 1.08, 5);
+        _scale = AnimationPlan.NiceScale(Math.Max(board.Peak, 0.0001) * 1.08, 5);
     }
+
+    /// <summary>
+    /// What the frame is showing at the moment being drawn: the axis position the animation has
+    /// reached, and each holding's value there.
+    ///
+    /// The values are the **eased** ones, the same numbers the lines were drawn from, because the
+    /// headline and the end labels are read off the picture rather than off the data — a figure
+    /// that disagreed with the line beside it would be worse than either on its own. A holding
+    /// that has not arrived yet is <see cref="double.NaN"/>, which is also how a holding that
+    /// listed after the range began reads on the frames before its own first day.
+    /// </summary>
+    private sealed record Plot(int Index, double[] Values);
 
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
@@ -81,22 +131,22 @@ public sealed class PositionRenderer : IFrameRenderer
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
-        var (index, point) = DrawPlot(session, context, t);
+        var plot = DrawPlot(session, context, t);
 
         DrawStats(session, context, t);
-        DrawHeader(session, context, t, index, point);
+        DrawHeader(session, context, t, plot);
         DrawProgress(session, context, t);
     }
 
     // ---- plot -----------------------------------------------------------------------
 
     /// <summary>
-    /// The two lines, the fill between them and the end dot; reports the point the
-    /// header should be reading out.
+    /// The capital line, one line per holding, their end labels; reports the axis position the
+    /// animation has reached and each holding's value there.
     /// </summary>
-    private (int Index, PositionPoint Point) DrawPlot(CanvasDrawingSession session, FrameContext context, double t)
+    private Plot DrawPlot(CanvasDrawingSession session, FrameContext context, double t)
     {
-        var n = _series.Points.Count;
+        var n = _board.Dates.Count;
         var top = context.HeaderRow(PlotTopFraction, ShowTitle);
         var bottom = context.BaselineAbove(CreditGap);
         var span = bottom - top;
@@ -123,63 +173,131 @@ public sealed class PositionRenderer : IFrameRenderer
             }
         }
 
-        // Which points have arrived, and how far the arriving one has come. The value
-        // line eases without overshoot — a total that exceeds its own final value and
-        // retreats reads as the data being corrected.
+        // Which axis positions have arrived, and how far each arriving one has come.
         //
-        // The arriving point eases in *from the previous point's level*, not from the
-        // baseline. Bars grow from zero because a bar is a column standing on the axis;
-        // a line's newest segment would otherwise plunge from the previous close to the
-        // floor and climb back, a crack that reads as a crash — glaring in a paused
-        // frame, a permanent dent at the leading edge in playback.
-        var points = _series.Points;
-        var visible = new List<(double X, double YValue, double YCapital)>(n);
+        // The arriving point eases in *from the previous point's level*, not from the baseline.
+        // Bars grow from zero because a bar is a column standing on the axis; a line's newest
+        // segment would otherwise plunge from the previous close to the floor and climb back, a
+        // crack that reads as a crash — glaring in a paused frame, a permanent dent at the
+        // leading edge in playback.
+        var moving = -1;
 
         for (var i = 0; i < n; i++)
         {
-            var start = _plan.IntroMs + (i * _plan.StaggerMs);
-            if (t <= start)
+            if (t <= _plan.IntroMs + (i * _plan.StaggerMs))
             {
                 break;
             }
 
-            var p = Easing.OutCubic(Easing.Ramp(t, start, _plan.BarMs));
-            var mark = points[i];
-            var x = mx + (n > 1 ? plotW * i / (n - 1) : 0);
-
-            double value, capital;
-
-            if (i == 0)
-            {
-                // The first point has no level to come from, so it rises from the axis —
-                // there is no segment yet, so nothing can crack.
-                value = mark.Value * p;
-                capital = mark.Capital * p;
-            }
-            else
-            {
-                var previous = points[i - 1];
-                value = previous.Value + ((mark.Value - previous.Value) * p);
-                capital = previous.Capital + ((mark.Capital - previous.Capital) * p);
-            }
-
-            visible.Add((x, bottom - (value / _scale.Top * span), bottom - (capital / _scale.Top * span)));
+            moving = i;
         }
 
-        var movingIndex = visible.Count - 1;
-
-        if (visible.Count > 1)
+        if (moving < 0)
         {
-            DrawFill(session, visible, bottom, introA);
+            DrawLegend(session, context, top, introA);
+            DrawXLabels(session, context, t, bottom, introA);
 
-            using var style = new CanvasStrokeStyle { LineJoin = CanvasLineJoin.Round };
+            return new Plot(-1, new double[_board.Tracks.Count]);
+        }
 
-            DrawLine(session, context, visible, p => p.YValue, Gain, style, introA);
-            DrawLine(session, context, visible, p => p.YCapital, Palette.Moving, style, introA);
+        var eased = new double[moving + 1];
 
-            // The end dot: where the holding stands right now.
-            var (lx, ly) = (visible[^1].X, Math.Min(visible[^1].YValue, visible[^1].YCapital) - context.Px(4));
-            var white = Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF);
+        for (var i = 0; i <= moving; i++)
+        {
+            eased[i] = Easing.OutCubic(Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), _plan.BarMs));
+        }
+
+        double Across(int i) => mx + (n > 1 ? plotW * i / (n - 1) : 0);
+
+        // The capital, which is one number for the whole board and therefore one line.
+        var capitalLine = new List<(double X, double Y)>(moving + 1);
+        var capitals = new double[moving + 1];
+
+        for (var i = 0; i <= moving; i++)
+        {
+            capitals[i] = i == 0
+                ? _board.Capital * eased[i]
+                : capitals[i - 1] + ((_board.Capital - capitals[i - 1]) * eased[i]);
+
+            capitalLine.Add((Across(i), bottom - (capitals[i] / _scale.Top * span)));
+        }
+
+        // Each holding's own line. Only its own stretch of the axis is drawn: an instrument
+        // that listed in 2020 has nothing to say about 2015, and a flat line along the capital
+        // there would be a claim that it did.
+        var lines = new List<((double X, double Y)[] Points, Color Colour, string Name, double Profit)>(_board.Tracks.Count);
+
+        for (var i = 0; i < _board.Tracks.Count; i++)
+        {
+            var track = _board.Tracks[i];
+
+            if (track.First > moving)
+            {
+                continue;
+            }
+
+            var last = Math.Min(moving, track.Last);
+            var points = new (double X, double Y)[last - track.First + 1];
+            var value = 0d;
+
+            for (var at = track.First; at <= last; at++)
+            {
+                var p = eased[at];
+
+                if (at == 0)
+                {
+                    // The board's own first day has no level to come from, so the line rises
+                    // from the axis — there is no segment yet, so nothing can crack.
+                    value = track.Value[at] * p;
+                }
+                else if (at == track.First)
+                {
+                    // A holding that joins the board partway has no earlier level of its own,
+                    // so it comes in at its own cost — which is exactly where the capital line
+                    // already is drawn, so the join is invisible. Rising from the axis instead
+                    // would draw years of nothing and then a vertical climb, a crash backwards.
+                    value = _board.Capital + ((track.Value[at] - _board.Capital) * p);
+                }
+                else
+                {
+                    var previous = track.Value[at - 1];
+                    value = previous + ((track.Value[at] - previous) * p);
+                }
+
+                points[at - track.First] = (Across(at), bottom - (value / _scale.Top * span));
+            }
+
+            lines.Add((points, Palette.Track(i), track.Name, value - _board.Capital));
+        }
+
+        // The fill is a single holding's picture — see the class note.
+        if (!_board.Comparing && lines.Count > 0)
+        {
+            DrawFill(session, lines[0].Points, capitalLine, Gain, Loss, introA);
+        }
+
+        using var style = new CanvasStrokeStyle { LineJoin = CanvasLineJoin.Round };
+
+        DrawPolyline(session, context, capitalLine, Palette.Moving, style, introA);
+
+        foreach (var line in lines)
+        {
+            DrawPolyline(session, context, [.. line.Points], line.Colour, style, introA);
+        }
+
+        // The end dots: where each holding stands right now. On that holding's **own** line,
+        // not on whichever of the two happens to be higher — the dot is what the label is
+        // anchored to, and a label that sat up at the capital line while its curve ran along the
+        // bottom would be a label about nothing on the frame.
+        var white = Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF);
+
+        var anchors = new List<(double X, double Y)>();
+
+        foreach (var line in lines)
+        {
+            var (lx, ly) = (line.Points[^1].X, line.Points[^1].Y - context.Px(4));
+
+            anchors.Add((lx, ly));
 
             void Dot(CanvasDrawingSession ds) =>
                 ds.FillCircle((float)lx, (float)ly, (float)context.Px(6), white);
@@ -188,32 +306,52 @@ public sealed class PositionRenderer : IFrameRenderer
             Dot(session);
         }
 
+        DrawLabels(session, context, lines, anchors, top, bottom, introA);
         DrawLegend(session, context, top, introA);
         DrawXLabels(session, context, t, bottom, introA);
 
-        var safe = movingIndex < 0 ? 0 : movingIndex;
+        // The values the headline reads: each holding's level at the moment being shown, or the
+        // last level it had for a holding whose data ended before the animation got there. A
+        // holding that has not started yet is `NaN`, which loses every comparison and so is
+        // never the leader — the same thing "not on the frame yet" means everywhere else here.
+        var values = new double[_board.Tracks.Count];
 
-        return (movingIndex, points[safe]);
-    }
-
-    /// <summary>The space between the two lines, coloured by which one is on top.</summary>
-    private void DrawFill(
-        CanvasDrawingSession session, List<(double X, double YValue, double YCapital)> visible,
-        double bottom, double opacity)
-    {
-        var last = visible[^1];
-        var colour = last.YValue <= last.YCapital ? Loss : Gain;
-
-        var ring = new Vector2[(visible.Count * 2) + 1];
-
-        for (var i = 0; i < visible.Count; i++)
+        for (var i = 0; i < _board.Tracks.Count; i++)
         {
-            ring[i] = new Vector2((float)visible[i].X, (float)visible[i].YValue);
+            var track = _board.Tracks[i];
+
+            values[i] = track.First > moving ? double.NaN : track.Value[Math.Min(moving, track.Last)];
         }
 
-        for (var i = visible.Count - 1; i >= 0; i--)
+        return new Plot(moving, values);
+    }
+
+    /// <summary>The space between a holding's line and the capital, coloured by which is on top.</summary>
+    private static void DrawFill(
+        CanvasDrawingSession session,
+        (double X, double Y)[] value, List<(double X, double Y)> capital,
+        Color gain, Color loss, double opacity)
+    {
+        // Both ends of both runs are the same axis positions, so the ring alternates cleanly.
+        var count = Math.Min(value.Length, capital.Count);
+
+        if (count < 2)
         {
-            ring[visible.Count + (visible.Count - 1 - i)] = new Vector2((float)visible[i].X, (float)visible[i].YCapital);
+            return;
+        }
+
+        var colour = value[count - 1].Y <= capital[count - 1].Y ? loss : gain;
+
+        var ring = new Vector2[(count * 2) + 1];
+
+        for (var i = 0; i < count; i++)
+        {
+            ring[i] = new Vector2((float)value[i].X, (float)value[i].Y);
+        }
+
+        for (var i = count - 1; i >= 0; i--)
+        {
+            ring[count + (count - 1 - i)] = new Vector2((float)capital[i].X, (float)capital[i].Y);
         }
 
         // Close along the left edge so the fill is a closed region, not a bow-tie when
@@ -225,22 +363,142 @@ public sealed class PositionRenderer : IFrameRenderer
         session.FillGeometry(geometry, Ink.Fade(colour, 0.14 * opacity));
     }
 
-    private static void DrawLine(
+    private static void DrawPolyline(
         CanvasDrawingSession session, FrameContext context,
-        List<(double X, double YValue, double YCapital)> visible,
-        Func<(double X, double YValue, double YCapital), double> y,
+        List<(double X, double Y)> points,
         Color colour, CanvasStrokeStyle shared, double opacity)
     {
-        var points = new Vector2[visible.Count];
-
-        for (var i = 0; i < visible.Count; i++)
+        if (points.Count < 2)
         {
-            points[i] = new Vector2((float)visible[i].X, (float)y(visible[i]));
+            return;
         }
 
-        using var geometry = Polyline(session, points);
+        var shape = new Vector2[points.Count];
+
+        for (var i = 0; i < points.Count; i++)
+        {
+            shape[i] = new Vector2((float)points[i].X, (float)points[i].Y);
+        }
+
+        using var geometry = Polyline(session, shape);
 
         session.DrawGeometry(geometry, Ink.Fade(colour, 0.95 * opacity), (float)context.Px(3), shared);
+    }
+
+    /// <summary>
+    /// The name and the figure, riding each line's leading end.
+    ///
+    /// Placed in one pass and drawn in another, because the boxes have to be kept apart from each
+    /// other and that cannot be decided one at a time. Two holdings that ended the day a fraction
+    /// apart put their labels in the same place, and the one drawn second covers the first — a
+    /// frame with the right number of labels on it and one of them missing. They are pushed down
+    /// the frame in the order they came out, which is stable between frames and between runs, and
+    /// the whole stack is then slid back inside the plot so a label near the top is not clipped.
+    /// </summary>
+    private void DrawLabels(
+        CanvasDrawingSession session, FrameContext context,
+        List<((double X, double Y)[] Points, Color Colour, string Name, double Profit)> lines,
+        List<(double X, double Y)> anchors,
+        double top, double bottom, double opacity)
+    {
+        if (lines.Count == 0)
+        {
+            return;
+        }
+
+        using var nameFormat = Ink.Format(context.Px(LabelSize));
+        using var valueFormat = Ink.Format(context.Px(LabelSize), bold: true);
+
+        var size = context.Px(LabelSize);
+
+        using var probe = new CanvasTextLayout(session, "0", valueFormat, 0, 0);
+        var height = probe.LayoutBounds.Height + context.Px(LabelPadY * 2);
+
+        var boxes = new List<Rect>(lines.Count);
+
+        for (var i = 0; i < lines.Count; i++)
+        {
+            var (points, _, name, profit) = lines[i];
+
+            var money = Sign(profit) + DcaRenderer.Money(Math.Abs(profit));
+            var width = Ink.Advance(session, name + " ", nameFormat)
+                        + Ink.Advance(session, money, valueFormat)
+                        + context.Px(LabelPadX * 2);
+
+            // Right edge just clear of the point, left edge never off the plot: early in the
+            // animation the point is at the left margin and the label would otherwise hang
+            // outside the frame entirely.
+            var right = anchors[i].X - context.Px(LabelGap);
+            var left = Math.Max(context.ChartLeft, right - width);
+
+            boxes.Add(new Rect(left, anchors[i].Y, width, height));
+        }
+
+        // Push apart, top to bottom. The order is by where the labels would have gone, and it is
+        // kept: a label pushed past its neighbour never overtakes it.
+        var order = Enumerable.Range(0, boxes.Count).OrderBy(i => boxes[i].Y).ToArray();
+        var centres = boxes.Select(b => b.Y).ToArray();
+        var gap = context.Px(LabelBetween);
+
+        for (var j = 1; j < order.Length; j++)
+        {
+            var previous = order[j - 1];
+            var here = order[j];
+
+            if (centres[here] < centres[previous] + height + gap)
+            {
+                centres[here] = centres[previous] + height + gap;
+            }
+        }
+
+        if (order.Length > 0)
+        {
+            var lowest = centres[order[^1]] + (height / 2);
+
+            if (lowest > bottom)
+            {
+                var shift = lowest - bottom;
+
+                for (var i = 0; i < centres.Length; i++)
+                {
+                    centres[i] -= shift;
+                }
+
+                var highest = centres[order[0]] - (height / 2);
+
+                if (highest < top)
+                {
+                    var push = top - highest;
+
+                    for (var i = 0; i < centres.Length; i++)
+                    {
+                        centres[i] += push;
+                    }
+                }
+            }
+        }
+
+        for (var i = 0; i < boxes.Count; i++)
+        {
+            var (_, colour, name, profit) = lines[i];
+            var box = new Rect(boxes[i].X, centres[i] - (height / 2), boxes[i].Width, height);
+            var radius = (float)(height / 2);
+
+            session.FillRoundedRectangle(box, radius, radius, Ink.Fade(Palette.CardFill, 0.92 * opacity));
+            session.DrawRoundedRectangle(box, radius, radius, Ink.Fade(colour, 0.95 * opacity), (float)context.Px(LabelEdge));
+
+            var money = Sign(profit) + DcaRenderer.Money(Math.Abs(profit));
+
+            Ink.Runs(
+                session,
+                [
+                    (name + " ", Palette.Muted, nameFormat),
+                    (money, colour, valueFormat),
+                ],
+                box.X + (box.Width / 2),
+                box.Y + (height / 2) + (size * 0.36),
+                opacity);
+        }
     }
 
     /// <summary>What each line is, drawn where a reader looks first: above the plot's left end.</summary>
@@ -258,7 +516,15 @@ public sealed class PositionRenderer : IFrameRenderer
 
         using var format = Ink.Format(context.Px(21));
 
-        foreach (var (colour, key) in new[] { (Gain, "DcaLegendValue"), (Palette.Moving, "PositionLegendCapital") })
+        // With one holding, what each line is — the same pair this has always shown. With
+        // several, only the capital: every curve is named by the label riding its own end, at
+        // the place the eye already is, and eight names in a row above the plot would be a
+        // legend longer than the chart it describes.
+        var entries = _board.Comparing
+            ? new[] { (Palette.Moving, "PositionLegendCapital") }
+            : [(Gain, "DcaLegendValue"), (Palette.Moving, "PositionLegendCapital")];
+
+        foreach (var (colour, key) in entries)
         {
             session.DrawLine(
                 new Vector2((float)x, (float)y), new Vector2((float)(x + swatch), (float)y),
@@ -276,7 +542,7 @@ public sealed class PositionRenderer : IFrameRenderer
     /// <summary>A handful of dates under the plot, fading in as the line reaches them.</summary>
     private void DrawXLabels(CanvasDrawingSession session, FrameContext context, double t, double bottom, double introA)
     {
-        var n = _series.Points.Count;
+        var n = _board.Dates.Count;
         var mx = context.ChartLeft;
         var plotW = context.ChartWidth;
 
@@ -288,7 +554,7 @@ public sealed class PositionRenderer : IFrameRenderer
 
         // A year label when the holding spans years, year-and-month when it spans less —
         // twelve "2024-06" stamps on a decade-long holding is noise nobody reads.
-        var longSpan = _series.End.DayNumber - _series.Start.DayNumber > 365 * 3;
+        var longSpan = _board.End.DayNumber - _board.Start.DayNumber > 365 * 3;
 
         using var format = Ink.Format(context.Px(19));
 
@@ -300,7 +566,7 @@ public sealed class PositionRenderer : IFrameRenderer
                 continue;
             }
 
-            var day = _series.Points[i].Date;
+            var day = _board.Dates[i];
             var text = longSpan ? day.Year.ToString(CultureInfo.InvariantCulture) : day.ToString("yyyy-MM", CultureInfo.InvariantCulture);
 
             Ink.Centred(session, text, mx + (n > 1 ? plotW * i / (n - 1) : 0), bottom + context.Px(28), format, Palette.DateLabel, a);
@@ -309,13 +575,12 @@ public sealed class PositionRenderer : IFrameRenderer
 
     // ---- header ---------------------------------------------------------------------
 
-    private void DrawHeader(
-        CanvasDrawingSession session, FrameContext context, double t, int movingIndex, PositionPoint point)
+    private void DrawHeader(CanvasDrawingSession session, FrameContext context, double t, Plot plot)
     {
         var a = Easing.Ramp(t, 0, 1000);
         var cx = context.Width / 2;
 
-        var title = Title.Length > 0 ? Title : Strings.Format("PositionDefaultTitle", _series.Name);
+        var title = Title.Length > 0 ? Title : DefaultTitle();
 
         if (ShowTitle)
         {
@@ -329,31 +594,40 @@ public sealed class PositionRenderer : IFrameRenderer
 
         using var small = Ink.Format(context.Px(25));
 
-        // What the holding is: when it was bought, for how much, of what, in whose currency.
-        var heldLine = Strings.Format(
-            "PositionSubtitleLine",
-            Iso(_series.Start),
-            DcaRenderer.Money(_series.Capital),
-            Strings.Get(CurrencyKey),
-            _series.Name);
+        // What the holdings are: when they were bought, for how much, of what, in whose
+        // currency. One date for all of them, because they are all bought on the board's own
+        // first trading day — except the ones that listed later, whose own line starts on their
+        // first day and says so by where it starts.
+        var heldLine = _board.Comparing
+            ? Strings.Format(
+                "PositionCompareSubtitle",
+                DcaRenderer.Money(_board.Capital),
+                Strings.Get(CurrencyKey),
+                Iso(_board.Start))
+            : Strings.Format(
+                "PositionSubtitleLine",
+                Iso(_board.Start),
+                DcaRenderer.Money(_board.Capital),
+                Strings.Get(CurrencyKey),
+                _board.Tracks[0].Name);
 
         Ink.Centred(session, heldLine, cx, Row(context, 0.19), small, Palette.Muted, a);
 
         // The span, with the days held as the figure the eye stops on.
-        var days = (_series.End.DayNumber - _series.Start.DayNumber).ToString("#,##0", CultureInfo.InvariantCulture);
+        var days = (_board.End.DayNumber - _board.Start.DayNumber).ToString("#,##0", CultureInfo.InvariantCulture);
 
         using (var strong = Ink.Format(context.Px(25), bold: true))
         {
             Ink.Highlighted(
                 session,
-                Strings.Format("PositionRangeLine", Iso(_series.Start), Iso(_series.End), days),
+                Strings.Format("PositionRangeLine", Iso(_board.Start), Iso(_board.End), days),
                 days,
                 Palette.Muted, Palette.Emphasis,
                 small, strong,
                 cx, Row(context, 0.218), a);
         }
 
-        if (movingIndex < 0)
+        if (plot.Index < 0)
         {
             return;
         }
@@ -371,15 +645,53 @@ public sealed class PositionRenderer : IFrameRenderer
             //
             // and (535.7 + 420.1 + 24.5) / 2 = 490.1, which is 0.2553 of the frame. At the
             // 0.262 it used to be the date had 58 pixels of air above it and 33 below.
-            Ink.Centred(session, Iso(point.Date), cx, Row(context, 0.2553), dateFormat, Palette.Moving, a);
+            Ink.Centred(session, Iso(_board.Dates[plot.Index]), cx, Row(context, 0.2553), dateFormat, Palette.Moving, a);
         }
 
-        // The headline: what the holding is worth over what went in, read off the
-        // moment being shown. Its colour follows the sign of what is displayed, so a
-        // holding crossing from loss to gain changes the colour of its own number.
-        var ret = point.Capital > 0 ? ((point.Value / point.Capital) - 1) * 100 : 0;
-        var text = (ret >= 0 ? "+" : string.Empty) + ret.ToString("0.0", CultureInfo.InvariantCulture) + "%";
-        var colour = ret >= 0 ? Gain : Loss;
+        // The headline: with one holding, what it is worth over what went in, read off the
+        // moment being shown — its colour follows the sign of what is displayed, so a holding
+        // crossing from loss to gain changes the colour of its own number. With several, the
+        // one furthest ahead and the money it has made, because a percentage cannot be about
+        // six things at once.
+        var leader = -1;
+        var best = double.NegativeInfinity;
+
+        for (var i = 0; i < plot.Values.Length; i++)
+        {
+            // `NaN` is a holding that has not arrived; a comparison of it with anything is
+            // false, so it never wins — which is what "not on the frame yet" should mean.
+            if (plot.Values[i] > best)
+            {
+                best = plot.Values[i];
+                leader = i;
+            }
+        }
+
+        if (leader < 0)
+        {
+            return;
+        }
+
+        string text;
+        Color colour;
+        string label;
+
+        if (_board.Comparing)
+        {
+            var profit = plot.Values[leader] - _board.Capital;
+
+            text = Sign(profit) + DcaRenderer.Money(Math.Abs(profit));
+            colour = profit >= 0 ? Gain : Loss;
+            label = Strings.Format("PositionLeaderLine", _board.Tracks[leader].Name);
+        }
+        else
+        {
+            var ret = _board.Capital > 0 ? ((plot.Values[leader] / _board.Capital) - 1) * 100 : 0;
+
+            text = (ret >= 0 ? "+" : string.Empty) + ret.ToString("0.0", CultureInfo.InvariantCulture) + "%";
+            colour = ret >= 0 ? Gain : Loss;
+            label = Strings.Get("DcaReturnLabel");
+        }
 
         using (var bigFormat = Ink.Format(context.Px(128), bold: true))
         {
@@ -391,12 +703,15 @@ public sealed class PositionRenderer : IFrameRenderer
 
         using var unitFormat = Ink.Format(context.Px(26));
 
-        Ink.Centred(session, Strings.Get("DcaReturnLabel"), cx, Row(context, 0.354), unitFormat, Palette.Muted, a);
+        Ink.Centred(session, label, cx, Row(context, 0.354), unitFormat, Palette.Muted, a);
     }
+
+    /// <summary>“持仓收益：中国平安” — what the frame says when no title was typed.</summary>
+    private string DefaultTitle() => Strings.Format("PositionDefaultTitle", _board.Tracks[0].Name);
 
     // ---- closing --------------------------------------------------------------------
 
-    /// <summary>The four summary cards and the credit, which arrive last.</summary>
+    /// <summary>The summary cards and the credit, which arrive last.</summary>
     private void DrawStats(CanvasDrawingSession session, FrameContext context, double t)
     {
         var a = Easing.Ramp(t, _plan.FinaleStartMs + 1900, 900);
@@ -406,27 +721,40 @@ public sealed class PositionRenderer : IFrameRenderer
             return;
         }
 
-        // The drawdown is shown as the negative it is a percentage of, not as a
-        // magnitude with a minus painted on: a card reading "-31.2%" next to "+143.7%"
-        // lets the two signs carry the story.
-        var cards = new[]
-        {
-            (Strings.Get("PositionCardValue"), DcaRenderer.Money(_series.FinalValue), Palette.CardValue),
-            (Strings.Get("PositionCardCapital"), DcaRenderer.Money(_series.Capital), Palette.CardValue),
-            (Strings.Get("DcaCardProfit"), Sign(_series.Profit) + DcaRenderer.Money(Math.Abs(_series.Profit)),
-                _series.Profit >= 0 ? Gain : Loss),
-            (Strings.Get("PositionCardDrawdown"),
-                (-_series.MaxDrawdownPct).ToString("0.0", CultureInfo.InvariantCulture) + "%", Loss),
-        };
-
         var left = context.ChartLeft;
         var gap = context.Px(14);
-        var cardWidth = (context.ChartWidth - (gap * 3)) / 4;
         var cardHeight = context.Px(132);
         var y = context.CreditLine - context.Px(CardsAboveCredit);
 
         using var labelFormat = Ink.Format(context.Px(22));
         using var valueFormat = Ink.Format(context.Px(34), bold: true);
+
+        if (_board.Comparing)
+        {
+            DrawTrackCards(session, context, a, left, gap, y, cardHeight, valueFormat);
+
+            DrawCredit(session, context, a);
+
+            return;
+        }
+
+        // One holding: the four figures that describe it. 期末市值 and 投入本金 are its two
+        // levels, 历史净收益 their difference, and 最大回撤 what it cost to get there — the
+        // drawdown is shown as the negative it is a percentage of, not as a magnitude with a
+        // minus painted on, so that "-31.2%" next to "+143.7%" lets the two signs carry the
+        // story.
+        var track = _board.Tracks[0];
+        var cards = new[]
+        {
+            (Strings.Get("PositionCardValue"), DcaRenderer.Money(track.FinalValue), Palette.CardValue),
+            (Strings.Get("PositionCardCapital"), DcaRenderer.Money(_board.Capital), Palette.CardValue),
+            (Strings.Get("DcaCardProfit"), Sign(track.Profit) + DcaRenderer.Money(Math.Abs(track.Profit)),
+                track.Profit >= 0 ? Gain : Loss),
+            (Strings.Get("PositionCardDrawdown"),
+                (-track.MaxDrawdownPct).ToString("0.0", CultureInfo.InvariantCulture) + "%", Loss),
+        };
+
+        var cardWidth = (context.ChartWidth - (gap * 3)) / 4;
 
         for (var i = 0; i < cards.Length; i++)
         {
@@ -441,6 +769,64 @@ public sealed class PositionRenderer : IFrameRenderer
             Ink.Centred(session, cards[i].Item2, x + (cardWidth / 2), y + context.Px(92), valueFormat, cards[i].Item3, a);
         }
 
+        DrawCredit(session, context, a);
+    }
+
+    /// <summary>
+    /// A comparison's closing row: one card per holding, in the colour of its own line.
+    ///
+    /// The four single-holding cards answer "what did this cost me and what did it cost me along
+    /// the way", over two levels, their difference and a drawdown. None of those is a comparison:
+    /// the capital is the same on every card, and one drawdown among six holdings cannot be the
+    /// frame's closing figure. So the row becomes the six answers to the question the page was
+    /// actually asked — who made how much — and the money figure repeats the label riding each
+    /// line, which is what makes it checkable at a glance.
+    /// </summary>
+    private void DrawTrackCards(
+        CanvasDrawingSession session, FrameContext context, double a,
+        double left, double gap, double y, double cardHeight,
+        CanvasTextFormat valueFormat)
+    {
+        var tracks = _board.Tracks;
+        var cardWidth = (context.ChartWidth - (gap * (tracks.Count - 1))) / tracks.Count;
+
+        using var returnFormat = Ink.Format(context.Px(24));
+
+        for (var i = 0; i < tracks.Count; i++)
+        {
+            var track = tracks[i];
+            var x = left + (i * (cardWidth + gap));
+            var box = new Rect(x, y, cardWidth, cardHeight);
+            var radius = (float)context.Px(14);
+            var ink = Palette.Track(i);
+
+            session.FillRoundedRectangle(box, radius, radius, Ink.Fade(Palette.CardFill, a));
+            session.DrawRoundedRectangle(box, radius, radius, Ink.Fade(ink, 0.75 * a), (float)context.Px(1.5));
+
+            // A company name in English is wider than a card at six columns, and a name that
+            // runs past its own border reads as a broken layout rather than as a long name.
+            var nameSize = Ink.FitSize(session, track.Name, context.Px(22), cardWidth - context.Px(20), bold: false);
+
+            using (var fitted = Ink.Format(nameSize))
+            {
+                Ink.Centred(session, track.Name, x + (cardWidth / 2), y + context.Px(40), fitted, Palette.Muted, a);
+            }
+
+            Ink.Centred(
+                session,
+                Sign(track.Profit) + DcaRenderer.Money(Math.Abs(track.Profit)),
+                x + (cardWidth / 2), y + context.Px(80), valueFormat, ink, a);
+
+            Ink.Centred(
+                session,
+                (track.ReturnPercent >= 0 ? "+" : string.Empty)
+                    + track.ReturnPercent.ToString("0.0", CultureInfo.InvariantCulture) + "%",
+                x + (cardWidth / 2), y + context.Px(114), returnFormat, Palette.Muted, a);
+        }
+    }
+
+    private static void DrawCredit(CanvasDrawingSession session, FrameContext context, double a)
+    {
         using var creditFormat = Ink.Format(context.Px(20));
 
         Ink.Centred(

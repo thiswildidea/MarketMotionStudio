@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>Die Quelle hat keine Minutenkerzen für {0} ({1}) — nur Shanghai und Shenzhen führen sie.</value></data>
   <data name="CandleMinuteNoWhole"><value>Keine der zurückgegebenen Sitzungen ist ein ganzer Tag — die letzte läuft vielleicht noch.</value></data>
   <data name="CandleMinuteMarketNone"><value>Dieser Markt hat keine Minutenkerzen — die Quelle führt sie nur für Shanghai und Shenzhen.</value></data>
+  <data name="PositionVsTitle"><value>{0} gegen {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} und {1} weitere</value></data>
+  <data name="PositionCompareSubtitle"><value>{0}{1} je Anlage, ab {2} · bereinigte Schlusskurse · Dividenden wieder angelegt</value></data>
+  <data name="PositionLeaderLine"><value>{0} · Gewinn bisher</value></data>
+  <data name="PositionBoardFetched"><value>{0} Anlagen über {1} Handelstage ({2} bis {3})</value></data>
+  <data name="PositionSkipped"><value>{0} hatten im Zeitraum keinen Kurs und blieben außen vor: {1}</value></data>
+  <data name="PositionTooMany"><value>Höchstens {0} Anlagen lassen sich vergleichen; {1} sind eingeschaltet</value></data>
+  <data name="PositionNoMarketPicks"><value>Nichts auf Ihrer Liste gehört zum Markt {0}</value></data>
 </root>

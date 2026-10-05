@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>Kaynakta {0} ({1}) için dakika mumu yok — yalnızca Şanghay ve Shenzhen'de var.</value></data>
   <data name="CandleMinuteNoWhole"><value>Dönen seansların hiçbiri tam bir gün değil — sonuncusu hâlâ işlem görüyor olabilir.</value></data>
   <data name="CandleMinuteMarketNone"><value>Bu piyasada dakika mumu yok — kaynak bunları yalnızca Şanghay ve Shenzhen için tutuyor.</value></data>
+  <data name="PositionVsTitle"><value>{0} ve {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} ve {1} tane daha</value></data>
+  <data name="PositionCompareSubtitle"><value>Her birine {0}{1}, {2} tarihinden · düzeltilmiş kapanışlar · temettüler yeniden yatırılır</value></data>
+  <data name="PositionLeaderLine"><value>{0} · şimdiye kadarki kâr</value></data>
+  <data name="PositionBoardFetched"><value>{0} varlık, {1} işlem günü ({2} – {3})</value></data>
+  <data name="PositionSkipped"><value>{0} aralıkta fiyatı olmadığı için dışarıda bırakıldı: {1}</value></data>
+  <data name="PositionTooMany"><value>En fazla {0} varlık karşılaştırılabilir; {1} tanesi açık</value></data>
+  <data name="PositionNoMarketPicks"><value>Listenizdeki hiçbir varlık {0} piyasasına ait değil</value></data>
 </root>

@@ -363,3 +363,57 @@ def canvas_box(whole):
         return None
 
     return left, right, top, bottom
+
+
+def frame_bottom(whole, box=None, run=4, light=200):
+    """The canvas's last row — the bottom edge `canvas_box` gets wrong.
+
+    `canvas_box` walks out from the canvas's centre and stops each walk at the first **long
+    run** of light pixels, which is the right idea sideways and wrong downwards: below the
+    preview sits the page, and the page is not uniformly light. The row of controls there —
+    the accent-filled button, the scrubber — is dark again across exactly the same columns,
+    so each dark band resets the streak and the walk steps over all of them. Measured on a
+    170-pixel-tall preview: `canvas_box` answered 890 where the canvas ends at 852, a canvas
+    0.5326 across where a 9:16 preview has to be 0.5625. `verify-position` then trimmed ten
+    pixels off that as "the progress bar", which left the real bar (the frame's last two
+    rows) *inside* the crop and the plot's right edge 50 pixels too far right.
+
+    Read the other way round it needs no tolerance at all: rows *inside* the canvas are
+    never light all the way across — the backdrop is near-black and a frame's light ink is
+    thin — while every row of the page below it is. Four such rows in a row is the page, and
+    the row above them is the canvas's last. The answer is exact: it lands within a pixel of
+    the height the frame's own 9:16 says it should be, which is what lets a script assert
+    the aspect ratio instead of assuming it.
+
+    Returns the row index of the canvas's last row, or `box[3]` when nothing light is found
+    below the canvas.
+    """
+    if box is None:
+        box = canvas_box(whole)
+
+    if box is None:
+        return None
+
+    left, right, top, bottom = box
+    pixels = whole.load()
+    width = right - left + 1
+    streak = 0
+
+    for y in range((top + bottom) // 2, whole.size[1]):
+        lit = 0
+
+        for x in range(left, right + 1):
+            r, g, b = pixels[x, y]
+
+            if (r + g + b) / 3 > light:
+                lit += 1
+
+        if lit * 2 >= width:
+            streak += 1
+
+            if streak >= run:
+                return y - run
+        else:
+            streak = 0
+
+    return bottom

@@ -98,8 +98,12 @@ public static class Ink
     /// The width is taken against a sentinel, which gives the spaces something to sit
     /// in front of, and the sentinel's own width comes back off. Kerning between a
     /// space and a box-drawing character is nothing to correct for.
+    ///
+    /// Public because <see cref="Runs"/> lays a line out by it and a caller that has to
+    /// size a box around those same runs — a label with its own background, say — has to
+    /// arrive at the same total, and a second copy of this is a second answer.
     /// </summary>
-    private static double Advance(ICanvasResourceCreator target, string text, CanvasTextFormat format)
+    public static double Advance(ICanvasResourceCreator target, string text, CanvasTextFormat format)
     {
         if (text.Length == 0)
         {

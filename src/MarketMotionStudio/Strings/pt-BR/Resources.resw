@@ -833,4 +833,12 @@
   <data name="CandleMinuteNone"><value>A fonte não tem candles de minuto para {0} ({1}) — apenas Xangai e Shenzhen os têm.</value></data>
   <data name="CandleMinuteNoWhole"><value>Nenhuma das sessões recebidas é um dia inteiro — a última pode ainda estar em andamento.</value></data>
   <data name="CandleMinuteMarketNone"><value>Este mercado não tem candles de minuto — a fonte os mantém apenas para Xangai e Shenzhen.</value></data>
+  <data name="PositionVsTitle"><value>{0} contra {1}</value></data>
+  <data name="PositionCompareMany"><value>{0} e mais {1}</value></data>
+  <data name="PositionCompareSubtitle"><value>{0}{1} em cada uma, desde {2} · fechamentos ajustados · dividendos reinvestidos</value></data>
+  <data name="PositionLeaderLine"><value>{0} · lucro até agora</value></data>
+  <data name="PositionBoardFetched"><value>{0} ativos em {1} dias de negociação ({2} a {3})</value></data>
+  <data name="PositionSkipped"><value>{0} não tinham preço no intervalo e ficaram de fora: {1}</value></data>
+  <data name="PositionTooMany"><value>É possível comparar no máximo {0} ativos; há {1} ligados</value></data>
+  <data name="PositionNoMarketPicks"><value>Nenhum ativo da sua lista pertence ao mercado {0}</value></data>
 </root>

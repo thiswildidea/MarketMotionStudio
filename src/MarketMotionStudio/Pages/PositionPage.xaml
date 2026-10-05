@@ -61,18 +61,21 @@
 
                     <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
 
-                    <!-- The same suggesting box as every page that names one instrument: a code,
-                         a Chinese name or pinyin all resolve to one of them, filtered to the
-                         market in force. -->
-                    <AutoSuggestBox x:Name="InstrumentSearch"
-                                    x:Uid="StockSearch"
-                                    QueryIcon="Find"
-                                    TextChanged="OnSearchTextChanged"
-                                    QuerySubmitted="OnSearchSubmitted"
-                                    SuggestionChosen="OnSuggestionChosen" />
+                    <!-- The reader's own list, shared with every roster board rather than kept as
+                         a second one here: a preference about an instrument is about the
+                         instrument, not about the page it was set on. The chips are switches —
+                         clicking a name decides whether that holding is on this frame — while
+                         the × still takes it off the shared list everywhere. -->
+                    <views:WatchlistPicker x:Name="Watch" Selectable="True" />
 
                     <!-- One-tap holdings: the names a long-term holding is a story about,
-                         the market's own list. -->
+                         the market's own list. A press puts it on the list above and draws it —
+                         one tap is the whole point of the row.
+
+                         Addressed by its code rather than by the name it happens to display:
+                         the name is the one the interface language spells, so anything that has
+                         to reach one of these — a screen reader, a script — would otherwise have
+                         to know fourteen spellings. -->
                     <ItemsControl x:Name="Presets">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -82,53 +85,13 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="local:MatrixPreset">
                                 <Button Content="{x:Bind Name}"
+                                        AutomationProperties.AutomationId="{x:Bind Code}"
                                         Tag="{x:Bind Code}"
                                         Click="OnPresetClick"
                                         Margin="0,0,8,6" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
-                    <!-- The same watchlist as the per-stock page, not a second one. A favourite
-                         is a fact about the instrument, not about the page it was added on. -->
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  HorizontalScrollMode="Auto"
-                                  VerticalScrollMode="Disabled"
-                                  VerticalScrollBarVisibility="Hidden">
-                        <ItemsControl x:Name="Favourites">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" Spacing="6" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="local:StockFavourite">
-                                    <StackPanel Orientation="Horizontal" Spacing="0">
-                                        <Button Click="OnFavouriteClick"
-                                                Padding="10,5"
-                                                CornerRadius="10,0,0,10"
-                                                Tag="{x:Bind Code}">
-                                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                                <TextBlock Text="{x:Bind Name}" />
-                                                <TextBlock Text="{x:Bind CodeUpper}"
-                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button Click="OnFavouriteRemove"
-                                                Padding="8,5"
-                                                CornerRadius="0,10,10,0"
-                                                Tag="{x:Bind Code}"
-                                                Content="✕" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-
-                    <Button x:Name="FavouriteButton"
-                            x:Uid="StockAddFavourite"
-                            HorizontalAlignment="Left"
-                            Click="OnAddFavourite" />
 
                     <!-- The holding's two terms: how much in, held since when. -->
                     <TextBox x:Name="CapitalBox"

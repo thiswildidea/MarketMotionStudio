@@ -117,6 +117,40 @@ public static class Palette
     ];
 
     /// <summary>
+    /// The colours a holding board's tracks are drawn in, in the order the holdings were listed.
+    ///
+    /// Its own list rather than <see cref="Race16"/>, whose neighbours are close by design — it is
+    /// walked in order for a race's twenty rows and no two of them are ever asked to be told apart
+    /// side by side. Here every colour is on the frame at once, over a shared axis, and the whole
+    /// question is which line is which. So the hues are hand-picked for distance from each other
+    /// rather than for the ramp's own progression.
+    ///
+    /// **Assigned by position, not by code.** A hashed colour would be stable across runs but not
+    /// distinct between two holdings — two of six sharing a hash is a comparison of two identical
+    /// lines — and the order here is the order the reader put them in, which is a thing they can
+    /// see and change. The first is <see cref="Emphasis"/>, which is the single value line's own
+    /// colour: a one-holding frame is unchanged by any of this.
+    ///
+    /// The amber of <see cref="Moving"/> is deliberately absent, because that is the capital line
+    /// under all of them.
+    /// </summary>
+    public static readonly Color[] Tracks =
+    [
+        Emphasis,
+        Rgb(0x06, 0xB6, 0xD4),
+        Rgb(0xA8, 0x55, 0xF7),
+        Rgb(0x22, 0xC5, 0x5E),
+        Rgb(0x3B, 0x82, 0xF6),
+        Rgb(0xEC, 0x48, 0x99),
+    ];
+
+    /// <summary>
+    /// Which of <see cref="Tracks"/> a holding draws in, by its position on the board. Wraps,
+    /// so that a board longer than the list still gets a colour rather than an exception.
+    /// </summary>
+    public static Color Track(int order) => Tracks[((order % Tracks.Length) + Tracks.Length) % Tracks.Length];
+
+    /// <summary>
     /// Which of <see cref="Race16"/> a row gets, from the code it stands for.
     ///
     /// Hashed by hand rather than with `string.GetHashCode`, which .NET randomises per process:

@@ -8,6 +8,7 @@ using MarketMotionStudio.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Media;
 
 namespace MarketMotionStudio.Views;
 
@@ -112,6 +113,86 @@ public sealed partial class WatchlistPicker : UserControl
             return _touched
                 ? [.. picks.Where(p => _on.Contains(p.Code))]
                 : [picks[0]];
+        }
+    }
+
+    /// <summary>
+    /// Puts a pick into what this board is drawing, without the reader having to find its chip
+    /// and switch it on.
+    ///
+    /// The one-tap rows call this. A press there has already decided that instrument is on this
+    /// frame, and a pick that arrived on the list but switched off would draw nothing at all —
+    /// which reads as a broken button rather than as a setting. The transition is the same one a
+    /// first click on a switch makes: "the first pick alone" stops being the rule, and the state
+    /// it was showing is carried into an explicit set, so the press adds a holding rather than
+    /// replacing the board.
+    /// </summary>
+    public void Include(string code)
+    {
+        if (!_touched)
+        {
+            _touched = true;
+            _on.Clear();
+
+            if (Watchlist.Picks.Count > 0)
+            {
+                _on.Add(Watchlist.Picks[0].Code);
+            }
+        }
+
+        _on.Add(code);
+
+        // The chips that already exist were ticked from the rule that was in force when they
+        // were built. A pick that was on the list and switched off is the one this changes, and
+        // it would otherwise sit there unticked while the board drew it.
+        RefreshChips();
+    }
+
+    /// <summary>
+    /// Puts every built chip's switch where the board actually is.
+    ///
+    /// Hung off the panel rather than pushed per chip, and reached through the visual tree
+    /// because an <see cref="ItemsControl"/> wraps what the template built in a container of its
+    /// own — the chip is a descendant of the panel's child, not the child.
+    /// </summary>
+    private void RefreshChips()
+    {
+        if (Chips.ItemsPanelRoot is not { } panel)
+        {
+            return;
+        }
+
+        foreach (var child in panel.Children)
+        {
+            foreach (var chip in Switches(child))
+            {
+                if (chip.Tag is string code)
+                {
+                    chip.IsChecked = IsOn(code);
+                }
+            }
+        }
+    }
+
+    private static IEnumerable<ToggleButton> Switches(DependencyObject root)
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+
+            if (child is ToggleButton chip)
+            {
+                yield return chip;
+
+                continue;
+            }
+
+            foreach (var deeper in Switches(child))
+            {
+                yield return deeper;
+            }
         }
     }
 

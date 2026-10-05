@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Globalization;
+﻿using System.Globalization;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
@@ -10,20 +9,26 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 namespace MarketMotionStudio.Pages;
 
 /// <summary>
-/// The position page: one purchase, held, and what the years did to it — the
-/// question this page is asked with is a person and a date, "what if I'd held
-/// a million of 中国平安 since 2015".
+/// The position page: one purchase, held, and what the years did to it — the question
+/// this page is asked with is a person and a date, "what if I'd held a million of
+/// 中国平安 since 2015".
 ///
-/// Two terms, both controls, for the same reason as the plan page: the point is
-/// the arithmetic between them. The simulation is the plainest thing that can
-/// honestly be called a holding; <see cref="PositionLoader"/> carries the
-/// reasoning about what was deliberately left out — dividends above all, which
-/// a long holding of a bank stock is a large fraction of, and which the frame's
-/// subtitle says is not counted.
+/// **And the same question asked of several instruments at once**, which is how it is
+/// usually asked: whether to have held this or that is one question, and answering it on
+/// two frames is not answering it. The holdings come from the reader's own list — the one
+/// every roster board shares — with a chip per holding deciding whether it is on this
+/// frame; the one-tap row above it is the market's own list of names a long-term holding
+/// is plausibly a story about.
 ///
-/// No renderer of its own pipeline: <see cref="PositionRenderer"/> draws the
-/// frames, this page is a loader that turns a code and two terms into the series
-/// it draws — the same split the calendar and the plan pages make.
+/// Two terms, both controls, for the same reason as the plan page: the point is the
+/// arithmetic between them. The simulation is the plainest thing that can honestly be
+/// called a holding; <see cref="PositionLoader"/> carries the reasoning about what was
+/// deliberately left out — dividends above all, which a long holding of a bank stock is a
+/// large fraction of, and which the frame's subtitle says is not counted.
+///
+/// No renderer of its own pipeline: <see cref="PositionRenderer"/> draws the frames, this
+/// page is a loader that turns a list and two terms into the board it draws — the same
+/// split the calendar and the plan pages make.
 /// </summary>
 public sealed partial class PositionPage : StudioPage, IPlaybackHost
 {
@@ -58,30 +63,14 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
     private readonly StudioPreferences _prefs = new("Position.");
 
-    /// <summary>The per-stock page's preferences container, used for the watchlist key only —
-    /// one list shared by every page that names one instrument.</summary>
-    private readonly StudioPreferences _watchlist = new("Stock.");
+    private PositionBoard? _board;
 
-    private PositionSeries? _fetched;
-
-    /// <summary>The market in force: it names the presets, it is what the search is
-    /// filtered to, and its currency names the amounts.</summary>
+    /// <summary>The market in force: it names the presets, it is what the list is kept to,
+    /// and its currency names the amounts.</summary>
     private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
-
-    private string _instrumentCode;
-
-    private string _instrumentName = string.Empty;
-
-    private StockSuggestion? _pendingChoice;
-
-    private string _lastQuery = string.Empty;
 
     /// <summary>Whether the page is finished being built; see the handlers that read it.</summary>
     private bool _ready;
-
-    private readonly ObservableCollection<StockFavourite> _favourites = [];
-
-    private readonly DispatcherTimer _searchDebounce = new() { Interval = TimeSpan.FromMilliseconds(260) };
 
     public PositionPage()
     {
@@ -113,18 +102,14 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             Presets.Items.Add(new MatrixPreset(entry.Code, InstrumentNames.Display(entry.Code, entry.Name)));
         }
 
-        Favourites.ItemsSource = _favourites;
+        // The picker has no panel of its own to write into, so what it has to say is said here.
+        Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
 
-        _searchDebounce.Tick += async (_, _) =>
-        {
-            _searchDebounce.Stop();
-            await SearchSuggestionsAsync();
-        };
-
-        // The default the frame will actually use, before anything is fetched: the
-        // market's own first one-tap holding.
-        _instrumentCode = _market.PositionInstruments[0].Code;
-        _instrumentName = InstrumentNames.Display(_market.PositionInstruments[0].Code, _market.PositionInstruments[0].Name);
+        // A pick added or removed here changes the list on every roster board, all five sharing
+        // one, and on this one it retires the board that was drawn from the old list: a frame
+        // still showing five holdings under a chip row that no longer lists one of them is a
+        // frame about a list nobody chose.
+        Watch.Changed += OnWatchChanged;
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -157,6 +142,20 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
 
     /// <summary>Reuses the page title as the job label, as the other pages do.</summary>
     protected override string JobName => Strings.Get("PositionPageTitle.Text");
+
+    // ---- what is being drawn ---------------------------------------------------------
+
+    /// <summary>
+    /// The picks this frame will draw: the reader's list, kept to the market in force.
+    ///
+    /// The list itself is deliberately cross-market — it is shared with four boards that put
+    /// three venues on one axis — while the amounts here are the market in force's currency and
+    /// its walk is the one that knows the venue's adjustment. So a pick from another venue is
+    /// not drawn rather than drawn in the wrong money, and the fetch says so when that leaves
+    /// nothing at all.
+    /// </summary>
+    private IReadOnlyList<RaceEntry> Chosen() =>
+        [.. Watch.SelectedEntries.Where(e => _market.Accepts(e.Code))];
 
     // ---- the holding's terms ---------------------------------------------------------
 
@@ -217,11 +216,11 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         var title = ResolvedTitle();
         var showTitle = VideoSettings.ShowTitle;
 
-        if (_fetched is { } fetched)
+        if (_board is { } board)
         {
-            var plan = AnimationPlan.For(VideoSettings.Duration, fetched.Points.Count, fetched.Peak);
+            var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
-            Preview.Renderer = new PositionRenderer(fetched, plan)
+            Preview.Renderer = new PositionRenderer(board, plan)
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -235,9 +234,9 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             Preview.Renderer = _stage;
         }
 
-        VideoSettings.TitlePlaceholder = Strings.Format("PositionDefaultTitle", _instrumentName);
+        VideoSettings.TitlePlaceholder = DefaultTitle();
 
-        var ready = _fetched is not null;
+        var ready = _board is not null;
 
         PlayButton.IsEnabled = ready;
         ExportButton.IsEnabled = ready;
@@ -248,186 +247,76 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     }
 
     /// <summary>
-    /// The title the frame will draw: the typed one, or the default naming the current
-    /// instrument. The renderer is rebuilt on every change, so the placeholder follows
-    /// the instrument even before a fetch has confirmed its proper name.
+    /// The title the frame will draw: the typed one, or the default naming what is on it. The
+    /// renderer is rebuilt on every change, so the placeholder follows the selection even before
+    /// a fetch has confirmed the holdings' proper names.
     /// </summary>
     private string ResolvedTitle() =>
-        VideoSettings.TitleText.Length > 0
-            ? VideoSettings.TitleText
-            : Strings.Format("PositionDefaultTitle", _instrumentName);
+        VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : DefaultTitle();
 
-    // ---- search ----------------------------------------------------------------------
-
-    private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    /// <summary>
+    /// “持仓收益：中国平安”, or the holdings named against each other when there is more than one.
+    ///
+    /// Read off the fetched board when there is one, because a fetch is what corrects a typed
+    /// code to the name the venue actually calls it; off the selection before that, so the
+    /// placeholder says something about what is about to be drawn.
+    /// </summary>
+    private string DefaultTitle()
     {
-        // Only a typed change asks for suggestions; choosing one assigns the text in code.
-        if (args.Reason is not AutoSuggestionBoxTextChangeReason.UserInput)
+        if (_board is { } board)
         {
-            return;
+            return board.Comparing
+                ? Compared([.. board.Tracks.Select(t => t.Name)])
+                : Strings.Format("PositionDefaultTitle", board.Tracks[0].Name);
         }
 
-        _lastQuery = sender.Text;
-        _searchDebounce.Stop();
-        _searchDebounce.Start();
+        var names = Chosen().Select(e => InstrumentNames.Display(e.Code, e.Name)).ToArray();
+
+        return names.Length switch
+        {
+            0 => Strings.Format("PositionDefaultTitle", _market.PositionInstruments[0].Name),
+            1 => Strings.Format("PositionDefaultTitle", names[0]),
+            _ => Compared(names),
+        };
     }
 
-    private async Task SearchSuggestionsAsync()
+    private static string Compared(string[] names) => names.Length == 2
+        ? Strings.Format("PositionVsTitle", names[0], names[1])
+        : Strings.Format("PositionCompareMany", names[0], names.Length);
+
+    // ---- picking ---------------------------------------------------------------------
+
+    private void OnWatchChanged(object? sender, EventArgs e)
     {
-        var query = _lastQuery.Trim();
-
-        if (query.Length == 0)
-        {
-            InstrumentSearch.ItemsSource = null;
-            return;
-        }
-
-        try
-        {
-            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
-
-            var ordered = found
-                .Where(r => _market.Accepts(r.Code))
-                .Take(12)
-                .Select(r => new StockSuggestion(r.Code, r.Name, r.Code[..2].ToUpperInvariant()))
-                .ToArray();
-
-            InstrumentSearch.ItemsSource = ordered;
-        }
-        catch (Exception)
-        {
-            // A failed suggestion list is a quiet failure: the person is still typing, and a
-            // status line flashing under every keystroke is worse than no suggestions.
-            InstrumentSearch.ItemsSource = null;
-        }
-    }
-
-    private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-    {
-        if (args.SelectedItem is StockSuggestion chosen)
-        {
-            _pendingChoice = chosen;
-            sender.Text = chosen.Display;
-        }
-    }
-
-    private void OnSearchSubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        if (_pendingChoice is { } pick)
-        {
-            _pendingChoice = null;
-            ChooseInstrument(pick.Code, pick.Name);
-            return;
-        }
-
-        var code = StockDirectory.Normalize(sender.Text);
-
-        if (code is null)
-        {
-            ShowStatus(InfoBarSeverity.Error, Strings.Get("StockBadCode"));
-            return;
-        }
-
-        if (!_market.Accepts(code))
-        {
-            ShowStatus(InfoBarSeverity.Error, Strings.Format("WrongMarket", _market.Name));
-            return;
-        }
-
-        ChooseInstrument(code, code);
+        _board = null;
+        SavePreferences();
+        ApplyPreviewSettings();
     }
 
     private void OnPresetClick(object sender, RoutedEventArgs e)
-    {
-        if ((sender as FrameworkElement)?.Tag is string code)
-        {
-            var name = Presets.Items.OfType<MatrixPreset>().FirstOrDefault(p => p.Code == code)?.Name ?? code;
-            ChooseInstrument(code, name);
-        }
-    }
-
-    // ---- favourites ------------------------------------------------------------------
-
-    /// <summary>Serialised as `code|name;…` under the shared watchlist key — see <see cref="_watchlist"/>.</summary>
-    private const string FavouriteKey = "Favourites";
-
-    private void LoadFavourites()
-    {
-        var raw = _watchlist.GetString(FavouriteKey, string.Empty);
-
-        foreach (var item in raw.Split(';', StringSplitOptions.RemoveEmptyEntries))
-        {
-            var parts = item.Split('|');
-
-            if (parts.Length == 2 && parts[0].Length > 0)
-            {
-                _favourites.Add(new StockFavourite(parts[0], parts[1]));
-            }
-        }
-    }
-
-    private void SaveFavourites()
-    {
-        _watchlist.Save(FavouriteKey, string.Join(";", _favourites.Select(f => $"{f.Code}|{f.Name}")));
-    }
-
-    private void OnAddFavourite(object sender, RoutedEventArgs e)
-    {
-        if (_fetched is not { } fetched)
-        {
-            ShowStatus(InfoBarSeverity.Informational, Strings.Get("StockFavNeedData"));
-            return;
-        }
-
-        if (_favourites.Any(f => f.Code == fetched.Code))
-        {
-            return;
-        }
-
-        _favourites.Add(new StockFavourite(fetched.Code, fetched.Name));
-        SaveFavourites();
-    }
-
-    private void OnFavouriteClick(object sender, RoutedEventArgs e)
-    {
-        if ((sender as FrameworkElement)?.Tag is string code)
-        {
-            var name = _favourites.FirstOrDefault(f => f.Code == code)?.Name ?? code;
-            ChooseInstrument(code, name);
-        }
-    }
-
-    private void OnFavouriteRemove(object sender, RoutedEventArgs e)
     {
         if ((sender as FrameworkElement)?.Tag is not string code)
         {
             return;
         }
 
-        var at = _favourites.ToList().FindIndex(f => f.Code == code);
+        var name = Presets.Items.OfType<MatrixPreset>().FirstOrDefault(p => p.Code == code)?.Name ?? code;
 
-        if (at >= 0)
+        if (!Watchlist.Has(code) && !Watchlist.Add(code, name))
         {
-            _favourites.RemoveAt(at);
-            SaveFavourites();
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooManyStocks", Watchlist.Most));
+            return;
         }
-    }
 
-    // ---- fetching --------------------------------------------------------------------
-
-    private void ChooseInstrument(string code, string name)
-    {
-        _instrumentCode = code;
-        _instrumentName = InstrumentNames.Display(code, name);
-
-        // The holding in the frame belongs to the instrument it was fetched for. A new
-        // pick drops it rather than leaving it standing under a title that no longer
-        // names it, and redraws now so the title says what the fetch is about to ask for.
-        _fetched = null;
-        ApplyPreviewSettings();
+        // On the list *and* switched on for this frame in one press. The row is one-tap by
+        // design: a pick that arrived on the list but switched off would draw nothing at all,
+        // which reads as a broken button rather than as a setting.
+        Watch.Include(code);
 
         Fetch();
     }
+
+    // ---- fetching --------------------------------------------------------------------
 
     private async void Fetch()
     {
@@ -440,7 +329,6 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         }
 
         var (start, end) = ChosenRange();
-        var display = _instrumentName.Length > 0 ? _instrumentName : _instrumentCode;
 
         // A typed span is the only one that can be wrong in a way the source would
         // answer badly: for two dates in the wrong order it would report "too few days"
@@ -452,30 +340,74 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             return;
         }
 
-        // Three minutes, not the calendar's two: a holding reaching back a dozen years
-        // is up to twenty requests answered one after another.
+        var chosen = Chosen();
+
+        if (chosen.Count == 0)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("PositionNoMarketPicks", _market.Name));
+            return;
+        }
+
+        // Refused rather than trimmed: a frame drawn from six of the nine holdings somebody
+        // ticked answers about a list nobody chose, and it looks entirely plausible while it
+        // does — the same reason the roster boards never quietly drop a row.
+        if (chosen.Count > PositionLoader.MostTracks)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format(
+                "PositionTooMany", PositionLoader.MostTracks, chosen.Count));
+            return;
+        }
+
+        // Six minutes, not the calendar's two: one holding reaching back a dozen years is up to
+        // twenty requests answered one after another, and this page now draws up to six of them.
         await RunAsync(FetchButton, async cancellation =>
         {
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
-            var fetched = await PositionLoader.LoadAsync(
-                Services.Quotes, _instrumentCode, display, capital, start, end, progress, cancellation);
+            var board = await PositionLoader.LoadAsync(
+                Services.Quotes, chosen, capital, start, end, progress, cancellation);
 
-            _fetched = fetched;
-            _instrumentName = InstrumentNames.Display(fetched.Code, fetched.Name);
+            _board = board;
+
+            // A typed pick is renamed to what the endpoint calls it, which is also the name the
+            // other roster boards will read off the shared list.
+            foreach (var track in board.Tracks)
+            {
+                Watchlist.Rename(track.Code, InstrumentNames.Display(track.Code, track.Name));
+            }
+
             ApplyPreviewSettings();
 
             // Parked on the last frame: the closing statistics are what someone wants to
             // look at before deciding whether to export.
             ShowMoment(1);
 
-            ShowStatus(InfoBarSeverity.Success, Strings.Format(
-                "PositionFetched",
-                fetched.Points.Count,
-                PositionRenderer.Iso(fetched.Start),
-                PositionRenderer.Iso(fetched.End),
-                fetched.End.DayNumber - fetched.Start.DayNumber));
-        }, TimeSpan.FromMinutes(3));
+            var fetched = board.Comparing
+                ? Strings.Format(
+                    "PositionBoardFetched",
+                    board.Tracks.Count,
+                    board.Dates.Count,
+                    PositionRenderer.Iso(board.Start),
+                    PositionRenderer.Iso(board.End))
+                : Strings.Format(
+                    "PositionFetched",
+                    board.Dates.Count,
+                    PositionRenderer.Iso(board.Start),
+                    PositionRenderer.Iso(board.End),
+                    board.End.DayNumber - board.Start.DayNumber);
+
+            if (board.Skipped.Count == 0)
+            {
+                ShowStatus(InfoBarSeverity.Success, fetched);
+            }
+            else
+            {
+                // Named rather than counted: which instrument the range could not hold is the
+                // thing the reader has to act on, and the frame is one line short without it.
+                ShowStatus(InfoBarSeverity.Warning, $"{fetched} {Strings.Format(
+                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped))}");
+            }
+        }, TimeSpan.FromMinutes(6));
     }
 
     private void OnFetch(object sender, RoutedEventArgs e) => Fetch();
@@ -595,7 +527,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
 
     private async void OnExport(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _fetched is not { } fetched || App.Window is not { } window)
+        if (Preview.Renderer is not { } renderer || _board is not { } board || App.Window is not { } window)
         {
             return;
         }
@@ -628,7 +560,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
 
             var file = await VideoExporter.EncodeAsync(
                 renderer, format, margins, duration, folder,
-                VideoExporter.VideoName(label, fetched.Start, fetched.End, format),
+                VideoExporter.VideoName(label, board.Start, board.End, format),
                 report, cancellation);
 
             clock.Stop();
@@ -649,7 +581,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
 
     private async void OnSaveCover(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _fetched is not { } fetched || App.Window is not { } window)
+        if (Preview.Renderer is not { } renderer || _board is not { } board || App.Window is not { } window)
         {
             return;
         }
@@ -668,7 +600,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
 
             var file = await FrameExporter.SavePngAsync(
                 renderer, format, VideoSettings.Margins, Preview.Progress, folder,
-                FrameExporter.CoverName(ResolvedTitle(), fetched.Start, fetched.End, format),
+                FrameExporter.CoverName(ResolvedTitle(), board.Start, board.End, format),
                 cancellation);
 
             ShowStatus(InfoBarSeverity.Success, Strings.Format(
@@ -707,25 +639,11 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             ToDate.Date = new DateTimeOffset(to, TimeOnly.MinValue, TimeSpan.Zero);
         }
 
-        var code = _prefs.GetString("Code", _market.PositionInstruments[0].Code);
-
-        // A code saved under another market is not carried over: it would fetch from a
-        // venue whose presets and search results this page no longer shows.
-        if (_market.Accepts(code))
-        {
-            _instrumentCode = code;
-
-            // The stored name is only a hint: the code decides. Falling back to the
-            // market's *first* preset — as this once did — put a name on the frame that
-            // belonged to an instrument the fetch was never going to ask for.
-            var name = _prefs.GetString("Name", string.Empty);
-
-            _instrumentName = InstrumentNames.Display(code, name.Length > 0 ? name : code);
-        }
-
         VideoSettings.Restore(_prefs);
-        LoadFavourites();
 
+        // The holdings are the shared list, which the picker loads on its own — there is
+        // nothing instrument-shaped left to remember here. What is remembered is the list
+        // itself, and it is remembered for five pages at once.
         _prefs.Restoring = false;
     }
 
@@ -735,8 +653,6 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         _prefs.Save("Months", ChosenMonths());
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
-        _prefs.Save("Code", _instrumentCode);
-        _prefs.Save("Name", _instrumentName);
 
         VideoSettings.Save(_prefs);
     }

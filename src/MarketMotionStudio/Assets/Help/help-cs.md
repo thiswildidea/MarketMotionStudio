@@ -368,9 +368,11 @@ Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý o
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/position.png)
 
-Jediný nákup, držený roky — třeba milion do 中国平安 v roce 2015 — animovaný jako to, co udělaly hodnota a výnos.
+Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 — animovaný tak, aby ukázal, co léta udělala s hodnotou a výnosem. Několik pozic může sdílet jeden obraz: po jedné čáře na každou, s běžným ziskem na jejím konci.
 
-- Nabízená jména odpovídají trhu: v Číně akcie, které lidé skutečně říkají, že drželi (Ping An, Moutai, CMB…), v Hongkongu Tencent, HSBC a Tracker Fund, v USA Apple, Berkshire a SPY.
+- Pozice pocházejí z **vašeho seznamu**, téhož, který sdílejí ostatní tabule: napište kód nebo název a přidejte ji; přepínač na každém chipu rozhoduje, zda je na tomto obraze, a × ji odebere ze sdíleného seznamu (a tím i z ostatních tabulí). Řádek na jeden klik jde za trhem — 中国平安 a 贵州茅台 pro pevninu, 腾讯, 汇丰 a 盈富基金 pro Hongkong, Apple, Berkshire a SPY pro New York — a stisk tento název přidá a hned ho vykreslí.
+- **2 až 6 pozic na jednom obraze.** Každá je koupena jednou, za stejnou částku, ve svůj vlastní první obchodní den, takže jsou čáry přímo srovnatelné a vzdálenost mezi dvěma z nich je v každém datu odpovědí na „kam to bylo lepší dát“. Datová osa je sjednocením jejich dnů: nástroj kótovaný později prostě začíná později a předtím tam není, místo aby byl vykreslen vodorovně na úrovni vkladu. Šest je strop — nad ním načtení odmítne, místo aby jich pár tiše vykreslilo — a pozice z jiného trhu zůstává vynechána, protože částky jsou zde v měně platného trhu.
+- **Číslo jede po čáře.** Štítek na konci každé pozice ji pojmenuje a ukáže, kolik v tu chvíli vydělala, a pohybuje se s animací — posuňte jezdec a pojede s čárou. U jedné pozice zůstává velké číslo uprostřed výnosem v procentech; u několika se stává částkou, kterou vydělala **vedoucí**, s jejím jménem pod tím, a závěrečné karty jsou po jedné na pozici místo čtyř čísel o jedné.
 - Počáteční kapitál a doba držení jsou na vás; doba může být tři, pět nebo deset let, nebo až tam, kam data sahají (zhruba třináct let).
 - Výnos se počítá ze zpětně upravených cen — dividendy reinvestovány, bez poplatků. Zpětná úprava kotví u prvního dne emise a hromadí dividendy dopředu, takže rané roky štědrého plátce nikdy nejsou nekladné, jak se může stát u dopředné úpravy.
 - Stejné **Vlastní** období platí i pro držbu: zadejte dvě data a stiskněte načtení dat. Pokud byl nástroj uveden na trh později, než je zadané datum, držba začíná jeho prvním obchodním dnem.

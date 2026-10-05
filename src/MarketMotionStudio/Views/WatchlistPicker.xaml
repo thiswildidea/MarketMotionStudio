@@ -29,8 +29,13 @@
              hiding one line should not be editing their holdings. -->
         <DataTemplate x:Key="PickChip" x:DataType="market:RaceEntry">
             <StackPanel Orientation="Horizontal" Spacing="2">
+                <!-- Addressed by its code, not by the name it displays: the name is the one the
+                     interface language spells, so anything reaching one of these — a screen
+                     reader's anchor, a script checking what is switched on — would otherwise
+                     have to know fourteen spellings of it. -->
                 <ToggleButton Loaded="OnChipLoaded"
                               Click="OnToggle"
+                              AutomationProperties.AutomationId="{x:Bind Code}"
                               AutomationProperties.Name="{x:Bind Name}"
                               Padding="10,5"
                               CornerRadius="10,0,0,10"

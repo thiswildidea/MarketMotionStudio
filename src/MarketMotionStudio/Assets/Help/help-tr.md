@@ -373,9 +373,11 @@ Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her ha
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/position.png)
 
-Tek bir alım, yıllarca tutulan — örneğin 2015'te 中国平安'a bir milyon — değer ve getirinin ne yaptığının animasyonu.
+Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon — yılların değere ve getiriye ne yaptığını gösteren bir animasyon. Birkaç pozisyon aynı kareyi paylaşabilir: her birine bir çizgi, ucunda o anki kâr.
 
-- Önerilen isimler pazara göre değişir: Çin'de insanların gerçekten "tutmuştum" dediği hisseler (Ping An, Moutai, CMB…), Hong Kong'da Tencent, HSBC ve Tracker Fund, ABD'de Apple, Berkshire ve SPY.
+- Pozisyonlar **kendi listenizden** gelir; diğer tabloların da paylaştığı liste: bir kod ya da ad arayıp ekleyin, her chip'in anahtarı o pozisyonun bu karede olup olmadığını belirler, × ise onu paylaşılan listeden (ve dolayısıyla diğer tablolardan) çıkarır. Tek dokunuş satırı piyasaya göre değişir — ana kara için 中国平安 ve 贵州茅台, Hong Kong için 腾讯, 汇丰 ve 盈富基金, New York için Apple, Berkshire ve SPY — ve bir dokunuş o adı ekleyip hemen çizer.
+- **Tek karede 2 ile 6 pozisyon.** Her biri aynı tutarla, kendi ilk işlem gününde bir kez alınır; böylece çizgiler doğrudan karşılaştırılabilir ve ikisi arasındaki mesafe her tarihte "parayı nereye koymak daha iyiydi" sorusunun cevabıdır. Tarih ekseni günlerinin birleşimidir: sonra işlem görmeye başlayan varlık yalnızca daha sonra başlar ve öncesinde maliyet çizgisi boyunca düz çizilmek yerine hiç görünmez. Sınır altıdır — üstünde getirme, birkaçını sessizce çizmek yerine reddeder — ve başka bir piyasadan pozisyon dışarıda kalır, çünkü buradaki tutarlar geçerli piyasanın para birimidir.
+- **Sayı çizgiyle birlikte gider.** Her pozisyonun ucundaki etiket onu adlandırır ve o andaki kâr tutarını verir; animasyonla birlikte hareket eder — çubuğu çekin, çizgiyle birlikte gider. Tek pozisyonda ortadaki büyük sayı yine yüzde getiridir; birkaç pozisyonda **öndeki**nin kâr tutarına dönüşür, altında o varlığın adı yazar ve kapanış kartları tek bir varlığı anlatan dört sayı yerine her pozisyon için birer kart olur.
 - Başlangıç sermayesi ve elde tutma süresi size ait; süre üç, beş veya on yıl olabilir, ya da verilerin yettiği kadar (yaklaşık on üç yıl).
 - Getiri geriye düzeltilmiş kapanışlarla — temettüler yeniden yatırıldı, ücretsiz — hesaplanır. Geriye düzeltme halka arzın ilk gününe demir atar ve temettüleri ileriye biriktirir, böylece cömert bir ödeyicinin ilk yılları asla negatif olmaz; ileriye düzeltmede bu olabilir.
 - Aynı **Özel** aralık elde tutma için de geçerlidir: iki tarih verip verileri alın. Araç belirttiğiniz tarihten sonra işlem görmeye başladıysa, elde tutma ilk işlem gününde başlar.
