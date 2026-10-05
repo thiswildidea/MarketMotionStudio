@@ -170,9 +170,13 @@ def main():
               for r in shot_rows for code in listing
               for p in [r[columns[code]]] if p))
 
-    check("zh-hans 八张、其余各七张（市场成交额页只在 A股 市场有）",
-          counts.get("zh-hans") == 8
-          and all(counts.get(c) == 7 for c in listing if c != "zh-hans"),
+    # 张数由两件事定：`store-screenshots.py` 的 PAGES 有几页，以及其中哪几页在别的市场下
+    # 不存在。现在 PAGES 是九页，只有成交额页受市场管辖（只在 A 股存在）→ 简体中文那一列
+    # 九张、其余十三种八张。这个数字**跟着 PAGES 走**：加一页而不改这里，这条就会以
+    # 「张数不对」的样子报出来，正是它该做的。
+    check("zh-hans 九张、其余各八张（市场成交额页只在 A股 市场有）",
+          counts.get("zh-hans") == 9
+          and all(counts.get(c) == 8 for c in listing if c != "zh-hans"),
           "zh-hans %d" % counts.get("zh-hans", 0))
 
     check("没有残留的旧 listingassets URL",
