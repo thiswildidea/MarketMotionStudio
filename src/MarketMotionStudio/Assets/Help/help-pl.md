@@ -59,6 +59,7 @@ Dzienne obroty całego rynku: kwoty indeksów zbiorczych z Szanghaju i Shenzhen 
 - **1, 5 i 15 minut** rysują jeden dzień sesji: od otwarcia do zamknięcia, na osi według zegara, która pomija dziewięćdziesiąt minut bez handlu, więc przedpołudnie i popołudnie stykają się na cienkiej linii zamiast zostawiać pustą jedną trzecią obrazu. Źródło trzyma świece minutowe tylko dla Szanghaju i Shenzhen i tylko za ostatnie sesje — około czterech dni przy jednej minucie, siedemnastu przy pięciu, pięćdziesięciu przy piętnastu — więc **Dzień sesji** to lista dni, które jeszcze ma, a nie kalendarz. Wybór innego dnia tylko przerysowuje.
 - **Rodzaj wykresu** decyduje, jak te same cztery ceny są rysowane: świece, słupki OHLC, linia zamknięcia lub obszar zamknięcia. Przełączanie niczego nie pobiera.
 - **Animacja** to pojawianie się świec jedna po drugiej, aż cały zakres zostanie narysowany, albo stałe okno, które przesuwa się w przód. To drugie sprawia, że świeca na długim zakresie zostaje dość szeroka do odczytania, a jej szerokość to ustawienie **Okno**.
+- **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
 - Średnie kroczące MA5, MA10 i MA20 można nałożyć na świece; panel wolumenu poniżej można wyłączyć, a panel ceny odzyskuje to miejsce.
 - Tydzień lub miesiąc wciąż trwający zostaje pominięty. Świeca złożona z trzech dni nie jest tygodniem.
 - Każdy rynek jest czytany na swojej serii skorygowanej, więc dzień splitu nie jest rysowany jako spadek, tak samo jak dywidenda.
@@ -383,6 +384,7 @@ Kupowanie jednego instrumentu na stałą kwotę w stałych odstępach — w każ
 - Stopa zwrotu liczona jest na cenach skorygowanych wstecz, bez opłat. Wynik opisuje szereg cen, a nie rachunek, który ktokolwiek mógłby zrealizować.
 - Oprócz 3, 5 i 10 lat oraz najdłuższego zakresu można wybrać **Własny**: podaj datę początkową i końcową, a następnie pobierz dane. Dostępnych jest około 35 lat wstecz — źródło zwraca około 640 dni kalendarzowych na jedno żądanie, a przejście wykonuje ich najwyżej dwadzieścia.
 - **Dwa tryby animacji.** *Cały zakres naraz* rozkłada cały okres za jednym razem; *przesuwne okno* utrzymuje okno o stałej liczbie dni sesyjnych i przesuwa je od początku do końca okresu — tylko tak długa seria dzienna zachowuje czytelne wahania. Okno liczy się tylko przy przewijaniu, a oba tryby czytają **te same dane** — przełączenie nic nie pobiera ponownie. **Oś pionowa nie jest przeliczana dla okna**: odstęp między dwiema liniami *jest* wynikiem planu, a przeliczenie rozciągnęłoby go razem z oknem.
+- **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
 
 ## Zwrot z pozycji
 
@@ -397,6 +399,7 @@ Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku �
 - Zwrot liczony jest na cenach skorygowanych wstecz — dywidendy reinwestowane, bez opłat. Korekta wstecz kotwi się w pierwszym dniu notowań i narasta o dywidendy w przód, więc wczesne lata szczodrego płatnika nigdy nie stają się niedodatnie, jak to możliwe przy korekcie w przód.
 - Ten sam zakres **Własny** działa dla pozycji: podaj dwie daty, a następnie pobierz dane. Jeśli instrument zadebiutował później niż podana data, pozycja zaczyna się w jego pierwszym dniu notowań.
 - **Dwa tryby animacji.** *Cały zakres naraz* rozkłada cały okres za jednym razem, więc kształt krzywej na ekranie to jej kształt w czasie. *Przesuwne okno* utrzymuje okno o stałej liczbie dni sesyjnych i przesuwa je od początku do końca okresu — tylko tak długa seria dzienna zachowuje czytelne wahania: rozłożona na dwanaście lat, trzymiesięczny spadek to dwa piksele. Okno liczy się tylko przy przewijaniu, a oba tryby czytają **te same dane** — przełączenie nic nie pobiera ponownie.
+- **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
 
 ## Film
 

@@ -61,6 +61,7 @@ Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels — ou p
 - **1, 5 et 15 minutes** dessinent une journée de bourse : la séance de l'ouverture à la clôture, sur un axe qui suit l'horloge et retire les quatre-vingt-dix minutes sans cotation, si bien que le matin et l'après-midi se rejoignent sur un filet plutôt que de laisser un tiers du cadre vide. La source ne conserve les bougies par minute que pour Shanghai et Shenzhen, et seulement pour les dernières séances — environ quatre jours à une minute, dix-sept à cinq, cinquante à quinze — donc **Jour de bourse** est une liste des jours encore disponibles, pas un calendrier. En choisir un autre ne fait que redessiner.
 - **Type de tracé** décide comment les quatre mêmes prix sont dessinés : chandeliers, barres OHLC, ligne de clôture ou aire de clôture. Passer de l'un à l'autre ne récupère rien.
 - **Animation** est soit l'arrivée des chandeliers l'un après l'autre jusqu'à ce que tout l'intervalle soit tracé, soit une fenêtre fixe qui avance. C'est la seconde qui garde le chandelier assez large pour être lu sur un intervalle long, et cette largeur est le réglage **Fenêtre**.
+- **Une fenêtre défilante s'ouvre à la fin.** Au début du segment de fermeture la fenêtre s'élargit vers l'arrière jusqu'au premier jour de la plage : l'image sur laquelle l'animation s'arrête est donc la plage entière et non ses dernières dizaines de jours.
 - Les moyennes mobiles MA5, MA10 et MA20 peuvent être superposées aux chandeliers ; le panneau de volume en dessous peut être désactivé, et le panneau de prix reprend la place.
 - Une semaine ou un mois encore en cours est laissé de côté. Un chandelier fait de trois jours n'est pas une semaine.
 - Chaque marché est lu sur sa série ajustée : un jour de division n'est donc pas dessiné comme une baisse, et un dividende non plus.
@@ -405,6 +406,7 @@ Acheter un titre à montant et cadence fixes — chaque jour de bourse, chaque s
 - Le rendement est calculé sur des clôtures rétro-ajustées, sans frais. Le résultat décrit la série de prix, pas une facture que qui que ce soit aurait pu exécuter.
 - Outre 3, 5 et 10 ans et la période la plus longue, la plage peut être **Personnalisée** : indiquez une date de début et une date de fin, puis récupérez les données. Environ 35 ans sont accessibles — la source sert environ 640 jours civils par requête et le parcours en fait vingt au plus.
 - **Deux animations.** *Tracer tout l'intervalle* déploie toute la période d'un coup ; *fenêtre glissante* garde une fenêtre d'un nombre fixe de jours de cotation et la fait avancer du début à la fin de la période — le seul moyen de garder lisibles les oscillations d'une longue série quotidienne. La fenêtre ne compte qu'en défilement, et les deux animations lisent **les mêmes données** : en changer ne recharge rien. **L'axe vertical n'est pas rééchelonné par fenêtre** : l'écart entre les deux lignes *est* le résultat d'un plan, et le rééchelonner l'élargirait avec la fenêtre.
+- **Une fenêtre défilante s'ouvre à la fin.** Au début du segment de fermeture la fenêtre s'élargit vers l'arrière jusqu'au premier jour de la plage : l'image sur laquelle l'animation s'arrête est donc la plage entière et non ses dernières dizaines de jours.
 
 ## Rendement de position
 
@@ -419,6 +421,7 @@ Un achat, conservé — un million du même nom depuis 2015 — animé pour mont
 - Le rendement est calculé sur des cours rétro-ajustés — dividendes réinvestis, sans frais. L'ajustement rétroactif s'ancre à l'introduction en bourse et cumule les dividendes vers l'avant, si bien que les premières années d'un gros versant ne deviennent jamais négatives, ce que l'ajustement avant peut produire.
 - La même plage **Personnalisée** s'applique à la détention : indiquez deux dates, puis récupérez les données. Si le titre a été coté après la date demandée, la détention commence à son premier jour de cotation.
 - **Deux animations.** *Tracer tout l'intervalle* déploie toute la période d'un coup : la forme de la courbe à l'écran est sa forme dans le temps. *Fenêtre glissante* garde une fenêtre d'un nombre fixe de jours de cotation et la fait avancer du début à la fin de la période — c'est le seul moyen de garder lisibles les oscillations d'une longue série quotidienne : étalée sur douze ans, une baisse de trois mois fait deux pixels. La fenêtre ne compte qu'en défilement, et les deux animations lisent **les mêmes données** : en changer ne recharge rien.
+- **Une fenêtre défilante s'ouvre à la fin.** Au début du segment de fermeture la fenêtre s'élargit vers l'arrière jusqu'au premier jour de la plage : l'image sur laquelle l'animation s'arrête est donc la plage entière et non ses dernières dizaines de jours.
 
 ## Vidéo
 

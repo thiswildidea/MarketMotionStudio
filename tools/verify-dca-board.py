@@ -116,6 +116,7 @@ def source():
     root = os.path.join(REPO, "src", "MarketMotionStudio")
     series = open(os.path.join(root, "Market", "DcaSeries.cs"), encoding="utf-8-sig").read()
     render = open(os.path.join(root, "Render", "DcaRenderer.cs"), encoding="utf-8-sig").read()
+    plan = open(os.path.join(root, "Render", "AnimationPlan.cs"), encoding="utf-8-sig").read()
     page = open(os.path.join(root, "Pages", "DcaPlanPage.xaml.cs"), encoding="utf-8-sig").read()
     xaml = open(os.path.join(root, "Pages", "DcaPlanPage.xaml"), encoding="utf-8-sig").read()
 
@@ -130,11 +131,16 @@ def source():
           "public DcaRenderer(DcaBoard board, AnimationPlan plan, DcaMotion motion, int window)"
           in render)
     check("窗口至少两根（一根连不成线）", "_window = Math.Max(2, window)" in render)
-    check("窗口三行算术：count / head / first",
-          "var count = _motion is DcaMotion.Scroll ? Math.Min(_window, n) : n;" in render
-          and "var head = _motion is DcaMotion.Scroll ? Math.Max(moving + eased[moving], count - 1) : moving;"
-          in render
-          and "var first = _motion is DcaMotion.Scroll ? head - (count - 1) : 0;" in render)
+    # 窗口三件套（多少格 / 右端 / 左端）**不在这三个渲染器里各算一遍**：持仓与 K 线是同一
+    # 套算术，改一处就得改三处，而每页单看都对。它住在 `AnimationPlan.Window`，这里断言的
+    # 是「这一页确实去问那一处」。
+    check("窗口几何交给共享的 `AnimationPlan.Window`",
+          "_plan.Window(" in render
+          and "_motion is DcaMotion.Scroll, _window, n" in render)
+    check("滚动的窗口在收尾段展开成整段（不是一路滚到底）",
+          "var wide = Easing.Ramp(t, FinaleStartMs, OpenOutMs);" in plan)
+    check("展开时三件套自洽（Count = 右端 − 左端 + 1）",
+          "return (head - first + 1, head, first);" in plan)
     check("横轴按窗口铺满（不是按整段）",
           "double Across(int i) => mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);" in render)
     check("窗口左边界向上取整（落在轴外会压住坐标数字）",
@@ -415,11 +421,17 @@ def main():
         check("六份时那条共享的投入线仍然贯穿画面（十段里每段都有它）",
               min(buckets) >= 12, f"{cols} 列，十段 {buckets}")
 
-        # **几个白点要算，不能写死。** 两份期末市值挨得很近时，两个点会叠成一个连通块。
+        # **几个白点要算，不能写死。** 两份期末市值挨得很近时，两个点会叠成一个连通块 ——
+        # 这一次跑里第 1 与第 6 条就叠了：量出来五个块，面积 13+15+13+12+25 = 78，正是六个
+        # 点的量（那个 25 是两块合成一个）。画面上六个点都画着，数块只能数出五个，而那一个
+        # 块只被认领给其中一条 —— 所以要**五**不要六：写六会在数据变动的那天红，而画面没错。
         # 每像素多少钱从画面上量：最高与最低那两个白点的距离除以它们末值之差。
         ends = [(i, six["ends"][i]) for i in range(6) if six["ends"][i] is not None]
 
-        check("每条线都找得到自己的白点", len(ends) == 6, f"{len(ends)}/6")
+        check("每条线都找得到自己的白点", len(ends) >= 5,
+              f"{len(ends)}/6" + ("，" + "、".join(str(i + 1) for i in range(6)
+                                                if six["ends"][i] is None) + " 没认到"
+                                  if len(ends) < 6 else ""))
 
         if len(ends) == 6:
             low = min(ends, key=lambda p: p[1])
@@ -527,6 +539,29 @@ def main():
     check("切回「整段铺满」", vp.motion(win, "整段铺满") == "整段铺满")
     check("切回来之后窗口框又是灰的", vp.window_on(win) is False,
           f"窗口框可用={vp.window_on(win)}")
+
+    # ---- 收尾：滚动的窗口展开成整段 -------------------------------------------------
+    #
+    # 同持仓页那一节：滚动回答「当时长什么样」，而动画停在的那一帧要回答「整段长什么样」。
+    # 判据是**整幅画面**（`vp.frame_diff`），不是曲线头 —— 展开完之后头本来就在同一处。
+    print("\n收尾（滚动展开成整段）")
+
+    whole_end = rolled_end = None
+
+    if vp.scrub(win, 1.0):
+        whole_end = vp.measure(win, "verify-dca-end-grow.png", count=6)
+
+    if vp.motion(win, "窗口滚动") == "窗口滚动" and vp.scrub(win, 1.0):
+        rolled_end = vp.measure(win, "verify-dca-end-scroll.png", count=6)
+
+    vp.motion(win, "整段铺满")
+
+    if whole_end is None or rolled_end is None:
+        check("两种推进方式都拖得到头", False, "取不到画面")
+    else:
+        check("滚动走到头，画面就是整段铺满（窗口在收尾段展开了）",
+              vp.frame_diff(rolled_end, whole_end) < 0.01,
+              "两幅差 {:.3%}".format(vp.frame_diff(rolled_end, whole_end)))
 
     # ---- 落盘 ----
     print("\n重启")

@@ -217,10 +217,11 @@ public sealed class DcaRenderer : IFrameRenderer
         // The window: how many axis positions it holds, where its right edge has reached,
         // and where its left one therefore is. Growing is the same arithmetic with a window
         // as long as the range, which is why the two motions share every line of drawing
-        // below.
-        var count = _motion is DcaMotion.Scroll ? Math.Min(_window, n) : n;
-        var head = _motion is DcaMotion.Scroll ? Math.Max(moving + eased[moving], count - 1) : moving;
-        var first = _motion is DcaMotion.Scroll ? head - (count - 1) : 0;
+        // below — and a scrolling one opens out into that same whole range as the frame
+        // closes. How, and why, is in `AnimationPlan.Window`, shared with the two other
+        // pages offering this choice.
+        var (count, head, first) = _plan.Window(
+            _motion is DcaMotion.Scroll, _window, n, moving + eased[moving], t);
 
         // Where the window's left edge falls, rounded **up**: a point to the left of it
         // lands off the plot, over the axis labels, and the curve has to start at the
@@ -700,15 +701,21 @@ public sealed class DcaRenderer : IFrameRenderer
     /// </param>
     private void DrawXLabels(
         CanvasDrawingSession session, FrameContext context, double t,
-        double bottom, double plotW, double introA, int count, double first, double head)
+        double bottom, double plotW, double introA, double count, double first, double head)
     {
         var n = _board.Dates.Count;
         var mx = context.ChartLeft;
 
-        var every = Math.Max(1, count / 5);
-        if (count % every == 0 && count / every > 5)
+        // How many positions the window holds, rounded, because the question the step
+        // answers — how far apart the labels go — is a whole-number one. The placing
+        // below still uses `count` itself, which is fractional while a scrolling window
+        // is opening out.
+        var whole = Math.Max(1, (int)Math.Round(count));
+
+        var every = Math.Max(1, whole / 5);
+        if (whole % every == 0 && whole / every > 5)
         {
-            every = Math.Max(1, (count / 6) + 1);
+            every = Math.Max(1, (whole / 6) + 1);
         }
 
         // A year label when the plan spans years, year-and-month when it spans less —

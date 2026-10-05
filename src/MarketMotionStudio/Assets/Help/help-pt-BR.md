@@ -59,6 +59,7 @@ Os candles de um instrumento: diários, semanais ou mensais — ou de minuto par
 - **1, 5 e 15 minutos** desenham um dia de negociação: o pregão da abertura ao fechamento, num eixo que segue o relógio e deixa fora os noventa minutos sem negócios, de modo que a manhã e a tarde se encontram numa linha fina em vez de deixar um terço do quadro vazio. A fonte mantém candles de minuto apenas para Xangai e Shenzhen, e só das últimas sessões — cerca de quatro dias a um minuto, dezessete a cinco, cinquenta a quinze — então **Dia de negociação** é uma lista dos dias que ainda tem, não um calendário. Escolher outro apenas redesenha.
 - **Tipo de desenho** decide como os mesmos quatro preços são desenhados: candles, barras OHLC, linha de fechamento ou área de fechamento. Trocar de um para outro não busca nada.
 - **Animação** é a chegada dos candles um após o outro até traçar todo o período, ou uma janela fixa que avança. A segunda é o que mantém o candle largo o bastante para ser lido num período longo, e essa largura é o ajuste **Janela**.
+- **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
 - As médias móveis MA5, MA10 e MA20 podem ser sobrepostas aos candles; o painel de volume abaixo pode ser desligado, e o painel de preço recupera o espaço.
 - Uma semana ou um mês ainda em curso fica de fora. Um candle feito de três dias não é uma semana.
 - Todo mercado é lido na sua série ajustada, então um dia de desdobramento não é desenhado como queda, e um dividendo tampouco.
@@ -386,6 +387,7 @@ Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda sem
 - O retorno é calculado sobre fechamentos ajustados retroativamente, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
 - Além de 3, 5 e 10 anos e do período mais longo, o intervalo pode ser **Personalizado**: informe a data inicial e a final e pressione o botão de buscar dados. Dá para voltar cerca de 35 anos — a fonte entrega cerca de 640 dias corridos por requisição e a varredura faz no máximo vinte.
 - **Dois modos de avanço.** *Todo o período* dispõe o intervalo inteiro de uma vez; *janela deslizante* mantém uma janela de um número fixo de dias de negociação e a percorre do início ao fim do intervalo — é a única forma de uma longa série diária manter as oscilações legíveis. A janela só conta ao deslizar, e os dois modos leem **os mesmos dados**: trocar não baixa nada de novo. **O eixo vertical não é reescalado por janela**: a distância entre as duas linhas *é* o resultado de um plano, e reescalar a alargaria junto com a janela.
+- **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
 
 ## Retorno de posição
 
@@ -400,6 +402,7 @@ Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mo
 - O retorno é calculado sobre fechamentos ajustados retroativamente — dividendos reinvestidos, sem taxas. O ajuste retroativo se ancora na abertura de capital e acumula os dividendos para frente, então os primeiros anos de um bom pagador nunca ficam negativos, como pode ocorrer no ajuste para frente.
 - O mesmo intervalo **Personalizado** vale para a posição: informe duas datas e pressione buscar dados. Se o ativo passou a ser negociado depois da data informada, a posição começa no seu primeiro dia de negociação.
 - **Dois modos de avanço.** *Todo o período* dispõe o intervalo inteiro de uma vez, então a forma da curva na tela é a sua forma no tempo. *Janela deslizante* mantém uma janela de um número fixo de dias de negociação e a percorre do início ao fim do intervalo — é a única forma de uma longa série diária manter as oscilações legíveis, porque espalhada por doze anos uma queda de três meses são dois pixels. A janela só conta ao deslizar, e os dois modos leem **os mesmos dados**: trocar não baixa nada de novo.
+- **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
 
 ## Vídeo
 

@@ -58,6 +58,74 @@ public sealed record AnimationPlan(
     }
 
     /// <summary>
+    /// How long a scrolling window takes to open out into the whole range at the end of
+    /// the closing stretch; see <see cref="Window"/>.
+    ///
+    /// Well inside that stretch rather than all of it: the stretch is at least three
+    /// seconds long, and the closing cards do not start arriving until nearly two
+    /// seconds into it. Opening first means they arrive on a frame that already shows
+    /// the whole range, rather than on one still widening underneath them.
+    /// </summary>
+    public const double OpenOutMs = 900;
+
+    /// <summary>
+    /// The stretch of the axis one frame is looking at: how many positions it holds,
+    /// where its right edge has reached, and where its left one therefore is.
+    ///
+    /// The three pages that offer a choice of motion used to work this out in their own
+    /// renderer, in the same three lines each. A change made to one of them is then a
+    /// change that has to be made to all three, or the pages quietly disagree about what
+    /// a motion is — and the frames keep looking right, because each page agrees with
+    /// itself. So it lives here, beside the pacing it is read off.
+    /// </summary>
+    /// <param name="scroll">Whether the frame is scrolling rather than growing.</param>
+    /// <param name="window">How many positions the scrolling window holds.</param>
+    /// <param name="span">How many positions the whole range has.</param>
+    /// <param name="reached">
+    /// How far the animation has come along the axis. Fractional, because the point
+    /// arriving now is part of the way into place.
+    /// </param>
+    /// <param name="t">The frame's time, in milliseconds.</param>
+    public (double Count, double Head, double First) Window(
+        bool scroll, int window, int span, double reached, double t)
+    {
+        // Growing is a window as long as the range, which is why the two motions share
+        // every line of drawing that follows this.
+        if (!scroll)
+        {
+            return (span, reached, 0);
+        }
+
+        // The window as the motion runs it: `held` positions, its right edge as far
+        // forward as the animation has come but never short of a full window — which is
+        // what keeps the opening frames from being three points stretched across the
+        // frame. The right edge leads the arrival by the part of the arriving point that
+        // has come through, so the window is already sliding while that point is still
+        // growing into place: a roll rather than a step per day.
+        var held = Math.Min(Math.Max(2, window), span);
+        var edge = Math.Max(reached, held - 1);
+
+        // The closing stretch opens the window out. Its left edge walks back to the
+        // start of the range and its right one settles on the range's last position, so
+        // the frame the animation ends on is the whole span rather than the last few
+        // years of it. Scrolling answers "what did it look like at the time"; the frame
+        // a video stops on answers "what did the whole stretch look like", and stopping
+        // on a window answers only the first of those.
+        var wide = Easing.Ramp(t, FinaleStartMs, OpenOutMs);
+
+        var head = edge + ((span - 1 - edge) * wide);
+        var first = (edge - held + 1) * (1 - wide);
+
+        // Count is read off the two edges rather than interpolated alongside them. The
+        // three have to agree — `Count == Head - First + 1` — because a point is placed
+        // by its position between them: a count that drifted would push the last point
+        // past the plot's right edge while the window was opening, and by the time the
+        // window had finished opening the frame would look normal again with nothing
+        // left to say what had happened.
+        return (head - first + 1, head, first);
+    }
+
+    /// <summary>
     /// A round axis step at or above <c>max / ticks</c>, and the top of the axis as a
     /// whole multiple of it.
     ///

@@ -60,6 +60,7 @@ Las velas de un instrumento: diarias, semanales o mensuales — o velas por minu
 - **1, 5 y 15 minutos** dibujan un día de negociación: la sesión de la apertura al cierre, en un eje que sigue el reloj y deja fuera los noventa minutos sin negociación, de modo que la mañana y la tarde se encuentran en una línea fina en vez de dejar vacío un tercio del dibujo. La fuente solo conserva velas por minuto de Shanghái y Shenzhen, y solo de las últimas sesiones —unos cuatro días a un minuto, diecisiete a cinco, cincuenta a quince—, así que **día de negociación** es una lista de los días que aún tiene, no un calendario. Elegir otro solo vuelve a dibujar.
 - **Tipo de dibujo** decide cómo se dibujan los mismos cuatro precios: velas, barras OHLC, línea de cierre o área de cierre. Pasar de uno a otro no vuelve a consultar nada.
 - **Animación** es o bien la llegada de las velas una tras otra hasta trazar todo el periodo, o bien una ventana fija que avanza. La segunda es lo que mantiene la vela lo bastante ancha para leerse en un periodo largo, y esa anchura es el ajuste **Ventana**.
+- **Una ventana deslizante se abre al final.** Al empezar el tramo de cierre la ventana se ensancha hacia atrás hasta el primer día del rango, así que el fotograma en el que se detiene la animación es el rango completo y no sus últimas decenas de días.
 - Las medias móviles MA5, MA10 y MA20 pueden superponerse a las velas; el panel de volumen de abajo se puede apagar, y el panel de precio recupera ese espacio.
 - Una semana o un mes aún en curso queda fuera. Una vela hecha de tres días no es una semana.
 - Todos los mercados se leen en su serie ajustada, así que un día de split no se dibuja como una caída, ni un dividendo tampoco.
@@ -391,6 +392,7 @@ Comprar un valor con importe y cadencia fijos — cada día de bolsa, cada seman
 - La rentabilidad se calcula sobre cierres ajustados hacia atrás, sin comisiones. El resultado describe la serie de precios, no una factura que alguien pudiera haber ejecutado.
 - Además de 3, 5 y 10 años y del tramo más largo, el rango puede ser **Personalizado**: indica una fecha inicial y una final y pulsa el botón de obtener datos. Se puede retroceder unos 35 años: la fuente entrega unos 640 días naturales por petición y el recorrido hace veinte como máximo.
 - **Dos modos de avance.** *Crecer por todo el periodo* despliega todo el intervalo de una vez; *desplazar una ventana* mantiene una ventana de un número fijo de días de cotización y la recorre del inicio al fin del intervalo — es la única forma de que una serie diaria larga conserve legibles sus oscilaciones. La ventana solo cuenta al desplazar, y ambos modos leen **los mismos datos**: cambiar no vuelve a descargar. **El eje vertical no se reescala por ventana**: la distancia entre las dos líneas *es* el resultado de un plan, y reescalar la ensancharía junto con la ventana.
+- **Una ventana deslizante se abre al final.** Al empezar el tramo de cierre la ventana se ensancha hacia atrás hasta el primer día del rango, así que el fotograma en el que se detiene la animación es el rango completo y no sus últimas decenas de días.
 
 ## Rentabilidad de cartera
 
@@ -405,6 +407,7 @@ Una compra, mantenida —un millón del mismo valor desde 2015—, animada para 
 - La rentabilidad se calcula sobre cierres ajustados hacia atrás — dividendos reinvertidos, sin comisiones. El ajuste hacia atrás se ancla en la salida a bolsa y acumula los dividendos hacia delante, así que los primeros años de un gran pagador nunca se vuelven negativos, como puede pasar con el ajuste hacia delante.
 - El mismo rango **Personalizado** vale para la tenencia: indica dos fechas y pulsa obtener datos. Si el instrumento empezó a cotizar después de la fecha indicada, la tenencia comienza su primer día de negociación.
 - **Dos modos de avance.** *Crecer por todo el periodo* despliega todo el intervalo de una vez, así que la forma de la curva en pantalla es su forma en el tiempo. *Desplazar una ventana* mantiene una ventana de un número fijo de días de cotización y la recorre desde el inicio hasta el fin del intervalo: es la única forma de que una serie diaria larga conserve legibles sus oscilaciones, porque repartida en doce años una caída de tres meses son dos píxeles. La ventana solo cuenta al desplazar, y ambos modos leen **los mismos datos**: cambiar no vuelve a descargar.
+- **Una ventana deslizante se abre al final.** Al empezar el tramo de cierre la ventana se ensancha hacia atrás hasta el primer día del rango, así que el fotograma en el que se detiene la animación es el rango completo y no sus últimas decenas de días.
 
 ## Vídeo
 

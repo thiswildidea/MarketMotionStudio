@@ -58,6 +58,7 @@ Bir enstrümanın mumları: günlük, haftalık veya aylık — ya da tek bir i�
 - **1, 5 ve 15 dakika** tek bir işlem gününü çizer: açılıştan kapanışa seans, saate göre kurulan ve hiç işlem geçmeyen doksan dakikayı dışarıda bırakan bir eksende; öğleden önce ve sonra, resmin üçte birini boş bırakmak yerine ince bir çizgide buluşur. Kaynak dakika mumlarını yalnızca Şanghay ve Shenzhen için ve yalnızca son birkaç seans için tutar — bir dakikada yaklaşık dört gün, beşte on yedi, on beşte elli — bu yüzden **İşlem günü** bir takvim değil, hâlâ elinde olan günlerin listesidir. Başka bir günü seçmek yalnızca yeniden çizer.
 - **Çizim türü**, aynı dört fiyatın nasıl çizileceğini belirler: mumlar, OHLC çubukları, kapanış çizgisi veya kapanış alanı. Aralarında geçiş yapmak hiçbir şey yeniden çekmez.
 - **Animasyon**, mumların tek tek gelip tüm aralığı çizmesi ya da ilerleyen sabit bir penceredir. İkincisi, mumu uzun bir aralıkta okunacak kadar geniş tutan şeydir ve bu genişlik **Pencere** ayarıdır.
+- **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
 - MA5, MA10 ve MA20 hareketli ortalamaları mumların üzerine bindirilebilir; alttaki hacim paneli kapatılabilir ve fiyat paneli o alanı geri alır.
 - Henüz bitmemiş bir hafta veya ay dışarıda bırakılır. Üç günden oluşan bir mum bir hafta değildir.
 - Her piyasa düzeltilmiş serisinden okunur, bu yüzden bir bölünme günü düşüş olarak çizilmez; temettü de çizilmez.
@@ -371,6 +372,7 @@ Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her ha
 - Getiri geriye düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
 - 3, 5 ve 10 yıl ile en uzun aralığın dışında **Özel** de seçilebilir: başlangıç ve bitiş tarihini verip verileri alın. Yaklaşık 35 yıl geriye gidilebilir — kaynak istek başına yaklaşık 640 takvim günü veriyor ve tarama en çok yirmi istek yapıyor.
 - **İki ilerleme biçimi.** *Aralığın tamamı* tüm dönemi bir anda serer; *kayan pencere* sabit sayıda işlem gününden oluşan bir pencereyi aralığın başından sonuna kadar yürütür — uzun bir günlük serinin dalgalanmalarını okunur tutmanın tek yolu budur. Pencere yalnızca kaydırırken anlam taşır ve iki biçim de **aynı fiyatları** okur — geçiş yeniden veri çekmez. **Dikey eksen pencereye göre yeniden ölçeklenmez**: iki çizgi arasındaki mesafe planın *ta kendisidir*; yeniden ölçeklemek onu pencereyle birlikte genişletirdi.
+- **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
 
 ## Pozisyon Getirisi
 
@@ -385,6 +387,7 @@ Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon �
 - Getiri geriye düzeltilmiş kapanışlarla — temettüler yeniden yatırıldı, ücretsiz — hesaplanır. Geriye düzeltme halka arzın ilk gününe demir atar ve temettüleri ileriye biriktirir, böylece cömert bir ödeyicinin ilk yılları asla negatif olmaz; ileriye düzeltmede bu olabilir.
 - Aynı **Özel** aralık elde tutma için de geçerlidir: iki tarih verip verileri alın. Araç belirttiğiniz tarihten sonra işlem görmeye başladıysa, elde tutma ilk işlem gününde başlar.
 - **İki ilerleme biçimi.** *Aralığın tamamı* tüm dönemi bir anda serer; eğrinin ekrandaki biçimi, zamandaki biçimidir. *Kayan pencere* sabit sayıda işlem gününden oluşan bir pencereyi aralığın başından sonuna kadar yürütür — uzun bir günlük serinin dalgalanmalarını okunur tutmanın tek yolu budur, çünkü on iki yıla yayılmış üç aylık bir düşüş iki pikseldir. Pencere yalnızca kaydırırken anlam taşır ve iki biçim de **aynı fiyatları** okur — geçiş yeniden veri çekmez.
+- **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
 
 ## Video
 

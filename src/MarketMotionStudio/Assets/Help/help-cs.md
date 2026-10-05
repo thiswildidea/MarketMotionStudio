@@ -57,6 +57,7 @@ Svíčky jednoho nástroje: denní, týdenní nebo měsíční — nebo minutov�
 - **1, 5 a 15 minut** kreslí jeden obchodní den: seanci od otevření do závěru na ose podle hodin, která vynechává devadesát minut bez obchodování, takže dopoledne a odpoledne se potkají na tenké čáře, místo aby třetina obrázku zůstala prázdná. Zdroj uchovává minutové svíčky jen pro Šanghaj a Šen-čen a jen za poslední seance — zhruba čtyři dny při jedné minutě, sedmnáct při pěti, padesát při patnácti — takže **Obchodní den** je seznam dnů, které ještě má, a ne kalendář. Výběr jiného dne jen překreslí.
 - **Způsob zobrazení** určuje, jak jsou tytéž čtyři ceny nakresleny: svíčky, OHLC sloupce, čára závěru nebo plocha závěru. Přepínání nic nenačítá.
 - **Animace** je buď přicházení svíček jedna po druhé, dokud není celé období rozkreslené, nebo pevné okno, které se posouvá vpřed. Druhá z nich udrží svíčku na dlouhém období dostatečně širokou ke čtení a její šířka je nastavení **Okno**.
+- **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
 - Klouzavé průměry MA5, MA10 a MA20 lze položit přes svíčky; panel objemu dole lze vypnout a panel ceny místo získá zpět.
 - Probíhající týden nebo měsíc je vynechán. Svíčka ze tří dnů není týden.
 - Každý trh se čte na své upravené řadě, takže den štěpení akcií není nakreslen jako pokles, a dividenda také ne.
@@ -366,6 +367,7 @@ Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý o
 - Výnos se počítá na zpětně upravených cenách, bez poplatků. Výsledek popisuje řadu cen, nikoli účtenku, kterou by někdo mohl realizovat.
 - Kromě 3, 5 a 10 let a nejdelšího období lze zvolit i **Vlastní**: zadejte počáteční a koncové datum a stiskněte načtení dat. Dostupných je asi 35 let zpět — zdroj vrací zhruba 640 kalendářních dnů na jeden požadavek a průchod jich provede nejvýše dvacet.
 - **Dva způsoby animace.** *Celé období* rozloží celý rozsah najednou; *posuvné okno* drží okno s pevným počtem obchodních dnů a posouvá je od začátku do konce rozsahu — jen tak zůstanou výkyvy dlouhé denní řady čitelné. Okno má význam jen při posouvání a oba způsoby čtou **stejné kurzy** — přepnutí nic nenačítá. **Svislá osa se pro okno nepřepočítává**: odstup mezi oběma čarami *je* výsledkem plánu, a přepočet by ho roztáhl spolu s oknem.
+- **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
 
 ## Výnos pozice
 
@@ -380,6 +382,7 @@ Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 —
 - Výnos se počítá ze zpětně upravených cen — dividendy reinvestovány, bez poplatků. Zpětná úprava kotví u prvního dne emise a hromadí dividendy dopředu, takže rané roky štědrého plátce nikdy nejsou nekladné, jak se může stát u dopředné úpravy.
 - Stejné **Vlastní** období platí i pro držbu: zadejte dvě data a stiskněte načtení dat. Pokud byl nástroj uveden na trh později, než je zadané datum, držba začíná jeho prvním obchodním dnem.
 - **Dva způsoby animace.** *Celé období* rozloží celý rozsah najednou, takže tvar křivky na obrazovce je její tvar v čase. *Posuvné okno* drží okno s pevným počtem obchodních dnů a posouvá je od začátku do konce rozsahu — jen tak zůstanou výkyvy dlouhé denní řady čitelné, protože rozložená na dvanáct let jsou tři měsíce poklesu dva pixely. Okno má význam jen při posouvání a oba způsoby čtou **stejné kurzy** — přepnutí nic nenačítá.
+- **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
 
 ## Video
 

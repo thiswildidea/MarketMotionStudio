@@ -65,6 +65,7 @@ SRC = os.path.join(REPO, "src/MarketMotionStudio")
 
 SERIES = os.path.join(SRC, "Market/PositionSeries.cs")
 RENDERER = os.path.join(SRC, "Render/PositionRenderer.cs")
+PLAN = os.path.join(SRC, "Render/AnimationPlan.cs")
 PAGE = os.path.join(SRC, "Pages/PositionPage.xaml.cs")
 XAML = os.path.join(SRC, "Pages/PositionPage.xaml")
 PALETTE = os.path.join(SRC, "Render/Palette.cs")
@@ -1070,6 +1071,28 @@ def scrub(win, progress):
     return True
 
 
+def frame_diff(a, b, floor=13):
+    """两幅画面差了多少，0..1。
+
+    比**整幅**，不比某一处：这里要证明的是「整个横轴都铺满了」，而曲线头碰巧落在同一处
+    说明不了这件事。`floor` 是「算不算不一样」的界，13/255 —— 抗锯齿那几个灰阶不算。
+
+    尺寸不同直接判 1：两幅画面对不上时，说「完全不一样」比说「差 0.3%」诚实。
+    """
+    from PIL import ImageChops
+
+    first = a["frame"].image
+    second = b["frame"].image
+
+    if first.size != second.size:
+        return 1.0
+
+    hist = ImageChops.difference(first, second).convert("L").histogram()
+    changed = sum(hist[floor:])
+
+    return changed / float(first.size[0] * first.size[1])
+
+
 def motion(win, name):
     """切一下推进方式，返回它请求的那一项的名字（取不到下拉就是 None）。
 
@@ -1129,6 +1152,7 @@ def main():
 
     series = open(SERIES, encoding="utf-8").read()
     renderer = open(RENDERER, encoding="utf-8").read()
+    plan = open(PLAN, encoding="utf-8").read()
     page = open(PAGE, encoding="utf-8").read()
     xaml = open(XAML, encoding="utf-8").read()
     palette = open(PALETTE, encoding="utf-8").read()
@@ -1212,12 +1236,21 @@ def main():
           in renderer)
     check("两种推进方式：整段铺满 / 窗口滚动",
           "public enum PositionMotion" in series and "Grow = 0," in series and "Scroll = 1," in series)
-    check("整段铺满就是「窗口和整段一样长」的同一套算术",
-          "var count = _motion is PositionMotion.Scroll ? Math.Min(_window, n) : n;" in renderer)
+    # 窗口三件套（多少格 / 右端 / 左端）**不在这三个渲染器里各算一遍**。持仓、定投、K线
+    # 三页是同一套算术，改一处就得改三处，而每页单看都对、错起来的样子也一模一样。它现在
+    # 住在 `AnimationPlan.Window`，下面这几条断言的是「这一页确实去问那一处、那一处确实
+    # 还在做原来那两件事」。
+    check("这一页的窗口几何交给共享的 `AnimationPlan.Window`",
+          "_plan.Window(" in renderer
+          and "_motion is PositionMotion.Scroll, _window, n" in renderer)
+    check("整段铺满那一支返回整段（窗口就是整段，不存在展开）",
+          "return (span, reached, 0);" in plan)
     check("窗口右端跟着到达点走（滚动是连续滑，不是一天一跳）",
-          "Math.Max(moving + eased[moving], count - 1)" in renderer)
-    check("窗口左端 = 右端 − 窗口长度",
-          "var first = _motion is PositionMotion.Scroll ? head - (count - 1) : 0;" in renderer)
+          "var edge = Math.Max(reached, held - 1);" in plan)
+    check("滚动的窗口在收尾段展开成整段（不是一路滚到底）",
+          "var wide = Easing.Ramp(t, FinaleStartMs, OpenOutMs);" in plan)
+    check("展开时三件套自洽（Count = 右端 − 左端 + 1，否则点会被推出绘图区）",
+          "return (head - first + 1, head, first);" in plan)
     check("横轴把窗口铺满（不是把整段铺满）",
           "double Across(int i) => mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);" in renderer)
     check("窗口左端向上取整（曲线不能画到轴外面去）",
@@ -1556,6 +1589,39 @@ def main():
 
     check("切回「整段铺满」", motion(win, "整段铺满") == "整段铺满")
     check("切回来之后窗口框又是灰的", window_on(win) is False, f"窗口框可用={window_on(win)}")
+
+    # ---- 6b) 收尾：滚动的窗口展开成整段 ---------------------------------------------
+    #
+    # 滚动回答的是「当时长什么样」，而动画停在的那一帧得回答「整段长什么样」——一段视频
+    # 停在最后 60 个交易日上，等于只答了前一个问题。所以收尾段开头（最后 10%、至少 3 秒
+    # 里的前 0.9 秒）把窗口拉开成整段。
+    #
+    # 判据是**整幅画面**：滚动拖到头 ≈ 整段铺满拖到头。用整幅而不是用曲线头，是因为展开
+    # 完之后头本来就在同一处；要证明的是横轴铺满、日期铺满、曲线整条在画面上，一个点
+    # 说明不了。
+    #
+    # 反过来那条（收尾之前滚动**还是**窗口）上面已经用 0.5 那一帧量过了 —— 同一个进度下
+    # 滚动的头比整段靠右一大截。这里不重复量。
+    print("\n收尾（滚动展开成整段）")
+
+    whole_end = rolled_end = None
+
+    if scrub(win, 1.0):
+        whole_end = measure(win, "verify-position-end-grow.png", count=3)
+
+    if motion(win, "窗口滚动") == "窗口滚动" and scrub(win, 1.0):
+        rolled_end = measure(win, "verify-position-end-scroll.png", count=3)
+
+    motion(win, "整段铺满")
+
+    if whole_end is None or rolled_end is None:
+        check("两种推进方式都拖得到头", False, "取不到画面")
+    else:
+        check("滚动走到头，画面就是整段铺满（窗口在收尾段展开了）",
+              frame_diff(rolled_end, whole_end) < 0.01,
+              "两幅差 {:.3%}（滚动那幅 {} 个白点 / {} 像素）".format(
+                  frame_diff(rolled_end, whole_end),
+                  len(rolled_end["dots"]), sum(rolled_end["pixels"][:3])))
 
     # ---- 7) 标签跟着进度条走 -------------------------------------------------------
     print("\n拖动")

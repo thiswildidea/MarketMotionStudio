@@ -343,9 +343,13 @@ public sealed class CandleRenderer : IFrameRenderer
 
         var reach = arrived < 0 ? -1 : arrived + growth;
 
-        var count = _motion is CandleMotion.Scroll ? Math.Min(_window, n) : n;
-        var head = _motion is CandleMotion.Scroll && reach >= 0 ? Math.Max(reach, count - 1) : reach;
-        var first = _motion is CandleMotion.Scroll ? head - (count - 1) : 0;
+        // The stretch of the axis in view. Growing looks at the whole range; scrolling
+        // looks at a window of it and opens that window out into the whole range as the
+        // frame closes, so a video ends on the entire chart rather than on its last few
+        // candles. How, and why, is in `AnimationPlan.Window`, shared with the two other
+        // pages offering this choice.
+        var (count, head, first) = _plan.Window(
+            _motion is CandleMotion.Scroll, _window, n, reach, t);
 
         var from = Math.Clamp((int)Math.Floor(first), 0, n - 1);
         var to = Math.Clamp((int)Math.Ceiling(head), -1, n - 1);

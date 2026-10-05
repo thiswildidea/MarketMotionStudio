@@ -61,6 +61,7 @@ Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich — oder Min
 - **1, 5 und 15 Minuten** zeichnen einen Handelstag: die Sitzung von der Eröffnung bis zum Schluss, auf einer Achse nach der Uhr, die die neunzig Minuten ohne Handel auslässt, sodass sich Vormittag und Nachmittag an einer Haarlinie treffen, statt ein Drittel des Bildes leer zu lassen. Die Quelle führt Minutenkerzen nur für Shanghai und Shenzhen und nur für die letzten Sitzungen — etwa vier Tage bei einer Minute, siebzehn bei fünf, fünfzig bei fünfzehn — daher ist **Handelstag** eine Liste der noch vorhandenen Tage und kein Kalender. Eine andere Auswahl zeichnet nur neu.
 - **Darstellung** entscheidet, wie dieselben vier Preise gezeichnet werden: Kerzen, OHLC-Balken, Schlusskurslinie oder Schlusskursfläche. Umschalten lädt nichts neu.
 - **Ablauf** ist entweder das Eintreffen der Kerzen nacheinander, bis der ganze Zeitraum steht, oder ein festes Fenster, das weiterwandert. Das zweite hält die Kerze auf einem langen Zeitraum breit genug zum Lesen, und wie breit ist die Einstellung **Fenster**.
+- **Ein rollendes Fenster öffnet sich am Ende.** Mit Beginn des Schlussteils weitet sich das Fenster zurück bis zum ersten Tag des Zeitraums, also steht am Ende der Animation der ganze Zeitraum da und nicht nur seine letzten Dutzend Tage.
 - Gleitende Durchschnitte MA5, MA10 und MA20 können über die Kerzen gelegt werden; das Volumenfeld darunter lässt sich abschalten, und das Preisfeld nimmt den Platz zurück.
 - Eine noch laufende Woche oder ein laufender Monat bleibt draußen. Eine Kerze aus drei Tagen ist keine Woche.
 - Jeder Markt wird auf seiner bereinigten Reihe gelesen, damit ein Split-Tag nicht als Rückgang erscheint und eine Dividende auch nicht.
@@ -400,6 +401,7 @@ Ein Wertpapier zum festen Betrag in festen Abständen gekauft — an jedem Hande
 - Die Rendite wird auf rückwärts bereinigten Schlusskursen gerechnet, ohne Gebühren. Das Ergebnis beschreibt die Kursreihe, nicht eine Rechnung, die so jemand hätte ausführen können.
 - Neben 3, 5 und 10 Jahren und dem längsten Zeitraum kann auch **Benutzerdefiniert** gewählt werden: Anfangs- und Enddatum eintragen und dann die Daten abrufen. Etwa 35 Jahre sind erreichbar — die Quelle liefert pro Anfrage rund 640 Kalendertage, und der Durchlauf macht höchstens zwanzig.
 - **Zwei Ablaufarten.** *Über die ganze Spanne* legt den gesamten Zeitraum auf einmal hin; *Fenster weiterbewegen* hält ein Fenster aus einer festen Zahl von Handelstagen und schiebt es vom Anfang bis zum Ende des Zeitraums — nur so bleiben die Ausschläge einer langen Tagesreihe lesbar. Das Fenster zählt nur beim Weiterbewegen, und beide Arten lesen **dieselben Kurse** — Umschalten lädt nichts neu. **Die senkrechte Achse wird nicht je Fenster neu skaliert**: der Abstand zwischen den beiden Linien *ist* das Ergebnis eines Plans, und eine Neuskalierung würde ihn mit dem Fenster breiter ziehen.
+- **Ein rollendes Fenster öffnet sich am Ende.** Mit Beginn des Schlussteils weitet sich das Fenster zurück bis zum ersten Tag des Zeitraums, also steht am Ende der Animation der ganze Zeitraum da und nicht nur seine letzten Dutzend Tage.
 
 ## Depotrendite
 
@@ -414,6 +416,7 @@ Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — ani
 - Die Rendite beruht auf rückwärts adjustierten Kursen — Dividenden reinvestiert, ohne Gebühren. Die rückwärtige Adjustierung verankert sich am Börsengang und trägt Dividenden nach vorn, sodass die frühen Jahre eines fleißigen Zahlers nie nichtpositiv werden, wie es die vorwärts adjustierte Reihe zulässt.
 - Dieselbe Auswahl **Benutzerdefiniert** gilt für die Haltedauer: zwei Daten eintragen und die Daten abrufen. Wurde das Papier später gelistet als das Anfangsdatum, beginnt die Haltung an seinem ersten Handelstag.
 - **Zwei Ablaufarten.** *Über die ganze Spanne* legt den gesamten Zeitraum auf einmal hin, die Kurve zeigt also ihre echte Form über die Zeit. *Fenster weiterbewegen* hält ein Fenster aus einer festen Zahl von Handelstagen und schiebt es vom Anfang bis zum Ende des Zeitraums — nur so bleiben die Ausschläge einer langen Tagesreihe lesbar: über zwölf Jahre verteilt sind drei Monate Rückgang zwei Pixel. Das Fenster zählt nur beim Weiterbewegen, und beide Arten lesen **dieselben Kurse** — Umschalten lädt nichts neu.
+- **Ein rollendes Fenster öffnet sich am Ende.** Mit Beginn des Schlussteils weitet sich das Fenster zurück bis zum ersten Tag des Zeitraums, also steht am Ende der Animation der ganze Zeitraum da und nicht nur seine letzten Dutzend Tage.
 
 ## Video
 

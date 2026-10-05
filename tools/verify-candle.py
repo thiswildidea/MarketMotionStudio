@@ -17,6 +17,7 @@ import uiautomation as auto
 APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
 EXE = "MarketMotionStudio.exe"
 OUT = r"D:\software\MarketMotionStudio\artifacts"
+SRC = r"D:\software\MarketMotionStudio\src\MarketMotionStudio"
 
 PRIVATE = re.compile(r"[\ue000-\uf8ff]")
 BAD = re.compile(r"失败|错误|无法|不可用|异常|failed|error")
@@ -241,7 +242,54 @@ def shot(win, name):
         return None
 
 
+def scrub_to(win, progress):
+    """把进度条拖到某一处。进度条是每一页共用的那一条（`Scrub`）。"""
+    bar = find(lambda c: c.AutomationId == "Scrub", win)
+
+    if bar is None:
+        return False
+
+    bar.GetRangeValuePattern().SetValue(progress)
+    time.sleep(1.8)
+
+    return True
+
+
+def png_diff(a, b, floor=13):
+    """两幅画面差了多少，0..1。
+
+    比**整幅**，不比某一根蜡烛：要证明的是整条横轴铺满了，而最后一根碰巧落在同一处说明
+    不了这件事。`floor` 是「算不算不一样」的界，13/255 —— 抗锯齿那几个灰阶不算。
+    """
+    from PIL import Image, ImageChops
+
+    if a is None or b is None:
+        return 1.0
+
+    first = Image.open(a).convert("RGB")
+    second = Image.open(b).convert("RGB")
+
+    if first.size != second.size:
+        return 1.0
+
+    hist = ImageChops.difference(first, second).convert("L").histogram()
+
+    return sum(hist[floor:]) / float(first.size[0] * first.size[1])
+
+
 def main():
+    # 窗口三件套（多少根 / 右端 / 左端）由 `AnimationPlan.Window` 一处算，K线、持仓、定投
+    # 三页共用 —— 各写一份的话改一处就得改三处，而每页单看都对、错起来也一模一样。
+    plan = open(os.path.join(SRC, "Render", "AnimationPlan.cs"), encoding="utf-8-sig").read()
+    render = open(os.path.join(SRC, "Render", "CandleRenderer.cs"), encoding="utf-8-sig").read()
+
+    check("窗口几何交给共享的 `AnimationPlan.Window`",
+          "_plan.Window(" in render and "_motion is CandleMotion.Scroll, _window, n" in render)
+    check("滚动的窗口在收尾段展开成整段（不是一路滚到底）",
+          "var wide = Easing.Ramp(t, FinaleStartMs, OpenOutMs);" in plan)
+    check("展开时三件套自洽（Count = 右端 − 左端 + 1）",
+          "return (head - first + 1, head, first);" in plan)
+
     win = launch()
     assert win is not None, "窗口未找到"
 
@@ -331,6 +379,22 @@ def main():
     pick(win, "MotionCombo", "逐根铺满")
     time.sleep(1.0)
     check("切回逐根铺满后窗口根数变灰", enabled(win, "WindowBox") is False)
+
+    # 收尾：滚动的窗口在收尾段展开成整段 —— 所以**拖到头**时，滚动与逐根铺满该是同一幅。
+    # 判据用整幅画面（`png_diff`），不是某一根蜡烛：展开完之后最后一根本来就在同一处，
+    # 一根说明不了整条横轴是不是铺满了。
+    pick(win, "MotionCombo", "窗口滚动")
+    time.sleep(1.2)
+    scrub_to(win, 1.0)
+    rolled = shot(win, "verify-candle-end-scroll.png")
+
+    pick(win, "MotionCombo", "逐根铺满")
+    time.sleep(1.2)
+    scrub_to(win, 1.0)
+    whole = shot(win, "verify-candle-end-grow.png")
+
+    check("滚动走到头，画面就是逐根铺满（窗口在收尾段展开了）",
+          png_diff(rolled, whole) < 0.01, "两幅差 {:.3%}".format(png_diff(rolled, whole)))
 
     # 周期换了要重新取数：等状态条说出新周期的名字。
     for label, key in [("周K", "周K"), ("月K", "月K")]:

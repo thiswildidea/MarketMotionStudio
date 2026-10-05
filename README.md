@@ -42,7 +42,8 @@ for the same reason it has them.
 instrument's prices as candles — daily, weekly or monthly, and down to **1, 5 or 15 minutes** when
 the page is asked for one single trading day — drawn four ways (candles, OHLC bars, a
 closing line, a closing area) with MA5/10/20 and a volume panel, arriving one candle at a time
-across the whole range or walking forward inside a window of it.
+across the whole range or walking forward inside a window of it — a window that opens out into
+the whole range as the frame closes.
 
 **Nine more pages followed**, and the navigation now numbers seventeen: **Market Cap Race** (a
 market's fifteen largest by total value, the field asked for at fetch time so members really come
@@ -301,7 +302,11 @@ not the same thing as being the worse plan.
 
 **Two motions, over one span**, the pair the holdings page has. *Grow across the span* lays the
 whole range down at once; *scroll a window* holds a window of a chosen number of trading days and
-walks it from the start of the range to its end. It is a **display** setting and not a data one:
+walks it from the start of the range to its end — and opens that window out into the whole range
+as the frame closes, so the last thing on screen is the span and not its final years. Scrolling
+answers *what did it look like at the time*; the frame a video stops on has to answer *what did the
+whole stretch look like*, and a frame that stops on a window has answered only the first. It is a
+**display** setting and not a data one:
 switching redraws and re-fetches nothing, which is why the window box is offered only while the
 window is what is moving. The vertical scale is **not** re-fitted to the window. A candle chart
 re-fits its price axis because a hundred bars of one stock is a different set of prices; here the
@@ -377,7 +382,9 @@ quantity. *Grow across the span* lays the whole range down at once, so the curve
 is its shape in time. *Scroll a window* holds a window of a chosen number of trading days and walks
 it from the start of the range to its end — twelve years of daily marks grown across one frame
 leaves a three-month fall two pixels wide, which flattens exactly the wobbles a holder remembers,
-while a sixty-day window keeps them at the width the frame has.
+while a sixty-day window keeps them at the width the frame has. Scrolling ends by opening the
+window out into the whole range, so both motions finish on the same picture and only the journey
+through it differs.
 
 It is a **display** setting and not a data one: switching redraws and re-fetches nothing, which is
 why the window box is offered only while the window is what is moving. The one thing it does *not*

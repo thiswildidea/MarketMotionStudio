@@ -59,6 +59,7 @@ One instrument's prices as candles: daily, weekly or monthly, or minute candles 
 - **1, 5 and 15 minutes** draw one trading day: the session from the open to the close, laid out on an axis that runs by the clock and leaves the ninety minutes nobody traded off it, so the morning and the afternoon meet across a hairline where the break was. The source keeps minute candles for Shanghai and Shenzhen only, and only for the last few sessions — about four days at one minute, seventeen at five, fifty at fifteen — so **trading day** is a list of the days it still has rather than a calendar. Picking another of them only draws it again.
 - **Style** decides how the same four prices are drawn: candles, OHLC bars, a closing line, or a closing area. Switching between them re-fetches nothing.
 - **Motion** is either candles arriving one after another until the whole range is laid out, or a fixed window of them walking forward. The second is what keeps a candle wide enough to read on a long range, and how wide is the **window** setting.
+- **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
 - Moving averages MA5, MA10 and MA20 can be laid over the candles; the volume panel underneath can be turned off, and the price panel takes the room back.
 - A week or a month still in progress is left out. A candle made of three days is not a week.
 - Every market is read on its adjusted series, so a split day is not drawn as a fall, and neither is a dividend.
@@ -390,6 +391,7 @@ Buying a fixed amount on a fixed cadence — every trading day, every week or ev
 - Returns are computed on backward-adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
 - Besides three, five and ten years and the longest span, the range can be **Custom**: give a start and an end date, then press Fetch. About 35 years is reachable — the source serves roughly 640 calendar days per request, and the walk makes at most twenty of them.
 - **Two motions.** *Grow across the span* lays the whole range down at once; *scroll a window* holds a window of a fixed number of trading days and walks it from the start of the range to its end — the only way a long daily series keeps its wobbles readable. The window only counts while scrolling, and both motions read **the same marks**: switching re-fetches nothing. **The vertical axis is not rescaled per window**: the gap between the two lines *is* the result of a plan, and rescaling would widen it along with the window.
+- **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
 
 ## Holdings Return
 
@@ -404,6 +406,7 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 - Returns are computed on backward-adjusted closes — dividends reinvested, no fees. The backward adjustment anchors at the listing and accumulates dividends forward, so a heavy payer's early years never turn negative the way the forward-adjusted series can.
 - The same **Custom** span works for the holding: give two dates, then press Fetch. If the instrument listed later than the date you asked for, the holding starts on its first trading day.
 - **Two motions.** *Grow across the span* lays the whole range down at once, so the curve's shape on screen is its shape in time. *Scroll a window* holds a window of a fixed number of trading days and walks it from the start of the range to its end — the only way a long daily series keeps its wobbles readable, since spread over twelve years a three-month fall is two pixels. The window only counts while scrolling, and both motions read **the same marks**: switching re-fetches nothing.
+- **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
 
 ## Video
 
