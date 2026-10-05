@@ -32,7 +32,8 @@ the shares became worth, in whichever currency that market quotes. **Position Re
 seventh and the mirror image of the plan: one purchase, once — 2015, a million, 中国平安 —
 and nothing but the mark-to-market after that, with the drawdown promoted to a headline figure
 because a holding's worst moment is the price of its whole story. **Candles** is the eighth: one
-instrument's prices as candles — daily, weekly or monthly — drawn four ways (candles, OHLC bars, a
+instrument's prices as candles — daily, weekly or monthly, and down to **1, 5 or 15 minutes** when
+the page is asked for one single trading day — drawn four ways (candles, OHLC bars, a
 closing line, a closing area) with MA5/10/20 and a volume panel, arriving one candle at a time
 across the whole range or walking forward inside a window of it.
 
@@ -124,6 +125,7 @@ than assumed from the market's existence:
 | **DCA Plan** | the Tracker Fund, the Hang Seng China Enterprises and tech trackers, and the two indices themselves | SPY, QQQ, DIA, IWM and the gold trust |
 | **Position Return** | same preset families as the plan, plus the blue-chip singles | same, plus the broad singles |
 | **Candles** | daily, weekly and monthly bars for indices and listings | same, with the venue tried in turn (`.OQ`, `.N`, `.AM`) |
+| **Candles at 1/5/15 minutes** | nothing — the minute endpoint answers every Hong Kong code with an empty body | the same empty body, whichever venue suffix is tried |
 | **Market Cap Race** | today's top 200 by market value, plus an archive of companies that used to be up there | thirty-five, and forty-two — a fixed field, because neither venue has a ranking this app can reach |
 | **AH premium** | the Hong Kong leg of each pair — and the mainland leg, always both | not applicable: the page compares the two listings of one company, so it is the one page the market switch does not govern |
 
@@ -328,6 +330,16 @@ to draw the same series — candles, OHLC bars, a closing line, a closing area �
 one thing and what a viewer reads off it is another: bodies answer "where did it open and close",
 a closing line answers "where has it been". MA5/10/20 ride over the plot and a volume panel sits
 under it, and the range's return with its high and low is marked on the frame.
+
+Three finer periods — **1, 5 and 15 minutes** — answer the other question the page can be asked:
+not "where has it been" but "what did that one day look like". Choosing one replaces the range
+selector with a **list of trading days**, because the minute endpoint takes no date: it is asked
+once for the widest window it will serve — 800 bars, which is about four 1-minute sessions and
+fifty 15-minute ones — and offers back only the days it returned **whole**, judged by how many bars
+they carry and whether the last one is stamped 15:00, so neither today's unfinished session nor a
+day cut in half by the request limit can be drawn as though it were complete. Changing the day
+redraws the frame without fetching anything again, and the x-axis runs on clock time rather than bar
+order, which leaves the lunch break the gap it actually was.
 
 It is also the first page with **two animations**, because a candle series raises a question the
 others do not. **Growing** draws one more candle per step until the whole range is on screen —
@@ -904,7 +916,8 @@ src/MarketMotionStudio/
                    InstrumentCalendar (one instrument's bars as that record),
                    HistoryWalk (years of closes, walked backwards a page at a time),
                    DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding),
-                   CandleSeries (daily/weekly/monthly bars, and the two animations' shapes),
+                   CandleSeries (daily/weekly/monthly bars, the two animations' shapes,
+                   and one trading day down to minutes),
                    MarketCaps (the fifteen-per-market field, and today's value turned into a history),
                    AhPremium (the A+H pairs, and the one page that must not use adjusted prices),
                    ExtremeDays (one instrument's largest single-day moves, rows that are days),
@@ -1166,6 +1179,10 @@ first export asks and then remembers.
 - **The console shows a log line per request and the walk logs one per page**, which for a
   ten-year fifteen-listing board is about ninety lines. It is not a problem, but it is the
   loudest thing this app does and worth knowing before reading a log.
-- **Only the A-share and US candle pages have been fetched end to end**, each 18 checks. The
-  Hong Kong one has not; neither has weekly or monthly through the page, nor an export at any
-  format other than the default.
+- **Only the A-share and US candle pages have been fetched end to end**, each 18 checks, plus 13 on
+  the day ranges. The Hong Kong one has not; neither has weekly or monthly through the page, nor an
+  export at any format other than the default. **The 1/5/15-minute periods were driven on a real
+  device too** — 68 checks, including the bar count of a session, the offered days matching what the
+  source actually returned, the lunch gap measured by counting empty pixel columns, and that changing
+  the day redraws without fetching again. Nothing has been exported at those periods, and no other
+  market's minute page exists to drive.
