@@ -856,4 +856,10 @@
   <data name="DcaSkipped"><value>（{0} 在區間內沒有數據，已跳過）</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · 每次 {1} {2} · {3} 個計劃自 {4} 起</value></data>
   <data name="DcaLeaderLine"><value>{0} · 目前收益率</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>浮水印</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>每一幀匯出的畫面背景上都會帶著這個名字：淡淡的、斜向重複，畫在數據之下，所以永遠不會和數據搶眼。預覽、影片與封面圖都有。</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>為匯出的畫面加上標記</value></data>
+  <data name="SettingsWatermarkText.Header"><value>寫什麼</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>預設開啟：影片會被發到一個完全看不出它是在哪裡做出來的地方。留空會回到上面的名字；關掉則畫面上什麼都不加。</value></data>
 </root>

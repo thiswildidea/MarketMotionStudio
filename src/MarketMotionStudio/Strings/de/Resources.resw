@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>({0} hatten im Zeitraum keinen Kurs und blieben außen vor)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · je {1} {2} · {3} Pläne ab {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · Rendite bisher</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Wasserzeichen</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>Der Name, der über den Hintergrund jedes exportierten Bilds liegt — blass, geneigt und wiederholt, unter den Daten gezeichnet, damit er ihnen nie Konkurrenz macht. Er gilt für das Video und das Titelbild ebenso wie für die Vorschau.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Exportierte Bilder kennzeichnen</value></data>
+  <data name="SettingsWatermarkText.Header"><value>Was dort steht</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>Standardmäßig an: Ein Video landet irgendwo, das nichts darüber verrät, wo es entstanden ist. Leer gelassen gilt wieder der Name darüber; ausgeschaltet tragen die Bilder nichts.</value></data>
 </root>

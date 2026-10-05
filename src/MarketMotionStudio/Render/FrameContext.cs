@@ -32,8 +32,16 @@
 /// backdrop chosen after an export has started cannot change the frames part-way
 /// through the file: the encoder builds one of these for the whole run.
 /// </param>
+/// <param name="Watermark">
+/// The name carried across the backdrop of this frame, or null when it is off.
+///
+/// Here for the reason the <see cref="Backdrop"/> is: it is drawn as part of the
+/// backdrop, by <see cref="Backdrop.Fill"/>, and a mark turned on or off after
+/// an export has started must not appear in half of the file.
+/// </param>
 public sealed record FrameContext(
-    VideoFormat Format, ChartMargins BaselineMargins, double Progress, Backdrop Backdrop)
+    VideoFormat Format, ChartMargins BaselineMargins, double Progress, Backdrop Backdrop,
+    Watermark? Watermark)
 {
     public double Width => Format.Width;
 

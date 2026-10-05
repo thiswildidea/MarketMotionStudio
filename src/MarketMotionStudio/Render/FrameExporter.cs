@@ -43,12 +43,15 @@ public static class FrameExporter
 
         // Read once, before drawing: the frame's backdrop is the one chosen when
         // the cover was asked for, not one that may have been changed since.
+        // The watermark is read with it and for the same reason — a mark turned
+        // on halfway through must not appear in half of one image.
         var backdrop = AnimationBackdrop.Current;
+        var watermark = WatermarkSettings.Current;
 
         using (var session = target.CreateDrawingSession())
         {
             // No transform. This is the encoder's path, not the preview's.
-            renderer.Draw(session, new FrameContext(format, margins, progress, backdrop));
+            renderer.Draw(session, new FrameContext(format, margins, progress, backdrop, watermark));
         }
 
         cancellation.ThrowIfCancellationRequested();

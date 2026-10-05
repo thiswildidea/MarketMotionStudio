@@ -134,6 +134,19 @@ public sealed partial class SettingsPage : Page
         FrameStrengthSlider.Maximum = AnimationBackdrop.MaxStrength;
         FrameStrengthSlider.Value = AnimationBackdrop.Strength;
 
+        // Given their values before the flag is cleared, like everything else:
+        // the switch raises Toggled and the box raises TextChanged on being
+        // filled in, and a change handled while restoring is a write of the
+        // value that was just read.
+        //
+        // The length is the watermark's own limit rather than a number here,
+        // because a box that accepts a sentence and a mark that carries
+        // twenty-four characters are two answers to one question.
+        WatermarkText.MaxLength = WatermarkSettings.MaxLength;
+        WatermarkToggle.IsOn = WatermarkSettings.Enabled;
+        WatermarkText.Text = WatermarkSettings.Text;
+        SettleWatermarkControls();
+
         _loading = false;
 
         SettleFrameBackdropGroups();
@@ -465,6 +478,48 @@ public sealed partial class SettingsPage : Page
         }
 
         PaintSwatches();
+    }
+
+    /// <summary>Whether the exported frames carry the mark at all.</summary>
+    private void OnWatermarkToggled(object sender, RoutedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        WatermarkSettings.Enabled = WatermarkToggle.IsOn;
+        SettleWatermarkControls();
+    }
+
+    /// <summary>
+    /// What the mark says. Stored as it is typed rather than on a commit, so the
+    /// strip below is showing the name before the box is left.
+    /// </summary>
+    private void OnWatermarkTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        WatermarkSettings.Text = WatermarkText.Text;
+        SettleWatermarkControls();
+    }
+
+    /// <summary>
+    /// What the watermark card shows, given the two controls on it.
+    ///
+    /// The strip is given the resolved watermark rather than the typed text:
+    /// blank falls back to the default name and off resolves to nothing, and
+    /// both of those are the settings' answers, not this page's. An empty strip
+    /// with no mark on it is the preview of a file with no mark on it, which is
+    /// the thing the switch asks for and the only way to see it here.
+    /// </summary>
+    private void SettleWatermarkControls()
+    {
+        WatermarkText.IsEnabled = WatermarkToggle.IsOn;
+        WatermarkSample.Watermark = WatermarkSettings.Current;
     }
 
     private void OnFramePictureChosen(object sender, ItemClickEventArgs e)

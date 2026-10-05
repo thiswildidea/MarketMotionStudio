@@ -1172,6 +1172,29 @@ a `CanvasBitmap` belongs to the device that created it and the preview and the e
 share one — a single cache would hand each the other's bitmap. And a picture that fails to load
 has its path remembered anyway, or a 2,700-frame export retries it 2,700 times.
 
+## The watermark, and why it is on by default
+
+Every exported frame carries a name across its backdrop — slanted at 45° and repeated, drawn
+**under** the data rather than over it, faint enough (a tenth of the way to white) that nothing
+drawn on top of it changes colour. It is on until it is switched off, and it says `周期留白` until
+someone types their own.
+
+On by default, because opting in is the wrong default here: a video leaves the app as a file and is
+posted somewhere that shows nothing of where it was made, so the alternative is that nearly every
+file goes out unsigned. The default wording does not follow the interface language — a signature
+that changed with the language would be a different signature on every machine.
+
+Two decisions worth stating. It is drawn **as part of the backdrop**, from `Backdrop.Fill`, which
+is the one call every renderer fills its frame through: putting it in each renderer instead would
+be twenty-odd copies of the same line, where the one that is forgotten is the page whose videos go
+out unsigned and nobody notices until one is posted. And the pattern is cached **as one layer per
+device**: tiling a 1080×1920 frame is over a hundred pieces of text, and an export is thousands of
+frames.
+
+Blank does not mean off — it falls back to the default wording, because "deleted" and "switched
+off" would otherwise be the same control asking the same question twice. Off resolves to `null`, so
+a renderer with no watermark is one with nothing to draw rather than one that has to be asked.
+
 ## Settings are remembered, results are not
 
 Range, duration, resolution, frame rate, quality, margins, the typed title, the chosen form, the

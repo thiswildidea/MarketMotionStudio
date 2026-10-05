@@ -449,6 +449,10 @@ Auf der Einstellungsseite lässt sich ändern, worauf die Animation gezeichnet w
 
 - Der Regler für die Abdunklung bestimmt, wie weit das Bild zum eigenen Hintergrund der Seite zurückgenommen wird: 20 % bis 95 %.
 
+- **Jedes Bild trägt außerdem einen Namen über seinem Hintergrund: das Wasserzeichen.** Es ist standardmäßig an, steht auf „周期留白“, bis Sie es ändern, und der Wortlaut gehört Ihnen. Es wird schräg über das ganze Bild wiederholt, **unter** den Daten gezeichnet, also überdeckt es nichts; Vorschau, exportiertes Video und Titelbild tragen es gleichermaßen. Leer gelassen gilt wieder der Standardname — damit gar nichts erscheint, schalten Sie es ab. Der Schalter ist standardmäßig an, weil ein Video irgendwo landet, das nichts darüber verrät, wo es entstanden ist.
+
+- Der Standardwortlaut folgt nicht der Sprache der Oberfläche: Ein Wasserzeichen ist eine Unterschrift, und eine Unterschrift, die mit der Sprache wechselt, wäre auf jedem Rechner eine andere.
+
 ## Die Daten, und was sie nicht sagen
 
 Kurse kommen von den öffentlichen Endpunkten von Tencent Finance, und das Bild nennt die Quelle immer. Diese Videos beschreiben, was schon gehandelt wurde. Sie dienen nur als Anhaltspunkt und sind keine Anlageberatung.

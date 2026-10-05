@@ -435,6 +435,10 @@ Na página de configurações você pode mudar sobre o que a animação é desen
 
 - O controle de escurecimento define o quanto a imagem volta para o fundo próprio da página, de 20% a 95%.
 
+- **Cada quadro também carrega um nome no seu fundo: a marca d'água.** Ela vem ativada por padrão, diz «周期留白» até você mudar, e a redação é sua. Repete-se na diagonal por todo o quadro, desenhada **abaixo** dos dados, portanto não cobre nada; a pré-visualização, o vídeo exportado e a imagem de capa a levam igual. Deixada em branco volta ao nome padrão — para não levar nada, desligue-a. O interruptor vem ligado por padrão porque um vídeo é publicado num lugar que não diz nada sobre onde foi feito.
+
+- A redação padrão não segue o idioma da interface: uma marca d'água é uma assinatura, e uma assinatura que mudasse com o idioma seria uma diferente em cada máquina.
+
 ## Os dados, e o que eles não vão dizer
 
 As cotações vêm dos endpoints públicos da Tencent Finance, e o quadro sempre cita a fonte. Estes vídeos descrevem o que já foi negociado. Servem apenas para referência e não são recomendação de investimento.

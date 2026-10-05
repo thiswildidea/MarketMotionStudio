@@ -415,6 +415,10 @@ Na stránce nastavení můžete změnit, na co se animace kreslí: vestavěný p
 
 - Posuvník ztmavení určuje, jak silně se obrázek vrací k vlastnímu pozadí stránky: 20 % až 95 %.
 
+- **Každý snímek nese také jméno na svém pozadí: vodoznak.** Je ve výchozím stavu zapnutý, říká „周期留白“, dokud ho nezměníte, a znění je vaše. Opakuje se šikmo přes celý obraz, kreslený **pod** daty, takže nic nezakrývá; náhled, exportované video i titulní obrázek ho nesou stejně. Prázdný se vrací k výchozímu jménu — aby se neslo nic, je třeba ho vypnout. Přepínač je zapnutý ve výchozím stavu, protože video končí někde, kde nic neříká, kde vzniklo.
+
+- Výchozí znění se neřídí jazykem rozhraní: vodoznak je podpis, a podpis, který by se měnil s jazykem, by byl na každém počítači jiný.
+
 ## Data a co neřeknou
 
 Kurzy přicházejí z veřejných rozhraní Tencent Finance a záběr zdroj vždy uvádí. Tato videa popisují to, co už bylo zobchodováno. Slouží pouze pro orientaci a nejsou investičním doporučením.

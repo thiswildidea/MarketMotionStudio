@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>({0} neměly v rozsahu žádný kurz a byly vynechány)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · po {1} {2} · {3} plánů od {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · výnos zatím</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Vodoznak</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>Jméno nesené pozadím každého exportovaného snímku — slabé, šikmé a opakované, kreslené pod daty, aby s nimi nesoupeřilo. Platí pro video i titulní obrázek stejně jako pro náhled.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Označovat exportované snímky</value></data>
+  <data name="SettingsWatermarkText.Header"><value>Co říká</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>Ve výchozím stavu zapnuto: video končí někde, kde nic neříká, kde vzniklo. Prázdné se vrací k výše uvedenému jménu; vypnuto — snímky nenesou nic.</value></data>
 </root>

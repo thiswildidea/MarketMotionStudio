@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>({0} n'avaient pas de cours sur la période et ont été écartés)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · {1} {2} chacun · {3} plans depuis le {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · rendement à ce jour</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Filigrane</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>Le nom porté par le fond de chaque image exportée — pâle, incliné et répété, dessiné sous les données pour ne jamais leur faire concurrence. Il s'applique à la vidéo et à l'image de couverture comme à l'aperçu.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Signer les images exportées</value></data>
+  <data name="SettingsWatermarkText.Header"><value>Ce qu'il dit</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>Activé par défaut : une vidéo est publiée quelque part qui ne dit rien d'où elle a été faite. Laissé vide, il reprend le nom ci-dessus ; désactivé, les images ne portent rien.</value></data>
 </root>

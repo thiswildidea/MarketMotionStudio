@@ -868,4 +868,10 @@
   <data name="DcaSkipped"><value>({0} had no price in the range and was left out)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · {1} {2} each · {3} plans from {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · return so far</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Watermark</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>The name carried across the backdrop of every exported frame — faint, slanted and repeated, drawn under the data so it never competes with it. It reaches the video and the cover image as well as the preview.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Sign exported frames</value></data>
+  <data name="SettingsWatermarkText.Header"><value>What it says</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>On by default: a video is posted somewhere that shows nothing of where it was made. Left blank it falls back to the name above; switched off, the frames carry nothing.</value></data>
 </root>

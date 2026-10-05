@@ -432,6 +432,10 @@ Na stronie ustawień możesz zmienić to, na czym rysowana jest animacja: wbudow
 
 - Suwak przyciemnienia decyduje, jak mocno obraz jest cofany do własnego tła strony: od 20% do 95%.
 
+- **Każda klatka niesie też nazwę na swoim tle: znak wodny.** Jest domyślnie włączony, głosi „周期留白”, dopóki go nie zmienisz, a treść jest twoja. Powtarza się ukośnie po całym obrazie, rysowany **pod** danymi, więc niczego nie zasłania; podgląd, eksportowane wideo i okładka niosą go tak samo. Pusty wraca do nazwy domyślnej — żeby nie było go wcale, trzeba go wyłączyć. Przełącznik jest domyślnie włączony, bo wideo trafia w miejsce, które nic nie mówi o tym, gdzie powstało.
+
+- Domyślna treść nie podąża za językiem interfejsu: znak wodny to podpis, a podpis, który zmieniałby się wraz z językiem, byłby na każdym komputerze innym podpisem.
+
 ## Dane i to, czego nie powiedzą
 
 Notowania pochodzą z publicznych punktów końcowych Tencent Finance, a kadr zawsze podaje źródło. Te filmy opisują to, co już zostało zawarte. Są wyłącznie informacyjne i nie stanowią porady inwestycyjnej.

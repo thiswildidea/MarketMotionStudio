@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>({0} nie miały kursu w przedziale i zostały pominięte)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · po {1} {2} · {3} planów od {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · zwrot do tej pory</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Znak wodny</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>Nazwa niesiona przez tło każdej eksportowanej klatki — blada, pochylona i powtarzana, rysowana pod danymi, by z nimi nie konkurować. Dotyczy wideo i okładki tak samo jak podglądu.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Oznaczać eksportowane klatki</value></data>
+  <data name="SettingsWatermarkText.Header"><value>Co mówi</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>Domyślnie włączone: wideo trafia w miejsce, które nic nie mówi o tym, gdzie powstało. Puste wraca do nazwy powyżej; wyłączone — klatki nie niosą niczego.</value></data>
 </root>

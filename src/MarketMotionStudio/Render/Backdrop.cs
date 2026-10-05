@@ -57,6 +57,21 @@ public sealed record Backdrop(
     public void Fill(
         CanvasDrawingSession session, FrameContext context, (float Position, Color Colour)[] fallback)
     {
+        FillBackdrop(session, context, fallback);
+
+        // **The watermark, here and nowhere else.** It belongs to the backdrop:
+        // after whatever was chosen for the frame, before anything the renderer
+        // draws on it. Every renderer reaches its backdrop through this call, so
+        // this is what makes "every page" true — the alternative is a line in
+        // each of them, where the one that is left out is the page whose videos
+        // go out unsigned and nobody notices until one is posted.
+        context.Watermark?.Draw(session, context);
+    }
+
+    /// <summary>Fills the whole frame with the backdrop itself, watermark aside.</summary>
+    private void FillBackdrop(
+        CanvasDrawingSession session, FrameContext context, (float Position, Color Colour)[] fallback)
+    {
         var box = new Rect(0, 0, context.Width, context.Height);
 
         if (Kind == BackdropKind.Colour)

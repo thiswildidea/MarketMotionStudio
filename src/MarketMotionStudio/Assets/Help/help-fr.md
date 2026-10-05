@@ -454,6 +454,10 @@ La page Paramètres permet de changer ce sur quoi l'animation est dessinée : le
 
 - Le curseur d'assombrissement règle à quel point l'image est ramenée vers le fond propre à la page, de 20 % à 95 %.
 
+- **Chaque image porte aussi un nom sur son fond : le filigrane.** Il est activé par défaut, il dit « 周期留白 » jusqu'à ce que vous le changiez, et le libellé vous appartient. Il se répète en diagonale sur toute l'image, dessiné **sous** les données, donc il ne cache rien ; l'aperçu, la vidéo exportée et l'image de couverture le portent également. Laissé vide, il reprend le nom par défaut — pour ne rien porter du tout, désactivez-le. L'interrupteur est activé par défaut parce qu'une vidéo est publiée quelque part qui ne dit rien d'où elle a été faite.
+
+- Le libellé par défaut ne suit pas la langue de l'interface : un filigrane est une signature, et une signature qui changerait avec la langue en serait une différente sur chaque machine.
+
 ## Les données, et ce qu'elles ne diront pas
 
 Les cours viennent des points d'accès publics de Tencent Finance, et l'image cite toujours la source. Ces vidéos décrivent ce qui s'est déjà échangé. Elles sont fournies à titre indicatif et ne constituent pas un conseil en investissement.

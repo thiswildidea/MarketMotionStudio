@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>({0} não tinham preço no intervalo e ficaram de fora)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · {1} {2} cada · {3} planos desde {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · retorno até agora</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Marca d'água</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>O nome que atravessa o fundo de cada quadro exportado — tênue, inclinado e repetido, desenhado abaixo dos dados para não competir com eles. Vale para o vídeo e para a imagem de capa como para a pré-visualização.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Marcar os quadros exportados</value></data>
+  <data name="SettingsWatermarkText.Header"><value>O que diz</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>Ativado por padrão: um vídeo é publicado em algum lugar que não diz nada sobre onde foi feito. Deixado em branco, volta ao nome acima; desligado, os quadros não levam nada.</value></data>
 </root>

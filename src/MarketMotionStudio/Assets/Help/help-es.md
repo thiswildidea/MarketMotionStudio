@@ -440,6 +440,10 @@ En la página de configuración puedes cambiar sobre qué se dibuja la animació
 
 - El control de atenuación decide cuánto se retira la imagen hacia el fondo propio de la página, del 20 % al 95 %.
 
+- **Cada fotograma lleva además un nombre sobre su fondo: la marca de agua.** Está activada por defecto, dice «周期留白» hasta que la cambies, y la redacción es tuya. Se repite en diagonal por todo el cuadro, dibujada **bajo** los datos, de modo que no tapa nada; la vista previa, el vídeo exportado y la imagen de portada la llevan igual. Si se deja vacía vuelve al nombre por defecto — para que no aparezca nada, desactívala. El interruptor está activado por defecto porque un vídeo se publica en un lugar que no dice nada de dónde se hizo.
+
+- La redacción por defecto no sigue el idioma de la interfaz: una marca de agua es una firma, y una firma que cambiara con el idioma sería una distinta en cada equipo.
+
 ## Los datos, y lo que no le dirán
 
 Las cotizaciones vienen de los puntos de acceso públicos de Tencent Finance, y el encuadre siempre cita la fuente. Estos vídeos describen lo que ya se ha negociado. Son solo a título informativo y no constituyen asesoramiento de inversión.

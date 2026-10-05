@@ -92,7 +92,12 @@ public static class VideoExporter
         // Resolved once for the whole run. Every frame of one file is drawn on the
         // same backdrop, whatever is chosen while it is encoding — the same reason
         // the format and the margins are read before the work starts.
+        //
+        // The watermark is resolved with it, and for the same reason: a file is
+        // signed or it is not, and one whose first thousand frames carry the
+        // mark and whose last thousand do not is worse than either.
         var backdrop = AnimationBackdrop.Current;
+        var watermark = WatermarkSettings.Current;
 
         var next = 0;
         Exception? failure = null;
@@ -128,7 +133,7 @@ public static class VideoExporter
                     {
                         // No transform, exactly as the cover export does it. Same renderer, same context
                         // type, no preview-specific path.
-                        renderer.Draw(session, new FrameContext(format, margins, fraction, backdrop));
+                        renderer.Draw(session, new FrameContext(format, margins, fraction, backdrop, watermark));
                     }
 
                     var pixels = target.GetPixelBytes();

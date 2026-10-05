@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>（期間内に価格がなかった {0} は除外しました）</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · 各 {1}{2} · {3} 件のプラン（{4} から）</value></data>
   <data name="DcaLeaderLine"><value>{0} · 現時点の運用利回り</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>透かし</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>書き出すすべてのフレームの背景に、斜めに繰り返し薄く記される名前です。データの下に描くので、データの読み取りを邪魔しません。プレビューだけでなく動画とカバー画像にも入ります。</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>書き出すフレームに署名する</value></data>
+  <data name="SettingsWatermarkText.Header"><value>表示する名前</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>既定でオンです。動画は、どこで作られたかを何も示さない場所に投稿されるものだからです。空にすれば上の名前に戻り、オフにすればフレームには何も入りません。</value></data>
 </root>

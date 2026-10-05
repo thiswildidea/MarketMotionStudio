@@ -420,6 +420,10 @@ Ayarlar sayfasında animasyonun neyin üzerine çizileceğini değiştirebilirsi
 
 - Karartma sürgüsü, resmin sayfanın kendi arka planına ne kadar geri çekileceğini belirler: %20 ile %95 arası.
 
+- **Her kare, fonunda bir ad daha taşır: filigran.** Varsayılan olarak açıktır, siz değiştirene kadar „周期留白“ yazar ve metin sizindir. Tüm kare boyunca eğik olarak yinelenir, verilerin **altına** çizilir, yani hiçbir şeyi kapatmaz; önizleme, dışa aktarılan video ve kapak görseli de onu taşır. Boş bırakılırsa varsayılan ada döner — hiçbir şey taşınmasın isterseniz kapatmanız gerekir. Anahtar varsayılan olarak açıktır, çünkü bir video nerede üretildiğini hiç göstermeyen bir yerde yayımlanır.
+
+- Varsayılan metin, arayüz dilini takip etmez: bir filigran bir imzadır ve dille birlikte değişen bir imza her makinede farklı bir imza olurdu.
+
 ## Veri ve söylemeyecekleri
 
 Fiyatlar Tencent Finance'in herkese açık uç noktalarından gelir ve kare kaynağı her zaman belirtir. Bu videolar zaten gerçekleşmiş işlemleri anlatır. Yalnızca bilgi amaçlıdır ve yatırım tavsiyesi değildir.

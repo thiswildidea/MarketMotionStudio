@@ -68,6 +68,12 @@ public sealed class PreviewSurface : Grid
         // would change nothing until something else happened to redraw.
         AnimationBackdrop.Changed += (_, _) => Redraw();
 
+        // And the watermark, chosen on the same page and for the same reason:
+        // the Settings page holds no reference to this one, so without this a
+        // name typed there would appear nowhere until something else happened
+        // to redraw.
+        WatermarkSettings.Changed += (_, _) => Redraw();
+
         // Win2D holds device resources that the XAML tree does not release for it.
         // A page that is navigated away from and collected takes its controls with
         // it, but the swap chain is not part of that, and the leak shows up as
@@ -129,7 +135,12 @@ public sealed class PreviewSurface : Grid
         // not itself be scaled, or the frame drifts off centre as the window grows.
         session.Transform = Matrix3x2.CreateScale((float)fit) * Matrix3x2.CreateTranslation(offset);
 
-        var context = new FrameContext(Format, Margins, Progress, AnimationBackdrop.Current);
+        // The watermark is read here rather than inside the renderer for the
+        // reason the backdrop is: this is a preview of a file, and the two have
+        // to agree. It is re-read every frame, which is what makes a change on
+        // the Settings page show up here as soon as it is made.
+        var context = new FrameContext(
+            Format, Margins, Progress, AnimationBackdrop.Current, WatermarkSettings.Current);
 
         if (Renderer is { } renderer)
         {

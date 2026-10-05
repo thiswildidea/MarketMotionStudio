@@ -448,6 +448,10 @@ Nella pagina Impostazioni puoi cambiare ciò su cui viene disegnata l'animazione
 
 - Il cursore di attenuazione decide quanto l'immagine viene riportata verso lo sfondo proprio della pagina, dal 20% al 95%.
 
+- **Ogni fotogramma porta anche un nome sul proprio sfondo: la filigrana.** È attiva per impostazione predefinita, dice «周期留白» finché non la cambi, e la formulazione è tua. Si ripete in diagonale su tutto il quadro, disegnata **sotto** i dati, quindi non copre nulla; anteprima, video esportato e immagine di copertina la portano allo stesso modo. Lasciata vuota torna al nome predefinito — per non portare nulla, va disattivata. L'interruttore è acceso per default perché un video finisce dove nulla dice da dove viene.
+
+- La formulazione predefinita non segue la lingua dell'interfaccia: una filigrana è una firma, e una firma che cambiasse con la lingua sarebbe una diversa su ogni macchina.
+
 ## I dati, e ciò che non diranno
 
 Le quotazioni vengono dagli endpoint pubblici di Tencent Finance, e l'inquadratura cita sempre la fonte. Questi video descrivono ciò che è già stato scambiato. Sono solo a titolo informativo e non costituiscono una consulenza di investimento.

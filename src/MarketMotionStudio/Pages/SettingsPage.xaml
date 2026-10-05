@@ -3,7 +3,8 @@
     x:Class="MarketMotionStudio.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mux="using:Microsoft.UI.Xaml.Controls">
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:views="using:MarketMotionStudio.Views">
 
     <ScrollViewer>
         <!-- Centred rather than pinned left. The page is a column of cards that
@@ -221,6 +222,49 @@
                                 StepFrequency="5"
                                 ValueChanged="OnFrameDimChanged" />
                     </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- The name carried across the backdrop of every frame.
+
+                 Its own card rather than another row on the backdrop's: that one
+                 is about how the frame looks, this one is about what the file says
+                 once it has left the app, and they are turned off for different
+                 reasons — one because a picture suits the channel better, the
+                 other because the file is going somewhere it should not be
+                 signed. -->
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsWatermarkLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsWatermarkNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <ToggleSwitch x:Name="WatermarkToggle"
+                                  x:Uid="SettingsWatermarkToggle"
+                                  Toggled="OnWatermarkToggled" />
+
+                    <TextBox x:Name="WatermarkText"
+                             x:Uid="SettingsWatermarkText"
+                             Width="280"
+                             HorizontalAlignment="Left"
+                             TextChanged="OnWatermarkTextChanged" />
+
+                    <!-- The mark as it will be laid across the frame, on the
+                         frame's own backdrop. Not decoration: the strip is the
+                         only place on this page where a name just typed becomes
+                         visible, and the frames themselves are on another page
+                         entirely. -->
+                    <views:WatermarkPreview x:Name="WatermarkSample" Height="72" />
+
+                    <TextBlock x:Uid="SettingsWatermarkHint"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                 </StackPanel>
             </Border>
 

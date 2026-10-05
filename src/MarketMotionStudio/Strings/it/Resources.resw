@@ -857,4 +857,10 @@
   <data name="DcaSkipped"><value>({0} non avevano prezzi nel periodo e sono stati esclusi)</value></data>
   <data name="DcaCompareSubtitle"><value>{0} · {1} {2} ciascuno · {3} piani dal {4}</value></data>
   <data name="DcaLeaderLine"><value>{0} · rendimento finora</value></data>
+  <data name="SettingsWatermarkLabel.Text"><value>Filigrana</value></data>
+  <data name="SettingsWatermarkNote.Text"><value>Il nome che attraversa lo sfondo di ogni fotogramma esportato — tenue, inclinato e ripetuto, disegnato sotto i dati per non fargli mai concorrenza. Rigguarda il video e l'immagine di copertina come l'anteprima.</value></data>
+  <data name="SettingsWatermarkToggle.Header"><value>Contrassegnare i fotogrammi esportati</value></data>
+  <data name="SettingsWatermarkText.Header"><value>Cosa dice</value></data>
+  <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
+  <data name="SettingsWatermarkHint.Text"><value>Attivo per impostazione predefinita: un video finisce dove nulla dice da dove viene. Lasciato vuoto torna al nome sopra; disattivato, i fotogrammi non portano nulla.</value></data>
 </root>
