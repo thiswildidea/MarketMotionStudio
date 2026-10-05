@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>期間内に価格がなかった {0} 銘柄は除外しました：{1}</value></data>
   <data name="PositionTooMany"><value>同時に比較できるのは最大 {0} 銘柄です。いま {1} 銘柄が選ばれています</value></data>
   <data name="PositionNoMarketPicks"><value>マイリストに{0}市場の銘柄がありません</value></data>
+  <data name="PositionMotionLabel.Header"><value>進行</value></data>
+  <data name="PositionMotionGrow"><value>全区間を描く</value></data>
+  <data name="PositionMotionScroll"><value>窓をスクロール</value></data>
+  <data name="PositionWindowLabel.Header"><value>表示日数</value></data>
 </root>

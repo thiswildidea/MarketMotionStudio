@@ -409,6 +409,7 @@ Un acquisto, tenuto — un milione dello stesso nome dal 2015 — animato per mo
 - Capitale iniziale e periodo di detenzione sono tuoi; il periodo può essere di tre, cinque o dieci anni, o fino a dove arrivano i dati (circa tredici anni).
 - Il rendimento è calcolato su chiusure rettificate all'indietro — dividendi reinvestiti, nessuna commissione. La rettifica all'indietro si ancora alla quotazione e accumula i dividendi in avanti, così i primi anni di un grande pagatore non diventano mai negativi, come può fare la rettifica in avanti.
 - Lo stesso periodo **Personalizzato** vale per la detenzione: indica due date, poi premi il pulsante per recuperare i dati. Se lo strumento è stato quotato dopo la data indicata, la detenzione inizia nel suo primo giorno di negoziazione.
+- **Due animazioni.** *Tutto l'intervallo* dispiega l'intero periodo in una volta, quindi la forma della curva sullo schermo è la sua forma nel tempo. *Finestra scorrevole* mantiene una finestra di un numero fisso di giorni di contrattazione e la fa avanzare dall'inizio alla fine del periodo: è l'unico modo perché una lunga serie giornaliera resti leggibile nei suoi movimenti, perché distribuita su dodici anni una discesa di tre mesi sono due pixel. La finestra conta solo nello scorrimento, ed entrambe le animazioni leggono **gli stessi dati**: cambiare non ricarica nulla.
 
 ## Video
 

@@ -401,6 +401,7 @@ Una compra, mantenida —un millón del mismo valor desde 2015—, animada para 
 - El capital inicial y el periodo de tenencia son tuyos; el periodo puede ser de tres, cinco o diez años, o hasta donde lleguen los datos (unos trece años).
 - La rentabilidad se calcula sobre cierres ajustados hacia atrás — dividendos reinvertidos, sin comisiones. El ajuste hacia atrás se ancla en la salida a bolsa y acumula los dividendos hacia delante, así que los primeros años de un gran pagador nunca se vuelven negativos, como puede pasar con el ajuste hacia delante.
 - El mismo rango **Personalizado** vale para la tenencia: indica dos fechas y pulsa obtener datos. Si el instrumento empezó a cotizar después de la fecha indicada, la tenencia comienza su primer día de negociación.
+- **Dos modos de avance.** *Crecer por todo el periodo* despliega todo el intervalo de una vez, así que la forma de la curva en pantalla es su forma en el tiempo. *Desplazar una ventana* mantiene una ventana de un número fijo de días de cotización y la recorre desde el inicio hasta el fin del intervalo: es la única forma de que una serie diaria larga conserve legibles sus oscilaciones, porque repartida en doce años una caída de tres meses son dos píxeles. La ventana solo cuenta al desplazar, y ambos modos leen **los mismos datos**: cambiar no vuelve a descargar.
 
 ## Vídeo
 

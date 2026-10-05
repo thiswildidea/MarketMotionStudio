@@ -33,7 +33,9 @@ seventh and the mirror image of the plan: one purchase, once — 2015, a million
 and nothing but the mark-to-market after that, with the drawdown promoted to a headline figure
 because a holding's worst moment is the price of its whole story. It is also the one page that
 answers *which of these was the better buy*: up to six holdings on one frame, each in a colour
-of its own, each carrying its gain in money at the end of its own line as the line grows.
+of its own, each carrying its gain in money at the end of its own line as the line grows — and
+the span itself either laid down whole or walked as a window, the candle page's pair of motions
+for the same reason it has them.
 **Candles** is the eighth: one
 instrument's prices as candles — daily, weekly or monthly, and down to **1, 5 or 15 minutes** when
 the page is asked for one single trading day — drawn four ways (candles, OHLC bars, a
@@ -342,6 +344,21 @@ fills — and the closing cards become one card per holding, in its own colour: 
 money it made, and its ratio. Six is the ceiling because six labels, six card values and six
 curves are still a comparison and a dozen is a barcode with its labels on top of one another —
 a limit read off the frame, not off the data.
+
+**Two motions, over one span**, which is the candle page's own pair asked of a different
+quantity. *Grow across the span* lays the whole range down at once, so the curve's shape on screen
+is its shape in time. *Scroll a window* holds a window of a chosen number of trading days and walks
+it from the start of the range to its end — twelve years of daily marks grown across one frame
+leaves a three-month fall two pixels wide, which flattens exactly the wobbles a holder remembers,
+while a sixty-day window keeps them at the width the frame has.
+
+It is a **display** setting and not a data one: switching redraws and re-fetches nothing, which is
+why the window box is offered only while the window is what is moving. The one thing it does *not*
+copy from the candle page is the vertical scale. A candle chart re-fits its price axis to whatever
+its window holds, because a hundred bars of one stock is a different set of prices; this page's
+axis is one number for the whole range in both motions, because the capital line is a constant and
+an axis that re-fitted itself as the window slid would make that flat line wander while nothing
+about the holding had changed.
 
 Three decisions a comparison has to make, and each has a wrong answer that looks right:
 

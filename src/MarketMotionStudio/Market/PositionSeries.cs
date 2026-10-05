@@ -1,6 +1,25 @@
 ﻿namespace MarketMotionStudio.Market;
 
 /// <summary>
+/// How a holding's picture advances.
+///
+/// Two motions, and they answer different questions — the same pair the candle page offers,
+/// and for the same reason. <see cref="Grow"/> lays the whole span down, so the frame is the
+/// holding's entire story and its shape on screen is its shape in time. <see cref="Scroll"/>
+/// holds a window of the span and walks it forward, which is the only way a decade of daily
+/// marks stays wide enough to read: grown across twelve years, a three-month wobble is two
+/// pixels and a crash is a slope.
+/// </summary>
+public enum PositionMotion
+{
+    /// <summary>The whole span, filled from its first day to its last.</summary>
+    Grow = 0,
+
+    /// <summary>A window of fixed length, walked from the start of the span to its end.</summary>
+    Scroll = 1,
+}
+
+/// <summary>
 /// One instrument's holding, laid out along the board's own date axis.
 ///
 /// The value is what the shares bought with the board's capital are worth on that day.

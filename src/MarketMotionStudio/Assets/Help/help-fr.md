@@ -415,6 +415,7 @@ Un achat, conservé — un million du même nom depuis 2015 — animé pour mont
 - Le capital initial et la période de détention sont à vous ; la période couvre trois, cinq ou dix ans, ou aussi loin que les données remontent (environ treize ans).
 - Le rendement est calculé sur des cours rétro-ajustés — dividendes réinvestis, sans frais. L'ajustement rétroactif s'ancre à l'introduction en bourse et cumule les dividendes vers l'avant, si bien que les premières années d'un gros versant ne deviennent jamais négatives, ce que l'ajustement avant peut produire.
 - La même plage **Personnalisée** s'applique à la détention : indiquez deux dates, puis récupérez les données. Si le titre a été coté après la date demandée, la détention commence à son premier jour de cotation.
+- **Deux animations.** *Tracer tout l'intervalle* déploie toute la période d'un coup : la forme de la courbe à l'écran est sa forme dans le temps. *Fenêtre glissante* garde une fenêtre d'un nombre fixe de jours de cotation et la fait avancer du début à la fin de la période — c'est le seul moyen de garder lisibles les oscillations d'une longue série quotidienne : étalée sur douze ans, une baisse de trois mois fait deux pixels. La fenêtre ne compte qu'en défilement, et les deux animations lisent **les mêmes données** : en changer ne recharge rien.
 
 ## Vidéo
 

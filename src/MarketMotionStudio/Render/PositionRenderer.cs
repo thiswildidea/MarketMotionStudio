@@ -31,6 +31,18 @@ namespace MarketMotionStudio.Render;
 /// have to pick one holding to be about, and picking the first would make the frame a statement
 /// about the order the list happened to be in.
 ///
+/// **Two motions, over one span.** <see cref="PositionMotion.Grow"/> lays the whole range across
+/// the frame and fills it; <see cref="PositionMotion.Scroll"/> keeps a window of fixed length and
+/// walks it forward. Both are the same arithmetic — grow is a window as long as the range — and
+/// that is deliberate, because everything else here (the labels, the headline, the closing cards)
+/// reads off the picture and must not have two versions.
+///
+/// The one thing they do *not* share is the vertical scale. A candle chart re-scales to what its
+/// window holds, because a hundred bars of one stock is a different set of prices. This chart's
+/// axis is one number for the whole range in both motions: the capital line is a constant, and an
+/// axis that re-fitted itself as the window slid would make the flat line wander while nothing
+/// about the holding had changed.
+///
 /// Stateless with respect to time per <c>one-render-path.mdc</c>: every frame comes
 /// from <see cref="FrameContext.Progress"/> alone.
 /// </summary>
@@ -88,6 +100,15 @@ public sealed class PositionRenderer : IFrameRenderer
 
     private readonly AnimationPlan _plan;
 
+    /// <summary>How the picture advances; see the class note.</summary>
+    private readonly PositionMotion _motion;
+
+    /// <summary>
+    /// How many axis positions the scrolling window holds. Read by the scrolling motion alone —
+    /// the growing one is a window as long as the whole range.
+    /// </summary>
+    private readonly int _window;
+
     private readonly (double Step, double Top) _scale;
 
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
@@ -103,10 +124,15 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </summary>
     public string CurrencyKey { get; set; } = "DcaCurrencyCny";
 
-    public PositionRenderer(PositionBoard board, AnimationPlan plan)
+    public PositionRenderer(PositionBoard board, AnimationPlan plan, PositionMotion motion, int window)
     {
         _board = board;
         _plan = plan;
+        _motion = motion;
+
+        // Two is the least that still draws a line. A window longer than the range is not
+        // wrong — it simply leaves nothing to scroll, and the frame grows instead of rolling.
+        _window = Math.Max(2, window);
 
         // One axis for every line: they are the same quantity in the same currency, and
         // the whole point of the picture is the distance between them.
@@ -195,7 +221,9 @@ public sealed class PositionRenderer : IFrameRenderer
         if (moving < 0)
         {
             DrawLegend(session, context, top, introA);
-            DrawXLabels(session, context, t, bottom, introA);
+
+            // Nothing has arrived, so nothing is on the frame: an empty window and no labels.
+            DrawXLabels(session, context, t, bottom, introA, n, 0, -1);
 
             return new Plot(-1, new double[_board.Tracks.Count]);
         }
@@ -207,19 +235,37 @@ public sealed class PositionRenderer : IFrameRenderer
             eased[i] = Easing.OutCubic(Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), _plan.BarMs));
         }
 
-        double Across(int i) => mx + (n > 1 ? plotW * i / (n - 1) : 0);
+        // The window: how many axis positions it holds, where its right edge has reached, and
+        // where its left one therefore is. Growing is the same arithmetic with a window as long
+        // as the range, which is why the two motions share every line of drawing below.
+        //
+        // The right edge leads the arrival by the part of the arriving point that has come
+        // through, so the window is already sliding while that point is still growing into
+        // place — a roll rather than a step per day.
+        var count = _motion is PositionMotion.Scroll ? Math.Min(_window, n) : n;
+        var head = _motion is PositionMotion.Scroll ? Math.Max(moving + eased[moving], count - 1) : moving;
+        var first = _motion is PositionMotion.Scroll ? head - (count - 1) : 0;
 
-        // The capital, which is one number for the whole board and therefore one line.
-        var capitalLine = new List<(double X, double Y)>(moving + 1);
-        var capitals = new double[moving + 1];
+        // Where the window's left edge falls, rounded **up**: a point to the left of it lands
+        // off the plot, over the axis labels, and the curve has to start at the chart's edge.
+        var left = Math.Max(0, (int)Math.Ceiling(first));
 
-        for (var i = 0; i <= moving; i++)
+        double Across(int i) => mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);
+
+        // The capital, which is one number for the whole board and therefore one line. A window
+        // that opens inside the range starts already at the capital — the line has been at that
+        // level since the first purchase, and easing it up again would draw a second one.
+        var capitalFrom = Math.Max(0, left);
+        var capitalLine = new List<(double X, double Y)>(Math.Max(0, moving - capitalFrom) + 1);
+        var level = capitalFrom == 0 ? 0 : _board.Capital;
+
+        for (var i = capitalFrom; i <= moving; i++)
         {
-            capitals[i] = i == 0
+            level = i == 0
                 ? _board.Capital * eased[i]
-                : capitals[i - 1] + ((_board.Capital - capitals[i - 1]) * eased[i]);
+                : level + ((_board.Capital - level) * eased[i]);
 
-            capitalLine.Add((Across(i), bottom - (capitals[i] / _scale.Top * span)));
+            capitalLine.Add((Across(i), bottom - (level / _scale.Top * span)));
         }
 
         // Each holding's own line. Only its own stretch of the axis is drawn: an instrument
@@ -237,10 +283,20 @@ public sealed class PositionRenderer : IFrameRenderer
             }
 
             var last = Math.Min(moving, track.Last);
-            var points = new (double X, double Y)[last - track.First + 1];
+
+            // The window's left edge cuts a line that is already running, and a holding the
+            // window has not reached yet has nothing on this frame at all.
+            var begin = Math.Max(track.First, left);
+
+            if (last < begin)
+            {
+                continue;
+            }
+
+            var points = new (double X, double Y)[last - begin + 1];
             var value = 0d;
 
-            for (var at = track.First; at <= last; at++)
+            for (var at = begin; at <= last; at++)
             {
                 var p = eased[at];
 
@@ -264,7 +320,7 @@ public sealed class PositionRenderer : IFrameRenderer
                     value = previous + ((track.Value[at] - previous) * p);
                 }
 
-                points[at - track.First] = (Across(at), bottom - (value / _scale.Top * span));
+                points[at - begin] = (Across(at), bottom - (value / _scale.Top * span));
             }
 
             lines.Add((points, Palette.Track(i), track.Name, value - _board.Capital));
@@ -308,7 +364,7 @@ public sealed class PositionRenderer : IFrameRenderer
 
         DrawLabels(session, context, lines, anchors, top, bottom, introA);
         DrawLegend(session, context, top, introA);
-        DrawXLabels(session, context, t, bottom, introA);
+        DrawXLabels(session, context, t, bottom, introA, count, first, head);
 
         // The values the headline reads: each holding's level at the moment being shown, or the
         // last level it had for a holding whose data ended before the animation got there. A
@@ -540,16 +596,22 @@ public sealed class PositionRenderer : IFrameRenderer
     }
 
     /// <summary>A handful of dates under the plot, fading in as the line reaches them.</summary>
-    private void DrawXLabels(CanvasDrawingSession session, FrameContext context, double t, double bottom, double introA)
+    private void DrawXLabels(
+        CanvasDrawingSession session, FrameContext context, double t, double bottom, double introA,
+        int count, double first, double head)
     {
         var n = _board.Dates.Count;
         var mx = context.ChartLeft;
         var plotW = context.ChartWidth;
 
-        var every = Math.Max(1, n / 5);
-        if (n % every == 0 && n / every > 5)
+        // About five labels across the window in view — the window, not the whole span. A
+        // scrolling chart of a decade has to have its dates read off the sixty days on screen,
+        // and the every-hundred-and-fortieth-day rule that suits the whole range leaves that
+        // window with none at all.
+        var every = Math.Max(1, count / 5);
+        if (count % every == 0 && count / every > 5)
         {
-            every = Math.Max(1, (n / 6) + 1);
+            every = Math.Max(1, (count / 6) + 1);
         }
 
         // A year label when the holding spans years, year-and-month when it spans less —
@@ -560,6 +622,14 @@ public sealed class PositionRenderer : IFrameRenderer
 
         for (var i = 0; i < n; i += every)
         {
+            // The stamps keep their days rather than their slots: a label is placed where its
+            // own date falls, so the row slides with the window instead of being dealt out
+            // again each frame — which is also why the step is taken over the whole axis.
+            if (i < first || i > head)
+            {
+                continue;
+            }
+
             var a = Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), 450) * introA;
             if (a <= 0)
             {
@@ -568,8 +638,9 @@ public sealed class PositionRenderer : IFrameRenderer
 
             var day = _board.Dates[i];
             var text = longSpan ? day.Year.ToString(CultureInfo.InvariantCulture) : day.ToString("yyyy-MM", CultureInfo.InvariantCulture);
+            var x = mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);
 
-            Ink.Centred(session, text, mx + (n > 1 ? plotW * i / (n - 1) : 0), bottom + context.Px(28), format, Palette.DateLabel, a);
+            Ink.Centred(session, text, x, bottom + context.Px(28), format, Palette.DateLabel, a);
         }
     }
 

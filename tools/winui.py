@@ -204,13 +204,37 @@ def combo_items(win, combo, name=None, seconds=5, baseline=None):
 def combo_pick(win, combo, name):
     """Opens a combo and selects the entry called `name`. Returns its name, or None.
 
+    **The return value is "this entry was found and clicked", not "the box now reads
+    that".** Nothing here can confirm the second half: a ComboBox exposes neither
+    `SelectionPattern` nor `ValuePattern` in this app (`GetSelectionPattern()` raises,
+    `GetValuePattern().Value` raises) and its own `Name` is the label above it, so the
+    selection cannot be read back at all. Callers that need to know whether the switch
+    took have to judge it off the picture — see the motion section in
+    `verify-position.py`, where "did it switch back" is answered by where the curve's
+    head sits, because that is the thing the switch is supposed to move.
+
     Retried, because an expand issued while the previous collapse is still animating
     does nothing at all — the menu then looks empty, and the caller reads that as "this
     option does not exist" rather than as "the box was not open yet". Picking a second
     entry straight after listing the first is exactly that sequence: `combo_labels`
     ends by collapsing, and the expand that follows arrives too early. It cost a
     verification run that reported a working menu as a missing option.
+
+    **It collapses both before and after**, and that is not tidiness. `combo_items`
+    expands every time, and an expand on an already-open box is a no-op — so the rows
+    it hands back may be the ones in a pop-up that is on its way out. Selecting a row
+    in a dying pop-up raises nothing and changes nothing, and the caller is told the
+    name it asked for. That is exactly how a switch *back* to the first entry reported
+    success while the box still read the second one: the run redrew, the assertion
+    passed, and every picture after it was of the wrong motion — including the two the
+    next section drew its conclusions from.
     """
+    try:
+        combo.GetExpandCollapsePattern().Collapse()
+        time.sleep(0.4)
+    except Exception:  # noqa: BLE001 - the box can go stale between pages
+        pass
+
     for attempt in range(3):
         items = combo_items(win, combo, name=name)
 
@@ -222,6 +246,13 @@ def combo_pick(win, combo, name):
                 continue
 
             time.sleep(1.2)
+
+            try:
+                combo.GetExpandCollapsePattern().Collapse()
+            except Exception:  # noqa: BLE001 - the popup may already be gone
+                pass
+
+            time.sleep(0.4)
 
             return items[0].Name
 

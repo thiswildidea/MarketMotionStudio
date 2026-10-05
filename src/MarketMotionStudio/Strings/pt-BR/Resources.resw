@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} não tinham preço no intervalo e ficaram de fora: {1}</value></data>
   <data name="PositionTooMany"><value>É possível comparar no máximo {0} ativos; há {1} ligados</value></data>
   <data name="PositionNoMarketPicks"><value>Nenhum ativo da sua lista pertence ao mercado {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Animação</value></data>
+  <data name="PositionMotionGrow"><value>Todo o período</value></data>
+  <data name="PositionMotionScroll"><value>Janela deslizante</value></data>
+  <data name="PositionWindowLabel.Header"><value>Janela (dias)</value></data>
 </root>

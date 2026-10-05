@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} не имели цены в диапазоне и были пропущены: {1}</value></data>
   <data name="PositionTooMany"><value>Сравнить можно не более {0} инструментов; включено {1}</value></data>
   <data name="PositionNoMarketPicks"><value>Ни одного инструмента из списка нет на рынке {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Анимация</value></data>
+  <data name="PositionMotionGrow"><value>Весь диапазон</value></data>
+  <data name="PositionMotionScroll"><value>Скользящее окно</value></data>
+  <data name="PositionWindowLabel.Header"><value>Окно (дней)</value></data>
 </root>

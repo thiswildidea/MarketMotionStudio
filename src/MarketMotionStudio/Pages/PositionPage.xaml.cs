@@ -63,6 +63,20 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
     private readonly StudioPreferences _prefs = new("Position.");
 
+    /// <summary>
+    /// How many trading days the scrolling window holds to begin with — about a quarter, which
+    /// is short enough that a move is visible and long enough that a move is not just noise.
+    ///
+    /// The ends of the range are here rather than in the renderer because a window is a reading
+    /// of marks that have already been fetched: a typed number is worth drawing, and only the
+    /// two extremes are worth refusing to. See <see cref="ChosenWindow"/>.
+    /// </summary>
+    private const int DefaultWindow = 60;
+
+    private const int MinWindow = 10;
+
+    private const int MaxWindow = 500;
+
     private PositionBoard? _board;
 
     /// <summary>The market in force: it names the presets, it is what the list is kept to,
@@ -84,6 +98,20 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         // "As far back as there is": a holding is a years-long story by default, and
         // the walk stops where the listing's own history does.
         RangeCombo.SelectedIndex = 3;
+
+        // Two ways of reading the same marks; see PositionMotion. Growing is
+        // first and default, because on a holding the whole span at once is the answer to the
+        // question the page is asked — the window is for looking closer at part of it.
+        foreach (var (motion, key) in new[]
+                 {
+                     (PositionMotion.Grow, "PositionMotionGrow"),
+                     (PositionMotion.Scroll, "PositionMotionScroll"),
+                 })
+        {
+            MotionCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)motion });
+        }
+
+        MotionCombo.SelectedIndex = 0;
 
         // The two pickers cannot ask for a span one walk cannot gather: past that the
         // walk runs out of requests before it runs out of range, and the holding would
@@ -181,6 +209,46 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     private int ChosenMonths() =>
         RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 0;
 
+    private PositionMotion ChosenMotion() =>
+        MotionCombo.SelectedItem is ComboBoxItem { Tag: int motion }
+            ? (PositionMotion)motion
+            : PositionMotion.Grow;
+
+    /// <summary>
+    /// How many trading days the scrolling window holds.
+    ///
+    /// Clamped rather than refused, unlike the capital: an amount of zero is not a holding, while
+    /// a window is only a reading of marks that have already been fetched — and the two ends of
+    /// the range are still readings. The interface's culture is tried first and the invariant one
+    /// second, the same order the capital box uses. A window as long as the range is legitimate
+    /// and simply leaves nothing to scroll; see <see cref="PositionRenderer"/>.
+    /// </summary>
+    private int ChosenWindow()
+    {
+        var text = WindowBox.Text.Trim();
+
+        var window = int.TryParse(text, NumberStyles.Integer, CultureInfo.CurrentUICulture, out var parsed) ? parsed
+            : int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed) ? parsed
+            : DefaultWindow;
+
+        return Math.Clamp(window, MinWindow, MaxWindow);
+    }
+
+    /// <summary>
+    /// The motion or the window changed. Neither is a term of the fetch — both read the marks
+    /// already on the page — so this redraws and stops there.
+    /// </summary>
+    private void OnLookChanged(object sender, object e)
+    {
+        if (!_ready)
+        {
+            return;
+        }
+
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
     /// <summary>The two dates in the pickers. The span in force only when custom is chosen.</summary>
     private (DateOnly From, DateOnly To) CustomSpan() =>
         (DateOnly.FromDateTime(FromDate.Date.DateTime), DateOnly.FromDateTime(ToDate.Date.DateTime));
@@ -220,7 +288,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
-            Preview.Renderer = new PositionRenderer(board, plan)
+            Preview.Renderer = new PositionRenderer(board, plan, ChosenMotion(), ChosenWindow())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -233,6 +301,10 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
+
+        // The window is a term of the scrolling motion alone; offered at any other time it
+        // reads as a setting the chart is ignoring.
+        WindowBox.IsEnabled = ChosenMotion() is PositionMotion.Scroll;
 
         VideoSettings.TitlePlaceholder = DefaultTitle();
 
@@ -623,6 +695,12 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         var index = Array.FindIndex(Ranges, r => r.Months == months);
         RangeCombo.SelectedIndex = index >= 0 ? index : 3;
 
+        // The motion is one of the two entries the constructor added, and the window goes back
+        // through the same clamp a typed one does — a remembered 600 comes back as 500.
+        MotionCombo.SelectedIndex = _prefs.GetInt("Motion", (int)PositionMotion.Grow) == (int)PositionMotion.Scroll ? 1 : 0;
+        WindowBox.Text = Math.Clamp(_prefs.GetInt("Window", DefaultWindow), MinWindow, MaxWindow)
+            .ToString(CultureInfo.InvariantCulture);
+
         // Three years, so the two pickers say something sensible the first time the
         // custom span is chosen instead of opening on today and today.
         var today = DateTimeOffset.Now;
@@ -651,6 +729,8 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     {
         _prefs.Save("Capital", ChosenCapital > 0 ? ChosenCapital : 1_000_000);
         _prefs.Save("Months", ChosenMonths());
+        _prefs.Save("Motion", (int)ChosenMotion());
+        _prefs.Save("Window", ChosenWindow());
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 

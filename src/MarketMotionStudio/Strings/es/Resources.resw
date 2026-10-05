@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} no tenían precio en el rango y quedaron fuera: {1}</value></data>
   <data name="PositionTooMany"><value>Se pueden comparar como máximo {0} valores; hay {1} activados</value></data>
   <data name="PositionNoMarketPicks"><value>Ningún valor de tu lista pertenece al mercado {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Animación</value></data>
+  <data name="PositionMotionGrow"><value>Crecer por todo el periodo</value></data>
+  <data name="PositionMotionScroll"><value>Desplazar una ventana</value></data>
+  <data name="PositionWindowLabel.Header"><value>Ventana (días)</value></data>
 </root>

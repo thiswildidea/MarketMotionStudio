@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} hatten im Zeitraum keinen Kurs und blieben außen vor: {1}</value></data>
   <data name="PositionTooMany"><value>Höchstens {0} Anlagen lassen sich vergleichen; {1} sind eingeschaltet</value></data>
   <data name="PositionNoMarketPicks"><value>Nichts auf Ihrer Liste gehört zum Markt {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Ablauf</value></data>
+  <data name="PositionMotionGrow"><value>Über die ganze Spanne</value></data>
+  <data name="PositionMotionScroll"><value>Fenster weiterbewegen</value></data>
+  <data name="PositionWindowLabel.Header"><value>Fenster (Tage)</value></data>
 </root>

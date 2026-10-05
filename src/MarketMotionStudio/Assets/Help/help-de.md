@@ -410,6 +410,7 @@ Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — ani
 - Anfangskapital und Haltezeitraum sind frei wählbar; der Zeitraum umfasst drei, fünf oder zehn Jahre — oder alles, was die Daten hergeben (etwa dreizehn Jahre).
 - Die Rendite beruht auf rückwärts adjustierten Kursen — Dividenden reinvestiert, ohne Gebühren. Die rückwärtige Adjustierung verankert sich am Börsengang und trägt Dividenden nach vorn, sodass die frühen Jahre eines fleißigen Zahlers nie nichtpositiv werden, wie es die vorwärts adjustierte Reihe zulässt.
 - Dieselbe Auswahl **Benutzerdefiniert** gilt für die Haltedauer: zwei Daten eintragen und die Daten abrufen. Wurde das Papier später gelistet als das Anfangsdatum, beginnt die Haltung an seinem ersten Handelstag.
+- **Zwei Ablaufarten.** *Über die ganze Spanne* legt den gesamten Zeitraum auf einmal hin, die Kurve zeigt also ihre echte Form über die Zeit. *Fenster weiterbewegen* hält ein Fenster aus einer festen Zahl von Handelstagen und schiebt es vom Anfang bis zum Ende des Zeitraums — nur so bleiben die Ausschläge einer langen Tagesreihe lesbar: über zwölf Jahre verteilt sind drei Monate Rückgang zwei Pixel. Das Fenster zählt nur beim Weiterbewegen, und beide Arten lesen **dieselben Kurse** — Umschalten lädt nichts neu.
 
 ## Video
 

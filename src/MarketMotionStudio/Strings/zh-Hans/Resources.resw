@@ -850,4 +850,8 @@
   <data name="PositionSkipped"><value>区间内没有数据的 {0} 只已跳过：{1}</value></data>
   <data name="PositionTooMany"><value>最多同时对比 {0} 只，现在勾了 {1} 只</value></data>
   <data name="PositionNoMarketPicks"><value>自选清单里没有{0}的标的</value></data>
+  <data name="PositionMotionLabel.Header"><value>推进方式</value></data>
+  <data name="PositionMotionGrow"><value>整段铺满</value></data>
+  <data name="PositionMotionScroll"><value>窗口滚动</value></data>
+  <data name="PositionWindowLabel.Header"><value>窗口天数</value></data>
 </root>

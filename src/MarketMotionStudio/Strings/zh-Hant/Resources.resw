@@ -840,4 +840,8 @@
   <data name="PositionSkipped"><value>區間內沒有數據的 {0} 隻已跳過：{1}</value></data>
   <data name="PositionTooMany"><value>最多同時對比 {0} 隻，現在勾了 {1} 隻</value></data>
   <data name="PositionNoMarketPicks"><value>自選清單裡沒有{0}的標的</value></data>
+  <data name="PositionMotionLabel.Header"><value>推進方式</value></data>
+  <data name="PositionMotionGrow"><value>整段鋪滿</value></data>
+  <data name="PositionMotionScroll"><value>視窗滾動</value></data>
+  <data name="PositionWindowLabel.Header"><value>視窗天數</value></data>
 </root>

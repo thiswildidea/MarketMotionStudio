@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} nie miały kursu w przedziale i zostały pominięte: {1}</value></data>
   <data name="PositionTooMany"><value>Porównać można najwyżej {0} instrumentów; włączonych jest {1}</value></data>
   <data name="PositionNoMarketPicks"><value>Żaden instrument z listy nie należy do rynku {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Animacja</value></data>
+  <data name="PositionMotionGrow"><value>Cały zakres naraz</value></data>
+  <data name="PositionMotionScroll"><value>Przesuwne okno</value></data>
+  <data name="PositionWindowLabel.Header"><value>Okno (dni)</value></data>
 </root>

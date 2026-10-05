@@ -400,6 +400,7 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 - The initial capital and the holding span are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
 - Returns are computed on backward-adjusted closes — dividends reinvested, no fees. The backward adjustment anchors at the listing and accumulates dividends forward, so a heavy payer's early years never turn negative the way the forward-adjusted series can.
 - The same **Custom** span works for the holding: give two dates, then press Fetch. If the instrument listed later than the date you asked for, the holding starts on its first trading day.
+- **Two motions.** *Grow across the span* lays the whole range down at once, so the curve's shape on screen is its shape in time. *Scroll a window* holds a window of a fixed number of trading days and walks it from the start of the range to its end — the only way a long daily series keeps its wobbles readable, since spread over twelve years a three-month fall is two pixels. The window only counts while scrolling, and both motions read **the same marks**: switching re-fetches nothing.
 
 ## Video
 

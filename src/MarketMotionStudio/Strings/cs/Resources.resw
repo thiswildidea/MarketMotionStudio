@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} neměly v rozsahu žádný kurz a byly vynechány: {1}</value></data>
   <data name="PositionTooMany"><value>Porovnat lze nejvýše {0} nástrojů; zapnuto je {1}</value></data>
   <data name="PositionNoMarketPicks"><value>Žádný nástroj ze seznamu nepatří na trh {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Animace</value></data>
+  <data name="PositionMotionGrow"><value>Celé období</value></data>
+  <data name="PositionMotionScroll"><value>Posuvné okno</value></data>
+  <data name="PositionWindowLabel.Header"><value>Okno (dny)</value></data>
 </root>

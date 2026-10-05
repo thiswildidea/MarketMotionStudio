@@ -852,4 +852,8 @@
   <data name="PositionSkipped"><value>{0} had no price in the range and was left out: {1}</value></data>
   <data name="PositionTooMany"><value>At most {0} holdings can be compared; {1} are switched on</value></data>
   <data name="PositionNoMarketPicks"><value>None of your list is on the {0} market</value></data>
+  <data name="PositionMotionLabel.Header"><value>Motion</value></data>
+  <data name="PositionMotionGrow"><value>Grow across the span</value></data>
+  <data name="PositionMotionScroll"><value>Scroll a window</value></data>
+  <data name="PositionWindowLabel.Header"><value>Window (days)</value></data>
 </root>

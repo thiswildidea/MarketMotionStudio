@@ -24,6 +24,11 @@
    「没有」的，而画面上那条紫线好好地画着。所以按**色相 + 饱和度**认：底色近黑、文字近
    灰，饱和度低，一并滤掉；色相不受冲淡影响。
 
+4. **两种推进方式（整段铺满 / 窗口滚动）**的差别也全落在像素上，而且正好是**头部的位置**：
+   同一个进度（0.5）下，整段铺满的曲线头跟着进度走到中段，窗口滚动的头贴着右缘 —— 窗口的
+   右端就是它。两帧用同一个进度比，所以不依赖任何绝对坐标。头部就是白点（见 `end_dots`），
+   但要取 **x 最大**的那一个，不能拿 `[-1]`：白点是按 y 排的，最后那个是画面最下面那只。
+
 画面的裁框也不是白拿的：`winui.canvas_box` 的下缘偏低几十像素（预览下面那一排控件也是
 深色，走列的那次遍历跨过了它们），要拿 `winui.frame_bottom` 重算 —— 算准了才能断言画面
 是 9:16，而量出来是 0.5622。
@@ -103,7 +108,8 @@ FOREIGN = ("hk00700", "腾讯控股")
 
 SHOTS = ("verify-position-one.png", "verify-position-two.png", "verify-position-three.png",
          "verify-position-six.png", "verify-position-early.png", "verify-position-late.png",
-         "verify-position-limit.png", "verify-position-filtered.png")
+         "verify-position-limit.png", "verify-position-filtered.png",
+         "verify-position-grow.png", "verify-position-scroll.png")
 
 FAILED = []
 
@@ -368,39 +374,93 @@ def blobs(rows, box, hit, lo=4, hi=200, span=13):
     return out
 
 
-def end_dots(frame, point_sets, near=3):
-    """曲线末端的白点，按 y 从小到大。
+def end_dots(frame, point_sets, near=5):
+    """每条曲线末端的白点，按 y 从小到大。
 
-    判据是**「白点挨着一条曲线」**：点画在线的最后一列上，离线的像素不超过两三个。
+    两条判据，缺一不可：
 
-    这一条把画面里其余的白色一并滤掉，而且是必需的。标题、大数字、坐标数字都近白；上一版
-    按「画布右缘那一列」去扫，量到二十几个「白点」—— 那个「右缘」其实是画布自己的右缘
-    （画面的下缘量错了，见 `winui.frame_bottom`），于是最底下那根横贯整幅的进度条也成了
-    「右缘上的一个点」。
+    * **它挨着一条曲线**：点画在线的最后一列上，离线的像素不超过两三个。标题、大数字、
+      坐标数字都近白，但它们旁边没有彩色曲线。这一条也顺带滤掉了最底下那根横贯整幅的
+      进度条（见 `Frame.of` 的 `trim`）。
+    * **它在那条线最右端的那一列上**。第二条是这一轮补的，补之前是「在画布右半边」——
+      而整段铺满走到一半时曲线头正好压在中线上，那个点**整个被滤掉**，`measure` 于是退到
+      「画面中间那一段」去数胶囊，报出来的位置是另一回事，而每一项看上去都正常：一条
+      「0.9 处标签比 0.45 处靠右得多」的断言因此从 142 像素掉到 1 像素，却仍然只是
+      「没通过」而已，说不出哪里不对。用「最右端」就没有这条缝 —— 头部走到哪里，它都是
+      那条线最右的那些像素。
 
-    再加半幅这一重：标题最长的几个笔画能凑出十几个像素的连通块，它们在中轴附近；曲线全长
-    到同一个横坐标，末端白点全在右边。
+    落在一个点上还要**挨着这条线自己**。两条线的末端在同一个最后交易日上，也就是**同一列**，
+    只按「离那一列最近」挑，两条线挑中的是同一个白点，去重以后只剩一个 —— 「两只就是两个
+    白点」从 2 掉到 1，紧接着 `ends` 里有一只取不到 y，`<` 比 `None` 直接把脚本崩在半路。
+
+    也不能按「离这条线末端的高度最近」挑。末端的高度要从这条线最右那一列的像素里读，而那一列
+    上不只有末端 —— 胶囊和收尾卡片那圈同色的边框也压在同一列上，是一段比末端长得多的连续
+    像素（实测第三只：末端在 y=514–515，边框在 y=697–740）。取中位数就被拽到 715，于是它
+    去挑离 715 最近的点，挑中的是**第二条**的点。「挨着这条线」没有这个前提要猜：末端的点
+    离末端两三个像素，离别的线的末端十几像素。
+
+    最右那一列要从**曲线本身**读，不能从这条颜色的全部像素里读。这一条颜色还画在别处：右上方
+    那几个图例色块（实测第一只、进度一半：线头在 x=952，色块在 x=1030，y=311–399），下面
+    收尾卡片那圈边框（第三只：末端 y=514–515，边框 y=697–740）。「最右」取成了色块那一列，
+    `abs(x - edge) <= 5` 就把真正的末端白点整个滤掉 —— 第一只的点在进度过半的画面上总是
+    消失，而另外两只各就各位，看上去谁也没少。
+
+    所以先把绘图区切出来：**上面是标题和大数字，下面是收尾的卡片，中间那三成才是绘图区** ——
+    和 `measure` 算 band 时用的是同一个界、同一句话。
+
+    一条曲线出一个点；两条末端完全叠在一起的算一个（同一个连通块，去重）。
     """
-    mask = set().union(*point_sets) if point_sets else set()
-    middle = frame.box[0] + ((frame.box[1] - frame.box[0]) // 2)
+    if not point_sets or not any(point_sets):
+        return []
 
-    def rides(x, y):
-        for dx in range(-near, near + 1):
-            for dy in range(-near, near + 1):
-                if (x + dx, y + dy) in mask:
+    mask = set().union(*point_sets)
+
+    top, bottom = frame.box[2], frame.box[3]
+    height = bottom - top
+    band = (top + (height * 45 // 100), top + (height * 74 // 100))
+
+    def rides(x, y, pts=None):
+        for dx in range(-3, 4):
+            for dy in range(-3, 4):
+                if (x + dx, y + dy) in (mask if pts is None else pts):
                     return True
 
         return False
 
+    # 下限放到 2：白点是 `Px(6)` 的圆，屏幕上四五个像素见方，而发光让边缘变淡，真正落进
+    # 「近白」那一档的有时只有两三个像素。
+    lights = blobs(frame.rows, frame.box, lambda h, s, v: s < 0.13 and v > 0.78, lo=2, hi=200)
+
+    # 重心是小数，而曲线像素是按整点收在集合里的 —— 不取整，邻域查表一个也命中不了，
+    # 于是「每个白点都找得到自己那条曲线」全成了 0 个白点。
+    lights = [(round(cx), round(cy), n) for cx, cy, n in lights]
+
     out = []
+    seen = set()
 
-    for cx, cy, n in blobs(frame.rows, frame.box, lambda h, s, v: s < 0.13 and v > 0.78):
-        # 重心是小数，而曲线像素是按整点收在集合里的 —— 不取整，邻域查表一个也命中不了，
-        # 于是「每个白点都找得到自己那条曲线」全成了 0 个白点。
-        x, y = round(cx), round(cy)
+    for pts in point_sets:
+        if not pts:
+            continue
 
-        if x >= middle and rides(x, y):
-            out.append((x, y, n))
+        line = {(x, y) for (x, y) in pts if band[0] <= y <= band[1]} or pts
+        edge = max(x for x, _ in line)
+
+        nearby = [d for d in lights if abs(d[0] - edge) <= near and rides(d[0], d[1])]
+
+        if not nearby:
+            continue
+
+        # 挨着这条线自己的那些点优先；一个也没有（点太淡、末端被胶囊压住）时才退到「挨着
+        # 任意一条线」。
+        own = [d for d in nearby if rides(d[0], d[1], line)]
+
+        dot = min(own or nearby, key=lambda d: abs(d[0] - edge))
+
+        if (dot[0], dot[1]) in seen:
+            continue
+
+        seen.add((dot[0], dot[1]))
+        out.append(dot)
 
     return sorted(out, key=lambda d: d[1])
 
@@ -925,6 +985,42 @@ def scrub(win, progress):
     return True
 
 
+def motion(win, name):
+    """切一下推进方式，返回它请求的那一项的名字（取不到下拉就是 None）。
+
+    **返回值不是「切成了」**：ComboBox 在本应用里既没有 `SelectionPattern` 也没有
+    `ValuePattern`，选中项根本读不回来，见 `winui.combo_pick`。所以这个函数只说明它点过
+    哪一项，切换是否生效由调用方**看画面**判定。
+    """
+    combo = winui.find(win, lambda c: c.AutomationId == "MotionCombo")
+
+    return None if combo is None else winui.combo_pick(win, combo, name)
+
+
+def window_on(win):
+    """窗口天数框可用吗 —— 推进方式读回来的唯一办法。
+
+    ComboBox 的选中项读不回来（见 `motion`），而「窗口框亮不亮」是由 `ChosenMotion()` 直接
+    算出来的同一个值：滚动才亮。所以这一页的推进方式是不是真的切过去了，看这个布尔值，
+    不看下拉。
+    """
+    box = winui.find(win, lambda c: c.AutomationId == "WindowBox")
+
+    return None if box is None else box.IsEnabled
+
+
+def head_of(shot):
+    """最靠右的那个末端白点的 x —— 曲线的头。
+
+    白点是按 y 排的（见 `end_dots`），所以这里要自己取 x 最大的那个，不能拿 `[-1]`：
+    几只挤在一起时最后那个点是画面最下面那只，而不是最靠右的那只。
+    """
+    if shot is None or not shot["dots"]:
+        return None
+
+    return max(d[0] for d in shot["dots"])
+
+
 def main():
     for old in SHOTS:
         path = os.path.join(REPO, "artifacts", old)
@@ -1007,6 +1103,34 @@ def main():
     check("清单存在盘上（重启还在）", 'StudioPreferences Store = new("Watchlist.")' in store)
     check("这一页的偏好里不再存标的代码/名字",
           'Save("Instrument' not in page and 'GetString("Instrument' not in page)
+
+    # 推进方式：两种走法看的是同一份数据，所以它们必须是**渲染器的构造参数**而不是取数
+    # 参数 —— 构造参数才在每次重画时被读到，见 memory 里那条「影响排名的开关写成属性会读
+    # 成默认值」的教训。
+    check("推进方式是渲染器的构造参数（不是取数参数）",
+          "public PositionRenderer(PositionBoard board, AnimationPlan plan, PositionMotion motion, int window)"
+          in renderer)
+    check("两种推进方式：整段铺满 / 窗口滚动",
+          "public enum PositionMotion" in series and "Grow = 0," in series and "Scroll = 1," in series)
+    check("整段铺满就是「窗口和整段一样长」的同一套算术",
+          "var count = _motion is PositionMotion.Scroll ? Math.Min(_window, n) : n;" in renderer)
+    check("窗口右端跟着到达点走（滚动是连续滑，不是一天一跳）",
+          "Math.Max(moving + eased[moving], count - 1)" in renderer)
+    check("窗口左端 = 右端 − 窗口长度",
+          "var first = _motion is PositionMotion.Scroll ? head - (count - 1) : 0;" in renderer)
+    check("横轴把窗口铺满（不是把整段铺满）",
+          "double Across(int i) => mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);" in renderer)
+    check("窗口左端向上取整（曲线不能画到轴外面去）",
+          "var left = Math.Max(0, (int)Math.Ceiling(first));" in renderer)
+    check("纵轴只算一次，不随窗口重算（本金线不会跟着滑）",
+          renderer.count("_scale = AnimationPlan.NiceScale(") == 1)
+    check("日期标签按窗口取，但每颗钉在自己那一天上",
+          "if (i < first || i > head)" in renderer)
+    check("切换推进方式只重画、不重新取数",
+          'SelectionChanged="OnLookChanged"' in xaml
+          and "WindowBox.IsEnabled = ChosenMotion() is PositionMotion.Scroll;" in page)
+    check("下拉与窗口框各自绑了资源键",
+          'x:Uid="PositionMotionLabel"' in xaml and 'x:Uid="PositionWindowLabel"' in xaml)
 
     # ---- 1) 进页 -------------------------------------------------------------------
     print("\n真机")
@@ -1261,7 +1385,78 @@ def main():
             check("至少有两对白点离得够开，能比每像素多少元", False,
                   f"只凑出 {len(spans)} 对")
 
-    # ---- 6) 标签跟着进度条走 -------------------------------------------------------
+    # ---- 6) 两种推进方式 -----------------------------------------------------------
+    #
+    # 这是「显示方式」而不是「参数」：切换只重画，不重新取数，所以它的全部差别正好落在
+    # 像素上 —— 而画布上没有 UIA 节点，也就只能量像素：
+    #
+    #     整段铺满 0.5 处   曲线头跟着进度走，它在画面中段
+    #     窗口滚动 0.5 处   窗口的右端就是头部，它停在绘图区右端
+    #
+    # 两条用**同一个进度**（0.5），所以「靠右了一大截」不依赖任何绝对位置。
+    #
+    # 「绘图区右端」不是画布右缘：右边那五十几个像素是胶囊标签占的地方，满进度的曲线头也
+    # 停在那里（实测 1081，画布右缘 1134）。所以基准要**从画面上量**（满进度那一帧的头），
+    # 不能拿画布的边框当基准 —— 拿边框当基准，一条本来是对的断言会报「还差 56 像素」，
+    # 而那 56 像素里 53 是天生就有的留白。
+    # 推进方式是**落盘的**偏好（这一节的最后一条就是验它落盘），所以上一次跑完停在
+    # 「窗口滚动」，这一次一开局就是滚动的 —— 不先复位，下面那一帧「整段铺满」量到的其实
+    # 是滚动的样子，而「滚动」那一帧也量到同样的东西，两条断言一起错、还错得一模一样
+    # （都是 1078），看不出是偏好没复位，只看见「两种走法没差别」。
+    print("\n推进方式")
+
+    check("推进方式下拉在", winui.find(win, lambda c: c.AutomationId == "MotionCombo") is not None)
+    check("窗口天数框在", winui.find(win, lambda c: c.AutomationId == "WindowBox") is not None)
+
+    motion(win, "整段铺满")
+
+    check("复位成「整段铺满」后窗口框是灰的（窗口是滚动的参数）", window_on(win) is False,
+          f"窗口框可用={window_on(win)}")
+
+    grow = scroll = None
+
+    if scrub(win, 0.5):
+        grow = measure(win, "verify-position-grow.png", count=3)
+
+    check("切成「窗口滚动」", motion(win, "窗口滚动") == "窗口滚动")
+    check("滚动时窗口框可用", window_on(win) is True, f"窗口框可用={window_on(win)}")
+
+    if scrub(win, 0.5):
+        scroll = measure(win, "verify-position-scroll.png", count=3)
+
+    if grow is None or scroll is None:
+        check("两种推进方式都画得出", False, "取不到画面")
+    else:
+        left, right = grow["box"][0], grow["box"][1]
+        width = right - left
+        a, b = head_of(grow), head_of(scroll)
+
+        # 绘图区右端：满进度那一帧的曲线头。同一批标的、同一条轴，两种走法都停在同一个
+        # x 上，所以它是这一对比的天然基准。
+        tip = head_of(three) if three is not None else None
+
+        check("整段铺满：0.5 处曲线头还在画面中段",
+              a is not None and a < left + (width * 0.66),
+              f"头 x={a}，中段 {left + (width // 2)}，右缘 {right}")
+        # 滚动的头部离右端最多差**一格**：窗口是 60 个交易日铺在绘图区上，新的一天从右端
+        # 长出来、旧的往左挪，所以头在 [右端 - 一格, 右端] 之间来回。一格约 5.6 像素，加白点
+        # 重心的一两个，取画面宽度的 4%（约 15 像素）当界 —— 而整段铺满在同一进度下要差
+        # 一百多像素，这个界松一点也照样分得开。
+        check("窗口滚动：0.5 处曲线头已经停在绘图区右端（窗口铺满了）",
+              b is not None and tip is not None and tip - b <= width * 0.04,
+              f"头 x={b}，绘图区右端 x={tip}（还差 {tip - b} 像素，画布宽 {width}）")
+        check("同一个进度下滚动比整段铺满靠右一大截",
+              a is not None and b is not None and b - a > width * 0.2,
+              f"整段 {a} → 滚动 {b}，差 {b - a} 像素（画布宽 {width}）")
+        check("滚动时三条曲线都还在窗口里（三个白点、三个标签）",
+              len(scroll["dots"]) == 3 and all(scroll["labels"][i][0] == 1 for i in (0, 1, 2)),
+              f"{len(scroll['dots'])} 个白点 / "
+              + " ".join(str(scroll["labels"][i][0]) for i in (0, 1, 2)) + " 个标签")
+
+    check("切回「整段铺满」", motion(win, "整段铺满") == "整段铺满")
+    check("切回来之后窗口框又是灰的", window_on(win) is False, f"窗口框可用={window_on(win)}")
+
+    # ---- 7) 标签跟着进度条走 -------------------------------------------------------
     print("\n拖动")
 
     early = late = None
@@ -1300,7 +1495,7 @@ def main():
 
         scrub(win, 1.0)
 
-    # ---- 7) 上限：六只画得出来，第七只被拒 -----------------------------------------
+    # ---- 8) 上限：六只画得出来，第七只被拒 -----------------------------------------
     print("\n上限")
 
     for code, _ in PRESETS[3:6]:
@@ -1376,8 +1571,13 @@ def main():
           after is not None and len(after["dots"]) == len(before),
           f"{len(before)} → {len(after['dots']) if after else '—'}")
 
-    # ---- 8) 重启后清单还在 ----------------------------------------------------------
+    # ---- 9) 重启后清单还在 ----------------------------------------------------------
     print("\n重启")
+
+    # 推进方式是这一页的偏好（`Position.Motion`），不是共享清单的一部分，所以它落不落盘
+    # 要在重启里验一次。切上去，重启，看窗口框还是不是可用的 —— 那一个布尔值就说明
+    # `ChosenMotion()` 读回来的是哪个。
+    check("重启前把推进方式切成「窗口滚动」（验它落盘）", motion(win, "窗口滚动") == "窗口滚动")
 
     kept = [name for _, name in chip_names(win)]
 
@@ -1401,6 +1601,8 @@ def main():
               "、".join(after) or "（空）")
         check("重启后勾选回到「只画第一只」（勾选是这一页的，不落盘）",
               ticked(win) == [PRESETS[0][0]], str(ticked(win)))
+        check("重启后推进方式还是「窗口滚动」（偏好落盘了）", window_on(win) is True,
+              f"窗口框可用={window_on(win)}")
 
         data, status = fetch(win)
 
@@ -1410,6 +1612,13 @@ def main():
             check("重启后直接取数", True, data["status"][:70])
             check("重启后画的是清单第一只（一笔一勾不跟着落盘）", data["tracks"] == 1,
                   data["status"][:80])
+
+        # 落盘的那一个偏好用完就复位：这一趟为了验落盘把它停在「窗口滚动」上，不复位的话
+        # 下一次跑是开局就在滚动里。开头那一句复位是同一件事的另一半 —— 两处都有，哪一处
+        # 生效都行，缺了才要紧。
+        motion(win, "整段铺满")
+
+        check("收尾复位回「整段铺满」", window_on(win) is False, f"窗口框可用={window_on(win)}")
 
     return report()
 

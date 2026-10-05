@@ -396,6 +396,7 @@ Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mo
 - O capital inicial e o período de posição são seus; o período pode ser de três, cinco ou dez anos, ou até onde os dados alcançam (cerca de treze anos).
 - O retorno é calculado sobre fechamentos ajustados retroativamente — dividendos reinvestidos, sem taxas. O ajuste retroativo se ancora na abertura de capital e acumula os dividendos para frente, então os primeiros anos de um bom pagador nunca ficam negativos, como pode ocorrer no ajuste para frente.
 - O mesmo intervalo **Personalizado** vale para a posição: informe duas datas e pressione buscar dados. Se o ativo passou a ser negociado depois da data informada, a posição começa no seu primeiro dia de negociação.
+- **Dois modos de avanço.** *Todo o período* dispõe o intervalo inteiro de uma vez, então a forma da curva na tela é a sua forma no tempo. *Janela deslizante* mantém uma janela de um número fixo de dias de negociação e a percorre do início ao fim do intervalo — é a única forma de uma longa série diária manter as oscilações legíveis, porque espalhada por doze anos uma queda de três meses são dois pixels. A janela só conta ao deslizar, e os dois modos leem **os mesmos dados**: trocar não baixa nada de novo.
 
 ## Vídeo
 

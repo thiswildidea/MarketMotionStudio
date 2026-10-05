@@ -118,6 +118,21 @@
                                     DateChanged="OnCustomRangeChanged" />
                     </StackPanel>
 
+                    <!-- How the picture advances: the whole span at once, or a window of it
+                         walked forward. Neither one re-fetches — they are two readings of the
+                         same marks, which is why changing them redraws and stops there. -->
+                    <ComboBox x:Name="MotionCombo"
+                              x:Uid="PositionMotionLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <!-- How many trading days that window holds. It only means something while
+                         the motion is scrolling, so it says so by being off otherwise. -->
+                    <TextBox x:Name="WindowBox"
+                             x:Uid="PositionWindowLabel"
+                             Text="60"
+                             TextChanged="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

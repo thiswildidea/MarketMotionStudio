@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>기간 안에 가격이 없던 {0}개는 제외했습니다: {1}</value></data>
   <data name="PositionTooMany"><value>동시에 비교할 수 있는 종목은 최대 {0}개입니다. 지금 {1}개가 켜져 있습니다</value></data>
   <data name="PositionNoMarketPicks"><value>내 목록에 {0} 시장 종목이 없습니다</value></data>
+  <data name="PositionMotionLabel.Header"><value>진행 방식</value></data>
+  <data name="PositionMotionGrow"><value>전체 구간 그리기</value></data>
+  <data name="PositionMotionScroll"><value>창 이동</value></data>
+  <data name="PositionWindowLabel.Header"><value>창 크기(일)</value></data>
 </root>

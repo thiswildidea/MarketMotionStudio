@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} non avevano prezzi nel periodo e sono stati esclusi: {1}</value></data>
   <data name="PositionTooMany"><value>Si possono confrontare al massimo {0} strumenti; {1} sono attivi</value></data>
   <data name="PositionNoMarketPicks"><value>Nessuno strumento della tua lista appartiene al mercato {0}</value></data>
+  <data name="PositionMotionLabel.Header"><value>Animazione</value></data>
+  <data name="PositionMotionGrow"><value>Tutto l'intervallo</value></data>
+  <data name="PositionMotionScroll"><value>Finestra scorrevole</value></data>
+  <data name="PositionWindowLabel.Header"><value>Finestra (giorni)</value></data>
 </root>

@@ -841,4 +841,8 @@
   <data name="PositionSkipped"><value>{0} aralıkta fiyatı olmadığı için dışarıda bırakıldı: {1}</value></data>
   <data name="PositionTooMany"><value>En fazla {0} varlık karşılaştırılabilir; {1} tanesi açık</value></data>
   <data name="PositionNoMarketPicks"><value>Listenizdeki hiçbir varlık {0} piyasasına ait değil</value></data>
+  <data name="PositionMotionLabel.Header"><value>Animasyon</value></data>
+  <data name="PositionMotionGrow"><value>Aralığın tamamı</value></data>
+  <data name="PositionMotionScroll"><value>Kayan pencere</value></data>
+  <data name="PositionWindowLabel.Header"><value>Pencere (gün)</value></data>
 </root>
