@@ -4,8 +4,8 @@ Open questions and unfinished edges, kept out of the README because they describ
 the work rather than the tool. Settled reasoning lives in commit messages; this file is only
 for what is still owed.
 
-Last reviewed: 2026-10-02 (after the twelfth page: currency corridors, the board whose rows are
-ranges; see the end).
+Last reviewed: 2026-10-05 (after 1.0.5.0: the holdings page comparing up to six at once, and the
+three places where the verification scripts were lying to themselves; see the end).
 
 ## The whole-market page was audited line for line against the source HTML
 
@@ -1922,3 +1922,58 @@ had been uploaded yet, and a package that does not match its own notes is worse 
 **其余两件：** 换交易日**不重新取数**（一次请求里的所有日子都在手上，`CandleMinutes.ForDay` 只
 重画），以及周期是**持久偏好** —— 脚本把周期停在月线，下一个验区间的脚本就找不到日线的
 「近 12 个月」，所以两个脚本开头都先显式复位到日K。
+
+## 1.0.5.0，以及「1.0.4.0 建了包但没上传」（2026-10-05）
+
+**1.0.4.0 的 `.msixupload` 在 `artifacts/` 里（149.3 MB），从未提交 Partner Center。** 这与
+1.0.2.0 是同一个先例（那一节写着 "1.0.2.0 was built and never uploaded… 1.0.3.0 carries it"），
+只是这次的选择不同：本版**没有**往 1.0.4.0 里加料，而是另起 1.0.5.0 让它带上 1.0.4.0 一起走。
+理由写在 CHANGELOG 本条里 —— 1.0.4.0 的条目与商店文案都已落成，往里加是回头改一个写完的版本；
+而它既然没上传，就没有用户手上有 1.0.4.0，版本号跳过一格不违反「必须高于已发布版本」那条。
+**这一点必须留在 CHANGELOG 里**，否则下次没人说得清 1.0.4.0 与 1.0.5.0 之间为什么空一格。
+
+本版要说的四件事：第十七页债市固收、成交额页的自选篮、K线指定一个交易日（含分钟档的午休从
+横轴剔掉）、持仓页最多六只对比。**第十七页其实是补窟窿**：商店文案的说明段与功能条一直写
+「十六」，而那一页早就在应用里了 —— 它从来没进过商店文案。
+
+## 持仓页的多标的：三处「看着对」的错答案（2026-10-05）
+
+用户要的是「一只以上放在一起比」+「曲线上实时显示收益数字，**只有一只时也要显示**」。参考图
+是两条曲线各带一个写着名字与金额的胶囊。三处口径，每处都有一个错答案会看起来完全正常：
+
+* **日期轴取并集，不是交集。** 取交集是条形榜的规矩，搬到这一页会把十年对比悄悄截成最年轻
+  那只的三年 —— 画面、状态行、期数全都正常，只有那个十年没了。
+* **晚上市的从自己第一个交易日起、之前不画。** 沿本金拉平线（「反正那时它还没涨」）会画出
+  「在它还买不到的年份里亏钱」，那是编出来的历史。停牌日则相反，**前值顺延**，因为持有人的
+  对账单就是这么写的。
+* **第七只拒绝取数，不是静默少画。** 少画的画面完全正常、看不出少了谁 —— 这与「用户没加上
+  去」是同一个画面。跨市场的标的同样过滤掉并**报出名字**：它那份钱不是本市场的货币，画上去
+  就是一条错的线，而「一条错线」比「没有这条线」糟。
+
+**六只这个上限是从画面上量出来的，不是从数据里**：六张末端标签、六张卡片、六条曲线还是一场
+比较，十几只就是一张码 —— 而 `Palette.Tracks` 只有六个颜色，按**位置**取（哈希是稳定的但
+**不互斥**，六只里两只撞成同色就是一条线跟自己比）。
+
+## 三个脚本在对自己说谎的地方（2026-10-05）
+
+这一轮真机验证有一项**时好时坏**（「把港股那只也勾上」），追下去发现根子不在应用而在脚本，
+而且三处都是静默的：
+
+* **`Click` 在矩形为空时静默跳过这一下，却照常返回。** `uiautomation` 的 `Click` 走
+  `MoveCursorToInnerPos`，矩形算不出内点就返回空，调用处是 `if point:` —— 没点、没异常。
+  横滚面板外的 chip 正是 0×0，而它的勾选态**照常读得到**（读不要矩形）。于是「按过了」是谎话，
+  故障随机且无声。现在 `press()` 先量矩形、空就报失败，并在点之前 `win.SetActive()`（真点是
+  按屏幕坐标点的）。
+* **chip 的 `InvokePattern` 实测恒为 None**（已在清单里的与刚加进来的两只都一样，`Toggle` 与
+  `Legacy` 都有）→ `Invoke` 这条路对 chip 从来没生效过。`Legacy.DoDefaultAction()` 实测无效；
+  真点与空格有效。
+* **`maxed()` 以前把 `SetWindowVisualState` 的异常吞掉就完事。** 窗口没最大化时横滚面板变窄，
+  第二只 chip 落到面板外 —— 这正是那一步时好时坏的根因。现在量回窗口尺寸并写成一条断言。
+
+**只有跨市场那一步会真去点 chip**：两只、三只、六只那几步都是一键预设走的 `Include`，进来就
+已经是勾上的，`tick` 读回来是 1，一次也没点过。所以一个「点一下」的 bug 只在整份脚本的
+一处现身 —— 这种 bug 最容易被人当成偶发而放过。
+
+另外 `winui.frame_bottom()` 进了公共库：`canvas_box` 的下缘偏低几十像素（实测答 890、真实
+852，比例 0.5326 而 9:16 应是 0.5625）。新算法与 9:16 预测值差不到 1 像素，于是「画面是
+9:16」本身可以当断言（实测 384×683）。
