@@ -14,10 +14,11 @@
    三个两两斜率（白点一律画在线上方 4 基线像素，那是一个常数偏移，两两一比就没了）必须
    一致 —— 一致才说明每只的价格序列、本金、买入日都对上了，而不只是「画了三条线」。
 
-2. **标签确实跟着曲线走、一条都不少。** 判据是像素：胶囊的上下边是**同一颜色一段很长
-   的水平连续像素**（量到 64～74），而曲线本身是斜的，一行里最多 7 个像素（差一个数量
-   级）。末端白点给曲线条数：每只一个，画在**自己那条线**的末端，判据是「白点挨着一条
-   曲线」—— 标题、大数字、坐标数字都是近白的，但它们旁边没有彩色曲线。
+2. **标签确实跟着曲线走、一条都不少，而且骑在线头右边。** 判据是像素：胶囊的上下边是
+   **同一颜色一段很长的水平连续像素**（量到 64～74），而曲线本身是斜的，一行里最多 7 个
+   像素（差一个数量级）。末端白点给曲线条数：每只一个，画在**自己那条线**的末端，判据是
+   「白点挨着一条曲线」—— 标题、大数字、坐标数字都是近白的，但它们旁边没有彩色曲线。
+   白点同时给胶囊的**位置**基准：胶囊的左缘在白点右边、右缘还在画面里，两条都量。
 
 3. **不能按绝对 RGB 认颜色。** 曲线只有一个多像素宽，抗锯齿把它冲淡到七成：令牌紫
    (168,85,247) 落成 (126,66,187)，离调色板比容差还远。临时探针就是这么把紫色的胶囊量成
@@ -100,6 +101,11 @@ TRACKS = [
 
 # Palette.Moving：本金线，全部曲线底下那一根。特意不在 Tracks 里。
 CAPITAL = (0xFB, 0xBF, 0x24)
+
+# 画面上出现的**全部**颜色，一个像素归给其中最近的那个（见 `painted`）。名字不叫
+# `PALETTE` —— 那个名字上面已经给了 `Render/Palette.cs` 的路径，撞上去会让 `source()`
+# 拿一张颜色表去 `open()`。
+PALETTE_RGB = TRACKS + [CAPITAL]
 
 CAPITAL_AMOUNT = 1_000_000
 
@@ -258,7 +264,7 @@ def hsv_rows(img, box):
     return rows
 
 
-def painted(rows, box, rgb, window=20, saturation=0.45, value=0.35):
+def painted(rows, box, rgb, window=20, saturation=0.45, value=0.35, palette=None):
     """画布上属于这个颜色的像素。
 
     **按色相认，不按绝对 RGB。** 曲线只有一个多像素宽，抗锯齿把它冲淡到七成：令牌紫
@@ -267,8 +273,23 @@ def painted(rows, box, rgb, window=20, saturation=0.45, value=0.35):
 
     饱和度与明度是门槛，不是颜色的一部分：底色近黑、坐标与说明文字近灰，两者都过不去，
     于是「画面上有没有紫色」不需要先知道背景是什么样。
+
+    **但一个像素只归给它最近的那个颜色。** 色相是抗锯齿唯一守得住的东西（与黑混合不变色
+    相），可惜它在这里太粗：调色板里红(0°)与粉(330.4°)只差 30°，而窗口是 ±20° —— 两者在
+    340°~350° 上重叠。曲线画在**深蓝**底上，边缘像素被底色拖走十来度，于是红色胶囊的下边
+    整行落进粉色的窗口：「六份都有末端胶囊」报出「第 6 条有 2 颗」，画面上明明只有一颗。
+    实测那一行 (226,96,99)、色相 349° —— 离红 11°、离粉 19°。谁近就是谁的，重叠带里不再
+    两头都认领（青 187° 与蓝 217° 是同一对毛病）。
+
+    `palette` 传全表（`TRACKS` + `CAPITAL`），不传就只有窗口这一条判据（老行为）。
     """
     target = hue_of(rgb)
+
+    def away(h, other):
+        return min((h - other) % 360, (other - h) % 360)
+
+    others = [hue_of(c) for c in (palette or []) if away(hue_of(c), target) > 0]
+
     left, top = box[0], box[2]
     out = set()
 
@@ -277,8 +298,15 @@ def painted(rows, box, rgb, window=20, saturation=0.45, value=0.35):
             if s < saturation or v < value:
                 continue
 
-            if min((h - target) % 360, (target - h) % 360) <= window:
-                out.add((left + i, top + j))
+            mine = away(h, target)
+
+            if mine > window:
+                continue
+
+            if others and min(away(h, other) for other in others) <= mine:
+                continue
+
+            out.add((left + i, top + j))
 
     return out
 
@@ -374,58 +402,63 @@ def blobs(rows, box, hit, lo=4, hi=200, span=13):
     return out
 
 
-def end_dots(frame, point_sets, near=5):
+def end_dots(frame, point_sets):
     """每条曲线末端的白点，按 y 从小到大。
 
-    两条判据，缺一不可：
+    判据只有一条：**band（绘图区）里的一个近白块，且挨着这条线自己的像素。** 三条理由：
 
-    * **它挨着一条曲线**：点画在线的最后一列上，离线的像素不超过两三个。标题、大数字、
-      坐标数字都近白，但它们旁边没有彩色曲线。这一条也顺带滤掉了最底下那根横贯整幅的
-      进度条（见 `Frame.of` 的 `trim`）。
-    * **它在那条线最右端的那一列上**。第二条是这一轮补的，补之前是「在画布右半边」——
-      而整段铺满走到一半时曲线头正好压在中线上，那个点**整个被滤掉**，`measure` 于是退到
-      「画面中间那一段」去数胶囊，报出来的位置是另一回事，而每一项看上去都正常：一条
-      「0.9 处标签比 0.45 处靠右得多」的断言因此从 142 像素掉到 1 像素，却仍然只是
-      「没通过」而已，说不出哪里不对。用「最右端」就没有这条缝 —— 头部走到哪里，它都是
-      那条线最右的那些像素。
+    * **为什么限定在 band 里。** 近白的东西满画面都是：标题、中间那个大数字、收尾卡片里的
+      字。实测单只那一帧 15 个近白块里 14 个在 band 之外（标题在 y≈265、卡片在 y≈723，而
+      band 是画面的 45%～74%），band 之内只剩曲线末端那个圆点。这个界与 `measure` 算横排时
+      用的是同一个，两处必须一致。
+    * **为什么必须「挨着这条线自己」。** 两条线的末端在同一个最后交易日上，也就是**同一列**；
+      只按位置挑，两条线会挑中同一个白点，去重以后只剩一个 —— 「两只就是两个白点」从 2 掉到
+      1，紧接着 `ends` 里有一只取不到 y，`<` 比 `None` 直接把脚本崩在半路。而「挨着这条线
+      自己」认不错：末端的点离自己的末端两三个像素，离别的线的末端十几像素。
+    * **为什么不能是「离这条颜色最右那一列最近」。** 那正是这条判据原来的样子，而它对**胶囊**
+      ——一个与曲线同色的东西——是敏感的。胶囊锚在曲线头**左边**时，最右那一列天然就是线头，
+      一切正常；这一轮把它挪到了线头**右边**，最右的一列成了胶囊的右端，真正的白点离它有
+      十几像素、一个也命中不了。单只那只于是量出「0 个白点」、脚本崩在半路，而画面完全正常。
 
-    落在一个点上还要**挨着这条线自己**。两条线的末端在同一个最后交易日上，也就是**同一列**，
-    只按「离那一列最近」挑，两条线挑中的是同一个白点，去重以后只剩一个 —— 「两只就是两个
-    白点」从 2 掉到 1，紧接着 `ends` 里有一只取不到 y，`<` 比 `None` 直接把脚本崩在半路。
+      想把胶囊从同色的曲线里摘出去是走不通的：它的左端离线头只有一个 `Px(LabelGap)`，而且
+      它自己会被拆成好几块互不相邻的连通块（边框一圈、里面每个字一块 —— 实测单只那一帧是
+      184 / 70 / 17 / 14 / 9 像素的五块）。所以判据不再提「哪一端是最右」：少一个前提，就少
+      一种会被布局改动弄坏的方式。
 
-    也不能按「离这条线末端的高度最近」挑。末端的高度要从这条线最右那一列的像素里读，而那一列
-    上不只有末端 —— 胶囊和收尾卡片那圈同色的边框也压在同一列上，是一段比末端长得多的连续
-    像素（实测第三只：末端在 y=514–515，边框在 y=697–740）。取中位数就被拽到 715，于是它
-    去挑离 715 最近的点，挑中的是**第二条**的点。「挨着这条线」没有这个前提要猜：末端的点
-    离末端两三个像素，离别的线的末端十几像素。
+      （更早的版本还用过「在画布右半边」，那条在整段铺满走到一半时会把点整个滤掉 —— 头部
+      正好压在中线上。两次都是同一个毛病：拿画面上的一个**位置**去认一个**东西**。）
 
-    最右那一列要从**曲线本身**读，不能从这条颜色的全部像素里读。这一条颜色还画在别处：右上方
-    那几个图例色块（实测第一只、进度一半：线头在 x=952，色块在 x=1030，y=311–399），下面
-    收尾卡片那圈边框（第三只：末端 y=514–515，边框 y=697–740）。「最右」取成了色块那一列，
-    `abs(x - edge) <= 5` 就把真正的末端白点整个滤掉 —— 第一只的点在进度过半的画面上总是
-    消失，而另外两只各就各位，看上去谁也没少。
-
-    所以先把绘图区切出来：**上面是标题和大数字，下面是收尾的卡片，中间那三成才是绘图区** ——
-    和 `measure` 算 band 时用的是同一个界、同一句话。
+    也不能按「离这条线末端的高度最近」挑：末端的高度要从这条线最右那一列的像素里读，而那一列
+    上不只有末端 —— 胶囊和收尾卡片那圈同色的边框也压在同一列上（实测第三只：末端在 y=514–515，
+    边框在 y=697–740），取中位数就被拽到 715，于是它去挑离 715 最近的点，挑中的是**第二条**的点。
 
     一条曲线出一个点；两条末端完全叠在一起的算一个（同一个连通块，去重）。
     """
     if not point_sets or not any(point_sets):
         return []
 
-    mask = set().union(*point_sets)
+    # 所有曲线颜色合起来那一份，只给最后那条兜底判据用。
+    any_line = set().union(*point_sets)
 
     top, bottom = frame.box[2], frame.box[3]
     height = bottom - top
     band = (top + (height * 45 // 100), top + (height * 74 // 100))
 
-    def rides(x, y, pts=None):
-        for dx in range(-3, 4):
-            for dy in range(-3, 4):
-                if (x + dx, y + dy) in (mask if pts is None else pts):
-                    return True
+    def gap(dot, pts, reach=6):
+        """这个近白块离这堆像素有多远（切比雪夫距离），超出 `reach` 一律算 `reach + 1`。
 
-        return False
+        从 0 开始一圈圈往外找，所以返回的就是**最小**的那一圈 —— 而且比「整个集合扫一遍取
+        最近」便宜得多（集合只有几百个点，但这一步每帧每只都要做）。
+        """
+        x, y = dot[0], dot[1]
+
+        for r in range(0, reach + 1):
+            for dx in range(-r, r + 1):
+                for dy in range(-r, r + 1):
+                    if (x + dx, y + dy) in pts:
+                        return r
+
+        return reach + 1
 
     # 下限放到 2：白点是 `Px(6)` 的圆，屏幕上四五个像素见方，而发光让边缘变淡，真正落进
     # 「近白」那一档的有时只有两三个像素。
@@ -443,18 +476,29 @@ def end_dots(frame, point_sets, near=5):
             continue
 
         line = {(x, y) for (x, y) in pts if band[0] <= y <= band[1]} or pts
-        edge = max(x for x, _ in line)
 
-        nearby = [d for d in lights if abs(d[0] - edge) <= near and rides(d[0], d[1])]
+        # band 里的近白块，且挨着这条线自己的像素 —— 见 docstring 里那三条理由（尤其第三条：
+        # 这条判据**不能**再提「哪一端是最右」，胶囊与曲线同色而它就挂在最右端）。
+        #
+        # 半径给到 6，不是 3：**白点自己把线头那几像素盖住了**。点画在线末端的上一格
+        # （`Points[^1].Y - Px(4)`），而它是实心白的，于是这条颜色在点底下那几个像素根本不
+        # 出现。实测滚动那一帧，三只里两只离自己的线 2～3 像素，第三只离 **4** —— 差一个
+        # 像素的事，`±3` 那一版就把它整只丢掉了（「三条曲线都还在窗口里」那条断言报「2 个
+        # 白点」）。6 ≈ 点的半径 + 那格偏移 + 抗锯齿，再留一点。
+        own = [d for d in lights
+               if band[0] <= d[1] <= band[1] and gap(d, line) <= 6]
+
+        # 一条也没有时（点太淡、或者线头那几像素整格被盖掉）退到「挨着任意一条线」——
+        # 这一步只为了让 `measure` 不至于少一只，选谁并不准，所以放在最后。
+        nearby = own or [d for d in lights
+                         if band[0] <= d[1] <= band[1] and gap(d, any_line) <= 6]
 
         if not nearby:
             continue
 
-        # 挨着这条线自己的那些点优先；一个也没有（点太淡、末端被胶囊压住）时才退到「挨着
-        # 任意一条线」。
-        own = [d for d in nearby if rides(d[0], d[1], line)]
-
-        dot = min(own or nearby, key=lambda d: abs(d[0] - edge))
+        # 几个都沾上时（两条线的末端挨在一起，两个点都算「挨着这条线」）：
+        # 先取离这条线**自己**最近的，再取最靠右的那个 —— 曲线头永远在绘图区右端那一侧。
+        dot = min(nearby, key=lambda d: (gap(d, line), -d[0]))
 
         if (dot[0], dot[1]) in seen:
             continue
@@ -516,9 +560,21 @@ class Frame:
         self.path = shot(win, name)
         self.image = Image.open(self.path).convert("RGB")
 
+        # **抓错了就不量。** `capture` 会重试四次、四次都把最后一张图写下来、并把
+        # 「这是不是这个窗口」作为返回值交出来。不看它的后果是量出一整串「有道理的数字」：
+        # 一张锁屏壁纸的「画布」是整张图，于是六条曲线数出两条、胶囊「不在」、绘图区右缘
+        # 变成 1919 —— 八条断言失败，报的却像是「胶囊竖栏把画面画坏了」。
+        self.ok = winui.capture(win, self.path)
+
+        if not self.ok:
+            print(f"  ! {name}：抓到的不是应用窗口（屏幕锁了/息屏了？）—— 这一张不量数")
+            self.box = self.rows = None
+            return
+
         box = winui.canvas_box(self.image)
 
         if box is None:
+            self.ok = False
             self.box = self.rows = None
             return
 
@@ -533,13 +589,15 @@ class Frame:
         也有本金线的琥珀（`Palette.ProgressFill` 就是蓝→青→琥珀）。不让掉它，「每种颜色
         各有多少像素」会把进度条算进好几条曲线里。
         """
-        return {(x, y) for (x, y) in painted(self.rows, self.box, rgb)
+        return {(x, y) for (x, y) in painted(self.rows, self.box, rgb, palette=PALETTE_RGB)
                 if y <= self.box[3] - trim}
 
 
 def shot(win, name):
-    """抓到的是不是这个窗口，`winui.capture` 负责 —— 它抓错窗口时不报错，只给一张别的窗口
-    的截图，而接下来每一条量出来的数都成了假话（见那个函数的说明）。
+    """抓一张画面，路径由 `winui.capture` 写、它抓错窗口时**如实返回 False**。
+
+    抓错的那张是别的窗口的截图（锁屏、编辑器、桌面），而接下来每一条量出来的数都成了
+    假话 —— 见那个函数的说明。`Frame` 看这个布尔值决定量不量。
     """
     path = os.path.join(REPO, "artifacts", name)
 
@@ -577,6 +635,14 @@ def measure(win, name, count=None):
     dots = end_dots(frame, points)
     out["dots"] = dots
     out["rides"] = [owners(points, dot) for dot in dots]
+
+    # 每只的白点落在哪一列 —— 「标签骑在头的**右边**」要拿它当基准。几只的曲线头本来就
+    # 同一列（都画在同一个 `moving` 上），所以这张表里几个值相同是可以预期的。
+    out["dotx"] = {}
+
+    for dot, who in zip(dots, out["rides"]):
+        for i in who:
+            out["dotx"].setdefault(i, dot[0])
 
     ys = [d[1] for d in dots]
 
@@ -913,8 +979,14 @@ def add_to_list(win, code, name, tries=3):
     return False
 
 
-def read_status(win, status):
-    hit = FETCHED.search(status)
+def read_status(win, status, pattern=None):
+    """把「取数完成」那句话拆成 (几份, 多少个交易日, 起, 止)。
+
+    `pattern` 是这一页的那一句。持仓页写「{n} 只标的 · {n} 个交易日」，定投页写
+    「{n} 个计划 · {n} 个交易日」——而**单份时两页都不写前半截**（持仓页那句变成
+    「已取 1211 个交易日（…），持有 1211 天」），所以那一组做成可选，一条正则管两种情形。
+    """
+    hit = (pattern or FETCHED).search(status)
 
     if hit is None:
         return None
@@ -928,8 +1000,12 @@ def read_status(win, status):
     }
 
 
-def fetch(win, seconds=300):
-    """按一次取数并读回状态行。"""
+def fetch(win, seconds=300, patterns=None):
+    """按一次取数并读回状态行。
+
+    `patterns` 是这一页「取数完成了」的那几个样子，默认持仓页那一套（见 `read_status`）。
+    """
+    done = patterns or [FETCHED]
     close_status(win)
 
     button = winui.find(win, lambda c: c.AutomationId == "FetchButton")
@@ -942,16 +1018,28 @@ def fetch(win, seconds=300):
     if not press(button, win):
         return None, "取数按钮点不到"
 
-    status = status_until(win, [FETCHED], seconds)
+    status = status_until(win, done, seconds)
 
     if status is None:
         return None, status_text(win) or "（状态条空）"
 
-    return read_status(win, status), status
+    return read_status(win, status, done[0]), status
 
 
-def press_preset(win, code, seconds=300):
-    """点一个一键预设 —— 它自己就会取数（加入清单 + 勾上 + 取数，一次点击）。"""
+def press_preset(win, code, seconds=300, patterns=None):
+    """点一个一键预设 —— 它自己就会取数（加入清单 + 勾上 + 取数，一次点击）。
+
+    **`patterns` 一定要按页面给。** 状态行的措辞是每页自己的资源：持仓页说
+    「{n} 只标的」、定投页说「{n} 个计划」，而单份时两页都只说「已取 N 个交易日（…）」。
+    于是定投页借用持仓页那对正则时，**第一只是通的、第二只起永远等不到** —— `status_until`
+    干等满 300 秒才返回，返回的是 `(None, 状态行)`：一个非空元组，**真值依旧为真**，所以
+    调用处那句 `if press_preset(...)` 看着像过了。后果是每加一只白等五分钟，整趟拖到半个
+    小时，而这半小时里任何一个别的脚本来动窗口，画面就不是这一趟摆出来的了。
+
+    所以要么传 `patterns`，要么老实看返回值里的第一个元素（它是 `None` 就说明没解析出
+    来，不是没取到数）。
+    """
+    done = patterns or [FETCHED, TOO_MANY]
     close_status(win)
 
     button = preset(win, code)
@@ -962,12 +1050,12 @@ def press_preset(win, code, seconds=300):
     if not press(button, win):
         return None, "预设点不到"
 
-    status = status_until(win, [FETCHED, TOO_MANY], seconds)
+    status = status_until(win, done, seconds)
 
     if status is None:
         return None, status_text(win) or "（状态条空）"
 
-    return read_status(win, status), status
+    return read_status(win, status, done[0]), status
 
 
 def scrub(win, progress):
@@ -1075,6 +1163,21 @@ def main():
           in renderer)
     check("标签描边不是发丝线（压在曲线上要分得开）",
           "private const double LabelEdge = 3;" in renderer)
+
+    # ---- 标签骑在曲线头右边 ---------------------------------------------------------
+    #
+    # 这一组全是**布局**断言，而布局是最容易悄悄回退的那一类：画面看着还是「三条线、
+    # 三个胶囊」，只有把它们之间的距离量出来才知道胶囊是不是又压回曲线上去了。
+    check("胶囊锚在自己曲线头的**右边**（左缘 = 头 + LabelGap）",
+          "anchors[i].X + context.Px(LabelGap)" in renderer)
+    check("右缘按**画面**右缘收，不是绘图区右缘（那条竖栏本来就在右边距里）",
+          "context.Width - context.Px(LabelEdgePad) - width" in renderer)
+    check("绘图区让出一列给胶囊（标题、卡片、进度条仍是整幅宽）",
+          "Math.Max(1, context.ChartWidth - LabelColumn(session, context))" in renderer)
+    check("那一列按**最终**金额量，所以每帧一样宽（不然曲线会横着滑）",
+          "track.Name, track.Profit));" in renderer)
+    check("日期也按让出去之后的宽度排（一处量、两处用）",
+          renderer.count("DrawXLabels(session, context, t, bottom, plotW, introA,") == 2)
     check("两条以上大数字是领先那只的金额 + 名字",
           "PositionLeaderLine" in renderer and "plot.Values[leader] - _board.Capital" in renderer)
     check("单只时大数字仍是收益率",
@@ -1392,10 +1495,11 @@ def main():
     #
     # 两条用**同一个进度**（0.5），所以「靠右了一大截」不依赖任何绝对位置。
     #
-    # 「绘图区右端」不是画布右缘：右边那五十几个像素是胶囊标签占的地方，满进度的曲线头也
-    # 停在那里（实测 1081，画布右缘 1134）。所以基准要**从画面上量**（满进度那一帧的头），
-    # 不能拿画布的边框当基准 —— 拿边框当基准，一条本来是对的断言会报「还差 56 像素」，
-    # 而那 56 像素里 53 是天生就有的留白。
+    # 「绘图区右端」不是画布右缘：绘图区右边让出了一条竖栏给末端胶囊（`LabelColumn`），
+    # 满进度的曲线头就停在那条栏的左边界上，栏里放着胶囊。所以基准要**从画面上量**（满进度
+    # 那一帧的头），不能拿画布的边框当基准 —— 拿边框当基准，一条本来是对的断言会报「还差
+    # 一大截」，而那一截里大半是天生就有的留白。留白的**数目**会随竖栏宽度变（它又随名字
+    # 与金额变），所以这里连数字都不写：写了就成了一条会被改一次忘一次的东西。
     # 推进方式是**落盘的**偏好（这一节的最后一条就是验它落盘），所以上一次跑完停在
     # 「窗口滚动」，这一次一开局就是滚动的 —— 不先复位，下面那一帧「整段铺满」量到的其实
     # 是滚动的样子，而「滚动」那一帧也量到同样的东西，两条断言一起错、还错得一模一样
@@ -1492,6 +1596,56 @@ def main():
 
         scrub(win, 1.0)
 
+    # ---- 7b) 胶囊骑在曲线头**右边** -------------------------------------------------
+    #
+    # 这是这一页的胶囊唯一一次挪位置。以前它锚在曲线头的**左边**（右缘 = 头 − 12），于是
+    # 压在自己那条线上；几只一起看时，几颗胶囊全叠在绘图区右端那一小片里，几乎盖住曲线的
+    # 最后一段 —— 而画面看起来只是「标签挤了点」。
+    #
+    # 现在绘图区右侧让出一条竖栏（`PositionRenderer.LabelColumn`），曲线停在那条栏左边，
+    # 胶囊骑在线头**右边**。两件事都能量：左缘在头的右边，右缘还在画面里。
+    #
+    # 为什么这一条不能只靠源码断言：源码里写对、画面里却压回去，是完全可能的
+    # —— `LabelColumn` 量出来的宽度、`ChartMargins.Right` 与画布宽度三者任何一个算错，
+    # 表达式都还是原来那一行。判决只在像素上。
+    print("\n胶囊的位置")
+
+    tip = measure(win, "verify-position-tip.png", count=3) if scrub(win, 1.0) else None
+
+    if tip is None:
+        check("满进度那一帧量得出", False, "取不到画面")
+    else:
+        right = tip["box"][1]
+        ahead, inside = [], []
+
+        for i in (0, 1, 2):
+            # 变量别叫 `start`：`main` 里那个是整段区间的起点（一个日期），在这里被一个列号
+            # 盖掉之后，后面 `expected(start, …)` 会拿日期当列号算 —— 报的是一句
+            # 「`date` 和 `int` 不能比大小」，离现场很远。
+            _, row, edge = tip["labels"][i]
+            head = tip["dotx"].get(i)
+
+            if row is None or edge is None or head is None:
+                continue
+
+            # 那一行上最长的那一段就是胶囊的上下边，它的长度约等于胶囊的宽（圆角那两截
+            # 不在里面，所以只会偏短一点点 —— 这一条判的是「还在画面里」，宁松不紧）。
+            width, _ = best_run(tip["frame"].of(TRACKS[i]), row)
+
+            if edge > head + 4:
+                ahead.append(i)
+
+            if edge + width <= right:
+                inside.append(i)
+
+        check("满进度时三颗胶囊都在自己曲线头的右边（不再压曲线）", len(ahead) == 3,
+              "、".join(f"第{i + 1}条 头 x={tip['dotx'].get(i)} → 胶囊 x={tip['labels'][i][2]}"
+                       for i in (0, 1, 2)))
+        check("三颗胶囊都没跑出画面（右边那条竖栏正是留给它们的）", len(inside) == 3,
+              f"画面右缘 x={right}；"
+              + "、".join(f"第{i + 1}条 左缘 {tip['labels'][i][2]}"
+                         for i in (0, 1, 2)))
+
     # ---- 8) 上限：六只画得出来，第七只被拒 -----------------------------------------
     print("\n上限")
 
@@ -1575,6 +1729,12 @@ def main():
     # 要在重启里验一次。切上去，重启，看窗口框还是不是可用的 —— 那一个布尔值就说明
     # `ChosenMotion()` 读回来的是哪个。
     check("重启前把推进方式切成「窗口滚动」（验它落盘）", motion(win, "窗口滚动") == "窗口滚动")
+
+    # **切完要等一会儿再杀进程。** 偏好写入是 400 毫秒去抖的（`StudioPreferences.Queue`
+    # 把写操作排进一个 `DispatcherTimer`），立刻 `kill` 的话那一笔还在队列里。这里一直是靠
+    # 下面那次 `chip_names`（整棵树的 UIA 遍历）把 400 毫秒拖过去才过的 —— 那是运气，
+    # 不是断言。定投页那一趟没有这一步，于是踩到了。
+    time.sleep(1.0)
 
     kept = [name for _, name in chip_names(win)]
 

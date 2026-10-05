@@ -15,6 +15,7 @@
 """
 import importlib.util
 import os
+import re
 import sys
 import time
 from datetime import date
@@ -54,6 +55,28 @@ SHOTS = ("verify-dca-one.png", "verify-dca-two.png", "verify-dca-three.png",
 # 投入线（那根琥珀阶梯）用的就是 `Palette.Moving`，与持仓页的「本金线」同一个色。
 CAPITAL = (0xFB, 0xBF, 0x24)
 
+# **状态行的措辞是每页自己的资源**（`DcaBoardFetched` 说「{n} 个计划」，`PositionBoardFetched`
+# 说「{n} 只标的」；`DcaTooMany` 说「6 个计划」，`PositionTooMany` 说「6 只」）。`vp` 里那对
+# 正则是持仓页的，借用过来时**只有第一只通得过** —— 单份时两页都只说「已取 N 个交易日（…）」，
+# 第二只起订投页那句「2 个计划 · N 个交易日」就认不出来了。
+#
+# 后果藏得很深：`press_preset` 干等满 300 秒后返回 `(None, 状态行)`，而**非空元组仍是真值**，
+# 于是 `if press_preset(...)` 一路通过；每一只白等五分钟，整趟拖到半个多小时，而这半小时里
+# 任何一个别的脚本来动一下窗口，画面就不是这一趟摆出来的（「六份只勾上三只、还混进持仓页那
+# 两只」就是这么来的 —— 那是两个脚本在抢同一个应用）。
+FETCHED = re.compile(r"已取\s*(?:(\d+)\s*个计划\s*·\s*)?(\d+)\s*个交易日（(\S+?)\s*至\s*(\S+?)）")
+TOO_MANY = re.compile(r"最多同时对比\s*(\d+)\s*个计划，现在勾了\s*(\d+)\s*个")
+DONE = (FETCHED, TOO_MANY)
+
+
+def tap(win, code):
+    """按一个一键预设，返回 `press_preset` 那一对。
+
+    没什么花招：就是把 `patterns=DONE` 收敛到一处，免得五个调用点里漏掉一个。成败一律看
+    返回元组的**第一个元素** —— 理由见上面那段话。
+    """
+    return vp.press_preset(win, code, patterns=list(DONE))
+
 
 def spent_columns(shot):
     """投入线出现在画面的哪些列上，以及十等分里每段各有多少列。
@@ -66,9 +89,12 @@ def spent_columns(shot):
     所以改量**列**：它盖住多少列，以及十段里是不是每段都有它。「覆盖了多少列」这种总量看不
     出「少了一截」（前半截被盖掉、后半截还在，总量照样过半），十等分才看得出来。
 
-    **后三段不是它的地盘。** 有几份就有几个胶囊，都从绘图区右端往回排：六份时六个胶囊叠在
-    一起，左端到 x≈995，把那条线连同六条曲线一起压住 —— 实测后三段只剩 [0, 5, 4] 列，哪一种
-    画法都一样。所以「每段都有它」只量到标签之前。
+    **后三段为什么曾经不算它的。** 从前末端胶囊锚在曲线头的**左边**，有几份就有几个胶囊，
+    都从绘图区右端往回排：六份时六个胶囊叠在一起、左端到 x≈995，把那条线连同六条曲线一起
+    压住 —— 实测后三段只剩 [0, 5, 4] 列，哪一种画法都一样。于是那一段只能量到标签之前。
+
+    胶囊挪到曲线头**右边**之后那条理由没了（绘图区右边让出一条竖栏专门放它们），所以现在
+    十段全要 —— 这正是一条能把「胶囊又压回曲线上了」抓住的断言。
     """
     xs = sorted({x for x, _ in shot["frame"].of(CAPITAL)})
 
@@ -172,6 +198,23 @@ def source():
           "(line.Points[^1].X, line.Points[^1].Y - context.Px(4))" in render)
     check("胶囊彼此避让（按 y 排序往下推）",
           "centres[here] = centres[previous] + height + gap;" in render)
+
+    # ---- 胶囊骑在曲线头右边（与持仓页同一套，两页必须一起改） ----
+    #
+    # 两页的这段布局是照抄的，所以断言也是照抄的：只改一页的话，另一页的画面看着同样
+    # 正常 —— 三条线、三个胶囊都在，只有把它们之间的距离量出来才知道胶囊压没压曲线。
+    check("胶囊锚在自己曲线头的**右边**（左缘 = 头 + LabelGap）",
+          "anchors[i].X + context.Px(LabelGap)" in render)
+    check("右缘按**画面**右缘收，不是绘图区右缘（那条竖栏本来就在右边距里）",
+          "context.Width - context.Px(LabelEdgePad) - width" in render)
+    check("绘图区让出一列给胶囊（标题、卡片、进度条仍是整幅宽）",
+          "Math.Max(1, context.ChartWidth - LabelColumn(session, context))" in render)
+    check("那一列按**最终**金额量，所以每帧一样宽（不然曲线会横着滑）",
+          "LabelWidth(session, context, nameFormat, valueFormat, track.Name, FinalProfit(track))"
+          in render)
+    check("日期也按让出去之后的宽度排（一处量、两处用）",
+          render.count("DrawXLabels(session, context, t, bottom, plotW, introA,") == 2)
+
     check("**单只也画**（这是需求里那一半：一个的时候也要显示）",
           render.count("DrawLabels(session, context, lines, anchors, top, bottom, introA);") == 1
           and "if (!_board.Comparing" not in render.split("DrawLabels(session, context")[0][-200:])
@@ -278,7 +321,10 @@ def main():
     # ---- 一份 ----
     print("\n一份")
 
-    check("点一键预设就取数", vp.press_preset(win, PRESETS[0][0]))
+    got = tap(win, PRESETS[0][0])
+
+    check("点一键预设就取数", got is not None and got[0] is not None,
+          (got[1] if got else "")[:70] or "（返回空）")
     check("清单里只有这一份且被勾上", vp.ticked(win) == [PRESETS[0][0]], str(vp.ticked(win)))
 
     one = vp.measure(win, "verify-dca-one.png", count=1)
@@ -300,7 +346,10 @@ def main():
     # ---- 两份 ----
     print("\n两份")
 
-    check("加第二份并取数", vp.press_preset(win, PRESETS[1][0]))
+    got = tap(win, PRESETS[1][0])
+
+    check("加第二份并取数", got is not None and got[0] is not None,
+          (got[1] if got else "")[:70] or "（返回空）")
     check("两份都勾着", vp.ticked(win) == [PRESETS[0][0], PRESETS[1][0]], str(vp.ticked(win)))
 
     union, tracks = plan(start, today, PRESETS[:2])
@@ -326,9 +375,18 @@ def main():
     # ---- 六份 ----
     print("\n六份")
 
-    for code, _ in PRESETS[2:6]:
-        vp.press_preset(win, code)
+    # 每一只都说得上有没有认出状态行，不能只在最后数一遍清单 —— 数得出来也一样可能在
+    # 「干等五分钟、对面窗口被别人动了」的路上。
+    fetched = True
 
+    for code, _ in PRESETS[2:6]:
+        got = tap(win, code)
+
+        if got is None or got[0] is None:
+            fetched = False
+            print(f"  ✗ {code} 没认出状态行：{(got[1] if got else '（返回空）')[:70]}")
+
+    check("四只加进来时每次都读回状态行", fetched)
     check("六份都勾着", len(vp.ticked(win)) == 6, str(vp.ticked(win)))
 
     _, six_tracks = plan(start, today, PRESETS[:6])
@@ -349,10 +407,13 @@ def main():
         # 所以前半段它们全都贴在投入线上走 —— 投入线画在它们**下面**的话，会被这六条
         # 盖掉前半截（实测只剩 99 列，前三分之一一列都没有），于是它看起来是从画面中段
         # 凭空冒出来的一小段。这一条守的就是绘制顺序。
+        #
+        # 十段全要：胶囊挪到曲线头右边、绘图区右边让出竖栏之后，这条线的右端也再没有东西
+        # 压着它了。以前只量前七段是因为胶囊吃掉了后三段。
         cols, buckets = spent_columns(six)
 
-        check("六份时那条共享的投入线仍然贯穿画面（标签之前每段都有它）",
-              min(buckets[:7]) >= 12, f"{cols} 列，十段 {buckets}")
+        check("六份时那条共享的投入线仍然贯穿画面（十段里每段都有它）",
+              min(buckets) >= 12, f"{cols} 列，十段 {buckets}")
 
         # **几个白点要算，不能写死。** 两份期末市值挨得很近时，两个点会叠成一个连通块。
         # 每像素多少钱从画面上量：最高与最低那两个白点的距离除以它们末值之差。
@@ -379,24 +440,54 @@ def main():
             else:
                 check("六份期末市值互不相同（否则比的是同一个数）", False)
 
+    # ---- 胶囊骑在曲线头右边 ---------------------------------------------------------
+    #
+    # 与持仓页同一套布局、同一套判据（那边的 `7b` 一节写清了为什么只能看像素）。这里用六份
+    # 那一帧：六条线都到齐了，白点也最多。
+    #
+    # 六份里有几对期末市值挨得很近，两个白点会并成一个连通块 —— 那样的白点只认得到一只，
+    # 所以要求「认得出白点的那几条都在自己头右边」，而不是六条。
+    if six is not None:
+        ahead = []
+
+        for i in range(6):
+            # 第三个值叫 `edge` 不叫 `start`：`main` 里那个 `start` 是整段区间的起点（一个
+            # `date`），盖掉它之后后面 `plan(start, …)` / `expected(start, …)` 拿日期当列号
+            # 算，报出来的是一句「date 和 int 不能比大小」。持仓页那一节就是这么坏的。
+            _, row, edge = six["labels"][i]
+            head = six["dotx"].get(i)
+
+            if row is None or edge is None or head is None:
+                continue
+
+            if edge > head + 4:
+                ahead.append(i)
+
+        check("有白点的那几份，胶囊都在自己曲线头的右边（不再压曲线）", len(ahead) >= 5,
+              f"认到 {len(six['dotx'])} 个白点，{len(ahead)} 条在头右边："
+              + "、".join(f"第{i + 1}条 头 x={six['dotx'].get(i)} → 胶囊 x={six['labels'][i][2]}"
+                         for i in range(6) if i in ahead))
+
     # ---- 第七份：拒绝 ----
     print("\n上限")
 
-    check("第七份也勾上了", vp.press_preset(win, PRESETS[6][0]) is not None
-          and len(vp.ticked(win)) == 7, str(vp.ticked(win)))
+    seventh = tap(win, PRESETS[6][0])
+
+    check("第七份也勾上了", seventh is not None and len(vp.ticked(win)) == 7,
+          str(vp.ticked(win)))
 
     # `fetch` 给的是 **(读回来的数据, 状态行)** 两个值：拒绝取数时第一个是 `None`、状态行
     # 里是那句拒绝的话。写成 `"最多" in fetch(...)` 是在元组里找字符串 —— 永远为假，而报
     # 出来的明细正是一句「最多同时对比 6 个计划，现在勾了 7 个」，看上去像断言对了。
-    data, said = vp.fetch(win)
+    data, said = vp.fetch(win, patterns=list(DONE))
 
     check("勾到七份时拒绝取数", data is None and "最多" in said, said[:80])
 
     # ---- 两种推进方式 ----
     #
     # 同持仓页那一对：整段铺满时曲线头跟着进度走，窗口滚动时窗口右端就是头、它停在绘图区
-    # 右端。基准**从画面上量**（满进度那一帧的头），不能拿画布边框当 —— 右边那几十个像素
-    # 是胶囊标签的地盘。
+    # 右端。基准**从画面上量**（满进度那一帧的头），不能拿画布边框当 —— 绘图区右边让出了一
+    # 条竖栏给末端胶囊（`LabelColumn`），栏宽随名字与金额变，所以那一段留白没有固定数。
     print("\n推进方式")
 
     vp.motion(win, "整段铺满")
@@ -442,6 +533,13 @@ def main():
 
     check("重启前把推进方式切成「窗口滚动」（验它落盘）",
           vp.motion(win, "窗口滚动") == "窗口滚动")
+
+    # **切完要等一会儿再杀进程。** 偏好写入是 400 毫秒去抖的（`StudioPreferences` 的
+    # `Queue` 把写操作排进一个 `DispatcherTimer`），切上去立刻 `kill` 的话那一笔还在队列里，
+    # 重启读回来的是上一个值 —— 而「切上去」这一步自己是过的，看起来就成了「偏好没落盘」。
+    # 持仓页那一趟从来没踩到，是因为它中间还有一次 `chip_names`（整棵树的 UIA 遍历）把
+    # 400 毫秒拖过去了；这里没有，于是踩到。别靠运气，等一秒。
+    time.sleep(1.0)
 
     winui.kill(winui.EXE)
     time.sleep(2.0)

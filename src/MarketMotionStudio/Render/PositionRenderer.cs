@@ -74,8 +74,15 @@ public sealed class PositionRenderer : IFrameRenderer
     // worth over what went in, at the moment being drawn. Sized in frame pixels like everything
     // else here, so a preview and an export of a different format put it in the same place.
 
-    /// <summary>How far the label's right edge stays clear of the point it belongs to.</summary>
+    /// <summary>
+    /// How far the label's **left** edge stays clear of the point it belongs to. The label
+    /// rides ahead of the line rather than over it; <see cref="LabelColumn"/> is where the
+    /// room for that comes from.
+    /// </summary>
     private const double LabelGap = 12;
+
+    /// <summary>How far the widest label stays clear of the frame's own right edge.</summary>
+    private const double LabelEdgePad = 12;
 
     /// <summary>Its own padding, and the room two stacked labels keep between them.</summary>
     private const double LabelPadX = 14;
@@ -177,7 +184,11 @@ public sealed class PositionRenderer : IFrameRenderer
         var bottom = context.BaselineAbove(CreditGap);
         var span = bottom - top;
         var mx = context.ChartLeft;
-        var plotW = context.ChartWidth;
+
+        // The plot stops short of the right edge by the width of the labels' column, so that a
+        // label can ride ahead of its own line without ever leaving the frame. Only the data
+        // area gives way — the title, the cards and the progress bar still run the full width.
+        var plotW = Math.Max(1, context.ChartWidth - LabelColumn(session, context));
 
         var introA = Easing.Ramp(t, 0, 1000);
 
@@ -223,7 +234,7 @@ public sealed class PositionRenderer : IFrameRenderer
             DrawLegend(session, context, top, introA);
 
             // Nothing has arrived, so nothing is on the frame: an empty window and no labels.
-            DrawXLabels(session, context, t, bottom, introA, n, 0, -1);
+            DrawXLabels(session, context, t, bottom, plotW, introA, n, 0, -1);
 
             return new Plot(-1, new double[_board.Tracks.Count]);
         }
@@ -364,7 +375,7 @@ public sealed class PositionRenderer : IFrameRenderer
 
         DrawLabels(session, context, lines, anchors, top, bottom, introA);
         DrawLegend(session, context, top, introA);
-        DrawXLabels(session, context, t, bottom, introA, count, first, head);
+        DrawXLabels(session, context, t, bottom, plotW, introA, count, first, head);
 
         // The values the headline reads: each holding's level at the moment being shown, or the
         // last level it had for a holding whose data ended before the animation got there. A
@@ -442,6 +453,64 @@ public sealed class PositionRenderer : IFrameRenderer
     }
 
     /// <summary>
+    /// How much of the frame's right-hand side the end labels need, in frame pixels — the
+    /// amount the plot gives up so that a label can ride ahead of its own line without
+    /// running off the edge.
+    ///
+    /// Measured from the **final** amounts rather than from this frame's, so the column is the
+    /// same width on every frame. A column that grew with the figures would narrow the plot
+    /// while the labels were still moving along it, and the lines would slide sideways as they
+    /// were being read.
+    ///
+    /// The right margin already keeps a band empty for the last value, so the plot gives up
+    /// only what that margin cannot cover — and never more than a fixed share of its own
+    /// width, because past that point a longer name is being answered by shrinking the
+    /// picture, which is the wrong end to take it from. When the cap does bite, the labels
+    /// give way instead: see <see cref="DrawLabels"/>.
+    /// </summary>
+    private double LabelColumn(CanvasDrawingSession session, FrameContext context)
+    {
+        using var nameFormat = Ink.Format(context.Px(LabelSize));
+        using var valueFormat = Ink.Format(context.Px(LabelSize), bold: true);
+
+        var widest = 0d;
+
+        // Every holding on the board, not just the ones on this frame: the column has to be
+        // the same width before a holding has arrived as after it, or the whole plot would
+        // shift the day its line starts.
+        foreach (var track in _board.Tracks)
+        {
+            widest = Math.Max(
+                widest,
+                LabelWidth(session, context, nameFormat, valueFormat, track.Name, track.Profit));
+        }
+
+        var need = widest + context.Px(LabelGap + LabelEdgePad);
+
+        return Math.Clamp(need - context.Margins.Right, 0, context.ChartWidth * 0.45);
+    }
+
+    /// <summary>
+    /// How wide one label is — the name and the money, measured in the two faces they are
+    /// drawn in rather than guessed from a character count, because the amount changes width
+    /// as it grows and the name can be anything the directory returns.
+    ///
+    /// Shared by the column that makes room for the widest label and by the drawing of each
+    /// one, so the two cannot disagree about how much room that is.
+    /// </summary>
+    private static double LabelWidth(
+        CanvasDrawingSession session, FrameContext context,
+        CanvasTextFormat nameFormat, CanvasTextFormat valueFormat,
+        string name, double profit)
+    {
+        var money = Sign(profit) + DcaRenderer.Money(Math.Abs(profit));
+
+        return Ink.Advance(session, name + " ", nameFormat)
+               + Ink.Advance(session, money, valueFormat)
+               + context.Px(LabelPadX * 2);
+    }
+
+    /// <summary>
     /// The name and the figure, riding each line's leading end.
     ///
     /// Placed in one pass and drawn in another, because the boxes have to be kept apart from each
@@ -450,6 +519,8 @@ public sealed class PositionRenderer : IFrameRenderer
     /// frame with the right number of labels on it and one of them missing. They are pushed down
     /// the frame in the order they came out, which is stable between frames and between runs, and
     /// the whole stack is then slid back inside the plot so a label near the top is not clipped.
+    ///
+    /// Each one sits **ahead of** its own line's leading end, in the column the plot left for it.
     /// </summary>
     private void DrawLabels(
         CanvasDrawingSession session, FrameContext context,
@@ -476,18 +547,23 @@ public sealed class PositionRenderer : IFrameRenderer
         {
             var (points, _, name, profit) = lines[i];
 
-            var money = Sign(profit) + DcaRenderer.Money(Math.Abs(profit));
-            var width = Ink.Advance(session, name + " ", nameFormat)
-                        + Ink.Advance(session, money, valueFormat)
-                        + context.Px(LabelPadX * 2);
+            var width = LabelWidth(session, context, nameFormat, valueFormat, name, profit);
 
-            // Right edge just clear of the point, left edge never off the plot: early in the
-            // animation the point is at the left margin and the label would otherwise hang
-            // outside the frame entirely.
-            var right = anchors[i].X - context.Px(LabelGap);
-            var left = Math.Max(context.ChartLeft, right - width);
+            // The label rides **ahead of** the point it belongs to, in the column the plot was
+            // shortened to leave for it: by the end of the animation that column is past the
+            // plot's last one, so a label never covers the line it is about.
+            //
+            // Its right edge is the one that has to stay inside the frame, and it is the one
+            // that gives way — measured to the **frame's** edge, not the plot's: the band the
+            // right margin keeps empty is where these labels live. A long name with a large
+            // amount, and the side margins pushed out, can leave the column narrower than the
+            // widest label, and then the label slides back over the point rather than off the
+            // edge of the picture.
+            var left = Math.Min(
+                anchors[i].X + context.Px(LabelGap),
+                context.Width - context.Px(LabelEdgePad) - width);
 
-            boxes.Add(new Rect(left, anchors[i].Y, width, height));
+            boxes.Add(new Rect(Math.Max(context.ChartLeft, left), anchors[i].Y, width, height));
         }
 
         // Push apart, top to bottom. The order is by where the labels would have gone, and it is
@@ -596,13 +672,17 @@ public sealed class PositionRenderer : IFrameRenderer
     }
 
     /// <summary>A handful of dates under the plot, fading in as the line reaches them.</summary>
+    /// <param name="plotW">
+    /// The plot's width, handed in rather than read off the context: the dates have to sit
+    /// under the columns they name, and the plot is narrower than the chart by the labels'
+    /// column (see <see cref="LabelColumn"/>). Measured in one place, used in two.
+    /// </param>
     private void DrawXLabels(
-        CanvasDrawingSession session, FrameContext context, double t, double bottom, double introA,
-        int count, double first, double head)
+        CanvasDrawingSession session, FrameContext context, double t, double bottom, double plotW,
+        double introA, int count, double first, double head)
     {
         var n = _board.Dates.Count;
         var mx = context.ChartLeft;
-        var plotW = context.ChartWidth;
 
         // About five labels across the window in view — the window, not the whole span. A
         // scrolling chart of a decade has to have its dates read off the sixty days on screen,

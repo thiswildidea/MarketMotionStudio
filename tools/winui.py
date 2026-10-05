@@ -14,6 +14,7 @@ learned the hard way:
   visible, and went on to verify the market it had failed to change.
 """
 
+import ctypes
 import os
 import subprocess
 import time
@@ -24,6 +25,25 @@ auto.uiautomation.SetGlobalSearchTimeout(5)
 
 APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
 EXE = "MarketMotionStudio.exe"
+
+
+def keep_awake():
+    """Ask Windows not to blank the display while this script runs.
+
+    A run spends minutes at a time in `sleep` between clicks, and an idle machine blanks
+    the screen and locks. From then on `CaptureToImage` hands back the *lock screen* for
+    every remaining shot — see `capture`, which says so rather than let the numbers from
+    those shots be read as the app drawing something wrong.
+
+    The request is per-thread and dies with this process; nothing is written to disk and
+    no setting is changed. A lock imposed by policy is still a lock.
+    """
+    try:
+        continuous, system, display = 0x80000000, 0x1, 0x2
+
+        ctypes.windll.kernel32.SetThreadExecutionState(continuous | system | display)
+    except Exception:  # noqa: BLE001 - an unrequested nap is not a failure
+        pass
 
 
 def console_text(raw):
@@ -107,7 +127,12 @@ def launch(image_name, appid=APPID, wait_seconds=45):
     Killed first, because a window already up is the last build's: the package is
     registered in place, and an instance that is running keeps the assembly it started
     with. Verifying against it is verifying the previous change.
+
+    Also wakes the display and asks it to stay awake — a run is minutes of clicking
+    followed by minutes of `sleep`, and the screen blanking in the middle of one costs
+    every screenshot after it (see `keep_awake`).
     """
+    keep_awake()
     kill(image_name)
     os.startfile(r"shell:AppsFolder\%s" % appid)
 
@@ -396,6 +421,18 @@ def canvas_box(whole):
     return left, right, top, bottom
 
 
+def looks_like_a_frame(picture, box):
+    """Is this box the canvas of a captured frame, rather than "some rectangle"?
+
+    This is the test `capture` has always made, given a name: the canvas is **inset** —
+    sidebar to its left, settings to its right, a playback bar under it — so a box the size
+    of the whole picture is never a canvas. A few pixels of slack for the frame's own border.
+    """
+    return (box is not None
+            and box[1] - box[0] < picture.size[0] - 8
+            and box[3] - box[2] < picture.size[1] - 8)
+
+
 def capture(win, path, tries=4):
     """Capture **this** window, and make sure that is what came back.
 
@@ -409,11 +446,18 @@ def capture(win, path, tries=4):
 
     So the picture is read back and checked against the one thing a captured app frame always
     has: **a canvas inside it**. `canvas_box` walks out from the frame's centre and returns
-    the whole picture for anything else, so "the box is not the whole picture" is the test.
-    Failing that, the window is raised again and the shot retaken.
+    the whole picture for anything else, so "the box is not the whole picture" is the test
+    (`looks_like_a_frame`). Failing that, the window is raised again and the shot retaken.
 
-    Returns the path either way — a guard that throws would turn a wrong reading into a lost
-    run, and a wrong reading is already visible in the assertions that follow.
+    **Returns whether the picture is a frame of this window**; the file is written either way.
+    A guard that threw would turn a wrong reading into a lost run, but a guard that only
+    returned the path turned one into a *silent* wrong reading — and the second one is worse,
+    because it arrives as a bug report about the app. The screen locking on its own is a
+    property of the machine: on the retry after one such lock, `verify-dca-board` measured
+    four lock-screen pictures in a row and reported eight failures — "the capsule column broke
+    the drawing", "the scrolling motion does not scroll" — with the app drawing exactly what
+    it should. The caller (`Frame`) now refuses to measure a picture that is not a frame and
+    says so in the line that reports it.
     """
     from PIL import Image
 
@@ -434,17 +478,10 @@ def capture(win, path, tries=4):
         except Exception:  # noqa: BLE001
             continue
 
-        box = canvas_box(picture)
+        if looks_like_a_frame(picture, canvas_box(picture)):
+            return True
 
-        if box is None:
-            continue
-
-        # The canvas is inset — sidebar, preview, settings — so a box the size of the window
-        # is never a canvas. A few pixels of slack for the frame's own border.
-        if box[1] - box[0] < picture.size[0] - 8 and box[3] - box[2] < picture.size[1] - 8:
-            return path
-
-    return path
+    return False
 
 
 def frame_bottom(whole, box=None, run=4, light=200):

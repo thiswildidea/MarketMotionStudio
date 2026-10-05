@@ -291,8 +291,10 @@ What is drawn is **the value line of each, and one paid-in line for all of them*
 and one cadence the six paid-in lines land exactly on top of one another, so drawing six of them
 would be drawing one line six times, and the one that is drawn is the plan that paid in the most,
 because drawing the least would make every other plan look better than it is. The fill goes away
-too, for the same reason six overlapping fills have. Each plan carries a capsule at the end of its
-own line, naming it and the money it is up, riding the line as it grows. With several, the headline
+too, for the same reason six overlapping fills have. Each plan carries a capsule just past the
+leading end of its own line, naming it and the money it is up, riding the line as it grows — the
+plot stops short of the right edge to leave those capsules a column of their own, so a label never
+sits on top of the curve it is about. With several, the headline
 becomes the **leader's ratio** and not its money, and the leader is picked on the ratio: a later
 listing has had less paid into it, and earning less than a plan that started three years earlier is
 not the same thing as being the worse plan.
@@ -357,16 +359,18 @@ different page rather than a setting on the first one. Up to **six holdings** sh
 read off the same watchlist every other per-instrument page uses, each in a colour of its own
 — assigned by the order the reader listed them in, because a hashed colour is stable but not
 *distinct*, and two of six coming out identical is a comparison of one line with itself. Each
-carries its own capsule at the end of its own line, naming the instrument and the money it
+carries its own capsule just past the leading end of its own line — the last thing a reader's eye
+reaches, and the one place on the frame where a name can sit without covering a curve, because the
+plot gives up a column at the right edge for exactly that. It names the instrument and the money it
 made, riding the line as it grows so the number is always the one for *this* frame rather than
 a caption that only becomes true at the end. One holding keeps the ratio as its headline and
 gains that label; several swap the headline for the leader's amount and name, because "up
 34.55%" is a fact about one thing and "+345,505" is the same fact in the unit two holdings are
 being compared in. The fill goes away when there are several — it would be six overlapping
 fills — and the closing cards become one card per holding, in its own colour: its name, the
-money it made, and its ratio. Six is the ceiling because six labels, six card values and six
-curves are still a comparison and a dozen is a barcode with its labels on top of one another —
-a limit read off the frame, not off the data.
+money it made, and its ratio. Six is the ceiling because six capsules stacked down one column,
+six card values and six curves are still a comparison, and a dozen is a barcode — a limit read
+off the frame, not off the data.
 
 **Two motions, over one span**, which is the candle page's own pair asked of a different
 quantity. *Grow across the span* lays the whole range down at once, so the curve's shape on screen
