@@ -9,7 +9,13 @@
    文案要写「十七页」，那一页就不能缺。清单是历史上一次次上架时追加出来的顺序，所以新的一
    页**追加在末尾**，不动前面的顺序。
 2. **「此版本的新增功能」换掉**（这一栏是**换**不是加，历史留在 CHANGELOG.md）。1.0.5.0 要
-   说的四件事：债市固收这一页、成交额页的自选篮、K线指定某一个交易日、持仓页最多六只对比。
+   说的五件事：债市固收这一页、成交额页的自选篮、K线指定某一个交易日、持仓页最多六只对比，
+   以及**所有页面的标题可以折成两行**。
+
+**最后一条（标题折两行）不在这里写 14 句**：它在 14 份 help-*.md 的「视频」章里已经有一句
+不可或缺的话，而那一句的唯一事实来源是 `port-title-wrap-help.py`。商店要的是同一个意思、
+同一个措辞 —— 手写一遍就是给自己留两份迟早讲不到一起的说法。所以这里把它按路径加载进来，
+剥掉手册里的列表记号直接用。加上它以后最长的一语种 1229 字，仍在商店 1500 的硬上限内。
 
 **描述从帮助手册里取，不另写。** 债市、K线、持仓三章的开场句在 14 份 help-*.md 里早就有，
 那是项目自己翻的、与界面一致的说法；再手写一遍只会得到 14 句各写各的。唯一例外是成交额那
@@ -26,6 +32,7 @@
 用法：python tools\\port-store-listing-1050.py      （跑第二遍应当 0 处改动）
 """
 
+import importlib.util
 import os
 import pathlib
 import re
@@ -35,6 +42,22 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # 取页面名与破折号，与另外两个 port 脚本共用一份规则。
 from listingtext import HELP, LANGS, LISTING, dash_of, page_name  # noqa: E402
+
+# 标题折两行那一条：**不在这里写第五套 14 句**。它在帮助手册「视频」章里已经有一句，
+# 而那一句的事实来源是另一个脚本 —— 手写一遍，商店与手册迟早讲成两种意思（这个仓库里
+# 「默写两份然后慢慢对不上」的事已经够多了）。文件名带连字符，只能按路径加载。
+_spec = importlib.util.spec_from_file_location(
+    "port_title_wrap_help",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "port-title-wrap-help.py"))
+_wrap = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_wrap)
+
+# 手册里那一行以 "- " 开头（它是要点列表的一条），商店里要的是一句独立的话。
+WRAP = {tag: (text[2:].strip() if text.startswith("- ") else text.strip())
+        for tag, text in _wrap.ENTRY.items()}
+
+assert sorted(WRAP) == sorted(LANGS), "标题那一条漏了语言：{}".format(
+    sorted(set(LANGS) - set(WRAP)))
 
 # 本版涉及的四页，按导航顺序。章节序号从导航推出，不写死 —— 往导航中间插一页，后面每一章
 # 的序号都会后移，写死的序号会让说明挂到错的那章头上。
@@ -188,7 +211,7 @@ def news(lang):
     # 行是「pages:Market cap」连着的 —— 中文看着对，英文看着像漏字，所以这里分开处理。
     gap = "" if lang in ("zh-Hans", "zh-Hant", "ja", "ko") else " "
 
-    return OPEN[lang] + gap + sep.join(bare(item) for item in items) + stop
+    return OPEN[lang] + gap + sep.join(bare(item) for item in items) + stop + gap + WRAP[lang]
 
 
 def main():

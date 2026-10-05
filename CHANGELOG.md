@@ -25,12 +25,17 @@ Entries run newest first. / 新版本在上。
 **1.0.4.0 的包已经构建，但从未提交商店**，所以本版把它带上一起走，1.0.4.0 不再单独上架。
 下面只列本版在 1.0.4.0 之上新增的改动；应用的完整能力仍见更下面的 0.0.0.0 条目。包已构建：
 `artifacts/MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload`（149.6 MB / 142.6 MiB），
-拆包核验包内六个内包的 Identity 都是 `1.0.5.0`、DisplayName 都是预留字面值。
+拆包核验包内六个内包的 Identity 都是 `1.0.5.0`、DisplayName 都是预留字面值。此后源码又动过
+（标题折成两行这一版），**提交商店之前要按惯例删掉 `Upload`、`ForBundle` 与 `*.appxrecipe` 重编
+同一个包** —— 商店文案不能先于与它匹配的那个包上传。
 Version 1.0.4.0's package was built but never sent to Partner Center, so this version carries it and
 1.0.4.0 will not be submitted on its own. What follows is only what this version adds on top of
 1.0.4.0; the full feature set is still in the 0.0.0.0 entry below. The package is built —
 `artifacts/MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload` (149.6 MB / 142.6 MiB) — and all
-six inner packages carry Identity `1.0.5.0` and the reserved literal DisplayName.
+six inner packages carry Identity `1.0.5.0` and the reserved literal DisplayName. The source has
+moved on since it was built — this is the version that added two-line titles — so the package has to
+be rebuilt the usual way before it goes up (drop `Upload`, `ForBundle` and `*.appxrecipe` first): the
+listing copy must never arrive ahead of the package it describes.
 
 ### 新增 / Added
 
@@ -116,6 +121,23 @@ six inner packages carry Identity `1.0.5.0` and the reserved literal DisplayName
   to — and a pick from another market is dropped the same visible way, because its amount is in a
   currency the frame is not quoting.
 
+- **标题可以折成两行 / titles may wrap onto a second line** — 以前标题是一行，一行放不下就缩字号；
+  现在先折行：标题框里按回车就在那里断，一行放不下时按画面宽度自动折出第二行，**最多两行**，
+  两行仍放不下才按比例缩字号（最多缩到一半）。折出第二行时下面的整摞（副标题、交易日、日期、
+  运行中的总额、绘图区）一起下移一行的高度，底部不动，所以图表相应变矮；只占一行的标题，画面与
+  改动前**一字不差**。十一个标题（十个渲染器加空数据时的底板）共用一处测量与一处让位算术：
+  **行数必须在读第一个行锚点之前算出来** —— 晚一步就是两行字叠在副标题上，而画面看着只是
+  「字重了一点」，状态行与界面树全绿。
+  Titles used to be one line that gave way by shrinking; now they wrap first: Return in the box
+  breaks them where you put it, a line too wide folds onto a second, **two at most**, and only when
+  two will not hold it does the size come down (to half at most). A second line moves the whole stack
+  below it — subtitle, session, date, the running total, the plot — down one row while the bottom
+  margin stays put, so the chart is that much shorter; a title that fits on one line leaves the frame
+  **exactly** as it was. Eleven titles (ten renderers plus the empty-data backdrop) share one
+  measurement and one piece of shift arithmetic, and the **line count has to be known before the first
+  row anchor is read**: work it out any later and two lines print on top of the subtitle, which reads
+  as nothing more than slightly heavier type, with the status line and the UI tree both green.
+
 ### 修复 / Fixed
 
 - **两个榜共用的月线起点口径 / a month-window bug shared by two boards** — 源端只以**整月**作
@@ -150,15 +172,22 @@ six inner packages carry Identity `1.0.5.0` and the reserved literal DisplayName
 ### 商店文案同步 / Store listing
 
 `docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份改成 1.0.5.0 的
-内容：第十七页债市固收、成交额页的自选篮、K线的指定交易日、持仓页的六只对比。同一份文件里
-「说明」的图表页数与「产品功能」的图表条数从十六改成十七 —— 第十七页插在**大类资产之后**，
-页面上早已在，只是从来没进过商店文案。三处各由一个脚本按语言改，幂等，且按整行精确匹配 ——
-某语言的措辞与脚本里的不一致时会报错，而不是留下一个旧数字。
+内容：第十七页债市固收、成交额页的自选篮、K线的指定交易日、持仓页的六只对比，**以及所有页面的
+标题可以折成两行**。同一份文件里「说明」的图表页数与「产品功能」的图表条数从十六改成十七 ——
+第十七页插在**大类资产之后**，页面上早已在，只是从来没进过商店文案。三处各由一个脚本按语言改，
+幂等，且按整行精确匹配 —— 某语言的措辞与脚本里的不一致时会报错，而不是留下一个旧数字。
+标题那一条**不手写**：商店文案里那句话直接取自 14 份帮助手册「视频」章里那一句（`port-title-wrap-help.py`
+是它唯一的事实来源），免得同一件事在两处各写一遍、慢慢讲成两种意思。加上它以后最长的一语种落到
+1229 字符，仍在商店 1500 的硬上限之内。
 The fourteen "What's new" lines now describe 1.0.5.0: the bond page, the turnover basket, one named
-candles day, and six holdings at once. The description's page count and the features bullet went from
-sixteen to seventeen — the bond page sits **after Asset Classes**, has been in the app all along and
-had never reached the listing. One script per edit, idempotent and matching whole lines, so a
-language whose wording differs fails loudly instead of keeping a stale number.
+candles day, six holdings at once, **and titles that wrap onto a second line**. The description's page
+count and the features bullet went from sixteen to seventeen — the bond page sits **after Asset
+Classes**, has been in the app all along and had never reached the listing. One script per edit,
+idempotent and matching whole lines, so a language whose wording differs fails loudly instead of
+keeping a stale number. The title sentence is not hand-written for the store: it comes straight out of
+the sentence already sitting in the Video chapter of the fourteen manuals, because two places telling
+the same thing eventually tell it differently. With it added, the longest language lands at 1,229
+characters, still inside the 1,500 ceiling.
 
 ---
 
