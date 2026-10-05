@@ -62,9 +62,29 @@ public sealed class StockDualRenderer : IFrameRenderer
     /// <summary>The venue-prefixed code shown in the header line.</summary>
     public string Code { get; set; } = string.Empty;
 
+    /// <summary>The wrapped headline.</summary>
+    private readonly TitleBlock _title = new(64);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn — what the header's rows below it
+    /// and the panels' top edge are moved by. Set once at the top of <see cref="Draw"/>.
+    /// </summary>
+    private int _titleLines;
+
+    /// <summary>
+    /// The headline this frame draws: what the user typed, or the instrument's name. One place,
+    /// because the text measured at the top of <see cref="Draw"/> and the text drawn in the header
+    /// have to be the same string.
+    /// </summary>
+    private string ResolvedTitle() => Title.Length > 0 ? Title : _series.Name;
+
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
         var t = context.Progress * _plan.TotalMs;
+
+        // Before the panels: their top edge is placed against the bottom of the header block, which
+        // is placed by how many lines the title took.
+        _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
         context.Backdrop.Fill(session, context, Palette.StockBackground);
 
@@ -87,7 +107,7 @@ public sealed class StockDualRenderer : IFrameRenderer
     /// decides where the lower one ends and the two share what is left equally.</summary>
     private (double Top, double Bottom) PanelArea(FrameContext context, bool isRate)
     {
-        var top = context.HeaderRow(PanelTopFraction, ShowTitle);
+        var top = context.HeaderRow(PanelTopFraction, _titleLines);
         var bottom = context.CreditLine - context.Px(CreditGap);
         var span = (bottom - top - context.Height * PanelMidFraction) / 2;
 
@@ -468,17 +488,9 @@ public sealed class StockDualRenderer : IFrameRenderer
         var cx = context.Width / 2;
         var iso = CultureInfo.InvariantCulture;
 
-        var title = Title.Length > 0 ? Title : _series.Name;
+        var title = ResolvedTitle();
 
-        if (ShowTitle)
-        {
-            var size = Ink.FitSize(session, title, context.Px(64), context.Width - context.Px(120), bold: true);
-
-            using (var format = Ink.Format(size, bold: true))
-            {
-                Ink.Centred(session, title, cx, context.HeaderRow(0.155, ShowTitle), format, Palette.Title, a);
-            }
-        }
+        _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
         using (var plain = Ink.Format(context.Px(26)))
         using (var strong = Ink.Format(context.Px(26), bold: true))
@@ -510,7 +522,7 @@ public sealed class StockDualRenderer : IFrameRenderer
             runs.Add((" " + Strings.Get(_series.RateIsCumulative ? "StockMinutesUnit" : "StockTradingDaysUnit"),
                 Palette.StockMuted, plain));
 
-            Ink.Runs(session, runs, cx, context.HeaderRow(0.188, ShowTitle), a);
+            Ink.Runs(session, runs, cx, context.HeaderRow(0.188, _titleLines), a);
         }
 
         if (moving >= 0)
@@ -519,7 +531,7 @@ public sealed class StockDualRenderer : IFrameRenderer
 
             // The moving date is drawn from the labels themselves: `09:30` in the intraday mode,
             // where the source had a separate date line, because the label is already the moment.
-            Ink.Centred(session, _series.Labels[moving], cx, context.HeaderRow(0.222, ShowTitle),
+            Ink.Centred(session, _series.Labels[moving], cx, context.HeaderRow(0.222, _titleLines),
                 format, Palette.Moving, a);
         }
     }

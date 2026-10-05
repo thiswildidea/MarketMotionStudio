@@ -62,7 +62,7 @@
   <data name="StudioDataSection.Text"><value>資料</value></data>
   <data name="StudioTitleSection.Text"><value>標題</value></data>
   <data name="StudioTitleText.Header"><value>標題文字</value></data>
-  <data name="StudioTitleNote.Text"><value>留空則使用預設標題。過長的標題會按比例縮小字號而不是被裁掉，最多縮到一半。</value></data>
+  <data name="StudioTitleNote.Text"><value>留空則使用預設標題。標題裡可以按 Enter 手動斷行；一行放不下會按寬度自動折成第二行（最多兩行），兩行還放不下才按比例縮小字級（最多縮到一半）。折出第二行時下面的內容整體下移一行。</value></data>
   <data name="StudioHideTitle.Header"><value>隱藏標題</value></data>
   <data name="StudioHideTitleNote.Text"><value>標題佔的那一行還給圖表，下面的內容整體上移一行。底邊由下邊界鎖住不動，所以面板會長高。取消勾選可精確恢復原樣。</value></data>
   <data name="StockTitlePlaceholder"><value>使用抓到的股票名稱</value></data>

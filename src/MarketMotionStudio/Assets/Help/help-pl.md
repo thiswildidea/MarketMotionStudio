@@ -408,6 +408,7 @@ Kadr jest zawsze 9:16. Wszystko inne ustalasz sam.
 - Czas trwania zmienia tempo, a nie skraca animacji: wstęp, wzrost słupków i końcowe statystyki są rozłożone na wybraną długość.
 - Marginesy są zapisane względem kadru 1080×1920 i skalowane do rozdzielczości eksportu, więc raz dobrany układ obowiązuje w każdym rozmiarze. Lewy margines decyduje też, gdzie trafiają opisy osi: za mały, i liczby wyjdą poza kadr.
 - Linie bezpiecznego obszaru obrysowują to, co aplikacja na telefonie zakrywa własnym interfejsem. Rysują się w podglądzie i nigdy w pliku.
+- Tytuł może mieć więcej niż jedną linię: w polu tytułu naciśnij Enter, aby złamać go tam, gdzie chcesz. Jeśli nie mieści się w jednej linii, sam przechodzi do drugiej — najwyżej dwóch; dopiero gdy i dwie nie wystarczą, maleje stopień pisma. Druga linia przesuwa wszystko poniżej o jeden wiersz, więc wykres jest o tyle niższy.
 
 ## Gdzie trafiają filmy
 

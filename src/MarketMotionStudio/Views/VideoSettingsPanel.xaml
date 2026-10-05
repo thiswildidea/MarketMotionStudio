@@ -16,8 +16,18 @@
         <!-- Free text, refreshing the preview as it is typed. The placeholder is set
              by the page, because what "leave it empty" means differs: the
              whole-market chart has a fixed default, the per-stock one uses whichever
-             instrument was fetched. -->
-        <TextBox x:Name="TitleBox" x:Uid="StudioTitleText" TextChanged="OnTitleChanged" />
+             instrument was fetched.
+
+             Enter is allowed inside it, and the box is two lines tall: the frame draws a
+             title that wraps, and the one place a break cannot be asked for would be the
+             control that writes it. Two lines' worth of box rather than one, so that a
+             second line is visible as you type it instead of scrolling out of sight. -->
+        <TextBox x:Name="TitleBox" x:Uid="StudioTitleText"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 MinHeight="64"
+                 MaxHeight="120"
+                 TextChanged="OnTitleChanged" />
 
         <!-- Collapsed as a group, switch and explanation together. Only the per-stock
              chart has a reason to hide its title — the name of the instrument is the

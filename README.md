@@ -802,12 +802,19 @@ so the label ran back over the name column and the row read as one string, "恒�
 Where that would happen the label is drawn beyond the zero axis instead. It is not a rare frame:
 it is the bottom row of every frame of any board with a fall on it, which includes the A+H page.
 
-**The title is yours on every page.** Type one, or leave the box empty to get the default —
-a fixed label on the whole-market chart, the fetched instrument's name on the per-stock one.
-A title too long for the frame is scaled down to fit rather than clipped or wrapped, to half
-size at most: clipping loses words silently and wrapping pushes the layout down into the chart,
-while type that is legibly too small reads as "shorten this". The preview redraws as you type,
-which is what makes that legible.
+**The title is yours on every page, and it may take two lines.** Type one, or leave the box empty to
+get the default — a fixed label on the whole-market chart, the fetched instrument's name on the
+per-stock one. Text wider than the frame wraps onto a second line rather than being clipped or
+shrunk, and a return in the box breaks it exactly where you put it, so a title that reads better
+split in two can be split in two. Only when two lines still will not hold it does the size come
+down, to half at most: clipping loses words silently, and a font small enough to fit a long title
+reads as "shorten this" rather than as a title. The preview redraws as you type, which is what
+makes either of those calls possible to make. A second line costs the chart a row — the subtitle,
+the date, the running total and the plot all move down by one title line while the lower edge stays
+put, so the frame is one title line shorter, and a title that fits on one line leaves the frame
+exactly as it was. That exactness is why the number of lines is worked out before the first row
+anchor is read rather than after: measuring late is how a second line gets drawn on top of the
+subtitle, which looks like nothing more than slightly heavier type.
 
 **Both pages can hide the title altogether.** It started per-stock only — the whole-market
 title names a market rather than an instrument, so there was nothing to keep out of frame —
@@ -815,10 +822,11 @@ but a frame holding just the number is a legitimate look, and the switch was alr
 the panel, the persistence and the stage renderer all implemented it. Hiding gives the title's
 row back to the chart: everything below shifts up into the freed row while the bottom margin
 holds the lower edge still, so the chart area grows by one title row, and unchecking the box
-restores the previous layout exactly rather than approximately. That exactness is why the shift
-is expressed as "the title row is present or absent" (`FrameContext.ContentTop` on the per-stock
-stage, `TurnoverRenderer.Row` on the whole-market indicators) rather than as an offset applied
-to everything underneath.
+restores the previous layout exactly rather than approximately. That exactness is why all three
+cases — hidden, one line, two lines — are one piece of arithmetic (`FrameContext.TitleShift`,
+which the row anchors, `ContentTop` and `PlotTop` all go through) rather than an offset applied
+per renderer: the renderers ask for the k-th row and are handed the y it belongs at.
+
 
 ## Design rules
 
@@ -861,7 +869,8 @@ where a phone's own interface stops covering the frame. That is what the margin 
 because it reproduces the pre-margin layout exactly — but it was also the minimum, which made
 the slider one-directional: a frame wanting less air could only ever get more. The range now
 runs 40 to 450, crossing the safe-area line on the way down rather than starting on it.
-Every top-anchored row moves through `FrameContext.TopRow(fraction)`, so the header block and
+Every top-anchored row moves through `FrameContext.TopRow(fraction)` — and the header's rows
+through `HeaderRow(fraction, lines)`, which is that plus the title's shift — so the header block and
 the plot shift together as one unit and the spacing inside the stack cannot change.
 
 **The safe-area guides are drawn by the preview, not by the renderer.** The encoder does not

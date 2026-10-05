@@ -415,6 +415,7 @@ The frame is always 9:16. Everything else is yours to set.
 - Duration changes the pacing rather than trimming the animation: the opening, the growth of the bars and the closing statistics are re-apportioned across whatever length you choose.
 - Margins are written against a 1080×1920 frame and scaled to the resolution you export at, so a layout tuned once holds at every size. The left margin also decides where the axis labels land — set it too small and the numbers leave the frame.
 - The safe-area guides outline what a phone app covers with its own interface. They are drawn in the preview and never in a file.
+- The title can be more than one line: press Enter in the title box to break it where you want. A title too wide for one line wraps onto a second, two lines at most; only when two still will not hold it does the size give way. A second line pushes everything below it down by one row, so the chart is that much shorter.
 
 ## Where videos go
 

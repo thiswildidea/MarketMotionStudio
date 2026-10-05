@@ -63,7 +63,7 @@
   <data name="StudioDataSection.Text"><value>Veri</value></data>
   <data name="StudioTitleSection.Text"><value>Başlık</value></data>
   <data name="StudioTitleText.Header"><value>Başlık metni</value></data>
-  <data name="StudioTitleNote.Text"><value>Varsayılan başlığı kullanmak için boş bırakın. Uzun bir başlık kırpılmak yerine oranlı biçimde küçültülür, en çok yarı boyuta kadar.</value></data>
+  <data name="StudioTitleNote.Text"><value>Varsayılan başlığı kullanmak için boş bırakın. Başlığı istediğiniz yerden kırmak için Enter'a basın; tek satıra sığmazsa kendiliğinden ikinci satıra kayar — en fazla iki satır — ve ancak o zaman yazı boyutu küçülür, en çok yarı boyuta kadar. İkinci satır altındaki her şeyi bir satır aşağı iter.</value></data>
   <data name="StudioHideTitle.Header"><value>Başlığı gizle</value></data>
   <data name="StudioHideTitleNote.Text"><value>Başlığın satırı grafiğe geri döner ve altındaki her şey o satıra yukarı kayar. Alt kenar boşluğu alt kenarı sabit tuttuğu için paneller uzar. Kapatılınca yerleşim birebir geri gelir.</value></data>
   <data name="StockTitlePlaceholder"><value>Çekilen hissenin adı</value></data>

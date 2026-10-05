@@ -396,6 +396,7 @@ Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.
 - Süre, animasyonu kesmek yerine tempoyu değiştirir: açılış, çubukların büyümesi ve kapanıştaki istatistikler seçtiğiniz uzunluğa yeniden paylaştırılır.
 - Kenar boşlukları 1080×1920 karesine göre yazılır ve dışa verme çözünürlüğüne oranlanır; bir kez ayarlanan yerleşim her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler: çok küçükse sayılar kareden çıkar.
 - Güvenli alan kılavuzları, bir telefon uygulamasının kendi arayüzüyle kapattığı yeri gösterir. Ön izlemede çizilir, dosyaya hiç girmez.
+- Başlık birden çok satır olabilir: başlık kutusunda Enter'a basarak istediğiniz yerden kırın. Tek satıra sığmazsa kendiliğinden ikinci satıra kayar, en fazla iki satır; iki satır da yetmezse yazı boyutu küçülür. İkinci satır altındaki her şeyi bir satır aşağı iter, grafik de o kadar kısalır.
 
 ## Videolar nereye gider
 

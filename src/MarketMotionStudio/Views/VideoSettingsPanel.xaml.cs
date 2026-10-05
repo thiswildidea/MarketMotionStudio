@@ -99,8 +99,18 @@ public sealed partial class VideoSettingsPanel : UserControl
         set => TitleBox.PlaceholderText = value;
     }
 
-    /// <summary>The typed title, or empty to mean "use the default".</summary>
-    public string TitleText => TitleBox.Text.Trim();
+    /// <summary>
+    /// The typed title, or empty to mean "use the default".
+    ///
+    /// Line breaks are canonicalised to a single newline here, in the one place the text is read,
+    /// rather than wherever it is drawn. A WinUI text box hands back <c>\r</c> for the breaks the
+    /// user typed and <c>\r\n</c> for the ones that arrived by paste, and the renderer measures
+    /// and draws the same string — but the persisted copy, the file name and the measurement all
+    /// come from here, and two of those three would rather not be looking at a carriage return.
+    /// The leading and trailing trim also drops a break typed at the very end, which is a stray
+    /// keystroke rather than a deliberate empty line.
+    /// </summary>
+    public string TitleText => TitleBox.Text.Trim().Replace("\r\n", "\n").Replace('\r', '\n');
 
     /// <summary>
     /// Whether the title is drawn. Always true unless the page offered the switch
@@ -203,9 +213,9 @@ public sealed partial class VideoSettingsPanel : UserControl
     private void OnGuidesToggled(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) => Announce();
 
     /// <summary>
-    /// Every keystroke redraws. The title is the element most likely to be too long,
-    /// and it is shrunk to fit — so seeing the size give way as you type is the
-    /// feedback that tells you to shorten it.
+    /// Every keystroke redraws. The title is the element most likely to be too long, and seeing
+    /// where it breaks — and how far the chart moved down to make room for the second line — is
+    /// the feedback that tells you whether it is still the length you wanted.
     /// </summary>
     private void OnTitleChanged(object sender, TextChangedEventArgs e) => Announce();
 

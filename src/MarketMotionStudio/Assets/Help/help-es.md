@@ -416,6 +416,7 @@ El encuadre es siempre 9:16. Todo lo demás lo decide usted.
 - La duración cambia el ritmo, no recorta la animación: la entrada, el crecimiento de las barras y las estadísticas finales se reparten a lo largo de lo que elija.
 - Los márgenes se anotan sobre un encuadre de 1080×1920 y se escalan a la resolución de exportación, así que una composición ajustada una vez sirve en todos los tamaños. El margen izquierdo decide además dónde caen las etiquetas del eje: si es demasiado pequeño, los números salen del encuadre.
 - Las guías de zona segura marcan lo que una aplicación de móvil tapa con su propia interfaz. Se dibujan en la vista previa y nunca en un archivo.
+- El título puede ocupar varias líneas: pulsa Intro en el campo del título para partirlo donde quieras. Si no cabe en una línea, se ajusta solo a una segunda, dos como máximo; solo cuando dos tampoco bastan cede el tamaño de letra. Una segunda línea empuja hacia abajo una fila todo lo que hay debajo, así que el gráfico se acorta en esa medida.
 
 ## Dónde van los vídeos
 

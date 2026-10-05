@@ -305,7 +305,18 @@ public static class Ink
         Runs(session, runs, cx, baselineY, opacity);
     }
 
-    private static void Draw(
+    /// <summary>
+    /// A layout that is already built, with its first line's baseline on
+    /// <paramref name="baselineY"/> and its left edge at <paramref name="x"/>.
+    ///
+    /// Public because a block of several lines cannot go through <see cref="Centred"/>:
+    /// that builds a layout per string, and the whole point of a wrapped title is that Win2D
+    /// decides where its lines break and how they are spaced. One line and five lines are the same
+    /// call here — <see cref="CanvasTextLayout.LineMetrics"/> carries the first line's ascent
+    /// either way, which is what converts the baseline this app positions by into the box
+    /// coordinate Win2D wants.
+    /// </summary>
+    public static void Draw(
         CanvasDrawingSession session, CanvasTextLayout layout, double x, double baselineY,
         Color colour, double opacity)
     {

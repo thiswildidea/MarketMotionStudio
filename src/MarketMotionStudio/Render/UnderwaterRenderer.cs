@@ -176,6 +176,15 @@ public sealed class UnderwaterRenderer : IFrameRenderer
 
     public bool ShowTitle { get; set; } = true;
 
+    /// <summary>The wrapped headline.</summary>
+    private readonly TitleBlock _title = new(64);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn — what the header's rows below it
+    /// and the plot's top edge are moved by. Set once at the top of <see cref="Draw"/>.
+    /// </summary>
+    private int _titleLines;
+
     public TimeSpan Duration { get; set; }
 
     private double TotalMs { get; set; }
@@ -191,6 +200,10 @@ public sealed class UnderwaterRenderer : IFrameRenderer
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
         var t = context.Progress * TotalMs;
+
+        // Before the rows: they are placed against the bottom of the header block, which is placed
+        // by how many lines the title took.
+        _titleLines = _title.For(session, Title, context, ShowTitle).Lines;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -490,14 +503,7 @@ public sealed class UnderwaterRenderer : IFrameRenderer
         var a = Easing.Ramp(t, 0, 1000);
         var cx = context.Width / 2;
 
-        if (ShowTitle)
-        {
-            var size = Ink.FitSize(session, Title, context.Px(64), context.Width - context.Px(120), bold: true);
-
-            using var format = Ink.Format(size, bold: true);
-
-            Ink.Centred(session, Title, cx, context.HeaderRow(0.155, ShowTitle), format, Palette.Title, a);
-        }
+        _title.Draw(session, context, Title, _title.For(session, Title, context, ShowTitle), Palette.Title, a);
 
         using (var plain = Ink.Format(context.Px(26)))
         using (var strong = Ink.Format(context.Px(26), bold: true))
@@ -511,13 +517,13 @@ public sealed class UnderwaterRenderer : IFrameRenderer
                     (" " + Span + " · " + _series.Racers.ToString(CultureInfo.InvariantCulture) + " " + UnitWord,
                         Palette.StockMuted, plain),
                 ],
-                cx, context.HeaderRow(0.188, ShowTitle), a);
+                cx, context.HeaderRow(0.188, _titleLines), a);
         }
 
         using (var format = Ink.Format(context.Px(40), bold: true))
         {
             Ink.Centred(session, Iso(_series.Dates[state.DayIndex]), cx,
-                context.HeaderRow(0.222, ShowTitle), format, Palette.Moving, a);
+                context.HeaderRow(0.222, _titleLines), format, Palette.Moving, a);
         }
     }
 
@@ -537,7 +543,7 @@ public sealed class UnderwaterRenderer : IFrameRenderer
 
     /// <summary>The plot's rows: the top anchored to the header block, the bottom to the credit.</summary>
     private (double Top, double Bottom) PlotArea(FrameContext context) =>
-        (context.HeaderRow(HeaderTopFraction, ShowTitle), context.CreditLine - context.Px(CreditGap));
+        (context.HeaderRow(HeaderTopFraction, _titleLines), context.CreditLine - context.Px(CreditGap));
 
     /// <summary>The plot's left and right, gutters inside the user's margins.</summary>
     private (double Left, double Right) PlotColumns(FrameContext context) =>

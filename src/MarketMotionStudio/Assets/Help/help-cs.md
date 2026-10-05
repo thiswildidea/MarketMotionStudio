@@ -391,6 +391,7 @@ Záběr je vždy 9:16. Všechno ostatní určujete vy.
 - Délka mění tempo, nezkracuje animaci: úvod, rostoucí sloupce a závěrečné statistiky se rozloží na zvolenou délku.
 - Okraje se zapisují proti záběru 1080×1920 a přepočítávají se na rozlišení exportu, takže jednou vyladěné rozvržení platí v každé velikosti. Levý okraj také rozhoduje, kam dopadnou popisky osy: příliš malý, a čísla opustí záběr.
 - Vodítka bezpečné oblasti vyznačují, co aplikace v telefonu zakryje vlastním rozhraním. Kreslí se v náhledu a nikdy do souboru.
+- Titulek může být na více řádcích: v poli titulku stiskněte Enter a zlomte ho tam, kde chcete. Když se nevejde na jeden řádek, zalomí se sám na druhý, nejvýše na dva; teprve když ani dva nestačí, ustoupí velikost písma. Druhý řádek posune vše pod ním o jeden řádek dolů, takže graf je o tolik nižší.
 
 ## Kam se videa ukládají
 

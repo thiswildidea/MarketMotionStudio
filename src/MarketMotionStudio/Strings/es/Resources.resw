@@ -63,7 +63,7 @@
   <data name="StudioDataSection.Text"><value>Datos</value></data>
   <data name="StudioTitleSection.Text"><value>Título</value></data>
   <data name="StudioTitleText.Header"><value>Texto del título</value></data>
-  <data name="StudioTitleNote.Text"><value>Déjelo vacío para usar el título predeterminado. Un título largo se reduce proporcionalmente en lugar de recortarse, hasta la mitad del tamaño.</value></data>
+  <data name="StudioTitleNote.Text"><value>Déjelo vacío para usar el título predeterminado. Pulsa Intro para partirlo donde quieras; si no cabe en una línea se ajusta solo a una segunda —dos como máximo— y solo entonces cede el tamaño, hasta la mitad. Una segunda línea empuja hacia abajo una fila todo lo que hay debajo.</value></data>
   <data name="StudioHideTitle.Header"><value>Ocultar el título</value></data>
   <data name="StudioHideTitleNote.Text"><value>La fila del título vuelve al gráfico y todo lo que está debajo sube a ella. El margen inferior mantiene fijo el borde de abajo, así que los paneles crecen. Al desactivarlo se restaura la composición exactamente.</value></data>
   <data name="StockTitlePlaceholder"><value>El nombre del valor obtenido</value></data>

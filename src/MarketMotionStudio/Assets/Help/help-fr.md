@@ -430,6 +430,7 @@ L'image est toujours en 9:16. Tout le reste vous appartient.
 - La durée change le rythme, elle ne raccourcit pas l'animation : l'ouverture, la croissance des barres et les statistiques finales sont réparties sur la longueur choisie.
 - Les marges sont notées par rapport à une image de 1080×1920 puis mises à l'échelle de la résolution d'export ; une mise en page réglée une fois tient à toutes les tailles. La marge gauche détermine aussi où se posent les graduations : trop petite, les chiffres sortent de l'image.
 - Les repères de zone sûre délimitent ce qu'une application mobile recouvre de sa propre interface. Ils sont tracés dans l'aperçu et jamais dans un fichier.
+- Le titre peut tenir sur plusieurs lignes : appuyez sur Entrée dans le champ du titre pour le couper où vous voulez. S'il ne tient pas sur une ligne, il se replie sur une deuxième, deux au maximum ; ce n'est que si deux ne suffisent pas que la taille cède. Une deuxième ligne décale d'une ligne tout ce qui suit, et le graphique raccourcit d'autant.
 
 ## Où vont les vidéos
 

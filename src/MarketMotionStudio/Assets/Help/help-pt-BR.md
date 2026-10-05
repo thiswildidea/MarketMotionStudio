@@ -411,6 +411,7 @@ O quadro é sempre 9:16. Todo o resto é você que decide.
 - A duração muda o ritmo, não corta a animação: a abertura, o crescimento das barras e as estatísticas finais são redistribuídos ao longo do tamanho escolhido.
 - As margens são anotadas contra um quadro de 1080×1920 e escalonadas para a resolução de exportação, então um layout ajustado uma vez vale em qualquer tamanho. A margem esquerda também decide onde caem os rótulos do eixo: pequena demais, e os números saem do quadro.
 - As guias de área segura delimitam o que um aplicativo de celular cobre com a própria interface. São desenhadas na prévia e nunca em um arquivo.
+- O título pode ter mais de uma linha: pressione Enter no campo do título para quebrá-lo onde quiser. Se não couber em uma linha, ele quebra sozinho em uma segunda, no máximo duas; só quando duas também não bastam é que o tamanho cede. Uma segunda linha empurra uma linha para baixo tudo o que vem depois, e o gráfico fica mais baixo na mesma medida.
 
 ## Para onde vão os vídeos
 

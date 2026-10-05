@@ -425,6 +425,7 @@ Das Bild ist immer 9:16. Alles andere bestimmen Sie.
 - Die Dauer verändert das Tempo, sie schneidet die Animation nicht ab: Anfang, Wachsen der Balken und die Kennzahlen am Ende werden auf die gewählte Länge neu verteilt.
 - Die Ränder sind gegen ein Bild von 1080×1920 notiert und werden auf die Exportauflösung skaliert, ein einmal abgestimmtes Layout gilt also in jeder Größe. Der linke Rand bestimmt auch, wo die Achsenbeschriftungen landen – zu klein gewählt, verlassen die Zahlen das Bild.
 - Die Hilfslinien für den sicheren Bereich umreißen, was eine Telefon-App mit ihrer eigenen Oberfläche verdeckt. Sie werden in der Vorschau gezeichnet und niemals in einer Datei.
+- Der Titel darf mehrzeilig sein: Mit der Eingabetaste im Titelfeld brechen Sie ihn dort, wo er brechen soll. Passt er nicht in eine Zeile, läuft er automatisch in eine zweite um – höchstens zwei Zeilen; erst wenn auch zwei nicht reichen, gibt die Schriftgröße nach. Eine zweite Zeile schiebt alles darunter um eine Zeile nach unten, das Diagramm wird entsprechend kürzer.
 
 ## Wohin die Videos gehen
 

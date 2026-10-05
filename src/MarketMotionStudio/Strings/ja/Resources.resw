@@ -63,7 +63,7 @@
   <data name="StudioDataSection.Text"><value>データ</value></data>
   <data name="StudioTitleSection.Text"><value>タイトル</value></data>
   <data name="StudioTitleText.Header"><value>タイトル文字</value></data>
-  <data name="StudioTitleNote.Text"><value>空のままにすると既定のタイトルを使います。長いタイトルは切り取らず、比例して縮小します（最小で半分まで）。</value></data>
+  <data name="StudioTitleNote.Text"><value>空のままにすると既定のタイトルを使います。Enter で好きな位置で改行できます。1 行に収まらないときは自動で 2 行目に折り返し（最大 2 行）、それでも収まらないときだけ文字サイズが縮小します（最小で半分まで）。2 行目が出ると、その下の内容が 1 行分下がります。</value></data>
   <data name="StudioHideTitle.Header"><value>タイトルを隠す</value></data>
   <data name="StudioHideTitleNote.Text"><value>タイトルの 1 行が図表に戻り、その下の内容が 1 行分上へ詰まります。下マージンが下端を固定するので、パネルは高くなります。外せば元のレイアウトに正確に戻ります。</value></data>
   <data name="StockTitlePlaceholder"><value>取得した銘柄名を使う</value></data>

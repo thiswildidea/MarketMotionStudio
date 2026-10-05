@@ -63,7 +63,7 @@
   <data name="StudioDataSection.Text"><value>Daten</value></data>
   <data name="StudioTitleSection.Text"><value>Titel</value></data>
   <data name="StudioTitleText.Header"><value>Titeltext</value></data>
-  <data name="StudioTitleNote.Text"><value>Leer lassen, um den Standardtitel zu verwenden. Ein langer Titel wird proportional verkleinert statt abgeschnitten, höchstens auf die halbe Größe.</value></data>
+  <data name="StudioTitleNote.Text"><value>Leer lassen, um den Standardtitel zu verwenden. Mit der Eingabetaste brechen Sie den Titel dort, wo er brechen soll; passt er nicht in eine Zeile, läuft er automatisch in eine zweite um — höchstens zwei Zeilen — und erst dann gibt die Schriftgröße nach, höchstens auf die halbe Größe. Eine zweite Zeile schiebt alles darunter um eine Zeile nach unten.</value></data>
   <data name="StudioHideTitle.Header"><value>Titel ausblenden</value></data>
   <data name="StudioHideTitleNote.Text"><value>Die Titelzeile geht an das Diagramm zurück, und alles darunter rückt in sie auf. Der untere Rand hält die Unterkante fest, die Felder werden also höher. Wieder abgeschaltet, stellt es das Layout genau wieder her.</value></data>
   <data name="StockTitlePlaceholder"><value>Der Name des abgerufenen Wertpapiers</value></data>

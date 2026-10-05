@@ -60,8 +60,10 @@ public sealed class CandleRenderer : IFrameRenderer
     // where the price row and the headline clear the halo, and not where they clear
     // the ink.
 
-    /// <summary>Instrument and period, the largest line in the block.</summary>
-    private const double TitleRow = 0.155;
+    // The headline's own row is no longer here: a title that wraps has more than one, so the row
+    // it starts on and the pitch between its lines live together in FrameContext (TitleRowFraction
+    // and TitleLineHeight), where the rows below it are moved by the same two numbers.
+    // It was 0.155.
 
     /// <summary>The code and the period again, in the source's own spelling.</summary>
     private const double SubtitleRow = 0.19;
@@ -190,6 +192,15 @@ public sealed class CandleRenderer : IFrameRenderer
     /// <summary>Whether the title row is drawn at all; hiding it hands its row back.</summary>
     public bool ShowTitle { get; set; } = true;
 
+    /// <summary>The wrapped headline.</summary>
+    private readonly TitleBlock _title = new(62);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn — what the subtitle, the price row
+    /// and the plot are all moved by. Set once at the top of <see cref="Draw"/>.
+    /// </summary>
+    private int _titleLines;
+
     public CandleRenderer(
         CandleSeries series, AnimationPlan plan, CandleStyle style, CandleMotion motion,
         int window, bool showAverages, bool showVolume)
@@ -273,6 +284,10 @@ public sealed class CandleRenderer : IFrameRenderer
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
         var t = context.Progress * _plan.TotalMs;
+
+        // Before the view is worked out: the plot's top edge is placed by the header block's
+        // bottom, and the header block's bottom now depends on how many lines the title took.
+        _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -392,7 +407,7 @@ public sealed class CandleRenderer : IFrameRenderer
             first, head, count,
             low, high, volume,
             arrived, growth, from, to,
-            context.HeaderRow(PlotTopFraction, ShowTitle), bottom,
+            context.HeaderRow(PlotTopFraction, _titleLines), bottom,
             context.ChartLeft, context.ChartWidth);
     }
 
@@ -886,19 +901,9 @@ public sealed class CandleRenderer : IFrameRenderer
         var cx = context.Width / 2;
         var period = Strings.Get(CandleLoader.NameKey(_series.Period));
 
-        if (ShowTitle)
-        {
-            var title = Title.Length > 0
-                ? Title
-                : Strings.Format("CandleDefaultTitle", _series.Name, period);
+        var title = ResolvedTitle();
 
-            var size = Ink.FitSize(session, title, context.Px(62), context.Width - context.Px(120), bold: true);
-
-            using (var format = Ink.Format(size, bold: true))
-            {
-                Ink.Centred(session, title, cx, Row(context, TitleRow), format, Palette.Title, a);
-            }
-        }
+        _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
         using var small = Ink.Format(context.Px(25));
 
@@ -1040,7 +1045,17 @@ public sealed class CandleRenderer : IFrameRenderer
             Palette.ProgressFill, context.Width);
     }
 
-    private double Row(FrameContext context, double fraction) => context.HeaderRow(fraction, ShowTitle);
+    private double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, _titleLines);
+
+    /// <summary>
+    /// The headline this frame draws: what the user typed, or the instrument and the period. One
+    /// place, because the text measured at the top of <see cref="Draw"/> and the text drawn in the
+    /// header have to be the same string.
+    /// </summary>
+    private string ResolvedTitle() => Title.Length > 0
+        ? Title
+        : Strings.Format("CandleDefaultTitle", _series.Name, Strings.Get(CandleLoader.NameKey(_series.Period)));
 
     private static Color Rgb(byte r, byte g, byte b) => Color.FromArgb(0xFF, r, g, b);
 

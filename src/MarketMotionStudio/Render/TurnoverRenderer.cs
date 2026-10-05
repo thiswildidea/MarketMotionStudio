@@ -52,6 +52,19 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// </remarks>
     public const double PlotTopFraction = 0.377;
 
+    /// <summary>
+    /// The headline, wrapped and drawn — shared by both forms and by the intraday one, because
+    /// all three put the same block on the same frame.
+    /// </summary>
+    private readonly TitleBlock _title = new(62);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn, and therefore how far every row
+    /// below it moves. Set once at the top of <see cref="Draw"/>; zero means the title is hidden
+    /// and the rows move up into its place.
+    /// </summary>
+    private int _titleLines;
+
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
 
@@ -62,20 +75,23 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// frame with just the number on it. What hiding does is hand the title's row back —
     /// every row below shifts <em>up</em> by exactly <see cref="FrameContext.TitleRowHeight"/>
     /// through <see cref="Row"/>, the bottom margin holds the lower edge still, so the plot
-    /// grows by one row and unchecking restores the previous layout exactly.
+    /// grows by one row and unchecking restores the previous layout exactly. A title long
+    /// enough to wrap moves those same rows the other way; see
+    /// <see cref="FrameContext.HeaderRow"/> for the three cases.
     /// </summary>
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>
     /// A header row of this indicator's layout, stated as a fraction of frame height the way the
-    /// source HTML stated it: the top margin's shift plus the title row's absence, in one place.
+    /// source HTML stated it: the top margin's shift plus the room the title block took, in one
+    /// place.
     ///
     /// Delegates to <see cref="FrameContext.HeaderRow"/> so both indicator pages apply the same
-    /// two adjustments by the same arithmetic — a renderer that multiplied the fraction itself
+    /// adjustments by the same arithmetic — a renderer that multiplied the fraction itself
     /// would leave the plot behind when the header moved.
     /// </summary>
     protected double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, ShowTitle);
+        context.HeaderRow(fraction, _titleLines);
 
     protected TurnoverSeries Series => series;
 
@@ -84,9 +100,23 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// <summary>Which metric this frame is drawing, and everything that follows from it.</summary>
     protected Metric Metric => metric;
 
+    /// <summary>
+    /// The headline this frame draws: what the user typed, or the default naming what is plotted.
+    /// One place, because the line count measured at the top of <see cref="Draw"/> and the text
+    /// drawn in the header have to be the same string — a default substituted in one of the two
+    /// is a title measured as one length and drawn as another.
+    /// </summary>
+    private string ResolvedTitle() => Title.Length > 0 ? Title : metric.DefaultTitle();
+
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
         var t = context.Progress * plan.TotalMs;
+
+        // Before anything is positioned: every row below the title is placed by how many lines it
+        // took, so the count has to be known before the first row is read. Measuring here rather
+        // than inside the header keeps the block that draws the title and the rows that make way
+        // for it from ever disagreeing about how much room it needed.
+        _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -160,20 +190,12 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
         var cx = context.Width / 2;
 
         // The whole block sits below the top safe area, plus whatever extra room the user's
-        // top margin asked for, minus the title row if the title is hidden — every row goes
-        // through Row, so the margin and the switch move the block as a unit and neither can
-        // change the spacing inside it.
-        var title = Title.Length > 0 ? Title : metric.DefaultTitle();
+        // top margin asked for, plus the room the title itself took — every row goes
+        // through Row, so the margin, the wrap and the switch move the block as a unit and
+        // none of them can change the spacing inside it.
+        var title = ResolvedTitle();
 
-        if (ShowTitle)
-        {
-            var titleSize = Ink.FitSize(session, title, context.Px(62), context.Width - context.Px(120), bold: true);
-
-            using (var format = Ink.Format(titleSize, bold: true))
-            {
-                Ink.Centred(session, title, cx, Row(context, 0.155), format, Palette.Title, a);
-            }
-        }
+        _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
         using var small = Ink.Format(context.Px(25));
 

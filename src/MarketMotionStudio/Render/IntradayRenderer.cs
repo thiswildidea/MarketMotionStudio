@@ -42,14 +42,35 @@ public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan
     /// <summary>Whether the title row is drawn at all — see <see cref="TurnoverRenderer.ShowTitle"/>.</summary>
     public bool ShowTitle { get; set; } = true;
 
+    /// <summary>The wrapped headline, in the daily forms' own size.</summary>
+    private readonly TitleBlock _title = new(62);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn — what every row below it is moved
+    /// by. Set once at the top of <see cref="Draw"/>.
+    /// </summary>
+    private int _titleLines;
+
     /// <summary>A header row, stated as a fraction of frame height and shifted the way every other
-    /// indicator's header row is shifted: by the top margin, and up by one row if the title is
-    /// hidden.</summary>
-    private double Row(FrameContext context, double fraction) => context.HeaderRow(fraction, ShowTitle);
+    /// indicator's header row is shifted: by the top margin, and by the room the title block
+    /// took — up when it is hidden, down when it wraps.
+    /// See <see cref="FrameContext.HeaderRow"/>.</summary>
+    private double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, _titleLines);
+
+    /// <summary>
+    /// The headline this frame draws: what the user typed, or the default naming the session. One
+    /// place, because the text measured at the top of <see cref="Draw"/> and the text drawn in the
+    /// header have to be the same string.
+    /// </summary>
+    private string ResolvedTitle() => Title.Length > 0 ? Title : Strings.Get("TurnoverIntradayStageTitle");
 
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
         var t = context.Progress * plan.TotalMs;
+
+        // The line count before the first row is read — the plot's top edge is one of those rows.
+        _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -300,16 +321,9 @@ public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan
         var a = Easing.Ramp(t, 0, 1000);
         var cx = context.Width / 2;
 
-        var title = Title.Length > 0 ? Title : Strings.Get("TurnoverIntradayStageTitle");
+        var title = ResolvedTitle();
 
-        if (ShowTitle)
-        {
-            var titleSize = Ink.FitSize(session, title, context.Px(62), context.Width - context.Px(120), bold: true);
-
-            using var format = Ink.Format(titleSize, bold: true);
-
-            Ink.Centred(session, title, cx, Row(context, 0.155), format, Palette.Title, a);
-        }
+        _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
         using var small = Ink.Format(context.Px(25));
 

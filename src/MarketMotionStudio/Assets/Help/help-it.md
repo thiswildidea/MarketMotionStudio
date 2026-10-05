@@ -424,6 +424,7 @@ L'inquadratura è sempre 9:16. Tutto il resto lo decidi tu.
 - La durata cambia il ritmo, non accorcia l'animazione: l'apertura, la crescita delle barre e le statistiche finali vengono ridistribuite sulla lunghezza scelta.
 - I margini sono annotati su un'inquadratura di 1080×1920 e riscalati sulla risoluzione di esportazione, così un'impaginazione messa a punto una volta vale in ogni dimensione. Il margine sinistro decide anche dove finiscono le etichette dell'asse: se è troppo piccolo i numeri escono dall'inquadratura.
 - Le guide dell'area sicura delimitano ciò che un'app per telefono copre con la propria interfaccia. Sono disegnate nell'anteprima e mai in un file.
+- Il titolo può stare su più righe: premi Invio nel campo del titolo per spezzarlo dove vuoi. Se non entra in una riga va a capo da solo su una seconda, due al massimo; solo quando nemmeno due bastano cede la dimensione del carattere. Una seconda riga sposta di una riga tutto ciò che sta sotto, e il grafico si accorcia di conseguenza.
 
 ## Dove finiscono i video
 

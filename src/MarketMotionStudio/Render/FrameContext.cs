@@ -104,14 +104,71 @@ public sealed record FrameContext(
     public double TopRow(double fraction) => Height * fraction + TopShift;
 
     /// <summary>
-    /// A header row as above, that also gives way when the title is hidden — the header-block
-    /// convention shared by both indicator pages.
+    /// A header row as above, that also gives way to the title block — the header-block
+    /// convention shared by every indicator page.
     ///
-    /// Hiding the title frees its row and everything below moves *up into* it, by exactly
-    /// <see cref="TitleRowHeight"/>, so the spacing between the rows that remain never changes.
+    /// <paramref name="titleLines"/> is how many lines the title actually took on this frame, and
+    /// the three cases are the whole of the behaviour:
+    ///
+    /// <list type="bullet">
+    /// <item><description><b>Zero</b> — the title is hidden. Everything below moves *up into* its
+    /// row, by exactly <see cref="TitleRowHeight"/>.</description></item>
+    /// <item><description><b>One</b> — an ordinary title. Nothing moves, which is what keeps the
+    /// layout that every page was tuned against unchanged for a title that fits on one
+    /// line.</description></item>
+    /// <item><description><b>Two or more</b> — a wrapped title. Everything below moves down by the
+    /// lines it took beyond the first, one <see cref="TitleLineHeight"/> each. Stated as
+    /// "the rows the title occupies" rather than as an offset the title adds, because the rows
+    /// below have to agree with the block that was drawn and not the other way round.</description></item>
+    /// </list>
+    ///
+    /// Either way the *first* line of the title stays where it always was — see
+    /// <see cref="TitleBaseline"/> — so the block grows downwards and never into the band the
+    /// phone covers.
     /// </summary>
-    public double HeaderRow(double fraction, bool titleShown) =>
-        TopRow(fraction) - (titleShown ? 0 : Px(TitleRowHeight));
+    public double HeaderRow(double fraction, int titleLines) => TopRow(fraction) + TitleShift(titleLines);
+
+    /// <summary>
+    /// How far a row below the title block moves, given how many lines the title took. Zero
+    /// when the title is shown on one line, negative when it is hidden — the one place those
+    /// three cases are turned into a number.
+    /// </summary>
+    public double TitleShift(int titleLines) => titleLines <= 0
+        ? -Px(TitleRowHeight)
+        : Px((titleLines - 1) * TitleLineHeight);
+
+    /// <summary>
+    /// Where line <paramref name="line"/> of the title block sits, counted from zero — the
+    /// alphabetic baseline, the way <see cref="Ink"/> wants it.
+    ///
+    /// Line zero is the row the title has always been drawn on, whatever the line count: a title
+    /// that wraps keeps its first line exactly where a one-line title's only line is, and grows
+    /// downwards into the room <see cref="HeaderRow"/> hands it. Growing upwards instead would
+    /// move the headline into the strip the phone covers with its own interface, which is the one
+    /// thing the top margin exists to prevent.
+    /// </summary>
+    public double TitleBaseline(int line) => TopRow(TitleRowFraction) + Px(line * TitleLineHeight);
+
+    /// <summary>
+    /// The row the title block starts on, as a fraction of frame height — the source's own
+    /// figure, in one place so that the page whose renderer draws the title and the pages that
+    /// borrow its plot rows cannot disagree about where the header ends.
+    /// </summary>
+    public const double TitleRowFraction = 0.155;
+
+    /// <summary>
+    /// The pitch between two lines of a wrapped title, in baseline pixels.
+    ///
+    /// Deliberately the same 0.035 of the frame the header's own rows are spaced by
+    /// (0.155 → 0.19 → 0.225): a second title line then lands on the row the subtitle would
+    /// have had, so wrapping one line costs exactly one header row and nothing about the
+    /// spacing inside the block has to be re-tuned. The fraction is multiplied out here rather
+    /// than written as 67.2 because the two numbers being the same is the point.
+    /// </summary>
+    public const double TitleLineHeight = HeaderRowPitch * VideoFormat.BaselineHeight;
+
+    /// <summary>The frame-height fraction the header's rows are spaced by.</summary>
+    public const double HeaderRowPitch = 0.035;
 
     /// <summary>
     /// How tall one title row is, in baseline pixels.
@@ -151,9 +208,16 @@ public sealed record FrameContext(
     /// it as "the title row is present or absent" rather than as an offset applied
     /// to the content is what makes unchecking the box restore the previous layout
     /// exactly instead of approximately.
+    ///
+    /// A wrapped title takes more than one row, and this is the difference between
+    /// <see cref="TitleRowHeight"/> and the two: the block is the row plus however many extra
+    /// lines were drawn at <see cref="TitleLineHeight"/> each, so a caller stacking content
+    /// under the title does not have to know which of the two it is looking at.
     /// </summary>
-    public double ContentTop(bool titleShown) =>
-        TitleTop + (titleShown ? Px(TitleRowHeight) : 0);
+    public double ContentTop(int titleLines) =>
+        TitleTop + (titleLines <= 0
+            ? 0
+            : Px(TitleRowHeight + ((titleLines - 1) * TitleLineHeight)));
 
     /// <summary>
     /// Where the plotting area begins: below the title row if there is one, and
@@ -163,16 +227,16 @@ public sealed record FrameContext(
     /// Rows the indicator puts between the title block and the plot — its subtitle,
     /// and a date line if it has one.
     /// </param>
-    public double PlotTop(bool titleShown, double headerBaselinePixels) =>
-        ContentTop(titleShown) + Px(headerBaselinePixels);
+    public double PlotTop(int titleLines, double headerBaselinePixels) =>
+        ContentTop(titleLines) + Px(headerBaselinePixels);
 
     /// <summary>
     /// The height available for plotting. Clamped, because a bottom margin dragged
     /// to its maximum on a short frame can otherwise cross the title block and give
     /// a negative height that draws as an inverted chart rather than as nothing.
     /// </summary>
-    public double PlotHeight(bool titleShown, double headerBaselinePixels, double creditGapBaselinePixels) =>
-        Math.Max(1, BaselineAbove(creditGapBaselinePixels) - PlotTop(titleShown, headerBaselinePixels));
+    public double PlotHeight(int titleLines, double headerBaselinePixels, double creditGapBaselinePixels) =>
+        Math.Max(1, BaselineAbove(creditGapBaselinePixels) - PlotTop(titleLines, headerBaselinePixels));
 
     /// <summary>A baseline measurement in the pixels being drawn.</summary>
     public double Px(double baselinePixels) => baselinePixels * Scale;

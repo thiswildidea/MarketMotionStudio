@@ -48,6 +48,15 @@ public sealed class MatrixRenderer : IFrameRenderer
 
     public bool ShowTitle { get; set; } = true;
 
+    /// <summary>The wrapped headline.</summary>
+    private readonly TitleBlock _title = new(62);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn — what every row of the header block
+    /// below it, and the grid's top edge, are moved by. Set once at the top of <see cref="Draw"/>.
+    /// </summary>
+    private int _titleLines;
+
     private double TotalMs => _duration.TotalMilliseconds;
 
     private double IntroMs => Math.Min(2200, TotalMs * 0.05);
@@ -75,6 +84,10 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         var t = context.Progress * TotalMs;
 
+        // Before the grid and the cards: both are placed against the bottom of the header block,
+        // which is placed by how many lines the title took.
+        _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
         // This page's own backdrop: the same shape, lifted green at the top.
         context.Backdrop.Fill(session, context, Palette.MatrixBackground);
 
@@ -100,7 +113,7 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         var ml = context.Margins.Left;
         var plotW = context.ChartWidth;
-        var gridTop = context.HeaderRow(GridTopFraction, ShowTitle);
+        var gridTop = context.HeaderRow(GridTopFraction, _titleLines);
         var gridBottom = context.CreditLine - context.Px(StatsAboveCredit);
 
         var headH = Math.Min(context.Px(42), (gridBottom - gridTop) * 0.10);
@@ -324,25 +337,18 @@ public sealed class MatrixRenderer : IFrameRenderer
         var appear = Easing.Ramp(t, 0, 1000);
         var cx = context.Width / 2;
 
-        var title = Title.Length > 0 ? Title : _spec.Title;
+        var title = ResolvedTitle();
 
-        if (ShowTitle)
-        {
-            var size = Ink.FitSize(session, title, context.Px(62), context.Width - context.Px(120), bold: true);
-
-            using var format = Ink.Format(size, bold: true);
-
-            Ink.Centred(session, title, cx, context.HeaderRow(0.155, ShowTitle), format, Palette.Title, appear);
-        }
+        _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, appear);
 
         using (var sub = Ink.Format(context.Px(25)))
         {
-            Ink.Centred(session, _spec.Subtitle, cx, context.HeaderRow(0.188, ShowTitle), sub, Palette.StockMuted, appear);
+            Ink.Centred(session, _spec.Subtitle, cx, context.HeaderRow(0.188, _titleLines), sub, Palette.StockMuted, appear);
         }
 
         using (var span = Ink.Format(context.Px(24)))
         {
-            Ink.Centred(session, _spec.Span, cx, context.HeaderRow(0.218, ShowTitle), span, Palette.StockMuted, appear);
+            Ink.Centred(session, _spec.Span, cx, context.HeaderRow(0.218, _titleLines), span, Palette.StockMuted, appear);
         }
 
         if (current is null)
@@ -352,7 +358,7 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         using (var label = Ink.Format(context.Px(36), bold: true))
         {
-            Ink.Centred(session, current.Label, cx, context.HeaderRow(0.262, ShowTitle), label, Palette.Moving, appear);
+            Ink.Centred(session, current.Label, cx, context.HeaderRow(0.262, _titleLines), label, Palette.Moving, appear);
         }
 
         var colour = Palette.Return(current.Value, AbsMax);
@@ -364,7 +370,7 @@ public sealed class MatrixRenderer : IFrameRenderer
         using (var big = Ink.Format(sizeBig, bold: true))
         {
             void Figure(CanvasDrawingSession ds) =>
-                Ink.Centred(ds, text, cx, context.HeaderRow(0.330, ShowTitle), big, colour, appear);
+                Ink.Centred(ds, text, cx, context.HeaderRow(0.330, _titleLines), big, colour, appear);
 
             // shadowBlur 26 → sigma ~13.
             Ink.Glow(session, context.Px(13), 0.5, Figure);
@@ -373,9 +379,16 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         using (var unit = Ink.Format(context.Px(26)))
         {
-            Ink.Centred(session, "%", cx, context.HeaderRow(0.357, ShowTitle), unit, Palette.StockMuted, appear);
+            Ink.Centred(session, "%", cx, context.HeaderRow(0.357, _titleLines), unit, Palette.StockMuted, appear);
         }
     }
+
+    /// <summary>
+    /// The headline this frame draws: what the user typed, or the spec's own title. One place,
+    /// because the text measured at the top of <see cref="Draw"/> and the text drawn in the header
+    /// have to be the same string.
+    /// </summary>
+    private string ResolvedTitle() => Title.Length > 0 ? Title : _spec.Title;
 
     private static void DrawProgress(CanvasDrawingSession session, FrameContext context)
     {

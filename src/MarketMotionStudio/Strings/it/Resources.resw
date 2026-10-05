@@ -63,7 +63,7 @@
   <data name="StudioDataSection.Text"><value>Dati</value></data>
   <data name="StudioTitleSection.Text"><value>Titolo</value></data>
   <data name="StudioTitleText.Header"><value>Testo del titolo</value></data>
-  <data name="StudioTitleNote.Text"><value>Lascialo vuoto per usare il titolo predefinito. Un titolo lungo viene ridotto in proporzione invece di essere tagliato, fino a metà della dimensione.</value></data>
+  <data name="StudioTitleNote.Text"><value>Lascialo vuoto per usare il titolo predefinito. Premi Invio per spezzarlo dove vuoi; se non entra in una riga va a capo da solo su una seconda —due al massimo— e solo allora la dimensione cede, fino a metà. Una seconda riga sposta di una riga tutto ciò che sta sotto.</value></data>
   <data name="StudioHideTitle.Header"><value>Nascondi il titolo</value></data>
   <data name="StudioHideTitleNote.Text"><value>La riga del titolo torna al grafico e tutto ciò che sta sotto risale al suo posto. Il margine inferiore tiene fermo il bordo basso, quindi i pannelli si alzano. Togliendo la spunta l'impaginazione torna identica.</value></data>
   <data name="StockTitlePlaceholder"><value>Il nome dello strumento scaricato</value></data>

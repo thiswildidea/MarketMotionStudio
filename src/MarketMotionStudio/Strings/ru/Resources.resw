@@ -63,7 +63,7 @@
   <data name="StudioDataSection.Text"><value>Данные</value></data>
   <data name="StudioTitleSection.Text"><value>Заголовок</value></data>
   <data name="StudioTitleText.Header"><value>Текст заголовка</value></data>
-  <data name="StudioTitleNote.Text"><value>Оставьте пустым, чтобы использовать заголовок по умолчанию. Длинный заголовок пропорционально уменьшается, а не обрезается — не более чем вдвое.</value></data>
+  <data name="StudioTitleNote.Text"><value>Оставьте пустым, чтобы использовать заголовок по умолчанию. Нажмите Enter, чтобы разорвать заголовок там, где нужно; если он не помещается в одну строку, он сам переносится на вторую — не более двух — и только тогда уступает размер шрифта, не более чем вдвое. Вторая строка сдвигает всё под ней на одну строку вниз.</value></data>
   <data name="StudioHideTitle.Header"><value>Скрыть заголовок</value></data>
   <data name="StudioHideTitleNote.Text"><value>Строка заголовка возвращается графику, и всё под ней поднимается в неё. Нижнее поле держит нижний край, поэтому панели становятся выше. Если снять галочку, компоновка восстанавливается в точности.</value></data>
   <data name="StockTitlePlaceholder"><value>Название загруженной бумаги</value></data>

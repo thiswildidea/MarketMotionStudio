@@ -60,8 +60,23 @@ public sealed class StageRenderer : IFrameRenderer
     /// </summary>
     public string Credit { get; set; } = string.Empty;
 
+    /// <summary>
+    /// The headline, drawn through the same block every indicator uses — the empty stage is what
+    /// the preview shows before a fetch, and a title that sits somewhere else (or breaks
+    /// somewhere else) until the data arrives would be a preview that lies about the layout.
+    /// </summary>
+    private readonly TitleBlock _title = new(58);
+
+    /// <summary>
+    /// How many lines the title took on the frame being drawn. Set once at the top of
+    /// <see cref="Draw"/>, read by everything below it.
+    /// </summary>
+    private int _titleLines;
+
     public void Draw(CanvasDrawingSession session, FrameContext context)
     {
+        _titleLines = _title.For(session, Title, context, ShowTitle).Lines;
+
         context.Backdrop.Fill(session, context, Palette.Background);
 
         DrawGrid(session, context);
@@ -83,7 +98,7 @@ public sealed class StageRenderer : IFrameRenderer
     private void DrawGrid(CanvasDrawingSession session, FrameContext context)
     {
         var baseline = context.BaselineAbove(CreditGap);
-        var height = context.PlotHeight(ShowTitle, HeaderRows, CreditGap);
+        var height = context.PlotHeight(_titleLines, HeaderRows, CreditGap);
 
         var dashed = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
         var thin = (float)context.Px(1.5);
@@ -108,71 +123,28 @@ public sealed class StageRenderer : IFrameRenderer
     }
 
     /// <summary>
-    /// The title block, positioned from <see cref="FrameContext.TitleTop"/> rather
+    /// The title block, positioned from <see cref="FrameContext.TitleBaseline"/> rather
     /// than from the top of the frame. Above that line the phone's status bar and
     /// the player's own controls overlap the video.
     /// </summary>
     private void DrawTitleBlock(CanvasDrawingSession session, FrameContext context)
     {
-        if (ShowTitle && Title.Length > 0)
-        {
-            // Shrunk to fit rather than clipped or wrapped. A custom title is free
-            // text, and the two failure modes it would otherwise have are both worse
-            // than smaller type: clipping loses words silently, and wrapping pushes
-            // the whole layout down into the chart.
-            using var format = Centred(context, FitSize(session, context, Title, 58), FontWeight.SemiBold);
-
-            session.DrawText(
-                Title,
-                new Rect(context.ChartLeft, context.TitleTop + context.Px(18),
-                         context.ChartWidth, context.Px(FrameContext.TitleRowHeight)),
-                Palette.Title,
-                format);
-        }
+        _title.Draw(session, context, Title, _title.For(session, Title, context, ShowTitle), Palette.Title);
 
         if (Subtitle.Length > 0)
         {
-            using var format = Centred(context, 34, FontWeight.Normal);
+            using var format = Centred(context, 34);
 
             // Positioned from ContentTop, which is what moves up when the title is
-            // hidden. Adding an offset to a fixed top instead is how the two halves
-            // of that behaviour drift apart.
+            // hidden and down when it wraps. Adding an offset to a fixed top instead is
+            // how the two halves of that behaviour drift apart.
             session.DrawText(
                 Subtitle,
-                new Rect(context.ChartLeft, context.ContentTop(ShowTitle) + context.Px(6),
+                new Rect(context.ChartLeft, context.ContentTop(_titleLines) + context.Px(6),
                          context.ChartWidth, context.Px(HeaderRows)),
                 Palette.Muted,
                 format);
         }
-    }
-
-    /// <summary>
-    /// The largest font size at or below <paramref name="wanted"/> that lets the text
-    /// fit the chart width, never going below half.
-    ///
-    /// The floor matters: without one, a pasted paragraph would shrink until it was
-    /// unreadable, which looks like a rendering bug rather than like text that is too
-    /// long. At half size it is legibly too small, which reads as "shorten this".
-    /// </summary>
-    private static double FitSize(CanvasDrawingSession session, FrameContext context, string text, double wanted)
-    {
-        using var probe = new CanvasTextFormat
-        {
-            FontSize = (float)context.Px(wanted),
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            WordWrapping = CanvasWordWrapping.NoWrap,
-        };
-
-        using var layout = new CanvasTextLayout(session, text, probe, 0, 0);
-
-        var natural = layout.LayoutBounds.Width;
-
-        if (natural <= 0 || natural <= context.ChartWidth)
-        {
-            return wanted;
-        }
-
-        return wanted * Math.Max(0.5, context.ChartWidth / natural);
     }
 
     /// <summary>
@@ -192,7 +164,7 @@ public sealed class StageRenderer : IFrameRenderer
             return;
         }
 
-        using var format = Centred(context, 26, FontWeight.Normal);
+        using var format = Centred(context, 26);
 
         session.DrawText(
             Credit,
@@ -229,23 +201,17 @@ public sealed class StageRenderer : IFrameRenderer
     /// that did not scale with the resolution, and the symptom — text that is
     /// correct at 1080p and wrong at 1440p — reads as a layout bug rather than as a
     /// missing multiplication.
+    ///
+    /// No weight: the two lines left here — the subtitle and the credit — are both set regular.
+    /// The headline used to go through this too, at a semibold weight, until it moved to
+    /// <see cref="TitleBlock"/>, which is where the weight now lives.
     /// </summary>
-    private static CanvasTextFormat Centred(FrameContext context, double baselineSize, FontWeight weight) => new()
+    private static CanvasTextFormat Centred(FrameContext context, double baselineSize) => new()
     {
         FontSize = (float)context.Px(baselineSize),
-        FontWeight = weight switch
-        {
-            FontWeight.SemiBold => Microsoft.UI.Text.FontWeights.SemiBold,
-            _ => Microsoft.UI.Text.FontWeights.Normal,
-        },
+        FontWeight = Microsoft.UI.Text.FontWeights.Normal,
         HorizontalAlignment = CanvasHorizontalAlignment.Center,
         VerticalAlignment = CanvasVerticalAlignment.Top,
         WordWrapping = CanvasWordWrapping.NoWrap,
     };
-
-    private enum FontWeight
-    {
-        Normal,
-        SemiBold,
-    }
 }
