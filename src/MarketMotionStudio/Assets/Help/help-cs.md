@@ -357,12 +357,15 @@ Libovolná čínská akce nebo index, jeho denní růst nebo pokles rozložený 
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/dca-plan.png)
 
-Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý obchodní den, každý týden nebo každý měsíc — a animace toho, čeho disciplína dosáhla.
+Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý obchodní den, každý týden nebo každý měsíc — a animace toho, čeho disciplína dosáhla. Několik plánů může sdílet jeden obraz: po jedné čáře hodnoty na každý, s běžným ziskem na jejím konci.
 
-- Nástroje na jedno klepnutí sledují trh: široké a zlaté ETF u A-akcí, hongkongské trackerové fondy, ve USA SPY, QQQ a GLD.
+- Nástroje pocházejí z **vašeho seznamu**, téhož, který sdílejí ostatní tabule: napište kód nebo název a přidejte jej; přepínač na každém chipu rozhoduje, zda je na tomto obraze, a × jej odebere ze sdíleného seznamu (a tím i z ostatních tabulí). Řádek na jeden klik jde za trhem — široké a zlaté ETF u A-akcií, hongkongské trackerové fondy, ve USA SPY, QQQ a GLD — a stisk tento název přidá a hned ho vykreslí.
+- **2 až 6 plánů na jednom obraze.** Každý vkládá stejnou částku ve stejném rytmu a nakupuje od svého prvního obchodního dne. Kreslí se jen čáry hodnoty: šest výplní přes sebe je bláto, a při stejné částce a rytmu leží šest čar vkladů přesně na sobě — proto se čára vkladů kreslí jednou, pro plán, který vložil nejvíc, protože kreslit tu s nejmenším vkladem by ostatní ukazovala lepší. Datová osa je sjednocením jejich dnů: nástroj uvedený později prostě začíná později a předtím tam není. Šest je strop — nad ním získání odmítne, místo aby potichu nakreslilo některé z nich — a nástroj z jiného trhu zůstane venku. U několika plánů se velké číslo uprostřed stává výnosem v procentech **vedoucího** plánu, ne jeho penězi: pozdější kótování vložilo méně, a vydělat méně není totéž co být horším plánem.
+- **Číslo jede na čáře.** Štítek na konci každého plánu jej pojmenuje a uvede peníze, o které je v daném okamžiku napřed; pohybuje se s animací — potáhněte lištou a půjde s čarou. U jednoho plánu je velké číslo uprostřed stále výnosem v procentech a štítek je tam přesto.
 - Částku a frekvenci si nastavíte sami; období je tři, pět nebo deset let, nebo tak daleko zpět, jak jsou data k dispozici (zhruba třináct let).
 - Výnos se počítá na zpětně upravených cenách, bez poplatků. Výsledek popisuje řadu cen, nikoli účtenku, kterou by někdo mohl realizovat.
 - Kromě 3, 5 a 10 let a nejdelšího období lze zvolit i **Vlastní**: zadejte počáteční a koncové datum a stiskněte načtení dat. Dostupných je asi 35 let zpět — zdroj vrací zhruba 640 kalendářních dnů na jeden požadavek a průchod jich provede nejvýše dvacet.
+- **Dva způsoby animace.** *Celé období* rozloží celý rozsah najednou; *posuvné okno* drží okno s pevným počtem obchodních dnů a posouvá je od začátku do konce rozsahu — jen tak zůstanou výkyvy dlouhé denní řady čitelné. Okno má význam jen při posouvání a oba způsoby čtou **stejné kurzy** — přepnutí nic nenačítá. **Svislá osa se pro okno nepřepočítává**: odstup mezi oběma čarami *je* výsledkem plánu, a přepočet by ho roztáhl spolu s oknem.
 
 ## Výnos pozice
 

@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Tracer tout l'intervalle</value></data>
   <data name="PositionMotionScroll"><value>Fenêtre glissante</value></data>
   <data name="PositionWindowLabel.Header"><value>Fenêtre (jours)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animation</value></data>
+  <data name="DcaMotionGrow"><value>Tracer tout l'intervalle</value></data>
+  <data name="DcaMotionScroll"><value>Fenêtre glissante</value></data>
+  <data name="DcaWindowLabel.Header"><value>Fenêtre (jours)</value></data>
+  <data name="DcaVsTitle"><value>{0} face à {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} et {1} autres</value></data>
+  <data name="DcaBoardFetched"><value>{0} plans · {1} jours de bourse ({2} au {3})</value></data>
+  <data name="DcaTooMany"><value>{0} plans au maximum ; {1} sont activés</value></data>
+  <data name="DcaNoMarketPicks"><value>Aucun support de votre liste n'appartient au marché {0}</value></data>
+  <data name="DcaSkipped"><value>({0} n'avaient pas de cours sur la période et ont été écartés)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · {1} {2} chacun · {3} plans depuis le {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · rendement à ce jour</value></data>
 </root>

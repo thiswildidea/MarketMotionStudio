@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Todo o período</value></data>
   <data name="PositionMotionScroll"><value>Janela deslizante</value></data>
   <data name="PositionWindowLabel.Header"><value>Janela (dias)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animação</value></data>
+  <data name="DcaMotionGrow"><value>Todo o período</value></data>
+  <data name="DcaMotionScroll"><value>Janela deslizante</value></data>
+  <data name="DcaWindowLabel.Header"><value>Janela (dias)</value></data>
+  <data name="DcaVsTitle"><value>{0} contra {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} e mais {1}</value></data>
+  <data name="DcaBoardFetched"><value>{0} planos · {1} dias de pregão ({2} a {3})</value></data>
+  <data name="DcaTooMany"><value>É possível comparar no máximo {0} planos; há {1} ligados</value></data>
+  <data name="DcaNoMarketPicks"><value>Nenhum ativo da sua lista pertence ao mercado {0}</value></data>
+  <data name="DcaSkipped"><value>({0} não tinham preço no intervalo e ficaram de fora)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · {1} {2} cada · {3} planos desde {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · retorno até agora</value></data>
 </root>

@@ -856,4 +856,16 @@
   <data name="PositionMotionGrow"><value>Grow across the span</value></data>
   <data name="PositionMotionScroll"><value>Scroll a window</value></data>
   <data name="PositionWindowLabel.Header"><value>Window (days)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Motion</value></data>
+  <data name="DcaMotionGrow"><value>Grow across the span</value></data>
+  <data name="DcaMotionScroll"><value>Scroll a window</value></data>
+  <data name="DcaWindowLabel.Header"><value>Window (days)</value></data>
+  <data name="DcaVsTitle"><value>{0} vs {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} and {1} more</value></data>
+  <data name="DcaBoardFetched"><value>{0} plans · {1} trading days ({2} to {3})</value></data>
+  <data name="DcaTooMany"><value>At most {0} plans can be compared; {1} are switched on</value></data>
+  <data name="DcaNoMarketPicks"><value>None of your list is on the {0} market</value></data>
+  <data name="DcaSkipped"><value>({0} had no price in the range and was left out)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · {1} {2} each · {3} plans from {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · return so far</value></data>
 </root>

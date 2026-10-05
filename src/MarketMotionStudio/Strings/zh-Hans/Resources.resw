@@ -854,4 +854,16 @@
   <data name="PositionMotionGrow"><value>整段铺满</value></data>
   <data name="PositionMotionScroll"><value>窗口滚动</value></data>
   <data name="PositionWindowLabel.Header"><value>窗口天数</value></data>
+  <data name="DcaMotionLabel.Header"><value>推进方式</value></data>
+  <data name="DcaMotionGrow"><value>整段铺满</value></data>
+  <data name="DcaMotionScroll"><value>窗口滚动</value></data>
+  <data name="DcaWindowLabel.Header"><value>窗口天数</value></data>
+  <data name="DcaVsTitle"><value>{0} vs {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} 等 {1} 个</value></data>
+  <data name="DcaBoardFetched"><value>已取 {0} 个计划 · {1} 个交易日（{2} 至 {3}）</value></data>
+  <data name="DcaTooMany"><value>最多同时对比 {0} 个计划，现在勾了 {1} 个</value></data>
+  <data name="DcaNoMarketPicks"><value>自选清单里没有{0}的标的</value></data>
+  <data name="DcaSkipped"><value>（{0} 在区间内没有数据，已跳过）</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · 每次 {1} {2} · {3} 个计划自 {4} 起</value></data>
+  <data name="DcaLeaderLine"><value>{0} · 目前收益率</value></data>
 </root>

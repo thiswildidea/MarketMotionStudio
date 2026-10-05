@@ -374,12 +374,15 @@ Dowolna chińska akcja lub indeks, jego dzienny wzrost lub spadek ułożony w ko
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/dca-plan.png)
 
-Kupowanie jednego instrumentu na stałą kwotę w stałych odstępach — w każdy dzień sesji, co tydzień lub co miesiąc — i animacja tego, czym stała się dyscyplina.
+Kupowanie jednego instrumentu na stałą kwotę w stałych odstępach — w każdy dzień sesji, co tydzień lub co miesiąc — i animacja tego, czym stała się dyscyplina. Kilka planów może dzielić jeden obraz: po jednej linii wartości na każdy, z bieżącym zyskiem na jej końcu.
 
-- Instrumenty jednym dotknięciem podążają za rynkiem: szerokie i złote ETF na akcjach A, hongkongskie fundusze śledzące, w USA SPY, QQQ i GLD.
+- Instrumenty pochodzą z **Twojej listy**, tej samej, którą dzielą inne tablice: wpisz kod lub nazwę, aby dodać; przełącznik na chipie decyduje, czy jest na tym obrazie, a × usuwa go ze wspólnej listy (a więc i z innych tablic). Wiersz jednego dotknięcia idzie za rynkiem — szerokie i złote ETF na akcjach A, hongkongskie fundusze śledzące, w USA SPY, QQQ i GLD — a dotknięcie dodaje tę nazwę i od razu ją rysuje.
+- **Od 2 do 6 planów na jednym obrazie.** Każdy wpłaca tę samą kwotę w tym samym rytmie, kupując od własnego pierwszego dnia sesyjnego. Rysowane są tylko linie wartości: sześć wypełnień jeden na drugim to błoto, a przy tej samej kwocie i rytmie sześć linii wpłat pada dokładnie jedna na drugą — więc linię wpłat rysuje się raz, dla planu, który wpłacił najwięcej, bo narysowanie najmniejszej wpłaty upiększyłoby pozostałe. Oś dat to suma ich dni: instrument notowany później po prostu zaczyna się później i wcześniej go nie ma. Sześć to pułap — powyżej pobieranie odmawia, zamiast po cichu narysować kilka z nich — a instrument z innego rynku zostaje pominięty. Przy kilku planach wielka liczba pośrodku staje się stopą zwrotu w procentach planu **prowadzącego**, a nie jego kwotą: późniejsza notacja wpłaciła mniej, a zarobić mniej to nie to samo co być gorszym planem.
+- **Liczba jedzie na linii.** Etykieta na końcu każdego planu nazywa go i podaje kwotę, o jaką jest w tym momencie do przodu; porusza się z animacją — pociągnij pasek, a pójdzie z linią. Przy jednym planie wielka liczba pośrodku to nadal stopa zwrotu w procentach, a etykieta i tak jest.
 - Kwotę i częstotliwość ustawiasz sam; okres to trzy, pięć lub dziesięć lat, albo tak daleko wstecz, jak sięgają dane (około trzynastu lat).
 - Stopa zwrotu liczona jest na cenach skorygowanych wstecz, bez opłat. Wynik opisuje szereg cen, a nie rachunek, który ktokolwiek mógłby zrealizować.
 - Oprócz 3, 5 i 10 lat oraz najdłuższego zakresu można wybrać **Własny**: podaj datę początkową i końcową, a następnie pobierz dane. Dostępnych jest około 35 lat wstecz — źródło zwraca około 640 dni kalendarzowych na jedno żądanie, a przejście wykonuje ich najwyżej dwadzieścia.
+- **Dwa tryby animacji.** *Cały zakres naraz* rozkłada cały okres za jednym razem; *przesuwne okno* utrzymuje okno o stałej liczbie dni sesyjnych i przesuwa je od początku do końca okresu — tylko tak długa seria dzienna zachowuje czytelne wahania. Okno liczy się tylko przy przewijaniu, a oba tryby czytają **te same dane** — przełączenie nic nie pobiera ponownie. **Oś pionowa nie jest przeliczana dla okna**: odstęp między dwiema liniami *jest* wynikiem planu, a przeliczenie rozciągnęłoby go razem z oknem.
 
 ## Zwrot z pozycji
 

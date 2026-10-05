@@ -844,4 +844,16 @@
   <data name="PositionMotionGrow"><value>整段鋪滿</value></data>
   <data name="PositionMotionScroll"><value>視窗滾動</value></data>
   <data name="PositionWindowLabel.Header"><value>視窗天數</value></data>
+  <data name="DcaMotionLabel.Header"><value>推進方式</value></data>
+  <data name="DcaMotionGrow"><value>整段鋪滿</value></data>
+  <data name="DcaMotionScroll"><value>視窗滾動</value></data>
+  <data name="DcaWindowLabel.Header"><value>視窗天數</value></data>
+  <data name="DcaVsTitle"><value>{0} vs {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} 等 {1} 個</value></data>
+  <data name="DcaBoardFetched"><value>已取 {0} 個計劃 · {1} 個交易日（{2} 至 {3}）</value></data>
+  <data name="DcaTooMany"><value>最多同時對比 {0} 個計劃，現在勾了 {1} 個</value></data>
+  <data name="DcaNoMarketPicks"><value>自選清單裡沒有{0}的標的</value></data>
+  <data name="DcaSkipped"><value>（{0} 在區間內沒有數據，已跳過）</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · 每次 {1} {2} · {3} 個計劃自 {4} 起</value></data>
+  <data name="DcaLeaderLine"><value>{0} · 目前收益率</value></data>
 </root>

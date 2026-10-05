@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Crecer por todo el periodo</value></data>
   <data name="PositionMotionScroll"><value>Desplazar una ventana</value></data>
   <data name="PositionWindowLabel.Header"><value>Ventana (días)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animación</value></data>
+  <data name="DcaMotionGrow"><value>Crecer por todo el periodo</value></data>
+  <data name="DcaMotionScroll"><value>Desplazar una ventana</value></data>
+  <data name="DcaWindowLabel.Header"><value>Ventana (días)</value></data>
+  <data name="DcaVsTitle"><value>{0} frente a {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} y {1} más</value></data>
+  <data name="DcaBoardFetched"><value>{0} planes · {1} días de bolsa ({2} a {3})</value></data>
+  <data name="DcaTooMany"><value>Se pueden comparar como máximo {0} planes; hay {1} activados</value></data>
+  <data name="DcaNoMarketPicks"><value>Ningún valor de tu lista pertenece al mercado {0}</value></data>
+  <data name="DcaSkipped"><value>({0} no tenían precio en el rango y quedaron fuera)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · {1} {2} cada uno · {3} planes desde {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · rentabilidad hasta ahora</value></data>
 </root>

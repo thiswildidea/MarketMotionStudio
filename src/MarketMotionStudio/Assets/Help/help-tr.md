@@ -362,12 +362,15 @@ Herhangi bir Çin hissesi veya endeksi, günlük yükseliş veya düşüşü ayl
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/dca-plan.png)
 
-Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her hafta veya her ay — ve disiplinin neye dönüştüğünü animasyonla görmek.
+Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her hafta veya her ay — ve disiplinin neye dönüştüğünü animasyonla görmek. Birkaç plan aynı kareyi paylaşabilir: her birine bir değer çizgisi, ucunda o anki kâr.
 
-- Tek dokunuşla seçilen varlıklar piyasayı izler: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD.
+- Varlıklar **kendi listenizden** gelir; diğer tabloların da paylaştığı liste: bir kod ya da ad arayıp ekleyin, her chip'in anahtarı onun bu karede olup olmadığını belirler, × ise onu paylaşılan listeden (ve dolayısıyla diğer tablolardan) çıkarır. Tek dokunuş satırı piyasaya göre değişir: A hisselerinde geniş ve altın ETF'ler, Hong Kong takip fonları, ABD'de SPY, QQQ ve GLD — bir dokunuş o adı ekleyip hemen çizer.
+- **Bir karede 2 ila 6 plan.** Her biri aynı tutarı aynı sıklıkta yatırır ve kendi ilk işlem gününden itibaren alır. Yalnızca değer çizgileri çizilir: üst üste altı dolgu çamurdur, ve aynı tutar ve sıklıkta altı yatırım çizgisi tamamen üst üste biner — bu yüzden yatırım çizgisi bir kez çizilir, en çok yatıran plan için; çünkü en az yatıranı çizmek diğerlerini daha iyi gösterirdi. Tarih ekseni günlerinin birleşimidir: daha geç kote olan yalnızca daha geç başlar ve öncesinde yoktur. Sınır altıdır — üstünde veri çekme, sessizce birkaçını çizmek yerine reddeder — ve başka bir piyasanın varlığı dışarıda kalır. Birkaçı birlikteyken ortadaki büyük sayı, **öndeki** planın yüzde olarak getirisi olur, parası değil: daha geç kote olan daha az yatırmıştır, ve daha az kazanmak daha kötü plan olmak değildir.
+- **Sayı çizginin üstünde gider.** Her planın ucundaki etiket onu adlandırır ve o anda kazandığı parayı verir; animasyonla birlikte hareket eder — çubuğu sürükleyin, çizgiyle gider. Tek planla ortadaki büyük sayı yine yüzde getiridir, ve etiket yine de oradadır.
 - Tutarı ve sıklığı siz belirlersiniz; süre üç, beş veya on yıl, ya da verinin geldiği en eski tarihe kadar (yaklaşık on üç yıl).
 - Getiri geriye düzeltilmiş kapanış fiyatları üzerinden, ücretsiz hesaplanır. Sonuç fiyat serisinin bir tarifi, kimsenin aynen uygulayabileceği bir fatura değildir.
 - 3, 5 ve 10 yıl ile en uzun aralığın dışında **Özel** de seçilebilir: başlangıç ve bitiş tarihini verip verileri alın. Yaklaşık 35 yıl geriye gidilebilir — kaynak istek başına yaklaşık 640 takvim günü veriyor ve tarama en çok yirmi istek yapıyor.
+- **İki ilerleme biçimi.** *Aralığın tamamı* tüm dönemi bir anda serer; *kayan pencere* sabit sayıda işlem gününden oluşan bir pencereyi aralığın başından sonuna kadar yürütür — uzun bir günlük serinin dalgalanmalarını okunur tutmanın tek yolu budur. Pencere yalnızca kaydırırken anlam taşır ve iki biçim de **aynı fiyatları** okur — geçiş yeniden veri çekmez. **Dikey eksen pencereye göre yeniden ölçeklenmez**: iki çizgi arasındaki mesafe planın *ta kendisidir*; yeniden ölçeklemek onu pencereyle birlikte genişletirdi.
 
 ## Pozisyon Getirisi
 

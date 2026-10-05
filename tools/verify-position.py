@@ -538,15 +538,12 @@ class Frame:
 
 
 def shot(win, name):
+    """抓到的是不是这个窗口，`winui.capture` 负责 —— 它抓错窗口时不报错，只给一张别的窗口
+    的截图，而接下来每一条量出来的数都成了假话（见那个函数的说明）。
+    """
     path = os.path.join(REPO, "artifacts", name)
 
-    try:
-        win.SetTopmost(True)
-        time.sleep(0.5)
-    except Exception:  # noqa: BLE001
-        pass
-
-    win.CaptureToImage(path)
+    winui.capture(win, path)
 
     try:
         win.SetTopmost(False)

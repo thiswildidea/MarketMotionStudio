@@ -381,12 +381,15 @@ Any A-share stock or index, its daily rise or fall laid into calendar cells by m
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/dca-plan.png)
 
-Buying one instrument for a fixed amount on a fixed cadence — every trading day, every week or every month — and watching what the discipline turned into.
+Buying a fixed amount on a fixed cadence — every trading day, every week or every month — and watching what the discipline turned into. Several plans can share the one frame: a value line each, with its running profit riding the line's leading end.
 
-- The one-tap instruments follow the market: broad and gold ETFs on the A-share market, the Hong Kong tracker funds, SPY, QQQ and GLD in the United States.
+- The instruments come from your **own list**, the one the other boards share: search a code or a name to add one, each chip's switch decides whether it is on this frame, and the × takes it off the shared list (and off those other boards with it). The one-tap row follows the market — broad and gold ETFs on the A-share market, the Hong Kong tracker funds, SPY, QQQ and GLD in the United States — and a press adds that name and draws it straight away.
+- **2 to 6 plans on one frame.** Each puts in the same amount at the same cadence, buying from its own first trading day. Only the value lines are drawn: six fills stacked over each other are mud, and at one amount and one cadence the six invested lines land exactly on top of one another, so the invested line is drawn once — for the plan that put in the most, since drawing the least would flatter the rest. The date axis is the union of their days: a listing that starts later begins later, and is absent before that. Six is the ceiling — past it the fetch refuses rather than quietly drawing some of them — and an instrument from another market is left off. With several, the big figure in the middle becomes the **leader's** return in per cent rather than its money: a later listing has had less paid in, and earning less is not the same as being the worse plan.
+- **The figure rides the line.** A label at each plan's leading end names it and gives the money it is up at that moment, and it moves with the animation — scrub the bar and it goes with the line. With one plan the big figure in the middle is still the return in per cent, and the label is there all the same.
 - The amount and the cadence are yours to set; the span is three, five or ten years, or as far back as the data goes (about thirteen years).
 - Returns are computed on backward-adjusted closes, with no fees. The result describes the price series, not a bill anyone could have executed.
 - Besides three, five and ten years and the longest span, the range can be **Custom**: give a start and an end date, then press Fetch. About 35 years is reachable — the source serves roughly 640 calendar days per request, and the walk makes at most twenty of them.
+- **Two motions.** *Grow across the span* lays the whole range down at once; *scroll a window* holds a window of a fixed number of trading days and walks it from the start of the range to its end — the only way a long daily series keeps its wobbles readable. The window only counts while scrolling, and both motions read **the same marks**: switching re-fetches nothing. **The vertical axis is not rescaled per window**: the gap between the two lines *is* the result of a plan, and rescaling would widen it along with the window.
 
 ## Holdings Return
 

@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Aralığın tamamı</value></data>
   <data name="PositionMotionScroll"><value>Kayan pencere</value></data>
   <data name="PositionWindowLabel.Header"><value>Pencere (gün)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animasyon</value></data>
+  <data name="DcaMotionGrow"><value>Aralığın tamamı</value></data>
+  <data name="DcaMotionScroll"><value>Kayan pencere</value></data>
+  <data name="DcaWindowLabel.Header"><value>Pencere (gün)</value></data>
+  <data name="DcaVsTitle"><value>{0} ve {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} ve {1} tane daha</value></data>
+  <data name="DcaBoardFetched"><value>{0} plan · {1} işlem günü ({2} - {3})</value></data>
+  <data name="DcaTooMany"><value>En fazla {0} plan karşılaştırılabilir; {1} tanesi açık</value></data>
+  <data name="DcaNoMarketPicks"><value>Listenizdeki hiçbir varlık {0} piyasasına ait değil</value></data>
+  <data name="DcaSkipped"><value>({0} aralıkta fiyatı olmadığı için dışarıda bırakıldı)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · her birine {1} {2} · {4} tarihinden {3} plan</value></data>
+  <data name="DcaLeaderLine"><value>{0} · şimdiye kadarki getiri</value></data>
 </root>

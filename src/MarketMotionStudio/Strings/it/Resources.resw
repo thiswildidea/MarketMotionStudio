@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Tutto l'intervallo</value></data>
   <data name="PositionMotionScroll"><value>Finestra scorrevole</value></data>
   <data name="PositionWindowLabel.Header"><value>Finestra (giorni)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animazione</value></data>
+  <data name="DcaMotionGrow"><value>Tutto l'intervallo</value></data>
+  <data name="DcaMotionScroll"><value>Finestra scorrevole</value></data>
+  <data name="DcaWindowLabel.Header"><value>Finestra (giorni)</value></data>
+  <data name="DcaVsTitle"><value>{0} contro {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} e altri {1}</value></data>
+  <data name="DcaBoardFetched"><value>{0} piani · {1} giorni di borsa ({2} al {3})</value></data>
+  <data name="DcaTooMany"><value>Si possono confrontare al massimo {0} piani; {1} sono attivi</value></data>
+  <data name="DcaNoMarketPicks"><value>Nessuno strumento della tua lista appartiene al mercato {0}</value></data>
+  <data name="DcaSkipped"><value>({0} non avevano prezzi nel periodo e sono stati esclusi)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · {1} {2} ciascuno · {3} piani dal {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · rendimento finora</value></data>
 </root>

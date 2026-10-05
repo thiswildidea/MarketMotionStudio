@@ -396,6 +396,57 @@ def canvas_box(whole):
     return left, right, top, bottom
 
 
+def capture(win, path, tries=4):
+    """Capture **this** window, and make sure that is what came back.
+
+    `CaptureToImage` hands back whichever window is on top at that moment, and a script that
+    runs for half an hour is not the only thing on the machine. One run of `verify-dca-board`
+    wrote the whole editor into `verify-dca-six.png` — a 1920×1080 picture where the app is
+    1920×1020 — and every measurement taken from it was confident nonsense: `canvas_box` fell
+    back to "the entire picture", six tracks were counted as two, the labels were "not there",
+    the plot's right edge came out at 1452, and seven assertions failed on a frame with
+    nothing wrong with it. The failure reads as a data or drawing bug, and it is neither.
+
+    So the picture is read back and checked against the one thing a captured app frame always
+    has: **a canvas inside it**. `canvas_box` walks out from the frame's centre and returns
+    the whole picture for anything else, so "the box is not the whole picture" is the test.
+    Failing that, the window is raised again and the shot retaken.
+
+    Returns the path either way — a guard that throws would turn a wrong reading into a lost
+    run, and a wrong reading is already visible in the assertions that follow.
+    """
+    from PIL import Image
+
+    for attempt in range(tries):
+        for call in (win.SetActive, lambda: win.SetTopmost(True)):
+            try:
+                call()
+            except Exception:  # noqa: BLE001 - a window that went away is the retry's job
+                pass
+
+        # Raised first, then given the time to actually come up: the capture takes whatever
+        # is on top *now*, and this sleep is the only thing between the two.
+        time.sleep(0.6 + (0.5 * attempt))
+
+        try:
+            win.CaptureToImage(path)
+            picture = Image.open(path).convert("RGB")
+        except Exception:  # noqa: BLE001
+            continue
+
+        box = canvas_box(picture)
+
+        if box is None:
+            continue
+
+        # The canvas is inset — sidebar, preview, settings — so a box the size of the window
+        # is never a canvas. A few pixels of slack for the frame's own border.
+        if box[1] - box[0] < picture.size[0] - 8 and box[3] - box[2] < picture.size[1] - 8:
+            return path
+
+    return path
+
+
 def frame_bottom(whole, box=None, run=4, light=200):
     """The canvas's last row — the bottom edge `canvas_box` gets wrong.
 

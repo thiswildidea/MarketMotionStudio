@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Globalization;
+﻿using System.Globalization;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
@@ -63,30 +62,28 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
     private readonly StudioPreferences _prefs = new("Dca.");
 
-    /// <summary>The per-stock page's preferences container, used for the watchlist key only —
-    /// one list shared by both pages, as the calendar page shares it.</summary>
-    private readonly StudioPreferences _watchlist = new("Stock.");
+    /// <summary>
+    /// How many trading days the scrolling window holds to begin with — about a quarter, which
+    /// is short enough that a wobble is visible and long enough that a wobble is not just noise.
+    ///
+    /// The ends of the range are here rather than in the renderer because a window is a reading
+    /// of marks that have already been fetched: a typed number is worth drawing, and only the
+    /// two extremes are worth refusing to. See <see cref="ChosenWindow"/>.
+    /// </summary>
+    private const int DefaultWindow = 60;
 
-    private DcaSeries? _fetched;
+    private const int MinWindow = 10;
 
-    /// <summary>The market in force: it names the presets, it is what the search is
-    /// filtered to, and its currency names the amounts.</summary>
+    private const int MaxWindow = 500;
+
+    private DcaBoard? _board;
+
+    /// <summary>The market in force: it names the presets, it is what the list is kept to,
+    /// and its currency names the amounts.</summary>
     private readonly MarketProfile _market = Markets.Of(MarketSettings.Current);
-
-    private string _instrumentCode;
-
-    private string _instrumentName = string.Empty;
-
-    private StockSuggestion? _pendingChoice;
-
-    private string _lastQuery = string.Empty;
 
     /// <summary>Whether the page is finished being built; see the handlers that read it.</summary>
     private bool _ready;
-
-    private readonly ObservableCollection<StockFavourite> _favourites = [];
-
-    private readonly DispatcherTimer _searchDebounce = new() { Interval = TimeSpan.FromMilliseconds(260) };
 
     public DcaPlanPage()
     {
@@ -123,18 +120,28 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             Presets.Items.Add(new MatrixPreset(entry.Code, InstrumentNames.Display(entry.Code, entry.Name)));
         }
 
-        Favourites.ItemsSource = _favourites;
-
-        _searchDebounce.Tick += async (_, _) =>
+        // Two ways of walking the same plan; see DcaMotion. Growing is first and default,
+        // because on a plan the whole span at once is the answer to the question the page is
+        // asked — the window is for looking closer at part of it.
+        foreach (var (motion, key) in new[]
+                 {
+                     (DcaMotion.Grow, "DcaMotionGrow"),
+                     (DcaMotion.Scroll, "DcaMotionScroll"),
+                 })
         {
-            _searchDebounce.Stop();
-            await SearchSuggestionsAsync();
-        };
+            MotionCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)motion });
+        }
 
-        // The default the frame will actually use, before anything is fetched: the
-        // market's own first one-tap plan.
-        _instrumentCode = _market.DcaInstruments[0].Code;
-        _instrumentName = InstrumentNames.Display(_market.DcaInstruments[0].Code, _market.DcaInstruments[0].Name);
+        MotionCombo.SelectedIndex = 0;
+
+        // The picker has no panel of its own to write into, so what it has to say is said here.
+        Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
+
+        // A pick added or removed here changes the list on every roster board, all of them
+        // sharing one, and on this one it retires the board that was drawn from the old list:
+        // a frame still showing three plans under a chip row that no longer lists one of them
+        // is a frame about a list nobody chose.
+        Watch.Changed += OnWatchChanged;
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -168,6 +175,27 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
     /// <summary>Reuses the page title as the job label, as the other pages do.</summary>
     protected override string JobName => Strings.Get("DcaPlanPageTitle.Text");
 
+    // ---- what is being drawn ---------------------------------------------------------
+
+    /// <summary>
+    /// The picks this frame will draw: the reader's list, kept to the market in force.
+    ///
+    /// The list itself is deliberately cross-market — it is shared with the roster boards that
+    /// put three venues on one axis — while the amounts here are the market in force's currency
+    /// and its walk is the one that knows the venue's adjustment. So a pick from another venue
+    /// is not drawn rather than drawn in the wrong money, and the fetch says so when that
+    /// leaves nothing at all.
+    /// </summary>
+    private IReadOnlyList<RaceEntry> Chosen() =>
+        [.. Watch.SelectedEntries.Where(e => _market.Accepts(e.Code))];
+
+    private void OnWatchChanged(object? sender, EventArgs e)
+    {
+        _board = null;
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
+
     // ---- the plan's terms ------------------------------------------------------------
 
     private DcaFrequency ChosenFrequency =>
@@ -193,6 +221,46 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
     private int ChosenMonths() =>
         RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 60;
+
+    private DcaMotion ChosenMotion() =>
+        MotionCombo.SelectedItem is ComboBoxItem { Tag: int motion }
+            ? (DcaMotion)motion
+            : DcaMotion.Grow;
+
+    /// <summary>
+    /// How many trading days the scrolling window holds.
+    ///
+    /// Clamped rather than refused, unlike the amount: an amount of zero is not a plan, while
+    /// a window is only a reading of marks that have already been fetched — and the two ends of
+    /// the range are still readings. The interface's culture is tried first and the invariant
+    /// one second, the same order the amount box uses. A window as long as the range is
+    /// legitimate and simply leaves nothing to scroll; see <see cref="DcaRenderer"/>.
+    /// </summary>
+    private int ChosenWindow()
+    {
+        var text = WindowBox.Text.Trim();
+
+        var window = int.TryParse(text, NumberStyles.Integer, CultureInfo.CurrentUICulture, out var parsed) ? parsed
+            : int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed) ? parsed
+            : DefaultWindow;
+
+        return Math.Clamp(window, MinWindow, MaxWindow);
+    }
+
+    /// <summary>
+    /// The motion or the window changed. Neither is a term of the fetch — both read the marks
+    /// already on the page — so this redraws and stops there.
+    /// </summary>
+    private void OnLookChanged(object sender, object e)
+    {
+        if (!_ready)
+        {
+            return;
+        }
+
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
 
     /// <summary>The two dates in the pickers. The span in force only when custom is chosen.</summary>
     private (DateOnly From, DateOnly To) CustomSpan() =>
@@ -229,11 +297,11 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         var title = ResolvedTitle();
         var showTitle = VideoSettings.ShowTitle;
 
-        if (_fetched is { } fetched)
+        if (_board is { } board)
         {
-            var plan = AnimationPlan.For(VideoSettings.Duration, fetched.Points.Count, fetched.Peak);
+            var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
-            Preview.Renderer = new DcaRenderer(fetched, plan)
+            Preview.Renderer = new DcaRenderer(board, plan, ChosenMotion(), ChosenWindow())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -247,9 +315,13 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             Preview.Renderer = _stage;
         }
 
-        VideoSettings.TitlePlaceholder = Strings.Format("DcaDefaultTitle", _instrumentName);
+        // The window is a term of the scrolling motion alone; offered at any other time it
+        // reads as a setting the chart is ignoring.
+        WindowBox.IsEnabled = ChosenMotion() is DcaMotion.Scroll;
 
-        var ready = _fetched is not null;
+        VideoSettings.TitlePlaceholder = DefaultTitle();
+
+        var ready = _board is not null;
 
         PlayButton.IsEnabled = ready;
         ExportButton.IsEnabled = ready;
@@ -260,188 +332,70 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
     }
 
     /// <summary>
-    /// The title the frame will draw: the typed one, or the default naming the current
-    /// instrument. The renderer is rebuilt on every change, so the placeholder follows
-    /// the instrument even before a fetch has confirmed its proper name.
+    /// The title the frame will draw: the typed one, or the default naming what is on it. The
+    /// renderer is rebuilt on every change, so the placeholder follows the selection even before
+    /// a fetch has confirmed the instruments' proper names.
     /// </summary>
     private string ResolvedTitle() =>
-        VideoSettings.TitleText.Length > 0
-            ? VideoSettings.TitleText
-            : Strings.Format("DcaDefaultTitle", _instrumentName);
+        VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : DefaultTitle();
 
-    // ---- search ----------------------------------------------------------------------
-
-    private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    /// <summary>
+    /// “定投计划：沪深300ETF”, or the plans named against each other when there is more than one.
+    ///
+    /// Read off the fetched board when there is one, because a fetch is what corrects a typed
+    /// code to the name the venue actually calls it; off the selection before that, so the
+    /// placeholder says something about what is about to be drawn.
+    /// </summary>
+    private string DefaultTitle()
     {
-        // Only a typed change asks for suggestions; choosing one assigns the text in code.
-        if (args.Reason is not AutoSuggestionBoxTextChangeReason.UserInput)
+        if (_board is { } board)
         {
-            return;
+            return board.Comparing
+                ? Compared([.. board.Tracks.Select(t => t.Name)])
+                : Strings.Format("DcaDefaultTitle", board.Tracks[0].Name);
         }
 
-        _lastQuery = sender.Text;
-        _searchDebounce.Stop();
-        _searchDebounce.Start();
+        var names = Chosen().Select(e => InstrumentNames.Display(e.Code, e.Name)).ToArray();
+
+        return names.Length switch
+        {
+            0 => Strings.Format("DcaDefaultTitle", InstrumentNames.Display(
+                _market.DcaInstruments[0].Code, _market.DcaInstruments[0].Name)),
+            1 => Strings.Format("DcaDefaultTitle", names[0]),
+            _ => Compared(names),
+        };
     }
 
-    private async Task SearchSuggestionsAsync()
-    {
-        var query = _lastQuery.Trim();
+    private static string Compared(string[] names) => names.Length == 2
+        ? Strings.Format("DcaVsTitle", names[0], names[1])
+        : Strings.Format("DcaCompareMany", names[0], names.Length);
 
-        if (query.Length == 0)
-        {
-            InstrumentSearch.ItemsSource = null;
-            return;
-        }
-
-        try
-        {
-            var found = await Services.Stocks.SearchAsync(query, _market, CancellationToken.None);
-
-            var ordered = found
-                .Where(r => _market.Accepts(r.Code))
-                .Take(12)
-                .Select(r => new StockSuggestion(r.Code, r.Name, r.Code[..2].ToUpperInvariant()))
-                .ToArray();
-
-            InstrumentSearch.ItemsSource = ordered;
-        }
-        catch (Exception)
-        {
-            // A failed suggestion list is a quiet failure: the person is still typing, and a
-            // status line flashing under every keystroke is worse than no suggestions.
-            InstrumentSearch.ItemsSource = null;
-        }
-    }
-
-    private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-    {
-        if (args.SelectedItem is StockSuggestion chosen)
-        {
-            _pendingChoice = chosen;
-            sender.Text = chosen.Display;
-        }
-    }
-
-    private void OnSearchSubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        if (_pendingChoice is { } pick)
-        {
-            _pendingChoice = null;
-            ChooseInstrument(pick.Code, pick.Name);
-            return;
-        }
-
-        var code = StockDirectory.Normalize(sender.Text);
-
-        if (code is null)
-        {
-            ShowStatus(InfoBarSeverity.Error, Strings.Get("StockBadCode"));
-            return;
-        }
-
-        if (!_market.Accepts(code))
-        {
-            ShowStatus(InfoBarSeverity.Error, Strings.Format("WrongMarket", _market.Name));
-            return;
-        }
-
-        ChooseInstrument(code, code);
-    }
+    // ---- picking ---------------------------------------------------------------------
 
     private void OnPresetClick(object sender, RoutedEventArgs e)
-    {
-        if ((sender as FrameworkElement)?.Tag is string code)
-        {
-            var name = Presets.Items.OfType<MatrixPreset>().FirstOrDefault(p => p.Code == code)?.Name ?? code;
-            ChooseInstrument(code, name);
-        }
-    }
-
-    // ---- favourites ------------------------------------------------------------------
-
-    /// <summary>Serialised as `code|name;…` under the shared watchlist key — see <see cref="_watchlist"/>.</summary>
-    private const string FavouriteKey = "Favourites";
-
-    private void LoadFavourites()
-    {
-        var raw = _watchlist.GetString(FavouriteKey, string.Empty);
-
-        foreach (var item in raw.Split(';', StringSplitOptions.RemoveEmptyEntries))
-        {
-            var parts = item.Split('|');
-
-            if (parts.Length == 2 && parts[0].Length > 0)
-            {
-                _favourites.Add(new StockFavourite(parts[0], parts[1]));
-            }
-        }
-    }
-
-    private void SaveFavourites()
-    {
-        _watchlist.Save(FavouriteKey, string.Join(";", _favourites.Select(f => $"{f.Code}|{f.Name}")));
-    }
-
-    private void OnAddFavourite(object sender, RoutedEventArgs e)
-    {
-        if (_fetched is not { } fetched)
-        {
-            ShowStatus(InfoBarSeverity.Informational, Strings.Get("StockFavNeedData"));
-            return;
-        }
-
-        if (_favourites.Any(f => f.Code == fetched.Code))
-        {
-            return;
-        }
-
-        _favourites.Add(new StockFavourite(fetched.Code, fetched.Name));
-        SaveFavourites();
-    }
-
-    private void OnFavouriteClick(object sender, RoutedEventArgs e)
-    {
-        if ((sender as FrameworkElement)?.Tag is string code)
-        {
-            var name = _favourites.FirstOrDefault(f => f.Code == code)?.Name ?? code;
-            ChooseInstrument(code, name);
-        }
-    }
-
-    private void OnFavouriteRemove(object sender, RoutedEventArgs e)
     {
         if ((sender as FrameworkElement)?.Tag is not string code)
         {
             return;
         }
 
-        var at = _favourites.ToList().FindIndex(f => f.Code == code);
+        var name = Presets.Items.OfType<MatrixPreset>().FirstOrDefault(p => p.Code == code)?.Name ?? code;
 
-        if (at >= 0)
+        if (!Watchlist.Has(code) && !Watchlist.Add(code, name))
         {
-            _favourites.RemoveAt(at);
-            SaveFavourites();
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooManyStocks", Watchlist.Most));
+            return;
         }
-    }
 
-    // ---- fetching --------------------------------------------------------------------
-
-    private void ChooseInstrument(string code, string name)
-    {
-        _instrumentCode = code;
-        _instrumentName = InstrumentNames.Display(code, name);
-
-        // The plan in the frame belongs to the instrument it was fetched for. A new pick
-        // drops it rather than leaving it standing under a title that no longer names it,
-        // and redraws now so the title says what the fetch is about to ask for — the old
-        // name would otherwise sit over the new code for the length of the request, and
-        // stay there outright if the request failed.
-        _fetched = null;
-        ApplyPreviewSettings();
+        // On the list *and* switched on for this frame in one press. The row is one-tap by
+        // design: a pick that arrived on the list but switched off would draw nothing at all,
+        // which reads as a broken button rather than as a setting.
+        Watch.Include(code);
 
         Fetch();
     }
+
+    // ---- fetching --------------------------------------------------------------------
 
     private async void Fetch()
     {
@@ -454,7 +408,6 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         }
 
         var (start, end) = ChosenRange();
-        var display = _instrumentName.Length > 0 ? _instrumentName : _instrumentCode;
         var frequency = ChosenFrequency;
 
         // A typed span is the only one that can be wrong in a way the source would
@@ -467,30 +420,66 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             return;
         }
 
-        // Three minutes, not the calendar's two: a plan reaching back a dozen years is
-        // up to twenty requests answered one after another.
+        var chosen = Chosen();
+
+        if (chosen.Count == 0)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("DcaNoMarketPicks", _market.Name));
+            return;
+        }
+
+        // Refused rather than trimmed: a frame drawn from six of the nine plans somebody
+        // ticked answers about a list nobody chose, and it looks entirely plausible while it
+        // does — the same reason the roster boards never quietly drop a row.
+        if (chosen.Count > DcaPlanner.MostTracks)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format(
+                "DcaTooMany", DcaPlanner.MostTracks, chosen.Count));
+            return;
+        }
+
+        // Six minutes, not three: one plan reaching back a dozen years is up to twenty
+        // requests answered one after another, and this page now draws up to six of them.
         await RunAsync(FetchButton, async cancellation =>
         {
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
-            var fetched = await DcaPlanner.LoadAsync(
-                Services.Quotes, _instrumentCode, display, frequency, amount, start, end, progress, cancellation);
+            var board = await DcaPlanner.LoadBoardAsync(
+                Services.Quotes, chosen, frequency, amount, start, end, progress, cancellation);
 
-            _fetched = fetched;
-            _instrumentName = InstrumentNames.Display(fetched.Code, fetched.Name);
+            _board = board;
+
+            // A typed pick is renamed to what the endpoint calls it, which is also the name
+            // the other roster boards will read off the shared list.
+            foreach (var track in board.Tracks)
+            {
+                Watchlist.Rename(track.Code, InstrumentNames.Display(track.Code, track.Name));
+            }
+
             ApplyPreviewSettings();
 
             // Parked on the last frame: the closing statistics are what someone wants to
             // look at before deciding whether to export.
             ShowMoment(1);
 
-            ShowStatus(InfoBarSeverity.Success, Strings.Format(
-                "DcaFetched",
-                fetched.Points.Count,
-                DcaRenderer.Iso(fetched.Start),
-                DcaRenderer.Iso(fetched.End),
-                fetched.Buys));
-        }, TimeSpan.FromMinutes(3));
+            var skipped = board.Skipped.Count > 0
+                ? " " + Strings.Format("DcaSkipped", string.Join("、", board.Skipped))
+                : string.Empty;
+
+            ShowStatus(InfoBarSeverity.Success, (board.Comparing
+                ? Strings.Format(
+                    "DcaBoardFetched",
+                    board.Tracks.Count,
+                    board.Dates.Count,
+                    DcaRenderer.Iso(board.Start),
+                    DcaRenderer.Iso(board.End))
+                : Strings.Format(
+                    "DcaFetched",
+                    board.Dates.Count,
+                    DcaRenderer.Iso(board.Start),
+                    DcaRenderer.Iso(board.End),
+                    board.Buys)) + skipped);
+        }, TimeSpan.FromMinutes(6));
     }
 
     private void OnFetch(object sender, RoutedEventArgs e) => Fetch();
@@ -610,7 +599,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
     private async void OnExport(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _fetched is not { } fetched || App.Window is not { } window)
+        if (Preview.Renderer is not { } renderer || _board is not { } board || App.Window is not { } window)
         {
             return;
         }
@@ -643,7 +632,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
             var file = await VideoExporter.EncodeAsync(
                 renderer, format, margins, duration, folder,
-                VideoExporter.VideoName(label, fetched.Start, fetched.End, format),
+                VideoExporter.VideoName(label, board.Start, board.End, format),
                 report, cancellation);
 
             clock.Stop();
@@ -664,7 +653,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
     private async void OnSaveCover(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _fetched is not { } fetched || App.Window is not { } window)
+        if (Preview.Renderer is not { } renderer || _board is not { } board || App.Window is not { } window)
         {
             return;
         }
@@ -683,7 +672,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
 
             var file = await FrameExporter.SavePngAsync(
                 renderer, format, VideoSettings.Margins, Preview.Progress, folder,
-                FrameExporter.CoverName(ResolvedTitle(), fetched.Start, fetched.End, format),
+                FrameExporter.CoverName(ResolvedTitle(), board.Start, board.End, format),
                 cancellation);
 
             ShowStatus(InfoBarSeverity.Success, Strings.Format(
@@ -726,24 +715,13 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             ToDate.Date = new DateTimeOffset(to, TimeOnly.MinValue, TimeSpan.Zero);
         }
 
-        var code = _prefs.GetString("Code", _market.DcaInstruments[0].Code);
-
-        // A code saved under another market is not carried over: it would fetch from a
-        // venue whose presets and search results this page no longer shows.
-        if (_market.Accepts(code))
-        {
-            _instrumentCode = code;
-
-            // The stored name is only a hint: the code decides. Falling back to the
-            // market's *first* preset — as this once did — put a name on the frame that
-            // belonged to an instrument the fetch was never going to ask for.
-            var name = _prefs.GetString("Name", string.Empty);
-
-            _instrumentName = InstrumentNames.Display(code, name.Length > 0 ? name : code);
-        }
+        // The motion is one of the two entries the constructor added, and the window goes back
+        // through the same clamp a typed one does — a remembered 600 comes back as 500.
+        MotionCombo.SelectedIndex = _prefs.GetInt("Motion", (int)DcaMotion.Grow) == (int)DcaMotion.Scroll ? 1 : 0;
+        WindowBox.Text = Math.Clamp(_prefs.GetInt("Window", DefaultWindow), MinWindow, MaxWindow)
+            .ToString(CultureInfo.InvariantCulture);
 
         VideoSettings.Restore(_prefs);
-        LoadFavourites();
 
         _prefs.Restoring = false;
     }
@@ -755,8 +733,8 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         _prefs.Save("Months", ChosenMonths());
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
-        _prefs.Save("Code", _instrumentCode);
-        _prefs.Save("Name", _instrumentName);
+        _prefs.Save("Motion", (int)ChosenMotion());
+        _prefs.Save("Window", ChosenWindow());
 
         VideoSettings.Save(_prefs);
     }

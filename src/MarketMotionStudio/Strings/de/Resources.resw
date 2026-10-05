@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Über die ganze Spanne</value></data>
   <data name="PositionMotionScroll"><value>Fenster weiterbewegen</value></data>
   <data name="PositionWindowLabel.Header"><value>Fenster (Tage)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Ablauf</value></data>
+  <data name="DcaMotionGrow"><value>Über die ganze Spanne</value></data>
+  <data name="DcaMotionScroll"><value>Fenster weiterbewegen</value></data>
+  <data name="DcaWindowLabel.Header"><value>Fenster (Tage)</value></data>
+  <data name="DcaVsTitle"><value>{0} gegen {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} und {1} weitere</value></data>
+  <data name="DcaBoardFetched"><value>{0} Pläne · {1} Handelstage ({2} bis {3})</value></data>
+  <data name="DcaTooMany"><value>Höchstens {0} Pläne lassen sich vergleichen; {1} sind eingeschaltet</value></data>
+  <data name="DcaNoMarketPicks"><value>Nichts auf Ihrer Liste gehört zum Markt {0}</value></data>
+  <data name="DcaSkipped"><value>({0} hatten im Zeitraum keinen Kurs und blieben außen vor)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · je {1} {2} · {3} Pläne ab {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · Rendite bisher</value></data>
 </root>

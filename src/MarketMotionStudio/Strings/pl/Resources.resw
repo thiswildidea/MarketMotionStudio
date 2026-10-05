@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Cały zakres naraz</value></data>
   <data name="PositionMotionScroll"><value>Przesuwne okno</value></data>
   <data name="PositionWindowLabel.Header"><value>Okno (dni)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animacja</value></data>
+  <data name="DcaMotionGrow"><value>Cały zakres naraz</value></data>
+  <data name="DcaMotionScroll"><value>Przesuwne okno</value></data>
+  <data name="DcaWindowLabel.Header"><value>Okno (dni)</value></data>
+  <data name="DcaVsTitle"><value>{0} kontra {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} i {1} więcej</value></data>
+  <data name="DcaBoardFetched"><value>{0} planów · {1} dni sesji ({2} do {3})</value></data>
+  <data name="DcaTooMany"><value>Porównać można najwyżej {0} planów; włączonych jest {1}</value></data>
+  <data name="DcaNoMarketPicks"><value>Żaden instrument z listy nie należy do rynku {0}</value></data>
+  <data name="DcaSkipped"><value>({0} nie miały kursu w przedziale i zostały pominięte)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · po {1} {2} · {3} planów od {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · zwrot do tej pory</value></data>
 </root>

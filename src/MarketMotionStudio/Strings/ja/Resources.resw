@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>全区間を描く</value></data>
   <data name="PositionMotionScroll"><value>窓をスクロール</value></data>
   <data name="PositionWindowLabel.Header"><value>表示日数</value></data>
+  <data name="DcaMotionLabel.Header"><value>進行</value></data>
+  <data name="DcaMotionGrow"><value>全区間を描く</value></data>
+  <data name="DcaMotionScroll"><value>窓をスクロール</value></data>
+  <data name="DcaWindowLabel.Header"><value>表示日数</value></data>
+  <data name="DcaVsTitle"><value>{0} vs {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} ほか {1} 件</value></data>
+  <data name="DcaBoardFetched"><value>{0} 件のプラン · {1}営業日（{2}〜{3}）</value></data>
+  <data name="DcaTooMany"><value>同時に比較できるのは最大 {0} 件です。いま {1} 件が選ばれています</value></data>
+  <data name="DcaNoMarketPicks"><value>マイリストに{0}市場の銘柄がありません</value></data>
+  <data name="DcaSkipped"><value>（期間内に価格がなかった {0} は除外しました）</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · 各 {1}{2} · {3} 件のプラン（{4} から）</value></data>
+  <data name="DcaLeaderLine"><value>{0} · 現時点の運用利回り</value></data>
 </root>

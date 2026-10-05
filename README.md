@@ -28,7 +28,9 @@ ten years; CSI Level-1 twelve months). Gain-loss Calendar is the fifth: the whol
 return calendar freed from its fixed series, run on any stock or index. **DCA Plan** is the sixth
 and the one that is not about a series: it buys one instrument on a fixed amount and a fixed
 cadence — daily, weekly or monthly — over years of closes, and animates what went in against what
-the shares became worth, in whichever currency that market quotes. **Position Return** is the
+the shares became worth, in whichever currency that market quotes. Several plans can share the
+frame: a value line each against one line for what went in, and the pair of motions the holdings
+page has. **Position Return** is the
 seventh and the mirror image of the plan: one purchase, once — 2015, a million, 中国平安 —
 and nothing but the mark-to-market after that, with the drawdown promoted to a headline figure
 because a holding's worst moment is the price of its whole story. It is also the one page that
@@ -282,6 +284,27 @@ has been paid in, in amber, and what those shares are worth, in red — with the
 between them filled warm while the plan is ahead and cool while it is behind. The headline
 reading is the ratio between them, which is the thing a plan is for: how the discipline
 did, not how the price did.
+
+Several plans can share the frame, read off the same watchlist every other per-instrument page
+uses — up to **six**, each in a colour of its own, assigned by the order they were listed in.
+What is drawn is **the value line of each, and one paid-in line for all of them**: at one amount
+and one cadence the six paid-in lines land exactly on top of one another, so drawing six of them
+would be drawing one line six times, and the one that is drawn is the plan that paid in the most,
+because drawing the least would make every other plan look better than it is. The fill goes away
+too, for the same reason six overlapping fills have. Each plan carries a capsule at the end of its
+own line, naming it and the money it is up, riding the line as it grows. With several, the headline
+becomes the **leader's ratio** and not its money, and the leader is picked on the ratio: a later
+listing has had less paid into it, and earning less than a plan that started three years earlier is
+not the same thing as being the worse plan.
+
+**Two motions, over one span**, the pair the holdings page has. *Grow across the span* lays the
+whole range down at once; *scroll a window* holds a window of a chosen number of trading days and
+walks it from the start of the range to its end. It is a **display** setting and not a data one:
+switching redraws and re-fetches nothing, which is why the window box is offered only while the
+window is what is moving. The vertical scale is **not** re-fitted to the window. A candle chart
+re-fits its price axis because a hundred bars of one stock is a different set of prices; here the
+gap between the two lines *is* the result, and an axis that re-fitted itself as the window slid
+would widen that gap while nothing about the plan had changed.
 
 Two decisions worth stating, because a naïve version gets both wrong silently:
 

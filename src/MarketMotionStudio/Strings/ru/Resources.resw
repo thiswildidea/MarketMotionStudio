@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Весь диапазон</value></data>
   <data name="PositionMotionScroll"><value>Скользящее окно</value></data>
   <data name="PositionWindowLabel.Header"><value>Окно (дней)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Анимация</value></data>
+  <data name="DcaMotionGrow"><value>Весь диапазон</value></data>
+  <data name="DcaMotionScroll"><value>Скользящее окно</value></data>
+  <data name="DcaWindowLabel.Header"><value>Окно (дней)</value></data>
+  <data name="DcaVsTitle"><value>{0} против {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} и ещё {1}</value></data>
+  <data name="DcaBoardFetched"><value>Планов: {0} · торговых дней {1} ({2} — {3})</value></data>
+  <data name="DcaTooMany"><value>Сравнить можно не более {0} планов; включено {1}</value></data>
+  <data name="DcaNoMarketPicks"><value>Ни одного инструмента из списка нет на рынке {0}</value></data>
+  <data name="DcaSkipped"><value>({0} не имели цены в диапазоне и были пропущены)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · по {1} {2} · планов: {3}, с {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · доходность на сейчас</value></data>
 </root>

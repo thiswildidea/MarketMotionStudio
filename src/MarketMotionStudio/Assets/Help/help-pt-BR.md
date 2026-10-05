@@ -377,12 +377,15 @@ Qualquer ação ou índice da bolsa chinesa, seu alta ou baixa diária disposta 
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/dca-plan.png)
 
-Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda semana ou todo mês — e ver em animação o que a disciplina virou.
+Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda semana ou todo mês — e ver em animação o que a disciplina virou. Vários planos podem dividir o mesmo quadro: uma linha de valor cada, com o lucro atual na sua ponta.
 
-- Os ativos de um toque seguem o mercado: ETFs amplos e de ouro nas ações A, os fundos índice de Hong Kong, SPY, QQQ e GLD nos Estados Unidos.
+- Os ativos vêm da **sua própria lista**, a mesma que os outros painéis compartilham: busque um código ou um nome para acrescentar um, o interruptor de cada chip decide se ele está neste quadro, e o × o remove da lista compartilhada (e com isso dos outros painéis). A linha de um toque segue o mercado — ETFs amplos e de ouro nas ações A, os fundos índice de Hong Kong, SPY, QQQ e GLD nos Estados Unidos — e um toque acrescenta esse nome e o desenha na hora.
+- **De 2 a 6 planos num quadro.** Cada um aporta o mesmo valor na mesma frequência, comprando desde o seu próprio primeiro dia de negociação. Só as linhas de valor são desenhadas: seis preenchimentos empilhados são lama, e com o mesmo valor e frequência as seis linhas do aportado caem exatamente umas sobre as outras — então a linha do aportado é desenhada uma vez, para o plano que mais aportou, porque desenhar a que menos aportou faria os outros parecerem melhores. O eixo de datas é a união dos dias deles: um ativo listado mais tarde simplesmente começa mais tarde, e antes disso não está lá. Seis é o teto — acima disso a obtenção recusa em vez de desenhar alguns em silêncio — e um ativo de outro mercado fica de fora. Com vários, o número grande no meio passa a ser o retorno em porcentagem do plano **líder**, não o seu dinheiro: uma listagem mais tardia aportou menos, e ganhar menos não é o mesmo que ser o plano pior.
+- **O número acompanha a linha.** Um rótulo na ponta de cada plano o nomeia e dá o dinheiro que ele ganhou naquele momento; move-se com a animação — arraste a barra e ele vai com a linha. Com um só plano o número grande no meio continua sendo o retorno em porcentagem, e o rótulo está lá do mesmo jeito.
 - Valor e frequência você define; o período é de três, cinco ou dez anos, ou até onde os dados alcançam (uns treze anos).
 - O retorno é calculado sobre fechamentos ajustados retroativamente, sem taxas. O resultado descreve a série de preços, não uma conta que alguém poderia ter executado.
 - Além de 3, 5 e 10 anos e do período mais longo, o intervalo pode ser **Personalizado**: informe a data inicial e a final e pressione o botão de buscar dados. Dá para voltar cerca de 35 anos — a fonte entrega cerca de 640 dias corridos por requisição e a varredura faz no máximo vinte.
+- **Dois modos de avanço.** *Todo o período* dispõe o intervalo inteiro de uma vez; *janela deslizante* mantém uma janela de um número fixo de dias de negociação e a percorre do início ao fim do intervalo — é a única forma de uma longa série diária manter as oscilações legíveis. A janela só conta ao deslizar, e os dois modos leem **os mesmos dados**: trocar não baixa nada de novo. **O eixo vertical não é reescalado por janela**: a distância entre as duas linhas *é* o resultado de um plano, e reescalar a alargaria junto com a janela.
 
 ## Retorno de posição
 

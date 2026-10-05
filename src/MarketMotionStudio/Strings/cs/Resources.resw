@@ -845,4 +845,16 @@
   <data name="PositionMotionGrow"><value>Celé období</value></data>
   <data name="PositionMotionScroll"><value>Posuvné okno</value></data>
   <data name="PositionWindowLabel.Header"><value>Okno (dny)</value></data>
+  <data name="DcaMotionLabel.Header"><value>Animace</value></data>
+  <data name="DcaMotionGrow"><value>Celé období</value></data>
+  <data name="DcaMotionScroll"><value>Posuvné okno</value></data>
+  <data name="DcaWindowLabel.Header"><value>Okno (dny)</value></data>
+  <data name="DcaVsTitle"><value>{0} versus {1}</value></data>
+  <data name="DcaCompareMany"><value>{0} a další {1}</value></data>
+  <data name="DcaBoardFetched"><value>{0} plánů · {1} obchodních dnů ({2} až {3})</value></data>
+  <data name="DcaTooMany"><value>Porovnat lze nejvýše {0} plánů; zapnuto je {1}</value></data>
+  <data name="DcaNoMarketPicks"><value>Žádný nástroj ze seznamu nepatří na trh {0}</value></data>
+  <data name="DcaSkipped"><value>({0} neměly v rozsahu žádný kurz a byly vynechány)</value></data>
+  <data name="DcaCompareSubtitle"><value>{0} · po {1} {2} · {3} plánů od {4}</value></data>
+  <data name="DcaLeaderLine"><value>{0} · výnos zatím</value></data>
 </root>
