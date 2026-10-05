@@ -1,7 +1,7 @@
 """文档一致性检查：版本号、商店文案、帮助手册、README 是不是说的同一件事。
 
-这一版动的全是文档，而文档里最容易出错的恰恰是**数字**：说明段说十六页、功能条说十六种、
-帮助说 900 天、CHANGELOG 说 1.0.4.0、manifest 说 1.0.4.0 —— 任何一个留在旧数字上，读的人
+这一版动的全是文档，而文档里最容易出错的恰恰是**数字**：说明段说十七页、功能条说十七种、
+帮助说 900 天、CHANGELOG 说 1.0.5.0、manifest 说 1.0.5.0 —— 任何一个留在旧数字上，读的人
 看到的是一个自相矛盾的应用。所以这些断言一条条把数字钉住。
 
 **为什么断言里全是数字**：`900`、`180`、`24`、`16` 在 14 种语言里写法都一样，而"最长"、
@@ -103,15 +103,16 @@ def listing_checks():
     for n, lang in enumerate(LANGS):
         _, start, end = secs[n]
         items = bullets(lines, start, end)
-        last = page_name(lang, "NavHoldOdds")
 
-        # 一页一条，所以这个数字**跟着页数走**：第十七页「债市固收」落地之后这一版应当是
-        # 十七条，而商店文案按惯例要等发版时才写（见 marketmotion-store-release），所以
-        # 现在仍是十六。改动这一页时它不会红——它就是发版时要改的那个提醒点。
-        check(f"{lang} 说明段是十六条", len(items) == 16, f"{len(items)} 条")
+        # 一页一条，所以这个数字**跟着页数走**：加一页就要回来改这里，那正是它该有的摩擦。
+        # 清单是历来一次次上架时追加出来的顺序，所以新的一页追加在末尾 —— 末尾那条也因此
+        # 换了页。（1.0.5.0 之前这一条是「十六条 / 最后一条是持有胜率」，第十七页债市固收
+        # 从来没进过商店文案，直到本版。）
+        check(f"{lang} 说明段是十七条", len(items) == 17, f"{len(items)} 条")
 
         if items:
-            check(f"{lang} 最后一条是持有胜率",
+            last = page_name(lang, "NavBondRace")
+            check(f"{lang} 最后一条是债市固收",
                   lines[items[-1]].startswith(f"• {last}"),
                   lines[items[-1]][:40])
 
@@ -128,12 +129,24 @@ def listing_checks():
             at += 1
 
         body = lines[at]
-        check(f"{lang} 新增功能写着本版的 900 天", "900" in body, body[:40])
+
+        # 本版要说这四件事，而它们的名字在 14 种语言里拼法不同 —— 所以拿**各语言自己的页面
+        # 名**当锚（`page_name` 从 resw 里取），不用「900」那种跨语言同形的数字：1.0.5.0
+        # 这一版要说的四件事里没有一件能用一个数字抓住。
+        this = [page_name(lang, key) for key in
+                ("NavBondRace", "NavMarketTurnover", "NavCandle", "NavPosition")]
+        missing = [name for name in this if name not in body]
+
+        check(f"{lang} 新增功能说到本版这四页", not missing,
+              f"缺 {'、'.join(missing)}" if missing else f"{len(body)} 字")
         check(f"{lang} 新增功能不超过 1500 字", len(body) <= 1500, f"{len(body)} 字")
 
-    # 上一版那句"新增第八个图表页"式的旧文案，中英文各断一次足够。
+    # 上一版那句"新增八个图表页"式的旧文案，中英文各断一次足够：这一栏是**换**不是加，
+    # 上一版一页一页数的那句留在里面，就和"十七大图表页"并排自相矛盾。
     text = "\n".join(lines)
+    check("中文里不再有「本版新增八个图表页」", "本版新增八个图表页" not in text)
     check("中文里不再有「本版新增第八个图表页」", "本版新增第八个图表页" not in text)
+    check("英文里不再有 Eight new chart pages", "Eight new chart pages" not in text)
     check("英文里不再有 an eighth chart page", "an eighth chart page" not in text)
     check("英文里不再有 a ninth chart page", "a ninth chart page" not in text)
 

@@ -12,7 +12,7 @@
 
 MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9:16 竖屏动画，专为抖音、视频号、快手等竖屏平台设计：选择市场与标的，应用自动抓取行情、生成动画，一键导出 H.264 MP4，开箱即发。
 
-十六大图表页：  
+十七大图表页：  
 • 市场成交额——全市场每日成交额的历史长卷（A股）  
 • 成交量与换手率——单只股票的量价齐观（A股/港股）  
 • 行业板块竞速——行业指数涨跌的赛跑动画  
@@ -29,6 +29,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 • 大类资产——一类资产一行，行是持有它到今天赚了多少，不是它的报价
 • 回撤与修复——一行是它落在自己高点下方多远——不是它赚了多少，而是赚到这些要付出什么
 • 持有胜率——一行是已走完的持有中赚钱的那一部分——在区间里每一个可以买进并持有相同时间的月份中，最后是赚的那一部分占多少
+• 债市固收——一条债券指数一行，条形是价格变动——这不等于持有它赚了多少
 
 支持A股、港股、美股三个市场，界面内置 14 种语言。
 
@@ -36,13 +37,13 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增八个图表页：市值榜——一个市场市值最大的十五家公司，按总市值排成一列横向条形，名次一路变到最后一帧；AH 溢价——同一家公司在两个市场都有上市时，A 股相对 H 股贵多少——按月排成一列横向条形；极端交易日——一个标的，它历史上最猛的那些天——按幅度排成一列横向条形；汇率走廊——一组货币一行，行本身就是那条走廊：一头是这组货币在所选区间里到过的最便宜，另一头是最贵；指数长跑——一个指数一行，行是这个指数从自己在区间里的第一个月起涨了多少，不是它的点位；大类资产——一类资产一行，行是持有它到今天赚了多少，不是它的报价；回撤与修复——一行是它落在自己高点下方多远——不是它赚了多少，而是赚到这些要付出什么；持有胜率——一行是已走完的持有中赚钱的那一部分——在区间里每一个可以买进并持有相同时间的月份中。另外：十六个页面各有自己画的图标（此前三对页面共用同一个系统字形）；指数长跑、大类资产、回撤与修复、持有胜率四页共用一份自选，三个市场可混装；四页的区间按接口实测重定——K线日线多了 5 年与 10 年，成交量换手率与行业板块竞速多了 24 个月（自定义上限 900 天），市值榜多了「最长」（月线一次给满 180 期）。
+本版新增一个图表页，并给三页各加了新能力：债市固收——一条债券指数一行，条形是价格变动——这不等于持有它赚了多少；市场成交额——可以把自选清单里的几只加成一个篮子，点一下名称就把它加进或移出合计；K线——一只标的的价格 K 线：日K、周K、月K，以及指定某一个交易日的 1／5／15 分钟 K 线。四种画法，下方带均线与成交量；持仓收益——一笔买入、长期持有——比如 2015 年 100 万买入同一个名字——动画展示这些年市值与收益率的起落。也可以把几只放在同一张图上比：每只一条线，末端跟着它此刻的收益数字。
 
 ### 产品功能
 
 - 一键生成 9:16 竖屏行情动画视频
 - 覆盖A股、港股、美股三大市场
-- 十六种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率
+- 十七种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率、债市固收
 - 导出 H.264 MP4，可直接发布到短视频平台
 - 界面内置 14 种语言
 - 无账号、无遥测，数据留在你自己的电脑上
@@ -57,7 +58,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shorts、Reels 等直式平台設計：選擇市場與標的，應用程式自動抓取行情、生成動畫，一鍵匯出 H.264 MP4，開箱即發。
 
-十六大圖表頁：  
+十七大圖表頁：  
 • 市場成交額——全市場每日成交額的歷史長卷（陸股）  
 • 成交量與換手率——單一股票的量價齊觀（陸股/港股）  
 • 行業板塊競速——類股指數漲跌的賽跑動畫  
@@ -74,6 +75,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 • 大類資產——一類資產一行，行是持有它到今天賺了多少，不是它的報價
 • 回撤與修復——一行是它落在自己高點下方多遠——不是它賺了多少，而是賺到這些要付出什麼
 • 持有勝率——一行是已走完的持有中賺錢的那一部分——在區間裡每一個可以買進並持有相同時間的月份中，最後是賺的那一部分佔多少
+• 債市固收——一條債券指數一行，條形是價格變動——這不等於持有它賺了多少
 
 支援陸股、港股、美股三個市場，介面內建 14 種語言。
 
@@ -81,13 +83,13 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增八個圖表頁：市值榜——一個市場市值最大的十五家公司，按總市值排成一列橫向條形，名次一路變到最後一幀；AH 溢價——同一家公司在兩個市場都有上市時，A 股相對 H 股貴多少——按月排成一列橫向條形；極端交易日——一個標的，它歷史上最猛的那些天——按幅度排成一列橫向條形；匯率走廊——一組貨幣一行，行本身就是那條走廊：一頭是這組貨幣在所選區間裡到過的最便宜，另一頭是最貴；指數長跑——一個指數一行，行是這個指數從自己在區間裡的第一個月起漲了多少，不是它的點位；大類資產——一類資產一行，行是持有它到今天賺了多少，不是它的報價；回撤與修復——一行是它落在自己高點下方多遠——不是它賺了多少，而是賺到這些要付出什麼；持有勝率——一行是已走完的持有中賺錢的那一部分——在區間裡每一個可以買進並持有相同時間的月份中。另外：十六個頁面各有自己畫的圖示（此前三對頁面共用同一個系統字形）；指數長跑、大類資產、回撤與修復、持有勝率四頁共用一份自選，三個市場可混裝；四頁的區間按介面實測重定——K線日線多了 5 年與 10 年，成交量與換手率、行業板塊競速多了 24 個月（自訂上限 900 天），市值榜多了「最長」（月線一次給滿 180 期）。
+本版新增一個圖表頁，並給三頁各加了新能力：債市固收——一條債券指數一行，條形是價格變動——這不等於持有它賺了多少；市場成交額——可以把自選清單裡的幾隻加成一個籃子，點一下名稱就把它加進或移出合計；K線——一檔標的的 K 線：日K、週K、月K，以及指定某個交易日的 1／5／15 分鐘 K 線。四種畫法，下方帶均線與成交量；持倉收益——一筆買入、長期持有——比如 2015 年 100 萬買入同一個名字——動畫展示這些年市值與收益率的起落。也可以把幾隻放在同一張圖上比：每隻一條線，末端跟著它此刻的收益數字。
 
 ### 產品功能
 
 - 一鍵生成 9:16 直式行情動畫影片
 - 涵蓋陸股、港股、美股三大市場
-- 十六種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率
+- 十七種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率、債市固收
 - 匯出 H.264 MP4，可直接發布到短影音平台
 - 介面內建 14 種語言
 - 無帳號、無遙測，資料留在你自己的電腦上
@@ -102,7 +104,7 @@ Turn stock-market indicators into ready-to-post vertical animated videos.
 
 Market Motion Studio turns stock-market data into 9:16 vertical animations, built for vertical platforms like TikTok, Shorts and Reels: pick a market and a symbol, the app fetches the data, animates it, and exports an H.264 MP4 ready to post.
 
-Sixteen chart pages:  
+Seventeen chart pages:  
 • Market turnover — a historical reel of whole-market daily turnover (A-share)  
 • Volume & turnover rate — a single stock's price and volume together (A-share/Hong Kong)  
 • Sector race — sector indices racing up and down  
@@ -119,6 +121,7 @@ Sixteen chart pages:
 • Asset classes — One row per asset class, and the row is what holding it earned — not its quote
 • Drawdowns — A row is how far below its own high a holding sits — not what it earned, but what it cost to earn it
 • Hold odds — A row is the share of finished entries that gained — of all the months a holder could have bought in and held for the same length of time, the share that ended up ahead
+• Bond market — One row per bond index, and the bar is a price change — which is not the same thing as what holding it earned
 
 Three markets: China A-share, Hong Kong, and US. The interface ships in 14 languages.
 
@@ -126,13 +129,13 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-Eight new chart pages:Market cap — One market's fifteen largest companies as horizontal bars ranked by total market value; AH premium — How much more a company's mainland listing costs than its Hong Kong one, for the firms listed on both sides; Extreme days — One instrument, and the days it moved the most — horizontal bars ranked by size; Currency corridors — One row per pair, and the row is the corridor itself: one end is the cheapest the pair has been in the chosen span; Index race — One row per index, and the row is how far that index has come since its own first month in the range — not its level; Asset classes — One row per asset class, and the row is what holding it earned — not its quote; Drawdowns — A row is how far below its own high a holding sits — not what it earned, but what it cost to earn it; Hold odds — A row is the share of finished entries that gained. Also: each of the sixteen pages now has an icon drawn for it (three pairs had been sharing one system glyph); the index race, asset classes, drawdowns and hold odds share one watchlist that may mix all three markets; and four range menus were re-cut against what the endpoints return — daily candles gained 5 and 10 years, Volume & Turnover and Sector Race gained 24 months (custom spans up to 900 days), and Market Cap Race gained Longest, one request returning all 180 monthly periods.
+One new chart page, and three pages that gained something new: Bond market — One row per bond index, and the bar is a price change — which is not the same thing as what holding it earned; Market Turnover — can add several picks from your own list into one basket — clicking a name includes it in the total or leaves it out; Candles — One instrument's prices as candles: daily, weekly or monthly, or minute candles for one named trading day — drawn four ways, with its averages and its volume underneath; Holdings Return — One purchase, held — a million of the same name since 2015 — animated to show what the years did to its value and its return. Several holdings can share the one frame: a line each, with its running profit riding the line's leading end.
 
 ### Product features
 
 - One-click 9:16 vertical market-animation videos
 - Three markets: China A-share, Hong Kong, and US
-- Sixteen charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds
+- Seventeen charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds, Bond market
 - Exports H.264 MP4, ready for short-video platforms
 - Interface available in 14 languages
 - No account, no telemetry — your data stays on your computer
@@ -147,7 +150,7 @@ Eight new chart pages:Market cap — One market's fifteen largest companies as h
 
 Market Motion Studio は株式市場データを 9:16 の縦型アニメーションに変換する、TikTok・ショート動画・リール向けの Windows アプリです。市場と銘柄を選ぶだけで、アプリが自動で相場データを取得し、アニメーションを生成、H.264 MP4 で書き出します。
 
-16 つのチャートページ：  
+17 つのチャートページ：  
 • 市場の売買代金 — 全市場の売買代金の歴史ロングリール（中国A株）  
 • 出来高と回転率 — 一眼でわかる銘柄の量価（中国A株/香港）  
 • 業界セクター競争 — セクター指数の騰落レース  
@@ -164,6 +167,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 • 資産クラス — 資産クラスごとに1行
 • ドローダウン — 行はその資産が自分の高値からどれだけ下にいるか——稼いだ額ではなく、それを稼ぐのに何が必要だったか
 • 保有勝率 — 行は完了したエントリーのうち利益になった割合——区間内で買って同じ期間だけ保有できるすべての月のうち、最終的にプラスになったものの割合
+• 債券市場 — 債券指数 1 本につき 1 行。バーは価格の変動であり、保有して稼いだ額とは同じではありません
 
 中国A株・香港・米国の 3 市場に対応。インターフェースは 14 言語を内蔵。
 
@@ -171,13 +175,13 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンで八つのチャートページが加わりました：時価総額 — 1 つの市場の時価総額上位 15 社を、時価総額順の横棒として並べます；A/H プレミアム — 両方の市場に上場している企業について、A 株が H 株より何割高いか——月ごとに横棒で並べ、順位は最後の…；極端な日 — 銘柄は一つ、その歴史で最も動いた日々——大きさ順に並べた横向きのバー；為替コリドー — 通貨ペアごとに1行、そしてその行自体がコリドーです：一方の端はそのペアが選んだ区間で最も安かった水準、も…；指数レース — 指数ごとに1行、行はその指数が区間内の自分の最初の月からどれだけ進んだかです；資産クラス — 資産クラスごとに1行；ドローダウン — 行はその資産が自分の高値からどれだけ下にいるか——稼いだ額ではなく、それを稼ぐのに何が必要だったか；保有勝率 — 行は完了したエントリーのうち利益になった割合——区間内で買って同じ期間だけ保有できるすべての月のうち、最…。また、十六のページすべてに専用のアイコンを用意しました（以前は三組のページが同じシステム字形を共有していました）。指数レース・資産クラス・下落と回復・保有勝率の四ページは一つのウォッチリストを共有し、三つの市場を混在できます。四ページの期間は実際の API が返す量に合わせて見直し、ローソク足の日足に 5 年と 10 年、出来高・回転率とセクターレースに 24 か月（カスタムは最大 900 日）、時価総額レースに「最長」（月足 180 期）を追加しました。
+このバージョンでは新しいチャートページが 1 つ加わり、既存の 3 ページにも新しい機能が入りました：債券市場 — 債券指数 1 本につき 1 行。バーは価格の変動であり、保有して稼いだ額とは同じではありません；市場の売買代金 — 自分のリストから複数の銘柄を一つのかごにまとめられます。名前をクリックすれば合計に加えたり外したりできます；ローソク足 — 1つの銘柄のローソク足。日足・週足・月足に加えて、指定した取引日1日分の分足も選べます。4つの描き方で表示し、下段に移動平均と出来高；保有収益 — 一度買って長期保有——たとえば 2015 年に同じ銘柄を 100 万分——その後の評価額と収益率の推移をアニメーションで見ます。複数の銘柄を同じ画面に載せることもでき、1 銘柄ごとに 1 本の線、その先端には今の収益額が付きます。
 
 ### 製品の機能
 
 - ワンクリックで 9:16 縦型の相場アニメーション動画を作成
 - 中国A株・香港・米国の 3 市場に対応
-- 16 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率
+- 17 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率、債券市場
 - H.264 MP4 で書き出し、ショート動画プラットフォームにそのまま投稿可能
 - インターフェースは 14 言語内蔵
 - アカウント不要・テレメトリなし — データはあなたの PC の中だけ
@@ -192,7 +196,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이션으로 바꿔주는 Windows 앱입니다. 틱톡, 쇼츠, 릴스 같은 세로형 플랫폼을 위해 설계되었으며, 시장과 종목만 선택하면 앱이 자동으로 시세를 가져오고 애니메이션을 만들어 H.264 MP4로 내보냅니다.
 
-16가지 차트 페이지:  
+17가지 차트 페이지:  
 • 시장 거래대금 — 전체 시장 일별 거래대금의 히스토리 릴 (중국 A주식)  
 • 거래량과 회전율 — 종목의 가격과 거래량을 한 화면에 (중국 A주식/홍콩)  
 • 업종 경주 — 업종 지수의 등락 레이스  
@@ -209,6 +213,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 • 자산군 — 자산군마다 한 행이며, 행은 보유해서 오늘까지 벌어들인 것입니다. 시세가 아닙니다. 여덟 개 모두 본토 거래소에 상장된 펀드이고 사는 돈이 같은 돈이므로 직접 비교할 수 있습니다
 • 낙폭 — 행은 그 자산이 자기 고점에서 얼마나 아래 있는지—얼마를 벌었는가가 아니라, 그것을 버는 데 무엇을 견뎠는가. 자산군 경주와 같은 여덟 자산을 서로가 아니라 각자의 고점에 견주어 측정한다
 • 보유 승률 — 행은 이익으로 끝난 완료 진입의 비율—구간 안에서 사서 같은 기간 보유할 수 있었던 모든 달 중, 결국 플러스가 된 것의 비율. 자산군·낙폭 보드와 같은 여덟 자산을, 얼마를 벌었는지가 아니라 보유가 얼마나 자주 통했는지로 평가한다
+• 채권시장 — 채권 지수당 한 행이며, 막대는 가격 변동입니다. 보유해서 벌어들인 것과는 같지 않습니다
 
 중국 A주식, 홍콩, 미국 3개 시장 지원. 인터페이스는 14개 언어 내장.
 
@@ -216,13 +221,13 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전에서 여덟 개의 차트 페이지가 추가되었습니다:시가총액 — 한 시장의 시가총액 상위 15개 기업을 시가총액 순 가로 막대로 늘어놓습니다. 순위는 마지막…；A/H 프리미엄 — 두 시장에 모두 상장된 기업의 A주가 H주보다 얼마나 비싼지——월 단위로 가로 막대를 늘어놓고…；극단의 날 — 종목은 하나, 그리고 그 역사에서 가장 크게 움직인 날들；환율 코리도 — 통화쌍마다 한 줄, 그리고 그 줄 자체가 코리도입니다: 한쪽 끝은 그 쌍이 선택한 구간에서 가…；지수 레이스 — 지수마다 한 줄, 줄은 그 지수가 구간 내 자기 첫 달부터 얼마나 왔는지입니다. 수준이 아닙니…；자산군 — 자산군마다 한 행이며, 행은 보유해서 오늘까지 벌어들인 것입니다. 시세가 아닙니다. 여덟 개…；낙폭 — 행은 그 자산이 자기 고점에서 얼마나 아래 있는지—얼마를 벌었는가가 아니라；보유 승률 — 행은 이익으로 끝난 완료 진입의 비율—구간 안에서 사서 같은 기간 보유할 수 있었던 모든 달…。또한 열여섯 개 페이지에 각각의 아이콘을 그렸습니다(이전에는 세 쌍이 같은 시스템 글리프를 공유했습니다). 지수 경주·자산군·낙폭과 회복·보유 승률 네 페이지는 하나의 관심 목록을 공유하며 세 시장을 섞을 수 있습니다. 네 페이지의 구간은 API가 실제로 돌려주는 양에 맞춰 다시 정했습니다: 캔들 일간에 5년과 10년, 거래량·회전율과 업종 경주에 24개월(사용자 지정 최대 900일), 시가총액 레이스에 「가장 긴 구간」(월간 180개 기간)을 추가했습니다.
+이 버전에서는 새 차트 페이지 하나가 추가되고, 기존 세 페이지에도 새 기능이 들어갔습니다:채권시장 — 채권 지수당 한 행이며, 막대는 가격 변동입니다. 보유해서 벌어들인 것과는 같지 않습니다；시장 거래대금 — 관심 목록의 여러 종목을 하나의 바구니로 묶을 수 있습니다. 이름을 클릭하면 합계에 넣거나 뺄 수 있습니다；캔들 — 한 종목의 캔들입니다. 일·주·월에 더해, 지정한 거래일 하루치 분봉도 고를 수 있습니다. 네 가지 방식으로 그리고 아래에 이동평균과 거래량；보유 수익 — 한 번 사서 오래 보유 — 예컨대 2015년에 같은 종목을 100만큼 — 그동안 평가액과 수익률이 어떻게 움직였는지 애니메이션으로 봅니다. 여러 종목을 한 화면에 올릴 수 있고, 종목마다 선 하나, 그 끝에는 지금의 수익 금액이 따라붙습니다。
 
 ### 제품 기능
 
 - 원클릭으로 9:16 세로형 시장 애니메이션 영상 제작
 - 중국 A주식, 홍콩, 미국 3개 시장 지원
-- 16가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률
+- 17가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률、채권시장
 - H.264 MP4로 내보내 숏폼 플랫폼에 바로 게시
 - 14개 언어 인터페이스 내장
 - 계정 없음, 텔레메트리 없음 — 데이터는 내 컴퓨터에만
@@ -237,7 +242,7 @@ Verwandeln Sie Marktindikatoren in direkt veröffentlichbare vertikale Animation
 
 Market Motion Studio macht aus Börsendaten 9:16-Animationen im Hochformat – gebaut für vertikale Plattformen wie TikTok, Shorts und Reels: Markt und Symbol wählen, die App ruft die Kurse ab, animiert sie und exportiert eine H.264-MP4, bereit zum Posten.
 
-Sechzehn Diagrammseiten:  
+Siebzehn Diagrammseiten:  
 • Marktumsatz – ein historischer Reel des täglichen Gesamtmarktumsatzes (China A-Aktien)  
 • Volumen und Umschlag – Kurs und Volumen einer Aktie zusammen (China A/Hongkong)  
 • Sektor-Rennen – Branchenindizes im Auf und Ab im Rennen  
@@ -254,6 +259,7 @@ Sechzehn Diagrammseiten:
 • Anlageklassen – Eine Zeile pro Anlageklasse, und die Zeile ist was das Halten eingebracht hat — nicht die Notierung
 • Rücksetzer – Eine Zeile ist, wie weit unter dem eigenen Hoch eine Anlage steht — nicht was sie verdient hat, sondern was es gekostet hat, es zu verdienen
 • Haltequote – Eine Zeile ist der Anteil der beendeten Einstiege, die gewonnen haben — von allen Monaten, in denen man hätte einsteigen und gleich lang halten können, der Anteil, der am Ende im Plus lag
+• Anleihemarkt – Eine Zeile pro Anleiheindex, und der Balken ist eine Kursänderung — nicht dasselbe wie das, was das Halten eingebracht hat
 
 Drei Märkte: China A-Aktien, Hongkong und USA. Die Oberfläche gibt es in 14 Sprachen.
 
@@ -261,13 +267,13 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Acht neue Diagrammseiten:Marktkapitalisierung — Die fünfzehn größten Unternehmen eines Marktes als waagerechte Balken nach Marktkapitalisierung; A/H-Prämie — Wie viel teurer die Festlandnotierung eines Unternehmens ist als seine Hongkonger — für die Firmen; Extreme Tage — Ein Instrument und die Tage, an denen es sich am stärksten bewegt hat — waagrechte Balken, nach Größe gereiht; Währungskorridore — Eine Zeile je Paar, und die Zeile ist der Korridor selbst: ein Ende ist der billigste Stand; Index-Rennen — Eine Zeile je Index, und die Zeile ist wie weit dieser Index seit seinem eigenen ersten Monat im Zeitraum gekommen ist…; Anlageklassen — Eine Zeile pro Anlageklasse, und die Zeile ist was das Halten eingebracht hat — nicht die Notierung; Rücksetzer — Eine Zeile ist, wie weit unter dem eigenen Hoch eine Anlage steht — nicht was sie verdient hat; Haltequote — Eine Zeile ist der Anteil der beendeten Einstiege, die gewonnen haben — von allen Monaten. Außerdem: Jede der sechzehn Seiten hat nun ein eigenes Symbol; Index-Rennen, Anlageklassen, Verluste und Erholung sowie Gewinnchancen nutzen eine gemeinsame Watchlist, die alle drei Märkte mischen darf; und die Zeiträume von vier Seiten wurden an das angepasst, was die Endpunkte liefern — Tageskerzen bekamen 5 und 10 Jahre, Volumen/Umschlag und Sektor-Rennen 24 Monate (eigene Zeiträume bis 900 Tage), das Marktkapitalisierungs-Rennen „Längster“ mit 180 Monatsperioden.
+Eine neue Diagrammseite, und drei Seiten, die etwas Neues bekamen: Anleihemarkt — Eine Zeile pro Anleiheindex, und der Balken ist eine Kursänderung — nicht dasselbe wie das, was das Halten eingebracht hat; Marktumsatz — kann mehrere Einträge aus Ihrer eigenen Liste zu einem Korb zusammenfassen — ein Klick auf den Namen nimmt ihn in die Summe auf oder lässt ihn weg; Kerzen — Die Kerzen eines Instruments: täglich, wöchentlich oder monatlich — oder Minutenkerzen für einen einzelnen Handelstag — auf vier Arten gezeichnet, mit Durchschnitten und Volumen darunter; Depotrendite — Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — animiert, um zu zeigen, was die Jahre mit Wert und Rendite gemacht haben. Mehrere Anlagen können sich ein Bild teilen: eine Linie je Anlage, mit dem laufenden Gewinn an ihrem vorderen Ende.
 
 ### Produktfunktionen
 
 - Mit einem Klick 9:16-Marktanimationsvideos im Hochformat
 - Drei Märkte: China A-Aktien, Hongkong und USA
-- Sechzehn Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote
+- Siebzehn Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote, Anleihemarkt
 - Export als H.264-MP4, fertig für Kurzvideo-Plattformen
 - Oberfläche in 14 Sprachen
 - Kein Konto, keine Telemetrie – Ihre Daten bleiben auf Ihrem Computer
@@ -282,7 +288,7 @@ Transformez les indicateurs de marché en vidéos animées verticales, prêtes �
 
 Market Motion Studio transforme les données boursières en animations 9:16 verticales, conçu pour les plateformes verticales comme TikTok, Shorts et Reels : choisissez un marché et un symbole, l'application récupère les cours, les anime et exporte un MP4 H.264 prêt à publier.
 
-Seize pages de graphiques :  
+Dix-sept pages de graphiques :  
 • Volume d'échanges du marché — un long format historique du volume quotidien de tout le marché (Chine A)  
 • Volume et rotation — le prix et le volume d'une action ensemble (Chine A/Hong Kong)  
 • Course de secteurs — les indices sectoriels qui montent et descendent en course  
@@ -299,6 +305,7 @@ Seize pages de graphiques :
 • Classes d'actifs — Une ligne par classe d'actifs, et la ligne est ce que la détention a rapporté — pas le cours
 • Reculs — Une ligne, c'est la distance entre une position et son propre sommet — pas ce qu'elle a rapporté, mais ce qu'il a fallu endurer pour le rapporter
 • Taux de réussite — Une ligne, c'est la part des entrées terminées qui ont gagné — parmi tous les mois où l'on aurait pu entrer et garder la même durée, la part qui s'est terminée dans le vert
+• Marché obligataire — Une ligne par indice obligataire, et la barre est une variation de cours — ce qui n'est pas la même chose que ce que la détention a rapporté
 
 Trois marchés : Chine A, Hong Kong et États-Unis. L'interface existe en 14 langues.
 
@@ -306,13 +313,13 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Huit nouvelles pages de graphiques :Capitalisation — Les quinze plus grandes sociétés d'un marché en barres horizontales classées par capitalisation; Prime A/H — De combien la cotation continentale d'une société dépasse sa cotation hongkongaise; Jours extrêmes — Un instrument, et les jours où il a le plus bougé — des barres horizontales classées par ampleur; Couloirs de devises — Une ligne par paire, et la ligne est le couloir lui-même : une extrémité est le niveau le plus bas que la paire a conn…; Course des indices — Une ligne par indice, et la ligne est le chemin parcouru par cet indice depuis son propre premier mois dans la période…; Classes d'actifs — Une ligne par classe d'actifs, et la ligne est ce que la détention a rapporté — pas le cours; Reculs — Une ligne, c'est la distance entre une position et son propre sommet — pas ce qu'elle a rapporté; Taux de réussite — Une ligne, c'est la part des entrées terminées qui ont gagné. Par ailleurs : chacune des seize pages a désormais son icône ; la course des indices, les classes d'actifs, les replis et les chances de détention partagent une liste de suivi qui peut mêler les trois marchés ; et les plages de quatre pages ont été recalées sur ce que renvoient les points d'accès — 5 et 10 ans sur le quotidien des chandeliers, 24 mois sur Volume et rotation et la course de secteurs (plage personnalisée jusqu'à 900 jours), « Maximale » sur la course des capitalisations, 180 périodes mensuelles en une requête.
+Une nouvelle page de graphiques, et trois pages qui gagnent quelque chose de nouveau : Marché obligataire — Une ligne par indice obligataire, et la barre est une variation de cours — ce qui n'est pas la même chose que ce que la détention a rapporté; Volume d'échanges du marché — peut réunir plusieurs titres de votre propre liste en un panier — un clic sur le nom l'ajoute au total ou l'en retire; Chandeliers — Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels — ou par minute pour une journée de bourse précise — dessinés de quatre façons, avec ses moyennes et son volume en dessous; Rendement de position — Un achat, conservé — un million du même nom depuis 2015 — animé pour montrer ce que les années ont fait à sa valeur et à sa performance. Plusieurs positions peuvent partager le même cadre : une ligne chacune, avec son gain courant à son extrémité.
 
 ### Fonctionnalités
 
 - Vidéos d'animation de marché 9:16 verticales en un clic
 - Trois marchés : Chine A, Hong Kong et États-Unis
-- Seize graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite
+- Dix-sept graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite, Marché obligataire
 - Export MP4 H.264, prêt pour les plateformes de vidéos courtes
 - Interface disponible en 14 langues
 - Pas de compte, pas de télémétrie — vos données restent sur votre ordinateur
@@ -327,7 +334,7 @@ Trasforma gli indicatori di mercato in video animati verticali pronti da pubblic
 
 Market Motion Studio trasforma i dati di borsa in animazioni verticali 9:16, pensate per piattaforme verticali come TikTok, Shorts e Reels: scegli un mercato e un simbolo, l'app recupera i dati, li anima ed esporta un MP4 H.264 pronto da pubblicare.
 
-Sedici pagine di grafici:  
+Diciassette pagine di grafici:  
 • Volume degli scambi di mercato — una lunga carrellata storica del volume giornaliero di tutto il mercato (Cina A)  
 • Volume e rotazione — prezzo e volume di una azione insieme (Cina A/Hong Kong)  
 • Corsa dei settori — gli indici settoriali che salgono e scendono in gara  
@@ -344,6 +351,7 @@ Sedici pagine di grafici:
 • Classi di attività — Una riga per classe di attività, e la riga è ciò che la detenzione ha reso — non la quotazione
 • Ribassi — Una riga è quanto sotto il proprio massimo si trova uno strumento — non quanto ha guadagnato, ma cosa è costato guadagnarlo
 • Tasso di riuscita — Una riga è la quota delle entrate concluse che hanno guadagnato — fra tutti i mesi in cui si sarebbe potuti entrare e mantenere per la stessa durata, la quota finita in guadagno
+• Mercato obbligazionario — Una riga per indice obbligazionario, e la barra è una variazione di prezzo — che non è la stessa cosa di ciò che ha reso la detenzione
 
 Tre mercati: Cina A, Hong Kong e Stati Uniti. L'interfaccia è disponibile in 14 lingue.
 
@@ -351,13 +359,13 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Otto nuove pagine di grafici:Capitalizzazione — Le quindici maggiori società di un mercato come barre orizzontali ordinate per capitalizzazione; l'ordine cambia fino…; Premio A/H — Quanto costa in più la quotazione continentale di una società rispetto a quella di Hong Kong; Giorni estremi — Uno strumento e i giorni in cui si è mosso di più — barre orizzontali ordinate per ampiezza; Corridoi valutari — Una riga per coppia, e la riga è il corridoio stesso: un'estremità è il livello più basso che la coppia ha avuto nel p…; Corsa degli indici — Una riga per indice, e la riga è quanto quell'indice ha percorso dal proprio primo mese nell'intervallo; Classi di attività — Una riga per classe di attività, e la riga è ciò che la detenzione ha reso — non la quotazione; Ribassi — Una riga è quanto sotto il proprio massimo si trova uno strumento — non quanto ha guadagnato; Tasso di riuscita — Una riga è la quota delle entrate concluse che hanno guadagnato. Inoltre: ognuna delle sedici pagine ha ora la sua icona; la corsa degli indici, le classi di attività, i cali e i recuperi e le probabilità di detenzione condividono un elenco che può mescolare i tre mercati; e gli intervalli di quattro pagine sono stati rimisurati su ciò che restituiscono gli endpoint — 5 e 10 anni sul giornaliero delle candele, 24 mesi su Volume e rotazione e sulla corsa dei settori (intervallo personalizzato fino a 900 giorni), «Massimo» sulla corsa delle capitalizzazioni, 180 periodi mensili in una richiesta.
+Una nuova pagina di grafici, e tre pagine che guadagnano qualcosa di nuovo: Mercato obbligazionario — Una riga per indice obbligazionario, e la barra è una variazione di prezzo — che non è la stessa cosa di ciò che ha reso la detenzione; Controvalore del mercato — può riunire diversi titoli della tua lista in un paniere — un clic sul nome lo aggiunge al totale o lo esclude; Candele — Le candele di uno strumento: giornaliere, settimanali o mensili — o al minuto per una singola giornata di borsa — disegnate in quattro modi, con le medie e il volume sotto; Rendimento di posizione — Un acquisto, tenuto — un milione dello stesso nome dal 2015 — animato per mostrare cosa hanno fatto gli anni al suo valore e al suo rendimento. Più posizioni possono condividere lo stesso quadro: una linea ciascuna, con il guadagno corrente in coda.
 
 ### Funzionalità del prodotto
 
 - Video di animazione di mercato verticali 9:16 con un clic
 - Tre mercati: Cina A, Hong Kong e Stati Uniti
-- Sedici grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita
+- Diciassette grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita, Mercato obbligazionario
 - Esportazione MP4 H.264, pronta per le piattaforme di video brevi
 - Interfaccia disponibile in 14 lingue
 - Nessun account, nessuna telemetria — i tuoi dati restano sul tuo computer
@@ -372,7 +380,7 @@ Convierta los indicadores de mercado en vídeos animados verticales listos para 
 
 Market Motion Studio convierte los datos bursátiles en animaciones verticales 9:16, diseñado para plataformas verticales como TikTok, Shorts y Reels: elija un mercado y un símbolo, la app obtiene los datos, los anima y exporta un MP4 H.264 listo para publicar.
 
-Dieciséis páginas de gráficos:  
+Diecisiete páginas de gráficos:  
 • Volumen negociado del mercado — un carrete histórico del volumen diario de todo el mercado (China A)  
 • Volumen y rotación — el precio y el volumen de una acción juntos (China A/Hong Kong)  
 • Carrera de sectores — los índices sectoriales subiendo y bajando en carrera  
@@ -389,6 +397,7 @@ Dieciséis páginas de gráficos:
 • Clases de activos — Una fila por clase de activo, y la fila es lo que ganó mantenerlo — no su cotización
 • Caídas — Una fila es cuánto por debajo de su propio máximo está una inversión — no lo que ganó, sino lo que costó ganarlo
 • Tasa de acierto — Una fila es la proporción de entradas terminadas que ganaron — de todos los meses en que se pudo entrar y mantener el mismo tiempo, la parte que acabó en ganancia
+• Renta fija — Una fila por índice de bonos, y la barra es una variación de precio — que no es lo mismo que lo que ganó mantenerlo
 
 Tres mercados: China A, Hong Kong y EE. UU. La interfaz está disponible en 14 idiomas.
 
@@ -396,13 +405,13 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Ocho páginas de gráficos nuevas:Capitalización — Las quince mayores compañías de un mercado como barras horizontales ordenadas por capitalización; Prima A/H — Cuánto más cara es la cotización continental de una compañía que la de Hong Kong; Días extremos — Un instrumento y los días en que más se movió — barras horizontales ordenadas por magnitud; Corredores de divisas — Una fila por par, y la fila es el corredor mismo: un extremo es el nivel más bajo que el par ha tenido en el periodo e…; Carrera de índices — Una fila por índice, y la fila es cuánto ha avanzado ese índice desde su propio primer mes en el periodo — no su nivel; Clases de activos — Una fila por clase de activo, y la fila es lo que ganó mantenerlo — no su cotización; Caídas — Una fila es cuánto por debajo de su propio máximo está una inversión — no lo que ganó, sino lo que costó ganarlo; Tasa de acierto — Una fila es la proporción de entradas terminadas que ganaron. Además: cada una de las dieciséis páginas tiene ya su icono (antes tres pares compartían un glifo del sistema); la carrera de índices, las clases de activos, los repliegues y las probabilidades de tenencia comparten una lista que puede mezclar los tres mercados; y los rangos de cuatro páginas se reajustaron a lo que devuelven los endpoints — 5 y 10 años en el diario de velas, 24 meses en Volumen y rotación y en la carrera de sectores (personalizado hasta 900 días), «Máximo» en la carrera de capitalización, 180 periodos mensuales en una petición.
+Una página de gráficos nueva, y tres páginas que ganan algo nuevo: Renta fija — Una fila por índice de bonos, y la barra es una variación de precio — que no es lo mismo que lo que ganó mantenerlo; Volumen negociado del mercado — puede reunir varios valores de tu propia lista en una cesta: un clic en el nombre lo incluye en el total o lo deja fuera; Velas — Las velas de un instrumento: diarias, semanales o mensuales — o velas por minuto de un día de negociación concreto — dibujadas de cuatro formas, con sus medias y su volumen debajo; Rentabilidad de cartera — Una compra, mantenida —un millón del mismo valor desde 2015—, animada para mostrar lo que los años hicieron con su valor y su rentabilidad. Varias posiciones pueden compartir el mismo cuadro: una línea cada una, con su ganancia actual en su extremo.
 
 ### Funciones del producto
 
 - Vídeos de animación de mercado 9:16 verticales con un clic
 - Tres mercados: China A, Hong Kong y EE. UU.
-- Dieciséis gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto
+- Diecisiete gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto, Renta fija
 - Exportación a MP4 H.264, lista para plataformas de vídeo corto
 - Interfaz disponible en 14 idiomas
 - Sin cuenta, sin telemetría — sus datos se quedan en su equipo
@@ -416,7 +425,7 @@ Transforme indicadores de mercado em vídeos animados verticais prontos para pub
 
 O Market Motion Studio transforma dados do mercado de ações em animações verticais 9:16, criado para plataformas verticais como TikTok, Shorts e Reels: escolha um mercado e um símbolo, o app busca os dados, anima e exporta um MP4 H.264 pronto para publicar.
 
-Dezesseis páginas de gráficos:  
+Dezessete páginas de gráficos:  
 • Volume financeiro do mercado — um carretel histórico do volume diário de todo o mercado (China A)  
 • Volume e giro — preço e volume de uma ação juntos (China A/Hong Kong)  
 • Corrida de setores — os índices setoriais subindo e caindo em corrida  
@@ -433,6 +442,7 @@ Dezesseis páginas de gráficos:
 • Classes de ativos — Uma linha por classe de ativos, e a linha é o que a manutenção rendeu — não a cotação
 • Quedas — Uma linha é a distância entre um ativo e sua própria máxima — não o que ele rendeu, mas o que custou para render
 • Taxa de acerto — Uma linha é a parcela das entradas concluídas que ganharam — de todos os meses em que se poderia ter entrado e mantido pelo mesmo tempo, a parte que terminou no positivo
+• Mercado de títulos — Uma linha por índice de títulos, e a barra é uma variação de preço — que não é o mesmo que o que a manutenção rendeu
 
 Três mercados: China A, Hong Kong e EUA. A interface vem em 14 idiomas.
 
@@ -440,13 +450,13 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Oito novas páginas de gráficos:Valor de mercado — As quinze maiores companhias de um mercado como barras horizontais ordenadas por valor de mercado; Prêmio A/H — Quanto mais cara é a cotação continental de uma companhia do que a de Hong Kong; Dias extremos — Um instrumento e os dias em que ele mais se moveu — barras horizontais ordenadas por tamanho; Corredores de câmbio — Uma linha por par, e a linha é o corredor em si: uma ponta é o nível mais baixo que o par teve no período escolhido; Corrida de índices — Uma linha por índice, e a linha é o quanto aquele índice avançou desde o seu próprio primeiro mês no período; Classes de ativos — Uma linha por classe de ativos, e a linha é o que a manutenção rendeu — não a cotação; Quedas — Uma linha é a distância entre um ativo e sua própria máxima — não o que ele rendeu, mas o que custou para render; Taxa de acerto — Uma linha é a parcela das entradas concluídas que ganharam. Além disso: cada uma das dezesseis páginas agora tem seu ícone (antes três pares compartilhavam um glifo do sistema); a corrida de índices, as classes de ativos, os recuos e as chances de manutenção compartilham uma lista que pode misturar os três mercados; e os intervalos de quatro páginas foram reajustados ao que os endpoints devolvem — 5 e 10 anos no diário do candlestick, 24 meses em Volume e giro e na corrida de setores (personalizado até 900 dias), «Máximo» na corrida de valor de mercado, 180 períodos mensais em um pedido.
+Uma nova página de gráficos, e três páginas que ganham algo novo: Mercado de títulos — Uma linha por índice de títulos, e a barra é uma variação de preço — que não é o mesmo que o que a manutenção rendeu; Volume financeiro do mercado — pode reunir vários itens da sua própria lista em uma cesta — um clique no nome o inclui no total ou o deixa fora; Candlestick — Os candles de um instrumento: diários, semanais ou mensais — ou de minuto para um único dia de negociação — desenhados de quatro formas, com médias e volume abaixo; Retorno de posição — Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mostrar o que os anos fizeram com seu valor e seu retorno. Várias posições podem dividir o mesmo quadro: uma linha cada, com o lucro atual na sua ponta.
 
 ### Funcionalidades do produto
 
 - Vídeos de animação de mercado verticais 9:16 com um clique
 - Três mercados: China A, Hong Kong e EUA
-- Dezesseis gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto
+- Dezessete gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto, Mercado de títulos
 - Exporta MP4 H.264, pronto para plataformas de vídeo curto
 - Interface disponível em 14 idiomas
 - Sem conta, sem telemetria — seus dados ficam no seu computador
@@ -461,7 +471,7 @@ Zamień wskaźniki rynkowe w pionowe filmy animowane gotowe do publikacji.
 
 Market Motion Studio zamienia dane giełdowe w pionowe animacje 9:16, stworzone dla pionowych platform jak TikTok, Shorts i Reels: wybierz rynek i symbol, aplikacja pobierze dane, zanimuje je i wyeksportuje plik MP4 H.264 gotowy do publikacji.
 
-Szesnaście stron wykresów:  
+Siedemnaście stron wykresów:  
 • Obroty rynku — historyczna zwijanka dziennych obrotów całego rynku (Chiny A)  
 • Wolumen i obrót — cena i wolumen jednej akcji razem (Chiny A/Hongkong)  
 • Wyścig sektorów — indeksy branżowe w wyścigu w górę i w dół  
@@ -478,6 +488,7 @@ Szesnaście stron wykresów:
 • Klasy aktywów — Jeden wiersz na klasę aktywów, a wiersz to ile zarobiło trzymanie — nie notowanie
 • Obsunięcia — Wiersz to jak daleko poniżej własnego szczytu jest instrument — nie ile zarobił, lecz ile kosztowało wytrzymanie tego zarobku
 • Skuteczność — Wiersz to udział zakończonych wejść, które zarobiły — ze wszystkich miesięcy, w których można było wejść i trzymać równie długo, część zakończona na plusie
+• Rynek obligacji — Jeden wiersz na indeks obligacji, a słupek to zmiana ceny — co nie jest tym samym co zarobek z trzymania
 
 Trzy rynki: Chiny A, Hongkong i USA. Interfejs dostępny w 14 językach.
 
@@ -485,13 +496,13 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Osiem nowych stron wykresów:Kapitalizacja — Piętnaście największych spółek danego rynku jako poziome słupki uszeregowane według kapitalizacji; kolejność zmienia s…; Premia A/H — O ile droższe jest notowanie kontynentalne spółki od jej notowania w Hongkongu; Ekstremalne dni — Jeden instrument i dni, w których poruszył się najmocniej — poziome słupki uporządkowane według wielkości; Korytarze walutowe — Jeden wiersz na parę, i ten wiersz jest korytarzem: jeden koniec to najniższy poziom; Wyścig indeksów — Jeden wiersz na indeks, a wiersz to jak daleko ten indeks zaszedł od swojego pierwszego miesiąca w okresie; Klasy aktywów — Jeden wiersz na klasę aktywów, a wiersz to ile zarobiło trzymanie — nie notowanie; Obsunięcia — Wiersz to jak daleko poniżej własnego szczytu jest instrument — nie ile zarobił; Skuteczność — Wiersz to udział zakończonych wejść, które zarobiły — ze wszystkich miesięcy. Poza tym: każda z szesnastu stron ma teraz własną ikonę (wcześniej trzy pary dzieliły jeden glif systemowy); wyścig indeksów, klasy aktywów, obsunięcia i szanse utrzymania korzystają z jednej listy obserwowanych, która może mieszać trzy rynki; a zakresy czterech stron przejrzano pod kątem tego, co zwracają endpointy — 5 i 10 lat na interwale dziennym świec, 24 miesiące w Wolumenie i obrocie oraz w wyścigu sektorów (własny zakres do 900 dni), „Najdłuższy“ w wyścigu kapitalizacji, 180 okresów miesięcznych w jednym żądaniu.
+Jedna nowa strona wykresów i trzy strony, które zyskały coś nowego: Rynek obligacji — Jeden wiersz na indeks obligacji, a słupek to zmiana ceny — co nie jest tym samym co zarobek z trzymania; Obroty rynku — może zebrać kilka pozycji z własnej listy w jeden koszyk — kliknięcie nazwy włącza ją do sumy lub ją pomija; Świece — Świece jednego instrumentu: dzienne, tygodniowe lub miesięczne — albo minutowe dla jednego wybranego dnia sesji — rysowane na cztery sposoby, ze średnimi i wolumenem poniżej; Zwrot z pozycji — Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku — animowany, by pokazać, co lata zrobiły z wartością i stopą zwrotu. Kilka pozycji może dzielić jeden obraz: po jednej linii na każdą, z bieżącym zyskiem na jej końcu.
 
 ### Funkcje produktu
 
 - Pionowe filmy z animacją rynku 9:16 jednym kliknięciem
 - Trzy rynki: Chiny A, Hongkong i USA
-- Szesnaście wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność
+- Siedemnaście wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność, Rynek obligacji
 - Eksport MP4 H.264, gotowy dla platform krótkich filmów
 - Interfejs w 14 językach
 - Bez konta, bez telemetrii — Twoje dane zostają na Twoim komputerze
@@ -506,7 +517,7 @@ Převeďte tržní ukazatele na svislá animovaná videa připravená k publikov
 
 Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro vertikální platformy jako TikTok, Shorts a Reels: vyberte trh a symbol, aplikace stáhne data, zanimuje je a exportuje MP4 H.264 připravené k publikování.
 
-Šestnáct stránek s grafy:  
+Sedmnáct stránek s grafy:  
 • Obrat trhu — historický svitek denních obratů celého trhu (Čína A)  
 • Objem a obrat — cena a objem jedné akcie společně (Čína A/Hongkong)  
 • Závod sektorů — odvětvové indexy závodící nahoru a dolů  
@@ -523,6 +534,7 @@ Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro
 • Třídy aktiv — Jeden řádek na třídu aktiv a řádek je co držení vyneslo — ne kotace
 • Poklesy — Řádek je jak hluboko pod vlastním maximem se nástroj nachází — ne kolik vydělal, ale co stálo to vydělat
 • Úspěšnost — Řádek je podíl uzavřených vstupů, které vydělaly — ze všech měsíců, v nichž se dalo vstoupit a držet stejně dlouho, ta část, která skončila v plusu
+• Trh dluhopisů — Jeden řádek na dluhopisový index a pruh je změna ceny — co není totéž co to, co držení vyneslo
 
 Tři trhy: Čína A, Hongkong a USA. Rozhraní je ve 14 jazycích.
 
@@ -530,13 +542,13 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Osm nových stránek s grafy:Tržní kapitalizace — Patnáct největších společností daného trhu jako vodorovné pruhy seřazené podle tržní kapitalizace; pořadí se mění až d…; Prémie A/H — O kolik je kontinentální kotace společnosti dražší než její hongkongská — u společností kotovaných na obou stranách; Extrémní dny — Jeden nástroj a dny, kdy se pohnul nejvíce — vodorovné pruhy seřazené podle velikosti; Měnové koridory — Jeden řádek na pár a ten řádek je sám koridor: jeden konec je nejnižší úroveň, na které pár ve zvoleném období byl; Závod indexů — Jeden řádek na index a řádek je jak daleko se ten index dostal od svého prvního měsíce v rozmezí — ne jeho úroveň; Třídy aktiv — Jeden řádek na třídu aktiv a řádek je co držení vyneslo — ne kotace; Poklesy — Řádek je jak hluboko pod vlastním maximem se nástroj nachází — ne kolik vydělal, ale co stálo to vydělat; Úspěšnost — Řádek je podíl uzavřených vstupů, které vydělaly — ze všech měsíců, v nichž se dalo vstoupit a držet stejně dlouho. Dále: každá z šestnácti stran má nyní vlastní ikonu (dříve tři dvojice sdílely jeden systémový glyf); závod indexů, třídy aktiv, propady a šance držení sdílejí jeden seznam, který může míchat všechny tři trhy; a rozsahy čtyř stran byly znovu změřeny podle toho, co vracejí koncové body — 5 a 10 let u denního intervalu svíček, 24 měsíců u Objemu a obratu a závodu sektorů (vlastní rozsah do 900 dnů), „Nejdelší“ u závodu kapitalizací, 180 měsíčních období v jednom požadavku.
+Jedna nová stránka s grafy a tři stránky, které získaly něco nového: Trh dluhopisů — Jeden řádek na dluhopisový index a pruh je změna ceny — co není totéž co to, co držení vyneslo; Obrat trhu — může spojit několik položek z vlastního seznamu do jednoho koše — kliknutí na název ji do součtu přidá nebo vynechá; Svíčky — Svíčky jednoho nástroje: denní, týdenní nebo měsíční — nebo minutové pro jeden zvolený obchodní den — kreslené čtyřmi způsoby, s průměry a objemem pod nimi; Výnos pozice — Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 — animovaný tak, aby ukázal, co léta udělala s hodnotou a výnosem. Několik pozic může sdílet jeden obraz: po jedné čáře na každou, s běžným ziskem na jejím konci.
 
 ### Funkce produktu
 
 - Svislá tržní animovaná videa 9:16 na jedno kliknutí
 - Tři trhy: Čína A, Hongkong a USA
-- Šestnáct grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost
+- Sedmnáct grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost, Trh dluhopisů
 - Export MP4 H.264, připravený pro platformy krátkých videí
 - Rozhraní ve 14 jazycích
 - Bez účtu, bez telemetrie — vaše data zůstávají na vašem počítači
@@ -551,7 +563,7 @@ Osm nových stránek s grafy:Tržní kapitalizace — Patnáct největších spo
 
 Market Motion Studio превращает биржевые данные в вертикальные анимации 9:16, созданное для вертикальных платформ вроде TikTok, Shorts и Reels: выберите рынок и символ, приложение само загрузит данные, оживит их и экспортирует MP4 H.264, готовый к публикации.
 
-Шестнадцать страниц с графиками:  
+Семнадцать страниц с графиками:  
 • Оборот рынка — историческая лента ежедневного оборота всего рынка (Китай, A-акции)  
 • Объём и оборачиваемость — цена и объём одной акции вместе (Китай A/Гонконг)  
 • Гонка секторов — отраслевые индексы в гонке вверх и вниз  
@@ -568,6 +580,7 @@ Market Motion Studio превращает биржевые данные в ве�
 • Классы активов — Одна строка на класс активов, и строка — это что принесло владение, а не котировка
 • Просадки — Строка — это насколько инструмент ниже собственного максимума: не сколько он заработал, а чего стоило это заработать
 • Доля удачных — Строка — это доля завершённых входов, которые оказались в плюсе: из всех месяцев, в которые можно было войти и держать одинаково долго, та часть, что закончилась с прибылью
+• Рынок облигаций — Одна строка на индекс облигаций, и полоса — это изменение цены, а не то, что принесло владение
 
 Три рынка: Китай (A-акции), Гонконг и США. Интерфейс доступен на 14 языках.
 
@@ -575,13 +588,13 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Восемь новых страниц с графиками:Капитализация — Пятнадцать крупнейших компаний одного рынка горизонтальными полосами по капитализации; порядок меняется до последнего…; Премия A/H — Насколько бумага компании на материке дороже её гонконгской — для компаний, торгующихся с обеих сторон; Экстремальные дни — Один инструмент и дни, когда он двигался сильнее всего — горизонтальные полосы, упорядоченные по величине; Валютные коридоры — Одна строка на пару, и строка сама является коридором: один конец — самый низкий уровень; Гонка индексов — Одна строка на индекс, и строка — это как далеко индекс ушёл от своего собственного первого месяца в диапазоне; Классы активов — Одна строка на класс активов, и строка — это что принесло владение, а не котировка; Просадки — Строка — это насколько инструмент ниже собственного максимума: не сколько он заработал, а чего стоило это заработать; Доля удачных — Строка — это доля завершённых входов, которые оказались в плюсе: из всех месяцев. Кроме того: у каждой из шестнадцати страниц теперь своя иконка; гонка индексов, классы активов, просадки и шансы удержания используют один список наблюдения, который может смешивать все три рынка; а диапазоны четырёх страниц пересчитаны по тому, что возвращают конечные точки — 5 и 10 лет на дневном интервале свечей, 24 месяца у «Объёма и оборачиваемости» и гонки секторов (свой диапазон до 900 дней), «Максимальный» у гонки капитализаций, 180 месячных периодов за один запрос.
+Одна новая страница с графиками и три страницы, которые получили что-то новое: Рынок облигаций — Одна строка на индекс облигаций, и полоса — это изменение цены, а не то, что принесло владение; Оборот рынка — может собрать несколько позиций из вашего списка в одну корзину — щелчок по названию включает её в сумму или убирает; Свечи — Свечи одного инструмента: дневные, недельные или месячные — либо минутные за один выбранный торговый день, — в четырёх видах, со скользящими средними и объёмом ниже; Доходность позиции — Одна покупка, удержанная надолго — миллион в одной и той же бумаге с 2015 года — анимация о том, что годы сделали со стоимостью и доходностью. Несколько позиций могут делить один кадр: по линии на каждую, с текущей прибылью у её конца.
 
 ### Функции продукта
 
 - Вертикальные анимационные видео рынка 9:16 одним кликом
 - Три рынка: Китай (A-акции), Гонконг и США
-- Шестнадцать графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных
+- Семнадцать графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных, Рынок облигаций
 - Экспорт MP4 H.264, готовый для платформ коротких видео
 - Интерфейс на 14 языках
 - Без аккаунта, без телеметрии — ваши данные остаются на вашем компьютере
@@ -596,7 +609,7 @@ Piyasa göstergelerini doğrudan yayınlanmaya hazır dikey animasyon videoları
 
 Market Motion Studio, borsa verilerini 9:16 dikey animasyonlara dönüştüren, TikTok, Shorts ve Reels gibi dikey platformlar için tasarlanmış bir Windows uygulamasıdır: bir piyasa ve sembol seçin, uygulama verileri çeker, animasyona dönüştürür ve yayınlanmaya hazır H.264 MP4 olarak dışa aktarır.
 
-On altı grafik sayfası:  
+On yedi grafik sayfası:  
 • Piyasa işlem hacmi — tüm piyasanın günlük işlem hacminin tarihî şeridi (Çin A)  
 • Hacim ve devir — bir hissenin fiyat ve hacmi birlikte (Çin A/Hong Kong)  
 • Sektör yarışı — sektör endeksleri yukarı ve aşağı yarışıyor  
@@ -613,6 +626,7 @@ On altı grafik sayfası:
 • Varlık sınıfları — Her varlık sınıfı için bir satır ve satır, onu tutmanın kazandırdığıdır — kotasyonu değil
 • Düşüşler — Bir satır, bir varlığın kendi zirvesinin ne kadar altında olduğudur — ne kazandığı değil, onu kazanmanın neye mal olduğu
 • Tutma oranı — Bir satır, kazançla biten tamamlanmış girişlerin payı — aynı süre boyunca girilip tutulabilecek tüm ayların içinde, artıda bitenlerin oranı
+• Tahvil piyasası — Her tahvil endeksi için bir satır ve çubuk bir fiyat değişimi — bu, elde tutmanın kazandırdığı ile aynı şey değil
 
 Üç piyasa: Çin A, Hong Kong ve ABD. Arayüz 14 dilde mevcut.
 
@@ -620,13 +634,13 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Sekiz yeni grafik sayfası:Piyasa değeri — Bir piyasanın en büyük on beş şirketi, piyasa değerine göre sıralanmış yatay çubuklar olarak; sıralama son kareye kada…; A/H primi — İki tarafta da kote olan şirketler için, karadaki kotasyonun Hong Kong kotasyonundan ne kadar pahalı olduğu — ay ay; Aşırı günler — Tek bir enstrüman ve en çok hareket ettiği günler — büyüklüğe göre sıralanmış yatay çubuklar; Döviz koridorları — Her parite için bir satır, ve satırın kendisi koridordur: bir ucu paritenin seçilen dönemde gördüğü en düşük seviye; Endeks yarışı — Her endeks için bir satır ve satır, o endeksin aralıktaki kendi ilk ayından bu yana ne kadar yol aldığıdır; Varlık sınıfları — Her varlık sınıfı için bir satır ve satır, onu tutmanın kazandırdığıdır — kotasyonu değil; Düşüşler — Bir satır, bir varlığın kendi zirvesinin ne kadar altında olduğudur — ne kazandığı değil; Tutma oranı — Bir satır, kazançla biten tamamlanmış girişlerin payı — aynı süre boyunca girilip tutulabilecek tüm ayların içinde. Ayrıca: on altı sayfanın her birinin artık kendi simgesi var (önceden üç çift aynı sistem glifini paylaşıyordu); endeks yarışı, varlık sınıfları, düşüşler ve elde tutma oranları üç pazarı karıştırabilen tek bir izleme listesi paylaşıyor; dört sayfanın aralıkları da uç noktaların döndürdüğüne göre yeniden ayarlandı — günlük mumlarda 5 ve 10 yıl, Hacim ve devir ile sektör yarışında 24 ay (özel aralık 900 güne kadar), piyasa değeri yarışında 「En uzun」, tek istekte 180 aylık dönem.
+Bir yeni grafik sayfası ve yeni bir şey kazanan üç sayfa: Tahvil piyasası — Her tahvil endeksi için bir satır ve çubuk bir fiyat değişimi — bu, elde tutmanın kazandırdığı ile aynı şey değil; Piyasa işlem hacmi — kendi listenizdeki birkaç kalemi tek bir sepette toplayabilir — ismine tıklamak onu toplama dahil eder veya çıkarır; Mumlar — Bir enstrümanın mumları: günlük, haftalık veya aylık — ya da tek bir işlem günü için dakika mumları — dört farklı şekilde çizilir; altında ortalamaları ve hacmi; Pozisyon Getirisi — Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon — yılların değere ve getiriye ne yaptığını gösteren bir animasyon. Birkaç pozisyon aynı kareyi paylaşabilir: her birine bir çizgi, ucunda o anki kâr.
 
 ### Ürün özellikleri
 
 - Tek tıkla 9:16 dikey piyasa animasyon videoları
 - Üç piyasa: Çin A, Hong Kong ve ABD
-- On altı grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı
+- On yedi grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı, Tahvil piyasası
 - H.264 MP4 dışa aktarma, kısa video platformlarına hazır
 - 14 dilde arayüz
 - Hesap yok, telemetri yok — verileriniz kendi bilgisayarınızda kalır

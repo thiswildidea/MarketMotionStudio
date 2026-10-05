@@ -20,6 +20,148 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.5.0 — 2026-10-05（更新版 / update）
+
+**1.0.4.0 的包已经构建，但从未提交商店**，所以本版把它带上一起走，1.0.4.0 不再单独上架。
+下面只列本版在 1.0.4.0 之上新增的改动；应用的完整能力仍见更下面的 0.0.0.0 条目。包已构建：
+`artifacts/MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload`（149.6 MB / 142.6 MiB），
+拆包核验包内六个内包的 Identity 都是 `1.0.5.0`、DisplayName 都是预留字面值。
+Version 1.0.4.0's package was built but never sent to Partner Center, so this version carries it and
+1.0.4.0 will not be submitted on its own. What follows is only what this version adds on top of
+1.0.4.0; the full feature set is still in the 0.0.0.0 entry below. The package is built —
+`artifacts/MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload` (149.6 MB / 142.6 MiB) — and all
+six inner packages carry Identity `1.0.5.0` and the reserved literal DisplayName.
+
+### 新增 / Added
+
+- **第十七页：债市固收竞速 / the seventeenth page: bond indices** — 九条债券指数一行，条形是
+  **价格变动，不是持有回报**：源端对指数忽略复权参数，而债券回报的大半在票息里，票息永远
+  不进报价。这与大类资产页刻意相反 —— 那页画在复权序列上，因为基金会分红；这页留空，因为
+  指数不分红。两个榜不能对着读。清单内置、不给自选分组：「中证全债」在源端**并不存在**
+  （看着像的那个代码是上证分离债指数，月线停在 2015 年 8 月；整个指数代码空间扫过一遍确认
+  没有全债指数），那三个位子换成源端确实作答的最深的信用债指数。九行起点各不相同（最早
+  2003-02，深证转债 2014-08），十年榜上后者五年后才加入；没开始的行是**缺席**而不是 0.00%。
+  Nine bond indices, one per row, and the bar is the **change in the quote, not the return on holding
+  it**: the source ignores the adjustment parameter for an index, and most of a bond's return is
+  coupon, which never reaches a quote. That is deliberately the opposite of the asset classes page,
+  which is drawn on adjusted closes because those funds do pay out. The list is built in rather than
+  a watchlist roster: the index that looks like "ChinaBond All" is not it — that code is the Shanghai
+  split-coupon index, whose monthly series stops in August 2015 — so those three places go to the
+  deepest credit indices the source actually answers for. The nine rows begin on nine different
+  months, and a row that has not begun is **absent**, not 0.00%.
+
+- **市场成交额页改成一篮子自选 / Market Turnover draws a basket of your own** — 这一页是唯一把
+  清单**加成一个数**的榜，而清单常常是按四个排名榜的需要建的（十几只是常态）。所以 chip 变成
+  **开关**：点名字决定它进不进合计，`×` 仍然是删共享清单 —— 两个按钮而不是一个，因为「在看板
+  上藏掉一条线」不该等于「改自己的持仓」。打开时默认只画清单里的**第一只**，因为默认那一版
+  必须是有人会看的一版。日内那一路同时进来：累计成交额曲线按钟点**线性推进**（这是一根钟，
+  缓动会让人以为没人交易了），并**截到 15:00**（端点补到 15:30 是盘后固定价格交易，比日线多
+  约 0.1%）。空清单与没勾选**分开报**，因为一句是「往里加标的」，另一句是「把开关点回来」。
+  The one board that adds the list into a single number, and the list is usually built for the four
+  ranking boards — a dozen entries is normal. So the chip became a **switch**: pressing the name
+  decides whether it joins the total, while `×` still removes it from the shared list. Two buttons
+  rather than one, because hiding a line on one board should not be editing your holdings. A
+  switched board draws only the **first** pick by default, because the default has to be a frame
+  somebody would actually watch. Intraday arrived with it: a cumulative-turnover curve advancing
+  **linearly** by the clock — a curve that eases looks like trading stopped — and **cut at 15:00**,
+  since the 15:30 the endpoint pads to is after-hours fixed-price trading and runs about 0.1% above
+  the daily bar. An empty list and nothing ticked are two different messages.
+
+- **K线：指定一个交易日画一天 / Candles: one named trading day** — 分钟周期三档（1 / 5 / 15
+  分钟）；选了分钟档就用**交易日下拉**换掉区间下拉，换日只重画不重新取数。端点不接受日期，
+  所以一次取回整段（单请求 800 根上限，约 4 个 1 分钟交易日或 50 个 15 分钟交易日），再按
+  **根数**与**最后一根是否 15:00** 判定哪几天是完整的一天 —— 只看根数会把被 800 根截断那天
+  当成整天。**只有沪深有分钟线**，港股与美股一律返空。横轴按钟点铺，而 90 分钟午休**不在轴
+  上**：按墙上那口钟从 09:30 铺到 15:00，午休会实打实吃掉 27% 的宽度（实测最宽空档 27% →
+  2.6%），现在上下午各占半个轴、中间留一条 2% 的缝（竖线与「午休」二字保留）。
+  Three finer periods — 1, 5 and 15 minutes — and choosing one replaces the range selector with a
+  **list of trading days**; changing the day redraws without fetching again. The endpoint takes no
+  date, so one request carries the whole window (800 bars, about four 1-minute sessions or fifty
+  15-minute ones) and a day counts as whole only by **how many bars it carries and whether the last
+  is stamped 15:00** — bar count alone would call the day the 800-bar cap cut short a full session.
+  **Only Shanghai and Shenzhen have minute bars**; Hong Kong and US codes answer with an empty body.
+  The axis is laid out by the clock, but the ninety-minute lunch break is **not on the axis**: going
+  from 09:30 to 15:00 by the wall clock let lunch take 27% of the width (measured: the widest gap
+  fell from 27% to 2.6%), so morning and afternoon now take half each with a 2% seam between.
+
+- **持仓收益：最多六只放在一起比，曲线末端实时显示收益金额 / Position Return: up to six
+  holdings at once, each carrying its gain on the curve** — 一页回答「这几只里哪只更值得买」。
+  六只共用一帧、各占一色，颜色按**清单里的顺序**取而不是哈希 —— 哈希是稳定的但**不互斥**，
+  六只里两只撞成同色就是一条线跟自己比。每只在**自己那条线的末端**挂一个胶囊，写着名字与赚
+  了多少金额，跟着曲线一起长，所以那个数字始终是「这一帧」的，而不是只有最后一帧才对。写
+  **金额**不写百分比：两只买在不同日子，百分比本来就不可比。两只以上时中间的大数字换成**领先
+  那只的金额与名字**，收尾换成每只一张卡。**只有一只时**同样有那个末端胶囊 —— 这是这次需求
+  的一半。
+  One page answering "which of these was the better buy". Six holdings share one frame in six
+  colours, assigned by the **order they were listed** rather than by hash — a hash is stable but not
+  *distinct*, and two of six coming out identical is a line compared with itself. Each carries a
+  capsule at the **end of its own line** naming the instrument and the money it made, riding the line
+  as it grows, so the number is the one for *this* frame rather than one that only becomes true at
+  the last. **Money, not percent**: two holdings bought on different days are not comparable as
+  ratios. With more than one, the headline becomes the **leader's amount and name** and the closing
+  cards become one per holding. **A single holding gets the capsule too** — that was half of the
+  request.
+
+  三处口径，每处都有一个「看着对」的错答案：日期轴取**并集**（取交集会把十年对比悄悄截成最
+  年轻那只的三年，而画面、状态行、期数全都正常）；晚上市的**从自己第一个交易日起、之前不画**
+  （沿本金拉平线会画出「在它还买不到的年份里亏钱」）；第七只**拒绝取数**而不是静默少画（少画
+  的画面完全正常、看不出少了谁），跨市场的标的同样过滤掉并报出名字 —— 它那份钱不是本市场的
+  货币，画上去就是一条错的线。
+  Three points of basis, each with a wrong answer that looks right: the axis is the **union** of
+  their trading days (intersecting would quietly cut a ten-year comparison down to the youngest
+  holding's three years, with the frame, the status line and the period count all looking normal);
+  a listing that began later **starts later and is not drawn before it existed** (pulling it flat
+  along the capital would invent years in which it was losing money); a seventh is **refused** rather
+  than silently dropped — a frame that drew six looks exactly like one you failed to add the seventh
+  to — and a pick from another market is dropped the same visible way, because its amount is in a
+  currency the frame is not quoting.
+
+### 修复 / Fixed
+
+- **两个榜共用的月线起点口径 / a month-window bug shared by two boards** — 源端只以**整月**作
+  答，且以该月**最后一天**命名那一行；而窗口是从今天倒推 N 个月算出来的，起点落在某个月的中
+  间 —— 那半个月被当成了一个整月，等于白送一个月，而表头上的首尾两个日期看起来是对的。现在
+  两端都先对齐到整月再去问源端。大类资产页抄了同一套算术，一起修：十年榜从 120 个月变成 119
+  个月，sz399307 从 +63.04% 降到 +62.26%。
+  The source only answers in **whole months** and names each row after that month's **last day**,
+  while the window was computed by counting N months back from today — so the start landed mid-month
+  and that partial month counted as a whole one, a free month, with the two dates in the header
+  looking correct. Both ends now align to whole months before asking. The asset classes page carried
+  the same arithmetic and was fixed with it: the ten-year board went from 120 months to 119, and
+  sz399307 from +63.04% to +62.26%.
+
+### 已知限制 / Known limits（沿用 1.0.4.0，另加两条 / unchanged from 1.0.4.0, plus two）
+
+- 分钟 K 线**只有沪深**：港股与美股代码在分钟端点上一律返空，所以那两个市场没有这一档。
+  Minute candles are **Shanghai and Shenzhen only**: Hong Kong and US codes answer the minute
+  endpoint with an empty body, so those two markets do not get the mode.
+- 持仓页一次最多**六只**：六张末端标签、六张卡片、六条曲线还是一场比较，十几只就是一张码。
+  Position Return carries **six** at a time: six end labels, six cards and six curves are still a
+  comparison; a dozen is a barcode.
+- 图标只换在导航里：设置与帮助仍是系统字形（问号与齿轮），工具条上的字形也没有重画。
+  The new icons are in the navigation only; Settings and Help keep their glyphs.
+- 成交量换手率与行业板块竞速的日线区间上限仍是约 900 个自然日，一次请求的天花板就到那里。
+  The daily ceiling on Volume & Turnover and Sector Race is still about 900 calendar days.
+- 美股没有日内模式（那个分时端点的 `data` 是 list 不是 object），日内只有最近几个交易日可选。
+  There is no intraday mode on the United States (that endpoint returns a list, not an object).
+- 一块榜上的行内文字是**一个字号**：整块榜算一次，行与行不会各自缩放。
+  The row text on a board is **one size**, computed once for the board.
+
+### 商店文案同步 / Store listing
+
+`docs/store-listing.md` 的「此版本的新增功能 / What's new in this version」14 份改成 1.0.5.0 的
+内容：第十七页债市固收、成交额页的自选篮、K线的指定交易日、持仓页的六只对比。同一份文件里
+「说明」的图表页数与「产品功能」的图表条数从十六改成十七 —— 第十七页插在**大类资产之后**，
+页面上早已在，只是从来没进过商店文案。三处各由一个脚本按语言改，幂等，且按整行精确匹配 ——
+某语言的措辞与脚本里的不一致时会报错，而不是留下一个旧数字。
+The fourteen "What's new" lines now describe 1.0.5.0: the bond page, the turnover basket, one named
+candles day, and six holdings at once. The description's page count and the features bullet went from
+sixteen to seventeen — the bond page sits **after Asset Classes**, has been in the app all along and
+had never reached the listing. One script per edit, idempotent and matching whole lines, so a
+language whose wording differs fails loudly instead of keeping a stale number.
+
+---
+
 ## 1.0.4.0 — 2026-10-02（更新版 / update）
 
 **1.0.3.0 已经提交商店、正在认证**，所以下面只列本版在它之上新增的改动。应用的完整能力仍见
