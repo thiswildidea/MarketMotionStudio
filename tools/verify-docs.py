@@ -65,14 +65,33 @@ def this_version_news():
     自己再列一遍「本版要说的四件事」，就是给同一件事留了第二份答案，而两份答案对不上的
     时候，看的人只会以为是某一侧写错了字。
 
+    **脚本名从 manifest 的版本号算，不写死**：曾经写死成 `…-1060.py`，版本号前进到
+    1.0.7.0 之后它去比上一版那一份，于是十四条里红四条（而且红的那四条看着像是某几种
+    语言的文案漏改）。同一个病第四次犯，就是因为每一处都在「这回就用这个号」的时候
+    顺手写进去了。
+
     （脚本名带连字符，不能当模块名 import；**且不要顺手调它的 main**。）
     """
+    manifest = MANIFEST.read_text(encoding="utf-8")
+    hit = re.search(r'Version="(\d+)\.(\d+)\.(\d+)\.(\d+)"', manifest)
+
+    if hit is None:
+        raise SystemExit("manifest 里读不到版本号，算不出本版那个 port 脚本的名字")
+
+    # 1.0.6.0 -> 1060，四段全拼（不是前三段：那样会算出 106）。
+    tag = "".join(hit.group(i) for i in (1, 2, 3, 4))
+    script = REPO / "tools" / ("port-store-listing-%s.py" % tag)
+
+    if not script.exists():
+        raise SystemExit("本版那个 port 脚本不在：%s（manifest 是 %s）"
+                         % (script, hit.group(0)))
+
     saved = sys.argv
     sys.argv = [sys.argv[0]]
 
     try:
         spec = importlib.util.spec_from_file_location(
-            "port_store_listing_1060", REPO / "tools" / "port-store-listing-1060.py")
+            "port_store_listing_" + tag, script)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
     finally:

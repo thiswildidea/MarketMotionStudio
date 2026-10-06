@@ -20,6 +20,49 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.7.0 — 2026-10-06（更新版 / update）
+
+**1.0.6.0 已经提交商店**，而它提交的是本版的**前一个构建**：后补的两处改动（查询失败时单独留
+一行、以及那行日志漏 `$` 的修复）因此**不属于 1.0.6.0**，要到本版才到用户手上。同一版本号
+的包传不进去第二次，这是它们必须等一个版本号的原因。
+本版的意思是**把「商店没给加载项」这一句拆成能各自修的几种**。1.0.6.0 的那次真机回报是
+`no add-on named MarketMotionStudio among 0` —— 它只说明商店对这个应用一个可买的加载项都没
+给出来，而不说明为什么。本版三件事都是为了让下一次测试一次分清，其中第二件**有可能直接把
+订阅变成可买的**。
+包已构建：`artifacts/MarketMotionStudio_1.0.7.0_x64_arm64_bundle.msixupload`（149.7 MB / 142.8 MiB），
+拆包核验包内六个内包的 Identity 都是 `1.0.7.0`、DisplayName 都是预留字面值。
+Version 1.0.6.0 has been sent to the Store, and it was the build before this one: two later
+repairs — a line of its own when the query itself fails, and the `$` missing from a log — belong
+to this version instead, because a package cannot be submitted twice under the same number. What
+this version is for is splitting "the Store gave no add-on" into causes that have separate
+repairs. The report from 1.0.6.0 was `no add-on named MarketMotionStudio among 0`, which says the
+Store offered nothing purchasable for this app and says nothing about why. The package is built —
+`artifacts/MarketMotionStudio_1.0.7.0_x64_arm64_bundle.msixupload` (149.7 MB / 142.8 MiB) — and all
+six inner packages carry Identity `1.0.7.0` and the reserved literal DisplayName.
+
+### 新增 / Added
+
+- **查询失败不再和「真的没有」长得一样 / a failed query no longer looks like an empty one** ——
+  「清单是空的」和「查询压根失败了」在外面长得分毫不差，而它们是两个地方的事：前者要去合作
+  伙伴中心修，后者是这台机器这个包（`0x803F6107` 的意思是商店不认它是商店装的）。现在失败时
+  单独留一行，并带上 HRESULT。
+- **加载项查询不再只问 Durable / the query no longer asks only for Durable** —— 文档口径是
+  「订阅型加载项就是 Durable」，只问 Durable 在配对了的世界里确实能找到。但这也是**我们这边
+  唯一能造成 `N=0` 的写法**：假如那只加载项在合作伙伴中心被建成了别的类型，只问 Durable 就
+  会返回空，而日志会把账算到商店头上。现在三种类型都问（选哪一只始终按 token，不按类型），
+  返回的东西连类型一起写出来 —— **这一件有可能直接把订阅变成可买的**。
+- **那行日志现在真的会说出 token / the line that names the token now names it** ——
+  「商店返回了别的加载项」那个分支漏了 `$`，会原样打印 `{OfferToken}` 字面量。它正是为了
+  「一句话里分清两种修法」才写的，却连自己抱怨的是哪个 token 都不说。
+
+### 本版仍然修不了的那一件事
+
+加载项要是在合作伙伴中心没有发布、没有关联到本应用、或者可用性不覆盖用户所在的市场，装本版
+的人看到的**仍然是**「订阅没能完成」那个框。**发布加载项不需要重新上传应用**，改的是商店那
+一侧的配置；本版只是让下一次测试能一次看清是上面哪一种。
+
+---
+
 ## 1.0.6.0 — 2026-10-06（更新版 / update）
 
 **1.0.5.0 已经提交商店**，所以本版只列在它之上新增的改动。1.0.5.0 上传的那份包是 10-06 08:48

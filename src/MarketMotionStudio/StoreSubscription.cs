@@ -57,15 +57,20 @@ public sealed class StoreSubscription
     private const string OfferToken = "MarketMotionStudio";
 
     /// <summary>
-    /// The query that finds the offer. **A subscription add-on *is* a durable
-    /// one** as far as this filter is concerned — the Store reports its
-    /// `ProductKind` as `Durable` and carries the billing period on the SKU
-    /// instead, which is why "Durable" alone is right and adding a "Subscription"
-    /// kind would be inventing one. Worth knowing because the opposite
-    /// assumption is the obvious thing to suspect when the list comes back
-    /// empty, and it sends the search off towards the code.
+    /// The kinds of add-on the query asks for. Every kind an add-on can be,
+    /// on purpose: a subscription add-on *is* a durable one as far as this
+    /// filter is concerned — the Store reports its `ProductKind` as `Durable`
+    /// and carries the billing period on the SKU instead, so "Durable" alone
+    /// would find ours in a correctly published world. It was also the one
+    /// thing here that could make the list come back empty for a reason of
+    /// our own: had the add-on been created as some other kind in Partner
+    /// Center, asking only for "Durable" would return nothing and the log
+    /// would blame the Store. Asking for all of them costs nothing — the
+    /// offer is picked by token, never by kind — and what the query returns
+    /// is written out with its kind, so a wrong kind shows up as a fact
+    /// instead of an absence.
     /// </summary>
-    private static readonly string[] Kinds = ["Durable"];
+    private static readonly string[] Kinds = ["Durable", "Consumable", "UnmanagedConsumable"];
 
     /// <summary>Where the Store sends someone to end a subscription it is billing.</summary>
     private static readonly Uri AccountServices = new("https://account.microsoft.com/services/");

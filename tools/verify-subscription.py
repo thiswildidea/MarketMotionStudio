@@ -183,6 +183,31 @@ def source():
     check("认加载项按 token 而不是 StoreId（两个部分换环境就换）",
           'private const string OfferToken = "MarketMotionStudio";' in subscription)
 
+    print("源码（去商店那一边找加载项）：")
+
+    # 这三条的敌人都是「看起来更正确的写法」：文档说订阅型加载项就是 Durable，所以只查
+    # Durable 读起来像是做过功课 —— 而它正是唯一能造成「商店返回 0 个」的本地写法。
+    check("不挑加载项类型（只按 Durable 找，会把建错类型的加载项读成「商店没给」）",
+          'private static readonly string[] Kinds = ["Durable", "Consumable", '
+          '"UnmanagedConsumable"];' in subscription)
+
+    check("选哪一只按 token 不按类型（放宽类型之后更不能靠类型认）",
+          "product.InAppOfferToken, OfferToken, StringComparison.OrdinalIgnoreCase"
+          in subscription)
+
+    check("查询失败不再和「清单是空的」长得一样（两者修的地方不同）",
+          "result.ExtendedError is { } failure" in subscription
+          and "0x{failure.HResult:X8}" in subscription)
+
+    check("商店真没给、与给了别的名字，是两句不同的话",
+          "the Store returned none for this app" in subscription
+          and "; it returned " in subscription)
+
+    check("那两句里的 token 是真插进去的（漏了 $ 会原样打印 {OfferToken}）",
+          '$"subscribe: no add-on named {OfferToken}; the Store returned none for this app"'
+          in subscription
+          and '$"subscribe: no add-on named {OfferToken}; it returned "' in subscription)
+
     print("源码（水印那一半）：")
 
     check("未订阅时 `Enabled` 恒为真（前置的那些排查不是一个开关能绕过的）",

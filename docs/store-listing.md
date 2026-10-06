@@ -37,7 +37,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版修的是订阅买不成时一声不响这个毛病：以前点「订阅」若商店那边没有可买的内容，什么都不会发生——按了和没按在画面上完全一样。现在这两种情况都会明说：商店没有可购买的内容，或者商店报告购买已完成却没有授予权限，各自弹一句说明并写清原因。其余照旧：十七个图表页的取数、播放动画、保存封面图依旧免费，收费的仍然只有导出视频与去掉水印这两件。
+本版让「订阅买不成」这件事可以排查。以前只留下一句「商店没有可买的加载项」，说不出为什么；现在查询失败会单独记一行并带上错误码，商店返回了别的加载项时会把它连名字和类型一起列出来，本应用也不再只按一种类型去找订阅——假如那只加载项在商店里被建成了别的类型，本版会直接找到它。其余照旧：十七个图表页的取数、播放动画、保存封面图依旧免费，订阅买下的仍然只是导出视频与去掉水印这两件。
 
 ### 产品功能
 
@@ -83,7 +83,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版修的是訂閱買不成時一聲不響這個毛病：以前點「訂閱」若商店那邊沒有可買的內容，什麼都不會發生——按了和沒按在畫面上完全一樣。現在這兩種情況都會明說：商店沒有可購買的內容，或者商店回報購買已完成卻沒有授予權限，各自彈一句說明並寫清原因。其餘照舊：十七個圖表頁的取數、播放動畫、儲存封面圖依舊免費，收費的仍然只有匯出影片與移除浮水印這兩件。
+本版讓「訂閱買不成」這件事可以排查。以前只留下一句「商店沒有可買的附加元件」，說不出為什麼；現在查詢失敗會單獨記一行並帶上錯誤碼，商店回傳了別的附加元件時會把它連名字和類型一起列出來，本應用也不再只按一種類型去找訂閱——假如那個附加元件在商店裡被建成了別的類型，本版會直接找到它。其餘照舊：十七個圖表頁的取數、播放動畫、儲存封面圖依舊免費，訂閱買下的仍然只是匯出影片與移除浮水印這兩件。
 
 ### 產品功能
 
@@ -129,7 +129,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-This version fixes one thing: a purchase that could not go through used to say nothing at all. When the Store had nothing to sell, pressing Subscribe looked exactly like never having pressed it. Now both cases speak, each in its own dialog with the reason spelled out — the Store has nothing to sell, or it reports a purchase that granted nothing. Nothing else changed: fetching data, playing the animation and saving a cover image stay free on all seventeen chart pages, and the subscription still buys only two things, exporting a video and removing the watermark.
+This version makes a subscription that cannot be bought diagnosable. What used to be a single line - the Store handed out nothing to buy - gave no reason, while "the Store has nothing", "the query failed" and "it goes by another name" are three different repairs. Now a failed query gets a line of its own with its error code, whatever the Store did return is listed with its name and kind, and the app no longer looks for the subscription under one add-on kind only, so an add-on created under a different kind is found outright. Nothing else changed: fetching data, playing the animation and saving a cover image stay free on all seventeen chart pages, and the subscription still buys only two things, exporting a video and removing the watermark.
 
 ### Product features
 
@@ -175,7 +175,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンで直したのは、購読が成立しなかったときに何も言わないという一点です。以前は、ストア側に購入できるものがない場合、「購読」を押しても何も起きず、押したのと押していないのとで画面上の違いがありませんでした。今はどちらの場合も伝えます。ストアに購入できるものがない場合と、購入は完了したと報告されたのに権限が付与されなかった場合で、それぞれ理由を書いたダイアログが出ます。他は変わりません。十七のチャートページでのデータ取得、アニメーションの再生、表紙画像の保存は引き続き無料で、購読で買うのは動画の書き出しと透かしの削除の二つだけです。
+このバージョンは、購読を買えないときに原因を辿れるようにします。以前は「ストアに買えるものがない」という一行だけで理由が分かりませんでしたが、「ストアにない」「問い合わせが失敗した」「別の名前で登録されている」はそれぞれ直し方が違います。今は問い合わせが失敗すればエラーコード付きで別の行が残り、ストアが返したものは名前と種類が並び、さらに一種類のアドオンだけを探すのをやめたので、別の種類として作られたアドオンも見つかります。他は変わりません。十七のチャートページでのデータ取得、アニメーションの再生、表紙画像の保存は引き続き無料で、購読で買うのは動画の書き出しと透かしの削除の二つだけです。
 
 ### 製品の機能
 
@@ -221,7 +221,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전은 한 가지를 고쳤습니다. 구매가 이루어지지 않을 때 아무 말도 하지 않았습니다. 스토어에 살 수 있는 항목이 없으면 '구독'을 눌러도 아무 일도 일어나지 않아, 누른 것과 누르지 않은 것이 화면에서 전혀 다르지 않았습니다. 이제 두 경우 모두 이유를 적은 대화 상자로 알려줍니다. 스토어에 구매할 항목이 없는 경우와, 구매가 완료되었다고 보고되었지만 권한이 부여되지 않은 경우입니다. 다른 것은 그대로입니다. 열일곱 개 차트 페이지의 데이터 가져오기, 애니메이션 재생, 표지 이미지 저장은 계속 무료이며, 구독으로 살 수 있는 것은 동영상 내보내기와 워터마크 제거 두 가지뿐입니다.
+이 버전은 구독을 살 수 없을 때 원인을 좇을 수 있게 합니다. 이전에는 '스토어에 살 수 있는 항목이 없다'는 한 줄뿐이어서 이유를 알 수 없었지만, '스토어에 없음', '조회 실패', '다른 이름으로 등록됨'은 서로 다른 수정이 필요합니다. 이제 조회가 실패하면 오류 코드와 함께 별도의 줄이 남고, 스토어가 반환한 항목은 이름과 종류가 함께 나열되며, 한 가지 종류의 추가 기능만 찾지도 않으므로 다른 종류로 만들어진 추가 기능도 그대로 찾습니다. 다른 것은 그대로입니다. 열일곱 개 차트 페이지의 데이터 가져오기, 애니메이션 재생, 표지 이미지 저장은 계속 무료이며, 구독으로 살 수 있는 것은 동영상 내보내기와 워터마크 제거 두 가지뿐입니다.
 
 ### 제품 기능
 
@@ -267,7 +267,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Diese Version behebt eines: Ein Kauf, der nicht zustande kam, sagte bisher gar nichts. Wenn der Store nichts zu verkaufen hatte, sah „Abonnieren“ genau so aus, als hätte man es nie gedrückt. Jetzt sprechen beide Fälle, jeder in einem eigenen Dialog und mit dem Grund: Der Store hat nichts zu verkaufen, oder er meldet einen Kauf, der nichts gewährt hat. Sonst bleibt alles, wie es ist: Daten abrufen, Animation abspielen und Titelbild speichern sind auf allen siebzehn Diagrammseiten weiterhin kostenlos, und das Abonnement kauft weiterhin nur zwei Dinge — das Video exportieren und das Wasserzeichen entfernen.
+Diese Version macht ein Abonnement, das sich nicht kaufen lässt, nachvollziehbar. Früher stand dort nur eine Zeile – der Store hat nichts zu kaufen herausgegeben – ohne Grund, dabei sind „der Store hat nichts“, „die Abfrage ist fehlgeschlagen“ und „es heißt anders“ drei verschiedene Reparaturen. Jetzt bekommt eine fehlgeschlagene Abfrage eine eigene Zeile mit ihrem Fehlercode, was der Store zurückgegeben hat, wird mit Namen und Art aufgelistet, und die App sucht das Abonnement nicht mehr unter einer einzigen Add-on-Art, sodass ein als andere Art angelegtes Add-on direkt gefunden wird. Sonst bleibt alles wie es ist: Daten abrufen, Animation abspielen und Titelbild speichern bleiben auf allen siebzehn Diagrammseiten kostenlos, und das Abonnement kauft weiterhin nur zwei Dinge, das Exportieren eines Videos und das Entfernen des Wasserzeichens.
 
 ### Produktfunktionen
 
@@ -313,7 +313,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Cette version corrige une chose : un achat qui n'aboutissait pas ne disait rien du tout. Quand le Store n'avait rien à vendre, appuyer sur S'abonner était identique à ne jamais l'avoir fait. Les deux cas parlent désormais, chacun dans sa propre boîte et avec la raison : le Store n'a rien à vendre, ou il signale un achat qui n'a rien accordé. Rien d'autre ne change : récupérer les données, lire l'animation et enregistrer l'image de couverture restent gratuits sur les dix-sept pages de graphiques, et l'abonnement continue d'acheter deux choses seulement — exporter une vidéo et retirer le filigrane.
+Cette version rend un abonnement impossible à acheter explicable. Auparavant, une seule ligne indiquait que le Store n'avait rien à vendre, sans en donner la raison, alors que « le Store n'a rien », « la requête a échoué » et « il porte un autre nom » sont trois réparations differentes. Désormais une requête qui échoue laisse sa propre ligne avec son code d'erreur, ce que le Store a renvoyé est listé avec son nom et son type, et l'application ne cherche plus l'abonnement sous un seul type de module, si bien qu'un module créé sous un autre type est trouvé directement. Rien d'autre ne change : la récupération des données, la lecture de l'animation et l'enregistrement de l'image de couverture restent gratuits sur les dix-sept pages de graphiques, et l'abonnement n'achète toujours que deux choses, l'exportation d'une vidéo et la suppression du filigrane.
 
 ### Fonctionnalités
 
@@ -359,7 +359,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Questa versione corregge una cosa: un acquisto che non andava a buon fine non diceva proprio nulla. Quando lo Store non aveva nulla da vendere, premere Abbonati era identico a non averlo mai premuto. Ora entrambi i casi parlano, ciascuno nella propria finestra e con il motivo: lo Store non ha nulla da vendere, oppure segnala un acquisto che non ha concesso nulla. Nient'altro cambia: recuperare i dati, riprodurre l'animazione e salvare l'immagine di copertina restano gratuiti su tutte le diciassette pagine di grafici, e l'abbonamento continua a comprare solo due cose — esportare un video e rimuovere la filigrana.
+Questa versione rende comprensibile un abbonamento che non si riesce ad acquistare. Prima restava una sola riga - lo Store non ha fornito nulla da acquistare - senza motivo, mentre «lo Store non ha nulla», «la query non è riuscita» e «si chiama in un altro modo» sono tre riparazioni diverse. Ora una query non riuscita lascia una riga propria con il suo codice di errore, ciò che lo Store ha restituito viene elencato con nome e tipo, e l'app non cerca più l'abbonamento sotto un solo tipo di componente, così un componente creato con un altro tipo viene trovato direttamente. Nient'altro cambia: il recupero dei dati, la riproduzione dell'animazione e il salvataggio dell'immagine di copertina restano gratuiti su tutte le diciassette pagine di grafici, e l'abbonamento continua a comprare solo due cose, l'esportazione di un video e la rimozione della filigrana.
 
 ### Funzionalità del prodotto
 
@@ -405,7 +405,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Esta versión corrige una cosa: una compra que no llegaba a buen puerto no decía absolutamente nada. Cuando la Tienda no tenía nada que vender, pulsar Suscribirse era exactamente igual a no haberlo pulsado nunca. Ahora ambos casos hablan, cada uno en su propio cuadro y con el motivo: la Tienda no tiene nada que vender, o informa de una compra que no concedió nada. Nada más cambia: obtener datos, reproducir la animación y guardar la imagen de portada siguen siendo gratis en las diecisiete páginas de gráficos, y la suscripción sigue comprando solo dos cosas — exportar un vídeo y quitar la marca de agua.
+Esta versión hace que una suscripción que no se puede comprar sea explicable. Antes quedaba una sola línea —la Store no entregó nada que comprar— sin motivo, aunque «la Store no tiene nada», «la consulta falló» y «tiene otro nombre» son tres arreglos distintos. Ahora una consulta fallida deja su propia línea con su código de error, lo que la Store devolvió se enumera con su nombre y tipo, y la aplicación ya no busca la suscripción bajo un único tipo de complemento, de modo que un complemento creado con otro tipo se encuentra directamente. Nada más cambia: la obtención de datos, la reproducción de la animación y el guardado de la imagen de portada siguen siendo gratuitos en las diecisiete páginas de gráficos, y la suscripción sigue comprando solo dos cosas, exportar un vídeo y quitar la marca de agua.
 
 ### Funciones del producto
 
@@ -450,7 +450,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Esta versão corrige uma coisa: uma compra que não se concretizava não dizia absolutamente nada. Quando a Loja não tinha nada à venda, pressionar Assinar era exatamente igual a nunca ter pressionado. Agora os dois casos falam, cada um na sua própria caixa e com o motivo: a Loja não tem nada à venda, ou informa uma compra que não concedeu nada. Nada mais muda: buscar dados, reproduzir a animação e salvar a imagem de capa continuam gratuitos nas dezessete páginas de gráficos, e a assinatura continua comprando apenas duas coisas — exportar um vídeo e remover a marca d'água.
+Esta versão torna explicável uma assinatura que não pode ser comprada. Antes restava uma única linha — a Store não forneceu nada para comprar — sem motivo, embora «a Store não tem nada», «a consulta falhou» e «tem outro nome» sejam três correções diferentes. Agora uma consulta que falha deixa sua própria linha com o código de erro, o que a Store devolveu é listado com nome e tipo, e o aplicativo não procura mais a assinatura sob um único tipo de complemento, de modo que um complemento criado com outro tipo é encontrado diretamente. Nada mais muda: a busca de dados, a reprodução da animação e o salvamento da imagem de capa continuam gratuitos nas dezessete páginas de gráficos, e a assinatura continua comprando apenas duas coisas, exportar um vídeo e remover a marca d'água.
 
 ### Funcionalidades do produto
 
@@ -496,7 +496,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Ta wersja naprawia jedną rzecz: zakup, który nie dochodził do skutku, nie mówił zupełnie nic. Gdy Sklep nie miał nic do sprzedania, naciśnięcie Subskrybuj wyglądało dokładnie tak, jakby się go nigdy nie nacisnęło. Teraz oba przypadki mówią, każdy we własnym oknie i z podaniem powodu: Sklep nie ma nic do sprzedania albo zgłasza zakup, który niczego nie przyznał. Poza tym bez zmian: pobieranie danych, odtwarzanie animacji i zapisywanie obrazu okładki pozostają bezpłatne na wszystkich siedemnastu stronach wykresów, a subskrypcja nadal kupuje tylko dwie rzeczy — eksport wideo i usunięcie znaku wodnego.
+Ta wersja sprawia, że subskrypcji, której nie można kupić, da się wyjaśnić. Wcześniej zostawała jedna linia — Sklep nie udostępnił niczego do kupienia — bez powodu, choć „Sklep nie ma niczego”, „zapytanie się nie powiodło” i „nazywa się inaczej” to trzy różne naprawy. Teraz nieudane zapytanie zostawia własną linię z kodem błędu, to, co Sklep zwrócił, jest wypisane z nazwą i rodzajem, a aplikacja nie szuka już subskrypcji tylko w jednym rodzaju dodatku, więc dodatek utworzony jako inny rodzaj zostanie znaleziony bezpośrednio. Nic więcej się nie zmienia: pobieranie danych, odtwarzanie animacji i zapisywanie obrazu okładki pozostają bezpłatne na siedemnastu stronach wykresów, a subskrypcja nadal kupuje tylko dwie rzeczy, eksport wideo i usunięcie znaku wodnego.
 
 ### Funkcje produktu
 
@@ -542,7 +542,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Tato verze opravuje jednu věc: nákup, který neprošel, neříkal vůbec nic. Když Obchod neměl co prodat, vypadalo stisknutí Přihlásit se k odběru přesně tak, jako by se nestisklo nikdy. Teď oba případy mluví, každý ve vlastním dialogu a s uvedením důvodu: Obchod nemá nic k prodeji, nebo hlásí nákup, který nic neudělil. Jinak se nic nemění: načítání dat, přehrávání animace a ukládání titulního obrázku zůstává na všech sedmnácti stranách grafů zdarma a předplatné nadále kupuje jen dvě věci — export videa a odstranění vodoznaku.
+Tato verze dělá předplatné, které nelze koupit, vysvětlitelným. Dříve zůstával jediný řádek – Store nevydal nic k zakoupení – bez důvodu, přestože „Store nic nemá“, „dotaz selhal“ a „jmenuje se jinak“ jsou tři různé opravy. Nyní neúspěšný dotaz zanechá vlastní řádek s chybovým kódem, to, co Store vrátil, je vypsáno s názvem a druhem, a aplikace již nehledá předplatné pouze v jednom druhu doplňku, takže doplněk vytvořený jako jiný druh je nalezen přímo. Nic jiného se nemění: načítání dat, přehrávání animace a ukládání titulního obrázku zůstávají na sedmnácti stranách grafů zdarma a předplatné nadále kupuje jen dvě věci, export videa a odstranění vodoznaku.
 
 ### Funkce produktu
 
@@ -588,7 +588,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Эта версия исправляет одно: покупка, которая не проходила, не говорила решительно ничего. Когда в магазине нечего было купить, нажатие «Подписаться» выглядело точно так же, как будто его никогда не нажимали. Теперь оба случая говорят, каждый в своём окне и с указанием причины: в магазине нечего покупать, либо он сообщает о покупке, которая ничего не дала. Остальное без изменений: получение данных, воспроизведение анимации и сохранение обложки остаются бесплатными на всех семнадцати страницах графиков, а подписка по-прежнему покупает только две вещи — экспорт видео и удаление водяного знака.
+Эта версия делает понятной подписку, которую невозможно купить. Раньше оставалась одна строка — магазин не выдал ничего для покупки — без причины, хотя «в магазине ничего нет», «запрос не удался» и «она называется иначе» — это три разных исправления. Теперь неудачный запрос оставляет отдельную строку с кодом ошибки, то, что вернул магазин, перечисляется с именем и типом, и приложение больше не ищет подписку только среди одного типа надстройки, поэтому надстройка, созданная с другим типом, будет найдена сразу. Ничего другого не меняется: получение данных, воспроизведение анимации и сохранение обложки остаются бесплатными на семнадцати страницах диаграмм, а подписка по-прежнему покупает только две вещи — экспорт видео и удаление водяного знака.
 
 ### Функции продукта
 
@@ -634,7 +634,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürüm tek bir şeyi düzeltiyor: gerçekleşmeyen bir satın alma hiçbir şey söylemiyordu. Mağazada satılacak bir şey olmadığında Abone ol'a basmak, hiç basılmamış gibi görünüyordu. Artık iki durum da konuşuyor, her biri kendi penceresinde ve nedeniyle: Mağazada satın alınacak bir şey yok ya da mağaza hiçbir yetki vermeyen bir satın alma bildiriyor. Bunun dışında değişen bir şey yok: veri çekme, animasyonu oynatma ve kapak görselini kaydetme on yedi grafik sayfasının tamamında ücretsiz kalıyor ve abonelik hâlâ yalnızca iki şey satın alıyor — video dışa aktarma ve filigranı kaldırma.
+Bu sürüm, satın alınamayan bir aboneliği açıklanabilir kılıyor. Eskiden yalnızca tek bir satır kalıyordu — Mağaza satın alınacak bir şey vermedi — ve hiçbir neden belirtilmiyordu; oysa «Mağazada hiçbir şey yok», «sorgu başarısız oldu» ve «adı farklı» üç ayrı onarım. Artık başarısız bir sorgu hata koduyla kendi satırını bırakıyor, Mağaza'nın döndürdüğü şeyler adı ve türüyle listeleniyor ve uygulama aboneliği yalnızca tek bir eklenti türünde aramıyor, böylece başka bir tür olarak oluşturulmuş bir eklenti doğrudan bulunuyor. Başka hiçbir şey değişmiyor: on yedi grafik sayfasının tamamında veri alma, animasyonu oynatma ve kapak görselini kaydetme ücretsiz kalıyor ve abonelik yalnızca iki şeyi satın alıyor: video dışa aktarma ve filigranı kaldırma.
 
 ### Ürün özellikleri
 
