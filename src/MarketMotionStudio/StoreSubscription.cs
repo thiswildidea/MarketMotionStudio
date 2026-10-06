@@ -317,7 +317,7 @@ public sealed class StoreSubscription
                 CrashLog.Note(
                     result.Products.Count == 0
                         ? $"subscribe: no add-on named {OfferToken}; the Store returned none for this app"
-                        : "subscribe: no add-on named {OfferToken}; it returned "
+                        : $"subscribe: no add-on named {OfferToken}; it returned "
                           + string.Join(", ", result.Products.Values.Select(
                               product => $"{product.InAppOfferToken}/{product.StoreId} ({product.ProductKind})")));
 
