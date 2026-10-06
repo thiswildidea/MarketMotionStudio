@@ -20,6 +20,37 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.8.0 — 2026-10-06（更新版 / update）
+
+**本版认的是另一只加载项。** 第一只在合作伙伴中心里建成了「Microsoft Store 托管的易耗品」——
+而产品的类型**保存之后不能改**，已发布的 product ID **既不能改也不能复用**，所以它只能由一只
+新建的「订阅」型加载项取代：product ID `MarketMotionStudioMonthly`。本版把 `OfferToken` 指向它。
+
+这只替代带来一件值得写下来的事：**本版起不再认旧那只**。易耗品买一次就永久解锁、永不续费，
+而它的许可证在代码里**和订阅长得一模一样**（到期日是默认值，被当成「还没到期」）。所以认它
+等于在一个写着「订阅」的按钮下面卖一次性买断 —— 名字对得上，东西对不上。
+订阅能不能买，取决于那只在商店里是否已发布并关联到本应用；改加载项的配置不需要重新上传应用。
+包已构建：`artifacts/MarketMotionStudio_1.0.8.0_x64_arm64_bundle.msixupload`（149.7 MB / 142.8 MiB），
+拆包核验包内六个内包的 Identity 都是 `1.0.8.0`。
+Version 1.0.8.0 asks for a different add-on. The first one was created in Partner Center as a
+Store-managed consumable, and a product's type cannot be changed once the page has been saved, nor
+can a published product ID be edited or reused — so a newly created subscription add-on replaces it,
+under the product ID `MarketMotionStudioMonthly`, and `OfferToken` now points there. Worth writing
+down what that replacement costs: from this version the old one is no longer recognised. A
+consumable buys access once and never renews, and its licence is indistinguishable from a live
+subscription's here — the expiration date is the default, which reads as "not expired yet".
+Recognising it would sell a one-time purchase under a button labelled subscribe: right name, wrong
+thing. Whether the subscription is purchasable depends on that add-on being published and associated
+with this app; changing an add-on's configuration does not require resubmitting the app.
+
+### 新增 / Added
+
+- **认新建的订阅型加载项 / it asks for the subscription add-on that replaced the consumable** ——
+  加载项名从 `MarketMotionStudio` 换成 `MarketMotionStudioMonthly`。只改了这一行：认哪一只始终
+  按 token，不按类型，也不按商店生成的 StoreId（后者换环境就换）。
+
+---
+
 ## 1.0.7.0 — 2026-10-06（更新版 / update）
 
 **1.0.6.0 已经提交商店**，而它提交的是本版的**前一个构建**：后补的两处改动（查询失败时单独留

@@ -180,8 +180,16 @@ def source():
           "// Read again rather than reusing what the purchase dialog said." in subscription
           and "return Subscribed" in subscription)
 
+    # 这里**故意**把新 token 写死：Partner Center 里那只加载项叫什么，商店那一头认的
+    # 就是那个字串，改一个字母就买不到 —— 所以它必须有第二双眼睛盯着，而不是从源码里
+    # 读回来再自证一遍。下面那条反向断言守住的是另一件事：旧那只（建错类型的易耗品）
+    # 的许可证跟合法的订阅长得一模一样，写回去会把买断不续费的东西卖出去。
     check("认加载项按 token 而不是 StoreId（两个部分换环境就换）",
-          'private const string OfferToken = "MarketMotionStudio";' in subscription)
+          'private const string OfferToken = "MarketMotionStudioMonthly";' in subscription)
+
+    check("不再认旧那只建错类型的加载项（它的许可证和订阅长得一样）",
+          '"MarketMotionStudio"' not in subscription.replace(
+              "MarketMotionStudioMonthly", ""))
 
     print("源码（去商店那一边找加载项）：")
 

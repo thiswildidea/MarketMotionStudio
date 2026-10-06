@@ -53,8 +53,15 @@ public sealed class StoreSubscription
     /// account and differs between a test flight and the published listing, so
     /// it cannot be written down here. The token is the one thing that survives
     /// both, and the offer is looked up by it every time.
+    ///
+    /// The first add-on was named <c>MarketMotionStudio</c> but created as a
+    /// Store-managed consumable, and a product's type cannot be changed once it
+    /// has been saved — nor can a published product ID be edited or reused.
+    /// So this names the subscription that replaced it. Do not go back to the
+    /// shorter one to "match the app": that offer buys a single purchase that
+    /// never renews, and a licence for it looks exactly like a live one here.
     /// </summary>
-    private const string OfferToken = "MarketMotionStudio";
+    private const string OfferToken = "MarketMotionStudioMonthly";
 
     /// <summary>
     /// The kinds of add-on the query asks for. Every kind an add-on can be,
