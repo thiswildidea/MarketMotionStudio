@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>表示する名前</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>既定でオンです。動画は、どこで作られたかを何も示さない場所に投稿されるものだからです。空にすれば上の名前に戻ります。オフにすることはサブスクリプションで購入する対象のひとつなので、購入まではこのスイッチは動きません。オフにすればフレームには何も入りません。</value></data>
+  <data name="SubscriptionFailedTitle"><value>サブスクリプションは完了しませんでした</value></data>
 </root>

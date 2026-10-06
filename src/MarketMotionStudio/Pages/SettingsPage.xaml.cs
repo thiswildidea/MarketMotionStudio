@@ -1,6 +1,7 @@
 ﻿using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
+using MarketMotionStudio.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppLifecycle;
@@ -613,17 +614,16 @@ public sealed partial class SettingsPage : Page
     /// changing under it, and one is what pressing Cancel means. Only the two
     /// failures speak — a purchase that could not even be offered, and a purchase
     /// the Store says went through without granting anything.
+    ///
+    /// **Which sentence answers which outcome is not decided here** — that is
+    /// <see cref="SubscriptionOffer.Explanation"/>, because the same offer
+    /// reached from an Export button reports the same answers and the two must
+    /// not drift apart. This only decides where a sentence goes, which is this
+    /// page's own strip.
     /// </summary>
     private void ExplainSubscription(SubscribeOutcome outcome)
     {
-        var key = outcome switch
-        {
-            SubscribeOutcome.Unavailable => "SettingsSubscriptionUnavailable",
-            SubscribeOutcome.Failed => "SettingsSubscriptionFailed",
-            _ => null,
-        };
-
-        if (key is not null)
+        if (SubscriptionOffer.Explanation(outcome) is { } key)
         {
             Note(key);
         }

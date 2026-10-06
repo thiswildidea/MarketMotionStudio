@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Qué dice</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Activado por defecto: un vídeo se publica en un lugar que no dice nada de dónde se hizo. Si se deja vacío, vuelve al nombre de arriba. Quitarlo forma parte de lo que compra la suscripción, así que hasta entonces este interruptor se queda donde está; desactivado, los fotogramas no llevan nada.</value></data>
+  <data name="SubscriptionFailedTitle"><value>La suscripción no se completó</value></data>
 </root>

@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Ne yazdığı</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Varsayılan olarak açık: bir video, nerede üretildiğini hiç göstermeyen bir yerde yayımlanır. Boş bırakılırsa yukarıdaki ada döner. Kapatmak, aboneliğin satın aldığı şeylerden biri olduğu için o zamana kadar bu anahtar olduğu yerde kalır; kapatıldığında kareler hiçbir şey taşımaz.</value></data>
+  <data name="SubscriptionFailedTitle"><value>Abonelik gerçekleşmedi</value></data>
 </root>

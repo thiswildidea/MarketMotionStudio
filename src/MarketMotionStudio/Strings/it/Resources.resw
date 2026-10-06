@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Cosa dice</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Attivo per impostazione predefinita: un video finisce dove nulla dice da dove viene. Lasciato vuoto torna al nome sopra. Toglierlo fa parte di ciò che compra l'abbonamento, quindi fino ad allora questo interruttore resta dov'è; disattivato, i fotogrammi non portano nulla.</value></data>
+  <data name="SubscriptionFailedTitle"><value>L'abbonamento non è andato a buon fine</value></data>
 </root>

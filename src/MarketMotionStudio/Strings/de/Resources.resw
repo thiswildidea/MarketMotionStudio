@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Was dort steht</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Standardmäßig an: Ein Video landet irgendwo, das nichts darüber verrät, wo es entstanden ist. Leer gelassen gilt wieder der Name darüber. Es abzuschalten gehört zu dem, was ein Abonnement kauft, deshalb bleibt der Schalter bis dahin stehen; ausgeschaltet tragen die Bilder nichts.</value></data>
+  <data name="SubscriptionFailedTitle"><value>Das Abonnement kam nicht zustande</value></data>
 </root>

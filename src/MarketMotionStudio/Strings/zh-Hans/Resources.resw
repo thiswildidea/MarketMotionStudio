@@ -892,4 +892,5 @@
   <data name="SettingsWatermarkText.Header"><value>写什么</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>默认开启：视频会被发到一个完全看不出它是在哪里做出来的地方。留空会回到上面的名字。关掉它属于订阅买下的东西之一，所以订阅之前这个开关搬不动；关掉则画面上什么都不加。</value></data>
+  <data name="SubscriptionFailedTitle"><value>订阅没能完成</value></data>
 </root>

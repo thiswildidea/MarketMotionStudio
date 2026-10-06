@@ -69,6 +69,7 @@ RESW_KEYS = [
     "SubscriptionOfferTitle",
     "SubscriptionOfferBody",
     "SubscriptionPerMonth",
+    "SubscriptionFailedTitle",
 ]
 
 FAILED = []
@@ -213,11 +214,27 @@ def source():
     print("源码（对话框里那三个答复）：")
 
     check("购买成功后接着把这一件事做完，而不是让用户再点一次导出",
-          "ContentDialogResult.Primary => await subscription.SubscribeAsync(handle) is SubscribeOutcome.Subscribed"
-          in offer)
+          "SubscribeOutcome.Subscribed => true" in offer
+          and "await subscription.SubscribeAsync(handle)" in offer)
 
     check("除了「订阅」和「恢复」以外都不是「可以」",
-          "_ => false," in offer)
+          "default:" in offer and "return false;" in offer)
+
+    # 三个答复都要说话，是这一批补的东西：买不成那条路以前完全安静 —— `SubscribeAsync`
+    # 返回 `Unavailable` 时连商店自己的框都不开，于是「点了一下订阅」和「什么都没点」
+    # 在画面上无法区分（商店版报回来就是「点击订阅没反应」）。下面三条守的是**说了**。
+    check("买不成时说话了，而不是安静地把人留在原地",
+          "Explanation(outcome)" in offer
+          and "await TellAsync(root, Explanation(outcome))" in offer)
+
+    check("恢复购买空手而归也要说 —— 那是「没找到」，不是「什么都没变」",
+          'await TellAsync(root, "SettingsSubscriptionRestoreMissing")' in offer)
+
+    # 「哪句话答哪个答案」只写一处：设置页卡片与导出框读的是同一份映射，
+    # 两边各写一份，同一个结果迟早会被讲成两种意思（各自通顺、互不矛盾、单看都看不出来）。
+    check("「哪句话答哪个答案」只写一处，两处调用读的是同一份映射",
+          offer.count("SubscribeOutcome.Unavailable =>") == 1
+          and "SubscriptionOffer.Explanation(outcome)" in settings)
 
 
 def resw_checks():
@@ -236,12 +253,14 @@ def resw_checks():
 
     lacked_all = sum(len(v) for v in missing.values())
 
-    check("订阅这一套 16 个键在 14 种语言里都在",
+    # 条数从 RESW_KEYS 上算，不写死：写死的那一天加了一个键，这句话会继续报「16 个键在」，
+    # 而它确实是核对过的 —— 数字对不上就被读成「这 17 个键都在」。
+    check("订阅这一套 %d 个键在 14 种语言里都在" % len(RESW_KEYS),
           not missing,
           ("缺 {} 处：{}".format(
               lacked_all,
               ", ".join("%s(%d)" % (k, len(v)) for k, v in missing.items())))
-          if lacked_all else "16 × 14")
+          if lacked_all else "%d × 14" % len(RESW_KEYS))
 
     tree = ET.parse(os.path.join(STRINGS, "en-US", "Resources.resw"))
     keys = {node.get("name") for node in tree.getroot().findall("data")}

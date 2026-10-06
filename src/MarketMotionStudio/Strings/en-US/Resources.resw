@@ -894,4 +894,5 @@
   <data name="SettingsWatermarkText.Header"><value>What it says</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>On by default: a video is posted somewhere that shows nothing of where it was made. Left blank it falls back to the name above. Taking it off is part of what a subscription buys, so until then this switch stays where it is; off, the frames carry nothing.</value></data>
+  <data name="SubscriptionFailedTitle"><value>The subscription did not go through</value></data>
 </root>

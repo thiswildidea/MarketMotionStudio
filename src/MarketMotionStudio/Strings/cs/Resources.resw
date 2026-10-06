@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Co říká</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Ve výchozím stavu zapnuto: video končí někde, kde nic neříká, kde vzniklo. Prázdné se vrací k výše uvedenému jménu. Vypnutí patří k tomu, co kupuje předplatné, takže do té doby přepínač zůstává tam, kde je; vypnuto — snímky nenesou nic.</value></data>
+  <data name="SubscriptionFailedTitle"><value>Předplatné se neuskutečnilo</value></data>
 </root>

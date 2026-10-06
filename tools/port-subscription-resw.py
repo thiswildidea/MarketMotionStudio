@@ -17,7 +17,7 @@ r"""注入「订阅」这一套界面文案，14 语言。
 
 **它只做一件事**：
 
-1. **新增 16 个键**（设置页订阅卡片、订阅对话框、状态行、还有水印开关下面那句「为什么搬不动」）。
+1. **新增 17 个键**（设置页订阅卡片、订阅对话框、状态行、还有水印开关下面那句「为什么搬不动」）。
    键不存在就插在 `</root>` 前；已存在就替换值 —— 幂等，可以随时复跑修正某一句。
 
 写回**照原样**：resw 是 LF 且**必须带 BOM**。
@@ -49,6 +49,7 @@ KEYS = [
     "SubscriptionOfferTitle",
     "SubscriptionOfferBody",
     "SubscriptionPerMonth",
+    "SubscriptionFailedTitle",
 ]
 
 # 顺序与 KEYS 一致。占位符 {0} 必须对得上 —— 少一个是 FormatException，多一个是白写的钱。
@@ -70,6 +71,7 @@ TEXT = {
         "Exporting a video takes a subscription",
         "Every page here fetches its data, plays its animation and saves its cover image without paying — all of that stays free. Writing the video is what the subscription buys, along with taking the watermark off it.",
         "{0} a month, cancelled any time.",
+        "The subscription did not go through",
     ],
     "de": [
         "Abonnement",
@@ -88,6 +90,7 @@ TEXT = {
         "Ein Video zu exportieren verlangt ein Abonnement",
         "Jede Seite hier lädt ihre Daten, spielt ihre Animation und speichert ihr Titelbild, ohne dass jemand zahlt — all das bleibt kostenlos. Das Video zu schreiben ist es, was das Abonnement kauft, zusammen mit dem Entfernen des Wasserzeichens.",
         "{0} pro Monat, jederzeit kündbar.",
+        "Das Abonnement kam nicht zustande",
     ],
     "es": [
         "Suscripción",
@@ -106,6 +109,7 @@ TEXT = {
         "Exportar un vídeo requiere suscripción",
         "Todas las páginas descargan sus datos, reproducen su animación y guardan su portada sin cobrar nada: todo eso sigue siendo gratis. Escribir el vídeo es lo que compra la suscripción, junto con quitar la marca de agua.",
         "{0} al mes, cancela cuando quieras.",
+        "La suscripción no se completó",
     ],
     "fr": [
         "Abonnement",
@@ -124,6 +128,7 @@ TEXT = {
         "Exporter une vidéo demande un abonnement",
         "Chaque page ici charge ses données, lit son animation et enregistre son image de couverture sans rien payer — tout cela reste gratuit. Écrire la vidéo est ce que l'abonnement achète, avec le retrait du filigrane.",
         "{0} par mois, résiliable à tout moment.",
+        "L'abonnement n'a pas abouti",
     ],
     "it": [
         "Abbonamento",
@@ -142,6 +147,7 @@ TEXT = {
         "Esportare un video richiede un abbonamento",
         "Ogni pagina qui scarica i propri dati, riproduce la propria animazione e salva la propria copertina senza far pagare nulla — tutto questo resta gratuito. Scrivere il video è ciò che compra l'abbonamento, insieme al togliere il marchio.",
         "{0} al mese, annullabile in qualsiasi momento.",
+        "L'abbonamento non è andato a buon fine",
     ],
     "pl": [
         "Subskrypcja",
@@ -160,6 +166,7 @@ TEXT = {
         "Eksport filmu wymaga subskrypcji",
         "Każda strona tu pobiera dane, odtwarza animację i zapisuje okładkę bez żadnej opłaty — to pozostaje darmowe. Zapisanie filmu jest tym, co kupuje subskrypcja, wraz ze zdjęciem znaku wodnego.",
         "{0} miesięcznie, anulujesz w każdej chwili.",
+        "Subskrypcja nie została zrealizowana",
     ],
     "pt-BR": [
         "Assinatura",
@@ -178,6 +185,7 @@ TEXT = {
         "Exportar um vídeo exige assinatura",
         "Todas as páginas buscam seus dados, reproduzem sua animação e salvam sua imagem de capa sem cobrar nada — tudo isso continua gratuito. Gravar o vídeo é o que a assinatura compra, junto com tirar a marca d'água.",
         "{0} por mês, cancele quando quiser.",
+        "A assinatura não foi concluída",
     ],
     "cs": [
         "Předplatné",
@@ -196,6 +204,7 @@ TEXT = {
         "Export videa vyžaduje předplatné",
         "Každá stránka tu načte svá data, přehraje animaci a uloží titulní obrázek bez placení — to vše zůstává zdarma. Zápis videa je tím, co předplatné kupuje, spolu s odebráním vodoznaku.",
         "{0} měsíčně, lze kdykoli zrušit.",
+        "Předplatné se neuskutečnilo",
     ],
     "tr": [
         "Abonelik",
@@ -214,6 +223,7 @@ TEXT = {
         "Video dışa aktarmak abonelik gerektirir",
         "Buradaki her sayfa verisini çeker, animasyonunu oynatır ve kapak görselini ücret almadan kaydeder — hepsi ücretsiz kalır. Aboneliğin satın aldığı şey videoyu yazmaktır, filigranı kaldırmakla birlikte.",
         "Aylık {0}, dilediğiniz zaman iptal edin.",
+        "Abonelik gerçekleşmedi",
     ],
     "ru": [
         "Подписка",
@@ -232,6 +242,7 @@ TEXT = {
         "Экспорт видео требует подписки",
         "Каждая страница здесь загружает данные, проигрывает анимацию и сохраняет обложку без оплаты — всё это остаётся бесплатным. Подписка покупает запись видео и вместе с ней снятие водяного знака.",
         "{0} в месяц, отмена в любой момент.",
+        "Подписка не была оформлена",
     ],
     "ja": [
         "サブスクリプション",
@@ -250,6 +261,7 @@ TEXT = {
         "動画の書き出しにはサブスクリプションが必要です",
         "どのページも、データの取得、アニメーションの再生、カバー画像の保存までは無料で、今後も無料のままです。サブスクリプションで購入する対象は動画の書き出しと、ウォーターマークの解除です。",
         "月額 {0}、いつでも解約できます。",
+        "サブスクリプションは完了しませんでした",
     ],
     "ko": [
         "구독",
@@ -268,6 +280,7 @@ TEXT = {
         "동영상 내보내기에는 구독이 필요합니다",
         "모든 페이지가 데이터를 불러오고 애니메이션을 재생하고 커버 이미지를 저장하는 것은 무료이며, 앞으로도 무료입니다. 구독이 구매하는 것은 동영상 저장과 워터마크 제거입니다.",
         "월 {0}, 언제든 해지할 수 있습니다.",
+        "구독이 완료되지 않았습니다",
     ],
     "zh-Hans": [
         "订阅",
@@ -286,6 +299,7 @@ TEXT = {
         "导出视频需要订阅",
         "这里每个页面的取数、播放动画、保存封面图都不收费，今后也仍然免费。订阅买下的是导出视频，以及去掉水印。",
         "每月 {0}，可随时取消。",
+        "订阅没能完成",
     ],
     "zh-Hant": [
         "訂閱",
@@ -304,6 +318,7 @@ TEXT = {
         "匯出影片需要訂閱",
         "這裡每個頁面的取數、播放動畫、儲存封面圖都不收費，今後也仍然免費。訂閱買下的是匯出影片，以及移除浮水印。",
         "每月 {0}，可隨時取消。",
+        "訂閱沒有完成",
     ],
 }
 

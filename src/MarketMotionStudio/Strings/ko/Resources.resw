@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>표시할 이름</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>기본적으로 켜져 있습니다. 영상은 어디서 만들어졌는지 아무것도 알려주지 않는 곳에 올라가기 때문입니다. 비워 두면 위의 이름으로 돌아갑니다. 워터마크를 끄는 것은 구독으로 구매하는 대상 중 하나이므로, 구독 전까지는 이 스위치를 움직일 수 없습니다. 끄면 프레임에 아무것도 들어가지 않습니다.</value></data>
+  <data name="SubscriptionFailedTitle"><value>구독이 완료되지 않았습니다</value></data>
 </root>

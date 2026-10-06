@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Co mówi</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Domyślnie włączone: wideo trafia w miejsce, które nic nie mówi o tym, gdzie powstało. Puste wraca do nazwy powyżej. Wyłączenie go należy do tego, co kupuje subskrypcja, więc do tego czasu przełącznik zostaje tam, gdzie jest; wyłączone — klatki nie niosą niczego.</value></data>
+  <data name="SubscriptionFailedTitle"><value>Subskrypcja nie została zrealizowana</value></data>
 </root>

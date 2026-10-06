@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>O que diz</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Ativado por padrão: um vídeo é publicado em algum lugar que não diz nada sobre onde foi feito. Deixado em branco, volta ao nome acima. Desligá-lo faz parte do que a assinatura compra, então até lá este interruptor fica onde está; desligado, os quadros não levam nada.</value></data>
+  <data name="SubscriptionFailedTitle"><value>A assinatura não foi concluída</value></data>
 </root>

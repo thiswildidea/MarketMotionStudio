@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Ce qu'il dit</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Activé par défaut : une vidéo est publiée quelque part qui ne dit rien d'où elle a été faite. Laissé vide, il reprend le nom ci-dessus. Le retirer fait partie de ce que l'abonnement achète : jusque-là, cet interrupteur reste où il est ; désactivé, les images ne portent rien.</value></data>
+  <data name="SubscriptionFailedTitle"><value>L'abonnement n'a pas abouti</value></data>
 </root>

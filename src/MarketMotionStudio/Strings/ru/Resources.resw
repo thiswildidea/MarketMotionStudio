@@ -883,4 +883,5 @@
   <data name="SettingsWatermarkText.Header"><value>Какой текст</value></data>
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Включено по умолчанию: видео попадает туда, где ничто не говорит, где оно сделано. Если оставить пустым, вернётся имя выше. Отключение входит в то, что покупает подписка, поэтому до её оформления переключатель остаётся на месте; при выключении кадры не несут ничего.</value></data>
+  <data name="SubscriptionFailedTitle"><value>Подписка не была оформлена</value></data>
 </root>

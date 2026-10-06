@@ -58,16 +58,88 @@ public static class SubscriptionOffer
 
         var asked = await Dialogs.ShowAsync(Offer(root, subscription));
 
-        return asked switch
+        // Each of the three answers is spoken to, rather than only the one that
+        // worked. A purchase that cannot be offered leaves the Store's own
+        // dialog unopened — nothing appears, nothing is said, and the button
+        // looks broken, which is the report this arrived with. The one answer
+        // that stays quiet is the person closing the Store's window themselves;
+        // that is what closing it means, and there is nothing to explain.
+        switch (asked)
         {
-            ContentDialogResult.Primary => await subscription.SubscribeAsync(handle) is SubscribeOutcome.Subscribed,
-            ContentDialogResult.Secondary => await RestoredAsync(handle, subscription),
+            case ContentDialogResult.Primary:
+                var outcome = await subscription.SubscribeAsync(handle);
 
-            // Nothing else is a yes. A dismissal, a second dialog being dropped
-            // by Dialogs.ShowAsync, and a purchase the Store refused all leave
-            // the caller exactly where it was.
-            _ => false,
+                return outcome switch
+                {
+                    SubscribeOutcome.Subscribed => true,
+                    _ => await TellAsync(root, Explanation(outcome)),
+                };
+
+            case ContentDialogResult.Secondary:
+                // Restore finding nothing is worth saying too: the person
+                // pressing it believes they have already paid, and a button
+                // that changes nothing tells them their purchase never
+                // happened, which is not the same as nothing having changed.
+                return await RestoredAsync(handle, subscription)
+                    || await TellAsync(root, "SettingsSubscriptionRestoreMissing");
+
+            // Nothing else is a yes. A dismissal, and a second dialog being
+            // dropped by Dialogs.ShowAsync, both leave the caller where it was.
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The sentence that says how an attempt ended, or null when there is
+    /// nothing to say.
+    ///
+    /// **Shared with the settings card, which is the other place a failed
+    /// purchase is reported.** Two places reading the same answer and naming
+    /// their own sentence is how the same outcome ends up described two ways —
+    /// each true, each uncontradicted by the other, and neither detectable
+    /// alone. Which key answers which outcome belongs to one caller of
+    /// <c>SubscribeAsync</c>, not two.
+    ///
+    /// Success and cancellation are both silent here: one is self-evident from
+    /// the card changing underneath, and one is what pressing Cancel means.
+    /// </summary>
+    public static string? Explanation(SubscribeOutcome outcome) =>
+        outcome switch
+        {
+            SubscribeOutcome.Unavailable => "SettingsSubscriptionUnavailable",
+            SubscribeOutcome.Failed => "SettingsSubscriptionFailed",
+            _ => null,
         };
+
+    /// <summary>
+    /// Says <paramref name="key"/> in its own dialog, and returns false, so that
+    /// every caller's "was this permitted" reads the same whichever way it went.
+    ///
+    /// A dialog rather than a note on the page that asked: the caller is a chart
+    /// page whose own strip is about the chart, and a purchase that failed is
+    /// answered here or not at all.
+    /// </summary>
+    private static async Task<bool> TellAsync(XamlRoot root, string? key)
+    {
+        if (root is null || key is null)
+        {
+            return false;
+        }
+
+        await Dialogs.ShowAsync(new ContentDialog
+        {
+            XamlRoot = root,
+            Title = Strings.Get("SubscriptionFailedTitle"),
+            Content = new TextBlock
+            {
+                Text = Strings.Get(key),
+                TextWrapping = TextWrapping.Wrap,
+            },
+            CloseButtonText = Strings.Get("StudioCancel.Content"),
+        });
+
+        return false;
     }
 
     /// <summary>
