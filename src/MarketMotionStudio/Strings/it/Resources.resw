@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>Non è stato possibile raggiungere l'abbonamento, quindi qui non c'è nulla da acquistare per ora. Controlla che il Microsoft Store sia connesso e riprova.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Lo Store ha segnalato l'acquisto come riuscito senza concederlo. Nulla si sblocca finché la licenza non concorda — riprova tra un attimo.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Nessun abbonamento trovato sotto questo account Microsoft. Se è stato acquistato con un altro, accedi con quell'account e ripristina di nuovo.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Ogni fotogramma porta il marchio finché non ti abboni. Questa pagina disegna i fotogrammi esattamente come verranno scritti: ciò che vedi qui è ciò che conterrà un video.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Finché non ti abboni, ogni fotogramma porta il marchio, e alla massima intensità. Questa pagina disegna i fotogrammi esattamente come verranno scritti: ciò che vedi qui è ciò che conterrà un video.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Abbonati</value></data>
   <data name="SubscriptionRestore.Content"><value>Ripristina l'acquisto</value></data>
   <data name="SubscriptionManage.Content"><value>Gestisci l'abbonamento</value></data>

@@ -3,3 +3,13 @@
 # 仓库里 core.autocrlf=true，不加这条的话检出时字段内的 LF 也会变成 CRLF，
 # 下一次跑 port 脚本就会把这 336 个换行全改一遍。
 docs/listingData-*.csv -text
+
+# 界面资源与帮助手册在仓库里是 **LF**，而 port 脚本一律「照原样写回」：它们读到 CRLF 就
+# 拒绝写、读到 LF 才写。core.autocrlf=true 会把检出时的 LF 换成 CRLF，于是脚本在这个
+# 工作区里**一份也改不动**，报的还是「the file came back with CRLF endings」——
+# 而 git status 同时是干净的（git 比较时把 CRLF 转换回去，认为内容没变），
+# 看起来就像文件本身有问题。2026-10-06 实测过一次：28 份（14 resw + 14 help）
+# 全是 CRLF，14 个键改了 0 处。
+# 这两条让它们以字节原样检出，与脚本的约定一致。
+*.resw -text
+src/MarketMotionStudio/Assets/Help/*.md -text

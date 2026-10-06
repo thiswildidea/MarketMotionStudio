@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>サブスクリプションに接続できなかったため、ここでは購入できるものがありません。Microsoft Store にサインインしているか確認して、もう一度お試しください。</value></data>
   <data name="SettingsSubscriptionFailed"><value>ストアは購入を完了と報告しましたが、権利を付与していません。ライセンスが一致するまで何も解放されません。しばらくしてもう一度お試しください。</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>この Microsoft アカウントにサブスクリプションは見つかりませんでした。別のアカウントで購入した場合は、そのアカウントでサインインして再度復元してください。</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>サブスクリプションに加入するまで、すべてのフレームにウォーターマークが入ります。このページは書き出されるとおりにフレームを描くため、ここで見えているものが動画に入るものです。</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>サブスクリプションに加入するまで、すべてのフレームにウォーターマークが入り、濃度も最大になります。このページは書き出されるとおりにフレームを描くため、ここで見えているものが動画に入るものです。</value></data>
   <data name="SubscriptionSubscribe.Content"><value>購入する</value></data>
   <data name="SubscriptionRestore.Content"><value>購入の復元</value></data>
   <data name="SubscriptionManage.Content"><value>サブスクリプションの管理</value></data>

@@ -460,6 +460,8 @@ Nella pagina Impostazioni puoi cambiare ciò su cui viene disegnata l'animazione
 
 
 - **Anche l'aspetto del segno è vostro.** Il carattere è qualsiasi carattere installato su questa macchina — ogni voce dell'elenco è scritta nel carattere che nomina —, il colore è quello che dà il selettore, e l'intensità è quanto di quel colore viene usato: 10% per impostazione predefinita, fino al 40%, e anche al massimo è disegnato sotto i dati. Tutte e tre valgono per anteprima, video esportato e immagine di copertina.
+
+- **Finché non c'è un abbonamento, quella barra resta al 40%.** Abbassare l'intensità va insieme al togliere il segno: un'app senza abbonamento disegna ogni fotogramma alla massima intensità e la barra non si può spostare. Il 10% qui sopra è il valore da cui parte una volta che c'è.
 - La formulazione predefinita non segue la lingua dell'interfaccia: una filigrana è una firma, e una firma che cambiasse con la lingua sarebbe una diversa su ogni macchina.
 
 ## I dati, e ciò che non diranno

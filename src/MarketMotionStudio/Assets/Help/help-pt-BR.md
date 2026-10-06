@@ -447,6 +447,8 @@ Na página de configurações você pode mudar sobre o que a animação é desen
 
 
 - **A aparência da marca também é sua.** A fonte é qualquer fonte instalada nesta máquina — cada item da lista é escrito na fonte que nomeia —, a cor é a que o seletor der, e a intensidade é quanto dessa cor é usado: 10% por padrão, até 40%, e mesmo no máximo ela é desenhada abaixo dos dados. As três valem para a pré-visualização, o vídeo exportado e a imagem de capa igualmente.
+
+- **Enquanto não houver assinatura, essa barra fica em 40%.** Baixar a intensidade vai junto com remover a marca: um app sem assinatura desenha cada quadro com intensidade máxima e a barra não sai daí. Os 10% acima são o valor com que ela começa quando houver uma.
 - A redação padrão não segue o idioma da interface: uma marca d'água é uma assinatura, e uma assinatura que mudasse com o idioma seria uma diferente em cada máquina.
 
 ## Os dados, e o que eles não vão dizer

@@ -194,6 +194,19 @@ def source():
     check("分辨率变了会重发一次（许可证变了，已画的那一帧不知道）",
           "AppServices.Current.Subscription.Changed += (_, _) => Announce();" in watermark)
 
+    check("未订阅时浓度恒为上限、且只在付费那一支读用户存的值",
+          "? Settings.Values[StrengthKey] is int strength" in watermark
+          and ": Watermark.MaxOpacity;" in watermark)
+
+    check("浓度能不能拖是**读**出来的（与开关同一套：灰掉与忽略是同一个事实）",
+          "public static bool StrengthOptional => PaidFor;" in watermark
+          and "WatermarkStrengthSlider.IsEnabled = on && WatermarkSettings.StrengthOptional;"
+          in settings)
+
+    check("锁着的时候滑块被写回实际在用的那个值，而不是留着页面打开时的旧值",
+          "WatermarkStrengthSlider.Value = strength;" in settings
+          and "var strength = WatermarkSettings.Strength;" in settings)
+
     check("还有一个被告别的入口：恢复购买与管理订阅都在卡片上",
           'x:Name="RestoreButton"' in markup and 'x:Name="ManageButton"' in markup)
 

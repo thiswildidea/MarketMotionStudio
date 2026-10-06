@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>Předplatné nebylo možné dosáhnout, takže tu teď není co koupit. Zkontrolujte, že je Microsoft Store přihlášen, a zkuste to znovu.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Store nahlásil nákup jako provedený, aniž by ho udělil. Nic se neodemkne, dokud licence nesouhlasí — zkuste to za chvíli znovu.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Pod tímto účtem Microsoft nebylo nalezeno žádné předplatné. Pokud bylo koupeno na jiný účet, přihlaste se k němu a obnovte znovu.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Každý snímek nese vodoznak, dokud si předplatné nepořídíte. Tato stránka kreslí snímky přesně tak, jak budou zapsány: co vidíte tady, to bude obsahovat i video.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Dokud si předplatné nepořídíte, nese každý snímek vodoznak, a to v plné síle. Tato stránka kreslí snímky přesně tak, jak budou zapsány: co vidíte tady, to bude obsahovat i video.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Předplatit</value></data>
   <data name="SubscriptionRestore.Content"><value>Obnovit nákup</value></data>
   <data name="SubscriptionManage.Content"><value>Spravovat předplatné</value></data>

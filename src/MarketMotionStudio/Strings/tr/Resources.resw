@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>Aboneliğe ulaşılamadı, bu yüzden şu an burada satın alınacak bir şey yok. Microsoft Store'un oturum açtığını kontrol edip yeniden deneyin.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Store, satın almayı tanımadığı halde tamamlandı olarak bildirdi. Lisans onaylamadıkça hiçbir şey açılmaz — birazdan yeniden deneyin.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Bu Microsoft hesabında abonelik bulunamadı. Başka bir hesapla satın alındıysa o hesapla oturum açıp yeniden geri yükleyin.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Abonelik başlayana kadar her kare filigranı taşır. Bu sayfa kareleri tam olarak yazıldıkları gibi çizer: burada gördüğünüz şey videonun içereceği şeydir.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Abonelik başlayana kadar her kare filigranı taşır ve yoğunluk da en yüksek değerde kalır. Bu sayfa kareleri tam olarak yazıldıkları gibi çizer: burada gördüğünüz şey videonun içereceği şeydir.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Abone ol</value></data>
   <data name="SubscriptionRestore.Content"><value>Satın almayı geri yükle</value></data>
   <data name="SubscriptionManage.Content"><value>Aboneliği yönet</value></data>

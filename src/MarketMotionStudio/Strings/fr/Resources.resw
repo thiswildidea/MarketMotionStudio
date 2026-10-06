@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>L'abonnement n'a pas pu être atteint : il n'y a donc rien à acheter ici pour l'instant. Vérifiez que le Microsoft Store est connecté et réessayez.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Le Store a signalé l'achat comme effectué sans l'accorder. Rien ne se débloque tant que la licence n'est pas d'accord — réessayez dans un instant.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Aucun abonnement n'a été trouvé sous ce compte Microsoft. S'il a été acheté avec un autre, connectez-vous avec celui-ci et restaurez à nouveau.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Chaque image porte le filigrane jusqu'à votre abonnement. Cette page dessine les images exactement comme elles seront écrites : ce que vous voyez ici est ce que contiendra une vidéo.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Jusqu'à votre abonnement, chaque image porte le filigrane, et à pleine intensité. Cette page dessine les images exactement comme elles seront écrites : ce que vous voyez ici est ce que contiendra une vidéo.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>S'abonner</value></data>
   <data name="SubscriptionRestore.Content"><value>Restaurer l'achat</value></data>
   <data name="SubscriptionManage.Content"><value>Gérer l'abonnement</value></data>

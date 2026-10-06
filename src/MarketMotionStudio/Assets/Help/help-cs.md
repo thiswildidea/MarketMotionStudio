@@ -427,6 +427,8 @@ Na stránce nastavení můžete změnit, na co se animace kreslí: vestavěný p
 
 
 - **Jak značka vypadá, je také vaše.** Písmo je jakékoli písmo nainstalované v tomto počítači — každá položka seznamu je napsána písmem, které uvádí —, barva je ta, kterou dá výběrník, a síla je, kolik z té barvy se použije: ve výchozím stavu 10%, nejvíce 40%, a i na maximum je značka kreslena pod daty. Všechny tři platí pro náhled, exportované video i titulní obrázek stejně.
+
+- **Dokud neexistuje předplatné, tento posuvník zůstává na 40 %.** Ztlumení značky patří k jejímu odebrání: aplikace bez předplatného kreslí každý snímek plnou silou a z této hodnoty posuvník nejde pohnout. Uvedených 10 % je hodnota, od které začíná, jakmile předplatné existuje.
 - Výchozí znění se neřídí jazykem rozhraní: vodoznak je podpis, a podpis, který by se měnil s jazykem, by byl na každém počítači jiný.
 
 ## Data a co neřeknou

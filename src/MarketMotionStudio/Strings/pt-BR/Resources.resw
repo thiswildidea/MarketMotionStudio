@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>Não foi possível alcançar a assinatura, então não há nada para comprar aqui agora. Verifique se a Microsoft Store está conectada e tente novamente.</value></data>
   <data name="SettingsSubscriptionFailed"><value>A Store informou a compra como concluída sem concedê-la. Nada é liberado até que a licença concorde — tente novamente em instantes.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Nenhuma assinatura foi encontrada nesta conta Microsoft. Se foi comprada em outra, entre com aquela conta e restaure novamente.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Cada quadro leva a marca d'água até você assinar. Esta página desenha os quadros exatamente como serão gravados: o que você vê aqui é o que um vídeo conterá.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Até você assinar, cada quadro leva a marca d'água, e na intensidade máxima. Esta página desenha os quadros exatamente como serão gravados: o que você vê aqui é o que um vídeo conterá.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Assinar</value></data>
   <data name="SubscriptionRestore.Content"><value>Restaurar compra</value></data>
   <data name="SubscriptionManage.Content"><value>Gerenciar assinatura</value></data>

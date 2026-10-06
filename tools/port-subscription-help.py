@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 r"""给 14 份帮助手册补上「订阅」这一件事。
 
-**为什么非写不可，以及为什么是这两处。** 订阅买下的是两件事——导出视频、去掉水印——而它们各自
-落在一章里：
+**为什么非写不可，以及为什么是这三处。** 订阅买下的是两件事——导出视频、去掉水印——它们落在两章里，
+而「去掉」后来又分出了两半：搬开关、和把浓度从上限调下来。
 
 * **「视频」章**：导出被拦了一次。不看说明，用户只看到一个点了会弹对话框的按钮。这儿要写进去的
   是「订阅之前免费到哪一步」——没有这句话，「预览明明能播、为什么导不出来」会被当成 bug 报上来。
@@ -10,6 +10,11 @@ r"""给 14 份帮助手册补上「订阅」这一件事。
   什么都不加就把开关关掉」。这句话单独看依然通顺，和旁边那个搬不动的开关放在一起，就是把
   用户引向一个不存在的开关 —— 正是前面几轮反复记下的那类失效。所以新条目**紧贴在那一条
   后面**，而不是贴在章末。
+
+**第三条为什么也写在这一本脚本里。** 浓度随后也进了订阅（未订阅时钉在上限、拨不动），而它在
+手册上的落点是「水印长什么样」那一条的下游：那条写着「默认 10%」，此时只对订阅者成立，却摆
+在所有人面前。三句回答的是同一个问题（订阅买下的是什么），放进三个文件就容易各说各的。同理
+**不去改那一条本身**——它对订阅者仍然句句属实，改了反倒让一段话同时对着两拨读者。
 
 **按那里锁定**：草稿的那句要靠已有脚本定，自己不再写第二个版本。
 
@@ -46,6 +51,7 @@ def load(name, filename):
 
 VIDEO = load("port_title_wrap_help", "port-title-wrap-help.py")
 BACKDROP = load("port_watermark_help", "port-watermark-help.py")
+LOOK = load("port_watermark_look_help", "port-watermark-look-help.py")
 
 # 「视频」章：订阅之前免费到哪一步、付费点落在哪一处。
 EXPORTING = {
@@ -173,6 +179,78 @@ SWITCH = {
                "畫面會帶著的東西，所以預覽與檔案永遠不會不一致。",
 }
 
+# 紧跟在「水印长什么样」那一条后面 —— 那一条写着「默认 10%、最高 40%」，而这句话说的正是
+# 未订阅时那 10% 根本轮不上：浓度钉在上限，拨不动。
+#
+# **不改写那一条，而在它后面补一条。** 那一条对订阅者仍然句句属实（读过这一条再读它，语序也顺）；
+# 把它改成「未订阅时 40%」则让一段话同时承担两拨读者。放在它后面等于先答「现在为什么是 40」，
+# 再答「订阅后为什么是 10%」。
+STRENGTH = {
+    "en-US": "- **Until there is a subscription, that slider stays at 40%.** Turning the mark down "
+             "goes with taking it off: an unsubscribed app writes every frame at full strength and "
+             "the slider cannot be moved off it. The 10% above is where it starts once there is one.",
+
+    "de": "- **Solange kein Abonnement besteht, bleibt dieser Regler bei 40 %.** Das Zeichen leiser "
+          "zu stellen gehört zum Abschalten dazu: Eine nicht abonnierte App schreibt jedes Bild mit "
+          "voller Stärke, und der Regler lässt sich nicht davon wegbewegen. Die 10 % oben sind der "
+          "Wert, mit dem es beginnt, sobald eines besteht.",
+
+    "es": "- **Hasta que haya suscripción, ese control se queda en el 40 %.** Bajar la intensidad va "
+          "junto con quitar la marca: una app sin suscripción dibuja cada fotograma a plena "
+          "intensidad y el control no se puede mover de ahí. El 10 % de arriba es el valor con el "
+          "que empieza una vez que la hay.",
+
+    "fr": "- **Tant qu'il n'y a pas d'abonnement, ce curseur reste à 40 %.** Baisser l'intensité va "
+          "avec le retrait de la marque : une application non abonnée dessine chaque image à pleine "
+          "intensité et le curseur ne peut pas en bouger. Les 10 % plus haut sont la valeur de "
+          "départ une fois l'abonnement en place.",
+
+    "it": "- **Finché non c'è un abbonamento, quella barra resta al 40%.** Abbassare l'intensità va "
+          "insieme al togliere il segno: un'app senza abbonamento disegna ogni fotogramma alla "
+          "massima intensità e la barra non si può spostare. Il 10% qui sopra è il valore da cui "
+          "parte una volta che c'è.",
+
+    "pl": "- **Dopóki nie ma subskrypcji, ten suwak zostaje na 40%.** Przyciszenie znaku idzie w "
+          "parze z jego zdjęciem: aplikacja bez subskrypcji rysuje każdą klatkę z pełną mocą, a "
+          "suwaka nie da się z tego miejsca ruszyć. Powyższe 10% to wartość, od której zaczyna się, "
+          "gdy subskrypcja już jest.",
+
+    "pt-BR": "- **Enquanto não houver assinatura, essa barra fica em 40%.** Baixar a intensidade vai "
+             "junto com remover a marca: um app sem assinatura desenha cada quadro com intensidade "
+             "máxima e a barra não sai daí. Os 10% acima são o valor com que ela começa quando houver "
+             "uma.",
+
+    "cs": "- **Dokud neexistuje předplatné, tento posuvník zůstává na 40 %.** Ztlumení značky patří "
+          "k jejímu odebrání: aplikace bez předplatného kreslí každý snímek plnou silou a z této "
+          "hodnoty posuvník nejde pohnout. Uvedených 10 % je hodnota, od které začíná, jakmile "
+          "předplatné existuje.",
+
+    "tr": "- **Abonelik olmadığı sürece bu kaydırıcı %40'ta kalır.** İşareti kısmak, onu kaldırmakla "
+          "birlikte gelir: aboneliksiz uygulama her kareyi tam yoğunlukta çizer ve kaydırıcı oradan "
+          "oynatılamaz. Yukarıdaki %10, bir abonelik olduğunda işin başlayacağı değerdir.",
+
+    "ru": "- **Пока подписки нет, этот ползунок остаётся на 40 %.** Сделать знак тише — то же, что "
+          "снять его: приложение без подписки рисует каждый кадр с полной насыщенностью, и сдвинуть "
+          "ползунок нельзя. Указанные выше 10 % — значение, с которого он начинается, когда подписка "
+          "появится.",
+
+    "ja": "- **購読があるまで、このスライダーは 40% のままです。** 透かしを薄くするのは外すのと"
+          "同じ扱いで、購読前のアプリは各フレームを常に最大の濃さで描き、スライダーはそこから"
+          "動かせません。上の 10% は、購読したときに出発点となる値です。",
+
+    "ko": "- **구독이 있을 때까지 이 슬라이더는 40%에 머뭅니다.** 워터마크를 옅게 하는 것은 없애는 "
+          "것과 같은 취급이어서, 구독 전의 앱은 모든 프레임을 가장 진하게 그리고 슬라이더는 그 자리에서 "
+          "움직이지 않습니다. 위의 10%는 구독했을 때 시작하는 값입니다.",
+
+    "zh-Hans": "- **没有订阅的时候，这个滑块停在 40%。** 把水印调淡和去掉水印是同一件事的两面：未"
+               "订阅时每一帧都按最高浓度写出去，滑块也就停在那儿挪不动；上面那句「默认 10%」说的是"
+               "订阅之后它从哪儿起步。",
+
+    "zh-Hant": "- **沒有訂閱的時候，這個滑桿停在 40%。** 把浮水印調淡和移除浮水印是同一件事的兩面："
+               "未訂閱時每一格畫面都按最高濃度寫出去，滑桿也就停在那裡挪不動；上面那句「預設 10%」"
+               "說的是訂閱之後它從哪裡起步。",
+}
+
 
 def lines_of(tag):
     path = ROOT / f"help-{tag}.md"
@@ -233,10 +311,12 @@ def main() -> int:
     for tag in lt.LANGS:
         video = insert(tag, EXPORTING[tag], heading=VIDEO.HEADING[tag])
         backdrop = insert(tag, SWITCH[tag], anchor=BACKDROP.WATERMARK, index=BACKDROP.CHAPTER)
+        strength = insert(tag, STRENGTH[tag], anchor=LOOK.LOOK, index=LOOK.CHAPTER)
 
-        print("%-9s %s / %s" % (tag,
-                                "video +1" if video else "already there",
-                                "backdrop +1" if backdrop else "already there"))
+        print("%-9s %s / %s / %s" % (tag,
+                                     "video +1" if video else "already there",
+                                     "backdrop +1" if backdrop else "already there",
+                                     "strength +1" if strength else "already there"))
 
     return 0
 

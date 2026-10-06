@@ -452,6 +452,8 @@ En la página de configuración puedes cambiar sobre qué se dibuja la animació
 
 
 - **El aspecto de la marca también es tuyo.** La fuente es cualquier fuente instalada en este equipo —cada entrada de la lista está escrita en la fuente que nombra—, el color es el que dé el selector, y la intensidad es cuánto de ese color se usa: 10% por defecto, hasta 40%, e incluso en su punto máximo se dibuja debajo de los datos. Las tres afectan igual a la vista previa, al vídeo exportado y a la imagen de portada.
+
+- **Hasta que haya suscripción, ese control se queda en el 40 %.** Bajar la intensidad va junto con quitar la marca: una app sin suscripción dibuja cada fotograma a plena intensidad y el control no se puede mover de ahí. El 10 % de arriba es el valor con el que empieza una vez que la hay.
 - La redacción por defecto no sigue el idioma de la interfaz: una marca de agua es una firma, y una firma que cambiara con el idioma sería una distinta en cada equipo.
 
 ## Los datos, y lo que no le dirán

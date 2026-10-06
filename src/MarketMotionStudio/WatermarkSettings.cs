@@ -138,12 +138,26 @@ public static class WatermarkSettings
     /// How strongly it is drawn, in percent — the one number behind "how visible
     /// is it", which the colour alone cannot answer: at the default tenth, white,
     /// amber and blue all come out as the same faint wash.
+    ///
+    /// **While nobody is subscribed this is not a stored preference at all: it is
+    /// the ceiling.** Both unmarked and faint are things the subscription buys —
+    /// the switch takes the mark off, this takes it down to a whisper — so an
+    /// unpaid build writes every frame at the strongest it can be. Reading it
+    /// from one place rather than having the page push a value into a slider
+    /// means the strip on the settings page, the preview and the encoder are
+    /// answers to the same question; the slider is only how it is displayed.
+    ///
+    /// The paid-for answer is still kept while unpaid, so subscribing restores
+    /// the strength somebody chose rather than an arbitrary one — the same
+    /// arrangement the switch above has.
     /// </summary>
     public static int Strength
     {
-        get => Settings.Values[StrengthKey] is int strength
-            ? Math.Clamp(strength, Watermark.MinOpacity, Watermark.MaxOpacity)
-            : Watermark.DefaultOpacity;
+        get => PaidFor
+            ? Settings.Values[StrengthKey] is int strength
+                ? Math.Clamp(strength, Watermark.MinOpacity, Watermark.MaxOpacity)
+                : Watermark.DefaultOpacity
+            : Watermark.MaxOpacity;
         set
         {
             Settings.Values[StrengthKey] =
@@ -151,6 +165,13 @@ public static class WatermarkSettings
             Announce();
         }
     }
+
+    /// <summary>
+    /// Whether the strength is anybody's to change, read by the control rather
+    /// than pushed into it, so that "greyed out" and "ignored" cannot drift
+    /// apart the way a duplicated rule would.
+    /// </summary>
+    public static bool StrengthOptional => PaidFor;
 
     /// <summary>The longest name the text box accepts, in characters.</summary>
     public static int MaxLength => Watermark.MaxLength;

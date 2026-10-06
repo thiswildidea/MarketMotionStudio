@@ -444,6 +444,8 @@ Na stronie ustawień możesz zmienić to, na czym rysowana jest animacja: wbudow
 
 
 - **Wygląd znaku też jest twój.** Font to dowolny font zainstalowany na tym komputerze — każda pozycja na liście jest napisana fontem, który wymienia —, kolor to ten, który da próbnik, a moc to, ile tego koloru zostanie użyte: domyślnie 10%, najwyżej 40%, i nawet przy najwyższym znak jest rysowany pod danymi. Wszystkie trzy dotyczą podglądu, eksportowanego wideo i okładki tak samo.
+
+- **Dopóki nie ma subskrypcji, ten suwak zostaje na 40%.** Przyciszenie znaku idzie w parze z jego zdjęciem: aplikacja bez subskrypcji rysuje każdą klatkę z pełną mocą, a suwaka nie da się z tego miejsca ruszyć. Powyższe 10% to wartość, od której zaczyna się, gdy subskrypcja już jest.
 - Domyślna treść nie podąża za językiem interfejsu: znak wodny to podpis, a podpis, który zmieniałby się wraz z językiem, byłby na każdym komputerze innym podpisem.
 
 ## Dane i to, czego nie powiedzą

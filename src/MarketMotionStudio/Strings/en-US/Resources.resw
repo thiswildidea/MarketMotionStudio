@@ -881,7 +881,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>The subscription could not be reached, so there is nothing here to buy just now. Check that Microsoft Store is signed in and try again.</value></data>
   <data name="SettingsSubscriptionFailed"><value>The Store reported the purchase as done without granting it. Nothing is unlocked until the licence agrees — try again in a moment.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>No subscription was found under this Microsoft account. If it was bought with a different one, sign in with that account and restore again.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Every frame carries the watermark until you subscribe. This page draws the frames exactly as they are written, so what you see here is what a video will contain.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Until you subscribe, every frame carries the watermark and at full strength. This page draws the frames exactly as they are written, so what you see here is what a video will contain.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Subscribe</value></data>
   <data name="SubscriptionRestore.Content"><value>Restore purchase</value></data>
   <data name="SubscriptionManage.Content"><value>Manage subscription</value></data>

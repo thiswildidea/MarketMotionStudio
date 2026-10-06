@@ -879,7 +879,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>无法联系到订阅，这里暂时没有可购买的内容。请确认 Microsoft Store 已登录并重试。</value></data>
   <data name="SettingsSubscriptionFailed"><value>商店报告购买已完成，但没有授予权限。许可证确认之前什么都不会解锁，请稍后重试。</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>这个 Microsoft 账户下没有找到订阅。如果是用另一个账户买的，请用那个账户登录后再恢复。</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>未订阅时每一帧都带水印。本页绘制的帧与写进文件的完全一致——这里看到的就是视频里会有的。</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>未订阅时每一帧都带水印，而且浓度拉满。本页绘制的帧与写进文件的完全一致——这里看到的就是视频里会有的。</value></data>
   <data name="SubscriptionSubscribe.Content"><value>订阅</value></data>
   <data name="SubscriptionRestore.Content"><value>恢复购买</value></data>
   <data name="SubscriptionManage.Content"><value>管理订阅</value></data>

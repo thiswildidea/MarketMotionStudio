@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>No se pudo alcanzar la suscripción, así que aquí no hay nada que comprar por ahora. Comprueba que Microsoft Store haya iniciado sesión y vuelve a intentarlo.</value></data>
   <data name="SettingsSubscriptionFailed"><value>La Store informó de la compra como realizada sin concederla. Nada se desbloquea hasta que la licencia lo confirme: inténtalo de nuevo en un momento.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>No se encontró ninguna suscripción en esta cuenta Microsoft. Si se compró con otra, inicia sesión con esa cuenta y restaura de nuevo.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Cada fotograma lleva la marca de agua hasta que te suscribas. Esta página dibuja los fotogramas tal y como se escriben: lo que ves aquí es lo que contendrá el vídeo.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Hasta que te suscribas, cada fotograma lleva la marca de agua y con toda su intensidad. Esta página dibuja los fotogramas tal y como se escriben: lo que ves aquí es lo que contendrá el vídeo.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Suscribirse</value></data>
   <data name="SubscriptionRestore.Content"><value>Restaurar compra</value></data>
   <data name="SubscriptionManage.Content"><value>Gestionar suscripción</value></data>

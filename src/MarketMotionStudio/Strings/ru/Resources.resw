@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>До подписки не удалось достучаться, поэтому здесь сейчас нечего покупать. Проверьте, что в Microsoft Store выполнен вход, и попробуйте снова.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Store сообщил, что покупка выполнена, но не предоставил её. Ничто не откроется, пока лицензия не подтвердит это — попробуйте через минуту снова.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Под этой учётной записью Microsoft подписка не найдена. Если она куплена на другую, войдите в неё и восстановите снова.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Каждый кадр несёт водяной знак, пока вы не оформите подписку. Эта страница рисует кадры ровно так, как они будут записаны: что вы видите здесь, то и будет в видео.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Пока вы не оформите подписку, каждый кадр несёт водяной знак, причём максимальной плотности. Эта страница рисует кадры ровно так, как они будут записаны: что вы видите здесь, то и будет в видео.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Подписаться</value></data>
   <data name="SubscriptionRestore.Content"><value>Восстановить покупку</value></data>
   <data name="SubscriptionManage.Content"><value>Управлять подпиской</value></data>

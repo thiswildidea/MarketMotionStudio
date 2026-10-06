@@ -869,7 +869,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>無法聯繫到訂閱，這裡暫時沒有可購買的內容。請確認 Microsoft Store 已登入並重試。</value></data>
   <data name="SettingsSubscriptionFailed"><value>商店回報購買已完成，但未授予權限。授權確認之前什麼都不會解鎖，請稍後再試。</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>這個 Microsoft 帳戶下找不到訂閱。若是用其他帳戶購買的，請改用那個帳戶登入後再還原。</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>未訂閱時每一格畫面都帶浮水印。本頁繪製的畫面與寫入檔案的完全一致——這裡看到的就是影片裡會有的。</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>未訂閱時每一格畫面都帶浮水印，濃度也拉滿。本頁繪製的畫面與寫入檔案的完全一致——這裡看到的就是影片裡會有的。</value></data>
   <data name="SubscriptionSubscribe.Content"><value>訂閱</value></data>
   <data name="SubscriptionRestore.Content"><value>還原購買</value></data>
   <data name="SubscriptionManage.Content"><value>管理訂閱</value></data>

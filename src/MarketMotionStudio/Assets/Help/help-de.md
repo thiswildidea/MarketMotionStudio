@@ -461,6 +461,8 @@ Auf der Einstellungsseite lässt sich ändern, worauf die Animation gezeichnet w
 
 
 - **Wie das Zeichen aussieht, ist ebenfalls Ihres.** Die Schriftart ist jede auf diesem Rechner installierte — jeder Eintrag in der Liste ist in der Schrift gesetzt, die er nennt —, die Farbe jede, die der Wähler hergibt, und die Stärke ist, wie viel von dieser Farbe verwendet wird: standardmäßig 10%, bis zu 40%, und selbst am stärksten wird es unter den Daten gezeichnet. Alle drei gelten für Vorschau, exportiertes Video und Titelbild gleichermaßen.
+
+- **Solange kein Abonnement besteht, bleibt dieser Regler bei 40 %.** Das Zeichen leiser zu stellen gehört zum Abschalten dazu: Eine nicht abonnierte App schreibt jedes Bild mit voller Stärke, und der Regler lässt sich nicht davon wegbewegen. Die 10 % oben sind der Wert, mit dem es beginnt, sobald eines besteht.
 - Der Standardwortlaut folgt nicht der Sprache der Oberfläche: Ein Wasserzeichen ist eine Unterschrift, und eine Unterschrift, die mit der Sprache wechselt, wäre auf jedem Rechner eine andere.
 
 ## Die Daten, und was sie nicht sagen

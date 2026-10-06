@@ -810,16 +810,31 @@ public sealed partial class SettingsPage : Page
         // is off: a font chosen for a mark that is not drawn is a setting with no
         // answer anywhere, and the strip below is then the only thing on the page
         // that would still be drawing it.
-        // Taking the mark off is one of the two things the subscription buys, so
-        // while there is none the switch answers for itself: it shows the frames
-        // as they will be written — marked — and refuses the question. The rest
-        // of the controls follow the switch as they always did, which is why the
-        // whole card reads as it does rather than only its switch.
+        // Taking the mark off and turning it down are the two things the
+        // subscription buys, so while there is none each control answers for
+        // itself: the switch shows the frames as they will be written — marked —
+        // and refuses the question, and the strength shows the ceiling for the
+        // same reason. The rest follow the switch as they always did, which is
+        // why the whole card reads as it does rather than only its switch.
         WatermarkToggle.IsEnabled = WatermarkSettings.Optional;
 
         if (!WatermarkSettings.Optional)
         {
             WatermarkToggle.IsOn = WatermarkSettings.Enabled;
+        }
+
+        // Written back to the slider rather than only read from it: the value it
+        // is holding was set when the page opened, and what has to be shown now
+        // is what the mark is actually drawn at. `_loading` suppresses the write
+        // that would otherwise come back out of this as a preference.
+        var strength = WatermarkSettings.Strength;
+
+        if (WatermarkStrengthSlider.Value != strength)
+        {
+            var restoring = _loading;
+            _loading = true;
+            WatermarkStrengthSlider.Value = strength;
+            _loading = restoring;
         }
 
         WatermarkLockedNote.Visibility =
@@ -830,7 +845,7 @@ public sealed partial class SettingsPage : Page
         WatermarkText.IsEnabled = on;
         WatermarkFontCombo.IsEnabled = on;
         WatermarkColourButton.IsEnabled = on;
-        WatermarkStrengthSlider.IsEnabled = on;
+        WatermarkStrengthSlider.IsEnabled = on && WatermarkSettings.StrengthOptional;
 
         WatermarkSwatch.Fill =
             new Microsoft.UI.Xaml.Media.SolidColorBrush(WatermarkSettings.Colour);

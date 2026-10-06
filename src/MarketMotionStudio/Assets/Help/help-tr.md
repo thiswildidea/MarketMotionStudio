@@ -432,6 +432,8 @@ Ayarlar sayfasında animasyonun neyin üzerine çizileceğini değiştirebilirsi
 
 
 - **İşaretin nasıl göründüğü de sizin.** Yazı tipi bu makinede yüklü herhangi bir yazı tipidir — listedeki her girdi, adını verdiği yazı tipiyle yazılır —, renk seçicinin verdiği renktir ve yoğunluk, o rengin ne kadarının kullanıldığıdır: varsayılan %10, en fazla %40 ve en yüksek değerde bile verilerin altına çizilir. Üçü de önizleme, dışa aktarılan video ve kapak görseli için aynı şekilde geçerlidir.
+
+- **Abonelik olmadığı sürece bu kaydırıcı %40'ta kalır.** İşareti kısmak, onu kaldırmakla birlikte gelir: aboneliksiz uygulama her kareyi tam yoğunlukta çizer ve kaydırıcı oradan oynatılamaz. Yukarıdaki %10, bir abonelik olduğunda işin başlayacağı değerdir.
 - Varsayılan metin, arayüz dilini takip etmez: bir filigran bir imzadır ve dille birlikte değişen bir imza her makinede farklı bir imza olurdu.
 
 ## Veri ve söylemeyecekleri

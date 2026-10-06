@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>Nie udało się połączyć z subskrypcją, więc nie ma tu teraz nic do kupienia. Sprawdź, czy Microsoft Store jest zalogowany, i spróbuj ponownie.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Sklep zgłosił zakup jako dokonany, ale nie przyznał go. Nic nie zostanie odblokowane, dopóki licencja się nie zgodzi — spróbuj ponownie za chwilę.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Nie znaleziono subskrypcji na tym koncie Microsoft. Jeśli kupiono ją na inne konto, zaloguj się tam i przywróć ponownie.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Każda klatka nosi znak wodny, dopóki nie wykupisz subskrypcji. Ta strona rysuje klatki dokładnie tak, jak zostaną zapisane: to, co tu widzisz, znajdzie się w filmie.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Dopóki nie wykupisz subskrypcji, każda klatka nosi znak wodny, i to w pełnym natężeniu. Ta strona rysuje klatki dokładnie tak, jak zostaną zapisane: to, co tu widzisz, znajdzie się w filmie.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Subskrybuj</value></data>
   <data name="SubscriptionRestore.Content"><value>Przywróć zakup</value></data>
   <data name="SubscriptionManage.Content"><value>Zarządzaj subskrypcją</value></data>

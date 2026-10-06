@@ -870,7 +870,7 @@
   <data name="SettingsSubscriptionUnavailable"><value>Das Abonnement war nicht erreichbar, es gibt hier also gerade nichts zu kaufen. Prüfen Sie, ob der Microsoft Store angemeldet ist, und versuchen Sie es erneut.</value></data>
   <data name="SettingsSubscriptionFailed"><value>Der Store meldete den Kauf als abgeschlossen, ohne ihn zu gewähren. Nichts wird freigeschaltet, solange die Lizenz nicht zustimmt — versuchen Sie es in einem Moment erneut.</value></data>
   <data name="SettingsSubscriptionRestoreMissing"><value>Unter diesem Microsoft-Konto wurde kein Abonnement gefunden. Wurde es mit einem anderen gekauft, melden Sie sich mit jenem Konto an und stellen Sie es erneut wieder her.</value></data>
-  <data name="SettingsWatermarkLockedNote.Text"><value>Jedes Bild trägt das Wasserzeichen, bis Sie abonnieren. Diese Seite zeichnet die Bilder genau so, wie sie geschrieben werden: Was Sie hier sehen, enthält auch ein Video.</value></data>
+  <data name="SettingsWatermarkLockedNote.Text"><value>Bis Sie abonnieren, trägt jedes Bild das Wasserzeichen, und zwar mit voller Stärke. Diese Seite zeichnet die Bilder genau so, wie sie geschrieben werden: Was Sie hier sehen, enthält auch ein Video.</value></data>
   <data name="SubscriptionSubscribe.Content"><value>Abonnieren</value></data>
   <data name="SubscriptionRestore.Content"><value>Kauf wiederherstellen</value></data>
   <data name="SubscriptionManage.Content"><value>Abonnement verwalten</value></data>

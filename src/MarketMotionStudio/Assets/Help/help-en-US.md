@@ -451,6 +451,8 @@ The Settings page can change what the animation is drawn on: the built-in gradie
 
 
 - **How the mark looks is yours too.** The font is any font installed on this machine — each entry in the list is drawn in the font it names —, the colour is whatever the picker gives, and the strength is how much of that colour is used: 10% by default, up to 40%, and even at its strongest it is drawn under the data. All three reach the preview, the exported video and the cover image alike.
+
+- **Until there is a subscription, that slider stays at 40%.** Turning the mark down goes with taking it off: an unsubscribed app writes every frame at full strength and the slider cannot be moved off it. The 10% above is where it starts once there is one.
 - The default wording does not follow the interface language: a watermark is a signature, and a signature that changed with the language would be a different one on every machine.
 
 ## Data, and what it will not tell you

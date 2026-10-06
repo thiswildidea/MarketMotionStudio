@@ -466,6 +466,8 @@ La page Paramètres permet de changer ce sur quoi l'animation est dessinée : le
 
 
 - **L'aspect de la marque vous appartient aussi.** La police est n'importe quelle police installée sur cette machine — chaque entrée de la liste est écrite dans la police qu'elle nomme —, la couleur est celle que donne le sélecteur, et l'intensité est la part de cette couleur utilisée : 10% par défaut, jusqu'à 40%, et même au maximum elle est dessinée sous les données. Ces trois réglages valent pour l'aperçu, la vidéo exportée et l'image de couverture.
+
+- **Tant qu'il n'y a pas d'abonnement, ce curseur reste à 40 %.** Baisser l'intensité va avec le retrait de la marque : une application non abonnée dessine chaque image à pleine intensité et le curseur ne peut pas en bouger. Les 10 % plus haut sont la valeur de départ une fois l'abonnement en place.
 - Le libellé par défaut ne suit pas la langue de l'interface : un filigrane est une signature, et une signature qui changerait avec la langue en serait une différente sur chaque machine.
 
 ## Les données, et ce qu'elles ne diront pas
