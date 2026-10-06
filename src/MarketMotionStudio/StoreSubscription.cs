@@ -57,9 +57,13 @@ public sealed class StoreSubscription
     private const string OfferToken = "MarketMotionStudio";
 
     /// <summary>
-    /// Subscription add-ons come back from the Store alongside durable ones, so
-    /// this is the query that finds it; that it is monthly is then read off the
-    /// product itself.
+    /// The query that finds the offer. **A subscription add-on *is* a durable
+    /// one** as far as this filter is concerned — the Store reports its
+    /// `ProductKind` as `Durable` and carries the billing period on the SKU
+    /// instead, which is why "Durable" alone is right and adding a "Subscription"
+    /// kind would be inventing one. Worth knowing because the opposite
+    /// assumption is the obvious thing to suspect when the list comes back
+    /// empty, and it sends the search off towards the code.
     /// </summary>
     private static readonly string[] Kinds = ["Durable"];
 
@@ -277,6 +281,18 @@ public sealed class StoreSubscription
         try
         {
             var result = await Context(window).GetAssociatedStoreProductsAsync(Kinds);
+
+            // An empty list and a failed query look exactly alike from the
+            // outside, and the difference is the whole diagnosis: no add-on
+            // published is a thing to fix in Partner Center, while a query that
+            // failed is this machine or this package — 0x803F6107, the one
+            // everybody hits, is the Store declining to answer a build it does
+            // not consider Store-installed. Without this line the log says
+            // "among 0" and the publisher goes looking in the wrong place.
+            if (result.ExtendedError is { } failure)
+            {
+                CrashLog.Note($"subscribe: add-on query failed, 0x{failure.HResult:X8}");
+            }
 
             var offer = result.Products.Values.FirstOrDefault(
                 product => string.Equals(product.InAppOfferToken, OfferToken, StringComparison.OrdinalIgnoreCase));
