@@ -65,7 +65,10 @@ six inner packages carry Identity `1.0.6.0` and the reserved literal DisplayName
 - **商店加载项查询失败时把错误码写进诊断日志 / the add-on query now logs its own error** ——
   之前只记 `no add-on named … among 0`，而「清单是空的」与「查询失败了」在外面长得一模一样；
   少了 `StoreProductQueryResult.ExtendedError` 那一行，排查一律被指引到合作伙伴中心去找，
-  真因却可能在这台机器这个包上（`0x803F6107` 的意思是商店不认这个包）。现在两种情况各留一行。
+  真因却可能在这台机器这个包上（`0x803F6107` 的意思是商店不认这个包）。现在两种情况各留一行，
+  而且**清单不是空的时候会把商店实际给了哪些加载项逐个写出来**（产品 ID / StoreId / 类型）——
+  「一个都没给」与「给了几个、但叫别的名字」是两种完全不同的修法，一句话里分得出来就不用去
+  翻仪表盘。
   Until now the log only said `no add-on named … among 0`, and *the list is empty* looks exactly
   like *the query failed* from outside. Without that one line from
   `StoreProductQueryResult.ExtendedError` every investigation is pointed at Partner Center, when

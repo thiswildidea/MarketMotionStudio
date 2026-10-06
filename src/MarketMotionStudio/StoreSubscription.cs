@@ -301,7 +301,26 @@ public sealed class StoreSubscription
 
             if (offer is null)
             {
-                CrashLog.Note($"subscribe: no add-on named {OfferToken} among {result.Products.Count}");
+                // "Nothing at all" and "things, but none by this name" are two
+                // entirely different diagnoses, and one sentence is all the
+                // publisher gets to tell them apart:
+                //
+                //   among 0            — the Store has no add-on for this app.
+                //                        Either none is published, or the query
+                //                        failed (see the line above).
+                //   X named instead    — add-ons are published and reachable, so
+                //                        the one being asked for is named
+                //                        differently in Partner Center. The exact
+                //                        product IDs come back here, which turns
+                //                        a hunt through the dashboard into one
+                //                        comparison.
+                CrashLog.Note(
+                    result.Products.Count == 0
+                        ? $"subscribe: no add-on named {OfferToken}; the Store returned none for this app"
+                        : "subscribe: no add-on named {OfferToken}; it returned "
+                          + string.Join(", ", result.Products.Values.Select(
+                              product => $"{product.InAppOfferToken}/{product.StoreId} ({product.ProductKind})")));
+
                 return null;
             }
 
