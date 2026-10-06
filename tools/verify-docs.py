@@ -1,7 +1,7 @@
 """文档一致性检查：版本号、商店文案、帮助手册、README 是不是说的同一件事。
 
 这一版动的全是文档，而文档里最容易出错的恰恰是**数字**：说明段说十七页、功能条说十七种、
-帮助说 900 天、CHANGELOG 说 1.0.5.0、manifest 说 1.0.5.0 —— 任何一个留在旧数字上，读的人
+帮助说 900 天、CHANGELOG 首条与 manifest 说同一个版本号 —— 任何一个留在旧数字上，读的人
 看到的是一个自相矛盾的应用。所以这些断言一条条把数字钉住。
 
 **为什么断言里全是数字**：`900`、`180`、`24`、`16` 在 14 种语言里写法都一样，而"最长"、
@@ -11,6 +11,7 @@
 不启真机：这些是文本文件，读一遍就知道对不对。
 """
 
+import importlib.util
 import pathlib
 import re
 import sys
@@ -54,6 +55,30 @@ def sections(text):
 
 def bullets(lines, start, end, mark="• "):
     return [i for i in range(start, end) if lines[i].lstrip().startswith(mark.strip())]
+
+
+def this_version_news():
+    """「此版本的新增功能」那一栏，从**本版那个 port 脚本**里取。
+
+    那一栏每次发版整段换掉（历史留在 CHANGELOG.md），所以「本版说什么」的事实来源是
+    `tools/port-store-listing-<版本>.py`，不是这个文件。这里按路径把它加载进来取那张表 ——
+    自己再列一遍「本版要说的四件事」，就是给同一件事留了第二份答案，而两份答案对不上的
+    时候，看的人只会以为是某一侧写错了字。
+
+    （脚本名带连字符，不能当模块名 import；**且不要顺手调它的 main**。）
+    """
+    saved = sys.argv
+    sys.argv = [sys.argv[0]]
+
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "port_store_listing_1060", REPO / "tools" / "port-store-listing-1060.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    finally:
+        sys.argv = saved
+
+    return module.NEWS
 
 
 def page_name(lang, key):
@@ -100,6 +125,8 @@ def listing_checks():
     secs = sections("\n".join(lines))
     check("商店文案是 14 个语言段", len(secs) == 14, f"{len(secs)} 段")
 
+    NEWS = this_version_news()
+
     for n, lang in enumerate(LANGS):
         _, start, end = secs[n]
         items = bullets(lines, start, end)
@@ -130,15 +157,20 @@ def listing_checks():
 
         body = lines[at]
 
-        # 本版要说这四件事，而它们的名字在 14 种语言里拼法不同 —— 所以拿**各语言自己的页面
-        # 名**当锚（`page_name` 从 resw 里取），不用「900」那种跨语言同形的数字：1.0.5.0
-        # 这一版要说的四件事里没有一件能用一个数字抓住。
-        this = [page_name(lang, key) for key in
-                ("NavBondRace", "NavMarketTurnover", "NavCandle", "NavPosition")]
-        missing = [name for name in this if name not in body]
+        check(f"{lang} 新增功能与本版那份文案逐字一致", body == NEWS[lang],
+              f"{len(body)} 字" if body == NEWS[lang]
+              else f"文案 {len(body)} 字 / 脚本 {len(NEWS[lang])} 字")
 
-        check(f"{lang} 新增功能说到本版这四页", not missing,
-              f"缺 {'、'.join(missing)}" if missing else f"{len(body)} 字")
+        # 反过来看一遍：上一版那一栏数的是「本版新增一个图表页 + 三页各加了新能力」，而那
+        # 些页在 1.0.5.0 已经上架。这一栏是**换**不是加 —— 那四个页面名再出现，就是一句
+        # 与说明段「十七大图表页」并排自相矛盾的旧版本说明。页面名从 resw 取，不写死汉字。
+        stale = [name for name in
+                 (page_name(lang, key) for key in
+                  ("NavBondRace", "NavMarketTurnover", "NavCandle", "NavPosition"))
+                 if name in body]
+
+        check(f"{lang} 新增功能里没有上一版数过的页面名", not stale,
+              "、".join(stale) if stale else "")
         check(f"{lang} 新增功能不超过 1500 字", len(body) <= 1500, f"{len(body)} 字")
 
     # 上一版那句"新增八个图表页"式的旧文案，中英文各断一次足够：这一栏是**换**不是加，

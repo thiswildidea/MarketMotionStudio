@@ -28,7 +28,15 @@ import zipfile
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 MANIFEST = ROOT / "src" / "MarketMotionStudio" / "Package.appxmanifest"
-DEFAULT = ROOT / "artifacts" / "MarketMotionStudio_1.0.5.0_x64_arm64_bundle.msixupload"
+
+# 包名**从 manifest 的版本号算出来，不写死**：写死的那一版在版本号前进之后会一声不响地
+# 去验上一个包，而那个包**每一项都是对的**（它就是照着当时的 manifest 编的）—— 只有
+# 「Identity 都写着 manifest 那个版本」这一条会对不上，于是看起来像「包编错了」，
+# 真因却是脚本在看别的文件。实测 1.0.6.0 那次就是这样。
+DEFAULT = ROOT / "artifacts" / ("MarketMotionStudio_%s_x64_arm64_bundle.msixupload"
+                                % re.search(
+                                    r'<Identity[^>]*Version="([^"]+)"',
+                                    MANIFEST.read_text(encoding="utf-8-sig")).group(1))
 
 SCALES = ["split.scale-100", "split.scale-125", "split.scale-150", "split.scale-400"]
 ARCHS = ["x64", "arm64"]

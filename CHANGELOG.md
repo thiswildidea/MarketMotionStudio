@@ -20,6 +20,83 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.6.0 — 2026-10-06（更新版 / update）
+
+**1.0.5.0 已经提交商店**，所以本版只列在它之上新增的改动。1.0.5.0 上传的那份包是 10-06 08:48
+重编的（带着「标题折成两行」「导出与去水印改为订阅」「未订阅时浓度钉在上限」这三批），
+那三件事因此**不属于本版**。本版只有一件用户可见的事，而它单独发一版是值得的——上一版在
+那里留了一个死口。
+包已构建：`artifacts/MarketMotionStudio_1.0.6.0_x64_arm64_bundle.msixupload`（149.7 MB / 142.8 MiB），
+拆包核验包内六个内包的 Identity 都是 `1.0.6.0`、DisplayName 都是预留字面值。
+Version 1.0.5.0 has been sent to the Store, so this entry lists only what is new on top of it. The
+package submitted as 1.0.5.0 was the one rebuilt at 08:48 on 10-06, which carried three batches of
+change — two-line titles, exporting and watermark removal behind a subscription, and the strength
+pinned at its ceiling while nobody is subscribed — so none of those belong to this version. This
+version has exactly one thing a user can see, and it is worth a version of its own: the previous one
+left a dead end there. The package is built —
+`artifacts/MarketMotionStudio_1.0.6.0_x64_arm64_bundle.msixupload` (149.7 MB / 142.8 MiB) — and all
+six inner packages carry Identity `1.0.6.0` and the reserved literal DisplayName.
+
+### 新增 / Added
+
+- **订阅买不成的时候不再一声不响 / a purchase that cannot go through no longer says nothing** ——
+  上一版留下的是这样一个场面：商店那边没有可买的东西时，`SubscribeAsync` **连商店自己的购买
+  框都不开**（没有东西可给，就不去打扰），而 `PermitAsync` 拿到 false 之后十七个页面一律
+  `return` —— 于是**「按了订阅」和「什么都没按」在画面上完全一样**，人只能把它读成按钮坏了。
+  现在三个答复都要说话：联系不到订阅（商店没有可购买的内容）与购买已报告完成却没有授予权限，
+  各弹一句说明并写清原因；「恢复购买」空手而归也说一句——按下它的人相信自己已经付过钱，
+  「没找到」和「什么都没变」不是同一件事。**唯一仍然安静的是用户自己关掉商店的窗**，那本来
+  就是「不要」的意思。「哪句话答哪个答案」只有一处（`SubscriptionOffer.Explanation`），设置页
+  卡片与导出对话框读的是同一份映射——两处各写一份，同一个结果迟早会被讲成两种意思，而每一份
+  单看都通顺、也都不被另一份反驳。新增第 17 个订阅键 `SubscriptionFailedTitle`（14 语言）。
+  The previous version left this: with nothing to sell, `SubscribeAsync` **never even opens the
+  Store's own purchase dialog** (nothing to offer, so nothing to interrupt with), and every one of
+  the seventeen pages simply `return`s once `PermitAsync` answers false — so **pressing Subscribe
+  and never having pressed it look exactly the same**, and the only reading left is that the button
+  is broken. All three answers speak now: no subscription within reach (the Store has nothing to
+  sell) and a purchase reported complete that granted nothing each get their own dialog with the
+  reason spelled out, and a **Restore purchase** that comes back empty says so too — somebody
+  pressing it believes they have already paid, and "not found" is not the same as "nothing
+  changed". **The one answer that stays quiet is the user closing the Store's own window**, which is
+  what "no" means. Which sentence answers which outcome lives in exactly one place
+  (`SubscriptionOffer.Explanation`): the settings card and the export dialog read the same map,
+  because two copies is how one outcome ends up described two ways, each of them fluent and each
+  uncontradicted by the other. One new subscription key, `SubscriptionFailedTitle`, in 14 languages.
+- **商店加载项查询失败时把错误码写进诊断日志 / the add-on query now logs its own error** ——
+  之前只记 `no add-on named … among 0`，而「清单是空的」与「查询失败了」在外面长得一模一样；
+  少了 `StoreProductQueryResult.ExtendedError` 那一行，排查一律被指引到合作伙伴中心去找，
+  真因却可能在这台机器这个包上（`0x803F6107` 的意思是商店不认这个包）。现在两种情况各留一行。
+  Until now the log only said `no add-on named … among 0`, and *the list is empty* looks exactly
+  like *the query failed* from outside. Without that one line from
+  `StoreProductQueryResult.ExtendedError` every investigation is pointed at Partner Center, when
+  the cause can as well be this machine or this package — `0x803F6107` means the Store does not
+  recognise the package. The two cases now each leave their own line.
+
+### 本版修不了的那一件事 / what this version cannot fix
+
+**订阅能不能买，仍然取决于合作伙伴中心那边，不在本版手里。** 加载项要存在、product ID 要精确
+是 `MarketMotionStudio`、要**已发布并关联到本应用**——`GetAssociatedStoreProductsAsync` 只返回
+已关联的那些。关联没做好，装了本版的人看到的仍然是设置页**一张整块隐藏的订阅卡片**，以及
+导出时那句「联系不到订阅」：**本版把话说出来了，没有把东西变出来。** 加载项发布之后不需要重新
+上传应用，改的是商店那一侧的配置。
+**Whether the subscription can be bought is still decided in Partner Center, not by this version.**
+The add-on has to exist, its product ID has to be exactly `MarketMotionStudio`, and it has to be
+**published and associated with this app** — `GetAssociatedStoreProductsAsync` only returns what is
+associated. If that is not in place, somebody installing this version still gets **a subscription
+card that stays hidden altogether** and the "no subscription within reach" line when exporting: this
+version makes the thing *say* something, it does not make it *exist*. Publishing the add-on does not
+call for a new submission — what has to change is the Store's configuration.
+
+### 开发侧（不进 Release）/ development only (compiled out of Release)
+
+- `tools/simulate-subscription.py on|off|status`：本地 Debug 解锁导出与水印自定义的开关
+  （`LocalState\simulate-subscription.txt`，`#if DEBUG` 包裹，Release 编译掉）。
+  真机判据两处：`verify-debug-subscribed-export.py`（不弹订阅框、文件夹里真的多出 mp4）与
+  `verify-subscription-failure-told.py`（买不成时那个框真的弹出来，且背靠背开第二个对话框
+  不崩）。
+
+---
+
 ## 1.0.5.0 — 2026-10-05（更新版 / update）
 
 **1.0.4.0 的包已经构建，但从未提交商店**，所以本版把它带上一起走，1.0.4.0 不再单独上架。
