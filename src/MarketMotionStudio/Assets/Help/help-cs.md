@@ -115,6 +115,32 @@ kapitalizace; pořadí se mění až do posledního snímku. Vzorkování po mě
 
 
 
+## Historie tržní hodnoty
+
+Tržní hodnota jedné akcie v oběhu den po dni a pod ní cena akcie na stejné časové ose. Nebo více firem najednou — každá jednou linií, pojmenovanou na konci.
+
+- **Hodnota je dopočítaná, ne uvedená.** Zdroj nemá historický počet akcií pro žádný den. Vyplývá z míry obratu, což je objem jako podíl akcií v oběhu — takže `objem ÷ míra obratu` *je* tento počet a hodnota je denní cena krát tento počet.
+
+- **Počet je medián dvaceti dnů.** Míra přichází se dvěma desetinnými místy, takže jeden den nese asi procento šumu, zatímco počet akcií je schodiště: hýbe se při emisi nebo zpětném odkupu a jinak stojí. Medián ponechá stupeň na dni, kdy vznikl.
+
+- **Počítají se jen akcie obchodované na tomto trhu.** Ty, které firma kotuje jinde, zůstávají venku, takže firma kotovaná ve dvou místech leží pod „celkovou tržní hodnotou” z aplikace s kurzy — tam se ony akcie oceňují cenou tohoto trhu. Rozdíl u ICBC tvoří výhradně akcie H. Venku jsou i akcie dosud vázané blokací.
+
+- **V Hongkongu je cena průměrná obchodní.** Tamní trh nedává neupravený závěr, takže cena je objem peněz dělený objemem akcií a dolní panel se jmenuje „průměrná obchodní cena“.
+
+- **New York dělí všemi akciemi, ne těmi obchodovanými.** Jeho míra je podílem všech akcií firmy, včetně akcií zasvěcených osob, takže linie je tam celkovou hodnotou, ne hodnotou v oběhu: počet převyšuje cifru z aplikace přesně o podíl těch osob — u Apple o nic, u NVIDIA o 4 %, u Tesly o 12 %. Dosáhne až do roku 2009, stejně hluboko jako pevnina.
+
+- **Desetiletá křivka vypadá, jako by jednou spadla na nulu — nespadla.** Osa musí pojmout vrchol, takže raný úsek v hodnotě desetiny leží pár pixelů nad základnou: 853 億 u 五粮液 proti vrcholu 13 097 億 je méně než sedm procent jeho výšky. Proto značky minima a maxima nesou vlastní číslo: holý bod tam dole se čte jako nula.
+
+- **Číslo jede po čáře.** Štítek na konci každé čáry pojmenuje firmu a ukáže hodnotu, které v tu chvíli dosáhla, a pohybuje se s animací — posuňte jezdec a pojede s čárou. U jedné firmy má každý panel jeden, hodnotu a cenu, a velké číslo nad panelem říká totéž číslo; u několika jsou štítky zároveň tím, co od sebe čáry rozezná.
+
+- Rozsah: jeden, dva, pět nebo deset let, anebo dvě vlastní data.
+
+Porovnejte více firem najednou. Při více než jednom zapnutém čipu má každá svou linii, pojmenovanou na konci. Ceny více firem nesdílejí poctivou cenovou osu — dejte 贵州茅台 vedle 京东方A a jedna z nich je plochá čára u spodního okraje —, takže dolní panel ustoupí a celý rám patří tržní hodnotě. Až šest; sedmá je odmítnuta, ne potichu vynechána, protože graf ze šesti ze sedmi zaškrtnutých firem odpovídá na seznam, který nikdo nevybral.
+
+Osa hodnoty má dva výklady. Absolutní říká, která firma má větší hodnotu; přepočtená na 100 v první den každé z nich říká, čí hodnota rostla rychleji, a je to jediný čitelný výklad, když je jedna násobkem druhé. V obou případech je osou dat sjednocení jejich dnů, ne průnik: průnik by zkrátil desetileté srovnání na úsek toho, kdo na burzu vstoupil nejpozději.
+
+
+
 ## Prémie A/H
 
 O kolik je kontinentální kotace společnosti dražší než její hongkongská — u společností

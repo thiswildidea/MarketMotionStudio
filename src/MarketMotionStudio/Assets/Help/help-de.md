@@ -121,6 +121,32 @@ die Reihenfolge ändert sich bis zum letzten Bild. Monatlich abgetastet.
 
 
 
+## Marktwert-Verlauf
+
+Der Marktwert einer Aktie im Umlauf Tag für Tag, darunter auf derselben Zeitachse ihr Kurs. Oder mehrere Unternehmen zugleich — je eine Linie, am Ende beschriftet.
+
+- **Der Wert ist errechnet, nicht geliefert.** Die Quelle kennt für keinen Tag eine historische Aktienzahl. Sie folgt aus der Umsatzrate — dem Anteil des Umsatzes an den umlaufenden Aktien — also ist `Umsatz ÷ Umsatzrate` genau diese Zahl, und der Wert ist der Tageskurs mal ihr.
+
+- **Die Zahl ist ein Zwanzig-Tage-Median.** Die Rate kommt mit zwei Dezimalstellen, ein Tag bringt also etwa ein Prozent Rauschen, während eine Aktienzahl eine Treppe ist: Sie springt bei Kapitalerhöhung oder Rückkauf und bleibt sonst. Der Median lässt die Stufe am Tag ihres Sprungs.
+
+- **Gezählt werden nur die Aktien dieses Marktes.** Was das Unternehmen anderswo notiert hat, bleibt draußen; bei doppelter Notierung liegt die Linie unter der „Gesamtmarktkapitalisierung“, die eine Kurs-App zeigt — dort werden die anderen Aktien zum Kurs dieses Marktes bewertet. Die Lücke bei ICBC sind ausschließlich H-Aktien. Noch gebundene Aktien fehlen ebenfalls.
+
+- **In Hongkong ist der Preis ein Handelsdurchschnitt.** Dort gibt es keinen unbereinigten Schlusskurs, also ist der Preis Umsatz geteilt durch Volumen, und das untere Feld heißt „durchschnittlicher Handelskurs“.
+
+- **New York teilt durch alle Aktien, nicht durch die handelbaren.** Seine Rate ist ein Anteil aller Aktien des Unternehmens, auch der von Insidern, also ist die Linie dort ein Gesamtwert statt eines Umlaufwerts: Die Zahl liegt genau um den Insider-Anteil über dem Umlaufwert einer Kurs-App — bei Apple null, bei NVIDIA 4 %, bei Tesla 12 %. Zurück reicht es bis 2009, dieselbe Tiefe wie auf dem Festland.
+
+- **Eine Zehnjahreskurve liest sich, als wäre sie einmal auf null gefallen — und das ist sie nicht.** Die Achse muss die Spitze fassen, also liegt ein früher Abschnitt von einem Zehntel davon nur wenige Pixel über der Grundlinie — 五粮液s 853 億 gegen eine Spitze von 13.097 億 entspricht das nicht einmal sieben Prozent der Panelhöhe. Deshalb tragen die Marken ihren eigenen Wert: Ein bloßer Punkt dort unten wird als null gelesen.
+
+- **Die Zahl fährt auf der Linie mit.** Ein Etikett am vorderen Ende jeder Linie nennt das Unternehmen und zeigt, welchen Wert es in diesem Moment erreicht hat; es bewegt sich mit der Animation — schieben Sie den Regler, und es geht mit der Linie. Bei einem Unternehmen tragen beide Felder je eines, Wert und Kurs, und die große Zahl über dem Feld nennt dieselbe Zahl; bei mehreren sind die Etiketten außerdem das, was die Linien auseinanderhält.
+
+- Zeitraum: ein, zwei, fünf oder zehn Jahre, oder zwei eigene Daten.
+
+Mehrere Unternehmen auf einmal. Bei mehr als einem Chip bekommt jedes eine eigene Linie, am eigenen Ende beschriftet. Die Kurse mehrerer Unternehmen teilen keine ehrliche Preisachse — 贵州茅台 neben 京东方A und eines von beiden ist eine flache Linie am Boden —, darum tritt das untere Preisfeld zurück und der ganze Rahmen gehört dem Marktwert. Bis zu sechs; ein siebtes wird abgelehnt statt still weggelassen, denn ein Bild aus sechs von sieben ausgewählten Unternehmen beantwortet eine Liste, die niemand gewählt hat.
+
+Die Wertachse hat zwei Lesarten. Absolut beantwortet, welches Unternehmen mehr wert ist; auf 100 umbasiert ab dem je eigenen ersten Tag, wessen Wert schneller wuchs — und das ist die einzige lesbare, sobald eines ein Vielfaches des anderen ist. In beiden Fällen ist die Zeitachse die Vereinigung ihrer Tage, nicht der Schnitt: Der Schnitt würde einen Zehnjahresvergleich auf die Spanne der zuletzt notierten Gesellschaft kürzen.
+
+
+
 ## A/H-Prämie
 
 Wie viel teurer die Festlandnotierung eines Unternehmens ist als seine Hongkonger — für die

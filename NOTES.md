@@ -2409,3 +2409,67 @@ int window, int span, double reached, double t)`，三页各调一次。
 **提交前必须做、而且只有你能做的一件事**：到合作伙伴中心把那个加载项建出来（标识符
 `MarketMotionStudio`，按月计费）。没有它，`StoreSubscription` 在商店里找不到任何可买的
 东西，登录用户会看到一张隐藏的卡片。
+## The eighteenth page: market value, recovered rather than served
+
+**What no endpoint has.** A market value is a price times a share count, and while every endpoint
+serves prices as far back as anyone cares to ask, none serves a share count for any past day —
+today's count lives in the quote snapshot and nowhere else. The count is therefore *recovered* from
+the turnover rate, which every daily bar carries: the rate is the volume as a fraction of the shares
+in circulation, so `volume ÷ turnover rate` is the count. It is the only route from what the source
+serves to what this page draws, which is why the page carries an explanatory note of the kind none
+of the others need.
+
+**The rate arrives with two decimals; the count is a staircase.** One day's recovered count carries
+about a percent of noise, while a real share count does not move at all between a placement and a
+buyback. A rolling **twenty-day median** keeps the step on the day it happened and drops the rest; a
+mean would smear the step across twenty frames, which is the opposite of what the picture is for.
+Reconciled against the snapshot's own circulating figure — the one value the source gives
+independently — A-shares agree to 0.04% and Hong Kong to 0.08%. **The US cannot be reconciled this
+way at all**: its turnover rate is quoted to one significant figure, so the comparison measures the
+rounding rather than the arithmetic and reads about ten per cent off. Nothing in the app or the
+script repeats that check today; to see whether a 2009 count is right somebody still has to do it by
+hand.
+
+**"Circulating" means three different things, and only one of them is the word's own meaning.** On
+the mainland and in Hong Kong the rate is a fraction of the shares in circulation, so the line is a
+circulating value, and shares the company lists in another market are outside it entirely — 工商
+银行's gap against a quote app's "total market value" is thirty-two per cent and is all H-shares. In
+New York the rate is a fraction of *every* share the company has, insiders' included, so the line is
+a total value and runs above the circulating figure by exactly the insider stake: 0.0% at Apple,
+4.1% at NVIDIA, 9.4% at Amazon, 11.7% at Tesla. Leaving the US out was the alternative, and drawing
+the larger number while saying what it includes is the better half of that choice — it reaches back
+to 2009, the same depth the mainland gets.
+
+**Comparing several companies took two decisions, and both were the reader's.** With more than one
+line on the frame the lower price panel gives its space up rather than drawing a price axis that
+several companies' prices cannot honestly share, and the value axis is offered in two readings —
+**as it stood**, which answers which company is worth more, and **rebased to 100** at each line's own
+first day, which answers whose value grew faster and is the only readable one once one is several
+times the other. The date axis is the **union** of their trading days, never the overlap: against 中国
+移动, which joined Shanghai in January 2022, the overlap would cost 招商银行 six of its ten years. Up
+to six lines; a seventh pick is refused rather than dropped, because a frame drawn from six of the
+seven companies somebody ticked answers a question about a list nobody chose.
+
+**A point that has not finished growing must not be drawn part-grown.** This cost the second half of
+a day and it is only visible while playing: with `value = values[i] * p`, a point born one frame ago
+is drawn near the baseline, so the line falls off a cliff vertically for a frame or two and then
+carries on — and the last frame is entirely normal, which is why watching frames rather than the
+animation misses it. **The same shape is still in `Render/StockDualRenderer.cs` around line 177**
+(the cumulative curve collects `tops` from part-grown bars), where it has not been touched; the fix
+here (`if (p < 1) break;` — a point arrives whole or not at all) should be ported, or refused, before
+this is called finished.
+
+**Verified 66 ways** (`tools/verify-caphistory.py`), across six segments: one company alone
+(贵州茅台, two years, 485 trading days ending at 15,724 亿), two companies compared over ten years
+(2,427 days against 1,149, starting on different days — which is what proves the union), both
+readings of the value axis, the seventh pick refused, and a US run. `DrawComparison` not touching
+`DrawPanel` or `PanelArea` is asserted **in the source** rather than in pixels: two panels whose line
+ranges overlap is not something a screenshot distinguishes from one tall panel.
+
+**Readings.** 2026-10-07, 贵州茅台 over two years: 485 trading days, 2024-10-08 → 2026-09-30, ending
+at 15,724 亿 and ¥1,258.62 a share.
+
+**Owed on this page:** no export at any format; the custom span has not been exercised; Hong Kong has
+not been driven through it; the English interface has not been read line by line; nothing reconciles
+the recovered count against the source after the day it was built; and the part-grown-point defect
+above still sits in the volume & turnover page's cumulative curve.

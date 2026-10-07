@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>既定でオンです。動画は、どこで作られたかを何も示さない場所に投稿されるものだからです。空にすれば上の名前に戻ります。オフにすることはサブスクリプションで購入する対象のひとつなので、購入まではこのスイッチは動きません。オフにすればフレームには何も入りません。</value></data>
   <data name="SubscriptionFailedTitle"><value>サブスクリプションは完了しませんでした</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>目盛り</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>実際の額</value></data>
+  <data name="CapHistoryAxisNormalized"><value>100 基準</value></data>
+  <data name="CapHistoryRebasedUnit"><value>初日 = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>複数社を比べると枠のすべてが時価総額に割かれます。株価を正直に共有できる価格軸がないためで、各線は末端に名前が付きます。一方が他方の何倍もあるとき、100 基準はどちらが速く伸びたかを答えます。</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} 対 {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} ほか {1} 社</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} 社、{1} 営業日（{2} から {3}）</value></data>
+  <data name="CapHistorySkipped"><value>期間内に値がなく除外（{0} 件）: {1}</value></data>
+  <data name="CapHistoryTooMany"><value>比較できるのは最大 {0} 社です（現在 {1} 社が選択中）</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>リストの選択肢は {0} 市場にありません</value></data>
+  <data name="NavCapHistory.Content"><value>時価総額の推移</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>時価総額の推移</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>一社の流通時価総額の推移と、同じ軸上にその株価。複数社なら一本ずつの線になり、末端に名前が付きます。</value></data>
+  <data name="CapHistoryCapWord"><value>流通時価総額</value></data>
+  <data name="CapHistoryPriceWord"><value>株価</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>平均売買価格</value></data>
+  <data name="CapHistoryCapUnit"><value>億{0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} の時価総額</value></data>
+  <data name="CapHistoryFetched"><value>{0} 営業日、{1} から {2}。期末の時価総額は {3}。</value></data>
+  <data name="CapHistoryNoTurnover"><value>この銘柄にはこの期間の売買高回転率のデータがありません。株数、そして時価総額はそこから求めるため、それがなければ描けるものがありません。</value></data>
+  <data name="CapHistoryMarketNone"><value>この市場は対象外です。回転率から株式数が得られず、それがなければ描ける値もありません。</value></data>
+  <data name="CapHistoryRangeTooLong"><value>この期間はこのページが辿れる範囲を超えています。一連のリクエストで届くのはおよそ {0} 年までです。</value></data>
+  <data name="CapHistoryNote.Text"><value>ここで数えるのはこの市場で取引される株式だけで、この会社が別の市場に上場している株式は含みません。二重上場の会社では、その線は相場アプリが示す『総時価総額』より下になります——あちらは別市場の株式もこの市場の価格で換算しているからです。</value></data>
+  <data name="CapHistoryHighMark"><value>最高 {0}</value></data>
+  <data name="CapHistoryLowMark"><value>最低 {0}</value></data>
+  <data name="StudioRange60M"><value>5 年</value></data>
+  <data name="StudioRange120M"><value>10 年</value></data>
 </root>

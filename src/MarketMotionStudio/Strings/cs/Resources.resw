@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Ve výchozím stavu zapnuto: video končí někde, kde nic neříká, kde vzniklo. Prázdné se vrací k výše uvedenému jménu. Vypnutí patří k tomu, co kupuje předplatné, takže do té doby přepínač zůstává tam, kde je; vypnuto — snímky nenesou nic.</value></data>
   <data name="SubscriptionFailedTitle"><value>Předplatné se neuskutečnilo</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Osa hodnoty</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>Skutečná hodnota</value></data>
+  <data name="CapHistoryAxisNormalized"><value>Přepočteno na 100</value></data>
+  <data name="CapHistoryRebasedUnit"><value>první den = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Při porovnání více firem patří celý rám tržní hodnotě — neexistuje cenová osa, kterou by jejich ceny sdílely poctivě — a každá linie je pojmenována na konci. Přepočet říká, čí hodnota rostla rychleji, když je jedna násobkem druhé.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} vs {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} a dalších {1}</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} firem za {1} obchodních dnů ({2} až {3})</value></data>
+  <data name="CapHistorySkipped"><value>Bez hodnoty v rozsahu, vynechány ({0}): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>Lze porovnat nejvýše {0} firem; zapnuto je {1}</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>Žádná položka z tvého seznamu není na trhu {0}</value></data>
+  <data name="NavCapHistory.Content"><value>Tržní hodnota</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Historie tržní hodnoty</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>Tržní hodnota jedné firmy v čase a pod ní cena akcie — nebo více firem, každá jednou linií pojmenovanou na konci.</value></data>
+  <data name="CapHistoryCapWord"><value>Tržní hodnota</value></data>
+  <data name="CapHistoryPriceWord"><value>Cena akcie</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Průměrná obchodní cena</value></data>
+  <data name="CapHistoryCapUnit"><value>100 mil. {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} tržní hodnota</value></data>
+  <data name="CapHistoryFetched"><value>{0} obchodních dnů, {1} až {2}. Tržní hodnota na konci: {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>Pro tento nástroj v tomto rozsahu chybí údaj o obratu. Z něj se počítá počet akcií a tedy hodnota — bez něj není co kreslit.</value></data>
+  <data name="CapHistoryMarketNone"><value>Tento trh není podporován: jeho míra obratu nedává počet akcií, a bez něj není žádná hodnota ke kreslení.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>Tento rozsah je delší, než kolik tato strana může projít: asi {0} let je maximum jedné série požadavků.</value></data>
+  <data name="CapHistoryNote.Text"><value>Počítají se jen akcie obchodované na tomto trhu, ne ty, které firma kotuje jinde. U firmy kotované ve dvou místech proto linie leží pod „celkovou tržní hodnotou“, kterou ukazuje aplikace s kurzy a která oceňuje ony další akcie cenou tohoto trhu.</value></data>
+  <data name="CapHistoryHighMark"><value>Maximum {0}</value></data>
+  <data name="CapHistoryLowMark"><value>Minimum {0}</value></data>
+  <data name="StudioRange60M"><value>5 let</value></data>
+  <data name="StudioRange120M"><value>10 let</value></data>
 </root>

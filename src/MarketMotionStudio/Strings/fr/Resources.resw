@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Activé par défaut : une vidéo est publiée quelque part qui ne dit rien d'où elle a été faite. Laissé vide, il reprend le nom ci-dessus. Le retirer fait partie de ce que l'abonnement achète : jusque-là, cet interrupteur reste où il est ; désactivé, les images ne portent rien.</value></data>
   <data name="SubscriptionFailedTitle"><value>L'abonnement n'a pas abouti</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Axe des valeurs</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>Valeur réelle</value></data>
+  <data name="CapHistoryAxisNormalized"><value>Rebasé sur 100</value></data>
+  <data name="CapHistoryRebasedUnit"><value>1er jour = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Comparer plusieurs entreprises donne tout le cadre à la valeur de marché — il n'existe pas d'axe de prix que leurs cours partagent honnêtement — et chaque courbe est nommée à son extrémité. Le rebasement répond à la question de laquelle a le plus progressé quand l'une vaut plusieurs fois l'autre.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} contre {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} et {1} autres</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} entreprises sur {1} séances ({2} à {3})</value></data>
+  <data name="CapHistorySkipped"><value>Sans valeur sur la période, non tracées ({0}) : {1}</value></data>
+  <data name="CapHistoryTooMany"><value>On peut comparer au plus {0} entreprises ; {1} sont sélectionnées</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>Aucun élément de votre liste n'est sur le marché {0}</value></data>
+  <data name="NavCapHistory.Content"><value>Valeur de marché</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Historique de la valeur de marché</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>La valeur de marché en circulation d'une entreprise au fil des années, avec son cours en dessous — ou plusieurs entreprises comparées, chacune une courbe nommée à son extrémité.</value></data>
+  <data name="CapHistoryCapWord"><value>Valeur en circulation</value></data>
+  <data name="CapHistoryPriceWord"><value>Cours de l'action</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Prix moyen des transactions</value></data>
+  <data name="CapHistoryCapUnit"><value>100 M {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} valeur de marché</value></data>
+  <data name="CapHistoryFetched"><value>{0} séances, du {1} au {2}. Valeur à la fin : {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>Aucune donnée de rotation pour cet instrument sur cette période. Le nombre d'actions, et donc la valeur, en est déduit : sans elle, rien à tracer.</value></data>
+  <data name="CapHistoryMarketNone"><value>Ce marché n'est pas servi : son taux de rotation ne donne pas de nombre d'actions, et sans lui il n'y a aucune valeur à tracer.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>Cette période dépasse ce que cette page peut parcourir : environ {0} ans, c'est le maximum atteint par une série de requêtes.</value></data>
+  <data name="CapHistoryNote.Text"><value>Seules les actions négociées sur ce marché sont comptées, pas celles que l'entreprise cote ailleurs. Pour une société à double cotation, la courbe passe donc sous la « capitalisation totale » des applications de cotation, qui évalue ces autres actions au cours de ce marché.</value></data>
+  <data name="CapHistoryHighMark"><value>Haut {0}</value></data>
+  <data name="CapHistoryLowMark"><value>Bas {0}</value></data>
+  <data name="StudioRange60M"><value>5 ans</value></data>
+  <data name="StudioRange120M"><value>10 ans</value></data>
 </root>

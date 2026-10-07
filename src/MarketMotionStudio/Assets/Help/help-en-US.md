@@ -119,6 +119,32 @@ order changing to the last frame. Sampled monthly.
 
 
 
+## Market Value History
+
+One stock's circulating market value day by day, with its share price beneath it on the same time axis. Or several companies at once — one line each, named at its end.
+
+- **The value is recovered, not quoted.** The source has no historical share count for any day. The count comes from the turnover rate, which is the volume as a fraction of the shares in circulation — so `volume ÷ turnover rate` *is* the circulating count, and the value is the day's price times it.
+
+- **The count is a twenty-day median.** The rate arrives with two decimals, so one day's count carries about a percent of noise, while a share count is a staircase — it moves on a placement or a buyback and is flat between. The median keeps the step on the day it happened and drops the rest.
+
+- **Only the shares traded in this market are counted.** Shares the company lists somewhere else are left out, so a company listed in two places sits below the “total market value” a quote app shows — that figure prices the other market's shares at this market's price too. ICBC's gap is entirely H-shares. Stock still under lock-up in this market is out as well.
+
+- **In Hong Kong the price is a traded average.** That market serves no unadjusted close, so the price is the amount over the volume, and the lower panel is labelled “average trade price” rather than “share price”.
+
+- **New York divides by every share, not by the ones that trade.** Its rate is a fraction of all the shares the company has, insiders' included, so the line there is a total value rather than a circulating one: the count runs above a quote app's circulating figure by exactly the insider stake — nothing at Apple, 4% at NVIDIA, 12% at Tesla. It reaches back to 2009, the same depth the mainland gets.
+
+- **A ten-year curve reads as if it once went to zero, and does not.** The axis has to hold the peak, so an early stretch worth a tenth of it sits within a few pixels of the baseline — 五粮液's 853 亿 against a 13,097 亿 peak is under seven per cent of it. That is why the low and high marks print their own figures: a bare dot down there is read as zero.
+
+- **The figure rides the line.** A label at each line's leading end names the company and gives the value it has reached at that moment, and it moves with the animation — scrub the bar and it goes with the line. With one company both panels carry one, value and price, and the big figure over the panel says the same number; with several the labels are also what tells the lines apart.
+
+- Span: one, two, five or ten years, or two dates of your own.
+
+Compare several companies at once. Tick more than one chip and each gets a line, named at its own leading end. Several companies' share prices do not share a price axis honestly — put 贵州茅台 beside 京东方A and one of them is a flat line along the bottom — so the lower price panel steps aside and the whole frame goes to market value. Up to six; a seventh is refused rather than quietly dropped, because a frame drawn from six of the seven companies somebody ticked answers about a list nobody chose.
+
+The value axis has two readings. Absolute answers which company is worth more; rebased to 100 at each line's own first day answers whose value grew faster, and is the only readable one once one is several times the other. Either way the date axis is the union of their days rather than the overlap: the overlap would cut a ten-year comparison down to the stretch of whichever listed last.
+
+
+
 ## AH premium
 
 How much more a company's mainland listing costs than its Hong Kong one, for the firms

@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Root element is the base class; see the note in MarketTurnoverPage.xaml. -->
+<local:StudioPage
+    x:Class="MarketMotionStudio.Pages.CapHistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:MarketMotionStudio.Controls"
+    xmlns:local="using:MarketMotionStudio.Pages"
+    xmlns:views="using:MarketMotionStudio.Views"
+    NavigationCacheMode="Required">
+
+    <!-- Required, not Disabled: the instrument and the span are choices someone made
+         once and expects to find as they left them. -->
+
+    <Grid RowDefinitions="Auto,*">
+
+        <StackPanel Grid.Row="0" Padding="24,20,24,12" Spacing="2">
+            <TextBlock x:Uid="CapHistoryPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock x:Uid="CapHistoryPageSubtitle"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+
+            <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto" Margin="24,0,12,24" RowSpacing="12">
+
+                <views:PreviewSurface x:Name="Preview" Grid.Row="0" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <!-- Icon button; see the note in MarketTurnoverPage.xaml. -->
+                    <Button x:Name="PlayButton"
+                            Grid.Column="0"
+                            Width="44"
+                            IsEnabled="False"
+                            Click="OnPlay">
+                        <FontIcon x:Name="PlayIcon" Glyph="&#xE768;" FontSize="16" />
+                    </Button>
+                    <Slider x:Name="Scrub"
+                            Grid.Column="1"
+                            Minimum="0" Maximum="1"
+                            StepFrequency="0.001"
+                            ValueChanged="OnScrub"
+                            VerticalAlignment="Center" />
+                    <TextBlock x:Name="ScrubText"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               MinWidth="72"
+                               TextAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <mux:InfoBar x:Name="Status" Grid.Row="2" IsOpen="False" IsClosable="True" />
+            </Grid>
+
+            <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
+                <StackPanel Spacing="14">
+
+                    <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- The reader's own list, shared with every roster board rather than kept
+                         as a second one here: a preference about a company is about the company,
+                         not about the page it was set on. The chips are switches — clicking a
+                         name decides whether that company is on this frame — while the × still
+                         takes it off the shared list everywhere.
+
+                         One company drawn gives the two panels below; several give one panel
+                         and one line apiece, named at each line's own end. -->
+                    <views:WatchlistPicker x:Name="Watch" Selectable="True" />
+
+                    <!-- One-tap instruments, the same long-hold names the position page
+                         offers: a value history is asked about the things someone might
+                         have held, not about the day's volume leaders. A press puts the
+                         company on the list above *and* switches it on for this frame — a
+                         pick that arrived on the list but switched off would draw nothing,
+                         which reads as a broken button rather than as a setting.
+
+                         Addressed by its code rather than by the name it happens to display:
+                         the name is the one the interface language spells, so anything that
+                         has to reach one of these would otherwise have to know fourteen
+                         spellings of it. -->
+                    <ItemsControl x:Name="Presets">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:MatrixPreset">
+                                <Button Content="{x:Bind Name}"
+                                        AutomationProperties.AutomationId="{x:Bind Code}"
+                                        Tag="{x:Bind Code}"
+                                        Click="OnPresetClick"
+                                        Margin="0,0,8,6" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- How far back. The value is recovered from the row rather than read
+                         off it, so a longer span is more requests rather than a bigger one;
+                         ten years is twenty pages and is the longest span offered. -->
+                    <ComboBox x:Name="RangeCombo"
+                              x:Uid="StudioRange"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnRangeChanged" />
+
+                    <!-- Shown only while the custom span is selected. Not wired to fetch on
+                         every spin of a calendar: a date is picked in three clicks and each
+                         one would be a request, so the span is submitted with 取数 the way
+                         every other page's custom range is. -->
+                    <StackPanel x:Name="CustomRange" Spacing="8" Visibility="Collapsed">
+                        <DatePicker x:Name="FromDate" x:Uid="StudioRangeFrom" HorizontalAlignment="Stretch" />
+                        <DatePicker x:Name="ToDate" x:Uid="StudioRangeTo" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+
+                    <!-- Which reading of the value panel's vertical axis is drawn. Both read
+                         marks that are already on the page, so this redraws and stops there.
+
+                         It is a constructor argument and not a property on the renderer for a
+                         reason that has nothing to do with this page: the scale, the unit word
+                         and how the numbers are written are all decided once, from it, where
+                         the renderer is built — so a page that set it afterwards got the
+                         default reading of every one of them and could not tell. Which is to
+                         say nothing here looks wrong if you get this the other way round.
+
+                         Only meaningful while several companies are on the frame: one line
+                         against a rebased axis is a line starting at 100 and saying nothing. -->
+                    <ComboBox x:Name="AxisCombo"
+                              x:Uid="CapHistoryAxisLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnAxisChanged" />
+
+                    <TextBlock x:Uid="CapHistoryAxisNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- What the upper panel is counting. Said here, next to the control
+                         that chooses the instrument, because "market value" is the one
+                         figure on this page a reader could take for the wrong one: the
+                         source will only give up the circulating share count, so it is the
+                         circulating value that is drawn. -->
+                    <TextBlock x:Uid="CapHistoryNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <Button x:Name="FetchButton"
+                            x:Uid="StudioFetch"
+                            HorizontalAlignment="Stretch"
+                            Click="OnFetch" />
+
+                    <views:VideoSettingsPanel x:Name="VideoSettings" />
+
+                    <Button x:Name="ExportButton"
+                            x:Uid="StudioExport"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="OnExport" />
+
+                    <Button x:Name="CoverButton"
+                            x:Uid="StudioCover"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnSaveCover" />
+
+                    <TextBlock x:Uid="StudioCoverNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <Button x:Name="CancelButton"
+                            x:Uid="StudioCancel"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnCancel" />
+
+                    <TextBlock x:Uid="StudioDisclaimer"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</local:StudioPage>

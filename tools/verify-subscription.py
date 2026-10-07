@@ -95,6 +95,18 @@ def pages():
     return sorted(name for name in os.listdir(folder) if name.endswith(".xaml.cs"))
 
 
+def chart_pages():
+    """导航里那几个**图表页**的 Tag —— 闸门该有几道，由它说了算。
+
+    从 `MainWindow.xaml` 数出来，而不是把「十七」这种数字抄在下面的断言里：抄下来的数字
+    在加第十九页那天照样是绿的，而那一页的导出按钮可能根本没问过闸口 —— 正是这条断言
+    存在的理由。帮助页与设置页没有导出按钮，所以认 Tag 排除。
+    """
+    tags = re.findall(r'<mux:NavigationViewItem[^>]*\bTag="([^"]+)"',
+                      read("MainWindow.xaml"))
+    return [tag for tag in tags if tag not in ("Help", "Settings")]
+
+
 def handler_body(text, name):
     """某个 handler 到下一个同类 handler 之间的那一段。"""
     at = text.find("private async void " + name + "(")
@@ -159,14 +171,14 @@ def source():
             homegrown.append(name)
 
     check("每一个有导出按钮的页面都问了同一个闸口",
-          len(export) == 17 and not late,
-          "{} 页有导出、{} 页没问（或问晚了）{}".format(
-              len(export), len(late), late[:4] if late else ""))
+          len(export) == len(chart_pages()) and not late,
+          "{} 页有导出（导航里 {} 页）、{} 页没问（或问晚了）{}".format(
+              len(export), len(chart_pages()), len(late), late[:4] if late else ""))
 
     coverless = [name for name in pages() if handler_body(read("Pages", name), "OnSaveCover")]
 
     check("封面 PNG 仍然免费——`OnSaveCover` 里没有闸口",
-          len(coverless) == 17 and not free,
+          len(coverless) == len(chart_pages()) and not free,
           "{} 页能存封面、{} 页被误锁{}".format(
               len(coverless), len(free), free[:4] if free else ""))
 

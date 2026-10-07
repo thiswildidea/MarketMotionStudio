@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Varsayılan olarak açık: bir video, nerede üretildiğini hiç göstermeyen bir yerde yayımlanır. Boş bırakılırsa yukarıdaki ada döner. Kapatmak, aboneliğin satın aldığı şeylerden biri olduğu için o zamana kadar bu anahtar olduğu yerde kalır; kapatıldığında kareler hiçbir şey taşımaz.</value></data>
   <data name="SubscriptionFailedTitle"><value>Abonelik gerçekleşmedi</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Değer ekseni</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>Gerçek değer</value></data>
+  <data name="CapHistoryAxisNormalized"><value>100'e göre yeniden</value></data>
+  <data name="CapHistoryRebasedUnit"><value>ilk gün = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Birden çok şirket karşılaştırıldığında çerçevenin tamamı piyasa değerine kalır — fiyatlarının dürüstçe paylaşacağı bir fiyat ekseni yoktur — ve her çizgi ucunda adlandırılır. Yeniden basma, biri diğerinin katları olduğunda kimin değeri daha hızlı büyüdü sorusunu yanıtlar.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} ve {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} ve {1} tane daha</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} şirket, {1} işlem günü ({2} - {3})</value></data>
+  <data name="CapHistorySkipped"><value>Aralıkta değeri yok, çıkarıldı ({0}): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>En fazla {0} şirket karşılaştırılabilir; {1} tanesi açık</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>Listenizdeki hiçbir seçim {0} piyasasında değil</value></data>
+  <data name="NavCapHistory.Content"><value>Piyasa değeri geçmişi</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Piyasa değeri geçmişi</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>Bir şirketin yıllar içindeki dolaşımdaki piyasa değeri, altında hisse fiyatı — ya da karşılaştırılan birden çok şirket, her biri ucunda adı yazan bir çizgi.</value></data>
+  <data name="CapHistoryCapWord"><value>Dolaşımdaki değer</value></data>
+  <data name="CapHistoryPriceWord"><value>Hisse fiyatı</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Ortalama işlem fiyatı</value></data>
+  <data name="CapHistoryCapUnit"><value>100 Mn {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} piyasa değeri</value></data>
+  <data name="CapHistoryFetched"><value>{0} işlem günü, {1} - {2}. Sonda değer: {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>Bu aralıkta bu enstrüman için devir verisi yok. Hisse sayısı ve dolayısıyla değer onunla bulunur; olmadan çizilecek bir şey yok.</value></data>
+  <data name="CapHistoryMarketNone"><value>Bu piyasa sunulmuyor: devir oranı bir hisse sayısı vermiyor, o olmadan çizilecek bir değer de yok.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>Bu aralık bu sayfanın yürüyebileceğinden uzun: bir dizi isteğin ulaştığı en fazla süre yaklaşık {0} yıl.</value></data>
+  <data name="CapHistoryNote.Text"><value>Yalnızca bu piyasada işlem gören hisseler sayılır; şirketin başka yerde listelediği hisseler sayılmaz. İki yerde listelenen bir şirkette çizgi bu yüzden bir fiyat uygulamasının gösterdiği «toplam piyasa değeri»nin altında kalır; o değer, diğer hisseleri de bu piyasanın fiyatıyla hesaplar.</value></data>
+  <data name="CapHistoryHighMark"><value>En yüksek {0}</value></data>
+  <data name="CapHistoryLowMark"><value>En düşük {0}</value></data>
+  <data name="StudioRange60M"><value>5 yıl</value></data>
+  <data name="StudioRange120M"><value>10 yıl</value></data>
 </root>

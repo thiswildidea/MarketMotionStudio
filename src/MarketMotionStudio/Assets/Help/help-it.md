@@ -119,6 +119,32 @@ capitalizzazione; l'ordine cambia fino all'ultimo fotogramma. Campionamento mens
 
 
 
+## Storia del valore di mercato
+
+Il valore di mercato flottante di un'azione giorno per giorno, con sotto il prezzo sullo stesso asse temporale. Oppure più aziende insieme — una linea ciascuna, nominata all'estremità.
+
+- **Il valore è ricostruito, non quotato.** La fonte non ha un numero storico di azioni per nessun giorno. Viene dal tasso di rotazione, che è il volume come frazione delle azioni in circolazione — quindi `volume ÷ tasso di rotazione` *è* quel numero, e il valore è il prezzo del giorno per esso.
+
+- **Il numero è la mediana di venti giorni.** Il tasso arriva con due decimali: un giorno porta circa un punto percentuale di rumore, mentre il numero di azioni è una scala — si muove su un aumento di capitale o un riacquisto e resta fermo in mezzo. La mediana lascia il gradino nel giorno in cui è avvenuto.
+
+- **Si contano solo le azioni scambiate in questo mercato.** Quelle che la società quota altrove restano fuori, quindi una società a doppia quotazione sta sotto la «capitalizzazione totale» mostrata dalle app di quotazioni, che valuta le azioni dell'altro mercato al prezzo di questo. Il divario di ICBC è fatto interamente di azioni H. Restano fuori anche le azioni ancora vincolate.
+
+- **A Hong Kong il prezzo è una media degli scambi.** Quel mercato non serve un closing non rettificato: il prezzo è l'importo diviso il volume, e il pannello inferiore si chiama «prezzo medio degli scambi».
+
+- **New York divide per tutte le azioni, non per quelle scambiate.** Il suo tasso è una frazione di tutte le azioni della società, comprese quelle degli interni, quindi la linea è un valore totale più che uno flottante: il numero supera la cifra flottante di un'app esattamente della quota degli interni — nulla in Apple, 4% in NVIDIA, 12% in Tesla. Arriva fino al 2009, la stessa profondità del continente.
+
+- **Una curva di dieci anni sembra essere passata per zero, e non è così.** L'asse deve contenere il massimo, quindi un tratto iniziale che vale un decimo sta a pochi pixel dalla base: 853 億 di 五粮液 contro un massimo di 13.097 億 sono meno del sette per cento della sua altezza. Per questo i segni di minimo e massimo portano la loro cifra: un punto nudo laggiù si legge come zero.
+
+- **La cifra cavalca la linea.** Un'etichetta sull'estremità di ogni linea nomina l'azienda e dà il valore che ha raggiunto in quel momento, e si muove con l'animazione: trascina la barra e se ne va con la linea. Con un'azienda entrambi i pannelli ne portano una, valore e prezzo, e la cifra grande sopra il pannello dice lo stesso numero; con più aziende le etichette sono anche ciò che distingue le linee fra loro.
+
+- Intervallo: uno, due, cinque o dieci anni, oppure due date a scelta.
+
+Confronta più aziende insieme. Con più di un chip attivo ognuna ha la sua linea, nominata all'estremità. I prezzi di più aziende non condividono un asse onesto — 贵州茅台 accanto a 京东方A e una delle due è una linea piatta sul fondo —, quindi il pannello inferiore si fa da parte e tutto il riquadro va al valore di mercato. Fino a sei; la settima è rifiutata invece di essere lasciata fuori in silenzio, perché un grafico fatto con sei delle sette aziende selezionate risponde a un elenco che nessuno ha scelto.
+
+L'asse del valore ha due letture. L'assoluto dice quale azienda vale di più; il ribasamento a 100 sul primo giorno di ciascuna dice quale valore è cresciuto più in fretta, ed è l'unico leggibile quando una vale più volte l'altra. In entrambi i casi l'asse delle date è l'unione dei loro giorni, non l'intersezione: l'intersezione ridurrebbe un confronto di dieci anni al tratto della quotazione più recente.
+
+
+
 ## Premio A/H
 
 Quanto costa in più la quotazione continentale di una società rispetto a quella di Hong Kong,

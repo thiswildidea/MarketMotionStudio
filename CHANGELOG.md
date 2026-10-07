@@ -20,6 +20,51 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.9.0 — 2026-10-07（更新版 / update）
+
+**本版加第十八页：市值历程。** 一只股票的**流通市值**逐日成线，下面是它同一段时间的股价，两块面板
+共用一条时间轴；也可以一次放几家公司，一家一条线。
+
+这一页最难的不是画，是**没有任何源端给出历史股本**。市值 = 价格 × 股本，价格源端天天有，股本没有。
+本版按一条恒等式把它算回来：**成交量 ÷ 换手率 = 流通股本**（换手率的单位是「占流通股本的百分之几」，
+所以成交量除以它正好落回股数），取滚动 30 日的中位数抗住单日异常，再拿当天的价格去乘。对账结果：
+A股用不复权收盘价，误差 −0.04%；港股拿不到不复权价，改走**成交额 ÷ 成交量**自算当天均价，误差
++0.08%；美股的换手率源端只给一位有效数字（差 10%），**因此美股不算**，页面只收本市场可交易的股票。
+
+顺带一条要说清楚的口径：这样算出来的是**本市场可交易的那些股份**。两地上市的公司因此会低于行情软件
+上「总市值」那个数字 —— 不是算错，是算的不是同一个东西。
+
+线头上的数字是**骑线胶囊**：跟着线走，报的是动画走到那一刻的值，不是序列末值。只放一只时两块面板各
+一颗；放几只时，那几个标签是画面上唯一说明哪条线是哪家的东西。
+包已构建：`artifacts/MarketMotionStudio_1.0.9.0_x64_arm64_bundle.msixupload`（149.8 MB / 142.8 MiB），
+拆包核验包内六个内包的 Identity 都是 `1.0.9.0`。
+Version 1.0.9.0 adds the eighteenth page, Market Value History: one company's circulating market
+value day by day, with its share price beneath it on the same time axis, or several companies at
+once, one line each. The hard part is not drawing it — it is that **no source carries a historical
+share count**. Value is price times count, and while the price arrives daily, the count does not, so
+it is recovered from an identity: **volume divided by the turnover rate is the circulating count**
+(the rate is a percentage *of* the circulating count, so dividing volume by it lands back on shares),
+taken as a rolling 30-day median so one odd day cannot move it, then multiplied by that day's price.
+Checked against quoted figures: A-shares, using the unadjusted close, land within −0.04%; Hong Kong,
+which offers no unadjusted price, derives the day's average as turnover ÷ volume and lands within
++0.08%; US listings are **not computed**, because their turnover rate carries a single significant
+digit (a 10% gap) — the page accepts only the stocks traded in the market it is showing. One
+consequence worth stating: the figure counts the shares tradable *in this market*, so a company
+listed in two places sits below the "total market value" a quote app shows. Not a wrong sum — a
+different one. The number riding each line's leading end moves with the animation and reports the
+value reached at that moment rather than the last value of the series; with one company both panels
+carry one, and with several they are the only thing on the frame that says which line is whose.
+
+### 新增 / Added
+
+- **第十八页「市值历程」/ Market Value History, the eighteenth page** —— 一只或几只，市值与股价
+  上下两块面板共轴；多标的时日期轴取**并集**，晚上市的那家从自己第一个交易日起，一次最多 6 家。
+- **股本由换手率反推 / the share count is recovered from the turnover rate** —— 市值历史源端没有，
+  只能算；美股因换手率精度不足而不算，不是没做。
+- **骑线胶囊 / a capsule riding each line** —— 圆角底 + 该线自己颜色的描边，随动画走，报当下值。
+
+---
+
 ## 1.0.8.0 — 2026-10-06（更新版 / update）
 
 **本版认的是另一只加载项。** 第一只在合作伙伴中心里建成了「Microsoft Store 托管的易耗品」——

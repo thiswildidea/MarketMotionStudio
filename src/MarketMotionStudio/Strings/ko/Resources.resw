@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>기본적으로 켜져 있습니다. 영상은 어디서 만들어졌는지 아무것도 알려주지 않는 곳에 올라가기 때문입니다. 비워 두면 위의 이름으로 돌아갑니다. 워터마크를 끄는 것은 구독으로 구매하는 대상 중 하나이므로, 구독 전까지는 이 스위치를 움직일 수 없습니다. 끄면 프레임에 아무것도 들어가지 않습니다.</value></data>
   <data name="SubscriptionFailedTitle"><value>구독이 완료되지 않았습니다</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>값 축</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>실제 값</value></data>
+  <data name="CapHistoryAxisNormalized"><value>100 기준</value></data>
+  <data name="CapHistoryRebasedUnit"><value>첫날 = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>여러 기업을 비교하면 프레임 전체를 시가총액에 씁니다(주가를 정직하게 공유할 가격 축이 없으므로). 각 선은 끝에 이름이 붙습니다. 한쪽이 다른 쪽의 몇 배일 때 100 기준은 누가 더 빨리 컸는지를 답합니다.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} 대 {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} 외 {1}개</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0}개 기업, {1}거래일({2}~{3})</value></data>
+  <data name="CapHistorySkipped"><value>구간에 값이 없어 제외({0}개): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>최대 {0}개 기업만 비교할 수 있습니다. 현재 {1}개가 켜져 있습니다</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>목록의 어떤 항목도 {0} 시장에 없습니다</value></data>
+  <data name="NavCapHistory.Content"><value>시가총액 추이</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>시가총액 추이</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>한 기업의 유통 시가총액 추이와 같은 축 위의 주가. 여러 기업이면 선 하나씩으로 그려지고 끝에 이름이 붙습니다.</value></data>
+  <data name="CapHistoryCapWord"><value>유통 시가총액</value></data>
+  <data name="CapHistoryPriceWord"><value>주가</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>평균 거래가</value></data>
+  <data name="CapHistoryCapUnit"><value>억 {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} 시가총액</value></data>
+  <data name="CapHistoryFetched"><value>{0}거래일, {1}~{2}. 기말 시가총액 {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>해당 구간에 이 종목의 회전율 데이터가 없습니다. 주식 수와 시가총액은 그것에서 구하므로, 없으면 그릴 것이 없습니다.</value></data>
+  <data name="CapHistoryMarketNone"><value>이 시장은 지원되지 않습니다. 회전율에서 주식 수를 얻을 수 없고, 그것 없이는 그릴 값도 없습니다.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>이 구간은 이 페이지가 탐색할 수 있는 범위를 넘습니다. 한 번의 요청으로 닿는 범위는 약 {0}년입니다.</value></data>
+  <data name="CapHistoryNote.Text"><value>이 시장에서 거래되는 주식만 셉니다. 회사가 다른 시장에 상장한 주식은 포함하지 않습니다. 이중 상장 기업이라면 이 선은 시세 앱이 보여주는 '총 시가총액'보다 낮게 나옵니다. 그 값은 다른 시장의 주식까지 이 시장 가격으로 환산하기 때문입니다.</value></data>
+  <data name="CapHistoryHighMark"><value>최고 {0}</value></data>
+  <data name="CapHistoryLowMark"><value>최저 {0}</value></data>
+  <data name="StudioRange60M"><value>5년</value></data>
+  <data name="StudioRange120M"><value>10년</value></data>
 </root>

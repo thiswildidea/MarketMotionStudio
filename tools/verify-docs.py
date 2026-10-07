@@ -28,12 +28,23 @@ MANIFEST = REPO / "src" / "MarketMotionStudio" / "Package.appxmanifest"
 LANGS = ["zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de", "fr", "it",
          "es", "pt-BR", "pl", "cs", "ru", "tr"]
 
-# 帮助手册章节序号（0 起）。25 章在 14 种语言里同顺序。
-# Chapter positions, which is to say positions in the navigation: the seventeenth page went in
-# after the asset race, so every chapter after it — and every constant below that points at one —
-# moved down by one. The headings are in fourteen languages, so a position is the only thing that
-# can be asserted on.
-CH_CANDLE, CH_VOLUME, CH_CAP, CH_DATA = 3, 4, 6, 23
+sys.path.insert(0, str(REPO / "tools"))
+
+import listingtext  # noqa: E402
+
+# 帮助手册章节序号（0 起），**推出来的，不是抄下来的**。
+#
+# 三个页面章问导航要：章节顺序就是导航顺序，往中间插一章会让它后面每一章整体后移一位，
+# 而抄在下面的数字不会跟着动 —— 1.0.8.0 加了「市值历程」这一章，写死的 23 从此指向
+# 「动画背景」，于是那条断言开始说「数据章写着 900 而不是 640」，而它抱怨的那一章根本
+# 不是数据章。用 `chapter_of` 问，同一个数字由导航自己算。
+#
+# 数据章不是页面，导航里没有它，所以按它在文件末尾的位置取：它永远是倒数第三章，而往
+# 中间插多少章都不影响这一点。负数索引直接喂给 `chapter_bullets`。
+CH_CANDLE = listingtext.chapter_of("NavCandle")
+CH_VOLUME = listingtext.chapter_of("NavStockVolume")
+CH_CAP = listingtext.chapter_of("NavMarketCap")
+CH_DATA = -3
 
 PASSED = []
 FAILED = []
@@ -152,15 +163,23 @@ def listing_checks():
 
         # 一页一条，所以这个数字**跟着页数走**：加一页就要回来改这里，那正是它该有的摩擦。
         # 清单是历来一次次上架时追加出来的顺序，所以新的一页追加在末尾 —— 末尾那条也因此
-        # 换了页。（1.0.5.0 之前这一条是「十六条 / 最后一条是持有胜率」，第十七页债市固收
-        # 从来没进过商店文案，直到本版。）
-        check(f"{lang} 说明段是十七条", len(items) == 17, f"{len(items)} 条")
+        # 换了页。（1.0.5.0 之前这一条是「十六条 / 最后一条是持有胜率」；第十七页债市固收
+        # 从来没进过商店文案，直到那一版；第十八页市值历程同样是在它已经在应用里之后才由
+        # `port-store-listing-caphistory.py` 补进来的。）
+        check(f"{lang} 说明段是十八条", len(items) == 18, f"{len(items)} 条")
 
         if items:
-            last = page_name(lang, "NavBondRace")
-            check(f"{lang} 最后一条是债市固收",
+            last = page_name(lang, "NavCapHistory")
+            check(f"{lang} 最后一条是市值历程",
                   lines[items[-1]].startswith(f"• {last}"),
                   lines[items[-1]][:40])
+
+            # 倒数第二条还在债市固收：追加不动前面的顺序，所以第十七页被第十八页顶开一位，
+            # 而不是被换掉。
+            before = page_name(lang, "NavBondRace")
+            check(f"{lang} 倒数第二条仍是债市固收",
+                  len(items) < 2 or lines[items[-2]].startswith(f"• {before}"),
+                  lines[items[-2]][:40] if len(items) > 1 else "（只有一条）")
 
         # 「此版本的新增功能」：本版要写在里面，上一版那一页一页数的旧文案不能还在。
         subs = [i for i in range(start, end) if lines[i].startswith("### ")]
@@ -256,15 +275,59 @@ def chapter_index_checks():
         check(f"商店文案还指得着 {key}", listingtext.chapter_of(key) >= 0)
 
 
+def nav_name_checks():
+    """侧边栏里两页不能叫同一个名字 —— 而这真的发生过。
+
+    「市值历程」刚加进来时，五种语言（pt-BR / tr / ru / ja / ko）的导航名是照各语言习惯
+    缩出来的，结果和上一页「市值榜」**逐字相同**。代价有两层：用户分不出两个不同的页面；
+    更麻烦的是商店清单那个脚本按「清单里有没有以这一页名字开头的条目」判重，而日文的
+    「時価総額レース」正是以「時価総額」开头 —— 于是第十八页那一条被静默跳过，脚本还报
+    「已最新」。读出 UML 那样无害的重复，代价是这一条本该被拒绝却一路绿灯。
+    """
+    for lang in LANGS:
+        root = ET.parse(STRINGS / lang / "Resources.resw").getroot()
+        said = {}
+
+        for entry in root.findall("data"):
+            name = entry.get("name") or ""
+
+            if not name.startswith("Nav") or not name.endswith(".Content"):
+                continue
+
+            word = (entry.find("value").text or "").strip()
+            said.setdefault(word, []).append(name[:-len(".Content")])
+
+        twin = {word: keys for word, keys in said.items() if len(keys) > 1}
+
+        check(f"{lang} 导航里没有两页同名", not twin,
+              "、".join(f"{w}（{ks}）" for w, ks in twin.items()) if twin else "")
+
+
+def word_of(count):
+    """页数写成英文单词的样子 —— README 用单词写页数，不用阿拉伯数字。
+
+    **为什么把这个数由导航算出来**：写死的「十七」在加第十九页那天照样是绿的，而它读的那个
+    文件说的已经不是事实 —— 这份脚本里别的锚差不多都已经是算出来的，这个不能是例外。
+    """
+    words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+             "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+             "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]
+    assert 0 < count < len(words), count
+    return words[count]
+
+
 def readme_checks():
     text = README.read_text(encoding="utf-8")
 
-    # 断「页数」而不是「出现过 sixteen 这个词」——自选上限也有十六（`three to sixteen racers`），
-    # 所以旧写法在页数改成十七之后照样绿。加一页就要回来改这里，那正是它该有的摩擦。
-    check("README 说清了共十七页", "seventeen pages" in text)
-    check("README 的页数清单标题是十七", "## The seventeen pages" in text)
-    check("README 里不再有「十六页」的说法", "sixteen pages" not in text and
-          "The sixteen pages" not in text)
+    # 页数从导航问（`nav_order` 认 `x:Uid`，所以帮助与设置都不算进去）。
+    pages = len(listingtext.nav_order())
+    word = word_of(pages)
+
+    check(f"README 说清了共 {pages} 页", f"{word} pages" in text)
+    check(f"README 的页数清单标题写着 {pages}", f"## The {word} pages" in text)
+    check(f"README 里不再有「{pages - 1} 页」的说法",
+          f"{word_of(pages - 1)} pages" not in text and
+          f"The {word_of(pages - 1)} pages" not in text)
     check("README 说到 make-icons.py", "make-icons.py" in text)
     check("README 说到 PathIcon 的包围盒", "bounding box" in text)
 
@@ -274,6 +337,7 @@ def main():
     listing_checks()
     help_checks()
     chapter_index_checks()
+    nav_name_checks()
     readme_checks()
     print(f"\n通过 {len(PASSED)} 项，失败 {len(FAILED)} 项")
 

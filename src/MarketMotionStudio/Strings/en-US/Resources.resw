@@ -895,4 +895,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>On by default: a video is posted somewhere that shows nothing of where it was made. Left blank it falls back to the name above. Taking it off is part of what a subscription buys, so until then this switch stays where it is; off, the frames carry nothing.</value></data>
   <data name="SubscriptionFailedTitle"><value>The subscription did not go through</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Value axis</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>As it stood</value></data>
+  <data name="CapHistoryAxisNormalized"><value>Rebased to 100</value></data>
+  <data name="CapHistoryRebasedUnit"><value>first day = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Comparing several companies gives the whole frame to market value — there is no price axis their prices share honestly — and each line is named at its end. Rebasing answers whose value grew faster once one is many times the other.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} vs {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} and {1} more</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} companies over {1} trading days ({2} to {3})</value></data>
+  <data name="CapHistorySkipped"><value>Had no value inside the range, left out ({0}): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>At most {0} companies can be compared; {1} are switched on</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>None of your list is on the {0} market</value></data>
+  <data name="NavCapHistory.Content"><value>Market value</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Market Value History</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>One company's circulating market value over the years with its share price beneath it — or several companies compared as one line each, named at its end.</value></data>
+  <data name="CapHistoryCapWord"><value>Market value</value></data>
+  <data name="CapHistoryPriceWord"><value>Share price</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Average trade price</value></data>
+  <data name="CapHistoryCapUnit"><value>100M {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} market value</value></data>
+  <data name="CapHistoryFetched"><value>{0} trading days, {1} to {2}. Value at the end: {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>No turnover figure for this instrument in that range. The share count — and so the value — is recovered from it, so without one there is nothing to draw.</value></data>
+  <data name="CapHistoryMarketNone"><value>This market is not served: its turnover rate will not give up a share count, and without one there is no value to draw.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>That span is longer than this page can walk: about {0} years is the most one run of requests reaches.</value></data>
+  <data name="CapHistoryNote.Text"><value>Only the shares traded in this market are counted, not the ones this company lists elsewhere. For a company listed in two places the line therefore sits below the “total market value” a quote app shows, which prices those other shares at this market's price too.</value></data>
+  <data name="CapHistoryHighMark"><value>High {0}</value></data>
+  <data name="CapHistoryLowMark"><value>Low {0}</value></data>
+  <data name="StudioRange60M"><value>5 years</value></data>
+  <data name="StudioRange120M"><value>10 years</value></data>
 </root>

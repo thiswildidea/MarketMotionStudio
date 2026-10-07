@@ -119,6 +119,32 @@ capitalización, con el orden cambiando hasta el último fotograma. Muestreo men
 
 
 
+## Historial de valor de mercado
+
+El valor de mercado en circulación de una acción día a día, con su cotización debajo en el mismo eje temporal. O varias empresas a la vez — una línea cada una, rotulada en su extremo.
+
+- **El valor se reconstruye, no se cita.** La fuente no tiene un número histórico de acciones para ningún día. Sale de la tasa de rotación, que es el volumen como fracción de las acciones en circulación — así que `volumen ÷ tasa de rotación` *es* ese número, y el valor es el precio del día por él.
+
+- **El número es la mediana de veinte días.** La tasa llega con dos decimales, así que un día trae alrededor de un uno por ciento de ruido, mientras que el número de acciones es una escalera: salta en una ampliación o una recompra y no se mueve entre medias. La mediana deja el escalón en el día en que ocurrió.
+
+- **Solo se cuentan las acciones negociadas en este mercado.** Las que la empresa cotiza en otro mercado quedan fuera, así que una empresa con doble cotización queda por debajo de la «capitalización total» que muestra una app de cotizaciones: esa cifra valora las acciones del otro mercado al precio de este. En ICBC la diferencia son íntegramente acciones H. Las acciones aún bloqueadas en este mercado tampoco entran.
+
+- **En Hong Kong el precio es un promedio negociado.** Ese mercado no sirve un cierre sin ajustar, así que el precio es el importe entre el volumen, y el panel inferior se llama «precio medio de negociación».
+
+- **Nueva York divide por todas las acciones, no por las que cotizan.** Su tasa es una fracción de todas las acciones de la empresa, incluidas las de los directivos, así que la línea es un valor total y no uno en circulación: la cifra supera la de circulación de una app justo en la participación de aquellos — nada en Apple, 4 % en NVIDIA, 12 % en Tesla. Llega hasta 2009, la misma profundidad que en el continente.
+
+- **Una curva de diez años parece haber tocado cero, y no lo hizo.** El eje debe contener el máximo, así que un tramo temprano que vale una décima parte queda a unos pocos píxeles de la base: 853 億 de 五粮液 frente a un máximo de 13.097 億 son menos del siete por ciento de él. Por eso las marcas de mínimo y máximo llevan su cifra: un punto desnudo ahí abajo se lee como cero.
+
+- **La cifra cabalga la línea.** Una etiqueta en el extremo de cada línea nombra la empresa y da el valor que ha alcanzado en ese momento, y se mueve con la animación: arrastra la barra y se va con la línea. Con una empresa, los dos paneles llevan uno cada uno, valor y precio, y la cifra grande sobre el panel dice el mismo número; con varias, las etiquetas son además lo que distingue unas líneas de otras.
+
+- Intervalo: uno, dos, cinco o diez años, o dos fechas propias.
+
+Compare varias empresas a la vez. Con más de un chip activo cada una tiene su línea, rotulada en su extremo. Las cotizaciones de varias empresas no comparten un eje de precios honesto — 贵州茅台 junto a 京东方A y una de las dos es una línea plana en el fondo —, así que el panel inferior cede su sitio y todo el marco va al valor de mercado. Hasta seis; una séptima se rechaza en lugar de omitirse en silencio, porque un gráfico hecho con seis de las siete empresas marcadas responde a una lista que nadie eligió.
+
+El eje de valor tiene dos lecturas. El absoluto responde qué empresa vale más; el rebasado a 100 en el primer día de cada una, cuál creció más rápido, y es el único legible cuando una es varias veces la otra. En ambos casos el eje de fechas es la unión de sus días, no la intersección: la intersección recortaría una comparación de diez años al tramo de la que cotizó más tarde.
+
+
+
 ## Prima A/H
 
 Cuánto más cara es la cotización continental de una compañía que la de Hong Kong, para las

@@ -188,6 +188,17 @@
                 <mux:NavigationViewItem x:Name="NavMarketCap" x:Uid="NavMarketCap" Tag="MarketCap">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMarketCap}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Right under the market-cap board, because the two are one measure at
+                     two shapes: that board is a cross-section — who is largest today — and this
+                     one is that same measure's history for one company, which is a line
+                     rather than a ranking. Kept beside it rather than with the other
+                     per-instrument pages, which are all about a price; this one is about
+                     a size, and the size is not on any endpoint — it is recovered from
+                     the turnover rate, which is why the page has an explanatory note
+                     where the others do not. -->
+                <mux:NavigationViewItem x:Name="NavCapHistory" x:Uid="NavCapHistory" Tag="CapHistory">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconCapHistory}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
                 <!-- Beside the market-cap board, because both rank companies rather than days:
                      that one asks which firm is largest, this one asks which firm's mainland
                      listing costs the most more than its Hong Kong one. Two readings of one

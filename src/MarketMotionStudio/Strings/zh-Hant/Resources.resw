@@ -883,4 +883,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>預設開啟：影片會被發到一個完全看不出它是在哪裡做出來的地方。留空會回到上面的名字。關掉它屬於訂閱買下的東西之一，所以訂閱之前這個開關搬不動；關掉則畫面上什麼都不加。</value></data>
   <data name="SubscriptionFailedTitle"><value>訂閱沒有完成</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>市值刻度</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>實際數值</value></data>
+  <data name="CapHistoryAxisNormalized"><value>歸一到 100</value></data>
+  <data name="CapHistoryRebasedUnit"><value>首日 = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>選了幾家公司時，整個畫面都留給市值：幾條股價曲線沒有一套共用的、誠實的刻度，所以每條線在自己的末端標出名字。若一家比另一家大好幾倍，歸一（首日 = 100）看的是誰漲得更快。</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} 對 {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} 等 {1} 家</value></data>
+  <data name="CapHistoryBoardFetched"><value>已取到 {0} 家公司、{1} 個交易日，{2} 至 {3}</value></data>
+  <data name="CapHistorySkipped"><value>區間內沒有市值、已略過（{0} 家）：{1}</value></data>
+  <data name="CapHistoryTooMany"><value>最多同時比較 {0} 家公司，目前選了 {1} 家</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>清單裡沒有一家公司屬於 {0} 市場</value></data>
+  <data name="NavCapHistory.Content"><value>市值歷程</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>市值歷程</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>一家公司流通市值隨年份的變化，同一時間軸上是它的股價；選了幾家公司則各畫一條線，在末端標出名字。</value></data>
+  <data name="CapHistoryCapWord"><value>流通市值</value></data>
+  <data name="CapHistoryPriceWord"><value>股價</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>成交均價</value></data>
+  <data name="CapHistoryCapUnit"><value>億{0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0}市值歷程</value></data>
+  <data name="CapHistoryFetched"><value>已取到 {0} 個交易日，{1} 至 {2}。期末市值 {3}。</value></data>
+  <data name="CapHistoryNoTurnover"><value>該標的在這個區間沒有換手率數據。股本（以及市值）要由它還原，沒有它就畫不出來。</value></data>
+  <data name="CapHistoryMarketNone"><value>目前市場不支援：該市場的換手率換算不出股本，沒有股本就沒有市值可畫。</value></data>
+  <data name="CapHistoryRangeTooLong"><value>這個區間超過了本頁能回溯的長度：一次取數最多約 {0} 年。</value></data>
+  <data name="CapHistoryNote.Text"><value>這裡只算本市場可交易的股票，不含這家公司在其它市場的股票。兩地上市公司的圖上值因此會低於行情軟體的「總市值」——後者把其它市場的股票也按本市場價格折了進來。</value></data>
+  <data name="CapHistoryHighMark"><value>最高 {0}</value></data>
+  <data name="CapHistoryLowMark"><value>最低 {0}</value></data>
+  <data name="StudioRange60M"><value>5 年</value></data>
+  <data name="StudioRange120M"><value>10 年</value></data>
 </root>

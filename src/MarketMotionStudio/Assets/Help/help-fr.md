@@ -121,6 +121,32 @@ l'ordre changeant jusqu'à la dernière image. Échantillonnage mensuel.
 
 
 
+## Historique de la valeur de marché
+
+La valeur de marché en circulation d'une action jour par jour, avec son cours en dessous sur le même axe temporel. Ou plusieurs entreprises à la fois — une courbe chacune, nommée à son extrémité.
+
+- **La valeur est reconstituée, pas citée.** La source n'a de nombre d'actions historique pour aucun jour. Il vient du taux de rotation, qui est le volume en fraction des actions en circulation — donc `volume ÷ taux de rotation` *est* ce nombre, et la valeur est le cours du jour multiplié par lui.
+
+- **Le nombre est une médiane de vingt jours.** Le taux arrive avec deux décimales : un jour apporte environ un pour cent de bruit, alors que le nombre d'actions est un escalier — il bouge à une augmentation de capital ou un rachat et reste plat entre les deux. La médiane laisse la marche au jour où elle a eu lieu.
+
+- **Seules les actions négociées sur ce marché sont comptées.** Celles que l'entreprise cote ailleurs sont exclues : une société à double cotation passe donc sous la « capitalisation totale » des applications de cotation, qui évalue les actions de l'autre marché au cours de celui-ci. L'écart d'ICBC est entièrement fait d'actions H. Les actions encore immobilisées sont exclues aussi.
+
+- **À Hong Kong, le prix est une moyenne négociée.** Ce marché ne sert pas de clôture non ajustée : le prix est le montant divisé par le volume, et le panneau du bas s'appelle « prix moyen des transactions ».
+
+- **New York divise par toutes les actions, pas par celles qui s'échangent.** Son taux est une fraction de toutes les actions de la société, y compris celles des initiés : la courbe est donc une valeur totale et non une valeur en circulation. Le nombre dépasse la valeur en circulation d'une application exactement de la part des initiés — rien chez Apple, 4 % chez NVIDIA, 12 % chez Tesla. Elle remonte jusqu'à 2009, la même profondeur que le continent.
+
+- **Une courbe de dix ans donne l'impression d'être passée par zéro, et ce n'est pas le cas.** L'axe doit contenir le sommet : un segment ancien qui vaut un dixième se tient à quelques pixels de la base — 853 億 pour 五粮液 contre un sommet de 13 097 億, soit moins de sept pour cent de sa hauteur. C'est pourquoi les repères de minimum et de maximum portent leur chiffre : un simple point là-bas se lit comme zéro.
+
+- **Le chiffre chevauche la ligne.** Une étiquette à l'extrémité de chaque ligne nomme l'entreprise et donne la valeur qu'elle atteint à cet instant, et elle suit l'animation : faites glisser la barre et elle part avec la ligne. Avec une entreprise, les deux panneaux en portent une chacun, valeur et cours, et le grand chiffre au-dessus du panneau dit le même nombre ; avec plusieurs, les étiquettes sont en plus ce qui distingue les lignes entre elles.
+
+- Période : un, deux, cinq ou dix ans, ou deux dates à vous.
+
+Comparez plusieurs entreprises à la fois. Avec plus d'une puce cochée, chacune a sa courbe, nommée à son extrémité. Les cours de plusieurs entreprises ne partagent pas d'axe de prix honnête — mettez 贵州茅台 à côté de 京东方A et l'une des deux n'est qu'une ligne plate au ras du bas —, donc le panneau du bas s'efface et tout le cadre va à la valeur de marché. Jusqu'à six ; une septième est refusée plutôt qu'omise en silence, car un graphique fait avec six des sept entreprises cochées répond à une liste que personne n'a choisie.
+
+L'axe des valeurs a deux lectures. L'absolu répond à la question de laquelle vaut le plus ; le rebasement à 100 au premier jour de chacune, à celle qui a le plus progressé, et c'est la seule lisible dès que l'une vaut plusieurs fois l'autre. Dans les deux cas l'axe des dates est l'union de leurs jours, pas l'intersection : l'intersection ramènerait une comparaison de dix ans au seul parcours de la cotation la plus récente.
+
+
+
 ## Prime A/H
 
 De combien la cotation continentale d'une société dépasse sa cotation hongkongaise, pour les

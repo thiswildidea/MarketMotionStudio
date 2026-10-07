@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **seventeen pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **eighteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -45,19 +45,23 @@ closing line, a closing area) with MA5/10/20 and a volume panel, arriving one ca
 across the whole range or walking forward inside a window of it — a window that opens out into
 the whole range as the frame closes.
 
-**Nine more pages followed**, and the navigation now numbers seventeen: **Market Cap Race** (a
+**Ten more pages followed**, and the navigation now numbers eighteen: **Market Cap Race** (a
 market's fifteen largest by total value, the field asked for at fetch time so members really come
-and go), **AH premium** (one company's two listings priced against each other), **Extreme Days**
+and go), **Market Value History** (one company's worth over the years — reconstructed from the
+turnover rate, because no endpoint carries yesterday's share count), **AH premium** (one company's
+two listings priced against each other), **Extreme Days**
 (one instrument's biggest moves ranked — the only board whose rows are days, not companies),
 **Currency Corridors** (a pair per row, and the row *is* the corridor), **Index Race** (how far each
 index has come since its own first month, never its level), **Asset Classes** (eight
 mainland-listed funds — what holding them earned), **Bond Market** (nine bond indices, measured on
 the quote because an index pays no coupon), **Drawdowns** (how far below its own high each
 sits, and how long the way back took), and **Hold Odds** (of every entry that finished, the share
-that gained). The last three share one watchlist that mixes all three markets — and Position
-Return reads the same list, where every pick is a line of its own rather than a row.
+that gained). The last three share one watchlist that mixes all three markets — Position Return
+reads the same list, where every pick is a line of its own rather than a row, and Market Value
+History reads it too, narrowed to the market in force, because what recovers a share count is that
+market's own turnover rate.
 
-**The seventeen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
+**The eighteen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
 Fluent glyph — Candles with Sector Race, Volume & Turnover with Hold Odds, Market Turnover with
 Position Replay — and one shape cannot mean two pages; the menu was quietly saying those pairs were
 the same thing. Each is now a stroke skeleton on a shared 20×20 grid (lines, rings, polylines,
@@ -137,6 +141,7 @@ than assumed from the market's existence:
 | **Candles at 1/5/15 minutes** | nothing — the minute endpoint answers every Hong Kong code with an empty body | the same empty body, whichever venue suffix is tried |
 | **Market Cap Race** | today's top 200 by market value, plus an archive of companies that used to be up there | thirty-five, and forty-two — a fixed field, because neither venue has a ranking this app can reach |
 | **AH premium** | the Hong Kong leg of each pair — and the mainland leg, always both | not applicable: the page compares the two listings of one company, so it is the one page the market switch does not govern |
+| **Market Value History** | the same arithmetic, except the price underneath is the amount over the volume — this source serves Hong Kong no unadjusted close, so the lower panel is labelled an average rather than a close | the same arithmetic on a rate that is a fraction of *every* share rather than of the ones that trade, so the line reads as a total value and runs above a quote app's circulating figure by exactly the insider stake; it reaches back to 2009, the depth the mainland gets |
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what
@@ -162,7 +167,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The seventeen pages
+## The eighteen pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -499,7 +504,75 @@ not cancelled**, because the adjusted series reinvests it, so a heavy payer's pa
 and it looks like it grew faster than it did. The manual says so, the settings panel says so, and
 the last frame's figure is the only one that came straight from the source.
 
-**AH premium** — the tenth page, and the one page that needs two markets at once: the same company
+**Market value** — the tenth page, and the only one whose headline figure is on no endpoint: one
+company's circulating market value day by day, over anything from a year to ten, with its share
+price beneath it on the same time axis. Tick several companies instead and each becomes a line of
+its own, named at its leading end, and the whole frame goes to value.
+
+**The value is recovered, not quoted.** No endpoint carries a past share count — not today's, not
+any earlier one. What the source does serve every day is the turnover rate, which is the volume as
+a fraction of the shares in circulation, so `volume ÷ turnover rate` *is* the circulating count, and
+the value is that day's price times it. It is cheap to ask for and it is wrong in a particular way:
+the rate arrives with two decimals, so one day's count carries about a percent of noise, while a
+share count is a staircase — it moves on a placement or a buyback and is flat between. The count is
+therefore a rolling **twenty-day median**, which keeps the step on the day it happened and drops the
+rest. Against the snapshot's own circulating figure — the one value the source does give — A-shares
+agree to 0.04% and Hong Kong to 0.08%.
+
+**Only the shares traded in this market are counted.** Shares the same company lists elsewhere are
+left out, and stock still under lock-up here is out too, so a company listed in two places sits
+below the "total market value" a quote app shows, because that figure prices the other market's
+shares at this market's price as well. 工商银行's gap is thirty-two per cent and is entirely
+H-shares. The page carries a note saying which market it is counting: the whole of the difference
+is invisible otherwise, and going by the code alone nobody would know to ask.
+
+**What the rate is a fraction of is not the same everywhere.** On the mainland and in Hong Kong it
+is shares in circulation; in New York it is every share the company has, insiders' included, so the
+line there is a *total* value rather than a circulating one, and runs above a quote app's
+circulating figure by exactly the insider stake — 0.0% at Apple, 4.1% at NVIDIA, 9.4% at Amazon,
+11.7% at Tesla. Leaving the US off the page was the alternative; drawing the larger number and
+saying what it includes is the better half of that choice, particularly since it reaches back to
+2009, the same depth the mainland gets.
+
+**Hong Kong pays for its own price.** That market serves no unadjusted close at all — asking for one
+answers with the adjusted series, which has no use here, since a value is `price × count` and both
+terms have to be quoted on the same day's own scale. The price is therefore the day's amount over
+its volume, which is an average traded price, and the lower panel is labelled as one rather than as
+a close. The label names what the number really is, which is the only honest thing to do with it.
+
+**A ten-year curve reads as though it once went to zero, and did not.** The axis has to hold the
+peak, so an early stretch worth a tenth of it sits within a few pixels of the baseline — 五粮液's
+853 亿 against a 13,097 亿 peak is under seven per cent of it. The high and low marks print their own
+figures for exactly that reason: a bare dot down there is read as zero, and no amount of axis
+labelling changes what a dot sitting on the axis says.
+
+**Comparing several companies raises a scale question one company never asks.** It is offered as two
+readings of the value axis, and nothing else changes between them: **as it stood** answers *which is
+worth more*, while **rebased to 100** at each line's own first day answers *whose value grew faster*
+— the only readable one once one company is several times the other, which is the ordinary case
+rather than the awkward one.
+
+**The date axis is the union of their days rather than the overlap.** The overlap would cut a
+ten-year comparison down to however long the youngest has been listed: against 中国移动, which joined
+the Shanghai market in January 2022, it would cost 招商银行 six of its ten years. Suspensions carry
+the last figure forward, so a halted month is a flat stretch rather than a hole, and a company whose
+own first day falls inside the range joins on that day.
+
+Up to six; **a seventh is refused rather than quietly dropped**, because a frame drawn from six of
+the seven companies somebody ticked answers a question about a list nobody chose. With one company
+the price panel comes back, and it earns its place: the count moves too, so the value line is not a
+scaled copy of the price line, and where they part company — a buyback, a placement, a bonus issue —
+shows on the frame as one rising while the other does not. This page and the market-cap board reach
+their past values by opposite routes, and the two do not agree: that board scales today's value by
+the adjusted price ratio, so for a heavy payer its past value reads low; this one is `price × count`
+straight, with the dividend inside the price and nowhere else.
+
+Measured 2026-10-07 on one company over two years: 贵州茅台, 485 trading days from 2024-10-08 to
+2026-09-30, ending at 15,724 亿 and ¥1,258.62 a share. Measured comparing two over ten years:
+招商银行 with 2,427 days from 2016-10-10 and 中国移动 with 1,149 from 2022-01-05, the union running
+from the earlier of those two dates and each line opening on its own.
+
+**AH premium** — the eleventh page, and the one page that needs two markets at once: the same company
 listed on the mainland and in Hong Kong, ranked by how much dearer the mainland share is.
 
 **Nothing here is derived, which is the whole design.** A market-cap board multiplies today's value
@@ -554,7 +627,7 @@ text before drawing: `Agricultural Bank of China` at the row's own size runs off
 the frame, and nothing complains — the first frame that names a company is the first frame that is
 visibly wrong. One shared size for the whole column, computed once rather than per frame.
 
-**Extreme days** — the eleventh page, and the one whose rows are days rather than companies: one
+**Extreme days** — the twelfth page, and the one whose rows are days rather than companies: one
 instrument's largest single-day moves, ranked by size.
 
 **A row's value never changes, which is the whole inversion.** Every other board gives a racer a
@@ -592,7 +665,7 @@ one request carries about 640 daily bars and the walk makes twenty. A span with 
 trading days is refused — the largest single day inside a quiet month is not a fact a board should
 be built on.
 
-**Currency corridors** — the twelfth page, and the one whose row is a *place* rather than a
+**Currency corridors** — the thirteenth page, and the one whose row is a *place* rather than a
 quantity: six currency pairs, each drawn against the range it has actually traded in.
 
 **The row is the corridor.** One end is the cheapest the pair has been in the chosen span, the
@@ -624,7 +697,7 @@ and an adjustment on one side of a comparison compares two different things.
 board is the same whichever one is in force — the second page, after A+H, that sits outside the
 market switch's reach.
 
-**Index race** — the thirteenth page, and the first one that is not about a single market: twelve
+**Index race** — the fourteenth page, and the first one that is not about a single market: twelve
 indices from Shanghai, Shenzhen, Hong Kong and New York, measured against one another.
 
 **The row is the change, never the level.** 3,800 on the Shanghai Composite and 5,700 on the
@@ -665,7 +738,7 @@ is no single market it could be about; the group is chosen on the page — all t
 six, Hong Kong's three, New York's three, or **a list of your own**. It is the third page, after
 A+H and the currency corridors, that sits outside the market switch's reach.
 
-**Asset classes** — the fourteenth page, and the index race's other half: eight asset classes you
+**Asset classes** — the fifteenth page, and the index race's other half: eight asset classes you
 could actually have held, one fund each, measured against one another. That board races published
 numbers; this one races money.
 
@@ -696,7 +769,7 @@ page — all eight, the four share funds, the four that are not shares, or **a l
 Measured 2026-10-03 over ten years: 119 months, the Nasdaq fund ahead at +556.98%, the gold fund at
 +225.67%, and the money-market fund behind at +18.55%.
 
-**Bond market** — the seventeenth page, and the bond world the asset race left as a single row: nine
+**Bond market** — the eighteenth page, and the bond world the asset race left as a single row: nine
 exchange bond indices, each measured from its own first month in the range. The asset race keeps the
 bond market down to one government-bond fund among eight; this page is the bond market itself.
 
@@ -728,7 +801,7 @@ convertible index reads +62.26% where the un-snapped arithmetic said +63.04%.
 Measured 2026-10-03 over ten years: 119 months, the Shenzhen convertible index ahead at +62.26%, the
 CSI convertible index at +56.15%, and the Shanghai enterprise bond 30 behind at +28.78%.
 
-**Drawdowns** — the fifteenth page, and the asset race's other half: the same eight holdings, on the
+**Drawdowns** — the sixteenth page, and the asset race's other half: the same eight holdings, on the
 same loader, over the same months, measured against their own highs instead of against each other.
 That page says what a holding earned; this one says what it cost to earn it. A row is a filled
 curve hanging below its own high-water line, deepest at its worst month, and the board's rows still
@@ -759,7 +832,7 @@ never fallen would be the only row with a hole in it. The roster is chosen on th
 the four share funds, the four that are not shares, or **a list of your own** — and a share put on
 that list is measured the same way, from its own first month, with the same two numbers.
 
-**Hold odds** — the sixteenth page, and the third board on that same roster. The first two are drawn
+**Hold odds** — the seventeenth page, and the third board on that same roster. The first two are drawn
 on the range's own two ends: one way in, one way out, which answers "was this decade good". The
 question a holder actually faces is a different one — walk in on a month you did not pick, hold for
 the same length of time, how often does that work. So this board runs **every entry there was**: one
@@ -794,6 +867,14 @@ three markets rather than in the one in force. Under three picks the fetch is re
 a field — and sixteen is the ceiling. A pick's name is re-resolved through the app's own instrument
 table after a fetch rather than frozen at whatever the search box returned, so the same code reads
 the same on this board as it does everywhere else in the app.
+
+**The market-value page reads that same list and narrows it.** It is the fifth board on it and the
+one that is governed by the market setting, because the arithmetic underneath it is per market: what
+recovers a share count is that market's own turnover rate, and what the recovered count means is that
+market's own notion of shares in circulation. So the page draws the picks belonging to the market in
+force and leaves the rest of one shared list alone rather than keeping a second list beside it — and
+when that leaves nothing it says the list has no company on this market instead of drawing a frame
+that looks like a fetch which found no data.
 
 **A short fall's label moves out of the way.** The race renderer puts a value label outside the
 bar's end when the bar is too short to hold it. For a fall that means to the left — and the axis's
@@ -1020,6 +1101,8 @@ src/MarketMotionStudio/
                    CandleSeries (daily/weekly/monthly bars, the two animations' shapes,
                    and one trading day down to minutes),
                    MarketCaps (the fifteen-per-market field, and today's value turned into a history),
+                   CapHistory (one company's value and its price on one axis; the share count
+                   recovered from the turnover rate, because its history is served nowhere),
                    AhPremium (the A+H pairs, and the one page that must not use adjusted prices),
                    ExtremeDays (one instrument's largest single-day moves, rows that are days),
                    FxRates (the pairs, their monthly bars, and the corridor's arithmetic),
@@ -1040,6 +1123,8 @@ src/MarketMotionStudio/
                    and the hold-odds board),
                    UnderwaterRenderer (ranked curves, one depth scale for the whole board),
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
+                   CapHistoryRenderer (two stacked panels for one company; one line each when
+                   several are compared, and the lower panel gives the frame up to do it),
                    FrameExporter (one frame to PNG)
   Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
   Pages/           StudioPage base, the indicator pages, the two buy-at-a-price pages,
@@ -1065,6 +1150,8 @@ tools/
   port-indexrace-*.py    The same, for the index race
   port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
                          (the pool script carries the 93 candidates that only need zh + en)
+  port-caphistory-*.py   The same, for the market-value page — including the two readings of the
+                         value axis and the comparison mode
   verify-*.py            Drive the UI and assert the feature behaves as documented
   drive-*.py             Drive the app end to end for a smoke run
 ```
@@ -1172,7 +1259,7 @@ not depend on the colour of the wallpaper behind the app.
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all seventeen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all eighteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -1231,9 +1318,9 @@ a renderer with no watermark is one with nothing to draw rather than one that ha
 ## The subscription, and the two things it buys
 
 Exporting a video and taking the watermark off it take a monthly subscription. Everything else
-stays free on all seventeen pages — fetching data, playing the animation, saving a cover image —
+stays free on all eighteen pages — fetching data, playing the animation, saving a cover image —
 and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
-two are the ends that leave home, and the seventeen pages of live market animation are what
+two are the ends that leave home, and the eighteen pages of live market animation are what
 somebody came for.
 
 The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
@@ -1245,12 +1332,12 @@ they have already paid.
 
 Three decisions worth stating.
 
-**The answer is asked for in one place.** Seventeen pages have an Export button and seventeen have
+**The answer is asked for in one place.** Eighteen pages have an Export button and eighteen have
 their own handler, each written out in full — that duplication already exists and is not this
 feature's to fix. What must not be duplicated is the answer to "may this be done": two answers
 written twice is one page that gives the video away. So every handler asks
 `Views/SubscriptionOffer.PermitAsync` in its first line, before anything is read for the encode,
-and `verify-subscription.py` counts them (17/17, plus the cover-image path at 0 — saving a PNG
+and `verify-subscription.py` counts them (18/18, plus the cover-image path at 0 — saving a PNG
 stays free, and that the script can prove it is what keeps the manual's sentence true).
 
 **The watermark is decided at the source, not at the switch.** `WatermarkSettings.Enabled` returns
@@ -1343,13 +1430,13 @@ first export asks and then remembers.
   So what is verified is the gate, its placement, the licence read, and the watermark's dependency
   on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
   is finally there.
-- **The Store screenshots show seven pages, not fourteen.** `tools/store-screenshots.py` predates
-  the candle page, the market-cap board, the A+H page, the extreme-day board, the currency corridor,
-  the index race and the asset-class board, so the gallery has none of the seven. The listing copy
-  says ten charts in all fourteen languages — it predates the last three pages, and the listing is
-  written at release time — so the copy and the
-  gallery disagree until all five captures are taken. The copy deliberately runs ahead of the package: it is
-  written for the version being prepared, and it must not be uploaded before that package is.
+- **The Store screenshots cover nine of the eighteen pages.** `tools/store-screenshots.py` stops at
+  the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
+  extreme-day board, currency corridor, index race, asset-class board, drawdown board or hold-odds
+  board. The listing copy describes eighteen chart pages in all fourteen languages — it is written at
+  release time, so until those nine captures are taken the copy and the gallery disagree. The copy
+  deliberately runs ahead of the package too: it is written for the version being prepared, and it
+  must not be uploaded before that package is.
 - **The A+H page has been fetched and read at two spans** (three years and the longest, twenty-two
   checks), and its headline number was recomputed independently from the source — the dearest premium
   matched the page to 0.04 of a percentage point, which is what proves the unadjusted prices, the
@@ -1360,6 +1447,14 @@ first export asks and then remembers.
   confirm membership changes. Hong Kong and New York have not been driven through the page; neither
   has the custom span, nor an export at any format. The English interface was checked for the name
   column's width, which is the thing a company name could break.
+- **The market-value page has been fetched and read on two markets** (A-shares and New York: one
+  company alone, two companies compared, both readings of the value axis, 66 checks — including that
+  a seventh pick is refused rather than dropped and that the date axis really is the union of the two
+  histories rather than their overlap). Hong Kong has not been driven through it, nor has the custom
+  span, nor an export at any format. The recovered share count was reconciled against the snapshot's
+  own figure by hand while it was being built — once each, on today's date — and neither the app nor
+  the verification script checks it again, so a count drifted by a round trip through a rate carried
+  to two decimals would not be caught by anything.
 - **The console shows a log line per request and the walk logs one per page**, which for a
   ten-year fifteen-listing board is about ninety lines. It is not a problem, but it is the
   loudest thing this app does and worth knowing before reading a log.

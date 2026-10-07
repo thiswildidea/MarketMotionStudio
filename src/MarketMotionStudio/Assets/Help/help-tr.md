@@ -117,6 +117,32 @@ sıralama son kareye kadar değişir. Örnekleme aylıktır.
 
 
 
+## Piyasa değeri geçmişi
+
+Bir hissenin dolaşımdaki piyasa değeri gün gün, altında aynı zaman ekseninde fiyatı. Ya da aynı anda birden çok şirket — her biri ucunda adı yazan bir çizgi.
+
+- **Değer kaynaktan alınmaz, geri çıkarılır.** Kaynağın hiçbir güne ait geçmiş hisse sayısı yok. Sayı devir oranından gelir — devir oranı hacmin dolaşımdaki hisselere oranıdır — yani `hacim ÷ devir oranı` doğrudan bu sayıdır ve değer, günün fiyatının bu sayıyla çarpımıdır.
+
+- **Sayı yirmi günlük medyandır.** Oran iki ondalıkla gelir, yani bir gün yaklaşık yüzde bir gürültü taşır; oysa hisse sayısı bir merdivendir: sermaye artırımında veya geri alımda sıçrar, arada sabittir. Medyan basamağı olduğu günde bırakır.
+
+- **Yalnızca bu piyasada işlem gören hisseler sayılır.** Şirketin başka bir piyasada listelediği hisseler dahil edilmez, bu yüzden iki yerde listelenen bir şirket, fiyat uygulamasının gösterdiği «toplam piyasa değeri»nin altında kalır; o değer diğer piyasanın hisselerini bu piyasanın fiyatıyla hesaplar. ICBC'nin farkı tamamen H hisselerinden oluşur. Bu piyasada hâlâ bloke olan hisseler de dahil değildir.
+
+- **Hong Kong'da fiyat ortalama işlem fiyatıdır.** O piyasada düzeltilmemiş kapanış yoktur, bu yüzden fiyat tutarın hacme bölümüdür ve alt panel «ortalama işlem fiyatı» olarak adlandırılır.
+
+- **New York, işlem görenlerle değil tüm hisselerle böler.** Oranı şirketin sahip olduğu tüm hisselerin, içeridekiler dahil, bir kesri olduğu için oradaki çizgi dolaşımdaki değer değil toplam değerdir: sayı, bir fiyat uygulamasının dolaşımdaki değerini tam olarak içeridekilerin payı kadar aşar — Apple'da sıfır, NVIDIA'da %4, Tesla'da %12. 2009'a kadar uzanır; anakara kadar derin.
+
+- **On yıllık bir eğri bir zamanlar sıfıra inmiş gibi okunur — inmemiştir.** Eksen zirveyi almak zorunda olduğundan, zirvenin onda biri değerindeki erken bir bölüm tabanın birkaç piksel üstünde kalır: 五粮液'nin 853 億'si 13.097 億 zirveye karşı panelin yüzde yedisinden az eder. Bu yüzden en düşük ve en yüksek işaretleri kendi sayısını yazar: oradaki çıplak bir nokta sıfır olarak okunur.
+
+- **Sayı çizgiyle birlikte gider.** Her çizginin ucundaki etiket şirketi adlandırır ve o anda ulaştığı değeri verir; animasyonla birlikte hareket eder — çubuğu çekin, çizgiyle birlikte gider. Tek şirkette iki panelin de birer etiketi olur, değer ve fiyat, panelin üstündeki büyük sayı ise aynı sayıyı söyler; birkaç şirkette etiketler ayrıca çizgileri birbirinden ayıran şeydir.
+
+- Aralık: bir, iki, beş veya on yıl, ya da iki kendi tarihiniz.
+
+Birden çok şirketi aynı anda karşılaştırın. Birden fazla çip açıkken her biri ucunda adı yazan bir çizgi alır. Birden çok şirketin fiyatı dürüst bir fiyat eksenini paylaşmaz — 贵州茅台'yı 京东方A'nın yanına koyun, ikisinden biri dipte düz bir çizgi olur — bu yüzden alt panel geri çekilir ve çerçevenin tamamı piyasa değerine kalır. En fazla altı; yedincisi sessizce atılmak yerine reddedilir, çünkü işaretlenen yedi şirketten altısıyla çizilen grafik kimsenin seçmediği bir listeyi yanıtlar.
+
+Değer ekseninin iki okuması var. Mutlak olan hangi şirketin daha değerli olduğunu; her birinin kendi ilk gününde 100'e indirgenmiş olan kimin değeri daha hızlı büyüdüğünü söyler ve biri diğerinin katları olduğunda okunabilen tek görünüm budur. İkisinde de tarih ekseni günlerin kesişimi değil birleşimidir: kesişim on yıllık bir karşılaştırmayı en son işlem görmeye başlayan şirketin aralığına indirger.
+
+
+
 ## A/H primi
 
 İki tarafta da kote olan şirketler için, karadaki kotasyonun Hong Kong kotasyonundan ne kadar

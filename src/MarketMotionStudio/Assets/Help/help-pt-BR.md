@@ -118,6 +118,32 @@ mercado, com a ordem mudando até o último quadro. Amostragem mensal.
 
 
 
+## Histórico de valor de mercado
+
+O valor de mercado em circulação de uma ação dia a dia, com o preço da ação abaixo no mesmo eixo de tempo. Ou várias empresas ao mesmo tempo — uma linha cada, nomeada na ponta.
+
+- **O valor é reconstruído, não citado.** A fonte não tem uma contagem histórica de ações para nenhum dia. Ela vem da taxa de giro, que é o volume como fração das ações em circulação — logo `volume ÷ taxa de giro` *é* essa contagem, e o valor é o preço do dia vezes ela.
+
+- **A contagem é a mediana de vinte dias.** A taxa vem com duas casas decimais, então um dia traz cerca de um por cento de ruído, enquanto a contagem de ações é uma escada: move-se numa emissão ou recompra e fica parada entre elas. A mediana deixa o degrau no dia em que ocorreu.
+
+- **Só entram as ações negociadas neste mercado.** As que a empresa lista em outro mercado ficam de fora, então uma empresa com dupla listagem fica abaixo do «valor de mercado total» que um app de cotações mostra — ele precifica as ações do outro mercado pelo preço deste. A diferença do ICBC são inteiramente ações H. As ações ainda bloqueadas neste mercado também ficam de fora.
+
+- **Em Hong Kong o preço é uma média negociada.** Esse mercado não serve fechamento sem ajuste, então o preço é o montante dividido pelo volume, e o painel inferior se chama «preço médio de negociação».
+
+- **Nova York divide por todas as ações, não pelas negociadas.** Sua taxa é uma fração de todas as ações da empresa, inclusive as de insiders, então a linha ali é um valor total, não um valor em circulação: a contagem fica acima da cifra de circulação de um app exatamente na participação deles — nada na Apple, 4% na NVIDIA, 12% na Tesla. Vai até 2009, a mesma profundidade do continente.
+
+- **Uma curva de dez anos parece ter passado por zero, e não passou.** O eixo precisa conter o pico, então um trecho antigo que vale um décimo fica a poucos pixels da base: 853 億 da 五粮液 contra um pico de 13.097 億 são menos de sete por cento da sua altura. Por isso as marcas de mínimo e máximo trazem o próprio número: um ponto nu ali embaixo é lido como zero.
+
+- **O número cavalga a linha.** Um rótulo na ponta de cada linha nomeia a empresa e dá o valor que ela alcançou naquele momento, e anda junto com a animação — arraste a barra e ele vai com a linha. Com uma empresa, os dois painéis levam um cada, valor e preço, e o número grande sobre o painel diz o mesmo número; com várias, os rótulos são também o que distingue uma linha da outra.
+
+- Intervalo: um, dois, cinco ou dez anos, ou duas datas próprias.
+
+Compare várias empresas ao mesmo tempo. Com mais de um chip marcado, cada uma ganha uma linha, nomeada na ponta. Os preços de várias empresas não compartilham um eixo de preço honesto — coloque 贵州茅台 ao lado de 京东方A e uma das duas vira uma linha reta no fundo —, então o painel inferior cede lugar e o quadro inteiro vai para o valor de mercado. Até seis; a sétima é recusada em vez de deixada de fora em silêncio, porque um gráfico feito com seis das sete empresas marcadas responde sobre uma lista que ninguém escolheu.
+
+O eixo de valor tem duas leituras. O absoluto responde qual empresa vale mais; o rebaseado em 100 no primeiro dia de cada uma responde qual valor cresceu mais rápido, e é o único legível quando uma vale várias vezes a outra. Nos dois casos o eixo de datas é a união dos dias delas, não a interseção: a interseção encolheria uma comparação de dez anos para o trecho do listing mais recente.
+
+
+
 ## Prêmio A/H
 
 Quanto mais cara é a cotação continental de uma companhia do que a de Hong Kong, para as

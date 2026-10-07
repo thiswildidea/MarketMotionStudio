@@ -12,7 +12,7 @@
 
 MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9:16 竖屏动画，专为抖音、视频号、快手等竖屏平台设计：选择市场与标的，应用自动抓取行情、生成动画，一键导出 H.264 MP4，开箱即发。所有图表页都免费：取数、预览、保存封面图都不收费。导出视频与去掉水印需要按月订阅，可随时取消。
 
-十七大图表页：  
+十八大图表页：  
 • 市场成交额——全市场每日成交额的历史长卷（A股）  
 • 成交量与换手率——单只股票的量价齐观（A股/港股）  
 • 行业板块竞速——行业指数涨跌的赛跑动画  
@@ -30,6 +30,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 • 回撤与修复——一行是它落在自己高点下方多远——不是它赚了多少，而是赚到这些要付出什么
 • 持有胜率——一行是已走完的持有中赚钱的那一部分——在区间里每一个可以买进并持有相同时间的月份中，最后是赚的那一部分占多少
 • 债市固收——一条债券指数一行，条形是价格变动——这不等于持有它赚了多少
+• 市值历程——一只股票流通市值逐日的曲线，下方同一时间轴上是它的股价。也可以同时画几家公司，各一条线、在末端标出名字
 
 支持A股、港股、美股三个市场，界面内置 14 种语言。
 
@@ -37,13 +38,13 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版起，订阅认的是商店里那只真正的按月订阅。之前认的那一只在商店里被建成了一次性买断：买一次永久有效、不会按月续费，和「订阅」不是同一个东西；而产品的类型一经保存就不能修改，已发布的加载项名称也无法复用，因此改为新建的那一只。等那一只在商店中发布并关联到本应用，设置页就会显示订阅的价格，买下的仍然是导出视频与去掉水印这两件事。其余照旧：十七个图表页的取数、播放动画、保存封面图依旧免费。
+本版新增「市值历程」一页：一只股票流通市值逐日的曲线，下方同一时间轴上是它的股价；也可以同时画几家公司，各一条线。行情源没有任何一天的历史股本，所以股本由换手率反推——成交量除以换手率就是流通股本，市值等于当日价格乘以它；只算本市场可交易的股票，两地上市的公司因此会低于行情软件显示的「总市值」。每条线的末端跟着一个标签，写着公司名字和它此刻到达的数值，随动画一起走；几家公司同框时，这些标签也是分辨哪条线是哪一家的唯一线索。
 
 ### 产品功能
 
 - 一键生成 9:16 竖屏行情动画视频
 - 覆盖A股、港股、美股三大市场
-- 十七种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率、债市固收
+- 十八种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率、债市固收、市值历程
 - 导出 H.264 MP4，可直接发布到短视频平台
 - 界面内置 14 种语言
 - 无账号、无遥测，数据留在你自己的电脑上
@@ -58,7 +59,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shorts、Reels 等直式平台設計：選擇市場與標的，應用程式自動抓取行情、生成動畫，一鍵匯出 H.264 MP4，開箱即發。所有圖表頁都免費：取數、預覽、儲存封面圖都不收費。匯出影片與移除浮水印需要按月訂閱，可隨時取消。
 
-十七大圖表頁：  
+十八大圖表頁：  
 • 市場成交額——全市場每日成交額的歷史長卷（陸股）  
 • 成交量與換手率——單一股票的量價齊觀（陸股/港股）  
 • 行業板塊競速——類股指數漲跌的賽跑動畫  
@@ -76,6 +77,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 • 回撤與修復——一行是它落在自己高點下方多遠——不是它賺了多少，而是賺到這些要付出什麼
 • 持有勝率——一行是已走完的持有中賺錢的那一部分——在區間裡每一個可以買進並持有相同時間的月份中，最後是賺的那一部分佔多少
 • 債市固收——一條債券指數一行，條形是價格變動——這不等於持有它賺了多少
+• 市值歷程——一檔股票流通市值逐日的曲線，下方同一時間軸上是它的股價。也可以同時畫幾家公司，各一條線、在末端標出名字
 
 支援陸股、港股、美股三個市場，介面內建 14 種語言。
 
@@ -83,13 +85,13 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版起，訂閱認的是商店裡那個真正的按月訂閱。之前認的那一個在商店裡被建成了一次性買斷：買一次永久有效、不會按月續費，和「訂閱」不是同一個東西；而產品的類型一經儲存就不能修改，已發佈的附加元件名稱也無法重複使用，因此改為新建的那一個。等那一個在商店中發佈並關聯到本應用程式，設定頁就會顯示訂閱的價格，買下的仍然是匯出影片與移除浮水印這兩件事。其餘照舊：十七個圖表頁的取數、播放動畫、儲存封面圖依舊免費。
+本版新增「市值歷程」一頁：一檔股票流通市值逐日的曲線，下方同一時間軸上是它的股價；也可以同時畫幾家公司，各一條線。行情源沒有任何一天的歷史股本，所以股本由換手率反推——成交量除以換手率就是流通股本，市值等於當日價格乘以它；只算本市場可交易的股票，兩地上市的公司因此會低於行情軟體顯示的「總市值」。每條線的末端跟著一個標籤，寫著公司名字和它此刻到達的數值，隨動畫一起走；幾家公司同框時，這些標籤也是分辨哪條線是哪一家的唯一線索。
 
 ### 產品功能
 
 - 一鍵生成 9:16 直式行情動畫影片
 - 涵蓋陸股、港股、美股三大市場
-- 十七種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率、債市固收
+- 十八種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率、債市固收、市值歷程
 - 匯出 H.264 MP4，可直接發布到短影音平台
 - 介面內建 14 種語言
 - 無帳號、無遙測，資料留在你自己的電腦上
@@ -104,7 +106,7 @@ Turn stock-market indicators into ready-to-post vertical animated videos.
 
 Market Motion Studio turns stock-market data into 9:16 vertical animations, built for vertical platforms like TikTok, Shorts and Reels: pick a market and a symbol, the app fetches the data, animates it, and exports an H.264 MP4 ready to post. Every chart page is free: fetching data, previewing and saving a cover image cost nothing. Exporting the video — and taking the watermark off it — takes a monthly subscription that can be cancelled at any time.
 
-Seventeen chart pages:  
+Eighteen chart pages:  
 • Market turnover — a historical reel of whole-market daily turnover (A-share)  
 • Volume & turnover rate — a single stock's price and volume together (A-share/Hong Kong)  
 • Sector race — sector indices racing up and down  
@@ -122,6 +124,7 @@ Seventeen chart pages:
 • Drawdowns — A row is how far below its own high a holding sits — not what it earned, but what it cost to earn it
 • Hold odds — A row is the share of finished entries that gained — of all the months a holder could have bought in and held for the same length of time, the share that ended up ahead
 • Bond market — One row per bond index, and the bar is a price change — which is not the same thing as what holding it earned
+• Market value — One stock's circulating market value day by day, with its share price beneath it on the same time axis. Or several companies at once — one line each, named at its end
 
 Three markets: China A-share, Hong Kong, and US. The interface ships in 14 languages.
 
@@ -129,13 +132,13 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-From this version the subscription points at the add-on in the Store that really is a monthly one. The add-on it used to ask for was created as a one-time purchase: bought once, it stays valid forever and never renews, which is not what a subscription is. A product's type cannot be changed once it has been saved and a published add-on name cannot be reused, so this version asks for the newly created one instead. Once that add-on is published and associated with this app, the settings page shows the subscription's price, and it still buys the same two things: exporting a video and removing the watermark. Nothing else changed - fetching data, playing the animation and saving a cover image stay free on all seventeen chart pages.
+New in this version: Market Value History - one stock's circulating market value day by day, with its share price beneath it on the same time axis, or several companies at once, one line each. No source carries a historical share count, so the count is recovered from the turnover rate: volume divided by the turnover rate is the circulating count, and the value is the day's price times it. Only the shares traded in this market are counted, so a company listed in two places sits below the "total market value" a quote app shows. A label rides each line's leading end with the company's name and the value it has reached at that moment, moving with the animation; with several companies on one frame, those labels are also the only thing that says which line is which.
 
 ### Product features
 
 - One-click 9:16 vertical market-animation videos
 - Three markets: China A-share, Hong Kong, and US
-- Seventeen charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds, Bond market
+- Eighteen charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds, Bond market, Market value
 - Exports H.264 MP4, ready for short-video platforms
 - Interface available in 14 languages
 - No account, no telemetry — your data stays on your computer
@@ -150,7 +153,7 @@ From this version the subscription points at the add-on in the Store that really
 
 Market Motion Studio は株式市場データを 9:16 の縦型アニメーションに変換する、TikTok・ショート動画・リール向けの Windows アプリです。市場と銘柄を選ぶだけで、アプリが自動で相場データを取得し、アニメーションを生成、H.264 MP4 で書き出します。どのチャートページも無料で使えます。データの取得、プレビュー、カバー画像の保存には費用がかかりません。動画の書き出しとウォーターマークの解除には、いつでも解約できる月額サブスクリプションが必要です。
 
-17 つのチャートページ：  
+18 つのチャートページ：  
 • 市場の売買代金 — 全市場の売買代金の歴史ロングリール（中国A株）  
 • 出来高と回転率 — 一眼でわかる銘柄の量価（中国A株/香港）  
 • 業界セクター競争 — セクター指数の騰落レース  
@@ -168,6 +171,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 • ドローダウン — 行はその資産が自分の高値からどれだけ下にいるか——稼いだ額ではなく、それを稼ぐのに何が必要だったか
 • 保有勝率 — 行は完了したエントリーのうち利益になった割合——区間内で買って同じ期間だけ保有できるすべての月のうち、最終的にプラスになったものの割合
 • 債券市場 — 債券指数 1 本につき 1 行。バーは価格の変動であり、保有して稼いだ額とは同じではありません
+• 時価総額の推移 — ある銘柄の流通時価総額を日ごとに、同じ時間軸の下に株価を添えて。複数社を同時に、その末端へ名前を付けた線にすることもできます
 
 中国A株・香港・米国の 3 市場に対応。インターフェースは 14 言語を内蔵。
 
@@ -175,13 +179,13 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-このバージョンから、購読はストアにある本当の月額購読を指します。以前が指していたのは一回きりの買い切りとして作られたもので、一度買うと期限なく有効なまま更新もされず、購読とは別のものでした。製品の種類は保存すると変更できず、公開済みのアドオン名も再利用できないため、新しく作られたものを指すようにしました。それがストアで公開されこのアプリに関連付けられれば、設定ページに購読の価格が表示されます。購読で買えるのは今までどおり動画の書き出しと透かしの削除の二つです。他は変わりません。十七のチャートページでのデータ取得、アニメーションの再生、表紙画像の保存は引き続き無料です。
+今バージョンの新機能は「時価総額の推移」です。ある銘柄の流通時価総額を日ごとに曲線で描き、その下に同じ時間軸で株価を置きます。複数社を同時に描くこともでき、会社ごとに一本の線になります。ソースはどの日についても過去の株式数を持っていないため、株式数は回転率から逆算します——出来高を回転率で割ったものがそのまま流通株式数で、時価総額はその日の価格にこれを掛けたものです。数えるのはこの市場で取引される株式だけなので、二重上場の会社は相場アプリが示す「総時価総額」より低くなります。各線の先端にはラベルが付き、会社名とその時点で到達した値を示しながらアニメーションと一緒に動きます。複数社を一枚に描いたときは、このラベルがどの線がどの会社かを見分ける唯一の手掛かりにもなります。
 
 ### 製品の機能
 
 - ワンクリックで 9:16 縦型の相場アニメーション動画を作成
 - 中国A株・香港・米国の 3 市場に対応
-- 17 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率、債券市場
+- 18 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率、債券市場、時価総額の推移
 - H.264 MP4 で書き出し、ショート動画プラットフォームにそのまま投稿可能
 - インターフェースは 14 言語内蔵
 - アカウント不要・テレメトリなし — データはあなたの PC の中だけ
@@ -196,7 +200,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이션으로 바꿔주는 Windows 앱입니다. 틱톡, 쇼츠, 릴스 같은 세로형 플랫폼을 위해 설계되었으며, 시장과 종목만 선택하면 앱이 자동으로 시세를 가져오고 애니메이션을 만들어 H.264 MP4로 내보냅니다.모든 차트 페이지는 무료입니다. 데이터 불러오기, 미리보기, 커버 이미지 저장에는 비용이 들지 않습니다. 동영상 내보내기와 워터마크 제거에는 언제든 해지할 수 있는 월간 구독이 필요합니다.
 
-17가지 차트 페이지:  
+18가지 차트 페이지:  
 • 시장 거래대금 — 전체 시장 일별 거래대금의 히스토리 릴 (중국 A주식)  
 • 거래량과 회전율 — 종목의 가격과 거래량을 한 화면에 (중국 A주식/홍콩)  
 • 업종 경주 — 업종 지수의 등락 레이스  
@@ -214,6 +218,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 • 낙폭 — 행은 그 자산이 자기 고점에서 얼마나 아래 있는지—얼마를 벌었는가가 아니라, 그것을 버는 데 무엇을 견뎠는가. 자산군 경주와 같은 여덟 자산을 서로가 아니라 각자의 고점에 견주어 측정한다
 • 보유 승률 — 행은 이익으로 끝난 완료 진입의 비율—구간 안에서 사서 같은 기간 보유할 수 있었던 모든 달 중, 결국 플러스가 된 것의 비율. 자산군·낙폭 보드와 같은 여덟 자산을, 얼마를 벌었는지가 아니라 보유가 얼마나 자주 통했는지로 평가한다
 • 채권시장 — 채권 지수당 한 행이며, 막대는 가격 변동입니다. 보유해서 벌어들인 것과는 같지 않습니다
+• 시가총액 추이 — 한 종목의 유통 시가총액을 날짜별로, 같은 시간축 아래에 주가를 함께. 또는 여러 기업을 한 번에 —— 끝에 이름이 붙은 선 하나씩으로도 볼 수 있습니다
 
 중국 A주식, 홍콩, 미국 3개 시장 지원. 인터페이스는 14개 언어 내장.
 
@@ -221,13 +226,13 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전부터 구독은 스토어에 있는 진짜 월간 구독을 가리킵니다. 이전에 가리키던 것은 일회성 구매로 만들어진 것으로, 한 번 사면 기한 없이 유효하고 갱신되지 않으므로 구독과는 다른 것이었습니다. 제품 종류는 저장하면 변경할 수 없고 이미 게시된 추가 기능 이름도 다시 쓸 수 없으므로, 새로 만든 것을 가리키도록 했습니다. 그것이 스토어에 게시되고 이 앱에 연결되면 설정 페이지에 구독 가격이 표시됩니다. 구독으로 살 수 있는 것은 여전히 동영상 내보내기와 워터마크 제거 두 가지입니다. 다른 것은 그대로입니다. 열일곱 개 차트 페이지의 데이터 가져오기, 애니메이션 재생, 표지 이미지 저장은 계속 무료입니다.
+이 버전의 새 기능은 「시가총액 추이」입니다. 한 종목의 유통 시가총액을 날짜별로 곡선으로 그리고, 그 아래 같은 시간 축에 주가를 놓습니다. 여러 기업을 동시에 그릴 수도 있고 기업마다 선이 하나씩 생깁니다. 출처에는 어느 날의 과거 주식 수도 없으므로 주식 수는 회전율에서 되찾습니다——거래량을 회전율로 나눈 것이 곧 유통 주식 수이고, 시가총액은 그날의 가격에 이를 곱한 값입니다. 이 시장에서 거래되는 주식만 세므로 이중 상장 기업은 시세 앱이 보여주는 「총 시가총액」보다 낮게 나옵니다. 각 선 끝에는 라벨이 붙어 회사 이름과 그 시점에 도달한 값을 보여주며 애니메이션과 함께 움직입니다. 여러 기업을 한 화면에 그릴 때는 이 라벨이 어떤 선이 어느 기업인지 구분하는 유일한 단서이기도 합니다.
 
 ### 제품 기능
 
 - 원클릭으로 9:16 세로형 시장 애니메이션 영상 제작
 - 중국 A주식, 홍콩, 미국 3개 시장 지원
-- 17가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률、채권시장
+- 18가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률、채권시장、시가총액 추이
 - H.264 MP4로 내보내 숏폼 플랫폼에 바로 게시
 - 14개 언어 인터페이스 내장
 - 계정 없음, 텔레메트리 없음 — 데이터는 내 컴퓨터에만
@@ -242,7 +247,7 @@ Verwandeln Sie Marktindikatoren in direkt veröffentlichbare vertikale Animation
 
 Market Motion Studio macht aus Börsendaten 9:16-Animationen im Hochformat – gebaut für vertikale Plattformen wie TikTok, Shorts und Reels: Markt und Symbol wählen, die App ruft die Kurse ab, animiert sie und exportiert eine H.264-MP4, bereit zum Posten. Jede Diagrammseite ist kostenlos: Daten laden, Vorschau und Titelbild speichern kosten nichts. Das Video zu exportieren — und das Wasserzeichen zu entfernen — verlangt ein monatliches Abonnement, das jederzeit kündbar ist.
 
-Siebzehn Diagrammseiten:  
+Achtzehn Diagrammseiten:  
 • Marktumsatz – ein historischer Reel des täglichen Gesamtmarktumsatzes (China A-Aktien)  
 • Volumen und Umschlag – Kurs und Volumen einer Aktie zusammen (China A/Hongkong)  
 • Sektor-Rennen – Branchenindizes im Auf und Ab im Rennen  
@@ -260,6 +265,7 @@ Siebzehn Diagrammseiten:
 • Rücksetzer – Eine Zeile ist, wie weit unter dem eigenen Hoch eine Anlage steht — nicht was sie verdient hat, sondern was es gekostet hat, es zu verdienen
 • Haltequote – Eine Zeile ist der Anteil der beendeten Einstiege, die gewonnen haben — von allen Monaten, in denen man hätte einsteigen und gleich lang halten können, der Anteil, der am Ende im Plus lag
 • Anleihemarkt – Eine Zeile pro Anleiheindex, und der Balken ist eine Kursänderung — nicht dasselbe wie das, was das Halten eingebracht hat
+• Marktwert – Der Marktwert einer Aktie im Umlauf Tag für Tag, darunter auf derselben Zeitachse ihr Kurs. Oder mehrere Unternehmen zugleich — je eine Linie, am Ende beschriftet
 
 Drei Märkte: China A-Aktien, Hongkong und USA. Die Oberfläche gibt es in 14 Sprachen.
 
@@ -267,13 +273,13 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Ab dieser Version zeigt das Abonnement auf das Add-on im Store, das wirklich ein monatliches ist. Das Add-on, nach dem zuvor gefragt wurde, war als Einmalkauf angelegt: einmal gekauft bleibt es dauerhaft gültig und verlängert sich nie, was etwas anderes ist als ein Abonnement. Der Produkttyp lässt sich nach dem Speichern nicht ändern und ein veröffentlichter Add-on-Name nicht wiederverwenden, daher fragt diese Version nach dem neu angelegten. Sobald dieses Add-on veröffentlicht und dieser App zugeordnet ist, zeigt die Einstellungsseite den Preis des Abonnements, und es kauft weiterhin dieselben zwei Dinge: das Exportieren eines Videos und das Entfernen des Wasserzeichens. Sonst bleibt alles wie es ist: Daten abrufen, Animation abspielen und Titelbild speichern bleiben auf allen siebzehn Diagrammseiten kostenlos.
+Neu in dieser Version: Marktwert-Verlauf - die frei handelbare Marktkapitalisierung einer Aktie Tag für Tag als Kurve, darunter auf derselben Zeitachse ihr Kurs, oder mehrere Unternehmen zugleich, mit je einer Linie. Keine Quelle kennt einen historischen Aktienbestand, deshalb wird er aus der Umschlagsrate ermittelt: das Volumen geteilt durch die Umschlagsrate ist die frei handelbare Stückzahl, und der Wert ist der Tageskurs mal diese Zahl. Gezählt werden nur die an diesem Markt gehandelten Aktien, weshalb ein doppelt notiertes Unternehmen unter der Gesamtmarktkapitalisierung liegt, die eine Kurs-App zeigt. Am vorderen Ende jeder Linie sitzt ein Etikett mit dem Namen des Unternehmens und dem Wert, den es in diesem Moment erreicht hat, und es wandert mit der Animation; bei mehreren Unternehmen in einem Bild sind diese Etiketten auch das Einzige, was sagt, welche Linie welche ist.
 
 ### Produktfunktionen
 
 - Mit einem Klick 9:16-Marktanimationsvideos im Hochformat
 - Drei Märkte: China A-Aktien, Hongkong und USA
-- Siebzehn Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote, Anleihemarkt
+- Achtzehn Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote, Anleihemarkt, Marktwert
 - Export als H.264-MP4, fertig für Kurzvideo-Plattformen
 - Oberfläche in 14 Sprachen
 - Kein Konto, keine Telemetrie – Ihre Daten bleiben auf Ihrem Computer
@@ -288,7 +294,7 @@ Transformez les indicateurs de marché en vidéos animées verticales, prêtes �
 
 Market Motion Studio transforme les données boursières en animations 9:16 verticales, conçu pour les plateformes verticales comme TikTok, Shorts et Reels : choisissez un marché et un symbole, l'application récupère les cours, les anime et exporte un MP4 H.264 prêt à publier. Chaque page de graphiques est gratuite : charger les données, prévisualiser et enregistrer une image de couverture ne coûtent rien. Exporter la vidéo — et retirer le filigrane — demande un abonnement mensuel, résiliable à tout moment.
 
-Dix-sept pages de graphiques :  
+Dix-huit pages de graphiques :  
 • Volume d'échanges du marché — un long format historique du volume quotidien de tout le marché (Chine A)  
 • Volume et rotation — le prix et le volume d'une action ensemble (Chine A/Hong Kong)  
 • Course de secteurs — les indices sectoriels qui montent et descendent en course  
@@ -306,6 +312,7 @@ Dix-sept pages de graphiques :
 • Reculs — Une ligne, c'est la distance entre une position et son propre sommet — pas ce qu'elle a rapporté, mais ce qu'il a fallu endurer pour le rapporter
 • Taux de réussite — Une ligne, c'est la part des entrées terminées qui ont gagné — parmi tous les mois où l'on aurait pu entrer et garder la même durée, la part qui s'est terminée dans le vert
 • Marché obligataire — Une ligne par indice obligataire, et la barre est une variation de cours — ce qui n'est pas la même chose que ce que la détention a rapporté
+• Valeur de marché — La valeur de marché en circulation d'une action jour par jour, avec son cours en dessous sur le même axe temporel. Ou plusieurs entreprises à la fois — une courbe chacune, nommée à son extrémité
 
 Trois marchés : Chine A, Hong Kong et États-Unis. L'interface existe en 14 langues.
 
@@ -313,13 +320,13 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-À partir de cette version, l'abonnement pointe vers le module du Store qui est réellement mensuel. Celui qu'il demandait auparavant avait été créé comme un achat unique : acheté une fois, il reste valable indéfiniment et ne se renouvelle jamais, ce qui n'est pas un abonnement. Le type d'un produit ne peut pas être modifié après l'enregistrement et un nom de module publié ne peut pas être réutilisé ; cette version demande donc le module nouvellement créé. Une fois ce module publié et associé à cette application, la page des paramètres affiche le prix de l'abonnement, qui achète toujours les deux mêmes choses : l'exportation d'une vidéo et la suppression du filigrane. Rien d'autre ne change : la récupération des données, la lecture de l'animation et l'enregistrement de l'image de couverture restent gratuits sur les dix-sept pages de graphiques.
+Nouveau dans cette version : Historique de la valeur de marché - la capitalisation flottante d'une action au jour le jour, avec son cours en dessous sur le même axe de temps, ou plusieurs entreprises à la fois, une courbe chacune. Aucune source ne connaît le nombre d'actions historique ; il est donc retrouvé à partir du taux de rotation : le volume divisé par le taux de rotation est le nombre d'actions flottantes, et la valeur est le cours du jour multiplié par ce nombre. Seules les actions négociées sur ce marché sont comptées, si bien qu'une entreprise cotée à deux endroits se situe sous la capitalisation totale affichée par une application de cotations. Une étiquette suit l'extrémité de chaque courbe avec le nom de l'entreprise et la valeur atteinte à cet instant, et elle avance avec l'animation ; avec plusieurs entreprises sur une même image, ces étiquettes sont aussi la seule chose qui dise quelle courbe est laquelle.
 
 ### Fonctionnalités
 
 - Vidéos d'animation de marché 9:16 verticales en un clic
 - Trois marchés : Chine A, Hong Kong et États-Unis
-- Dix-sept graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite, Marché obligataire
+- Dix-huit graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite, Marché obligataire, Valeur de marché
 - Export MP4 H.264, prêt pour les plateformes de vidéos courtes
 - Interface disponible en 14 langues
 - Pas de compte, pas de télémétrie — vos données restent sur votre ordinateur
@@ -334,7 +341,7 @@ Trasforma gli indicatori di mercato in video animati verticali pronti da pubblic
 
 Market Motion Studio trasforma i dati di borsa in animazioni verticali 9:16, pensate per piattaforme verticali come TikTok, Shorts e Reels: scegli un mercato e un simbolo, l'app recupera i dati, li anima ed esporta un MP4 H.264 pronto da pubblicare. Ogni pagina di grafici è gratuita: scaricare i dati, l'anteprima e il salvataggio della copertina non costano nulla. Esportare il video — e togliere il marchio — richiede un abbonamento mensile, annullabile in qualsiasi momento.
 
-Diciassette pagine di grafici:  
+Diciotto pagine di grafici:  
 • Volume degli scambi di mercato — una lunga carrellata storica del volume giornaliero di tutto il mercato (Cina A)  
 • Volume e rotazione — prezzo e volume di una azione insieme (Cina A/Hong Kong)  
 • Corsa dei settori — gli indici settoriali che salgono e scendono in gara  
@@ -352,6 +359,7 @@ Diciassette pagine di grafici:
 • Ribassi — Una riga è quanto sotto il proprio massimo si trova uno strumento — non quanto ha guadagnato, ma cosa è costato guadagnarlo
 • Tasso di riuscita — Una riga è la quota delle entrate concluse che hanno guadagnato — fra tutti i mesi in cui si sarebbe potuti entrare e mantenere per la stessa durata, la quota finita in guadagno
 • Mercato obbligazionario — Una riga per indice obbligazionario, e la barra è una variazione di prezzo — che non è la stessa cosa di ciò che ha reso la detenzione
+• Valore di mercato — Il valore di mercato flottante di un'azione giorno per giorno, con sotto il prezzo sullo stesso asse temporale. Oppure più aziende insieme — una linea ciascuna, nominata all'estremità
 
 Tre mercati: Cina A, Hong Kong e Stati Uniti. L'interfaccia è disponibile in 14 lingue.
 
@@ -359,13 +367,13 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Da questa versione l'abbonamento punta al componente dello Store che è davvero mensile. Quello che chiedeva prima era stato creato come acquisto una tantum: comprato una volta resta valido per sempre e non si rinnova mai, che non è un abbonamento. Il tipo di un prodotto non può essere modificato dopo il salvataggio e il nome di un componente pubblicato non può essere riutilizzato, quindi questa versione chiede quello appena creato. Una volta che tale componente sarà pubblicato e associato a questa app, la pagina delle impostazioni mostrerà il prezzo dell'abbonamento, che continua a comprare le stesse due cose: l'esportazione di un video e la rimozione della filigrana. Nient'altro cambia: il recupero dei dati, la riproduzione dell'animazione e il salvataggio dell'immagine di copertina restano gratuiti su tutte le diciassette pagine di grafici.
+Novità di questa versione: Storia del valore di mercato - la capitalizzazione flottante di un'azione giorno per giorno, con sotto il suo prezzo sullo stesso asse temporale, oppure più aziende insieme, una linea ciascuna. Nessuna fonte conserva un numero storico di azioni, quindi lo si ricava dal tasso di rotazione: il volume diviso per il tasso di rotazione è il numero di azioni flottanti, e il valore è il prezzo del giorno per questo numero. Si contano solo le azioni scambiate su questo mercato, perciò un'azienda quotata in due piazze resta sotto la capitalizzazione totale mostrata da un'app di quotazioni. Un'etichetta segue l'estremità di ogni linea con il nome dell'azienda e il valore raggiunto in quell'istante, e si muove con l'animazione; con più aziende in un solo quadro, queste etichette sono anche l'unica cosa che dice quale linea è quale.
 
 ### Funzionalità del prodotto
 
 - Video di animazione di mercato verticali 9:16 con un clic
 - Tre mercati: Cina A, Hong Kong e Stati Uniti
-- Diciassette grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita, Mercato obbligazionario
+- Diciotto grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita, Mercato obbligazionario, Valore di mercato
 - Esportazione MP4 H.264, pronta per le piattaforme di video brevi
 - Interfaccia disponibile in 14 lingue
 - Nessun account, nessuna telemetria — i tuoi dati restano sul tuo computer
@@ -380,7 +388,7 @@ Convierta los indicadores de mercado en vídeos animados verticales listos para 
 
 Market Motion Studio convierte los datos bursátiles en animaciones verticales 9:16, diseñado para plataformas verticales como TikTok, Shorts y Reels: elija un mercado y un símbolo, la app obtiene los datos, los anima y exporta un MP4 H.264 listo para publicar. Todas las páginas de gráficos son gratuitas: descargar datos, previsualizar y guardar una portada no cuestan nada. Exportar el vídeo —y quitarle la marca de agua— requiere una suscripción mensual que puedes cancelar cuando quieras.
 
-Diecisiete páginas de gráficos:  
+Dieciocho páginas de gráficos:  
 • Volumen negociado del mercado — un carrete histórico del volumen diario de todo el mercado (China A)  
 • Volumen y rotación — el precio y el volumen de una acción juntos (China A/Hong Kong)  
 • Carrera de sectores — los índices sectoriales subiendo y bajando en carrera  
@@ -398,6 +406,7 @@ Diecisiete páginas de gráficos:
 • Caídas — Una fila es cuánto por debajo de su propio máximo está una inversión — no lo que ganó, sino lo que costó ganarlo
 • Tasa de acierto — Una fila es la proporción de entradas terminadas que ganaron — de todos los meses en que se pudo entrar y mantener el mismo tiempo, la parte que acabó en ganancia
 • Renta fija — Una fila por índice de bonos, y la barra es una variación de precio — que no es lo mismo que lo que ganó mantenerlo
+• Valor de mercado — El valor de mercado en circulación de una acción día a día, con su cotización debajo en el mismo eje temporal. O varias empresas a la vez — una línea cada una, rotulada en su extremo
 
 Tres mercados: China A, Hong Kong y EE. UU. La interfaz está disponible en 14 idiomas.
 
@@ -405,13 +414,13 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-A partir de esta versión, la suscripción apunta al complemento de la Store que sí es mensual. El que pedía antes se creó como una compra única: al comprarlo una vez sigue siendo válido para siempre y nunca se renueva, que no es lo mismo que una suscripción. El tipo de un producto no se puede cambiar una vez guardado y el nombre de un complemento publicado no se puede reutilizar, por lo que esta versión pide el recién creado. Cuando ese complemento esté publicado y asociado a esta aplicación, la página de configuración mostrará el precio de la suscripción, que sigue comprando las mismas dos cosas: exportar un vídeo y quitar la marca de agua. Nada más cambia: la obtención de datos, la reproducción de la animación y el guardado de la imagen de portada siguen siendo gratuitos en las diecisiete páginas de gráficos.
+Novedad de esta versión: Historial de valor de mercado - la capitalización circulante de una acción día a día, con su cotización debajo en el mismo eje temporal, o varias empresas a la vez, una línea cada una. Ninguna fuente guarda un número histórico de acciones, así que se recupera desde la tasa de rotación: el volumen dividido por la tasa de rotación es el número de acciones en circulación, y el valor es el precio del día multiplicado por ese número. Solo se cuentan las acciones negociadas en este mercado, de modo que una empresa cotizada en dos plazas queda por debajo de la capitalización total que muestra una app de cotizaciones. Una etiqueta sigue el extremo de cada línea con el nombre de la empresa y el valor alcanzado en ese instante, y avanza con la animación; con varias empresas en un mismo cuadro, esas etiquetas son también lo único que dice qué línea es cuál.
 
 ### Funciones del producto
 
 - Vídeos de animación de mercado 9:16 verticales con un clic
 - Tres mercados: China A, Hong Kong y EE. UU.
-- Diecisiete gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto, Renta fija
+- Dieciocho gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto, Renta fija, Valor de mercado
 - Exportación a MP4 H.264, lista para plataformas de vídeo corto
 - Interfaz disponible en 14 idiomas
 - Sin cuenta, sin telemetría — sus datos se quedan en su equipo
@@ -425,7 +434,7 @@ Transforme indicadores de mercado em vídeos animados verticais prontos para pub
 
 O Market Motion Studio transforma dados do mercado de ações em animações verticais 9:16, criado para plataformas verticais como TikTok, Shorts e Reels: escolha um mercado e um símbolo, o app busca os dados, anima e exporta um MP4 H.264 pronto para publicar. Todas as páginas de gráficos são gratuitas: buscar dados, pré-visualizar e salvar uma capa não custam nada. Exportar o vídeo — e tirar a marca d'água — exige uma assinatura mensal, que pode ser cancelada a qualquer momento.
 
-Dezessete páginas de gráficos:  
+Dezoito páginas de gráficos:  
 • Volume financeiro do mercado — um carretel histórico do volume diário de todo o mercado (China A)  
 • Volume e giro — preço e volume de uma ação juntos (China A/Hong Kong)  
 • Corrida de setores — os índices setoriais subindo e caindo em corrida  
@@ -443,6 +452,7 @@ Dezessete páginas de gráficos:
 • Quedas — Uma linha é a distância entre um ativo e sua própria máxima — não o que ele rendeu, mas o que custou para render
 • Taxa de acerto — Uma linha é a parcela das entradas concluídas que ganharam — de todos os meses em que se poderia ter entrado e mantido pelo mesmo tempo, a parte que terminou no positivo
 • Mercado de títulos — Uma linha por índice de títulos, e a barra é uma variação de preço — que não é o mesmo que o que a manutenção rendeu
+• Histórico de valor de mercado — O valor de mercado em circulação de uma ação dia a dia, com o preço da ação abaixo no mesmo eixo de tempo. Ou várias empresas ao mesmo tempo — uma linha cada, nomeada na ponta
 
 Três mercados: China A, Hong Kong e EUA. A interface vem em 14 idiomas.
 
@@ -450,13 +460,13 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-A partir desta versão, a assinatura aponta para o complemento da Store que realmente é mensal. O que era pedido antes foi criado como uma compra única: comprado uma vez, permanece válido para sempre e nunca renova, o que não é uma assinatura. O tipo de um produto não pode ser alterado depois de salvo e o nome de um complemento publicado não pode ser reutilizado; por isso esta versão pede o recém-criado. Quando esse complemento estiver publicado e associado a este aplicativo, a página de configurações mostrará o preço da assinatura, que continua comprando as mesmas duas coisas: exportar um vídeo e remover a marca d'água. Nada mais muda: a busca de dados, a reprodução da animação e o salvamento da imagem de capa continuam gratuitos nas dezessete páginas de gráficos.
+Novo nesta versão: Histórico de valor de mercado - o valor de mercado circulante de uma ação dia a dia, com o preço dela abaixo no mesmo eixo de tempo, ou várias empresas ao mesmo tempo, uma linha cada. Nenhuma fonte guarda uma contagem histórica de ações, então ela é recuperada pela taxa de giro: o volume dividido pela taxa de giro é a quantidade de ações em circulação, e o valor é o preço do dia vezes essa quantidade. Só entram as ações negociadas neste mercado, por isso uma empresa listada em duas praças fica abaixo da capitalização total que um app de cotações mostra. Um rótulo acompanha a ponta de cada linha com o nome da empresa e o valor alcançado naquele instante, e anda com a animação; com várias empresas num mesmo quadro, esses rótulos são também a única coisa que diz qual linha é qual.
 
 ### Funcionalidades do produto
 
 - Vídeos de animação de mercado verticais 9:16 com um clique
 - Três mercados: China A, Hong Kong e EUA
-- Dezessete gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto, Mercado de títulos
+- Dezoito gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto, Mercado de títulos, Histórico de valor de mercado
 - Exporta MP4 H.264, pronto para plataformas de vídeo curto
 - Interface disponível em 14 idiomas
 - Sem conta, sem telemetria — seus dados ficam no seu computador
@@ -471,7 +481,7 @@ Zamień wskaźniki rynkowe w pionowe filmy animowane gotowe do publikacji.
 
 Market Motion Studio zamienia dane giełdowe w pionowe animacje 9:16, stworzone dla pionowych platform jak TikTok, Shorts i Reels: wybierz rynek i symbol, aplikacja pobierze dane, zanimuje je i wyeksportuje plik MP4 H.264 gotowy do publikacji. Każda strona wykresów jest darmowa: pobieranie danych, podgląd i zapisanie okładki nic nie kosztują. Zapisanie filmu — i zdjęcie znaku wodnego — wymaga miesięcznej subskrypcji, którą można anulować w każdej chwili.
 
-Siedemnaście stron wykresów:  
+Osiemnaście stron wykresów:  
 • Obroty rynku — historyczna zwijanka dziennych obrotów całego rynku (Chiny A)  
 • Wolumen i obrót — cena i wolumen jednej akcji razem (Chiny A/Hongkong)  
 • Wyścig sektorów — indeksy branżowe w wyścigu w górę i w dół  
@@ -489,6 +499,7 @@ Siedemnaście stron wykresów:
 • Obsunięcia — Wiersz to jak daleko poniżej własnego szczytu jest instrument — nie ile zarobił, lecz ile kosztowało wytrzymanie tego zarobku
 • Skuteczność — Wiersz to udział zakończonych wejść, które zarobiły — ze wszystkich miesięcy, w których można było wejść i trzymać równie długo, część zakończona na plusie
 • Rynek obligacji — Jeden wiersz na indeks obligacji, a słupek to zmiana ceny — co nie jest tym samym co zarobek z trzymania
+• Wartość rynkowa — Wartość rynkowa akcji w obrocie dzień po dniu, a pod nią kurs na tej samej osi czasu. Albo kilka spółek naraz — każda jedną linią, podpisaną na końcu
 
 Trzy rynki: Chiny A, Hongkong i USA. Interfejs dostępny w 14 językach.
 
@@ -496,13 +507,13 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Od tej wersji subskrypcja wskazuje ten dodatek w Sklepie, który naprawdę jest miesięczny. Ten, o który pytano wcześniej, został utworzony jako zakup jednorazowy: kupiony raz pozostaje ważny na zawsze i nigdy się nie odnawia, co nie jest subskrypcją. Typu produktu nie można zmienić po zapisaniu, a nazwy opublikowanego dodatku nie można użyć ponownie, dlatego ta wersja pyta o nowo utworzony. Gdy ten dodatek zostanie opublikowany i powiązany z tą aplikacją, strona ustawień pokaże cenę subskrypcji, która nadal kupuje te same dwie rzeczy: eksport wideo i usunięcie znaku wodnego. Nic więcej się nie zmienia: pobieranie danych, odtwarzanie animacji i zapisywanie obrazu okładki pozostają bezpłatne na siedemnastu stronach wykresów.
+Nowość w tej wersji: Historia wartości rynkowej - kapitalizacja obrotowa jednej akcji dzień po dniu, a pod nią na tej samej osi czasu jej kurs, albo kilka spółek naraz, każda ze swoją linią. Żadne źródło nie ma historycznej liczby akcji, więc odtwarza się ją ze wskaźnika obrotu: wolumen podzielony przez wskaźnik obrotu to liczba akcji w obrocie, a wartość to kurs dnia razy ta liczba. Liczone są tylko akcje handlowane na tym rynku, więc spółka notowana w dwóch miejscach wypada poniżej całkowitej kapitalizacji pokazywanej przez aplikację z notowaniami. Etykieta podąża za końcem każdej linii z nazwą spółki i wartością, jaką ta osiągnęła w danej chwili, i porusza się razem z animacją; przy kilku spółkach na jednym obrazie te etykiety są też jedyną rzeczą, która mówi, która linia jest która.
 
 ### Funkcje produktu
 
 - Pionowe filmy z animacją rynku 9:16 jednym kliknięciem
 - Trzy rynki: Chiny A, Hongkong i USA
-- Siedemnaście wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność, Rynek obligacji
+- Osiemnaście wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność, Rynek obligacji, Wartość rynkowa
 - Eksport MP4 H.264, gotowy dla platform krótkich filmów
 - Interfejs w 14 językach
 - Bez konta, bez telemetrii — Twoje dane zostają na Twoim komputerze
@@ -517,7 +528,7 @@ Převeďte tržní ukazatele na svislá animovaná videa připravená k publikov
 
 Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro vertikální platformy jako TikTok, Shorts a Reels: vyberte trh a symbol, aplikace stáhne data, zanimuje je a exportuje MP4 H.264 připravené k publikování. Každá stránka s grafy je zdarma: načtení dat, náhled i uložení titulního obrázku nic nestojí. Zápis videa — a odebrání vodoznaku — vyžaduje měsíční předplatné, které lze kdykoli zrušit.
 
-Sedmnáct stránek s grafy:  
+Osmnáct stránek s grafy:  
 • Obrat trhu — historický svitek denních obratů celého trhu (Čína A)  
 • Objem a obrat — cena a objem jedné akcie společně (Čína A/Hongkong)  
 • Závod sektorů — odvětvové indexy závodící nahoru a dolů  
@@ -535,6 +546,7 @@ Sedmnáct stránek s grafy:
 • Poklesy — Řádek je jak hluboko pod vlastním maximem se nástroj nachází — ne kolik vydělal, ale co stálo to vydělat
 • Úspěšnost — Řádek je podíl uzavřených vstupů, které vydělaly — ze všech měsíců, v nichž se dalo vstoupit a držet stejně dlouho, ta část, která skončila v plusu
 • Trh dluhopisů — Jeden řádek na dluhopisový index a pruh je změna ceny — co není totéž co to, co držení vyneslo
+• Tržní hodnota — Tržní hodnota jedné akcie v oběhu den po dni a pod ní cena akcie na stejné časové ose. Nebo více firem najednou — každá jednou linií, pojmenovanou na konci
 
 Tři trhy: Čína A, Hongkong a USA. Rozhraní je ve 14 jazycích.
 
@@ -542,13 +554,13 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Od této verze předplatné ukazuje na ten doplněk ve Storu, který je skutečně měsíční. Ten, který se ptal dříve, byl vytvořen jako jednorázový nákup: po jednou zakoupení zůstává platný navždy a nikdy se neobnovuje, což předplatné není. Typ produktu nelze po uložení změnit a název publikovaného doplňku nelze znovu použít, proto tato verze žádá o nově vytvořený. Jakmile bude tento doplněk publikován a přidružen k této aplikaci, stránka nastavení zobrazí cenu předplatného, které nadále kupuje tytéž dvě věci: export videa a odstranění vodoznaku. Nic jiného se nemění: načítání dat, přehrávání animace a ukládání titulního obrázku zůstávají na sedmnácti stranách grafů zdarma.
+Novinkou této verze je Historie tržní hodnoty - obchodovaná tržní kapitalizace jedné akcie den po dni, pod ní na stejné časové ose její kurz, nebo několik firem najednou, každá se svou čarou. Žádný zdroj neuchovává historický počet akcií, a tak se dopočítává z míry obratu: objem dělený mírou obratu je počet akcií v oběhu a hodnota je kurz dne krát tento počet. Počítají se jen akcie obchodované na tomto trhu, takže firma kótovaná na dvou místech je pod celkovou tržní kapitalizací, kterou ukazuje aplikace s kurzy. Štítek jede na konci každé čáry s názvem firmy a hodnotou, které v tu chvíli dosáhla, a pohybuje se s animací; při několika firmách v jednom obraze jsou tyto štítky také tím jediným, co říká, která čára je která.
 
 ### Funkce produktu
 
 - Svislá tržní animovaná videa 9:16 na jedno kliknutí
 - Tři trhy: Čína A, Hongkong a USA
-- Sedmnáct grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost, Trh dluhopisů
+- Osmnáct grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost, Trh dluhopisů, Tržní hodnota
 - Export MP4 H.264, připravený pro platformy krátkých videí
 - Rozhraní ve 14 jazycích
 - Bez účtu, bez telemetrie — vaše data zůstávají na vašem počítači
@@ -563,7 +575,7 @@ Od této verze předplatné ukazuje na ten doplněk ve Storu, který je skutečn
 
 Market Motion Studio превращает биржевые данные в вертикальные анимации 9:16, созданное для вертикальных платформ вроде TikTok, Shorts и Reels: выберите рынок и символ, приложение само загрузит данные, оживит их и экспортирует MP4 H.264, готовый к публикации. Каждая страница с графиками бесплатна: загрузка данных, предпросмотр и сохранение обложки ничего не стоят. Экспорт видео — и снятие водяного знака — требуют ежемесячной подписки, которую можно отменить в любой момент.
 
-Семнадцать страниц с графиками:  
+Восемнадцать страниц с графиками:  
 • Оборот рынка — историческая лента ежедневного оборота всего рынка (Китай, A-акции)  
 • Объём и оборачиваемость — цена и объём одной акции вместе (Китай A/Гонконг)  
 • Гонка секторов — отраслевые индексы в гонке вверх и вниз  
@@ -581,6 +593,7 @@ Market Motion Studio превращает биржевые данные в ве�
 • Просадки — Строка — это насколько инструмент ниже собственного максимума: не сколько он заработал, а чего стоило это заработать
 • Доля удачных — Строка — это доля завершённых входов, которые оказались в плюсе: из всех месяцев, в которые можно было войти и держать одинаково долго, та часть, что закончилась с прибылью
 • Рынок облигаций — Одна строка на индекс облигаций, и полоса — это изменение цены, а не то, что принесло владение
+• История капитализации — Капитализация одной акции в обращении день за днём, а под ней — цена акции на той же временной оси. Либо несколько компаний сразу — по одной линии на каждую, с подписью на конце
 
 Три рынка: Китай (A-акции), Гонконг и США. Интерфейс доступен на 14 языках.
 
@@ -588,13 +601,13 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Начиная с этой версии подписка указывает на ту надстройку в магазине, которая действительно ежемесячная. Та, которую она запрашивала раньше, была создана как разовая покупка: купленная один раз, она остаётся действительной навсегда и никогда не продлевается, а это не подписка. Тип продукта нельзя изменить после сохранения, а имя опубликованной надстройки нельзя использовать повторно, поэтому эта версия запрашивает созданную заново. Когда эта надстройка будет опубликована и связана с этим приложением, на странице настроек появится цена подписки, которая по-прежнему покупает те же две вещи: экспорт видео и удаление водяного знака. Ничего другого не меняется: получение данных, воспроизведение анимации и сохранение обложки остаются бесплатными на семнадцати страницах диаграмм.
+Новое в этой версии: История капитализации - капитализация одной акции в свободном обращении день за днём, а под ней на той же оси времени её цена; можно вывести и несколько компаний сразу, по одной линии на каждую. Ни один источник не хранит историческое число акций, поэтому оно восстанавливается из оборачиваемости: объём, делённый на оборачиваемость, - это и есть число акций в обращении, а капитализация - цена дня, умноженная на него. Учитываются только акции, которыми торгуют на этом рынке, поэтому компания с листингом в двух местах оказывается ниже общей капитализации, которую показывает приложение с котировками. Ярлык едет у конца каждой линии с названием компании и значением, которого она достигла в этот момент, и движется вместе с анимацией; когда в одном кадре несколько компаний, эти ярлыки - ещё и единственное, что говорит, какая линия какая.
 
 ### Функции продукта
 
 - Вертикальные анимационные видео рынка 9:16 одним кликом
 - Три рынка: Китай (A-акции), Гонконг и США
-- Семнадцать графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных, Рынок облигаций
+- Восемнадцать графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных, Рынок облигаций, История капитализации
 - Экспорт MP4 H.264, готовый для платформ коротких видео
 - Интерфейс на 14 языках
 - Без аккаунта, без телеметрии — ваши данные остаются на вашем компьютере
@@ -609,7 +622,7 @@ Piyasa göstergelerini doğrudan yayınlanmaya hazır dikey animasyon videoları
 
 Market Motion Studio, borsa verilerini 9:16 dikey animasyonlara dönüştüren, TikTok, Shorts ve Reels gibi dikey platformlar için tasarlanmış bir Windows uygulamasıdır: bir piyasa ve sembol seçin, uygulama verileri çeker, animasyona dönüştürür ve yayınlanmaya hazır H.264 MP4 olarak dışa aktarır. Her grafik sayfası ücretsizdir: veri çekmek, önizleme ve kapak görselini kaydetmek hiçbir ücrete tabi değildir. Videoyu dışa aktarmak — ve filigranı kaldırmak — her zaman iptal edilebilen aylık bir abonelik gerektirir.
 
-On yedi grafik sayfası:  
+On sekiz grafik sayfası:  
 • Piyasa işlem hacmi — tüm piyasanın günlük işlem hacminin tarihî şeridi (Çin A)  
 • Hacim ve devir — bir hissenin fiyat ve hacmi birlikte (Çin A/Hong Kong)  
 • Sektör yarışı — sektör endeksleri yukarı ve aşağı yarışıyor  
@@ -627,6 +640,7 @@ On yedi grafik sayfası:
 • Düşüşler — Bir satır, bir varlığın kendi zirvesinin ne kadar altında olduğudur — ne kazandığı değil, onu kazanmanın neye mal olduğu
 • Tutma oranı — Bir satır, kazançla biten tamamlanmış girişlerin payı — aynı süre boyunca girilip tutulabilecek tüm ayların içinde, artıda bitenlerin oranı
 • Tahvil piyasası — Her tahvil endeksi için bir satır ve çubuk bir fiyat değişimi — bu, elde tutmanın kazandırdığı ile aynı şey değil
+• Piyasa değeri geçmişi — Bir hissenin dolaşımdaki piyasa değeri gün gün, altında aynı zaman ekseninde fiyatı. Ya da aynı anda birden çok şirket — her biri ucunda adı yazan bir çizgi
 
 Üç piyasa: Çin A, Hong Kong ve ABD. Arayüz 14 dilde mevcut.
 
@@ -634,13 +648,13 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümden itibaren abonelik, Mağaza'daki gerçekten aylık olan eklentiyi gösteriyor. Önceden istenen eklenti tek seferlik satın alma olarak oluşturulmuştu: bir kez satın alındığında süresiz geçerli kalır ve hiç yenilenmez, ki bu abonelik değildir. Bir ürünün türü kaydedildikten sonra değiştirilemez ve yayımlanmış bir eklenti adı yeniden kullanılamaz; bu nedenle bu sürüm yeni oluşturulanı istiyor. Bu eklenti yayımlanıp bu uygulamayla ilişkilendirildiğinde, ayarlar sayfası aboneliğin fiyatını gösterecek ve abonelik yine aynı iki şeyi satın alacak: video dışa aktarma ve filigranı kaldırma. Başka hiçbir şey değişmiyor: on yedi grafik sayfasının tamamında veri alma, animasyonu oynatma ve kapak görselini kaydetme ücretsiz kalıyor.
+Bu sürümde yeni: Piyasa değeri geçmişi - bir hissenin dolaşımdaki piyasa değeri gün gün, altında aynı zaman ekseninde fiyatı; ya da birden çok şirket aynı anda, her birine bir çizgi. Hiçbir kaynak geçmiş hisse sayısını saklamıyor, bu yüzden o devir hızından geri çıkarılıyor: hacmin devir hızına bölümü dolaşımdaki hisse sayısıdır ve değer, günün fiyatının bu sayıyla çarpımıdır. Yalnızca bu piyasada işlem gören hisseler sayılır, bu yüzden iki yerde listelenen bir şirket, fiyat uygulamasının gösterdiği toplam piyasa değerinin altında kalır. Her çizginin ucunda bir etiket şirketin adını ve o anda ulaştığı değeri taşır ve animasyonla birlikte hareket eder; tek karede birkaç şirket varken bu etiketler aynı zamanda hangi çizginin hangisi olduğunu söyleyen tek şeydir.
 
 ### Ürün özellikleri
 
 - Tek tıkla 9:16 dikey piyasa animasyon videoları
 - Üç piyasa: Çin A, Hong Kong ve ABD
-- On yedi grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı, Tahvil piyasası
+- On sekiz grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı, Tahvil piyasası, Piyasa değeri geçmişi
 - H.264 MP4 dışa aktarma, kısa video platformlarına hazır
 - 14 dilde arayüz
 - Hesap yok, telemetri yok — verileriniz kendi bilgisayarınızda kalır

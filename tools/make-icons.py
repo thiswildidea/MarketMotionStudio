@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""画出导航栏那十六个页面的图标，并生成 `Themes/Icons.xaml`。
+"""画出导航栏那十八个页面的图标，并生成 `Themes/Icons.xaml`。
 
 为什么要有这个脚本
 ------------------
-导航原先用的是 `Segoe Fluent Icons` 里的字形，而字形是**有限的一袋**：十六页里有三对
+导航原先用的是 `Segoe Fluent Icons` 里的字形，而字形是**有限的一袋**：最早的十六页里有三对
 页面被分到了同一个字形 —— K线与行业板块竞速（`E9E9`）、成交量换手率与持有胜率
 （`E9D2`）、成交额与持仓收益（`E9D9`）。一个字形说不了两个页面，于是"图标不代表
 页面意思"不是审美问题，是**重号**问题。
@@ -151,7 +151,7 @@ def arrow(x0, y0, x1, y1, length=2.2, spread=30.0, w=STROKE, tail=True):
     return unary_union(parts)
 
 
-# ---------------------------------------------------------------- 十六幅图
+# ---------------------------------------------------------------- 十八幅图
 #
 # 每一幅都写清它替的是哪一页、为什么是这个形状。形状本身是给 16px 看的：
 # 细节超过三处就会糊成一团，所以宁可少画。
@@ -227,6 +227,18 @@ def icon_market_cap():
     ]
 
 
+def icon_cap_history():
+    """市值历程：一条折线从左下走到右上，末段带箭头。
+
+    与市值榜那幅（三块台子）的分别：那幅是一次横截面上的名次，问的是"谁最大"；
+    这幅是一只标的自己的时间，问的是"它怎么变大的"。折线是过程，箭头是方向。
+    """
+    return [
+        polyline([(2.8, 15.4), (6.0, 12.2), (9.2, 13.4), (12.0, 8.6)]),
+        arrow(12.0, 8.6, 16.4, 4.6),
+    ]
+
+
 def icon_ah_premium():
     """AH 溢价：两个同大的圆环，上面一个双向箭头。
 
@@ -289,6 +301,20 @@ def icon_asset_race():
         parts.append(line(cx, cy, at(cx, cy, deg, r)[0], at(cx, cy, deg, r)[1]))
 
     return parts
+
+
+def icon_bond_race():
+    """债市固收竞速：三条左对齐、长度递增的横条——就是一个榜单，也是债券自己走的那种
+    斜率：慢，但一路向上。
+
+    半笔宽，不是主笔宽：横条比别的图里的线细一半，是因为九条债指并排时粗条会糊成
+    一片，而"榜单"靠的是左端对齐与长度差，不是笔的粗细。
+    """
+    return [
+        line(3.0, 13.9, 9.2, 13.9, w=0.8),
+        line(3.0, 10.7, 13.2, 10.7, w=0.8),
+        line(3.0, 7.5, 16.7, 7.5, w=0.8),
+    ]
 
 
 def icon_drawdown():
@@ -382,11 +408,13 @@ ICONS = [
     ("Volume", "成交量换手率", icon_volume),
     ("SectorRace", "行业板块竞速", icon_sector_race),
     ("MarketCap", "市值榜", icon_market_cap),
+    ("CapHistory", "市值历程", icon_cap_history),
     ("AhPremium", "AH 溢价", icon_ah_premium),
     ("ExtremeDays", "极端交易日", icon_extreme_days),
     ("FxCorridor", "汇率走廊", icon_fx_corridor),
     ("IndexRace", "指数长跑", icon_index_race),
     ("AssetRace", "大类资产", icon_asset_race),
+    ("BondRace", "债市固收竞速", icon_bond_race),
     ("Drawdown", "回撤与修复", icon_drawdown),
     ("HoldOdds", "持有胜率", icon_hold_odds),
     ("Matrix", "收益矩阵", icon_matrix),
@@ -562,7 +590,7 @@ def write_xaml(shapes, path):
     blocks = [
         '<?xml version="1.0" encoding="utf-8"?>',
         "<!--",
-        "    导航栏那十六个页面的图标。**生成物**，不要手改：",
+        "    导航栏那十八个页面的图标。**生成物**，不要手改：",
         "    改 tools/make-icons.py 再跑一次（python tools/make-icons.py）。",
         "",
         "    每条都是一幅填充几何（路径数据，只用了 M/L/Z），由描边骨架外扩求并",

@@ -118,6 +118,32 @@ kapitalizacji; kolejność zmienia się do ostatniej klatki. Próbkowanie miesi�
 
 
 
+## Historia wartości rynkowej
+
+Wartość rynkowa akcji w obrocie dzień po dniu, a pod nią kurs na tej samej osi czasu. Albo kilka spółek naraz — każda jedną linią, podpisaną na końcu.
+
+- **Wartość jest odtwarzana, nie podawana.** Źródło nie ma historycznej liczby akcji dla żadnego dnia. Wynika ona ze wskaźnika rotacji, który jest ułamkiem akcji w obrocie — więc `wolumen ÷ wskaźnik rotacji` *to* ta liczba, a wartość to kurs dnia razy ona.
+
+- **Liczba to mediana z dwudziestu dni.** Wskaźnik ma dwa miejsca po przecinku, więc jeden dzień niesie około procentu szumu, podczas gdy liczba akcji to schody: rusza się przy emisji lub skupie i stoi w miejscu pomiędzy. Mediana zostawia stopień w dniu, w którym powstał.
+
+- **Liczone są tylko akcje handlowane na tym rynku.** Te, które spółka notuje gdzie indziej, są pominięte, więc przy podwójnym notowaniu linia jest poniżej „całkowitej kapitalizacji” z aplikacji z notowaniami — tamte akcje wycenia się po cenie tego rynku. Różnica w ICBC to w całości akcje H. Pominięte są też akcje nadal objęte blokadą.
+
+- **W Hongkongu cena to średnia transakcji.** Ten rynek nie daje kursu zamknięcia bez korekty, więc cena to obrót podzielony przez wolumen, a dolny panel nazywa się „średnia cena transakcji”.
+
+- **Nowy Jork dzieli przez wszystkie akcje, nie przez te w obrocie.** Jego wskaźnik jest ułamkiem wszystkich akcji spółki, także należących do osób związanych, więc linia jest tam wartością całkowitą, nie będącą w obrocie: liczba przewyższa wartość z aplikacji dokładnie o udział tych osób — w Apple o zero, w NVIDIA o 4%, w Tesli o 12%. Sięga do 2009 roku, tak samo głęboko jak w Chinach.
+
+- **Dziesięcioletnia krzywa wygląda, jakby kiedyś spadła do zera — nie spadła.** Oś musi pomieścić szczyt, więc wczesny odcinek wart jedną dziesiątą leży kilka pikseli nad podstawą: 853 億 dla 五粮液 przy szczycie 13 097 億 to poniżej siedmiu procent jego wysokości. Dlatego znaczniki minimum i maksimum podają swoją liczbę: goły punkt tam na dole czyta się jako zero.
+
+- **Liczba jedzie na linii.** Etykieta na końcu każdej linii podaje nazwę spółki i wartość, jaką osiągnęła w tej chwili, i porusza się razem z animacją — przeciągnij suwak, a pojedzie z linią. Przy jednej spółce oba panele mają po jednej etykiecie, wartość i cenę, a duża liczba nad panelem podaje tę samą liczbę; przy kilku etykiety są też tym, co pozwala odróżnić linie od siebie.
+
+- Zakres: jeden, dwa, pięć lub dziesięć lat, albo dwie własne daty.
+
+Porównaj kilka spółek naraz. Po zaznaczeniu więcej niż jednego chipa każda dostaje własną linię, podpisaną na końcu. Kursy kilku spółek nie dzielą uczciwie jednej osi cen — postaw 贵州茅台 obok 京东方A, a jedna z nich jest płaską linią przy dolnej krawędzi — więc dolny panel ustępuje i cały kadr należy do wartości rynkowej. Do sześciu; siódma zostaje odrzucona zamiast pominięta po cichu, bo wykres z sześciu spośród siedmiu zaznaczonych spółek odpowiada na listę, której nikt nie wybrał.
+
+Oś wartości ma dwa odczyty. Bezwzględna mówi, która spółka jest warta więcej; przeliczona na 100 w pierwszym dniu każdej z nich — czyja wartość rosła szybciej, i to jest jedyny czytelny odczyt, gdy jedna jest wielokrotnością drugiej. W obu przypadkach oś dat to suma ich dni, nie część wspólna: część wspólna ścięłaby dziesięcioletnie porównanie do okresu najpóźniejszego debiutu.
+
+
+
 ## Premia A/H
 
 O ile droższe jest notowanie kontynentalne spółki od jej notowania w Hongkongu — dla spółek

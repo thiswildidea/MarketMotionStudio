@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""把导航栏那十六项的字形换成 Themes/Icons.xaml 里的自绘图标。
+"""把导航栏里每个页面的字形换成 Themes/Icons.xaml 里的自绘图标。
 
 为什么不是手改 XAML
 ------------------
-十六处，每处都在一个 `NavigationViewItem` 里，替换的是一行的中间一段。手改十六遍
+每一处都在一个 `NavigationViewItem` 里，替换的是一行的中间一段。手改这么多遍
 既要求每一遍都认出正确的那个（字形 `E9E9` 出现两次、`E9D2` 两次、`E9D9` 两次——
 正是这次要修的东西），又会在下一次重跑时重复劳动。脚本按**项名**锚定，字形重号
 也就无所谓了：`NavCandle` 只有一个。
@@ -31,11 +31,13 @@ ITEMS = [
     ("NavStockVolume", "Volume"),
     ("NavSectorRace", "SectorRace"),
     ("NavMarketCap", "MarketCap"),
+    ("NavCapHistory", "CapHistory"),
     ("NavAhPremium", "AhPremium"),
     ("NavExtremeDays", "ExtremeDays"),
     ("NavFxCorridor", "FxCorridor"),
     ("NavIndexRace", "IndexRace"),
     ("NavAssetRace", "AssetRace"),
+    ("NavBondRace", "BondRace"),
     ("NavDrawdown", "Drawdown"),
     ("NavHoldOdds", "HoldOdds"),
     ("NavMatrix", "Matrix"),
@@ -51,7 +53,7 @@ ANCHOR = (
 
 def anchor_for(name):
     # `{name}` 得真的填进去：模板里留着占位符，正则就去找一个叫 `{name}` 的属性，
-    # 于是十六项一项都认不出（第一版就是这么错的）。
+    # 于是每一项一项都认不出（第一版就是这么错的）。
     return re.compile(ANCHOR.format(name=re.escape(name)), re.S)
 
 

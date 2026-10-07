@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Domyślnie włączone: wideo trafia w miejsce, które nic nie mówi o tym, gdzie powstało. Puste wraca do nazwy powyżej. Wyłączenie go należy do tego, co kupuje subskrypcja, więc do tego czasu przełącznik zostaje tam, gdzie jest; wyłączone — klatki nie niosą niczego.</value></data>
   <data name="SubscriptionFailedTitle"><value>Subskrypcja nie została zrealizowana</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Oś wartości</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>Wartość rzeczywista</value></data>
+  <data name="CapHistoryAxisNormalized"><value>Przeliczone na 100</value></data>
+  <data name="CapHistoryRebasedUnit"><value>pierwszy dzień = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Porównanie kilku spółek oddaje cały kadr wartości rynkowej — nie ma osi cen, którą ich kursy dzielą uczciwie — a każda linia jest podpisana na końcu. Przeliczenie na 100 mówi, czyja wartość rosła szybciej, gdy jedna jest wielokrotnością drugiej.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} kontra {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} i {1} więcej</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} spółek przez {1} sesji ({2} - {3})</value></data>
+  <data name="CapHistorySkipped"><value>Brak wartości w zakresie, pominięte ({0}): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>Można porównać najwyżej {0} spółek; włączone są {1}</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>Żaden wybór z twojej listy nie jest na rynku {0}</value></data>
+  <data name="NavCapHistory.Content"><value>Wartość rynkowa</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Historia wartości rynkowej</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>Wartość rynkowa jednej spółki na przestrzeni lat, a pod nią kurs akcji — albo kilka spółek, każda jedną linią podpisaną na końcu.</value></data>
+  <data name="CapHistoryCapWord"><value>Wartość w obrocie</value></data>
+  <data name="CapHistoryPriceWord"><value>Kurs akcji</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Średnia cena transakcji</value></data>
+  <data name="CapHistoryCapUnit"><value>100 mln {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} wartość rynkowa</value></data>
+  <data name="CapHistoryFetched"><value>{0} sesji, od {1} do {2}. Wartość na koniec: {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>Brak danych o rotacji dla tego instrumentu w tym zakresie. Z nich wylicza się liczbę akcji, a więc i wartość — bez nich nie ma czego rysować.</value></data>
+  <data name="CapHistoryMarketNone"><value>Ten rynek nie jest obsługiwany: jego wskaźnik rotacji nie daje liczby akcji, a bez niej nie ma wartości do narysowania.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>Ten zakres jest dłuższy, niż ta strona może przejść: około {0} lat to maksimum jednej serii zapytań.</value></data>
+  <data name="CapHistoryNote.Text"><value>Liczone są tylko akcje handlowane na tym rynku, nie te, które spółka notuje gdzie indziej. Przy podwójnym notowaniu linia przebiega więc poniżej „całkowitej kapitalizacji“, którą pokazuje aplikacja z notowaniami i która wycenia tamte akcje po cenie tego rynku.</value></data>
+  <data name="CapHistoryHighMark"><value>Maksimum {0}</value></data>
+  <data name="CapHistoryLowMark"><value>Minimum {0}</value></data>
+  <data name="StudioRange60M"><value>5 lat</value></data>
+  <data name="StudioRange120M"><value>10 lat</value></data>
 </root>

@@ -7,7 +7,7 @@
 
 四类断言，前三类是源码级的：
 
-1. **十七项都换成了 PathIcon**，而且每一项挂的是**它自己的那幅图**（项名 → 键的
+1. **导航里每一项都换成了 PathIcon**，而且每一项挂的是**它自己的那幅图**（项名 → 键的
    对应关系写死在脚本里，与 port-nav-icons.py 同表）。数量从那张表推，不写死：
    加一页就该让这张表多一行，而不是让四处「十六」变红。
 2. **没有两条路径是完全一样的。** 这是这次改动的全部理由，也是最容易被一次
@@ -15,7 +15,7 @@
 3. **每幅图的包围盒都是 [2,18]²。** PathIcon 用等比缩放填满图标格，量的是包围盒：
    一幅忘了带定位点的图会与邻座不一样大，而"大小不一样"在截图里几乎看不出来
    ——两边都"有个图标"。这里是唯一抓得住它的地方。
-4. **真机上应用起得来、导航里十七项都在、还能一项一项点过去。** 这条不是走过场：
+4. **真机上应用起得来、导航里一项不少、还能一项一项点过去。** 这条不是走过场：
    `PathGeometry` 当资源用（`Data="{StaticResource ...}"`）在 WinUI 里是能用但
    少见的写法，写错就是启动即崩 —— 而崩在启动时，正是源码级断言看不见的那种坏。
 
@@ -48,6 +48,7 @@ ITEMS = [
     ("NavStockVolume", "Volume", "成交量换手率"),
     ("NavSectorRace", "SectorRace", "行业板块竞速"),
     ("NavMarketCap", "MarketCap", "市值榜"),
+    ("NavCapHistory", "CapHistory", "市值历程"),
     ("NavAhPremium", "AhPremium", "AH 溢价"),
     ("NavExtremeDays", "ExtremeDays", "极端交易日"),
     ("NavFxCorridor", "FxCorridor", "汇率走廊"),
@@ -124,7 +125,7 @@ def source_checks():
 
     check("App.xaml 合并了 Icons.xaml", "ms-appx:///Themes/Icons.xaml" in app)
 
-    # 十六项，各自挂自己的那幅图
+    # 每一项都挂自己的那幅图（数量从 ITEMS 推）
     for name, key, label in ITEMS:
         hit = re.search(
             rf'x:Name="{name}"[^>]*>\s*<mux:NavigationViewItem\.Icon>'

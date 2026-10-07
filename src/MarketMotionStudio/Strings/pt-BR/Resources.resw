@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Ativado por padrão: um vídeo é publicado em algum lugar que não diz nada sobre onde foi feito. Deixado em branco, volta ao nome acima. Desligá-lo faz parte do que a assinatura compra, então até lá este interruptor fica onde está; desligado, os quadros não levam nada.</value></data>
   <data name="SubscriptionFailedTitle"><value>A assinatura não foi concluída</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Eixo do valor</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>Valor real</value></data>
+  <data name="CapHistoryAxisNormalized"><value>Rebaseado em 100</value></data>
+  <data name="CapHistoryRebasedUnit"><value>primeiro dia = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Comparar várias empresas dá todo o quadro ao valor de mercado — não há eixo de preço que seus preços compartilhem honestamente — e cada linha é nomeada na ponta. Rebasear responde quem cresceu mais rápido quando uma é várias vezes a outra.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} x {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} e mais {1}</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} empresas em {1} pregões ({2} a {3})</value></data>
+  <data name="CapHistorySkipped"><value>Sem valor no intervalo, deixadas de fora ({0}): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>No máximo {0} empresas podem ser comparadas; {1} estão ativadas</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>Nenhuma escolha da sua lista está no mercado {0}</value></data>
+  <data name="NavCapHistory.Content"><value>Histórico de valor de mercado</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Histórico de valor de mercado</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>O valor de mercado em circulação de uma empresa ao longo dos anos, com o preço da ação abaixo — ou várias empresas comparadas, uma linha cada, nomeada na ponta.</value></data>
+  <data name="CapHistoryCapWord"><value>Valor em circulação</value></data>
+  <data name="CapHistoryPriceWord"><value>Preço da ação</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Preço médio de negociação</value></data>
+  <data name="CapHistoryCapUnit"><value>100 mi {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} valor de mercado</value></data>
+  <data name="CapHistoryFetched"><value>{0} pregões, de {1} a {2}. Valor no fim: {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>Não há dado de giro para este instrumento nesse intervalo. A quantidade de ações, e portanto o valor, vem dele; sem ele não há o que desenhar.</value></data>
+  <data name="CapHistoryMarketNone"><value>Este mercado não é atendido: sua taxa de giro não fornece uma contagem de ações, e sem ela não há valor a desenhar.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>Esse intervalo é mais longo do que esta página pode percorrer: cerca de {0} anos é o máximo que uma série de consultas alcança.</value></data>
+  <data name="CapHistoryNote.Text"><value>Só entram as ações negociadas neste mercado, não as que a empresa lista em outros. Para uma empresa com dupla listagem a linha fica abaixo do «valor de mercado total» que um app de cotações mostra, que precifica aquelas outras ações pelo preço deste mercado.</value></data>
+  <data name="CapHistoryHighMark"><value>Máximo {0}</value></data>
+  <data name="CapHistoryLowMark"><value>Mínimo {0}</value></data>
+  <data name="StudioRange60M"><value>5 anos</value></data>
+  <data name="StudioRange120M"><value>10 anos</value></data>
 </root>

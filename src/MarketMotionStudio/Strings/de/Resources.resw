@@ -884,4 +884,32 @@
   <data name="SettingsWatermarkText.PlaceholderText"><value>周期留白</value></data>
   <data name="SettingsWatermarkHint.Text"><value>Standardmäßig an: Ein Video landet irgendwo, das nichts darüber verrät, wo es entstanden ist. Leer gelassen gilt wieder der Name darüber. Es abzuschalten gehört zu dem, was ein Abonnement kauft, deshalb bleibt der Schalter bis dahin stehen; ausgeschaltet tragen die Bilder nichts.</value></data>
   <data name="SubscriptionFailedTitle"><value>Das Abonnement kam nicht zustande</value></data>
+  <data name="CapHistoryAxisLabel.Header"><value>Wertachse</value></data>
+  <data name="CapHistoryAxisAbsolute"><value>Tatsächlicher Wert</value></data>
+  <data name="CapHistoryAxisNormalized"><value>Auf 100 umbasiert</value></data>
+  <data name="CapHistoryRebasedUnit"><value>erster Tag = 100</value></data>
+  <data name="CapHistoryAxisNote.Text"><value>Beim Vergleich mehrerer Unternehmen gehört der ganze Rahmen dem Marktwert — es gibt keine Preisachse, die ihre Kurse ehrlich teilen — und jede Linie ist am Ende beschriftet. Das Umbasieren beantwortet, wessen Wert schneller wuchs, wenn einer ein Vielfaches des anderen ist.</value></data>
+  <data name="CapHistoryVsTitle"><value>{0} gegen {1}</value></data>
+  <data name="CapHistoryCompareMany"><value>{0} und {1} weitere</value></data>
+  <data name="CapHistoryBoardFetched"><value>{0} Unternehmen über {1} Handelstage ({2} bis {3})</value></data>
+  <data name="CapHistorySkipped"><value>Ohne Marktwert im Zeitraum, weggelassen ({0}): {1}</value></data>
+  <data name="CapHistoryTooMany"><value>Höchstens {0} Unternehmen lassen sich vergleichen; {1} sind eingeschaltet</value></data>
+  <data name="CapHistoryNoMarketPicks"><value>Keine Auswahl aus deiner Liste liegt am Markt {0}</value></data>
+  <data name="NavCapHistory.Content"><value>Marktwert</value></data>
+  <data name="CapHistoryPageTitle.Text"><value>Marktwert-Verlauf</value></data>
+  <data name="CapHistoryPageSubtitle.Text"><value>Der Marktwert eines Unternehmens im Zeitverlauf, darunter sein Aktienkurs — oder mehrere Unternehmen, je eine Linie, am Ende beschriftet.</value></data>
+  <data name="CapHistoryCapWord"><value>Marktwert</value></data>
+  <data name="CapHistoryPriceWord"><value>Aktienkurs</value></data>
+  <data name="CapHistoryAveragePriceWord"><value>Durchschnittlicher Handelskurs</value></data>
+  <data name="CapHistoryCapUnit"><value>100 Mio. {0}</value></data>
+  <data name="CapHistoryDefaultTitle"><value>{0} Marktwert</value></data>
+  <data name="CapHistoryFetched"><value>{0} Handelstage, {1} bis {2}. Marktwert am Ende: {3}.</value></data>
+  <data name="CapHistoryNoTurnover"><value>Für dieses Instrument liegt in diesem Zeitraum keine Umsatzrate vor. Aus ihr wird die Aktienzahl und damit der Wert gewonnen — ohne sie gibt es nichts zu zeichnen.</value></data>
+  <data name="CapHistoryMarketNone"><value>Dieser Markt wird nicht bedient: Seine Umsatzrate ergibt keine Aktienzahl, und ohne sie gibt es keinen Wert zu zeichnen.</value></data>
+  <data name="CapHistoryRangeTooLong"><value>Dieser Zeitraum ist länger, als diese Seite gehen kann: etwa {0} Jahre sind das Meiste, was ein Durchlauf erreicht.</value></data>
+  <data name="CapHistoryNote.Text"><value>Gezählt werden nur die Aktien, die in diesem Markt gehandelt werden — nicht die, die dieses Unternehmen anderswo notiert hat. Bei doppelter Notierung liegt die Linie daher unter der „Gesamtmarktkapitalisierung“, die eine Kurs-App zeigt: Dort werden die anderen Aktien zum Kurs dieses Marktes bewertet.</value></data>
+  <data name="CapHistoryHighMark"><value>Hoch {0}</value></data>
+  <data name="CapHistoryLowMark"><value>Tief {0}</value></data>
+  <data name="StudioRange60M"><value>5 Jahre</value></data>
+  <data name="StudioRange120M"><value>10 Jahre</value></data>
 </root>
