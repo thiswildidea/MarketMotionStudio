@@ -594,20 +594,23 @@ public sealed partial class SettingsPage : Page
             return;
         }
 
-        var subscribed = AppServices.Current.Subscription.Subscribed;
-
         await AppServices.Current.Subscription.RestoreAsync(
             WinRT.Interop.WindowNative.GetWindowHandle(window));
 
         SettleSubscription();
 
-        // The ordinary answer here is "there is nothing under this account", and
-        // it is not worth announcing to somebody who never subscribed in the
-        // first place. It is only news to the person who came here because a
-        // paid-for page would not open — so it is said only when the licence
-        // still says no, and not softened into "restored" otherwise, because the
-        // card changing under them is already that answer.
-        if (!AppServices.Current.Subscription.Subscribed || !subscribed)
+        // Only what the licence says now speaks; what it said before the button
+        // was pressed does not. What was here before read the two together, and
+        // the one case where they disagree is a real one — a subscription bought
+        // in the Store's own window minutes ago, granted just after this process
+        // last looked. Then the card above says subscribed and this note says
+        // nothing was found, and the two sentences contradict each other while
+        // each is true of the moment it describes.
+        //
+        // The note is for the case where nothing changes: somebody who has paid
+        // and finds the app locked. The card changing under them is already the
+        // answer when it changes.
+        if (!AppServices.Current.Subscription.Subscribed)
         {
             Note("SettingsSubscriptionRestoreMissing");
         }

@@ -267,6 +267,24 @@ def source():
     check("还有一个被告别的入口：恢复购买与管理订阅都在卡片上",
           'x:Name="RestoreButton"' in markup and 'x:Name="ManageButton"' in markup)
 
+    # 这两条守的是卡片上两个「看着像没做完」的地方，而它们都是**选过的样子**，不是漏做的。
+    check("已订阅时「订阅」按钮是灰掉而不是藏起来（这是定过的：改小一点、不动界面）",
+          "SubscribeButton.IsEnabled = !subscription.Busy && !subscription.Subscribed;" in settings
+          and "SubscribeButton.Visibility" not in settings)
+
+    # 「恢复购买」那句话曾经连「按下之前没订阅」一起算进条件（`|| !subscribed`），于是
+    # 唯一两头不一致的那种情况会自相矛盾：刚在商店自己的窗口买完、许可证晚一步到，
+    # 卡片写着「已订阅」，而下面这句说「没有找到」。判据是**不再把按下之前的状态存下来**
+    # —— 只有存下来，它才可能参与判断。同时要确认那句话没有因此被删掉。
+    restore = handler_body(settings, "OnRestoreSubscription") or ""
+
+    check("「恢复购买」那句话只问结果，不问按下之前是什么状态",
+          restore != ""
+          and 'Note("SettingsSubscriptionRestoreMissing")' in restore
+          and "var subscribed =" not in restore,
+          "handler 里还留着 var subscribed =，那句「没找到」会盖过卡片上刚变成的「已订阅」"
+          if "var subscribed =" in restore else "只问结果")
+
     print("源码（对话框里那三个答复）：")
 
     check("购买成功后接着把这一件事做完，而不是让用户再点一次导出",
