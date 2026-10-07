@@ -108,11 +108,19 @@ def chart_pages():
 
 
 def handler_body(text, name):
-    """某个 handler 到下一个同类 handler 之间的那一段。"""
-    at = text.find("private async void " + name + "(")
+    """某个 handler 到下一个同类 handler 之间的那一段。
 
-    if at < 0:
-        at = text.find("private void " + name + "(")
+    `async Task` 也算（`RefreshSubscriptionAsync` 就是它）：一个方法返回 Task 不代表
+    它不是那个 handler，漏掉它会让「结算界面」那条断言静默地什么都不查。
+    """
+    at = -1
+
+    for prefix in ("private async void ", "private async Task ", "private void ",
+                   "private async Task<bool> "):
+        at = text.find(prefix + name + "(")
+
+        if at >= 0:
+            break
 
     if at < 0:
         return None
@@ -185,11 +193,14 @@ def source():
     check("「能不能导出」只有一处会答（没有页面自己读许可证）",
           not homegrown, ", ".join(homegrown) or "无")
 
-    check("没有订阅时一律按「没有」处理，从不按「有」",
-          "Subscribed = false;" in subscription and "Known = false;" in subscription)
+    # 每次重读都从「没有」开始，而不是留着上一次的答案。留着的写法在「本来有、
+    # 后来没了」那一边看不出来（重读一次还是真的），而在「本来没有、后来有了」
+    # 那一边也不出来 —— 它只在许可证读失败时把上一次的「有」当成今天的答案。
+    check("每次重读先把「有」清掉，不缓存上一次的答案",
+          "RenewsOn = null;\n        Subscribed = false;" in subscription)
 
     check("订阅成功不看 dialog 那句话，回头再读一次许可证",
-          "// Read again rather than reusing what the purchase dialog said." in subscription
+          "// Read again rather than reusing what the purchase dialog said" in subscription
           and "return Subscribed" in subscription)
 
     # 这里**故意**把新 token 写死：Partner Center 里那只加载项叫什么，商店那一头认的
@@ -280,6 +291,62 @@ def source():
     check("「哪句话答哪个答案」只写一处，两处调用读的是同一份映射",
           offer.count("SubscribeOutcome.Unavailable =>") == 1
           and "SubscriptionOffer.Explanation(outcome)" in settings)
+
+    print("源码（已经买了的人，不该再被当成没买）：")
+
+    # 这一节的来路是一个真机回报：一张写着「已订阅 / 2026-11-07 续订 / 每月 ¥28.00」
+    # 的卡片，重启之后整块不见了，而订阅本身是好的 —— 能导出、能去水印。
+    #
+    # 卡片在 xaml 里的默认值就是 `Collapsed`，所以「消失」等价于 `Known == false`。
+    # 而把这个答案压成 false 的路有两条，都出自同一个混淆：**把「商店答没答」当成
+    # 「买没买」**。商店那一半是一次网络调用、还会失败；许可证那一半就在本机，
+    # 一次调用就答。把它们绑在一起，代价在失败那一刻全部落在已经付过钱的人身上。
+    # 数在**重读那一路**里，不数全文件：Debug 模拟也写 `Known = true`，那是另一条路，
+    # 把它的次数算进来，这条断言就会在「模拟那一处也改了」的时候报一个假红。
+    resolved = handler_body(subscription, "ResolveAsync")
+    known = re.findall(r"^\s*Known = [^;]+;", resolved or "", re.M)
+    anywhere = re.findall(r"^\s*Known = [^;]+;", subscription, re.M)
+
+    check("续订日期不再用索引器去取（key 不在就抛，抛了就被读成「没买」）",
+          "AddOnLicenses[" not in subscription,
+          "还在用索引器" if "AddOnLicenses[" in subscription else "用的是 TryGetValue")
+
+    check("卡片该不该出现只有一处说了算，且「买没买」自己就能让它出现",
+          len(known) == 1 and "Subscribed" in known[0],
+          "重读那一路 %d 处：%s（全文件 %d 处，多出来的是 Debug 模拟）" % (
+              len(known), " / ".join(k.strip() for k in known) or "没有", len(anywhere)))
+
+    check("认许可证按 token，不靠商店返回的那件商品（目录查不到也认得出买了）",
+          "private static IEnumerable<StoreLicense> Granted(StoreAppLicense license)" in subscription
+          and "addOn.InAppOfferToken, OfferToken, StringComparison.OrdinalIgnoreCase" in subscription)
+
+    check("目录与许可证是两条路（重读许可证可以不联网）",
+          "private async Task ResolveAsync(nint window, bool lookup = true)" in subscription
+          and "lookup ? await LookupAsync(window) : _offer" in subscription)
+
+    check("有一个只重读许可证的入口，它不走网络",
+          "public async Task<bool> RecheckAsync(nint window)" in subscription
+          and "await ResolveAsync(window, lookup: false)" in subscription)
+
+    # 问在弹框之前，而且要问的是「本地那一次」。在商店自己的窗口里买完回到软件，
+    # 这一次点击本来是「第一次点导出」—— 它必须通过，否则刚付完钱的人看到的是
+    # 「请订阅」，那句话在那一刻读起来就是「你的钱白花了」。
+    check("点导出先本地重读一次许可证，再决定要不要弹框",
+          "await subscription.RecheckAsync(handle)" in offer
+          and offer.index("await subscription.RecheckAsync(handle)")
+          < offer.index("await Dialogs.ShowAsync(Offer(root, subscription))"))
+
+    check("购买成功后等一会儿再看几次（许可证从商店发到本机会晚一步）",
+          "StorePurchaseStatus.Succeeded ? 3 : 1" in subscription
+          and "await Task.Delay(TimeSpan.FromSeconds(attempt))" in subscription)
+
+    refresh = handler_body(settings, "RefreshSubscriptionAsync")
+    settled = refresh.find("SettleSubscription();") if refresh else -1
+
+    check("刷新出错也要把界面结算一遍（卡片停在 xaml 默认值上就等于消失）",
+          refresh is not None and "finally" in refresh and settled > 0
+          and refresh.index("finally") < settled,
+          "没找到方法体" if refresh is None else "")
 
 
 def resw_checks():

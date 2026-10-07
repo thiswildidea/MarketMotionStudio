@@ -496,14 +496,15 @@ public sealed partial class SettingsPage : Page
     }
 
     /// <summary>
-    /// Asks again whether this machine has paid, and settles both cards after it.
+    /// Asks again whether this machine has paid, and settles the card after it.
     ///
     /// Refreshed every time rather than once, because the licence can be granted
     /// elsewhere — the Store's own window is a different window — and this page
-    /// answers from whatever the last answer was. Nothing subscribes to the
-    /// <see cref="StoreSubscription.Changed"/> event on purpose: subscribing
-    /// passes through a dialog owned by whichever page asked, so by the time this
-    /// page is in front again the answer is one it already read.
+    /// answers from whatever the last answer was. This page does not subscribe to
+    /// <see cref="StoreSubscription.Changed"/>: the refresh that follows every
+    /// action here is what updates it, and a second path in would be the same
+    /// decision taken twice. (Not that the event has no listeners — the watermark
+    /// listens, so that frames already drawn are redrawn when the answer moves.)
     /// </summary>
     private async Task RefreshSubscriptionAsync()
     {
@@ -512,10 +513,19 @@ public sealed partial class SettingsPage : Page
             return;
         }
 
-        await AppServices.Current.Subscription.RefreshAsync(
-            WinRT.Interop.WindowNative.GetWindowHandle(window));
-
-        SettleSubscription();
+        try
+        {
+            await AppServices.Current.Subscription.RefreshAsync(
+                WinRT.Interop.WindowNative.GetWindowHandle(window));
+        }
+        finally
+        {
+            // Settled whichever way the refresh went. A card left at its collapsed
+            // default because a call threw is a card that vanishes for somebody
+            // who has paid — and the only way to cancel goes with it, while the
+            // app stays unlocked around the gap.
+            SettleSubscription();
+        }
     }
 
     /// <summary>

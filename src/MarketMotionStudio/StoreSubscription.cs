@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MarketMotionStudio.Diagnostics;
@@ -88,12 +89,18 @@ public sealed class StoreSubscription
     public bool Subscribed { get; private set; }
 
     /// <summary>
-    /// Whether the Store answered at all, either way.
+    /// Whether the settings card has anything to say: something to offer, or
+    /// something already bought.
     ///
-    /// False on a machine where there was nothing to buy — sideloaded build,
-    /// Store switched off, add-on not published — and the settings card is
-    /// hidden rather than shown empty, for the same reason the update button is:
-    /// offering something requires having something to offer.
+    /// False only on a machine with neither — a sideloaded build, a Store
+    /// switched off, an add-on not published and no licence for one — where the
+    /// card is hidden rather than shown empty, for the same reason the update
+    /// button is: offering something requires having something to offer.
+    ///
+    /// **A licence counts on its own.** Read as "the Store answered at all", it
+    /// hid the card from subscribers whenever the catalogue call came back empty,
+    /// which is the worst moment to lose it: the card is the only way to cancel,
+    /// and the app carries on unlocked around its absence.
     /// </summary>
     public bool Known { get; private set; }
 
@@ -142,6 +149,33 @@ public sealed class StoreSubscription
     }
 
     /// <summary>
+    /// Reads the licence again, and the licence only — no catalogue call, and so
+    /// no network round trip.
+    ///
+    /// **Separate from <see cref="RefreshAsync"/> because of what that one
+    /// costs.** Anything on a path a person is waiting on cannot afford a call to
+    /// the Store's servers; the first press of an Export button is exactly such a
+    /// path, and the licence is already on this machine and answers at once.
+    ///
+    /// What it is for is the ordinary way a subscription arrives: bought in the
+    /// Store's own window, which is a different window, while this app was open.
+    /// This process is not told about it, so without this the first press after
+    /// paying is refused — and to somebody who has just paid, that reads as "my
+    /// purchase did not work"; the only way through is a button labelled
+    /// "restore", which is not a thing anybody expects to need right then.
+    /// </summary>
+    public async Task<bool> RecheckAsync(nint window)
+    {
+        await ResolveAsync(window, lookup: false);
+
+        ReadSimulation();
+
+        Changed?.Invoke(this, EventArgs.Empty);
+
+        return Subscribed;
+    }
+
+    /// <summary>
     /// Puts the offer in front of the user and takes them through the Store's
     /// own purchase dialog.
     ///
@@ -179,8 +213,30 @@ public sealed class StoreSubscription
                 return SubscribeOutcome.Unavailable;
             }
 
-            // Read again rather than reusing what the purchase dialog said.
-            await ResolveAsync(window);
+            // Read again rather than reusing what the purchase dialog said — and
+            // more than once, because the licence is granted by the Store's
+            // servers and can reach this machine a moment after the purchase
+            // returns. One look is how "I bought it, it was still locked, and
+            // restarting fixed it" happens: the licence was there all along,
+            // arriving just after the only look anybody took. Waiting is worth
+            // more than being right immediately, since the alternative is asking
+            // somebody to restart the app they have just paid for.
+            var attempts = result.Status == StorePurchaseStatus.Succeeded ? 3 : 1;
+
+            for (var attempt = 0; attempt < attempts; attempt++)
+            {
+                if (attempt > 0)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(attempt));
+                }
+
+                await ResolveAsync(window);
+
+                if (Subscribed)
+                {
+                    break;
+                }
+            }
 
             return Subscribed
                 ? SubscribeOutcome.Subscribed
@@ -216,40 +272,42 @@ public sealed class StoreSubscription
     /// <summary>
     /// Asks for the offer and then for the licence, and sets everything else from
     /// what they say.
+    ///
+    /// <paramref name="lookup"/> false skips the catalogue call and re-reads only
+    /// the licence, which is what <see cref="RecheckAsync"/> is for: the
+    /// catalogue is a network round trip and the licence is not, so a path a
+    /// person is standing on has to be able to take the second without the first.
     /// </summary>
-    private async Task ResolveAsync(nint window)
+    private async Task ResolveAsync(nint window, bool lookup = true)
     {
         RenewsOn = null;
         Subscribed = false;
 
-        var offer = await LookupAsync(window);
-
-        if (offer is null)
-        {
-            Known = false;
-            return;
-        }
+        var offer = lookup ? await LookupAsync(window) : _offer;
 
         try
         {
             var license = await Context(window).GetAppLicenseAsync();
 
             Subscribed = Holds(license, offer);
-
-            if (Subscribed)
-            {
-                RenewsOn = license.AddOnLicenses[offer.StoreId].ExpirationDate;
-            }
-
-            Known = true;
+            RenewsOn = Subscribed ? Renewal(license, offer) : null;
         }
         catch (Exception ex)
         {
             // A failure to read the licence is not a licence. Left locked, and
-            // `Known` stays false so nothing claims to have an answer.
+            // said out loud, because the two ways to be wrong here are not alike:
+            // reading a failed call as "not paid" costs somebody who has paid,
+            // and the log line is all they get instead of what they bought.
             CrashLog.Note($"subscribe: licence read failed, {ex.GetType().Name} 0x{ex.HResult:X8}");
-            Known = false;
         }
+
+        // **One assignment, one rule, whichever way the read above went.** The
+        // card has something to say when there is something to offer *or*
+        // something already bought, and those two come from different places.
+        // Letting the catalogue alone decide it is how a subscriber ends up with
+        // no card — and so no way to cancel — on a machine whose Store call
+        // happened to fail, while the app stayed unlocked around them.
+        Known = offer is not null || Subscribed;
     }
 
     /// <summary>
@@ -267,20 +325,65 @@ public sealed class StoreSubscription
     /// leave nothing to fall back on if it ever hands back a different one for
     /// the same product.
     /// </summary>
-    private static bool Holds(StoreAppLicense license, StoreProduct offer)
+    private static bool Holds(StoreAppLicense license, StoreProduct? offer)
     {
-        if (license.AddOnLicenses.TryGetValue(offer.StoreId, out var granted))
+        if (offer is not null
+            && license.AddOnLicenses.TryGetValue(offer.StoreId, out var byId)
+            && Live(byId))
         {
-            return Live(granted);
+            return true;
         }
 
-        return license.AddOnLicenses.Values.Any(
-            addOn => addOn.InAppOfferToken == offer.InAppOfferToken && Live(addOn));
+        return Granted(license).Any(Live);
+    }
 
-        // Licences that never run out carry the default date rather than one far
-        // in the future, so "no expiry" has to be read as "still going".
-        static bool Live(StoreLicense addOn) =>
-            addOn.IsActive && (addOn.ExpirationDate == default || addOn.ExpirationDate > DateTimeOffset.Now);
+    /// <summary>
+    /// The licences this machine holds for the add-on this app sells.
+    ///
+    /// Matched by token rather than by the <c>StoreId</c> the Store hands out
+    /// with its catalogue, and **found without the catalogue at all**. The two
+    /// come from two different places: the catalogue is published by the Store
+    /// and fetched over the network, while the licence is already on the machine
+    /// and answers at once. A machine that has paid must not have to wait on the
+    /// first to be believed about the second.
+    ///
+    /// That dependency was real, and this is what it cost: when the catalogue
+    /// call failed, `offer` came back null, the licence was never consulted, and
+    /// a subscriber was told there was nothing — the app stayed unlocked around
+    /// them while the card carrying the only way to cancel disappeared.
+    /// </summary>
+    private static IEnumerable<StoreLicense> Granted(StoreAppLicense license) =>
+        license.AddOnLicenses.Values.Where(
+            addOn => string.Equals(addOn.InAppOfferToken, OfferToken, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>
+    /// Licences that never run out carry the default date rather than one far in
+    /// the future, so "no expiry" has to be read as "still going".
+    /// </summary>
+    private static bool Live(StoreLicense addOn) =>
+        addOn.IsActive && (addOn.ExpirationDate == default || addOn.ExpirationDate > DateTimeOffset.Now);
+
+    /// <summary>
+    /// When the subscription next renews, or null when the licence does not say.
+    ///
+    /// Read through <see cref="Granted"/> rather than by looking the offer up
+    /// again, for the reason <see cref="Holds"/> does — and one more. Indexing
+    /// the map with a <c>StoreId</c> that is not one of its keys *throws*, so a
+    /// licence that had just been found by token would have been thrown away on
+    /// the very next line. It took the whole card with it: the exception landed
+    /// in the handler below, which reads any failure as "no answer from the
+    /// Store" and hides what it cannot answer for.
+    /// </summary>
+    private static DateTimeOffset? Renewal(StoreAppLicense license, StoreProduct? offer)
+    {
+        if (offer is not null
+            && license.AddOnLicenses.TryGetValue(offer.StoreId, out var byId)
+            && Live(byId))
+        {
+            return byId.ExpirationDate;
+        }
+
+        return Granted(license).FirstOrDefault(Live)?.ExpirationDate;
     }
 
     /// <summary>

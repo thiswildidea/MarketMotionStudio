@@ -37,6 +37,17 @@ public static class SubscriptionOffer
     /// pressed for. Anything else returns false and the caller stops, having
     /// written nothing to disk.
     /// </para>
+    ///
+    /// <para>
+    /// **The licence is read once more before the person is asked anything**,
+    /// which is the other half of that same promise. A subscription can be
+    /// bought in the Store's own window — a different window — while this app is
+    /// open, and this process is not told about it; without that look the first
+    /// press of Export after paying is refused, and being refused straight after
+    /// buying reads as "my purchase did not work". It reads the licence and not
+    /// the catalogue, so no network round trip stands between the click and the
+    /// dialog it has earned.
+    /// </para>
     /// </summary>
     /// <param name="root">The page's XAML root, which a dialog in a desktop app has to be given.</param>
     /// <param name="window">The window, whose handle the Store's own dialog is parented to.</param>
@@ -55,6 +66,11 @@ public static class SubscriptionOffer
         }
 
         var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+
+        if (await subscription.RecheckAsync(handle))
+        {
+            return true;
+        }
 
         var asked = await Dialogs.ShowAsync(Offer(root, subscription));
 
