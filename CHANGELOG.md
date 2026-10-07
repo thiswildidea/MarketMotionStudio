@@ -20,6 +20,80 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.10.0 — 2026-10-07（更新版 / update）
+
+**本版修正订阅的两个症状。** 一个是：已经在另一个设备上买过订阅的人，设置页那张写着续订日期、可以
+「恢复购买」和「管理订阅」的卡片会整块消失 —— 而订阅本身是好的，水印能去掉、MP4 能导出。另一个是：
+买完之后要重启应用才生效。
+
+第一个症状只有一条路能成立，这也是它能被诊断出来的原因：卡片在 XAML 里的默认值就是 `Collapsed`，
+所以它「消失」等于 `Known == false`；而那一刻 `Subscribed` 已经是 true。两者同时成立，只能是
+`Subscribed` 先被置真、`Known` 随后被压假。代码里有两处会这么做，**都出自把「商店答没答」当成
+「买没买」** —— 这俩不是同一个问题，也不来自同一个地方：许可证早就在本机、当场就能读；目录要联网，
+可能根本不回来。
+
+- 续订日期用**索引器**硬取 `license.AddOnLicenses[offer.StoreId]`。key 不在时索引器**抛异常**而不
+  是返回空，被下面那个 `catch` 接住，而那个 catch 把任何失败都读成「商店没回答」。同一个文件里，
+  上一行 `Holds()` 的注释自己写着「万一商店对同一个产品给出另一个 StoreId」——一处谨慎，一处假定
+  必然命中。
+- 目录查询返回空时直接 `return`，**许可证根本没被问过**。一次网络调用的成败，变成了这个人买没买
+  的答案。
+
+第二个症状有两层原因。一层是进程内**没有任何地方重读许可证**，而商店的购买窗口是另一个窗口，在那儿
+买完回来，这个进程不知道。现在点「导出」之前会先把许可证在本地重读一遍，点击和它该拿到的对话框之间
+不再隔着一次网络。另一层是商店的服务器要在购买**返回之后**才过一会儿下发许可证，这正是「我买了、它
+还是锁着、重启就好了」的由来；购买成功后现在会等一等，最多再看三次（间隔 1 秒、2 秒）。
+
+顺带两件：`RefreshSubscriptionAsync` 是开出去不等的，一次抛错的刷新会跳过它后面那句结算，卡片就停在
+默认的折叠状态上 —— 结算移进了 `finally`。以及那个方法的注释写着「没有任何地方订阅 `Changed` 事件」，
+**那是错的**：`WatermarkSettings.cs:33` 就订阅了它。
+Version 1.0.10.0 fixes two symptoms around subscribing. One: someone who had paid — often on another
+device — could lose the whole settings card that shows the renewal date and offers restore and manage,
+while the subscription itself worked, watermark off and MP4 exported. Two: a purchase took effect only
+after restarting the app.
+
+The vanishing has exactly one route, which is what makes it diagnosable: the card is Collapsed by
+default in XAML, so its absence means `Known` was false, while `Subscribed` had already been set true.
+Both hold only if `Subscribed` was set first and `Known` forced false after it. Two places did that,
+and **both come from reading "did the Store answer" as "has this person paid"** — not the same
+question, and not answered in the same place either. The licence is already on this machine and answers
+at once; the catalogue is fetched over the network and may simply not arrive.
+
+- The renewal date was taken with an **indexer**, `license.AddOnLicenses[offer.StoreId]`. A key that is
+  not there throws rather than returning nothing, the exception landed in the `catch` below, and that
+  `catch` reads any failure as "no answer from the Store". The line above it, in the same file, allows
+  for the Store handing back another id for the same product — one place careful, the next assuming the
+  key must be there.
+- An empty catalogue answer returned early, and **the licence was never consulted**. Whether one network
+  call succeeded became the answer to whether this person had paid.
+
+The restart had two causes of its own. Nothing in the process re-read the licence, so a purchase made in
+the Store's own window — a different window — was unknown here until the next launch; the licence is now
+read locally before exporting asks anyone anything, with no network round trip standing between a click
+and the dialog it earns. And the Store grants the licence a moment *after* the purchase returns, which is
+precisely how "I bought it, it stayed locked, restarting fixed it" happens; a successful purchase waits
+and looks up to three times.
+
+Two things alongside: `RefreshSubscriptionAsync` is fire-and-forget, so one throwing call skipped the
+settling after it and left the card at its collapsed default — that settling moved into a `finally`. And
+its comment claiming nothing subscribes to the `Changed` event **is wrong**: `WatermarkSettings.cs:33`
+does.
+
+### 修正 / Fixed
+
+- **已有订阅时卡片不再消失 / the card stays put once you have paid** —— 「买没买」自己就能让卡片出现，
+  不再取决于商店目录有没有答上来；续订日期改走 `TryGetValue` 回落，不再用会抛异常的索引器。
+- **购买之后当场生效 / a purchase takes effect immediately** —— 认订阅一律只读本机许可证；成功的购买
+  之后最多再看三次，补上商店下发许可证的那一段延迟。
+- **一次失败的刷新不再把卡片留在折叠状态 / a failed refresh no longer leaves the card collapsed** ——
+  结算移进 `finally`，出错也要给卡片一个答案。
+
+包已构建：`artifacts/MarketMotionStudio_1.0.10.0_x64_arm64_bundle.msixupload`（149.8 MB / 142.8 MiB），
+拆包核验包内六个内包的 Identity 都是 `1.0.10.0`。**它还带着 1.0.9.0 的全部内容** —— 市值历程那一页从头就在里面，
+所以 1.0.9.0 那个包不必再传，直接从这个版本上传即可。
+
+---
+
 ## 1.0.9.0 — 2026-10-07（更新版 / update）
 
 **本版加第十八页：市值历程。** 一只股票的**流通市值**逐日成线，下面是它同一段时间的股价，两块面板

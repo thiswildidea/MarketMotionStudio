@@ -38,7 +38,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增「市值历程」一页：一只股票流通市值逐日的曲线，下方同一时间轴上是它的股价；也可以同时画几家公司，各一条线。行情源没有任何一天的历史股本，所以股本由换手率反推——成交量除以换手率就是流通股本，市值等于当日价格乘以它；只算本市场可交易的股票，两地上市的公司因此会低于行情软件显示的「总市值」。每条线的末端跟着一个标签，写着公司名字和它此刻到达的数值，随动画一起走；几家公司同框时，这些标签也是分辨哪条线是哪一家的唯一线索。
+本版修正订阅状态：买下之后当场生效，不必重启应用；已有订阅时，设置页那张写着续订日期、可以管理或恢复订阅的卡片也不会再消失。两个症状出自同一个错：「这个人买没买」本该读本机已经拿到的许可证，却跑去问商店的商品目录——那是要联网才拿得到的东西。改成读本机之后，两者都不会再发生；购买之后稍等一下再看一遍，也补上了商店记下付款到下发许可证之间的那一小段间隔。
 
 ### 产品功能
 
@@ -85,7 +85,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增「市值歷程」一頁：一檔股票流通市值逐日的曲線，下方同一時間軸上是它的股價；也可以同時畫幾家公司，各一條線。行情源沒有任何一天的歷史股本，所以股本由換手率反推——成交量除以換手率就是流通股本，市值等於當日價格乘以它；只算本市場可交易的股票，兩地上市的公司因此會低於行情軟體顯示的「總市值」。每條線的末端跟著一個標籤，寫著公司名字和它此刻到達的數值，隨動畫一起走；幾家公司同框時，這些標籤也是分辨哪條線是哪一家的唯一線索。
+本版修正訂閱狀態：買下之後當場生效，不必重新啟動應用程式；已有訂閱時，設定頁那張寫著續訂日期、可以管理或恢復訂閱的卡片也不會再消失。兩個症狀出自同一個錯：「這個人買了沒」本該讀本機已經拿到的授權，卻跑去問商店的商品目錄——那是要連網才拿得到的東西。改成讀本機之後，兩者都不會再發生；購買之後稍等一下再看一遍，也補上了商店記下付款到核發授權之間的那一小段間隔。
 
 ### 產品功能
 
@@ -132,7 +132,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-New in this version: Market Value History - one stock's circulating market value day by day, with its share price beneath it on the same time axis, or several companies at once, one line each. No source carries a historical share count, so the count is recovered from the turnover rate: volume divided by the turnover rate is the circulating count, and the value is the day's price times it. Only the shares traded in this market are counted, so a company listed in two places sits below the "total market value" a quote app shows. A label rides each line's leading end with the company's name and the value it has reached at that moment, moving with the animation; with several companies on one frame, those labels are also the only thing that says which line is which.
+New in this version: a subscription takes effect the moment it is bought - no restarting the app - and once you have one, the card in Settings that shows its renewal date and lets you manage or restore it no longer disappears. Both symptoms came from one mistake: the answer to "has this person paid" was taken from the Store's catalogue, which has to be fetched, when the licence was already on this machine and could simply be read there. It is read locally now, and neither can happen. A short wait and a second look after the purchase also cover the gap between the Store recording a payment and granting the licence.
 
 ### Product features
 
@@ -179,7 +179,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-今バージョンの新機能は「時価総額の推移」です。ある銘柄の流通時価総額を日ごとに曲線で描き、その下に同じ時間軸で株価を置きます。複数社を同時に描くこともでき、会社ごとに一本の線になります。ソースはどの日についても過去の株式数を持っていないため、株式数は回転率から逆算します——出来高を回転率で割ったものがそのまま流通株式数で、時価総額はその日の価格にこれを掛けたものです。数えるのはこの市場で取引される株式だけなので、二重上場の会社は相場アプリが示す「総時価総額」より低くなります。各線の先端にはラベルが付き、会社名とその時点で到達した値を示しながらアニメーションと一緒に動きます。複数社を一枚に描いたときは、このラベルがどの線がどの会社かを見分ける唯一の手掛かりにもなります。
+今バージョンでは購読の扱いを修正しました。購入した瞬間に反映され、アプリの再起動は要りません。また、購読中の場合に設定画面のカード——更新日を示し、購読の管理や復元を行うもの——が消えてしまうこともなくなりました。二つの症状は同じ間違いから来ています。「その人が支払ったか」という答えを、すでにこの端末にあるライセンスからではなく、取得に通信が必要なストアのカタログから得ていました。今はローカルのライセンスを読むため、どちらも起こりません。購入後に少し待ってからもう一度確認することで、ストアが支払いを記録してからライセンスを付与するまでのわずかな開きも埋めます。
 
 ### 製品の機能
 
@@ -226,7 +226,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이 버전의 새 기능은 「시가총액 추이」입니다. 한 종목의 유통 시가총액을 날짜별로 곡선으로 그리고, 그 아래 같은 시간 축에 주가를 놓습니다. 여러 기업을 동시에 그릴 수도 있고 기업마다 선이 하나씩 생깁니다. 출처에는 어느 날의 과거 주식 수도 없으므로 주식 수는 회전율에서 되찾습니다——거래량을 회전율로 나눈 것이 곧 유통 주식 수이고, 시가총액은 그날의 가격에 이를 곱한 값입니다. 이 시장에서 거래되는 주식만 세므로 이중 상장 기업은 시세 앱이 보여주는 「총 시가총액」보다 낮게 나옵니다. 각 선 끝에는 라벨이 붙어 회사 이름과 그 시점에 도달한 값을 보여주며 애니메이션과 함께 움직입니다. 여러 기업을 한 화면에 그릴 때는 이 라벨이 어떤 선이 어느 기업인지 구분하는 유일한 단서이기도 합니다.
+이 버전에서는 구독 상태를 고쳤습니다. 결제하면 즉시 적용되어 앱을 다시 시작할 필요가 없고, 구독 중이라면 갱신일을 보여 주고 구독을 관리하거나 복원하는 설정의 카드가 사라지지도 않습니다. 두 증상은 같은 실수에서 왔습니다. 「이 사람이 결제했는가」라는 답을 이미 이 기기에 들어 있는 라이선스에서 읽지 않고, 내려받아야 하는 스토어 카탈로그에서 가져왔습니다. 이제는 로컬 라이선스를 읽으므로 두 가지 모두 일어나지 않으며, 결제 후 잠시 기다렸다 한 번 더 확인하여 스토어가 결제를 기록한 뒤 라이선스를 내려주는 사이의 짧은 간격도 메웁니다.
 
 ### 제품 기능
 
@@ -273,7 +273,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Neu in dieser Version: Marktwert-Verlauf - die frei handelbare Marktkapitalisierung einer Aktie Tag für Tag als Kurve, darunter auf derselben Zeitachse ihr Kurs, oder mehrere Unternehmen zugleich, mit je einer Linie. Keine Quelle kennt einen historischen Aktienbestand, deshalb wird er aus der Umschlagsrate ermittelt: das Volumen geteilt durch die Umschlagsrate ist die frei handelbare Stückzahl, und der Wert ist der Tageskurs mal diese Zahl. Gezählt werden nur die an diesem Markt gehandelten Aktien, weshalb ein doppelt notiertes Unternehmen unter der Gesamtmarktkapitalisierung liegt, die eine Kurs-App zeigt. Am vorderen Ende jeder Linie sitzt ein Etikett mit dem Namen des Unternehmens und dem Wert, den es in diesem Moment erreicht hat, und es wandert mit der Animation; bei mehreren Unternehmen in einem Bild sind diese Etiketten auch das Einzige, was sagt, welche Linie welche ist.
+Neu in dieser Version: Ein Abonnement gilt ab dem Moment des Kaufs - die App muss nicht neu gestartet werden -, und wer eines hat, für den bleibt die Karte in den Einstellungen erhalten, die das Verlängerungsdatum zeigt und das Verwalten oder Wiederherstellen erlaubt. Beide Fehler kamen aus derselben Verwechslung: Die Antwort auf "hat diese Person bezahlt" wurde aus dem Katalog des Stores geholt, der erst geladen werden muss, obwohl die Lizenz längst auf diesem Gerät liegt und sich dort lesen lässt. Sie wird nun dort gelesen, und beides ist unmöglich geworden. Ein kurzes Warten und ein zweiter Blick nach dem Kauf überbrückt auch die Spanne zwischen dem Verbuchen der Zahlung im Store und dem Erteilen der Lizenz.
 
 ### Produktfunktionen
 
@@ -320,7 +320,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Nouveau dans cette version : Historique de la valeur de marché - la capitalisation flottante d'une action au jour le jour, avec son cours en dessous sur le même axe de temps, ou plusieurs entreprises à la fois, une courbe chacune. Aucune source ne connaît le nombre d'actions historique ; il est donc retrouvé à partir du taux de rotation : le volume divisé par le taux de rotation est le nombre d'actions flottantes, et la valeur est le cours du jour multiplié par ce nombre. Seules les actions négociées sur ce marché sont comptées, si bien qu'une entreprise cotée à deux endroits se situe sous la capitalisation totale affichée par une application de cotations. Une étiquette suit l'extrémité de chaque courbe avec le nom de l'entreprise et la valeur atteinte à cet instant, et elle avance avec l'animation ; avec plusieurs entreprises sur une même image, ces étiquettes sont aussi la seule chose qui dise quelle courbe est laquelle.
+Nouveau dans cette version : l'abonnement prend effet dès l'achat, sans relancer l'application, et une fois abonné, la carte des paramètres qui affiche la date de renouvellement et permet de gérer ou de restaurer l'abonnement ne disparaît plus. Les deux symptômes venaient de la même erreur : la réponse à « cette personne a-t-elle payé » était cherchée dans le catalogue du Store, qu'il faut télécharger, alors que la licence est déjà sur la machine et peut y être lue. Elle est désormais lue localement, et ni l'un ni l'autre ne peut plus arriver. Une courte attente puis un second contrôle après l'achat comblent aussi l'écart entre l'enregistrement du paiement par le Store et l'octroi de la licence.
 
 ### Fonctionnalités
 
@@ -367,7 +367,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Novità di questa versione: Storia del valore di mercato - la capitalizzazione flottante di un'azione giorno per giorno, con sotto il suo prezzo sullo stesso asse temporale, oppure più aziende insieme, una linea ciascuna. Nessuna fonte conserva un numero storico di azioni, quindi lo si ricava dal tasso di rotazione: il volume diviso per il tasso di rotazione è il numero di azioni flottanti, e il valore è il prezzo del giorno per questo numero. Si contano solo le azioni scambiate su questo mercato, perciò un'azienda quotata in due piazze resta sotto la capitalizzazione totale mostrata da un'app di quotazioni. Un'etichetta segue l'estremità di ogni linea con il nome dell'azienda e il valore raggiunto in quell'istante, e si muove con l'animazione; con più aziende in un solo quadro, queste etichette sono anche l'unica cosa che dice quale linea è quale.
+Novità di questa versione: l'abbonamento vale dal momento dell'acquisto, senza riavviare l'app, e una volta attivo la scheda delle impostazioni che mostra la data di rinnovo e permette di gestire o ripristinare l'abbonamento non scompare più. Entrambi i sintomi venivano dallo stesso errore: la risposta a "questa persona ha pagato" era presa dal catalogo dello Store, che va scaricato, mentre la licenza è già sul dispositivo e si può leggere lì. Ora si legge in locale e nessuno dei due può più accadere. Una breve attesa e un secondo controllo dopo l'acquisto coprono anche l'intervallo fra la registrazione del pagamento nello Store e la concessione della licenza.
 
 ### Funzionalità del prodotto
 
@@ -414,7 +414,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Novedad de esta versión: Historial de valor de mercado - la capitalización circulante de una acción día a día, con su cotización debajo en el mismo eje temporal, o varias empresas a la vez, una línea cada una. Ninguna fuente guarda un número histórico de acciones, así que se recupera desde la tasa de rotación: el volumen dividido por la tasa de rotación es el número de acciones en circulación, y el valor es el precio del día multiplicado por ese número. Solo se cuentan las acciones negociadas en este mercado, de modo que una empresa cotizada en dos plazas queda por debajo de la capitalización total que muestra una app de cotizaciones. Una etiqueta sigue el extremo de cada línea con el nombre de la empresa y el valor alcanzado en ese instante, y avanza con la animación; con varias empresas en un mismo cuadro, esas etiquetas son también lo único que dice qué línea es cuál.
+Novedad de esta versión: la suscripción surte efecto en el momento de la compra, sin reiniciar la aplicación, y una vez suscrito la tarjeta de ajustes que muestra la fecha de renovación y permite gestionar o restaurar la suscripción ya no desaparece. Ambos síntomas venían del mismo error: la respuesta a «¿esta persona ha pagado?» se tomaba del catálogo de la Store, que hay que descargar, cuando la licencia ya está en el equipo y puede leerse allí. Ahora se lee en local y ninguno de los dos puede ocurrir. Una breve espera y una segunda comprobación tras la compra cubren también el intervalo entre el registro del pago en la Store y la concesión de la licencia.
 
 ### Funciones del producto
 
@@ -460,7 +460,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Novo nesta versão: Histórico de valor de mercado - o valor de mercado circulante de uma ação dia a dia, com o preço dela abaixo no mesmo eixo de tempo, ou várias empresas ao mesmo tempo, uma linha cada. Nenhuma fonte guarda uma contagem histórica de ações, então ela é recuperada pela taxa de giro: o volume dividido pela taxa de giro é a quantidade de ações em circulação, e o valor é o preço do dia vezes essa quantidade. Só entram as ações negociadas neste mercado, por isso uma empresa listada em duas praças fica abaixo da capitalização total que um app de cotações mostra. Um rótulo acompanha a ponta de cada linha com o nome da empresa e o valor alcançado naquele instante, e anda com a animação; com várias empresas num mesmo quadro, esses rótulos são também a única coisa que diz qual linha é qual.
+Novo nesta versão: a assinatura passa a valer no momento da compra, sem reiniciar o aplicativo, e, depois de assinante, o cartão de configurações que mostra a data de renovação e permite gerenciar ou restaurar a assinatura não desaparece mais. Os dois sintomas vinham do mesmo erro: a resposta para "esta pessoa pagou" era buscada no catálogo da Store, que precisa ser baixado, quando a licença já está na máquina e pode ser lida ali. Agora ela é lida localmente e nenhum dos dois pode acontecer. Uma breve espera e uma segunda verificação depois da compra cobrem também o intervalo entre o registro do pagamento pela Store e a concessão da licença.
 
 ### Funcionalidades do produto
 
@@ -507,7 +507,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Nowość w tej wersji: Historia wartości rynkowej - kapitalizacja obrotowa jednej akcji dzień po dniu, a pod nią na tej samej osi czasu jej kurs, albo kilka spółek naraz, każda ze swoją linią. Żadne źródło nie ma historycznej liczby akcji, więc odtwarza się ją ze wskaźnika obrotu: wolumen podzielony przez wskaźnik obrotu to liczba akcji w obrocie, a wartość to kurs dnia razy ta liczba. Liczone są tylko akcje handlowane na tym rynku, więc spółka notowana w dwóch miejscach wypada poniżej całkowitej kapitalizacji pokazywanej przez aplikację z notowaniami. Etykieta podąża za końcem każdej linii z nazwą spółki i wartością, jaką ta osiągnęła w danej chwili, i porusza się razem z animacją; przy kilku spółkach na jednym obrazie te etykiety są też jedyną rzeczą, która mówi, która linia jest która.
+Nowość w tej wersji: subskrypcja działa od razu po zakupie, bez ponownego uruchamiania aplikacji, a gdy już jest, karta w ustawieniach pokazująca datę odnowienia i pozwalająca zarządzać subskrypcją lub ją przywrócić nie znika. Oba objawy brały się z tego samego błędu: odpowiedź na pytanie „czy ta osoba zapłaciła” brano z katalogu sklepu, który trzeba pobrać, choć licencja jest już na tym urządzeniu i można ją tam odczytać. Teraz jest odczytywana lokalnie i żaden z nich nie może się zdarzyć. Krótkie oczekiwanie i ponowne sprawdzenie po zakupie pokrywają też odstęp między zarejestrowaniem płatności przez sklep a przyznaniem licencji.
 
 ### Funkcje produktu
 
@@ -554,7 +554,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Novinkou této verze je Historie tržní hodnoty - obchodovaná tržní kapitalizace jedné akcie den po dni, pod ní na stejné časové ose její kurz, nebo několik firem najednou, každá se svou čarou. Žádný zdroj neuchovává historický počet akcií, a tak se dopočítává z míry obratu: objem dělený mírou obratu je počet akcií v oběhu a hodnota je kurz dne krát tento počet. Počítají se jen akcie obchodované na tomto trhu, takže firma kótovaná na dvou místech je pod celkovou tržní kapitalizací, kterou ukazuje aplikace s kurzy. Štítek jede na konci každé čáry s názvem firmy a hodnotou, které v tu chvíli dosáhla, a pohybuje se s animací; při několika firmách v jednom obraze jsou tyto štítky také tím jediným, co říká, která čára je která.
+Novinkou této verze je oprava předplatného: platí ihned po zakoupení, bez restartu aplikace, a když je aktivní, karta v nastavení, která ukazuje datum obnovení a umožňuje předplatné spravovat nebo obnovit, nezmizí. Oba příznaky pramenily ze stejné chyby: odpověď na otázku „zaplatil tento člověk” se brala z katalogu obchodu, který je třeba stáhnout, přestože licence je už v tomto zařízení a lze ji tam přečíst. Nyní se čte místně a ani jedno se nemůže stát. Krátké čekání a druhý pohled po nákupu pokrývají i mezeru mezi zaznamenáním platby v obchodě a udělením licence.
 
 ### Funkce produktu
 
@@ -601,7 +601,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Новое в этой версии: История капитализации - капитализация одной акции в свободном обращении день за днём, а под ней на той же оси времени её цена; можно вывести и несколько компаний сразу, по одной линии на каждую. Ни один источник не хранит историческое число акций, поэтому оно восстанавливается из оборачиваемости: объём, делённый на оборачиваемость, - это и есть число акций в обращении, а капитализация - цена дня, умноженная на него. Учитываются только акции, которыми торгуют на этом рынке, поэтому компания с листингом в двух местах оказывается ниже общей капитализации, которую показывает приложение с котировками. Ярлык едет у конца каждой линии с названием компании и значением, которого она достигла в этот момент, и движется вместе с анимацией; когда в одном кадре несколько компаний, эти ярлыки - ещё и единственное, что говорит, какая линия какая.
+Новое в этой версии: подписка начинает действовать сразу после покупки, без перезапуска приложения, а когда она есть, карточка в настройках, показывающая дату продления и позволяющая управлять подпиской или восстановить её, больше не исчезает. Оба симптома шли из одной ошибки: ответ на вопрос «этот человек заплатил» брали из каталога магазина, который нужно загружать, хотя лицензия уже лежит на этом устройстве и читается там. Теперь она читается локально, и ни то ни другое произойти не может. Небольшая пауза и повторная проверка после покупки закрывают и промежуток между тем, как магазин записал платёж, и тем, как выдал лицензию.
 
 ### Функции продукта
 
@@ -648,7 +648,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümde yeni: Piyasa değeri geçmişi - bir hissenin dolaşımdaki piyasa değeri gün gün, altında aynı zaman ekseninde fiyatı; ya da birden çok şirket aynı anda, her birine bir çizgi. Hiçbir kaynak geçmiş hisse sayısını saklamıyor, bu yüzden o devir hızından geri çıkarılıyor: hacmin devir hızına bölümü dolaşımdaki hisse sayısıdır ve değer, günün fiyatının bu sayıyla çarpımıdır. Yalnızca bu piyasada işlem gören hisseler sayılır, bu yüzden iki yerde listelenen bir şirket, fiyat uygulamasının gösterdiği toplam piyasa değerinin altında kalır. Her çizginin ucunda bir etiket şirketin adını ve o anda ulaştığı değeri taşır ve animasyonla birlikte hareket eder; tek karede birkaç şirket varken bu etiketler aynı zamanda hangi çizginin hangisi olduğunu söyleyen tek şeydir.
+Bu sürümde abonelik düzeltildi: satın aldığınız anda geçerli olur, uygulamayı yeniden başlatmanız gerekmez; aboneliğiniz varken ayarlardaki, yenileme tarihini gösteren ve aboneliği yönetmenizi ya da geri yüklemenizi sağlayan kart da kaybolmaz. İki belirti de aynı hatadan geliyordu: «bu kişi ödeme yaptı mı» sorusunun yanıtı, bu cihazda zaten duran ve burada okunabilen lisans yerine, indirilmesi gereken mağaza kataloğunda aranıyordu. Artık yerelde okunuyor ve ikisi de gerçekleşemez. Satın almadan sonra kısa bir bekleme ve ikinci bir bakış, mağazanın ödemeyi kaydetmesiyle lisansı vermesi arasındaki kısa aralığı da kapatıyor.
 
 ### Ürün özellikleri
 
