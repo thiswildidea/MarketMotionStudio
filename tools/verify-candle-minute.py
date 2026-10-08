@@ -464,6 +464,13 @@ def main():
     winui.combo_pick(win, motion, MOTION_GROW)
     time.sleep(1.0)
 
+    # 周期也是存住的偏好：上一跑可能就停在 5 分钟，再选一次 5 分钟**不会**触发
+    # SelectionChanged，于是下面那句「切周期会自动取一次」根本没有发生，wait_status 干等
+    # 300 秒返回 None —— 而失败信息是「分钟取数成功 — None」，看着像页面没取到数，其实
+    # 一次请求都没发出。先切回日K，让这一次选择真的是一次改变。
+    winui.combo_pick(win, period, PERIOD_DAILY)
+    time.sleep(1.5)
+
     if not winui.combo_pick(win, period, PERIOD_5):
         print(f"周期里没有「{PERIOD_5}」")
         return 1

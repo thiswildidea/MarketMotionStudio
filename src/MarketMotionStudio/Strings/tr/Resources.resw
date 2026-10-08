@@ -500,6 +500,7 @@
   <data name="CandleCardAmplitude"><value>Genlik</value></data>
   <data name="CandleLegendClose"><value>Kapanış</value></data>
   <data name="CandleFetched"><value>{0} {1} ({2} - {3})</value></data>
+  <data name="CandlePickNone"><value>Hiçbir enstrüman açık değil. Grafiğe eklemek için listenizdeki bir ada dokunun.</value></data>
   <data name="CandleRangeTooLong"><value>Aralık çok uzun — {0} en fazla yaklaşık {1} mum alır. Başlangıç tarihini ileri alın.</value></data>
   <data name="INSTSH601398"><value>ICBC</value></data>
   <data name="INSTSH601939"><value>CCB</value></data>

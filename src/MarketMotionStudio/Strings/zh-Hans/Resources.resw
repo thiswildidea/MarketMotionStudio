@@ -509,6 +509,7 @@
   <data name="CandleCardAmplitude"><value>振幅</value></data>
   <data name="CandleLegendClose"><value>收盘价</value></data>
   <data name="CandleFetched"><value>{0} 根{1}（{2} 至 {3}）</value></data>
+  <data name="CandlePickNone"><value>没有选中任何标的。点清单里的一个名字把它放到画面上。</value></data>
   <data name="CandleRangeTooLong"><value>区间过长：{0}最多能取约 {1} 根，请把起始日期往后调。</value></data>
   <data name="INSTSH601398"><value>工商银行</value></data>
   <data name="INSTSH601939"><value>建设银行</value></data>

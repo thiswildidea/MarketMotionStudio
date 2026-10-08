@@ -500,6 +500,7 @@
   <data name="CandleCardAmplitude"><value>Spanne</value></data>
   <data name="CandleLegendClose"><value>Schlusskurs</value></data>
   <data name="CandleFetched"><value>{0} {1} ({2} bis {3})</value></data>
+  <data name="CandlePickNone"><value>Kein Instrument ist eingeschaltet. Tippe einen Namen auf deiner Liste an, um es ins Bild zu nehmen.</value></data>
   <data name="CandleRangeTooLong"><value>Der Zeitraum ist zu lang — {0} erreicht höchstens etwa {1} Kerzen. Verschieben Sie das Startdatum nach hinten.</value></data>
   <data name="INSTSH601398"><value>ICBC</value></data>
   <data name="INSTSH601939"><value>CCB</value></data>

@@ -65,6 +65,7 @@ Le candele di uno strumento: giornaliere, settimanali o mensili — o al minuto 
 - Una settimana o un mese ancora in corso resta fuori. Una candela fatta di tre giorni non è una settimana.
 - Ogni mercato è letto sulla sua serie rettificata, quindi un giorno di frazionamento non è disegnato come un calo, e nemmeno un dividendo.
 - **L'intervallo** segue il periodo: il giornaliero offre 3, 6 o 12 mesi e 3, 5 o 10 anni; il settimanale 1, 3, 5 o 10 anni; il mensile 3, 5 o 10 anni, oppure il massimo di cui la fonte dispone (circa 13). Una richiesta porta circa 640 barre giornaliere e la pagina torna indietro una pagina alla volta: dieci anni, circa 2.500 barre, ci stanno dentro.
+- **Due o più strumenti trasformano l'inquadratura in un confronto.** I nomi nella tua lista sono interruttori: attivane un secondo e l'inquadratura smette di disegnare candele — i prezzi di due strumenti non hanno alcun asse da condividere — e disegna invece ciò che ciascuno ha fatto, come percentuale cumulata. Ogni curva è nominata alla propria estremità anteriore, con quanto è avanti o indietro nel momento mostrato. Nei periodi al minuto tutti sono disegnati nella stessa giornata di borsa: la seduta più recente che ciascuno ha.
 
 ## Volume e rotazione
 

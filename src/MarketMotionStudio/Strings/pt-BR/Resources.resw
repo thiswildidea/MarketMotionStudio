@@ -500,6 +500,7 @@
   <data name="CandleCardAmplitude"><value>Amplitude</value></data>
   <data name="CandleLegendClose"><value>Fechamento</value></data>
   <data name="CandleFetched"><value>{0} {1} ({2} a {3})</value></data>
+  <data name="CandlePickNone"><value>Nenhum instrumento está ativado. Toque um nome na sua lista para colocá-lo no gráfico.</value></data>
   <data name="CandleRangeTooLong"><value>O intervalo é longo demais — {0} alcança cerca de {1} candles no máximo. Adiante a data de início.</value></data>
   <data name="INSTSH601398"><value>ICBC</value></data>
   <data name="INSTSH601939"><value>CCB</value></data>

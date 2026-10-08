@@ -132,6 +132,15 @@
                             HorizontalAlignment="Left"
                             Click="OnAddFavourite" />
 
+                    <!-- The reader's own list, shared with the other boards that name an
+                         instrument. The chips are switches, and that is what turns one
+                         instrument's candles into a comparison: pick two and the frame stops
+                         drawing candles at all, because two instruments' prices have no
+                         common axis, and draws what they did as percentages instead. With one
+                         pick — the state this opens in — the page behaves exactly as it did
+                         before the row was here. -->
+                    <views:WatchlistPicker x:Name="Watch" Selectable="True" />
+
                     <!-- What one candle covers. Changing it re-fetches: the periods are
                          different series on the source, not one series drawn differently. -->
                     <ComboBox x:Name="PeriodCombo"

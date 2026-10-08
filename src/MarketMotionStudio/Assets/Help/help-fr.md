@@ -66,6 +66,7 @@ Les chandeliers d'un instrument : quotidiens, hebdomadaires ou mensuels — ou p
 - Une semaine ou un mois encore en cours est laissé de côté. Un chandelier fait de trois jours n'est pas une semaine.
 - Chaque marché est lu sur sa série ajustée : un jour de division n'est donc pas dessiné comme une baisse, et un dividende non plus.
 - **La plage** suit la période : en quotidien 3, 6 ou 12 mois, ou 3, 5 ou 10 ans ; en hebdomadaire 1, 3, 5 ou 10 ans ; en mensuel 3, 5 ou 10 ans, ou le maximum dont la source dispose (environ 13 ans). Une requête ramène environ 640 bougies quotidiennes et la page remonte page par page : dix ans, soit quelque 2 500 bougies, y tiennent.
+- **Deux instruments ou plus font de l'image une comparaison.** Les noms de votre liste sont des interrupteurs : activez-en un deuxième et l'image cesse de tracer des chandeliers — les prix de deux instruments n'ont aucun axe à partager — et trace à la place ce que chacun a fait, en pourcentage cumulé. Chaque courbe est nommée à sa propre extrémité avant, avec son avance ou son retard au moment affiché. Sur les périodes en minutes, tous sont tracés le même jour de bourse : la séance la plus récente que chacun possède.
 
 ## Volume et rotation
 

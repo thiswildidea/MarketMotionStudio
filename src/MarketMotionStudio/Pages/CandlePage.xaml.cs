@@ -52,6 +52,23 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     /// </summary>
     private MinuteSession? _minutes;
 
+    /// <summary>
+    /// Several instruments on one frame, once more than one is picked.
+    ///
+    /// Kept beside <see cref="_fetched"/> rather than instead of it: the two are different
+    /// pictures of the same question and the page holds whichever was fetched last, so
+    /// dropping back to one instrument drops this and not the other way round.
+    /// </summary>
+    private CandleBoard? _board;
+
+    /// <summary>
+    /// Whether the reader has touched the shared list on this page. Until they have, the
+    /// page is the single-instrument one it always was and the list is only a row of
+    /// names — a list shared with four other boards cannot be allowed to decide what this
+    /// page fetches before anyone here has said anything about it.
+    /// </summary>
+    private bool _watchTouched;
+
     /// <summary>Which of those sessions is drawn, as the source names it, `20260930`.</summary>
     private string _day = string.Empty;
 
@@ -141,6 +158,14 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         }
 
         Favourites.ItemsSource = _favourites;
+
+        // The shared list, read by this page only once a chip has been switched here — see
+        // `_watchTouched` — because it is one list behind five boards, and a pick made on
+        // another of them is not a request about this one.
+        Watchlist.EnsureLoaded();
+
+        Watch.Changed += OnWatchChanged;
+        Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
 
         _searchDebounce.Tick += async (_, _) =>
         {
@@ -378,7 +403,22 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         var title = ResolvedTitle();
         var showTitle = VideoSettings.ShowTitle;
 
-        if (_fetched is { } fetched)
+        if (_board is { } board)
+        {
+            // The axis reaches as far as the furthest any curve got, either way: returns go
+            // down as well as up, and an axis scaled to the rises alone would draw the falls
+            // off the bottom of the plot.
+            var plan = AnimationPlan.For(
+                VideoSettings.Duration, board.Count,
+                Math.Max(Math.Abs(board.Peak), Math.Abs(board.Trough)));
+
+            Preview.Renderer = new CandleRaceRenderer(board, plan, ChosenMotion(), ChosenWindow())
+            {
+                Title = title,
+                ShowTitle = showTitle,
+            };
+        }
+        else if (_fetched is { } fetched)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, fetched.Count, fetched.High);
 
@@ -397,14 +437,24 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
             Preview.Renderer = _stage;
         }
 
-        VideoSettings.TitlePlaceholder = Strings.Format(
-            "CandleDefaultTitle", _instrumentName, Strings.Get(CandleLoader.NameKey(ChosenPeriod())));
+        VideoSettings.TitlePlaceholder = _board is { } comparing
+            ? string.Join(" / ", comparing.Tracks.Select(t => t.Name))
+            : Strings.Format("CandleDefaultTitle", _instrumentName,
+                Strings.Get(CandleLoader.NameKey(ChosenPeriod())));
 
         // The window is a term of the scrolling motion alone; offered at any other
         // time it reads as a setting the chart is ignoring.
         WindowBox.IsEnabled = ChosenMotion() is CandleMotion.Scroll;
 
-        var ready = _fetched is not null;
+        // Three more that a comparison does not read: the four styles are ways of drawing
+        // *candles*, and a frame of percentages has none, while the averages and the volume
+        // belong to one instrument's bars. Offered anyway they would be three settings the
+        // frame was silently ignoring — the thing the window box above is guarded against.
+        StyleCombo.IsEnabled = _board is null;
+        AveragesCheck.IsEnabled = _board is null;
+        VolumeCheck.IsEnabled = _board is null;
+
+        var ready = _fetched is not null || _board is not null;
 
         PlayButton.IsEnabled = ready;
         ExportButton.IsEnabled = ready;
@@ -421,8 +471,10 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     private string ResolvedTitle() =>
         VideoSettings.TitleText.Length > 0
             ? VideoSettings.TitleText
-            : Strings.Format("CandleDefaultTitle", _instrumentName,
-                Strings.Get(CandleLoader.NameKey(ChosenPeriod())));
+            : _board is { } board
+                ? string.Join(" / ", board.Tracks.Select(t => t.Name))
+                : Strings.Format("CandleDefaultTitle", _instrumentName,
+                    Strings.Get(CandleLoader.NameKey(ChosenPeriod())));
 
     // ---- search ----------------------------------------------------------------------
 
@@ -581,16 +633,66 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
     // ---- fetching --------------------------------------------------------------------
 
+    /// <summary>
+    /// What this frame is about: the instruments switched on in the shared list, or — until
+    /// the reader has switched any — the one the page is naming.
+    /// </summary>
+    private IReadOnlyList<RaceEntry> Chosen() =>
+        _watchTouched
+            ? Watch.SelectedEntries
+            : _instrumentCode.Length > 0
+                ? [new RaceEntry(_instrumentCode, _instrumentName)]
+                : [];
+
+    /// <summary>
+    /// A chip switched on or off: what the frame is about has changed, and what was last
+    /// fetched no longer answers to it.
+    ///
+    /// Nothing is fetched here. A chip is a switch and a reader deciding between four
+    /// instruments clicks four of them, and four requests for the three states passed
+    /// through on the way would be three requests about a picture nobody asked to see.
+    /// The fetch is the button's, as it is everywhere else on this page.
+    /// </summary>
+    private void OnWatchChanged(object? sender, EventArgs e)
+    {
+        _watchTouched = true;
+        _fetched = null;
+        _board = null;
+        _minutes = null;
+        _day = string.Empty;
+
+        DayCombo.Items.Clear();
+
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
+
     private void ChooseInstrument(string code, string name)
     {
         _instrumentCode = code;
         _instrumentName = InstrumentNames.Display(code, name);
 
+        // Onto the shared list, and switched on for this frame in one press — a pick that
+        // arrived on the list but switched off would draw nothing at all, which reads as a
+        // broken row rather than as a setting. Which is also why a press here counts as
+        // having touched the list: from this point the chips are what the page fetches.
+        if (!Watchlist.Has(code) && !Watchlist.Add(code, name))
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format("SectorTooManyStocks", Watchlist.Most));
+        }
+        else
+        {
+            _watchTouched = true;
+            Watch.Include(code);
+        }
+
         // The candles in the frame belong to the instrument they were fetched for. A
         // new pick drops them rather than leaving them standing under a title that no
         // longer names them — and drops the sessions with them, because the day list is
-        // one instrument's days.
+        // one instrument's days. A comparison goes with them: one instrument chosen by
+        // name is the single-instrument page again.
         _fetched = null;
+        _board = null;
         _minutes = null;
         _day = string.Empty;
 
@@ -658,7 +760,6 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
     private async void Fetch()
     {
-        var display = _instrumentName.Length > 0 ? _instrumentName : _instrumentCode;
         var period = ChosenPeriod();
         var months = ChosenMonths();
         var custom = months == CandleLoader.CustomMonths;
@@ -687,6 +788,42 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                 return;
             }
         }
+
+        var chosen = Chosen();
+
+        if (chosen.Count == 0)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Get("CandlePickNone"));
+            return;
+        }
+
+        // Refused rather than trimmed, for the reason every other board refuses it: a
+        // frame drawn from six of the nine instruments somebody ticked answers about a
+        // list nobody chose, and looks entirely plausible while it does.
+        if (chosen.Count > CandleBoardLoader.MostTracks)
+        {
+            ShowStatus(InfoBarSeverity.Error, Strings.Format(
+                "SectorTooManyStocks", CandleBoardLoader.MostTracks));
+
+            return;
+        }
+
+        // More than one instrument is a different picture, not a bigger one: their prices
+        // have no common axis, so the frame draws what each did as a percentage instead.
+        // Taken here, before the single-instrument path below, because both paths ask the
+        // source the same questions about the period and the span and both refusals above
+        // are the same for either.
+        if (chosen.Count > 1)
+        {
+            await FetchComparison(chosen, months, from, to);
+
+            return;
+        }
+
+        _instrumentCode = chosen[0].Code;
+        _instrumentName = InstrumentNames.Display(chosen[0].Code, chosen[0].Name);
+
+        var display = _instrumentName.Length > 0 ? _instrumentName : _instrumentCode;
 
         // Three minutes: a daily chart three years back is two requests, and a
         // monthly one reaching forty is one, but a slow answer should not be
@@ -756,6 +893,76 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                 CandleLoader.Iso(fetched.Start),
                 CandleLoader.Iso(fetched.End)));
         }, TimeSpan.FromMinutes(3));
+    }
+
+    /// <summary>
+    /// Several instruments' candles on one frame.
+    ///
+    /// Asked for as one board rather than as N charts, because the axis is the thing they
+    /// have to share: two instruments fetched separately and drawn together is only a
+    /// comparison if each point on one answers to the same moment on the other, and that
+    /// is decided where the bars are put on the axis, not where they are painted.
+    /// </summary>
+    private async Task FetchComparison(
+        IReadOnlyList<RaceEntry> chosen, int months, DateOnly from, DateOnly to)
+    {
+        var period = ChosenPeriod();
+
+        // Six minutes, not the single-instrument path's three: one instrument reaching back
+        // a dozen years is up to six requests answered one after another, and this path asks
+        // for as many as six of them.
+        await RunAsync(FetchButton, async cancellation =>
+        {
+            var progress = new Immediate<string>(
+                message => ShowStatus(InfoBarSeverity.Informational, message));
+
+            var board = await CandleBoardLoader.LoadAsync(
+                Services.Quotes, chosen, period, months, from, to, progress, cancellation);
+
+            if (board.Tracks.Count < 2)
+            {
+                // Fewer than two came back, so there is nothing to compare: a "comparison"
+                // of one curve is a single-instrument chart under a title that says
+                // otherwise, and of none is an empty frame. Named rather than counted —
+                // which instrument the period could not supply is what has to be acted on.
+                ShowStatus(InfoBarSeverity.Error, Strings.Format(
+                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped)));
+
+                return;
+            }
+
+            _board = board;
+
+            // The single-instrument series is dropped rather than kept alongside: the frame
+            // is one or the other, and a stale chart standing behind a comparison would be
+            // drawn the moment the reader dropped back to one pick.
+            _fetched = null;
+            _minutes = null;
+            _day = string.Empty;
+
+            DayCombo.Items.Clear();
+
+            ApplyPreviewSettings();
+
+            ShowMoment(1);
+
+            var fetched = Strings.Format(
+                "CandleFetched",
+                board.Count,
+                Strings.Get(CandleLoader.NameKey(period)),
+                CandleLoader.Iso(board.Start),
+                CandleLoader.Iso(board.End));
+
+            if (board.Skipped.Count == 0)
+            {
+                ShowStatus(InfoBarSeverity.Success, fetched);
+            }
+            else
+            {
+                ShowStatus(InfoBarSeverity.Warning, $"{fetched} {Strings.Format(
+                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped))}");
+            }
+        }, TimeSpan.FromMinutes(6));
     }
 
     private void OnFetch(object sender, RoutedEventArgs e) => Fetch();

@@ -64,6 +64,7 @@ Os candles de um instrumento: diários, semanais ou mensais — ou de minuto par
 - Uma semana ou um mês ainda em curso fica de fora. Um candle feito de três dias não é uma semana.
 - Todo mercado é lido na sua série ajustada, então um dia de desdobramento não é desenhado como queda, e um dividendo tampouco.
 - **O intervalo** acompanha o período: no diário, 3, 6 ou 12 meses, ou 3, 5 ou 10 anos; no semanal, 1, 3, 5 ou 10 anos; no mensal, 3, 5 ou 10 anos ou o máximo de que a fonte dispõe (cerca de 13). Um pedido traz cerca de 640 barras diárias e a página volta página por página, então dez anos — cerca de 2.500 barras — cabem nela.
+- **Dois instrumentos ou mais transformam o quadro em uma comparação.** Os nomes na sua lista são chaves: ligue um segundo e o quadro para de desenhar candles — os preços de dois instrumentos não têm nenhum eixo que possam compartilhar — e desenha, em vez disso, o que cada um fez, como porcentagem acumulada. Cada curva é nomeada na própria extremidade dianteira, com o quanto está à frente ou atrás no momento mostrado. Nos períodos de minutos, todos são desenhados no mesmo dia de negociação: a sessão mais recente que cada um tem.
 
 ## Volume e giro
 

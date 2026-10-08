@@ -64,6 +64,7 @@ One instrument's prices as candles: daily, weekly or monthly, or minute candles 
 - A week or a month still in progress is left out. A candle made of three days is not a week.
 - Every market is read on its adjusted series, so a split day is not drawn as a fall, and neither is a dividend.
 - **Range** follows the period: daily offers 3, 6 or 12 months and 3, 5 or 10 years; weekly 1, 3, 5 or 10 years; monthly 3, 5 or 10 years, or as far back as the source goes (about 13). One request carries about 640 daily bars and this page walks backwards a page at a time, so ten years — around 2,500 bars — is inside it.
+- **Two or more instruments turn the frame into a comparison.** The names on your list are switches: turn a second one on and the frame stops drawing candles, because two instruments' prices have no axis they can share, and draws what each of them did as a cumulative percentage instead — every curve named at its own leading end, with how far ahead or behind it is at the moment being shown. On the minute periods all of them are drawn on one trading day: the newest session every one of them has.
 
 ## Volume and Turnover
 

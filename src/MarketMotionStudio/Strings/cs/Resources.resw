@@ -500,6 +500,7 @@
   <data name="CandleCardAmplitude"><value>Rozpětí</value></data>
   <data name="CandleLegendClose"><value>Závěr</value></data>
   <data name="CandleFetched"><value>{0} {1} ({2} – {3})</value></data>
+  <data name="CandlePickNone"><value>Žádný nástroj není zapnutý. Klikněte na název ve svém seznamu a vložte jej do grafu.</value></data>
   <data name="CandleRangeTooLong"><value>Rozsah je příliš dlouhý — {0} pojme nejvýše přibližně {1} svíček. Posuňte datum začátku dopředu.</value></data>
   <data name="INSTSH601398"><value>ICBC</value></data>
   <data name="INSTSH601939"><value>CCB</value></data>

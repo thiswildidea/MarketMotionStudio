@@ -62,6 +62,7 @@ Svíčky jednoho nástroje: denní, týdenní nebo měsíční — nebo minutov�
 - Probíhající týden nebo měsíc je vynechán. Svíčka ze tří dnů není týden.
 - Každý trh se čte na své upravené řadě, takže den štěpení akcií není nakreslen jako pokles, a dividenda také ne.
 - **Rozsah** se řídí periodou: denní nabízí 3, 6 nebo 12 měsíců a 3, 5 nebo 10 let; týdenní 1, 3, 5 nebo 10 let; měsíční 3, 5 nebo 10 let nebo maximum, které zdroj má (asi 13). Jeden požadavek přinese asi 640 denních svíček a strana se vrací po stránkách, takže deset let — asi 2 500 svíček — se do toho vejde.
+- **Dva nebo více nástrojů udělají ze záběru srovnání.** Jména ve tvém seznamu jsou přepínače: zapni druhý a záběr přestane kreslit svíčky — ceny dvou nástrojů nemají žádnou osu, kterou by mohly sdílet — a místo toho nakreslí, co každý z nich udělal, jako kumulativní procento. Každá křivka je pojmenována na svém vlastním předním konci, s tím, jak je v zobrazovaném okamžiku napřed nebo pozadu. V minutových periodách jsou všechny nakresleny v jeden obchodní den: v nejnovější seanci, kterou každý z nich má.
 
 ## Objem a obrat
 

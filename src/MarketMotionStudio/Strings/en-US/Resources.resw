@@ -511,6 +511,7 @@
   <data name="CandleCardAmplitude"><value>Amplitude</value></data>
   <data name="CandleLegendClose"><value>Close</value></data>
   <data name="CandleFetched"><value>{0} {1} candles ({2} to {3})</value></data>
+  <data name="CandlePickNone"><value>No instrument is switched on. Click a name on your list to put it on the frame.</value></data>
   <data name="CandleRangeTooLong"><value>That range is too long — {0} reaches about {1} candles at most. Move the start date later.</value></data>
   <data name="INSTSH601398"><value>ICBC</value></data>
   <data name="INSTSH601939"><value>CCB</value></data>

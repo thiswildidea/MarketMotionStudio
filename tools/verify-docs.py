@@ -260,24 +260,30 @@ def listing_checks():
 
 
 def help_checks():
-    """四章各有一句带数字的档位说明 —— 数字在所有语言里写法一致。"""
+    """四章各有一句带数字的档位说明 —— 数字在所有语言里写法一致。
+
+    按**这一章里找得到这一条**判，不按「末条」判。末条是个代理指标，而一章是会再加一条的：
+    K 线章加了「多标的」那条之后，末条就是它，而档位那条好好地待在上一行 —— 判据红 14 项，
+    手册一句没错。找得到就是要验的事，位置不是。
+    """
     for lang in LANGS:
         candle = chapter_bullets(lang, CH_CANDLE)
-        check(f"{lang} K线章末条写着 10 年", bool(candle) and "10" in candle[-1],
-              candle[-1][:40] if candle else "（没有 bullet）")
+        check(f"{lang} K线章写着 12 个月与 10 年",
+              any("12" in b and "10" in b for b in candle),
+              "这一章里找不到同时写着 12 与 10 的那条" if candle else "（没有 bullet）")
 
         vol = chapter_bullets(lang, CH_VOLUME)
-        check(f"{lang} 成交量章末条写着 24 个月", bool(vol) and "24" in vol[-1],
-              vol[-1][:40] if vol else "（没有 bullet）")
+        check(f"{lang} 成交量章写着 24 个月", any("24" in b for b in vol),
+              "这一章里找不到写着 24 的那条" if vol else "（没有 bullet）")
 
         cap = chapter_bullets(lang, CH_CAP)
-        check(f"{lang} 市值榜章末条写着 180 期", bool(cap) and "180" in cap[-1],
-              cap[-1][:40] if cap else "（没有 bullet）")
+        check(f"{lang} 市值榜章写着 180 期", any("180" in b for b in cap),
+              "这一章里找不到写着 180 的那条" if cap else "（没有 bullet）")
 
         data = chapter_bullets(lang, CH_DATA)
         check(f"{lang} 数据章写着 900 而不是 640",
-              bool(data) and "900" in data[-1] and "640" not in data[-1],
-              data[-1][:40] if data else "（没有 bullet）")
+              any("900" in b for b in data) and not any("640" in b for b in data),
+              "这一章里找不到写着 900 的那条，或者还留着 640" if data else "（没有 bullet）")
 
 
 def chapter_index_checks():

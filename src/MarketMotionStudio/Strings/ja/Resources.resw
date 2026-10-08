@@ -500,6 +500,7 @@
   <data name="CandleCardAmplitude"><value>振幅</value></data>
   <data name="CandleLegendClose"><value>終値</value></data>
   <data name="CandleFetched"><value>{0}本の{1}（{2}〜{3}）</value></data>
+  <data name="CandlePickNone"><value>銘柄が選択されていません。リストの名前をクリックすると画面に追加されます。</value></data>
   <data name="CandleRangeTooLong"><value>期間が長すぎます。{0}で取得できるのは最大およそ {1} 本です。開始日を後ろにずらしてください。</value></data>
   <data name="INSTSH601398"><value>工商銀行</value></data>
   <data name="INSTSH601939"><value>建設銀行</value></data>

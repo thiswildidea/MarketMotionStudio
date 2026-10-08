@@ -500,6 +500,7 @@
   <data name="CandleCardAmplitude"><value>Amplitude</value></data>
   <data name="CandleLegendClose"><value>Clôture</value></data>
   <data name="CandleFetched"><value>{0} {1} ({2} à {3})</value></data>
+  <data name="CandlePickNone"><value>Aucun instrument n'est activé. Cliquez un nom de votre liste pour le mettre dans l'image.</value></data>
   <data name="CandleRangeTooLong"><value>La période est trop longue : {0} atteint environ {1} bougies au maximum. Avancez la date de début.</value></data>
   <data name="INSTSH601398"><value>ICBC</value></data>
   <data name="INSTSH601939"><value>CCB</value></data>
