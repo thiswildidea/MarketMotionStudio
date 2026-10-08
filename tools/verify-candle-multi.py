@@ -7,10 +7,15 @@
 各有各的纵轴、上下排列，最多三只；两种排布的最下方都收在一排卡片上，每只一张，大数字是
 涨幅%、小字是涨跌额。分图超过三只时只画前三只，其余的在状态行里点名。
 
+再一件（用户报「导出 MP4 没响应」）：**比较画面的导出**。这一页是唯一一个「两个数据源画两张
+画」的页面，而两个导出处理器的守卫只问了序列 —— 比较画面故意把序列清空、留着板子，于是每
+一次按下都从第一行静默返回。这一跑把它按下去，等日志里长出 `encode: enter`（`EncodeAsync`
+的第一句），再按取消收尾。
+
 为什么要真机：都不是「源端返回什么」的问题。当日涨跌幅是把**前一个交易日**的收盘价带进
 序列；多标的是把 N 条序列摆到同一根轴上；零点取昨收而不是当日开盘改的是画出来的数；
-交易日改的是画面上的选择与重画路径；排布是下拉接上了没有、切过去有没有重画 —— 都发生在
-页面里，离线脚本一样也证明不了。
+交易日改的是画面上的选择与重画路径；排布是下拉接上了没有、切过去有没有重画；导出是那条
+路走不走得到编码器 —— 都发生在页面里，离线脚本一样也证明不了。
 
 画面上的判据是**像素**的，因为预览画布没有自动化节点：曲线几条按赛道色的色相数，末端标注
 有没有进平台那条按钮栏按最右侧墨迹与「帧宽 82%」那条线比，换一天有没有重画按两幅画的差异
@@ -69,6 +74,64 @@ PERIOD_5 = "5 分钟"
 # 落在这条带里 —— 所以这里可以按比例写，而不必去问「卡片到底在第几行」。
 CARD_LO = 0.70
 CARD_HI = 0.97
+
+
+def package_state_file(name):
+    """应用 LocalState 里的一个文件，包名不写死。
+
+    这台机器上只有一个带 `MarketMotionStudio` 的包文件夹，找出来就是了 —— 把 `8166Yxw....`
+    那一串写进脚本，等于把某一次安装当成了事实。
+    """
+    base = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Packages")
+
+    if not os.path.isdir(base):
+        return None
+
+    for entry in os.listdir(base):
+        if "MarketMotionStudio" not in entry:
+            continue
+
+        path = os.path.join(base, entry, "LocalState", name)
+
+        if os.path.exists(path):
+            return path
+
+    return None
+
+
+LOG = package_state_file("crash.log")
+
+
+def log_size():
+    """应用自己那份诊断日志现在有多长。
+
+    按**偏移量**等新行，而不是按内容找：这一跑里 `encode: enter` 之前出现过多少次都不算数，
+    算数的是**按下去之后**多出来的那一行。
+    """
+    try:
+        return os.path.getsize(LOG)
+    except (OSError, TypeError):
+        return 0
+
+
+def wait_log(offset, needle, seconds):
+    """等日志从 `offset` 之后长出含 `needle` 的一行，返回是否等到。"""
+    deadline = time.time() + seconds
+
+    while time.time() < deadline:
+        try:
+            with open(LOG, "rb") as handle:
+                handle.seek(offset)
+                grown = handle.read().decode("utf-8", "replace")
+        except (OSError, TypeError):
+            grown = ""
+
+        if needle in grown:
+            return True
+
+        time.sleep(1.0)
+
+    return False
 
 
 def read(*parts):
@@ -279,6 +342,44 @@ def chips(win):
         out.append((control.AutomationId, control.Name, pattern))
 
     return out
+
+
+def drop_chip(win, code, name):
+    """把一只从**共享清单**上摘掉（chip 右边那个 ×），返回是否摘掉。
+
+    认那个 × 只能在**开关的父节点里**找：它自己的 `AutomationId` 是空的（`WatchlistPicker.xaml`
+    里两套模板都一样），而按名字找会碰到页面上别处同名的按钮 —— 检索建议里就有同一个名字。
+    父节点里那个 `ButtonControl` 是唯一的，所以这一条不含猜测。
+
+    为什么需要它：这一段要凑够四只，而共享清单是**用户自己的数据**。一键预设点一下就「把这只
+    放到清单上并画出来」，不在这份清单上的预设按下去就会永久留上去 —— 用完了要放回原样。
+    """
+    toggle = vc.find(lambda c: c.AutomationId == code, win)
+
+    if toggle is None:
+        return False
+
+    try:
+        parent = toggle.GetParentControl()
+    except Exception:  # noqa: BLE001 - 取不到父节点，下面按窗口找
+        parent = None
+
+    for box in (parent, win):
+        if box is None:
+            continue
+
+        # `vc.find` 的第三个位置参数是 **depth**（第四个才是 limit），所以这里把它写全：
+        # 在父节点里只搜三层，免得一路搜到页面上别处同名的按钮去。
+        button = vc.find(
+            lambda c: c.ControlTypeName == "ButtonControl"
+            and not c.AutomationId
+            and (box is parent or c.Name == name),
+            box, 0, 6 if box is parent else 12)
+
+        if button is not None:
+            return vc.click(button, 1.5)
+
+    return False
 
 
 def clear_chips(win, tries=8):
@@ -754,6 +855,35 @@ def main():
               r"\s*ApplyPreviewSettings\(\);\s*SavePreferences\(\);", page) is not None,
           "" if "void OnLookChanged" in page else "OnLookChanged 不见了")
 
+    # ---- 源码：导出的守卫（用户报「导出 MP4 没响应」） --------------------------------
+    #
+    # 这一条是用户那一句报出来的，而它出问题时的样子**一点声响都没有**：按钮是亮的
+    # （`ExportButton.IsEnabled = _fetched is not null || _board is not null` 把两条来源都算
+    # 上了），画面好好地画着，按下去既不弹框、也不写状态行、也不报错、也不写文件，日志里
+    # 干干净净 —— 因为那两个导出处理器的守卫只问了**序列**，而比较画面**故意把序列清空**
+    # （留着板子），于是每一次按下都从第一行静默返回。
+    #
+    # 这一页是唯一一个「两个数据源画两张画」的页面：另外十六页各只有一处来源、各问一处，
+    # 照抄它们的写法正是这个缺陷的来源。所以判据问的是「守卫是不是只有一处」，不是
+    # 「这个处理器里改没改」—— 一处一处地问，第二个处理器就会有一份自己的答案。
+    #
+    # 而**先例本来就在**：成交额页（唯一另一个有两种视图的页面）的守卫问的是 `SeriesRange()`
+    # —— 那正是「两处来源，取在的那一处」。所以这一页是照抄错了对象，不是没东西可抄。
+    # 那一条别的页面的原文这里**不钉**：钉住它，等于让它以后被一次合法的重构判红。
+    check("导出的守卫问的是一处，而不是只问序列",
+          page.count("FrameSpan is not { } span") == 2
+          and "_fetched is not { } fetched || App.Window" not in page)
+    check("那一处同时读两条来源（比较画面把序列清空了，板子在）",
+          "private (DateOnly Start, DateOnly End)? FrameSpan =>" in page
+          and "board.Start, board.End" in page
+          and "fetched.Start, fetched.End" in page)
+    check("视频与封面两个文件名都从那一处取日期",
+          page.count("span.Start, span.End, format)") == 2)
+    check("按钮的可用性问的是同一件事（两条来源都算，所以守卫也得两条都收）",
+          "var ready = _fetched is not null || _board is not null;" in page
+          and "ExportButton.IsEnabled = ready;" in page
+          and "CoverButton.IsEnabled = ready;" in page)
+
     resw = sorted(
         d for d in os.listdir(os.path.join(SRC, "Strings"))
         if os.path.isfile(os.path.join(SRC, "Strings", d, "Resources.resw")))
@@ -1202,22 +1332,47 @@ def main():
     # 点的也必须是**此刻关着**的那几只：上一段留下的那一只正开着，而点一个已经开着的预设
     # 不会让清单多出第二只 —— 于是「凑到两只」这件事会悄悄不成立。
     live = chips(win)
-    off = {c[0] for c in live if c[2].ToggleState == auto.ToggleState.Off}
-    todo = [row for row in rows if row.AutomationId in off]
+    on = {c[0] for c in live if c[2].ToggleState == auto.ToggleState.On}
+
+    # 清单是**异步读进来**的（`clear_chips` 那一节的教训），所以「本来就有哪些」连读两次取
+    # 并集 —— 这个集合只用来决定「哪几只是**这一跑带进来的**、走的时候要摘掉」，只可能让
+    # 摘的动作更保守：读漏了就会把读者自己的一只当成带进来的。
+    before = {c[0] for c in live}
+    time.sleep(1.5)
+    before |= {c[0] for c in chips(win)}
+
+    # 点的是**此刻没开着**的预设，只筛这一条。原来还多筛了一条「它已经在清单上」，那一条既是
+    # 多余的、又把这一段挂在了**用户自己的清单里恰好有几只预设**上：一键预设本来就是「把这只
+    # 放到清单上并画出来」，不在清单上的按一下照样上去。共享清单是用户数据、会变 —— 实测这份
+    # 清单里只有两只是预设里的（上证指数、创业板指），于是「关着的预设」只剩 1 个，整段直接
+    # 跳过：红的是「凑够四只」这句话，而页面是好的。
+    todo = [row for row in rows if row.AutomationId not in on]
+
+    # 还差几只到四只；`head` 是「先凑到两只」那一只 —— 一只时排布下拉是灰的（它属于比较画面），
+    # 而「第 4 只被点名」只发生在分图下，所以顺序是：凑到两只 → 切分图 → 再点剩下的。
+    need = max(0, 4 - len(on))
+    head = todo[:1] if len(on) < 2 else []
+    tail = todo[len(head):need]
+    clicked = list(head) + list(tail)
 
     if len(rows) < 4:
         check("页面上至少有四个一键预设（这一段要凑够四只）", False, f"{len(rows)} 个")
     elif len(labels) != 2 or split_combo is None:
         check("排布下拉还在，且挑得出两项", False, "、".join(labels))
-    elif len(todo) < 3:
-        check("清单上还关着至少三只预设（这一段要凑够四只）", False,
-              f"关着 {len(todo)} 个：{[c[1] for c in live]}")
+    elif need > len(todo):
+        check("清单与预设加起来凑得出四只（这一段量的真是「超过三只」）", False,
+              f"清单上 {len(on)} 只开着，预设里没开着的只有 {len(todo)} 个")
     else:
         stale = vc.status_text(win)
 
-        vc.click(todo[0], 1.0)
-        two = vc.wait_status(win, unlike=stale, seconds=180)
-        stale = two or stale
+        for row in head:
+            vc.click(row, 1.0)
+            got = vc.wait_status(win, unlike=stale, seconds=180)
+            stale = got or stale
+
+            if not got or BAD.search(got):
+                check(f"加上「{row.Name}」之后取数正常", False, got or "(状态条空)")
+                break
 
         on2 = [c for c in chips(win) if c[2].ToggleState == auto.ToggleState.On]
         check("先凑到两只（一只时排布下拉是灰的）", len(on2) == 2,
@@ -1228,7 +1383,7 @@ def main():
         if winui.combo_pick(win, split_combo, labels[1]) is None:
             check("切到分图（点名只在分图下发生）", False)
         else:
-            for row in todo[1:3]:
+            for row in tail:
                 vc.click(row, 1.0)
                 got = vc.wait_status(win, unlike=stale, seconds=180)
                 stale = got or stale
@@ -1236,6 +1391,13 @@ def main():
                 if not got or BAD.search(got):
                     check(f"加上「{row.Name}」之后取数正常", False, got or "(状态条空)")
                     break
+
+            # 清单上本来就已经开着四只时没有第四只可点，而「点名」是**取数时**由页面说的（图
+            # 片那一栏选的还是合图）。切到分图之后重取一次，让它把没画的那一只说出来 —— 不然
+            # 这一条会红在一个「页面根本没机会说话」的地方。
+            if not tail:
+                vc.click(vc.find(lambda c: c.AutomationId == "FetchButton", win), 1.0)
+                stale = vc.wait_status(win, unlike=stale, seconds=180) or stale
 
         on4 = [c for c in chips(win) if c[2].ToggleState == auto.ToggleState.On]
 
@@ -1282,6 +1444,63 @@ def main():
                 check("只画前 3 只：把关掉第 4 只之后的画面与它比，逐像素一样",
                       same < 0.02, f"{same:.1%} 不同")
 
+        # ---- 真机：比较画面的导出，按下去必须真的动起来 ---------------------------------
+        #
+        # 量的就是用户报的那一件事。`encode: enter` 是 `VideoExporter.EncodeAsync` 的第一句，
+        # 出现它说明整条路走到了编码器 —— 而在这一版之前，比较画面上**从来没有出现过这一行**
+        # （导出按钮按得下去，什么都不发生，日志里干干净净）。
+        #
+        # 只问「状态行有没有说话」是不够的：不说不动是缺陷，动错了也是另一种缺陷，这里能分
+        # 开的正是前者 —— 而前者就是用户报的那一种。
+        #
+        # 收尾**按取消**：取消会把半成品删掉（`EncodeAsync` 的 catch 里 delete），所以不会在
+        # 读者的输出文件夹里留下垃圾文件。
+        split_box = vc.find(lambda c: c.AutomationId == "SplitCombo", win)
+
+        check("这一段量的是比较画面（单标的的导出一直是好的，量它等于没量）",
+              split_box is not None and split_box.IsEnabled,
+              "SplitCombo 不在或不可用 —— 此刻画的不是比较画面")
+
+        export = vc.find(lambda c: c.AutomationId == "ExportButton", win)
+
+        if export is None or not export.IsEnabled:
+            check("比较画面的导出按钮是亮的（它是 `ready`，两条来源都算）", False,
+                  "没找到按钮" if export is None else "IsEnabled=False")
+        else:
+            offset = log_size()
+            said = vc.status_text(win)
+
+            vc.click(export, 1.0)
+
+            entered = wait_log(offset, "encode: enter", seconds=45)
+
+            check("按下导出后编码真的开始了（比较画面的导出不再是静默返回）",
+                  entered,
+                  "" if entered else
+                  "45 秒内日志里没有 encode: enter；状态行："
+                  f"{(vc.status_text(win) or '（空）')[:80]}")
+
+            if entered:
+                during = vc.status_text(win) or ""
+
+                check("导出期间状态行在报进度", during != (said or "") or "%" in during,
+                      during[:90])
+
+                cancel = vc.find(lambda c: c.AutomationId == "CancelButton", win)
+
+                if cancel is not None and cancel.IsEnabled:
+                    vc.click(cancel, 1.0)
+                else:
+                    check("导出的取消按钮是亮的（导出期间它能停）",
+                          cancel is not None and cancel.IsEnabled,
+                          "没找到按钮" if cancel is None else "IsEnabled=False")
+
+                time.sleep(4.0)
+
+                after = vc.status_text(win) or ""
+
+                check("取消之后状态行换了话（不是停在那儿不动）", after != during, after[:90])
+
         # 排布也是落盘的偏好：走的时候摆回「同一张图」，别把下一个判据（和下一次真实使用）
         # 留在没人选过的那一半上。
         winui.combo_pick(win, split_combo, labels[0])
@@ -1292,6 +1511,24 @@ def main():
     # 也全关。
     clean, why = clear_chips(win)
     check("走的时候清单也是干净的", clean, why)
+
+    # 而这一段点进去的预设，落在的是**共享清单**上（一键预设点一下就是「放到清单上并画出来」），
+    # 用完了要摘掉：共享清单是读者自己的数据，判据不该给它留下东西。摘的只有**这一跑带进来的
+    # 那几只**（`before` 是这一段开始时的清单），读者原本就在清单上的预设一只都不碰。
+    ours = [row for row in clicked if row.AutomationId not in before]
+
+    if ours:
+        for row in ours:
+            drop_chip(win, row.AutomationId, row.Name)
+
+        time.sleep(1.0)
+
+        still = {c[0] for c in chips(win)}
+
+        check("这一跑带进清单的预设又摘掉了（共享清单是读者自己的）",
+              not any(row.AutomationId in still for row in ours),
+              f"带进 {[r.Name for r in ours]}，还留着 "
+              f"{[r.Name for r in ours if r.AutomationId in still]}")
 
     passed = sum(1 for _, ok, _ in CHECKS if ok)
     print(f"\n通过 {passed} 项，失败 {len(CHECKS) - passed} 项")

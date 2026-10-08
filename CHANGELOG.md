@@ -23,7 +23,7 @@ Entries run newest first. / 新版本在上。
 ## 1.0.12.0 — 2026-10-09（更新版 / update）
 
 **本版做了两件各自独立的事：让 K 线页一次比较多只标的，以及把五页底部的数字卡片从手机那条按钮
-栏底下挪开。**
+栏底下挪开。另外修掉一个只有比较画面才会碰上的缺陷——那上面的「导出 MP4」按下去没有反应。**
 
 **一、K 线页可以一次放上多只标的。** 此前在清单上多选几只，画面什么也不做——那个选取器根本没接
 上。现在选两只以上就不再画蜡烛：不同标的的价格没有共同的纵轴，所以每只都从自己的起点算累计涨
@@ -60,7 +60,8 @@ Entries run newest first. / 新版本在上。
 移动。
 
 **This version does two unrelated things: the candle page can hold several instruments at once, and
-the row of figures at the foot of five pages no longer sits under the phone's button rail.**
+the row of figures at the foot of five pages no longer sits under the phone's button rail. It also
+fixes a fault only a comparison could meet — Export MP4 doing nothing at all when pressed.**
 
 **One — the candle page takes more than one instrument.** Picking several used to do nothing at all:
 the picker was not wired up. Two or more no longer draw candles, because prices from different
@@ -124,6 +125,13 @@ eleven pixels and no line moves.
 
 ### 修正 / Fixed
 
+- **比较画面的「导出 MP4」不再毫无反应 / Export MP4 on a comparison answers again** —— 用户报「导出
+  MP4 没响应」。按钮是亮的（它的可用性问的是「序列**或**板子有没有」），画面好好地画着，按下去却
+  既不弹框、也不写状态行、也不报错、也不写文件，日志里干干净净：两个导出处理器的守卫只问了**序列**
+  （`_fetched`），而比较画面**故意把序列清空**、留着板子，于是每一次按下都从第一行静默返回。这一页
+  是唯一一个「两个数据源画两张画」的页面，另外十六页各只有一处来源、各问一处——照抄它们的写法正是
+  这个缺陷的来源。现在守卫与文件名都问同一处 `FrameSpan`（板子优先，其次序列），与按钮的可用性读
+  的是同一件事，所以两者再也不可能各说一套。封面导出同病、同样修掉。
 - **五页底部的数字卡片不再压在平台那条按钮栏下 / the cards at the foot of five pages clear the
   platform's rail** —— K线、成交额、日内、定投、持仓五页的四张统计卡此前按 `ChartWidth` 铺到画面
   右缘（1080 帧下 930），安全线在 885.6，右缘落在栏内 44 px；现在五处都改调
@@ -142,10 +150,14 @@ eleven pixels and no line moves.
 DisplayName` 仍是字面值 `MarketMotionStudio`；包内 14 份手册、70 张配图、`resources.pri` 与 Win2D
 的 `Microsoft.Graphics.Canvas.dll` 都在。
 
-判据：六份真机脚本全过 —— K线多标的 98 项、K线 22 项、分钟线 71 项、成交额日内 48 项、持仓
-151 项、定投 87 项；`verify-docs.py` 182 项 0 失败，`verify-resw-uids.py` 14 语言 870 键 0 问题，
-商店 CSV 43 项 0 失败。商店文案 14 语言那一栏由 `tools/port-store-listing-10120.py` 改写，最长
-的法语 1295 字，都在商店 1500 字上限以内。
+判据：K线 22 项、分钟线 71 项、成交额日内 48 项、持仓 151 项、定投 87 项全过。K线多标的这一份
+本轮新增四条**源码**断言 —— 守卫只有一处 / 那一处同时读两条来源 / 视频与封面两个文件名都从它取
+日期 / 按钮的可用性问的是同一件事 —— 四条已绿；另有一段**真机**断言（按下导出后日志里必须长出
+`encode: enter`，`VideoExporter.EncodeAsync` 的第一句，再按取消收尾）**待补跑**：它要独占应用约
+八分钟，而跑的时候读者的应用正在编码另一页的视频，不能掐掉。（这一条本来也是**日志先红出来的**：
+`crash.log` 里根本没有 `encode: enter`，所以问题在闸口之前，而不在编码器里。）`verify-docs.py`
+182 项 0 失败，`verify-resw-uids.py` 14 语言 870 键 0 问题，商店 CSV 43 项 0 失败。商店文案 14 语言
+那一栏由 `tools/port-store-listing-10120.py` 改写，最长的法语 1295 字，都在商店 1500 字上限以内。
 
 ---
 

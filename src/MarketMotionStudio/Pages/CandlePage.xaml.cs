@@ -537,6 +537,34 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                 : Strings.Format("CandleDefaultTitle", _instrumentName,
                     Strings.Get(CandleLoader.NameKey(ChosenPeriod())));
 
+    /// <summary>
+    /// The span the frame covers — the dates an export is named after — or null when the
+    /// frame is the placeholder and there is nothing to write.
+    ///
+    /// <para>
+    /// **One place, because this page is the only one that draws two pictures from two
+    /// fields.** Sixteen other pages have a single source and ask about that one; here the
+    /// comparison keeps a board and clears the series, on purpose, and the two agree on
+    /// nothing but these two dates. Each export handler asking about the series alone
+    /// therefore returned without a word on every comparison: the button was enabled (its
+    /// enablement is `_fetched is not null || _board is not null`), a finished frame was on
+    /// screen, and pressing it did nothing at all. That is how "导出 MP4 没反应" arrives —
+    /// no dialog, no status line, no file, and no fault in the log.
+    /// </para>
+    ///
+    /// <para>
+    /// Both are read here rather than in each handler so that the guard and the button can
+    /// never disagree: every path that clears one of these fields calls
+    /// <see cref="ApplyPreviewSettings"/> on the way out, which is where both are decided.
+    /// </para>
+    /// </summary>
+    private (DateOnly Start, DateOnly End)? FrameSpan =>
+        _board is { } board
+            ? (board.Start, board.End)
+            : _fetched is { } fetched
+                ? (fetched.Start, fetched.End)
+                : null;
+
     // ---- search ----------------------------------------------------------------------
 
     private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -1124,7 +1152,10 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
     private async void OnExport(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _fetched is not { } fetched || App.Window is not { } window)
+        // Asked of `FrameSpan`, not of the series: the comparison is a board and clears the
+        // series on purpose, so a guard reading `_fetched` turned every press on a comparison
+        // into a silent return. See the note on `FrameSpan`.
+        if (Preview.Renderer is not { } renderer || FrameSpan is not { } span || App.Window is not { } window)
         {
             return;
         }
@@ -1165,7 +1196,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
             var file = await VideoExporter.EncodeAsync(
                 renderer, format, margins, duration, folder,
-                VideoExporter.VideoName(label, fetched.Start, fetched.End, format),
+                VideoExporter.VideoName(label, span.Start, span.End, format),
                 report, cancellation);
 
             clock.Stop();
@@ -1186,7 +1217,9 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
     private async void OnSaveCover(object sender, RoutedEventArgs e)
     {
-        if (Preview.Renderer is not { } renderer || _fetched is not { } fetched || App.Window is not { } window)
+        // The same guard as the video's, for the same reason — a cover of a comparison was
+        // equally silent, and the cover is the one export with no subscription in front of it.
+        if (Preview.Renderer is not { } renderer || FrameSpan is not { } span || App.Window is not { } window)
         {
             return;
         }
@@ -1205,7 +1238,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
             var file = await FrameExporter.SavePngAsync(
                 renderer, format, VideoSettings.Margins, Preview.Progress, folder,
-                FrameExporter.CoverName(ResolvedTitle(), fetched.Start, fetched.End, format),
+                FrameExporter.CoverName(ResolvedTitle(), span.Start, span.End, format),
                 cancellation);
 
             ShowStatus(InfoBarSeverity.Success, Strings.Format(
