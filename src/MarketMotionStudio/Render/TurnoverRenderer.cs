@@ -152,7 +152,7 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
         var cards = metric.Cards(series);
         var left = context.ChartLeft;
         var gap = context.Px(14);
-        var cardWidth = (context.ChartWidth - (gap * 3)) / 4;
+        var cardWidth = (context.CardRowRight() - left - (gap * 3)) / 4;
         var cardHeight = context.Px(132);
         var y = context.CreditLine - context.Px(CardsAboveCredit);
 

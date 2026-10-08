@@ -20,6 +20,135 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.12.0 — 2026-10-09（更新版 / update）
+
+**本版做了两件各自独立的事：让 K 线页一次比较多只标的，以及把五页底部的数字卡片从手机那条按钮
+栏底下挪开。**
+
+**一、K 线页可以一次放上多只标的。** 此前在清单上多选几只，画面什么也不做——那个选取器根本没接
+上。现在选两只以上就不再画蜡烛：不同标的的价格没有共同的纵轴，所以每只都从自己的起点算累计涨
+跌幅，名字与整段的涨跌标在线的末端。轴取的是各标的交易日的**并集**而不是交集，否则一只十年的
+与一只三年的并排，前者会被悄悄截成三年；某一天缺数据就向前携带上一个值，因为停牌不是跌到零。
+分钟档把所有标的放在同一个交易日上，取它们都有数据的、最近一个完整的交易日。最多六只，那是这
+一页调色板上分得开的颜色数。
+
+**二、多只时可以选择怎么排布。** 新加的排布下拉给两种：都画在一张图上，或者每只一张图、上下排
+列。分图时每只有自己的纵轴——一只三年里只在两个点以内晃动的标的，画在跑了三十个点的邻居旁边
+就是一条直线。**x 轴不复制**：整帧一个时间窗口、一个标签列，所以同一个日期在整幅画面上是同一
+个 x，日期行只画一次，画在最下面那格底下。上限三只是**格子的高度**决定的，不是调色板：三格时
+每格约占帧高的九分之一，第四格连轴都放不下。第四只起**从轴上也掉下去**，不只是不画——轴是各标
+的交易日的并集，画面不管的标的不能拉伸别人被读的日期；被略过的那些会在状态行里点名，而不是悄
+悄不画。
+
+**三、两种排布最后都收在同一排卡片上。** 曲线动着的时候名字骑在末端，那是观众正在看的地方；但
+一个还在动的数字是抄不下来的。收尾那一段把它们全放进画面下方的一排卡片里，按画的顺序、用各自
+的颜色：谁领先、领先多少，可以和刚才标签上那个数对一下。每张卡写名称、涨幅百分比与涨跌额。这
+一排就是持仓页一直在用的那一排，现在由一处 `TrackCards` 画，四个渲染器只填空。
+
+**四、涨跌从前一个交易日的收盘价算起。** 用户报「上证指数今天跌了 0.79，图上对不上」：比较画面
+把每只从**第一根 K 线的开盘价**量起，而一天的涨跌是相对昨收的。2026-10-08 的 5 分钟线上，上证
+指数从开盘量是 −0.7054%，从昨收量是 −0.7884%；科创 50 是 −3.7328% 与 −4.8163%。基准现在只在一
+处（`CandleSeries.Baseline`），比较与区间卡片都读它，所以分钟档下的区间卡片也是当日涨跌幅。同
+一个屏幕上还报「交易日为空」：那一行被清空后从没填上——比较只能画在每只都交易过的那一天，所以
+候选是它们共同的交易日，是交集不是并集。
+
+**五、五页底部的数字卡片不再画到画面最右边。** 帧宽 1080、右边距 150 时那一排的右缘落在 930，
+而平台那条竖栏是帧宽的 18%，即 885.6 —— **右缘落在栏内 44 px**，最后一格卡片自己的数字正压在头
+像与评论按钮底下。它一直没被发现，是因为卡片的边框是中性灰而不是赛道色：那一排看着像家具，不
+像内容。算术收进 `FrameContext.CardRowRight` 一处，五处拷贝都改为调它。与 1.0.11.0 那三页的末端
+标注不同，这里不需要开关：卡片只是把剩下的宽度平分，四张卡每张窄掉约 11 px，没有一条线因此
+移动。
+
+**This version does two unrelated things: the candle page can hold several instruments at once, and
+the row of figures at the foot of five pages no longer sits under the phone's button rail.**
+
+**One — the candle page takes more than one instrument.** Picking several used to do nothing at all:
+the picker was not wired up. Two or more no longer draw candles, because prices from different
+instruments share no axis; the board is normalised to cumulative change from each instrument's own
+starting bar, with its name and its move over the whole span labelled at the line's end. The axis is
+the **union** of the trading days, not the intersection — a ten-year instrument next to a three-year
+one would otherwise be quietly cut to three — and a missing day carries the last value forward,
+because a suspension is not a fall to zero. Minute periods put every instrument on one trading day,
+the most recent whole one they all have. Six at most, which is how many distinct hues the board has.
+
+**Two — how they are laid out.** A new layout switch offers two: every instrument on one chart, or one
+panel each, stacked. Stacked, each instrument gets its own axis, which is what makes the quiet ones
+readable: one that spent three years inside a two-point band, drawn against a neighbour that ran
+thirty, is a straight line. **The x axis is not duplicated** — one time window and one label column
+for the whole frame, so a date is at one x across the picture, and the date row is drawn once, under
+the bottom panel. The limit of three is the panels' **height**, not the palette: three panels leave
+each about a ninth of the frame, and a fourth has no room for an axis. The fourth pick is dropped
+**from the axis as well as from the picture** — the axis is the union of the days, so an instrument
+the frame does not draw cannot stretch the dates a reader reads off everyone else — and it is named in
+the status line rather than silently left out.
+
+**Three — both layouts end on the same row of cards.** While the curves move, the names ride their
+leading ends, which is where a reader is looking; but a figure that is still moving is a figure that
+has to be chased. The closing stretch puts them all in one row under the plot, in the order they are
+drawn and in their own colours: who is ahead, by how much, checked against the number the label was
+showing a moment ago. Each card carries the name, the percentage and the amount. It is the row the
+holdings board has always ended on, now drawn by one `TrackCards` that the four renderers fill in.
+
+**Four — change is measured from the previous close.** Two reports, one screen: the day's move did not
+match the number on the chart, and the trading-day box was empty. The comparison measured every
+instrument from the first bar's *open*; a day is measured from the *previous close*. On 2026-10-08's
+five-minute candles, sh000001 was −0.7054% from its open against −0.7884% from yesterday's close, and
+科创50 −3.7328% against −4.8163%. The baseline now lives in one place, `CandleSeries.Baseline`, and
+both the comparison and the range card read it, so on a minute period the range card is the day's move
+too. The empty box was the page clearing it and never filling it: a comparison can only be drawn on a
+day every instrument traded, so the candidates are the days they have in common — an intersection, not
+a union.
+
+**Five — the row of cards at the foot of five pages no longer reaches the frame's edge.** With a
+1080-wide frame and a right margin of 150, the row ended at 930; the platform's rail is 18% of the
+frame, which is 885.6 — so **the row sat 44 px inside the band**, and the last card's own figures
+landed under the avatar and the comment button. It went unnoticed because a card's border is a neutral
+grey rather than a track colour: the row reads as furniture, not as content. The arithmetic now lives
+in one place, `FrameContext.CardRowRight`, and all five copies call it. Unlike the end labels of three
+pages in 1.0.11.0, this needs no switch: the cards share what is left, so four cards each lose about
+eleven pixels and no line moves.
+
+### 新增 / Added
+
+- **K 线页可以一次比较多只标的 / the candle page compares several instruments** —— 清单那一排变成可
+  开关的，两只以上改画累计涨跌幅；轴取交易日并集，缺日向前携带，分钟档取共同的完整交易日，最多
+  六只。
+- **排布可选「每只一张图」 / a stacked layout, one panel per instrument** —— 上下排列，各有各的纵
+  轴，最多三只；x 轴与日期行整帧一份，只画一次；第四只起从轴上也掉，并在状态行里点名。
+- **两种排布最后都收在同一排卡片上 / both layouts end on one row of cards** —— 名称、涨幅百分比、
+  涨跌额三行，按画的顺序、用各自的颜色；与持仓页那一排是同一处 `TrackCards`。
+- **K 线页也有那个越线开关 / the candle page has the band switch too** —— 打开时曲线末端的标注与蜡
+  烛的绘图区都收在安全线以内；关掉时用它自己的右边缘，已经把右边距调到比栏还宽的人拿到的仍是原
+  先那张图。页面上同时去掉了第二个检索框：选取器自带一个，与页面原来那个一模一样，屏幕上两个相
+  同的框没人知道哪个在听。
+
+### 修正 / Fixed
+
+- **五页底部的数字卡片不再压在平台那条按钮栏下 / the cards at the foot of five pages clear the
+  platform's rail** —— K线、成交额、日内、定投、持仓五页的四张统计卡此前按 `ChartWidth` 铺到画面
+  右缘（1080 帧下 930），安全线在 885.6，右缘落在栏内 44 px；现在五处都改调
+  `FrameContext.CardRowRight()`，算术只在一处。
+- **分钟档的表头读当日涨跌幅 / the minute headline reads the day's move** —— 表头取的是屏幕前一根，
+  5 分钟档下就是五分钟前。2026-10-08 的上证指数画面上写 +0.07%，当日实际 −0.79%。分钟行不带涨跌
+  字段，前收要从会话里取：`MinuteSession.CloseBefore(day)` 按窗口里的位置找，不按日历回退一天，
+  所以周五不会去要周四的收盘。
+- **比较画面的零点取前一个交易日的收盘价 / a comparison is measured from the previous close** ——
+  见上第四段；区间卡片与它读同一个基准。
+- **交易日的下拉不再是空的 / the trading-day box is no longer empty** —— 候选是各标的共同的交易日，
+  取回来就填上；换一天不重新取数。
+
+包已构建：`artifacts/MarketMotionStudio_1.0.12.0_x64_arm64_bundle.msixupload`（149.8 MB / 142.9 MiB，
+六个内包）。拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.12.0`，`Package/Properties/
+DisplayName` 仍是字面值 `MarketMotionStudio`；包内 14 份手册、70 张配图、`resources.pri` 与 Win2D
+的 `Microsoft.Graphics.Canvas.dll` 都在。
+
+判据：六份真机脚本全过 —— K线多标的 98 项、K线 22 项、分钟线 71 项、成交额日内 48 项、持仓
+151 项、定投 87 项；`verify-docs.py` 182 项 0 失败，`verify-resw-uids.py` 14 语言 870 键 0 问题，
+商店 CSV 43 项 0 失败。商店文案 14 语言那一栏由 `tools/port-store-listing-10120.py` 改写，最长
+的法语 1295 字，都在商店 1500 字上限以内。
+
+---
+
 ## 1.0.11.0 — 2026-10-08（更新版 / update）
 
 **本版修的是一件「做得对、但只对了一半」的事：三个页面的数字被平台的按钮盖住了。**

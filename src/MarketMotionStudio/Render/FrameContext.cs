@@ -117,6 +117,27 @@ public sealed record FrameContext(
         widestLabel + gap + (Width * SafeArea.Right * giveWay) - Margins.Right;
 
     /// <summary>
+    /// The right edge a row of cards may reach: the chart's own right edge, or the host's
+    /// button rail — whichever comes first.
+    ///
+    /// <para>
+    /// Five pages draw a row of four cards above the credit and all five measured it to
+    /// <see cref="ChartWidth"/>, which ends at the frame's own margin. The rail is wider than
+    /// that margin — 18% of a 1080-wide frame against a margin of 150 — so the row reached
+    /// **44 px into the band**, and the last card's own figures sat under the avatar and the
+    /// comment button. It went unnoticed because the borders are a neutral grey rather than a
+    /// track colour: the row looked like furniture, not like content.
+    ///
+    /// A card is content. It states the figures the frame exists to state, and it does not
+    /// spend the room the frame asked to keep clear. Unlike <see cref="RightLabelColumn"/>
+    /// this costs the plot nothing — the cards share what is left, so four cards each lose
+    /// about eleven pixels and no line moves. That is why there is no switch for it.
+    /// </para>
+    /// </summary>
+    /// <param name="giveWay">How much of the rail to keep clear: 1 all of it, 0 none.</param>
+    public double CardRowRight(double giveWay = 1) => Math.Min(ChartRight, SafeRight(giveWay));
+
+    /// <summary>
     /// Where the lowest thing in the frame sits: the data-source credit. This is
     /// what the bottom margin measures to, which is what makes all three margins
     /// mean the same thing.

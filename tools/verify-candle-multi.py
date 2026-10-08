@@ -592,6 +592,9 @@ def main():
     # ---- 源码：当日涨跌幅 ------------------------------------------------------------
     series = read("Market", "CandleSeries.cs")
     render = read("Render", "CandleRenderer.cs")
+    frame_ctx = read("Render", "FrameContext.cs")
+    intraday = read("Render", "IntradayRenderer.cs")
+    turnover = read("Render", "TurnoverRenderer.cs")
 
     check("序列带得动「昨收」", "double PreviousClose = 0" in series)
     check("昨收取**前一场**的收盘，不是上一根的",
@@ -718,8 +721,15 @@ def main():
     # 那排卡片也得让开右侧那条按钮栏。这一条是**真机先红出来的**：加了卡片之后「最右墨迹
     # 在安全线以内」那条从绿变红 —— 卡片按整幅绘图区宽铺，右缘落在按钮栏里 44 px（帧宽
     # 18% 是 194，右页边距只有 150）。而它是**内容**：一个数字被头像压住，比曲线越线更糟。
-    check("卡片行也让开那条按钮栏（不是按整幅绘图区宽铺）",
-          "Math.Min(context.ChartRight, context.SafeRight(giveWay))" in cards)
+    # 算术在 `FrameContext` 一处（`CardRowRight`），六处都调它：K 线两种排布共用那排收尾卡，
+    # 加上五页的四张统计卡。判据里问的是「有没有第二份算术」，不是「某一页有没有让」——
+    # 一份一份地问，第五页就会有一份自己的。
+    check("卡片行也让开那条按钮栏（算术只在一处，六处都调它）",
+          "context.CardRowRight(giveWay)" in cards
+          and "public double CardRowRight(double giveWay = 1) => "
+              "Math.Min(ChartRight, SafeRight(giveWay));" in frame_ctx
+          and all("context.CardRowRight() - left" in src
+                  for src in (render, dca, position, intraday, turnover)))
     check("这一页两种画面收在同一处家具上（与单标的那张图同一个总数）",
           "public const double CreditGap = TrackCards.CreditGap;" in racer
           and "public const double CreditGap = TrackCards.CreditGap;" in split
@@ -782,6 +792,19 @@ def main():
     # 量位置之前先叫醒窗口：不激活时矩形全是 0，按位置认的那几条（`presets`、`chips`）会
     # 认错人，而认错人之后每句话都还通顺 —— 这是这一跑里最难看出来的一种错。
     check("窗口叫到了前台（矩形量得出来）", wake(win))
+
+    # 推进方式是**落盘的偏好**，而末帧的形状由它决定：窗口滚动的最后一段会展开成完整区间，
+    # 让位量跟着同一个斜坡走到 0，末端标注因此跑到画面右缘 —— **与打开越线开关同一个位置**
+    # （x=1129 对安全线 1065）。这一条问的是「关着时收在安全线以内」，所以先拨回逐根铺满：
+    # 前面跑的那几份判据会把偏好留在滚动上，而落盘的偏好是跨会话的，默认值只在「从没跑过
+    # 别的判据」时才成立。
+    #
+    # 放在 `panel_top` **之前**：挑下拉要与面板交互，交互会把面板滚下去，而按位置认控件的
+    # 那两处（`chips`、`presets`）都以检索框下缘当零点 —— 实测放在取数之后那一处，预设会读
+    # 到 0 个，而两幅「应当一模一样」的画差出 4.5%。先摆偏好，再定面板的起点。
+    check("推进方式拨回逐根铺满（末帧的形状由它决定）",
+          winui.combo_pick(win, vc.find(lambda c: c.AutomationId == "MotionCombo", win),
+                           "逐根铺满") is not None)
 
     # 面板的起点也定死：清单与一键预设都是**虚拟化**的一排，滚到哪儿决定了哪几项被实例化，
     # 而按位置认控件的那两处又都以检索框下缘当零点。从同一个地方起，这一跑的每一步才和

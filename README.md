@@ -477,6 +477,26 @@ the source again, since every one of them arrived in the same requests that buil
 most — that is how many hues the palette has, and seven tracks drawn in six colours is a picture
 whose own legend cannot be read.
 
+**Together or stacked.** A comparison's second choice is how many instruments the frame is about.
+*Together* puts every track on one percentage axis — the right answer for two indices, where the gap
+between the two lines *is* the answer. *Apart* gives each instrument its own panel, stacked, and its
+own vertical axis, which is what makes a quiet instrument readable: one that spent three years inside
+a two-point band, drawn against a neighbour that ran thirty, is a straight line. Stacked takes three
+at most, and the limit is the panel's **height** rather than the palette — three panels leave each
+about a ninth of the frame, and a fourth has no room for an axis at all. The fourth pick is dropped
+**from the axis as well as from the picture**: the axis is the union of the days, so an instrument
+the frame does not draw cannot stretch the dates a reader reads off everyone else, and it is named in
+the status line rather than silently left out. The x axis is not duplicated either — one window and
+one label column for the whole frame, so a date is at one x across the picture, and the date row is
+drawn once, under the bottom panel.
+
+Both layouts end on the **same row of cards**: the name, the percentage, and the amount it moved, in
+the order the tracks are drawn and in their own colours. While the curves move, the names ride their
+leading ends, which is where a reader is looking — but a figure that is still moving is a figure that
+has to be chased, so the closing stretch states the numbers a viewer came for, and states them from
+the values the run ended on rather than the values of the frame being drawn. It is the row the
+holdings board has always ended on, now drawn by one `TrackCards` that the four renderers fill in.
+
 The band down the right-hand side — the one that belongs to the platform's button rail, and that
 the leader boards let go of — is a choice on this page too, and it answers **both** of its pictures.
 Off, which is the default, a comparison's labels stop short of the rail and the candles' plot ends
@@ -484,6 +504,15 @@ where it begins: at 1080 wide the rail takes 194 pixels and the default right ma
 without this the last few candles were being drawn underneath the avatar and the comment button.
 On, both run to the margin the reader set — and a scrolling comparison opens out into the band as
 its window opens out, so the frame the video stops on is the whole span, edge to edge.
+
+That band is also why the **row of cards at the foot of the frame** keeps clear of it, and there is no
+switch for that one: a row of cards is content, and giving the room up costs the plot nothing — four
+cards share what is left, so each loses about eleven pixels and no line moves. Five pages draw such a
+row (candles, market turnover, intraday, the savings plan, holdings) and all five used to measure it
+to the chart's own width, which ends at the margin: at 1080 wide that put the row 44 px inside the
+rail, with the last card's own figures under the avatar. It went unnoticed for as long as it did
+because a card's border is a neutral grey rather than a track colour, so the row reads as furniture
+rather than as content. The arithmetic is `FrameContext.CardRowRight`, in one place.
 
 A US code typed in the wrong case fetches **nothing**, because the search endpoint answers
 `usaapl.oq` while the chart endpoint will only read `usAAPL.OQ` and returns no bars rather than an

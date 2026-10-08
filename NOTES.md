@@ -431,6 +431,14 @@ all fourteen help documents parse to the same number of blocks (the count
 is not the contract, all fourteen agreeing is); every generated PNG is 32-bit with a
 transparent corner and an opaque centre, and the `.ico` loads.
 
+**1.0.12.0 (2026-10-09).** The upload bundle built and reported `PackageSuccessfullyCreated`:
+`artifacts/MarketMotionStudio_1.0.12.0_x64_arm64_bundle.msixupload`, 149.8 MB, six inner packages.
+Opened rather than trusted: both the x64 and the arm64 inner package report Identity `1.0.12.0` —
+**the version in a file name is not evidence** — and both hold fourteen help documents, seventy help
+images, `resources.pri` and Win2D. `Package/Properties/DisplayName` is still the literal reserved
+name. This one carries everything that landed after 1.0.11.0 was uploaded: the comparison board, its
+baseline, the stacked layout and the card row.
+
 **1.0.11.0 (2026-10-08).** The upload bundle built and reported `PackageSuccessfullyCreated`.
 Opened rather than trusted: both the x64 and the arm64 inner package report Identity `1.0.11.0` —
 **the version in a file name is not evidence** (1.0.3.0's bundle once carried 1.0.2.0 inside

@@ -964,7 +964,7 @@ public sealed class PositionRenderer : IFrameRenderer
                 (-track.MaxDrawdownPct).ToString("0.0", CultureInfo.InvariantCulture) + "%", Loss),
         };
 
-        var cardWidth = (context.ChartWidth - (gap * 3)) / 4;
+        var cardWidth = (context.CardRowRight() - left - (gap * 3)) / 4;
 
         for (var i = 0; i < cards.Length; i++)
         {

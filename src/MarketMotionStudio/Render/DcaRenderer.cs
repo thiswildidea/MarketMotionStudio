@@ -992,7 +992,7 @@ public sealed class DcaRenderer : IFrameRenderer
             (Strings.Get("DcaCardBuys"), track.Buys.ToString("#,##0", CultureInfo.InvariantCulture), Palette.CardValue),
         };
 
-        var cardWidth = (context.ChartWidth - (gap * 3)) / 4;
+        var cardWidth = (context.CardRowRight() - left - (gap * 3)) / 4;
 
         for (var i = 0; i < cards.Length; i++)
         {

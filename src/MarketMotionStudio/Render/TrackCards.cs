@@ -91,7 +91,7 @@ public static class TrackCards
         }
 
         var left = context.ChartLeft;
-        var right = Math.Min(context.ChartRight, context.SafeRight(giveWay));
+        var right = context.CardRowRight(giveWay);
         var gap = context.Px(14);
         var cardWidth = (right - left - (gap * (cards.Count - 1))) / cards.Count;
         var cardHeight = context.Px(Height);
