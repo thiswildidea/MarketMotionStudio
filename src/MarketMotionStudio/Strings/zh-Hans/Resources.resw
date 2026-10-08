@@ -499,6 +499,11 @@
   <data name="CandleMotionLabel.Header"><value>推进方式</value></data>
   <data name="CandleMotionGrow"><value>逐根铺满</value></data>
   <data name="CandleMotionScroll"><value>窗口滚动</value></data>
+  <data name="CandleSplitLabel.Header"><value>分图显示</value></data>
+  <data name="CandleSplitTogether"><value>同一张图</value></data>
+  <data name="CandleSplitApart"><value>每只一张图</value></data>
+  <data name="CandleSplitNote.Text"><value>分图时每个标的一张图，上下排列，最多 3 只；清单里多于 3 只时按顺序只画前 3 只，其余在状态行里点名。</value></data>
+  <data name="CandleSplitTrimmed"><value>分图最多 {0} 只，未画：{1}</value></data>
   <data name="CandleWindowLabel.Header"><value>窗口根数</value></data>
   <data name="CandleShowAverages.Content"><value>均线 MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>成交量</value></data>

@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Animation</value></data>
   <data name="CandleMotionGrow"><value>Tracer tout l'intervalle</value></data>
   <data name="CandleMotionScroll"><value>Fenêtre glissante</value></data>
+  <data name="CandleSplitLabel.Header"><value>Disposition</value></data>
+  <data name="CandleSplitTogether"><value>Un seul graphique</value></data>
+  <data name="CandleSplitApart"><value>Un graphique par instrument</value></data>
+  <data name="CandleSplitNote.Text"><value>Un panneau par instrument, empilés, trois au maximum. Au-delà de trois sélections, les trois premières de la liste sont tracées et les autres sont nommées dans la barre d'état.</value></data>
+  <data name="CandleSplitTrimmed"><value>La vue éclatée accepte {0} panneaux ; non tracés : {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Fenêtre (chandeliers)</value></data>
   <data name="CandleShowAverages.Content"><value>Moyennes mobiles MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Volume</value></data>

@@ -3,9 +3,14 @@
 比较画面的零点与交易日（用户报「上证指数今天跌了 0.79，图上对不上」「为什么交易日为空」），
 以及这一页也有了「允许图形越过右侧安全线」—— 顺便验页面上只剩一处检索框。
 
+再往下一版：多标的的两种排布。**合图**是几条百分比曲线共用一根轴，**分图**是一只一格、
+各有各的纵轴、上下排列，最多三只；两种排布的最下方都收在一排卡片上，每只一张，大数字是
+涨幅%、小字是涨跌额。分图超过三只时只画前三只，其余的在状态行里点名。
+
 为什么要真机：都不是「源端返回什么」的问题。当日涨跌幅是把**前一个交易日**的收盘价带进
 序列；多标的是把 N 条序列摆到同一根轴上；零点取昨收而不是当日开盘改的是画出来的数；
-交易日改的是画面上的选择与重画路径 —— 四件都发生在页面里，离线脚本一样也证明不了。
+交易日改的是画面上的选择与重画路径；排布是下拉接上了没有、切过去有没有重画 —— 都发生在
+页面里，离线脚本一样也证明不了。
 
 画面上的判据是**像素**的，因为预览画布没有自动化节点：曲线几条按赛道色的色相数，末端标注
 有没有进平台那条按钮栏按最右侧墨迹与「帧宽 82%」那条线比，换一天有没有重画按两幅画的差异
@@ -58,6 +63,12 @@ BAD = vc.BAD
 SAFE = 0.82
 PERIOD_DAILY = "日K"
 PERIOD_5 = "5 分钟"
+
+# 收尾那排卡片所在的横带，画面高度的比例。绘图区在它上面结束（曲线与末端标签都夹在
+# 绘图区里），进度条在它下面（恒被 `band_hues` 排除）。页边距那四个偏好怎么调，卡片都
+# 落在这条带里 —— 所以这里可以按比例写，而不必去问「卡片到底在第几行」。
+CARD_LO = 0.70
+CARD_HI = 0.97
 
 
 def read(*parts):
@@ -116,9 +127,17 @@ def into_view(win, automation_id="InstrumentSearch"):
     """把右侧面板滚到看得见那个控件为止，返回它。
 
     面板是个 `ScrollViewer`，而按**位置**认控件的那两处（清单那一排、一键预设那一排）都拿
-    检索框的下缘当零点。跑到后半程面板会被别处的聚焦滚下去（最后一张截图上它从「起始日期」
-    开头），那时零点不在视口里，两处一起认错人。`ScrollItemPattern.ScrollIntoView` 正是
-    UIA 给的「把这一项滚进来」，也是真人会做的动作。
+    检索框的下缘当零点。跑到后半程面板会被别处的聚焦滚下去，那时零点不在视口里，两处一起
+    认错人。`ScrollItemPattern.ScrollIntoView` 正是 UIA 给的「把这一项滚进来」，也是真人会
+    做的动作。
+
+    **这一段是补过的，而且原来那句从来没有生效过。** 原来写的是
+    `ctrl.GetScrollItemPattern()`，而这一页的检索框在 uiautomation 里是个 `GroupControl`，
+    它**没有**这个便捷方法 —— 实测恒抛 `AttributeError: 'GroupControl' object has no
+    attribute 'GetScrollItemPattern'`，被那句 `except` 吞掉。于是「滚回视口」这件事一次都
+    没发生过，而它看起来是发生了：函数照常返回控件，调用方接着按位置量。改用
+    `GetPattern(PatternId.ScrollItemPattern)`（这个在每一类 Control 上都有），拿不到或者
+    调用失败就退到容器自己那条路（见 `panel_top`）。
     """
     ctrl = vc.find(lambda c: c.AutomationId == automation_id, win)
 
@@ -126,14 +145,67 @@ def into_view(win, automation_id="InstrumentSearch"):
         return None
 
     try:
-        if ctrl.IsOffscreen:
-            ctrl.GetScrollItemPattern().ScrollIntoView()
-            time.sleep(1.0)
-            ctrl = vc.find(lambda c: c.AutomationId == automation_id, win)
-    except Exception:  # noqa: BLE001 - 控件在这一趟里消失了，下面会当成 None
+        if not ctrl.IsOffscreen:
+            return ctrl
+    except Exception:  # noqa: BLE001 - 读不到就当作要滚
         pass
 
-    return ctrl
+    pattern = vc.pat(ctrl, auto.PatternId.ScrollItemPattern)
+    scrolled = False
+
+    if pattern is not None:
+        try:
+            pattern.ScrollIntoView()
+            scrolled = True
+        except Exception:  # noqa: BLE001 - 有的容器给了模式但调用会失败
+            scrolled = False
+
+    if not scrolled:
+        panel_top(win)
+
+    time.sleep(1.0)
+
+    return vc.find(lambda c: c.AutomationId == automation_id, win)
+
+
+def panel_top(win):
+    """把右侧面板滚回顶部，返回那个容器是否真的动了。
+
+    `into_view` 那条路不够用（见它上面那段），所以这里走**容器自己**的滚动条位置。
+
+    容器的认法只能靠 `ClassName`：面板那个 `ScrollViewer` 在 UIA 里是 `PaneControl`，
+    **不是** `ScrollViewerControl`（实测按名字找不到任何 `ScrollViewerControl`，而
+    `ClassName == "ScrollViewer"` 有八个）。再要求它把检索框装在里面，才不会被清单那个
+    自己的滚动条认成面板。
+
+    为什么非滚回来不可：与检索框交互（展开下拉、选一行）本身就会把面板滚下去 —— 实测
+    滚到 28.09%，检索框的矩形变成 `(0,0,0,0)`、`IsOffscreen` True。而按**位置**认控件的
+    那两处（清单那一排、一键预设那一排）都以检索框的下缘当零点：零点不在视口里，两处一起
+    认错人。实测「一键预设」读到 **0 个**（页面上明明有四个），而状态条上还留着上一句成功
+    的话 —— 认错人之后每句话都还通顺。
+    """
+    def holds_the_search(box):
+        return vc.find(lambda c: c.AutomationId == "InstrumentSearch", box, limit=8) is not None
+
+    found = False
+
+    for box in vc.find_all(lambda c: c.ClassName == "ScrollViewer", win):
+        if not holds_the_search(box):
+            continue
+
+        pattern = vc.pat(box, auto.PatternId.ScrollPattern)
+
+        try:
+            if pattern is not None and pattern.VerticallyScrollable:
+                pattern.SetScrollPercent(auto.ScrollPattern.NoScrollValue, 0)
+                found = True
+        except Exception:  # noqa: BLE001 - 容器可能在这一趟里消失
+            continue
+
+    if found:
+        time.sleep(1.0)
+
+    return found
 
 
 def goto(win):
@@ -209,8 +281,16 @@ def chips(win):
     return out
 
 
-def clear_chips(win, tries=6):
-    """把清单里的开关全关掉，**数到 0 才算**，返回 `(是否关干净, 说明)`。
+def clear_chips(win, tries=8):
+    """把清单里的开关全关掉，**连着两次数到 0 才算**，返回 `(是否关干净, 说明)`。
+
+    「连着两次」是补上去的，原因和这一段的其它几处一样：清单是**异步读**进来的。实测
+    第一遍读到 8 只、全关掉、报「关干净了」，随后页面自己把存住的那一只又点亮了回来 ——
+    于是「点一下预设就是清单上多一只」读到 **2 只**（多出来的那只不是点出来的），而它的
+    下一句「一只时样式下拉是可用的」跟着红：那会儿画的已经是两只的比较了。两句话都通顺，
+    只有数不对，而数不对已经被下一句掩盖成「下拉坏了」。
+
+    所以干净的判据不是「这一眼看到 0」，是「隔一秒再看还是 0」。
 
     说明那一半是给失败看的：这一条红的时候有两个完全不同的原因 —— 开关真的关不掉，或者
     一个 chip 都没读出来（窗口不在前台、清单还没画）。两者的「没关干净」长得一样。
@@ -222,18 +302,28 @@ def clear_chips(win, tries=6):
     而这一跑要的是「一只 → 两只」那两步。
     """
     seen = 0
+    clean = 0
 
     for _ in range(tries):
         live = chips(win)
 
         if not live:
+            clean = 0
             time.sleep(1.5)
             continue
 
         on = [c[1] for c in live if c[2].ToggleState == auto.ToggleState.On]
 
         if not on:
-            return True, f"关干净了（清单上 {len(live)} 只）"
+            clean += 1
+
+            if clean >= 2:
+                return True, f"关干净了（清单上 {len(live)} 只，隔一秒还是 0）"
+
+            time.sleep(2.0)
+            continue
+
+        clean = 0
 
         for c in live:
             if c[2].ToggleState == auto.ToggleState.On:
@@ -414,6 +504,50 @@ def analyse(name):
     return strong, far, box, right
 
 
+def band_hues(name, lo=0.0, hi=1.0, step=2, least=60):
+    """画面里**某一条横带**上出现了几种赛道色。
+
+    与 `analyse` 同一次取样，交出的是色相桶而不是个数：问「这帧是几只的」要的是种类，
+    而两种颜色各画了三百个像素，在「个数」那一半上长得一模一样。
+
+    `lo` / `hi` 是画面高度的比例（0 是顶、1 是底），所以画布大小变了也不用改数 —— 两次
+    实拍的画布可能不一样大。最下面 3% 恒被排除在外：那一条是进度条，它铺满整幅宽，混进
+    来就是一条永远在那儿的墨迹（见 `analyse`）。
+
+    取**色相**而不是 RGB：画布是近黑的、描边与大字都按浓度淡入淡出，同一条赛道色在收尾
+    那一段里每个像素都不相等，而色相不变。
+    """
+    if name is None:
+        return None
+
+    whole = Image.open(name if os.path.isabs(name) else os.path.join(OUT, name)).convert("RGB")
+    box = winui.canvas_box(whole)
+
+    if box is None:
+        return None
+
+    left, right, top, _ = box
+    bottom = winui.frame_bottom(whole, box) or box[3]
+    height = bottom - top
+    pixels = whole.load()
+
+    y0 = max(top, int(top + (height * lo)))
+    y1 = min(int(top + (height * hi)), int(bottom - (height * 0.03)))
+    hues = {}
+
+    for y in range(y0, y1, step):
+        for x in range(left, right, step):
+            r, g, b = pixels[x, y]
+
+            if max(r, g, b) - min(r, g, b) < 70 or max(r, g, b) < 90:
+                continue
+
+            hue = int(colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)[0] * 12)
+            hues[hue] = hues.get(hue, 0) + 1
+
+    return frozenset(hue for hue, count in hues.items() if count >= least)
+
+
 def band_diff(a, b, floor=40):
     """两幅画面的**画布带**差了多少，0..1。
 
@@ -472,6 +606,11 @@ def main():
     # ---- 源码：多标的 ----------------------------------------------------------------
     board = read("Market", "CandleBoard.cs")
     racer = read("Render", "CandleRaceRenderer.cs")
+    split = read("Render", "CandleSplitRenderer.cs")
+    line = read("Render", "CandleLine.cs")
+    cards = read("Render", "TrackCards.cs")
+    position = read("Render", "PositionRenderer.cs")
+    dca = read("Render", "DcaRenderer.cs")
     page = read("Pages", "CandlePage.xaml.cs")
     xaml = read("Pages", "CandlePage.xaml")
 
@@ -515,16 +654,107 @@ def main():
           "" if "!CandleLoader.IsMinute(ChosenPeriod())" in page
           else "自定义区间那两个 DatePicker 在 5 分钟档下还立着")
     check("每条曲线一种赛道色", "Palette.Track(k)" in racer)
-    check("末端标注走的是三页共用那一处安全线算术",
-          "context.SafeRight(_giveWay)" in racer
-          and "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay)"
-          in racer)
     check("页面在选了 2 个以上时改画比较",
-          "board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())" in page)
+          "drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())" in page)
     check("蜡烛图那一排样式在多标的下是灰的（不然就是三个被忽略的设置）",
           "StyleCombo.IsEnabled = _board is null" in page)
     check("清单那一排是可开关的",
           "Selectable=\"True\"" in xaml and "WatchlistPicker" in xaml)
+
+    # ---- 源码：分图（每只一张图，上下排列，最多三只） ------------------------------
+    #
+    # 这一版的两半：**合图**是一张轴上几条百分比曲线，**分图**是一只一格、各有各的纵轴。
+    # 分图上限三只不是调色板的限制（那是 `MostTracks = 6`），是格子的高度 —— 三格时一格
+    # 约帧高的九分之一，第四格就剩不到一百像素的绘图区。
+    check("分图最多三格（第四格就没有绘图区了）",
+          "public const int MostPanels = 3;" in board)
+    check("分图时把板子重建到前三只 —— 从轴上也掉，不只是不画",
+          "CandleBoardLoader.Only(board, CandleBoardLoader.MostPanels)" in page
+          and "[.. series.Take(count)], board.Period, board.Skipped, board.Sessions, board.Drawn);"
+          in board)
+    check("板子带着它那几份序列（所以重画不用再取一遍）",
+          "IReadOnlyList<CandleSeries>? Series = null" in board
+          and "sessions, drawn, series);" in board)
+
+    # 两种排布画的是同一套家具。安全线那套算术只有一处（`CandleLine`）：两份各自写着
+    # 「每句都通顺、合起来就是两种答案」是最难看出来的一种错。
+    check("末端标注走的是三页共用那一处安全线算术",
+          "context.SafeRight(giveWay)" in line
+          and "widest, context.Px(LabelGap + LabelEdgePad), giveWay);" in line)
+    check("合图里不再留着它自己的第二份（搬走之后没有留下来的那一份）",
+          "RightLabelColumn" not in racer and "SafeRight(" not in racer
+          and "LabelGap" not in racer)
+    check("两种排布画的是同一套家具：轴、曲线、末端标签、标题",
+          all(("CandleLine." + what + "(") in racer and ("CandleLine." + what + "(") in split
+              for what in ("Axis", "Curve", "EndLabel", "Header")))
+    check("日期行只画一次，画在最下面那格底下（x 轴是整帧的，不是一格的）",
+          split.count("CandleLine.XLabels(") == 1
+          and "XLabels" not in split.split("private void DrawPanel(")[1]
+              .split("private static (double Lo")[0])
+    check("一个标签列给整帧（三格同宽，同一个 x 才对得上）",
+          split.count("CandleLine.LabelColumn(") == 1
+          and split.index("CandleLine.LabelColumn(")
+          < split.index("for (var k = 0; k < tracks.Count; k++)"))
+    check("分图里的标签夹在自己那一格内（不许掉到下一格上）",
+          "panelTop, panelBottom, introA, _giveWay);" in split)
+
+    # ---- 源码：收尾那排卡片 ----------------------------------------------------------
+    #
+    # 用户要的「最下方显示多标的涨幅」：两种排布都收在同一排上，每只一张，大数字是涨幅%，
+    # 小字是涨跌额。这一排是从持仓页那排抽出来共用的，所以持仓页与定投页也走同一处。
+    check("两种排布都收在同一排卡片上",
+          "TrackCards.Draw(session, context, cards, a, _giveWay);" in racer
+          and "TrackCards.Draw(session, context, cards, a, _giveWay);" in split)
+    check("卡片的大数字是涨幅%、小字是涨跌额",
+          "CandleLine.Percent(track.Final)" in racer
+          and "Amount(track.Baseline * track.Final / 100)" in racer
+          and "CandleLine.Percent(track.Final)" in split
+          and "Amount(track.Baseline * track.Final / 100)" in split)
+    check("卡片行只有一处：持仓页与定投页也用这同一行",
+          "TrackCards.Card(" in position and "TrackCards.Card(" in dca
+          and "TrackCards.Draw(session, context, cards, a, _giveWay);" in position
+          and "TrackCards.Draw(session, context, cards, a, _giveWay);" in dca)
+
+    # 那排卡片也得让开右侧那条按钮栏。这一条是**真机先红出来的**：加了卡片之后「最右墨迹
+    # 在安全线以内」那条从绿变红 —— 卡片按整幅绘图区宽铺，右缘落在按钮栏里 44 px（帧宽
+    # 18% 是 194，右页边距只有 150）。而它是**内容**：一个数字被头像压住，比曲线越线更糟。
+    check("卡片行也让开那条按钮栏（不是按整幅绘图区宽铺）",
+          "Math.Min(context.ChartRight, context.SafeRight(giveWay))" in cards)
+    check("这一页两种画面收在同一处家具上（与单标的那张图同一个总数）",
+          "public const double CreditGap = TrackCards.CreditGap;" in racer
+          and "public const double CreditGap = TrackCards.CreditGap;" in split
+          and "public const double CreditGap = 430;" in render
+          and "AboveCredit = 192" in cards and "DateRowRoom = 238" in cards)
+
+    # ---- 源码：这个选择在页面上 ------------------------------------------------------
+    check("排布下拉是比较画面自己的设置（一只时是灰的，与「画法」那条相反）",
+          "SplitCombo.IsEnabled = _board is not null;" in page
+          and "StyleCombo.IsEnabled = _board is null" in page)
+    check("分图时才解释「最多 3 只」（合图没有这回事）",
+          "SplitNote.Visibility = _board is not null && ChosenSplit() is CandleSplit.Apart"
+          in page)
+    check("这个选择是存住的（读一次、写一次）",
+          page.count('"Split"') >= 2, str(page.count('"Split"')))
+    check("第 4 只起在状态行里点名，不是悄悄不画",
+          "CandleSplitTrimmed" in page
+          and "board.Tracks.Skip(CandleBoardLoader.MostPanels)" in page)
+    check("切排布不重新取数（下拉只改画法）",
+          re.search(
+              r"OnLookChanged\(object sender, object e\)\s*\{\s*if \(!_ready\)\s*\{\s*return;\s*\}"
+              r"\s*ApplyPreviewSettings\(\);\s*SavePreferences\(\);", page) is not None,
+          "" if "void OnLookChanged" in page else "OnLookChanged 不见了")
+
+    resw = sorted(
+        d for d in os.listdir(os.path.join(SRC, "Strings"))
+        if os.path.isfile(os.path.join(SRC, "Strings", d, "Resources.resw")))
+    keys = ("CandleSplitLabel.Header", "CandleSplitTogether", "CandleSplitApart",
+            "CandleSplitNote.Text", "CandleSplitTrimmed")
+    missing = [f"{d}/{k}" for d in resw for k in keys
+               if f'<data name="{k}"' not in read("Strings", d, "Resources.resw")]
+
+    check("14 种语言都有分图那五条（下拉的标签、两项、说明、点名）",
+          len(resw) == 14 and not missing,
+          f"{len(resw)} 种语言；缺 {missing[:4]}" if missing else f"{len(resw)} 种语言")
 
     # ---- 源码：越线开关，和一处检索 --------------------------------------------------
     check("蜡烛图那把绘图区也当安全线是硬约束（关着时收在按钮栏之前）",
@@ -552,6 +782,11 @@ def main():
     # 量位置之前先叫醒窗口：不激活时矩形全是 0，按位置认的那几条（`presets`、`chips`）会
     # 认错人，而认错人之后每句话都还通顺 —— 这是这一跑里最难看出来的一种错。
     check("窗口叫到了前台（矩形量得出来）", wake(win))
+
+    # 面板的起点也定死：清单与一键预设都是**虚拟化**的一排，滚到哪儿决定了哪几项被实例化，
+    # 而按位置认控件的那两处又都以检索框下缘当零点。从同一个地方起，这一跑的每一步才和
+    # 上一次可比。
+    panel_top(win)
 
     rows = presets(win)
     check("页面上有至少两个一键预设", len(rows) >= 2,
@@ -697,12 +932,121 @@ def main():
 
     if was_period and was_period != PERIOD_5:
         winui.combo_pick(win, period_combo, was_period)
-        vc.wait_status(win, unlike=vc.status_text(win), seconds=150)
+
+        restored = vc.wait_status(win, unlike=vc.status_text(win), seconds=150)
+
+        # 这一次取数**必须**成：下面分图那一段拿「比较画面在不在」当探针，而一次失败的
+        # 取数会把板子留成空的 —— 于是排布下拉是灰的、`combo_labels` 读到 **0 项**，读成
+        # 「下拉里没有分图这一项」，其实是这一次根本没取到。实测就这样红过一跑，而那条红
+        # 报的是一个没坏的控件。
+        if not restored or BAD.search(restored):
+            stale = vc.status_text(win)
+            vc.click(vc.find(lambda c: c.AutomationId == "FetchButton", win), 1.0)
+
+            retry = vc.wait_status(win, unlike=stale, seconds=180)
+
+            check("切回原来的周期之后取数正常（第一次没成，补了一次）",
+                  bool(retry) and not BAD.search(retry or ""), retry or "(状态条空)")
 
     # 蜡烛那几条要在日 K 上量：分钟档下这一页画的是同一条曲线，不是蜡烛。
     check("回到日K（蜡烛那几条要在日K上量）",
           vm.combo_selected(win, period_combo) == PERIOD_DAILY,
           str(vm.combo_selected(win, period_combo)))
+
+    # ---- 分图：一个下拉，两种排布，和收尾那排卡片 ------------------------------------
+    #
+    # 用户要的三件事都在这一段：一个下拉在「同一张图」与「每只一张图」之间切；分图上下排列；
+    # 两种排布的最下方都有一排卡片，每只一张，大数字是涨幅%、小字是涨跌额。
+    #
+    # 全是像素判据（预览画布没有自动化节点）：切过去有没有重画按两幅画的差异比；收尾那排
+    # 卡片按「绘图区以下那条带里有没有赛道色」比 —— 那条带在收尾之前是空的，卡片是唯一会
+    # 画进去的东西，所以这两个数一进一出就把「卡片在收尾时出现了」量出来了，不必知道卡片
+    # 落在第几行（行位置随页边距的偏好走，写死就会红在一个没坏的画面上）。
+    # 这一段量的是「比较画面」上的东西，所以先在页面自己身上确认比较画面在手上 —— 探针就是
+    # 那个排布下拉：它是比较画面自己的设置，一只的图它是灰的。灰着就别往下量了，先补一次
+    # 取数（周期来回是下一次取数才生效的，页面手上那块板子可能是旧周期的、也可能是空的）。
+    if vc.enabled(win, "SplitCombo") is not True:
+        stale = vc.status_text(win)
+        vc.click(vc.find(lambda c: c.AutomationId == "FetchButton", win), 1.0)
+        vc.wait_status(win, unlike=stale, seconds=180)
+
+    # 这里**故意不** `into_view("SplitCombo")`：把面板滚到那个下拉会让它自己的滚动条出现
+    # 或消失，右侧面板的宽度跟着变一点，预览按剩余宽度等比缩 —— 于是同一张画面前后两次
+    # 量出来的画布不一样大，两幅「应当一模一样」的画差出四五个百分点。挑下拉靠的是
+    # ExpandCollapse，不需要它进视口。
+    split_combo = vc.find(lambda c: c.AutomationId == "SplitCombo", win)
+    labels = winui.combo_labels(win, split_combo) if split_combo is not None else []
+
+    check("页面上多了「分图显示」这个下拉，正好两项",
+          len(labels) == 2, "、".join(labels) or "0 项")
+    check("比较时排布下拉是能选的（它属于比较，不属于蜡烛图）",
+          vc.enabled(win, "SplitCombo") is not False, str(vc.enabled(win, "SplitCombo")))
+    check("合图时不解释分图（那条说明是收起来的）",
+          vc.find(lambda c: c.AutomationId == "SplitNote", win) is None)
+
+    vc.scrub_to(win, 1.0)
+    together = vc.shot(win, "verify-candle-split-together.png")
+    together_status = vc.status_text(win)
+
+    if len(labels) != 2:
+        check("排布下拉里挑得出两项", False, "、".join(labels))
+    elif winui.combo_pick(win, split_combo, labels[1]) is None:
+        check(f"挑到「{labels[1]}」", False)
+    else:
+        time.sleep(2.0)
+
+        # 切排布不该发请求：那几份序列都在手上，换的是画法。真发了请求的话状态行会换一条。
+        check("切排布不重新取数（状态行还是那一条）",
+              vc.status_text(win) == together_status, str(vc.status_text(win))[:80])
+
+        vc.scrub_to(win, 0.5)
+        mid = vc.shot(win, "verify-candle-split-apart-mid.png")
+        vc.scrub_to(win, 1.0)
+        apart = vc.shot(win, "verify-candle-split-apart.png")
+
+        moved = band_diff(together, apart)
+
+        check(f"切到「{labels[1]}」画面真的重画了（不是只换了个标签）",
+              moved > 0.02, f"画布带里 {moved:.1%} 的像素变了")
+
+        strong_apart, far_apart, box_apart, right_apart = analyse(apart)
+
+        if box_apart is None:
+            check("分图那张照片里认得出画布", False)
+        else:
+            line_apart = round(box_apart[0] + ((box_apart[1] - box_apart[0]) * SAFE))
+
+            check("分图画面上仍有两条赛道色（一格一条曲线）",
+                  len(strong_apart) >= 2, str(strong_apart[:4]))
+            check("分图的末端标注也在安全线以内（不进平台那条按钮栏）",
+                  far_apart <= line_apart + 6,
+                  f"最右墨迹 x={far_apart}，安全线 {line_apart}，画布右缘 {right_apart}")
+
+        before = band_hues(mid, CARD_LO, CARD_HI, step=1)
+        after = band_hues(apart, CARD_LO, CARD_HI, step=1)
+
+        check("收尾之前，绘图区以下那条带是空的（曲线都还在绘图区里）",
+              before is not None and len(before) == 0,
+              f"{len(before) if before is not None else '读不出来'} 种色相")
+        check("收尾时最下方出现那排卡片，每只一种赛道色",
+              after is not None and len(after) >= 2,
+              f"{len(after) if after is not None else '读不出来'} 种色相")
+        check("分图时那条说明出来了（最多 3 只这件事被说出口）",
+              vc.find(lambda c: c.AutomationId == "SplitNote", win) is not None)
+
+        # 双向验：只验「切过去变了」的话，「下拉没接上、而画面本来就在动」也过得去。
+        if winui.combo_pick(win, split_combo, labels[0]) is None:
+            check(f"切回「{labels[0]}」", False)
+        else:
+            time.sleep(2.0)
+
+            vc.scrub_to(win, 1.0)
+            back = vc.shot(win, "verify-candle-split-back.png")
+            again = band_diff(together, back)
+
+            check("切回「同一张图」画回同一张", again < 0.02, f"{again:.1%} 不同")
+            check("合图时那条说明又收起来了",
+                  vc.find(lambda c: c.AutomationId == "SplitNote", win) is None)
 
     # ---- 一处检索，和一个越线开关 ----------------------------------------------------
     #
@@ -714,6 +1058,10 @@ def main():
     if remeasured[2] is not None:
         _, far, box, right = remeasured
         line = round(box[0] + ((box[1] - box[0]) * SAFE))
+
+    # 与检索框交互（展开排布下拉、选一行）会把面板滚下去，而 `into_view` 滚不回来（见
+    # `panel_top`）。这一条量的是「页面上只有一个检索框」，不该由面板滚到哪儿决定。
+    panel_top(win)
 
     boxes = visible_searches(win)
     check("页面上看得见的检索框只有一个（不再有两块「股票」）",
@@ -772,6 +1120,10 @@ def main():
               back or "(状态条空)")
         check("退回一只后样式下拉恢复可用", vc.enabled(win, "StyleCombo") is not False,
               str(vc.enabled(win, "StyleCombo")))
+        # 与上一条**相反**，这就是「排布是比较画面自己的设置」那句话在真机上的那一面：
+        # 一只的图没有「分不分」这回事。两条一起才说明这个开关是按画面接的，不是按有没有板子。
+        check("退回一只后排布下拉变灰了（一只的图没有分不分这回事）",
+              vc.enabled(win, "SplitCombo") is False, str(vc.enabled(win, "SplitCombo")))
 
         vc.scrub_to(win, 1.0)
         strong2, _, box2, _ = analyse(vc.shot(win, "verify-candle-single-again.png"))
@@ -793,6 +1145,123 @@ def main():
               f"关闭 x={candle_off} → 打开 x={candle_on}")
 
         cross(win, False)
+
+    # ---- 分图只画前三只：第四只在状态行里被点名 --------------------------------------
+    #
+    # 上限三只是这一版定的，而「只画前 3 只」有两种做法：悄悄不画，或者把没画的那几只说出
+    # 来。悄悄不画的话，读者要数一遍面板才发现清单上少了一只 —— 所以页面在点名。这一段要
+    # 真的凑够四只才量得出来：只有三只时根本没有「被略过的」这件事。
+    #
+    # 画面上的判据是**「四只的那一张」与「把第 4 只关掉之后那一张」一模一样**。
+    #
+    # 这个对照的选法磕了两次，两次都值得记下来：
+    #
+    # - 先是「整帧只有三种赛道色」。实测不成立：分图的曲线是淡着画的，一条线在预览这个
+    #   尺寸下几乎没有纯色像素，全是与近黑底的混色 —— 同一支紫（#A855F7，色相 271）混暗
+    #   之后色相落到 268–270，跨过了 12 等分那条边界，于是**一支线数出两种色**。「第四只
+    #   真画了」和「一支线被数成两种」在「几种色」这个数上是同一个数。
+    # - 再是「另一组三只当对照」。实测差 3.8%，而差的不是多画了一只 —— **第三只本来就
+    #   不是同一只**：清单的顺序就是看板的顺序，而这里点进来的次序按的是一键预设那一排
+    #   的位置，两者不一样。于是对照里第 3 格是茅台、正式那张第 3 格是平安。
+    #
+    # 所以对照只能由**页面自己说的那一只**来定：状态行点名了「未画：X」，就把 X 关掉。
+    # 剩下的正好是前 3 只，两张该逐像素一样。不一样才是「多画了一只」。
+    check("面板能滚回顶部（不然下面按位置认控件的那两条会一起认错人）", panel_top(win))
+
+    rows = presets(win)
+    split_combo = vc.find(lambda c: c.AutomationId == "SplitCombo", win)
+
+    # 顺序不能反过来：**一只时排布下拉是灰的**（它是比较画面自己的设置），所以先要点到两只
+    # 才有板子、才能切分图；而点名只在分图下发生，所以第四只要在切过去之后再点。上一次跑
+    # 就是在这里红的 —— 上一次这一段直接从一只起手去挑分图，`combo_pick` 返回 None，读成
+    # 「下拉里没有那一项」，其实是那一项就在那儿、只是这一个下拉整个是灰的。
+    #
+    # 点的也必须是**此刻关着**的那几只：上一段留下的那一只正开着，而点一个已经开着的预设
+    # 不会让清单多出第二只 —— 于是「凑到两只」这件事会悄悄不成立。
+    live = chips(win)
+    off = {c[0] for c in live if c[2].ToggleState == auto.ToggleState.Off}
+    todo = [row for row in rows if row.AutomationId in off]
+
+    if len(rows) < 4:
+        check("页面上至少有四个一键预设（这一段要凑够四只）", False, f"{len(rows)} 个")
+    elif len(labels) != 2 or split_combo is None:
+        check("排布下拉还在，且挑得出两项", False, "、".join(labels))
+    elif len(todo) < 3:
+        check("清单上还关着至少三只预设（这一段要凑够四只）", False,
+              f"关着 {len(todo)} 个：{[c[1] for c in live]}")
+    else:
+        stale = vc.status_text(win)
+
+        vc.click(todo[0], 1.0)
+        two = vc.wait_status(win, unlike=stale, seconds=180)
+        stale = two or stale
+
+        on2 = [c for c in chips(win) if c[2].ToggleState == auto.ToggleState.On]
+        check("先凑到两只（一只时排布下拉是灰的）", len(on2) == 2,
+              f"{len(on2)} 只：{[c[1] for c in on2]}")
+        check("两只时排布下拉恢复可用", vc.enabled(win, "SplitCombo") is not False,
+              str(vc.enabled(win, "SplitCombo")))
+
+        if winui.combo_pick(win, split_combo, labels[1]) is None:
+            check("切到分图（点名只在分图下发生）", False)
+        else:
+            for row in todo[1:3]:
+                vc.click(row, 1.0)
+                got = vc.wait_status(win, unlike=stale, seconds=180)
+                stale = got or stale
+
+                if not got or BAD.search(got):
+                    check(f"加上「{row.Name}」之后取数正常", False, got or "(状态条空)")
+                    break
+
+        on4 = [c for c in chips(win) if c[2].ToggleState == auto.ToggleState.On]
+
+        check("清单上有四只开着（这一段量的真是「超过三只」）",
+              len(on4) == 4, f"{len(on4)} 只：{[c[1] for c in on4]}")
+
+        if len(on4) == 4:
+            said = vc.status_text(win) or ""
+
+            # 关哪一只**由状态行决定**，不由清单顺序决定：名字出现在那句话里的那一只就是
+            # 页面自己说没画的那一只。清单的先后和看板的先后是两件事，这一段的两次红都是
+            # 踩在这上面。
+            dropped = next((c for c in on4 if c[1] in said), on4[-1])
+
+            check("第 4 只在状态行里被点名（不是悄悄不画）",
+                  dropped[1] in said, f"第 4 只「{dropped[1]}」，状态行：{said[:90]}")
+
+            vc.scrub_to(win, 1.0)
+            four = vc.shot(win, "verify-candle-split-four.png")
+
+            win.SetFocus()
+
+            try:
+                dropped[2].Toggle()
+            except Exception:  # noqa: BLE001 - 拨不动的话下面按清单数判
+                pass
+
+            time.sleep(1.0)
+
+            left3 = [c for c in chips(win) if c[2].ToggleState == auto.ToggleState.On]
+            vc.click(vc.find(lambda c: c.AutomationId == "FetchButton", win), 1.0)
+            back = vc.wait_status(win, unlike=said, seconds=180)
+
+            if not left3 or len(left3) != 3:
+                check("把被点名的那一只关掉之后清单上正好剩三只", False,
+                      f"{len(left3)} 只：{[c[1] for c in left3]}")
+            elif not back or BAD.search(back):
+                check("关掉它之后取数正常", False, back or "(状态条空)")
+            else:
+                vc.scrub_to(win, 1.0)
+                three = vc.shot(win, "verify-candle-split-three.png")
+                same = band_diff(four, three)
+
+                check("只画前 3 只：把关掉第 4 只之后的画面与它比，逐像素一样",
+                      same < 0.02, f"{same:.1%} 不同")
+
+        # 排布也是落盘的偏好：走的时候摆回「同一张图」，别把下一个判据（和下一次真实使用）
+        # 留在没人选过的那一半上。
+        winui.combo_pick(win, split_combo, labels[0])
 
     # 开关的状态**也落盘**，和清单的内容一起 —— 把开关留在开着的位置上，下一个判据（以及
     # 下一次真实使用）就是从一个没人选过的画面开始的：这一页的搜索和一键预设都是「把这只放

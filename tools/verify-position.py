@@ -1258,7 +1258,9 @@ def main():
           "var ret = _board.Capital > 0 ? ((plot.Values[leader] / _board.Capital) - 1) * 100 : 0;"
           in renderer)
     check("两条以上收尾是每只一张卡",
-          "DrawTrackCards(session, context, a, left, gap, y, cardHeight, valueFormat);" in renderer)
+          "DrawTrackCards(session, context, a);" in renderer
+          and "TrackCards.Draw(session, context, cards, a, _giveWay);" in renderer
+          and "TrackCards.Card(" in renderer)
     check("取数后把清单里的名字换成端点叫的",
           "Watchlist.Rename(track.Code, InstrumentNames.Display(track.Code, track.Name));" in page)
     check("一键预设是「加入清单 + 勾上 + 立刻取数」",

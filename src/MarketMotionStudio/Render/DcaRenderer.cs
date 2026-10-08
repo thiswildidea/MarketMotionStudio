@@ -972,7 +972,7 @@ public sealed class DcaRenderer : IFrameRenderer
 
         if (_board.Comparing)
         {
-            DrawTrackCards(session, context, a, left, gap, y, cardHeight, valueFormat);
+            DrawTrackCards(session, context, a);
 
             DrawCredit(session, context, a);
 
@@ -1023,48 +1023,29 @@ public sealed class DcaRenderer : IFrameRenderer
     /// The return is on the card as well as the money, because the two disagree whenever the
     /// plans did not start together: one that listed later paid in less, and a smaller profit
     /// on it is not a worse plan.
+    ///
+    /// The row itself is <see cref="TrackCards"/>, the same one the holdings board and both of the
+    /// candle board's layouts end on. What a card says is this page's business; what it looks like
+    /// is not.
     /// </summary>
-    private void DrawTrackCards(
-        CanvasDrawingSession session, FrameContext context, double a,
-        double left, double gap, double y, double cardHeight,
-        CanvasTextFormat valueFormat)
+    private void DrawTrackCards(CanvasDrawingSession session, FrameContext context, double a)
     {
-        var tracks = _board.Tracks;
-        var cardWidth = (context.ChartWidth - (gap * (tracks.Count - 1))) / tracks.Count;
+        var cards = new List<TrackCards.Card>(_board.Tracks.Count);
 
-        using var returnFormat = Ink.Format(context.Px(24));
-
-        for (var i = 0; i < tracks.Count; i++)
+        for (var i = 0; i < _board.Tracks.Count; i++)
         {
-            var track = tracks[i];
-            var x = left + (i * (cardWidth + gap));
-            var box = new Rect(x, y, cardWidth, cardHeight);
-            var radius = (float)context.Px(14);
-            var ink = Palette.Track(i);
+            var track = _board.Tracks[i];
 
-            session.FillRoundedRectangle(box, radius, radius, Ink.Fade(Palette.CardFill, a));
-            session.DrawRoundedRectangle(box, radius, radius, Ink.Fade(ink, 0.75 * a), (float)context.Px(1.5));
-
-            // A company name in English is wider than a card at six columns, and a name that
-            // runs past its own border reads as a broken layout rather than as a long name.
-            var nameSize = Ink.FitSize(session, track.Name, context.Px(22), cardWidth - context.Px(20), bold: false);
-
-            using (var fitted = Ink.Format(nameSize))
-            {
-                Ink.Centred(session, track.Name, x + (cardWidth / 2), y + context.Px(40), fitted, Palette.Muted, a);
-            }
-
-            Ink.Centred(
-                session,
+            cards.Add(new TrackCards.Card(
+                track.Name,
+                Palette.Muted,
+                Palette.Track(i),
                 Sign(track.Profit) + Money(Math.Abs(track.Profit)),
-                x + (cardWidth / 2), y + context.Px(80), valueFormat, ink, a);
-
-            Ink.Centred(
-                session,
                 (track.ReturnPercent >= 0 ? "+" : string.Empty)
-                    + track.ReturnPercent.ToString("0.0", CultureInfo.InvariantCulture) + "%",
-                x + (cardWidth / 2), y + context.Px(114), returnFormat, Palette.Muted, a);
+                    + track.ReturnPercent.ToString("0.0", CultureInfo.InvariantCulture) + "%"));
         }
+
+        TrackCards.Draw(session, context, cards, a, _giveWay);
     }
 
     private static void DrawCredit(CanvasDrawingSession session, FrameContext context, double a)

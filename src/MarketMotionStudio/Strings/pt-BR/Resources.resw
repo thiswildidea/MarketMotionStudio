@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Animação</value></data>
   <data name="CandleMotionGrow"><value>Todo o período</value></data>
   <data name="CandleMotionScroll"><value>Janela deslizante</value></data>
+  <data name="CandleSplitLabel.Header"><value>Disposição</value></data>
+  <data name="CandleSplitTogether"><value>Um gráfico</value></data>
+  <data name="CandleSplitApart"><value>Um gráfico cada</value></data>
+  <data name="CandleSplitNote.Text"><value>Um painel por instrumento, empilhados, no máximo três. Com mais de três selecionados, os três primeiros da lista são desenhados e os demais são indicados na barra de status.</value></data>
+  <data name="CandleSplitTrimmed"><value>A visão dividida comporta {0} painéis; não desenhados: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Janela (candles)</value></data>
   <data name="CandleShowAverages.Content"><value>Médias móveis MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Volume</value></data>

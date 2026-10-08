@@ -87,6 +87,11 @@ public sealed record CandleTrack(
 /// The session every curve on an intraday board is drawn on, or null on a daily one. The
 /// day control shows it, and it is the only day the board is a picture of.
 /// </param>
+/// <param name="Series">
+/// What the tracks were built from, kept so that a board can be rebuilt over some of them
+/// without asking the source again — see <see cref="CandleBoardLoader.Only"/>. In track
+/// order, and with the instruments that came back empty already dropped.
+/// </param>
 public sealed record CandleBoard(
     IReadOnlyList<string> Stamps,
     IReadOnlyList<DateOnly> Dates,
@@ -94,7 +99,8 @@ public sealed record CandleBoard(
     CandlePeriod Period,
     IReadOnlyList<string> Skipped,
     IReadOnlyList<MinuteSession>? Sessions = null,
-    MinuteDay? Drawn = null)
+    MinuteDay? Drawn = null,
+    IReadOnlyList<CandleSeries>? Series = null)
 {
     public int Count => Stamps.Count;
 
@@ -140,6 +146,17 @@ public static class CandleBoardLoader
     /// telling them apart.
     /// </summary>
     public const int MostTracks = 6;
+
+    /// <summary>
+    /// The most instruments the apart frame can carry: one panel each, stacked.
+    ///
+    /// Three, and not because the palette runs out — that is <see cref="MostTracks"/>, and it
+    /// still applies to the list. A panel is a ninth of the frame's height at three, which is
+    /// about a third of what one instrument's chart gets, and a fourth would put each of them
+    /// under a hundred pixels of plot: a curve with no room for its own axis, in a frame whose
+    /// whole reason for being split up was that each could be read on its own scale.
+    /// </summary>
+    public const int MostPanels = 3;
 
     /// <param name="months">
     /// How far back, or <see cref="CandleLoader.CustomMonths"/> for the two dates — the
@@ -241,6 +258,31 @@ public static class CandleBoardLoader
     }
 
     /// <summary>
+    /// The same board over its first <paramref name="count"/> instruments — a redraw, not a
+    /// fetch, and not a trim either.
+    ///
+    /// The apart frame draws one instrument per panel and has room for
+    /// <see cref="MostPanels"/> of them, so the instruments past the third are not drawn. They
+    /// are dropped from the **axis** as well, rather than merely left undrawn: the axis is the
+    /// union of the days its tracks traded, and an instrument the frame is not about must not
+    /// stretch the dates everyone else is read against. Rebuilt from the fetched series rather
+    /// than clipped, because which positions a track carries forward is not recoverable from
+    /// the returns alone — a carried-forward value does not look like one.
+    ///
+    /// Asked for a board that already has that many or fewer, it returns the board itself.
+    /// </summary>
+    public static CandleBoard Only(CandleBoard board, int count)
+    {
+        if (count <= 0 || board.Series is not { Count: > 0 } series || count >= series.Count)
+        {
+            return board;
+        }
+
+        return Compose(
+            [.. series.Take(count)], board.Period, board.Skipped, board.Sessions, board.Drawn);
+    }
+
+    /// <summary>
     /// The days every instrument on the board has, newest first: what a multi-instrument minutes
     /// chart may be drawn on.
     ///
@@ -315,7 +357,7 @@ public static class CandleBoardLoader
             tracks.Add(Track(one, place, minute));
         }
 
-        return new CandleBoard(stamps, dates, tracks, period, skipped, sessions, drawn);
+        return new CandleBoard(stamps, dates, tracks, period, skipped, sessions, drawn, series);
     }
 
     /// <summary>

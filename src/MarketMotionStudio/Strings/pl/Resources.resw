@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Animacja</value></data>
   <data name="CandleMotionGrow"><value>Cały zakres naraz</value></data>
   <data name="CandleMotionScroll"><value>Przesuwne okno</value></data>
+  <data name="CandleSplitLabel.Header"><value>Układ</value></data>
+  <data name="CandleSplitTogether"><value>Jeden wykres</value></data>
+  <data name="CandleSplitApart"><value>Wykres dla każdego</value></data>
+  <data name="CandleSplitNote.Text"><value>Jeden panel na instrument, jeden pod drugim, maksymalnie trzy. Przy większej liczbie wybranych rysowane są trzy pierwsze z listy, a pozostałe są wymienione na pasku stanu.</value></data>
+  <data name="CandleSplitTrimmed"><value>Układ dzielony mieści {0} panele; nie narysowano: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Okno (świece)</value></data>
   <data name="CandleShowAverages.Content"><value>Średnie kroczące MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Wolumen</value></data>

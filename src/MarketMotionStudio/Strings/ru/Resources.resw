@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Анимация</value></data>
   <data name="CandleMotionGrow"><value>Весь диапазон</value></data>
   <data name="CandleMotionScroll"><value>Скользящее окно</value></data>
+  <data name="CandleSplitLabel.Header"><value>Раскладка</value></data>
+  <data name="CandleSplitTogether"><value>Один график</value></data>
+  <data name="CandleSplitApart"><value>По графику на инструмент</value></data>
+  <data name="CandleSplitNote.Text"><value>По одной панели на инструмент, друг под другом, не более трёх. Если выбрано больше трёх, рисуются первые три по списку, остальные перечисляются в строке состояния.</value></data>
+  <data name="CandleSplitTrimmed"><value>Раскладка вмещает {0} панели; не нарисованы: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Окно (свечи)</value></data>
   <data name="CandleShowAverages.Content"><value>Скользящие средние MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Объём</value></data>

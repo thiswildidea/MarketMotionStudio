@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Animace</value></data>
   <data name="CandleMotionGrow"><value>Celé období</value></data>
   <data name="CandleMotionScroll"><value>Posuvné okno</value></data>
+  <data name="CandleSplitLabel.Header"><value>Rozvržení</value></data>
+  <data name="CandleSplitTogether"><value>Jeden graf</value></data>
+  <data name="CandleSplitApart"><value>Graf pro každý</value></data>
+  <data name="CandleSplitNote.Text"><value>Jeden panel na nástroj, pod sebou, nejvýše tři. Je-li vybráno více než tři, kreslí se první tři v pořadí seznamu a zbytek se vypíše ve stavovém řádku.</value></data>
+  <data name="CandleSplitTrimmed"><value>Rozvržení po panelech zvládne {0}; nekreslí se: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Okno (svíčky)</value></data>
   <data name="CandleShowAverages.Content"><value>Klouzavé průměry MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Objem</value></data>

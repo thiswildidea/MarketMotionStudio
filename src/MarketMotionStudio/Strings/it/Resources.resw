@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Animazione</value></data>
   <data name="CandleMotionGrow"><value>Tutto l'intervallo</value></data>
   <data name="CandleMotionScroll"><value>Finestra scorrevole</value></data>
+  <data name="CandleSplitLabel.Header"><value>Disposizione</value></data>
+  <data name="CandleSplitTogether"><value>Un solo grafico</value></data>
+  <data name="CandleSplitApart"><value>Un grafico ciascuno</value></data>
+  <data name="CandleSplitNote.Text"><value>Un pannello per strumento, impilati, al massimo tre. Con più di tre selezionati si disegnano i primi tre dell'elenco e gli altri vengono indicati nella barra di stato.</value></data>
+  <data name="CandleSplitTrimmed"><value>La vista divisa tiene {0} pannelli; non disegnati: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Finestra (candele)</value></data>
   <data name="CandleShowAverages.Content"><value>Medie mobili MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Volume</value></data>

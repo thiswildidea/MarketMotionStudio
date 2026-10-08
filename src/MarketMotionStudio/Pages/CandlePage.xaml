@@ -206,6 +206,26 @@
                               HorizontalAlignment="Stretch"
                               SelectionChanged="OnLookChanged" />
 
+                    <!-- Whether several instruments share one axis or get a panel each.
+
+                         A choice about the picture, like the one above it and like the motion
+                         below: nothing here re-fetches. It decides how many instruments the
+                         frame is *about* when they are split up, which is why the note under it
+                         says how many panels there are — three curves on one axis is a
+                         comparison, and a fourth instrument with no panel is a pick that was
+                         silently ignored. -->
+                    <ComboBox x:Name="SplitCombo"
+                              x:Uid="CandleSplitLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <TextBlock x:Name="SplitNote"
+                               x:Uid="CandleSplitNote"
+                               Visibility="Collapsed"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
                     <!-- Whether the whole range is laid out, or a window of it walked
                          forward. The second is the only way a long range keeps a candle
                          wide enough to read. -->

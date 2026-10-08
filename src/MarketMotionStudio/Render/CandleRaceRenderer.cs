@@ -32,35 +32,20 @@ namespace MarketMotionStudio.Render;
 /// </summary>
 public sealed class CandleRaceRenderer : IFrameRenderer
 {
-    /// <summary>Distance from the chart baseline down to the credit: the date row alone.</summary>
-    public const double CreditGap = 150;
+    /// <summary>
+    /// Distance from the chart baseline down to the credit, in baseline pixels: the date row, the
+    /// cards, and the credit under them.
+    ///
+    /// The two distances <see cref="TrackCards"/> states, and the same total the
+    /// single-instrument chart reserves, so that the two pictures this one page draws end on the
+    /// same furniture in the same place. It used to be 150 — the date row alone — because this
+    /// frame had nothing else to say at the bottom, and a comparison that ends without its
+    /// figures is half a frame.
+    /// </summary>
+    public const double CreditGap = TrackCards.CreditGap;
 
     /// <summary>Where the plot area starts, as a fraction of frame height.</summary>
     private const double PlotTopFraction = 0.30;
-
-    /// <summary>The subtitle — which instruments, on what period — under the title.</summary>
-    private const double SubtitleRow = 0.20;
-
-    // ---- the end label ------------------------------------------------------------------
-    //
-    // A rounded box riding each curve's leading end, carrying the instrument's name and how
-    // far ahead or behind it is. The same furniture the holdings board uses, down to the
-    // measurements: a reader who has watched one of these frames has already learned where
-    // to look on the other.
-
-    private const double LabelGap = 12;
-
-    private const double LabelEdgePad = 12;
-
-    private const double LabelPadX = 14;
-
-    private const double LabelPadY = 8;
-
-    private const double LabelBetween = 8;
-
-    private const double LabelSize = 22;
-
-    private const double LabelEdge = 3;
 
     private readonly CandleBoard _board;
 
@@ -118,18 +103,19 @@ public sealed class CandleRaceRenderer : IFrameRenderer
 
         // Measured once, here, and read by everything that follows: the plot's width and the
         // labels' right edge are two answers to one question.
-        _giveWay = GiveWay(t);
+        _giveWay = CandleLine.GiveWay(t, _plan, _motion, _crossSafeRight);
 
-        var plotW = Math.Max(1, context.ChartWidth - LabelColumn(session, context));
+        var plotW = Math.Max(1, context.ChartWidth - CandleLine.LabelColumn(
+            session, context, [.. _board.Tracks.Select(track => (track.Name, track.Final))], _giveWay));
         var introA = Easing.Ramp(t, 0, 1000);
 
-        DrawHeader(session, context, t);
+        CandleLine.Header(session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t);
 
         var (lo, hi, step) = Bounds();
 
         double Level(double value) => bottom - (((value - lo) / (hi - lo)) * span);
 
-        DrawGrid(session, context, lo, hi, step, Level, plotW, introA);
+        CandleLine.Axis(session, context, lo, hi, step, Level, plotW, introA);
 
         var n = _board.Count;
         var moving = -1;
@@ -146,7 +132,8 @@ public sealed class CandleRaceRenderer : IFrameRenderer
 
         if (moving < 0)
         {
-            DrawXLabels(session, context, t, bottom, plotW, introA, n, 0, -1);
+            CandleLine.XLabels(session, context, _board, _plan, t, bottom, plotW, introA, n, 0, -1);
+            DrawClosing(session, context, t);
             DrawProgress(session, context, t);
 
             return;
@@ -220,7 +207,7 @@ public sealed class CandleRaceRenderer : IFrameRenderer
 
             if (drawn.Length >= 2)
             {
-                DrawPolyline(session, context, drawn, colour, introA);
+                CandleLine.Curve(session, context, drawn, colour, introA);
             }
 
             var (lx, ly) = (drawn[^1].X, drawn[^1].Y - context.Px(4));
@@ -236,10 +223,67 @@ public sealed class CandleRaceRenderer : IFrameRenderer
             lines.Add((drawn, colour, track.Name, value));
         }
 
-        DrawLabels(session, context, lines, anchors, top, bottom, introA);
-        DrawXLabels(session, context, t, bottom, plotW, introA, count, first, head);
+        CandleLine.EndLabel(session, context, lines, anchors, top, bottom, introA, _giveWay);
+        CandleLine.XLabels(session, context, _board, _plan, t, bottom, plotW, introA, count, first, head);
+        DrawClosing(session, context, t);
         DrawProgress(session, context, t);
     }
+
+    /// <summary>
+    /// What the frame ends on: one card per instrument, and the credit under them.
+    ///
+    /// The figures on the cards are the **final** ones — <see cref="CandleTrack.Final"/> over
+    /// <see cref="CandleTrack.Baseline"/> — and deliberately not this frame's, which is the
+    /// opposite of the rule the labels riding the curves obey. A label is a reading of the moment
+    /// being drawn and has to agree with the line beside it; a closing card is the answer to "so
+    /// how did they finish", and one that was still moving while the range opened out would be
+    /// the one figure on the frame a viewer could not write down.
+    ///
+    /// The amount under the percentage is what that percentage is of: the same figure the axis
+    /// and the candles on the single-instrument chart are quoted in, so that "-0.79%" and the
+    /// index points it moved by appear together rather than on two different pages.
+    /// </summary>
+    private void DrawClosing(CanvasDrawingSession session, FrameContext context, double t)
+    {
+        var a = ClosingOpacity(t);
+
+        if (a <= 0)
+        {
+            return;
+        }
+
+        var cards = new List<TrackCards.Card>(_board.Tracks.Count);
+
+        for (var i = 0; i < _board.Tracks.Count; i++)
+        {
+            var track = _board.Tracks[i];
+            var ink = Palette.Track(i);
+
+            cards.Add(new TrackCards.Card(
+                track.Name,
+                Ink.Fade(ink, 0.55),
+                ink,
+                CandleLine.Percent(track.Final),
+                Amount(track.Baseline * track.Final / 100)));
+        }
+
+        TrackCards.Draw(session, context, cards, a, _giveWay);
+
+        using var creditFormat = Ink.Format(context.Px(20));
+
+        Ink.Centred(session, Strings.Get("StudioCredit"), context.Width / 2, context.CreditLine,
+            creditFormat, Palette.Credit, a * 0.75);
+    }
+
+    /// <summary>
+    /// How much of the closing row has arrived: the credit and the cards come in together, a
+    /// little after the last curve's label has settled, the way every other frame's figures do.
+    /// </summary>
+    private double ClosingOpacity(double t) => Easing.Ramp(t, _plan.FinaleStartMs + 1900, 900);
+
+    /// <summary>A price difference with its sign always shown, as the percentages beside it have.</summary>
+    private static string Amount(double value) =>
+        (value >= 0 ? "+" : string.Empty) + CandleLoader.Price(value);
 
     // ---- axis -----------------------------------------------------------------------
 
@@ -262,258 +306,7 @@ public sealed class CandleRaceRenderer : IFrameRenderer
         return (lo, hi, step);
     }
 
-    private void DrawGrid(
-        CanvasDrawingSession session, FrameContext context,
-        double lo, double hi, double step, Func<double, double> level,
-        double plotW, double opacity)
-    {
-        var mx = context.ChartLeft;
-        var line = (float)Math.Max(1, context.Px(1));
-
-        using var format = Ink.Format(context.Px(20));
-
-        for (var v = lo; v <= hi + 1e-9; v += step)
-        {
-            var y = level(v);
-            var zero = Math.Abs(v) < 1e-9;
-
-            session.DrawLine(
-                new Vector2((float)mx, (float)y),
-                new Vector2((float)(mx + (plotW * opacity)), (float)y),
-                zero ? Palette.AxisLabel : Palette.Grid,
-                zero ? Math.Max((float)context.Px(2), line) : line);
-
-            Ink.RightMiddle(
-                session, Percent(v), mx - context.Px(12), y,
-                format, zero ? Palette.Muted : Palette.AxisLabel, opacity);
-        }
-    }
-
-    /// <summary>A percentage the same way in every locale, with its sign always shown.</summary>
-    private static string Percent(double value) =>
-        (value >= 0 ? "+" : "-") + Math.Abs(value).ToString("0.##", CultureInfo.InvariantCulture) + "%";
-
-    // ---- the labels -----------------------------------------------------------------
-
-    /// <summary>
-    /// How much of the frame's right-hand side the end labels need: the amount the plot
-    /// gives up so a label can ride ahead of its own curve and come to rest short of the
-    /// band the host's interface covers.
-    ///
-    /// Measured from the **final** percentages rather than from this frame's, so the column
-    /// is the same width on every frame — one that grew with the figures would narrow the
-    /// plot while the labels were still moving along it.
-    /// </summary>
-    private double LabelColumn(CanvasDrawingSession session, FrameContext context)
-    {
-        using var nameFormat = Ink.Format(context.Px(LabelSize));
-        using var valueFormat = Ink.Format(context.Px(LabelSize), bold: true);
-
-        var widest = 0d;
-
-        foreach (var track in _board.Tracks)
-        {
-            widest = Math.Max(
-                widest,
-                LabelWidth(session, context, nameFormat, valueFormat, track.Name, track.Final));
-        }
-
-        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay);
-
-        return Math.Clamp(need, 0, context.ChartWidth * 0.45);
-    }
-
-    private static double LabelWidth(
-        CanvasDrawingSession session, FrameContext context,
-        CanvasTextFormat nameFormat, CanvasTextFormat valueFormat,
-        string name, double value)
-    {
-        return Ink.Advance(session, name + " ", nameFormat)
-               + Ink.Advance(session, Percent(value), valueFormat)
-               + context.Px(LabelPadX * 2);
-    }
-
-    /// <summary>
-    /// The name and the figure, riding each curve's leading end.
-    ///
-    /// Placed in one pass and drawn in another, because the boxes have to be kept apart
-    /// from each other and that cannot be decided one at a time: two instruments that ended
-    /// the range a fraction apart put their labels in the same place, and the one drawn
-    /// second covers the first — a frame with the right number of labels on it and one of
-    /// them missing.
-    /// </summary>
-    private void DrawLabels(
-        CanvasDrawingSession session, FrameContext context,
-        List<((double X, double Y)[] Points, Color Colour, string Name, double Value)> lines,
-        List<(double X, double Y)> anchors,
-        double top, double bottom, double opacity)
-    {
-        if (lines.Count == 0)
-        {
-            return;
-        }
-
-        using var nameFormat = Ink.Format(context.Px(LabelSize));
-        using var valueFormat = Ink.Format(context.Px(LabelSize), bold: true);
-
-        var size = context.Px(LabelSize);
-
-        using var probe = new CanvasTextLayout(session, "0", valueFormat, 0, 0);
-        var height = probe.LayoutBounds.Height + context.Px(LabelPadY * 2);
-
-        var boxes = new List<Rect>(lines.Count);
-
-        for (var i = 0; i < lines.Count; i++)
-        {
-            var (_, _, name, value) = lines[i];
-
-            var width = LabelWidth(session, context, nameFormat, valueFormat, name, value);
-
-            // Its right edge is the one that gives way, and it gives way to the **safe
-            // line** rather than to the frame's edge: past that line is the band the
-            // platform covers with its avatar and its comment button.
-            var left = Math.Min(
-                anchors[i].X + context.Px(LabelGap),
-                context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width);
-
-            boxes.Add(new Rect(Math.Max(context.ChartLeft, left), anchors[i].Y, width, height));
-        }
-
-        var order = Enumerable.Range(0, boxes.Count).OrderBy(i => boxes[i].Y).ToArray();
-        var centres = boxes.Select(b => b.Y).ToArray();
-        var gap = context.Px(LabelBetween);
-
-        for (var j = 1; j < order.Length; j++)
-        {
-            var previous = order[j - 1];
-            var here = order[j];
-
-            if (centres[here] < centres[previous] + height + gap)
-            {
-                centres[here] = centres[previous] + height + gap;
-            }
-        }
-
-        if (order.Length > 0)
-        {
-            var lowest = centres[order[^1]] + (height / 2);
-
-            if (lowest > bottom)
-            {
-                var shift = lowest - bottom;
-
-                for (var i = 0; i < centres.Length; i++)
-                {
-                    centres[i] -= shift;
-                }
-
-                var highest = centres[order[0]] - (height / 2);
-
-                if (highest < top)
-                {
-                    var push = top - highest;
-
-                    for (var i = 0; i < centres.Length; i++)
-                    {
-                        centres[i] += push;
-                    }
-                }
-            }
-        }
-
-        for (var i = 0; i < boxes.Count; i++)
-        {
-            var (_, colour, name, value) = lines[i];
-            var box = new Rect(boxes[i].X, centres[i] - (height / 2), boxes[i].Width, height);
-            var radius = (float)(height / 2);
-
-            session.FillRoundedRectangle(box, radius, radius, Ink.Fade(Palette.CardFill, 0.92 * opacity));
-            session.DrawRoundedRectangle(box, radius, radius, Ink.Fade(colour, 0.95 * opacity), (float)context.Px(LabelEdge));
-
-            Ink.Runs(
-                session,
-                [
-                    (name + " ", Palette.Muted, nameFormat),
-                    (Percent(value), colour, valueFormat),
-                ],
-                box.X + (box.Width / 2),
-                box.Y + (height / 2) + (size * 0.36),
-                opacity);
-        }
-    }
-
     // ---- the rest of the frame ------------------------------------------------------
-
-    private void DrawXLabels(
-        CanvasDrawingSession session, FrameContext context, double t, double bottom, double plotW,
-        double introA, double count, double first, double head)
-    {
-        var n = _board.Count;
-        var mx = context.ChartLeft;
-
-        var whole = Math.Max(1, (int)Math.Round(count));
-
-        var every = Math.Max(1, whole / 5);
-        if (whole % every == 0 && whole / every > 5)
-        {
-            every = Math.Max(1, (whole / 6) + 1);
-        }
-
-        // A year across a span of years, a year-and-month across less; on a single session
-        // it is the clock, which is what that axis counts in.
-        var years = _board.End.DayNumber - _board.Start.DayNumber > 365 * 3;
-
-        using var format = Ink.Format(context.Px(19));
-
-        for (var i = 0; i < n; i += every)
-        {
-            if (i < first || i > head)
-            {
-                continue;
-            }
-
-            var a = Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), 450) * introA;
-            if (a <= 0)
-            {
-                continue;
-            }
-
-            var stamp = _board.Stamps[i];
-            var text = _board.Intraday ? stamp : years ? stamp[..4] : stamp[..7];
-            var x = mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);
-
-            Ink.Centred(session, text, x, bottom + context.Px(28), format, Palette.DateLabel, a);
-        }
-    }
-
-    private void DrawHeader(CanvasDrawingSession session, FrameContext context, double t)
-    {
-        var a = Easing.Ramp(t, 0, 1000);
-        var cx = context.Width / 2;
-
-        var title = ResolvedTitle();
-
-        _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
-
-        using var small = Ink.Format(context.Px(25));
-
-        // Which instruments, on what period — the same line the single-instrument frame
-        // draws, with the code replaced by the ones being compared. Capped at three and
-        // counted past that, because six upper-case codes under a title is a second title.
-        var codes = _board.Tracks.Select(track => track.Code.ToUpperInvariant()).Take(3).ToList();
-
-        if (_board.Tracks.Count > codes.Count)
-        {
-            codes.Add("+" + (_board.Tracks.Count - codes.Count).ToString(CultureInfo.InvariantCulture));
-        }
-
-        Ink.Centred(
-            session,
-            Strings.Format("CandleSubtitleLine",
-                string.Join(" / ", codes),
-                Strings.Get(CandleLoader.NameKey(_board.Period))),
-            cx, Row(context, SubtitleRow), small, Palette.Muted, a);
-    }
 
     private void DrawProgress(CanvasDrawingSession session, FrameContext context, double t)
     {
@@ -528,65 +321,10 @@ public sealed class CandleRaceRenderer : IFrameRenderer
     }
 
     /// <summary>
-    /// How much of the host's button rail the frame now being drawn keeps clear: the same
-    /// fraction, and the same reason for it being a fraction rather than a flag, as the
-    /// three pages that offer the choice — a scrolling frame is a window while it rolls and
-    /// only becomes the whole range as it opens out at the end, and the reservation has to
-    /// open with it.
-    /// </summary>
-    private double GiveWay(double t)
-    {
-        if (!_crossSafeRight)
-        {
-            return 1;
-        }
-
-        return _motion is CandleMotion.Scroll
-            ? 1 - Easing.Ramp(t, _plan.FinaleStartMs, AnimationPlan.OpenOutMs)
-            : 0;
-    }
-
-    private static void DrawPolyline(
-        CanvasDrawingSession session, FrameContext context,
-        (double X, double Y)[] points, Color colour, double opacity)
-    {
-        var shape = new Vector2[points.Length];
-
-        for (var i = 0; i < points.Length; i++)
-        {
-            shape[i] = new Vector2((float)points[i].X, (float)points[i].Y);
-        }
-
-        using var geometry = Polyline(session, shape);
-
-        session.DrawGeometry(geometry, Ink.Fade(colour, 0.95 * opacity), (float)context.Px(3));
-    }
-
-    private double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
-
-    /// <summary>
     /// What the frame is about: what the user typed, or the instruments' names. One place,
     /// because the text measured at the top of <see cref="Draw"/> and the text drawn in the
     /// header have to be the same string.
     /// </summary>
     private string ResolvedTitle() =>
         Title.Length > 0 ? Title : string.Join(" / ", _board.Tracks.Select(t => t.Name));
-
-    /// <summary>A path through the points, open at both ends: a curve, not a filled ring.</summary>
-    private static CanvasGeometry Polyline(CanvasDrawingSession session, Vector2[] points)
-    {
-        using var builder = new CanvasPathBuilder(session);
-
-        builder.BeginFigure(points[0]);
-
-        for (var i = 1; i < points.Length; i++)
-        {
-            builder.AddLine(points[i]);
-        }
-
-        builder.EndFigure(CanvasFigureLoop.Open);
-
-        return CanvasGeometry.CreatePath(builder);
-    }
 }

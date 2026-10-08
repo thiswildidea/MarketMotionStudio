@@ -146,9 +146,19 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
             MotionCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)motion });
         }
 
+        foreach (var (split, key) in new[]
+                 {
+                     (CandleSplit.Together, "CandleSplitTogether"),
+                     (CandleSplit.Apart, "CandleSplitApart"),
+                 })
+        {
+            SplitCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)split });
+        }
+
         PeriodCombo.SelectedIndex = 0;
         StyleCombo.SelectedIndex = 0;
         MotionCombo.SelectedIndex = 0;
+        SplitCombo.SelectedIndex = 0;
 
         FillRanges();
 
@@ -220,6 +230,8 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     private CandleStyle ChosenStyle() => Chosen(StyleCombo, CandleStyle.Candles);
 
     private CandleMotion ChosenMotion() => Chosen(MotionCombo, CandleMotion.Grow);
+
+    private CandleSplit ChosenSplit() => Chosen(SplitCombo, CandleSplit.Together);
 
     /// <summary>
     /// Whether the picture may run into the band the platform's own button rail covers. Read by
@@ -423,19 +435,36 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
         if (_board is { } board)
         {
+            // Split into panels, the frame is about at most three of them: the picks past the
+            // third are not drawn, and — this is the part that has to be done here rather than in
+            // the renderer — they are dropped from the **board** as well, so that the axis the
+            // panels are read against is the union of the days the *drawn* instruments traded.
+            // A board still carrying them would stretch the dates to cover an instrument with no
+            // panel, and the picture would be short by its own left-hand third for no visible
+            // reason. Rebuilt from the series in hand: a redraw, not a fetch.
+            var split = ChosenSplit() is CandleSplit.Apart;
+            var drawn = split ? CandleBoardLoader.Only(board, CandleBoardLoader.MostPanels) : board;
+
             // The axis reaches as far as the furthest any curve got, either way: returns go
             // down as well as up, and an axis scaled to the rises alone would draw the falls
             // off the bottom of the plot.
             var plan = AnimationPlan.For(
-                VideoSettings.Duration, board.Count,
-                Math.Max(Math.Abs(board.Peak), Math.Abs(board.Trough)));
+                VideoSettings.Duration, drawn.Count,
+                Math.Max(Math.Abs(drawn.Peak), Math.Abs(drawn.Trough)));
 
-            Preview.Renderer = new CandleRaceRenderer(
-                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
-            {
-                Title = title,
-                ShowTitle = showTitle,
-            };
+            Preview.Renderer = split
+                ? new CandleSplitRenderer(
+                    drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                {
+                    Title = title,
+                    ShowTitle = showTitle,
+                }
+                : new CandleRaceRenderer(
+                    drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                {
+                    Title = title,
+                    ShowTitle = showTitle,
+                };
         }
         else if (_fetched is { } fetched)
         {
@@ -477,6 +506,14 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         StyleCombo.IsEnabled = _board is null;
         AveragesCheck.IsEnabled = _board is null;
         VolumeCheck.IsEnabled = _board is null;
+
+        // The layout, on the other hand, is a comparison's own setting — one instrument is one
+        // chart however it is arranged. Its note goes with it, and only while there is a panel per
+        // instrument to explain: the limit of three is not a fact about the overlaid frame.
+        SplitCombo.IsEnabled = _board is not null;
+        SplitNote.Visibility = _board is not null && ChosenSplit() is CandleSplit.Apart
+            ? Visibility.Visible
+            : Visibility.Collapsed;
 
         var ready = _fetched is not null || _board is not null;
 
@@ -988,15 +1025,32 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                 CandleLoader.Iso(board.Start),
                 CandleLoader.Iso(board.End));
 
-            if (board.Skipped.Count == 0)
+            // Picked past the third, in the layout that draws one panel per instrument: drawn,
+            // they would be a fourth panel on top of one of the other three, so they are left out
+            // of the picture — and said out loud here rather than left for the reader to notice by
+            // counting the panels. Named, like the instruments the period could not supply: which
+            // ones are missing is what has to be acted on.
+            var beyond = ChosenSplit() is CandleSplit.Apart
+                ? board.Tracks.Skip(CandleBoardLoader.MostPanels).Select(track => track.Name).ToList()
+                : [];
+
+            var notes = new List<string>();
+
+            if (board.Skipped.Count > 0)
             {
-                ShowStatus(InfoBarSeverity.Success, fetched);
+                notes.Add(Strings.Format(
+                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped)));
             }
-            else
+
+            if (beyond.Count > 0)
             {
-                ShowStatus(InfoBarSeverity.Warning, $"{fetched} {Strings.Format(
-                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped))}");
+                notes.Add(Strings.Format(
+                    "CandleSplitTrimmed", CandleBoardLoader.MostPanels, string.Join(", ", beyond)));
             }
+
+            ShowStatus(
+                notes.Count == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning,
+                notes.Count == 0 ? fetched : $"{fetched} {string.Join(" ", notes)}");
         }, TimeSpan.FromMinutes(6));
     }
 
@@ -1168,6 +1222,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         Select(PeriodCombo, _prefs.GetInt("Period", 0));
         Select(StyleCombo, _prefs.GetInt("Style", 0));
         Select(MotionCombo, _prefs.GetInt("Motion", 0));
+        Select(SplitCombo, _prefs.GetInt("Split", 0));
 
         // A minute period remembered from a market that has minute candles, on a market
         // that does not: the preference is this page's, the market is the whole app's, and
@@ -1233,6 +1288,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         _prefs.Save("Period", (int)ChosenPeriod());
         _prefs.Save("Style", (int)ChosenStyle());
         _prefs.Save("Motion", (int)ChosenMotion());
+        _prefs.Save("Split", (int)ChosenSplit());
         _prefs.Save("Months", ChosenMonths());
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));

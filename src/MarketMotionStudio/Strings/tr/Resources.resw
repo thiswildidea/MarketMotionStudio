@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Animasyon</value></data>
   <data name="CandleMotionGrow"><value>Aralığın tamamı</value></data>
   <data name="CandleMotionScroll"><value>Kayan pencere</value></data>
+  <data name="CandleSplitLabel.Header"><value>Yerleşim</value></data>
+  <data name="CandleSplitTogether"><value>Tek grafik</value></data>
+  <data name="CandleSplitApart"><value>Her biri için bir grafik</value></data>
+  <data name="CandleSplitNote.Text"><value>Her enstrüman için bir panel, alt alta, en çok üç. Üçten fazla seçilirse listedeki ilk üç enstrüman çizilir, kalanlar durum çubuğunda belirtilir.</value></data>
+  <data name="CandleSplitTrimmed"><value>Bölünmüş yerleşim {0} panel alır; çizilmeyenler: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Pencere (mum)</value></data>
   <data name="CandleShowAverages.Content"><value>Hareketli ortalamalar MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Hacim</value></data>

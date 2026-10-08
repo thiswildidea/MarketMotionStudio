@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>Ablauf</value></data>
   <data name="CandleMotionGrow"><value>Über den ganzen Zeitraum</value></data>
   <data name="CandleMotionScroll"><value>Fenster weiterbewegen</value></data>
+  <data name="CandleSplitLabel.Header"><value>Anordnung</value></data>
+  <data name="CandleSplitTogether"><value>Ein Diagramm</value></data>
+  <data name="CandleSplitApart"><value>Je ein Diagramm</value></data>
+  <data name="CandleSplitNote.Text"><value>Je Instrument ein Panel, untereinander, höchstens drei. Bei mehr als drei Auswahlen werden die ersten drei der Liste gezeichnet, der Rest wird in der Statuszeile genannt.</value></data>
+  <data name="CandleSplitTrimmed"><value>Die Anordnung fasst {0} Panels; nicht gezeichnet: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Fenster (Kerzen)</value></data>
   <data name="CandleShowAverages.Content"><value>Gleitende Durchschnitte MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Volumen</value></data>

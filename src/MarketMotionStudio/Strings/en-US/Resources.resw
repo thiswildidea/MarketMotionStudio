@@ -501,6 +501,11 @@
   <data name="CandleMotionLabel.Header"><value>Motion</value></data>
   <data name="CandleMotionGrow"><value>Grow across the range</value></data>
   <data name="CandleMotionScroll"><value>Scroll a window</value></data>
+  <data name="CandleSplitLabel.Header"><value>Layout</value></data>
+  <data name="CandleSplitTogether"><value>One chart</value></data>
+  <data name="CandleSplitApart"><value>One chart each</value></data>
+  <data name="CandleSplitNote.Text"><value>One panel per instrument, stacked, up to three. With more than three picked, the first three in the list are drawn and the rest are named in the status line.</value></data>
+  <data name="CandleSplitTrimmed"><value>Split view holds {0} panels; not drawn: {1}</value></data>
   <data name="CandleWindowLabel.Header"><value>Window (candles)</value></data>
   <data name="CandleShowAverages.Content"><value>Moving averages MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>Volume</value></data>

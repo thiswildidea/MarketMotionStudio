@@ -195,7 +195,9 @@ def source():
     check("大数字按**收益率**选领先的那份（晚上市的投得少，赚得少不等于更差）",
           "var ret = (plot.Values[i] / plot.Paid[i]) - 1;" in render)
     check("多只时收尾是每份一张卡",
-          "DrawTrackCards(session, context, a, left, gap, y, cardHeight, valueFormat);" in render)
+          "DrawTrackCards(session, context, a);" in render
+          and "TrackCards.Draw(session, context, cards, a, _giveWay);" in render
+          and "TrackCards.Card(" in render)
 
     # ---- 末端实时收益金额 ----
     check("末端胶囊两行：名字 + 金额",
@@ -565,9 +567,18 @@ def main():
         check("窗口滚动：0.5 处曲线头已经停在绘图区右端",
               b is not None and tip is not None and tip - b <= width * 0.04,
               f"头 x={b}，绘图区右端 x={tip}（还差 {tip - b} 像素，画布宽 {width}）")
-        check("同一个进度下滚动比整段铺满靠右一大截",
-              a is not None and b is not None and b - a > width * 0.2,
-              f"整段 {a} → 滚动 {b}，差 {b - a} 像素（画布宽 {width}）")
+        # 界不能按**画布宽**给：这一条走的路本来就只到绘图区右端，而绘图区比画布窄一截
+        # （右边那一列是末端胶囊要占的）。实测 0.5 处整段铺满的头在画布 37%、滚动的头在
+        # 58%，差 76 px / 画布 383 px = **19.8%** —— 而界写的是 20%：这条一直坐在物理上限
+        # 上，过不过是四舍五入决定的。真要问的是「滚动这把头往右边推了多少」，所以拿**剩下
+        # 那段路**（头到绘图区右端）当尺子：实测 76 / 78 = 97%。开关没接上时 b≈a，这条照样红。
+        reach = None if (a is None or tip is None) else tip - a
+
+        check("同一个进度下滚动把曲线头推到了剩下的那段路的大半",
+              a is not None and b is not None and reach is not None and reach > 0
+              and b - a > reach * 0.5,
+              f"整段 {a} → 滚动 {b}（差 {b - a} px），绘图区右端 {tip}，"
+              f"剩下那段 {reach} px，推掉了 {0 if not reach else (b - a) / reach:.0%}")
 
     check("切回「整段铺满」", vp.motion(win, "整段铺满") == "整段铺满")
     check("切回来之后窗口框又是灰的", vp.window_on(win) is False,

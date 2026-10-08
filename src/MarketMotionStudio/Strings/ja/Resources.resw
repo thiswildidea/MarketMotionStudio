@@ -490,6 +490,11 @@
   <data name="CandleMotionLabel.Header"><value>進行</value></data>
   <data name="CandleMotionGrow"><value>全区間を描く</value></data>
   <data name="CandleMotionScroll"><value>窓をスクロール</value></data>
+  <data name="CandleSplitLabel.Header"><value>レイアウト</value></data>
+  <data name="CandleSplitTogether"><value>1 枚のチャート</value></data>
+  <data name="CandleSplitApart"><value>1 銘柄 1 チャート</value></data>
+  <data name="CandleSplitNote.Text"><value>分割表示では 1 銘柄につき 1 パネルを縦に並べ、最大 3 銘柄までです。4 銘柄以上を選ぶと、リストの順に前の 3 銘柄だけを描き、残りはステータス行に表示します。</value></data>
+  <data name="CandleSplitTrimmed"><value>分割表示は最大 {0} 銘柄です。未描画：{1}</value></data>
   <data name="CandleWindowLabel.Header"><value>表示本数</value></data>
   <data name="CandleShowAverages.Content"><value>移動平均 MA5/10/20</value></data>
   <data name="CandleShowVolume.Content"><value>出来高</value></data>

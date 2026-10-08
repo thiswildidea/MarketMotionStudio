@@ -58,6 +58,28 @@ public enum CandleMotion
 }
 
 /// <summary>
+/// How several instruments share the frame: over one axis, or one panel each.
+///
+/// The two answer the same question two ways, and neither is the better one. Together puts
+/// every curve on one percentage axis, which is what makes them comparable — one line above
+/// another means what it looks like it means. Apart gives each its own axis, which is what
+/// makes one of them *readable*: three curves of very different volatility drawn to one scale
+/// flatten the quiet ones into straight lines, and a panel scaled to its own range is the only
+/// way to see a quarter-per-cent day on an instrument that has been doing five.
+///
+/// A choice about the picture, so it re-fetches nothing; but on the apart side it decides how
+/// many instruments the frame is about — see <see cref="CandleBoardLoader.MostPanels"/>.
+/// </summary>
+public enum CandleSplit
+{
+    /// <summary>Every instrument on one axis, as cumulative percentages.</summary>
+    Together = 0,
+
+    /// <summary>One panel per instrument, stacked, each on its own percentage axis.</summary>
+    Apart = 1,
+}
+
+/// <summary>
 /// One span offered for one period, as a number of months back from today.
 /// </summary>
 /// <param name="Months">How far back; zero is as far as the source has.</param>
