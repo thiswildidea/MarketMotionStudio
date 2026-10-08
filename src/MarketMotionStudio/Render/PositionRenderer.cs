@@ -116,7 +116,22 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </summary>
     private readonly int _window;
 
+    /// <summary>
+    /// Whether the picture may run into the band the host covers with its button rail.
+    /// A constructor argument and not a property: the board and the motion are, and a
+    /// setting the renderer read back off a mutable property would arrive as the default
+    /// on the frame that mattered — with every control still looking right.
+    /// </summary>
+    private readonly bool _crossSafeRight;
+
     private readonly (double Step, double Top) _scale;
+
+    /// <summary>
+    /// How much of that band the frame now being drawn keeps clear: 1 all of it, 0 none.
+    /// Set once per frame, before anything measures the plot, because the plot's width and
+    /// the labels' right edge have to be answers to the same question.
+    /// </summary>
+    private double _giveWay = 1;
 
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
@@ -140,11 +155,18 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </summary>
     public string CurrencyKey { get; set; } = "DcaCurrencyCny";
 
-    public PositionRenderer(PositionBoard board, AnimationPlan plan, PositionMotion motion, int window)
+    /// <param name="crossSafeRight">
+    /// Whether the picture may run into the band the host covers with its button rail; see
+    /// the same argument on <see cref="DcaRenderer"/>, which this shares its arithmetic with.
+    /// </param>
+    public PositionRenderer(
+        PositionBoard board, AnimationPlan plan, PositionMotion motion, int window,
+        bool crossSafeRight = false)
     {
         _board = board;
         _plan = plan;
         _motion = motion;
+        _crossSafeRight = crossSafeRight;
 
         // Two is the least that still draws a line. A window longer than the range is not
         // wrong — it simply leaves nothing to scroll, and the frame grows instead of rolling.
@@ -197,6 +219,10 @@ public sealed class PositionRenderer : IFrameRenderer
         var bottom = context.BaselineAbove(CreditGap);
         var span = bottom - top;
         var mx = context.ChartLeft;
+
+        // Measured once, here, and read by everything that follows: the plot's width and the
+        // labels' right edge are two answers to one question.
+        _giveWay = GiveWay(t);
 
         // The plot stops short of the right edge by the width of the labels' column, so that a
         // label can ride ahead of its own line without ever leaving the frame. Only the data
@@ -484,6 +510,23 @@ public sealed class PositionRenderer : IFrameRenderer
     /// the picture, which is the wrong end to take it from. When the cap does bite, the
     /// labels give way instead: see <see cref="DrawLabels"/>.
     /// </summary>
+    /// <summary>
+    /// How much of the host's button rail the frame now being drawn keeps clear: the same
+    /// fraction, and the same reason for it being a fraction rather than a flag, as
+    /// <see cref="DcaRenderer"/>'s — the two motions are one choice offered on two pages.
+    /// </summary>
+    private double GiveWay(double t)
+    {
+        if (!_crossSafeRight)
+        {
+            return 1;
+        }
+
+        return _motion is PositionMotion.Scroll
+            ? 1 - Easing.Ramp(t, _plan.FinaleStartMs, AnimationPlan.OpenOutMs)
+            : 0;
+    }
+
     private double LabelColumn(CanvasDrawingSession session, FrameContext context)
     {
         using var nameFormat = Ink.Format(context.Px(LabelSize));
@@ -501,7 +544,7 @@ public sealed class PositionRenderer : IFrameRenderer
                 LabelWidth(session, context, nameFormat, valueFormat, track.Name, track.Profit));
         }
 
-        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad));
+        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay);
 
         return Math.Clamp(need, 0, context.ChartWidth * 0.45);
     }
@@ -575,10 +618,11 @@ public sealed class PositionRenderer : IFrameRenderer
             // in the editor and hidden on the phone it was made for is the failure this exists
             // to prevent. A long name with a large amount, and the side margins pushed out, can
             // leave the column narrower than the widest label, and then the label slides back
-            // over the point rather than into the rail.
+            // over the point rather than into the rail. `GiveWay` is what turns that line
+            // back into the frame's own edge on a page allowed to use the band.
             var left = Math.Min(
                 anchors[i].X + context.Px(LabelGap),
-                context.SafeRight - context.Px(LabelEdgePad) - width);
+                context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width);
 
             boxes.Add(new Rect(Math.Max(context.ChartLeft, left), anchors[i].Y, width, height));
         }

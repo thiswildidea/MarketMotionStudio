@@ -215,6 +215,13 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             : PositionMotion.Grow;
 
     /// <summary>
+    /// <summary>
+    /// Whether the frame keeps clear of the band the host covers with its button rail.
+    /// Read off the checkbox rather than out of the preferences: the renderer is handed the
+    /// choice, and a second copy of it would be a second place to keep the two in step.
+    /// </summary>
+    private bool CrossSafeRight() => CrossCheck.IsChecked is true;
+
     /// How many trading days the scrolling window holds.
     ///
     /// Clamped rather than refused, unlike the capital: an amount of zero is not a holding, while
@@ -288,7 +295,8 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
-            Preview.Renderer = new PositionRenderer(board, plan, ChosenMotion(), ChosenWindow())
+            Preview.Renderer = new PositionRenderer(
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -709,6 +717,9 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         WindowBox.Text = Math.Clamp(_prefs.GetInt("Window", DefaultWindow), MinWindow, MaxWindow)
             .ToString(CultureInfo.InvariantCulture);
 
+        // Off unless asked for: the band is where the host puts its own controls.
+        CrossCheck.IsChecked = _prefs.GetInt("CrossSafeRight", 0) != 0;
+
         // Three years, so the two pickers say something sensible the first time the
         // custom span is chosen instead of opening on today and today.
         var today = DateTimeOffset.Now;
@@ -739,6 +750,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         _prefs.Save("Months", ChosenMonths());
         _prefs.Save("Motion", (int)ChosenMotion());
         _prefs.Save("Window", ChosenWindow());
+        _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 

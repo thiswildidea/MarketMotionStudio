@@ -228,6 +228,13 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             : DcaMotion.Grow;
 
     /// <summary>
+    /// Whether the frame keeps clear of the band the host covers with its button rail.
+    /// Read off the checkbox rather than out of the preferences: the renderer is handed the
+    /// choice, and a second copy of it would be a second place to keep the two in step.
+    /// </summary>
+    private bool CrossSafeRight() => CrossCheck.IsChecked is true;
+
+    /// <summary>
     /// How many trading days the scrolling window holds.
     ///
     /// Clamped rather than refused, unlike the amount: an amount of zero is not a plan, while
@@ -301,7 +308,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
-            Preview.Renderer = new DcaRenderer(board, plan, ChosenMotion(), ChosenWindow())
+            Preview.Renderer = new DcaRenderer(board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -729,6 +736,9 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         WindowBox.Text = Math.Clamp(_prefs.GetInt("Window", DefaultWindow), MinWindow, MaxWindow)
             .ToString(CultureInfo.InvariantCulture);
 
+        // Off unless asked for: the band is where the host puts its own controls.
+        CrossCheck.IsChecked = _prefs.GetInt("CrossSafeRight", 0) != 0;
+
         VideoSettings.Restore(_prefs);
 
         _prefs.Restoring = false;
@@ -743,6 +753,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("Motion", (int)ChosenMotion());
         _prefs.Save("Window", ChosenWindow());
+        _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
 
         VideoSettings.Save(_prefs);
     }

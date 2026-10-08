@@ -124,6 +124,7 @@ order changing to the last frame. Sampled monthly.
 One stock's circulating market value day by day, with its share price beneath it on the same time axis. Or several companies at once — one line each, named at its end.
 
 - **The value is recovered, not quoted.** The source has no historical share count for any day. The count comes from the turnover rate, which is the volume as a fraction of the shares in circulation — so `volume ÷ turnover rate` *is* the circulating count, and the value is the day's price times it.
+- **The band down the right-hand side can be given up, if you want the width.** It is off by default: the platform draws its avatar and its like and comment buttons down that side of a vertical video, and a figure underneath them is hidden on the phone even though it is perfectly readable here. Turned on, the panels draw to the frame's own edge and the plot is as wide as the frame.
 
 - **The count is a twenty-day median.** The rate arrives with two decimals, so one day's count carries about a percent of noise, while a share count is a staircase — it moves on a placement or a buyback and is flat between. The median keeps the step on the day it happened and drops the rest.
 
@@ -418,6 +419,7 @@ Buying a fixed amount on a fixed cadence — every trading day, every week or ev
 - Besides three, five and ten years and the longest span, the range can be **Custom**: give a start and an end date, then press Fetch. About 35 years is reachable — the source serves roughly 640 calendar days per request, and the walk makes at most twenty of them.
 - **Two motions.** *Grow across the span* lays the whole range down at once; *scroll a window* holds a window of a fixed number of trading days and walks it from the start of the range to its end — the only way a long daily series keeps its wobbles readable. The window only counts while scrolling, and both motions read **the same marks**: switching re-fetches nothing. **The vertical axis is not rescaled per window**: the gap between the two lines *is* the result of a plan, and rescaling would widen it along with the window.
 - **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
+- **The band down the right-hand side can be given up, if you want the width.** It is off by default: the platform draws its avatar and its like and comment buttons down that side of a vertical video, and a figure underneath them is hidden on the phone even though it is perfectly readable here. Turned on, a frame filling the whole span draws to the frame's own edge from its first frame on; a scrolling window still keeps clear while it is a window, and opens out into the full width along with the window — so the frame the video stops on is the whole span, edge to edge.
 
 ## Holdings Return
 
@@ -433,6 +435,7 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 - The same **Custom** span works for the holding: give two dates, then press Fetch. If the instrument listed later than the date you asked for, the holding starts on its first trading day.
 - **Two motions.** *Grow across the span* lays the whole range down at once, so the curve's shape on screen is its shape in time. *Scroll a window* holds a window of a fixed number of trading days and walks it from the start of the range to its end — the only way a long daily series keeps its wobbles readable, since spread over twelve years a three-month fall is two pixels. The window only counts while scrolling, and both motions read **the same marks**: switching re-fetches nothing.
 - **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
+- **The band down the right-hand side can be given up, if you want the width.** It is off by default: the platform draws its avatar and its like and comment buttons down that side of a vertical video, and a figure underneath them is hidden on the phone even though it is perfectly readable here. Turned on, a frame filling the whole span draws to the frame's own edge from its first frame on; a scrolling window still keeps clear while it is a window, and opens out into the full width along with the window — so the frame the video stops on is the whole span, edge to edge.
 
 ## Video
 

@@ -200,6 +200,30 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         SavePreferences();
     }
 
+    /// <summary>
+    /// Whether the picture may run into the band the host covers. Not a term of the fetch
+    /// either — it is a question of where the drawing stops, not of what is drawn — so it
+    /// redraws and stops there, the same as the axis.
+    /// </summary>
+    private void OnLookChanged(object sender, RoutedEventArgs e)
+    {
+        if (!_ready)
+        {
+            return;
+        }
+
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
+    /// <summary>
+    /// Whether the frame keeps clear of the band the host covers with its button rail.
+    /// Read straight off the checkbox rather than out of the preferences, because the two
+    /// are the same answer by the time this is asked — and a renderer handed a copy of the
+    /// preference instead of the choice would be a second place to keep them in step.
+    /// </summary>
+    private bool CrossSafeRight() => CrossCheck.IsChecked is true;
+
     // ---- preview ---------------------------------------------------------------------
 
     private void ApplyPreviewSettings()
@@ -215,7 +239,7 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Count, board.CapPeak);
 
-            Preview.Renderer = new CapHistoryRenderer(board, plan, ChosenAxis())
+            Preview.Renderer = new CapHistoryRenderer(board, plan, ChosenAxis(), CrossSafeRight())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -633,6 +657,10 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         Select(RangeCombo, _prefs.GetInt("Months", 24));
         Select(AxisCombo, _prefs.GetInt("Axis", (int)CapAxis.Absolute));
 
+        // Off unless asked for: the band is where the host puts its own controls, and a
+        // figure drawn into it is missing on the phone rather than merely close to an edge.
+        CrossCheck.IsChecked = _prefs.GetInt("CrossSafeRight", 0) != 0;
+
         CustomRange.Visibility = ChosenMonths() == CustomMonths ? Visibility.Visible : Visibility.Collapsed;
 
         VideoSettings.Restore(_prefs);
@@ -652,6 +680,7 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
 
         _prefs.Save("Months", ChosenMonths());
         _prefs.Save("Axis", (int)ChosenAxis());
+        _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 

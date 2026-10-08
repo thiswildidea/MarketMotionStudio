@@ -66,6 +66,7 @@
   <data name="StudioTitleNote.Text"><value>Deixe vazio para usar o título padrão. Pressione Enter para quebrá-lo onde quiser; se não couber em uma linha ele quebra sozinho em uma segunda — no máximo duas — e só então o tamanho cede, até a metade. Uma segunda linha empurra uma linha para baixo tudo o que vem depois.</value></data>
   <data name="StudioHideTitle.Header"><value>Ocultar o título</value></data>
   <data name="StudioHideTitleNote.Text"><value>A linha do título volta para o gráfico e tudo abaixo sobe para ela. A margem inferior mantém a borda de baixo fixa, então os painéis crescem. Ao desmarcar, o layout volta exatamente.</value></data>
+  <data name="SafeRightCross.Content"><value>Permitir que o gráfico cruze a linha de segurança à direita</value></data>
   <data name="StockTitlePlaceholder"><value>O nome da ação obtida</value></data>
   <data name="StudioVideoSection.Text"><value>Vídeo</value></data>
   <data name="StudioLayoutSection.Text"><value>Layout</value></data>

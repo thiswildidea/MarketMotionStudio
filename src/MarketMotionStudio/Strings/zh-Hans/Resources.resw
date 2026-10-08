@@ -71,6 +71,7 @@
   <data name="StudioTitleNote.Text"><value>留空则使用默认标题。标题里可以按回车手动换行；一行放不下会按宽度自动折成第二行（最多两行），两行仍放不下才按比例缩小字号（最多缩到一半）。折出第二行时下面的内容整体下移一行。</value></data>
   <data name="StudioHideTitle.Header"><value>隐藏标题</value></data>
   <data name="StudioHideTitleNote.Text"><value>标题占的那一行还给图表，下面的内容整体上移一行。底边由下边距锁住不动，所以面板会长高。取消勾选可精确恢复原样。</value></data>
+  <data name="SafeRightCross.Content"><value>允许图形越过右侧安全线</value></data>
   <data name="StockTitlePlaceholder"><value>使用抓到的股票名称</value></data>
   <data name="StudioVideoSection.Text"><value>视频</value></data>
   <data name="StudioLayoutSection.Text"><value>版面</value></data>

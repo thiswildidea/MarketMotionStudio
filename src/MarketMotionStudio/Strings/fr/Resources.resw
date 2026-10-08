@@ -66,6 +66,7 @@
   <data name="StudioTitleNote.Text"><value>Laissez vide pour utiliser le titre par défaut. Appuyez sur Entrée pour le couper où vous voulez ; s'il ne tient pas sur une ligne il se replie seul sur une deuxième — deux au maximum — et ce n'est qu'alors que la taille cède, jusqu'à la moitié. Une deuxième ligne décale d'une ligne tout ce qui suit.</value></data>
   <data name="StudioHideTitle.Header"><value>Masquer le titre</value></data>
   <data name="StudioHideTitleNote.Text"><value>La ligne du titre revient au graphique et tout ce qui est en dessous y remonte. La marge basse maintient le bord inférieur, donc les panneaux s'agrandissent. Décoché, la disposition est restituée à l'identique.</value></data>
+  <data name="SafeRightCross.Content"><value>Laisser le graphique dépasser la ligne de sécurité à droite</value></data>
   <data name="StockTitlePlaceholder"><value>Le nom de la valeur récupérée</value></data>
   <data name="StudioVideoSection.Text"><value>Vidéo</value></data>
   <data name="StudioLayoutSection.Text"><value>Mise en page</value></data>

@@ -136,6 +136,16 @@
                              Text="60"
                              TextChanged="OnLookChanged" />
 
+                    <!-- Whether the picture may run into the band the phone's own interface
+                         covers. Off by default: that band is where the avatar and the
+                         comment button sit. On, a frame filling the span is as wide as the
+                         frame, and a scrolling one opens out into that too — its window
+                         keeps clear while it is still a window. -->
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

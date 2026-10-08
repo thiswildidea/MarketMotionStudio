@@ -1037,11 +1037,12 @@ def source_checks():
     check("预设按代码寻址", 'AutomationProperties.AutomationId="{x:Bind Code}"' in xaml)
 
     # 刻度必须是**构造参数**。写成属性会读成默认的「实际数值」，而周围的控件全绿。
+    # 只盯「刻度在构造参数表里」，不把整行签名抄下来 —— 签名会随新开关变长，抄下来的那一行
+    # 会在加一个参数时变红，而它要管的那件事一点没变。
     check("渲染器在构造时就拿到了刻度",
-          "public CapHistoryRenderer(CapBoard board, AnimationPlan plan, "
-          "CapAxis axis = CapAxis.Absolute)" in draw)
+          "public CapHistoryRenderer(" in draw and "CapAxis axis = CapAxis.Absolute," in draw)
     check("页面把选中的刻度真的传了进去",
-          "new CapHistoryRenderer(board, plan, ChosenAxis())" in code,
+          "new CapHistoryRenderer(board, plan, ChosenAxis(), CrossSafeRight())" in code,
           "代码里找不到 ChosenAxis() 那次构造")
 
     # 多标的时只留市值一个面板。画面上两种样子都像一张画好的图，量出任一种「就是这样」的像素
@@ -1097,11 +1098,20 @@ def source_checks():
     # 右边距里」——而那是错的，安全区右边那条栏是帧宽 18%（1080 下 194 像素），比右边距默认
     # 150 还宽，胶囊于是落在帧宽 98%、正好在平台头像与评论按钮底下。三页现在共用一处算术。
     check("右缘收在**安全线**上，不是画面右缘（右边 18% 是平台自己的按钮栏）",
-          "context.SafeRight - context.Px(LabelEdgePad) - width" in draw,
+          "context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width" in draw,
           "还在按画面右缘收")
     check("让出的那一列把按钮栏算进去了，且三页共用同一处算术（不再各抄一份）",
-          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad))" in draw,
+          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay)" in draw,
           "还在各抄一份 need = widest + … - Margins.Right")
+
+    # 这条带可以让出来：一个开关，默认关。这一页**没有推进方式**可选（它天然就是整段铺满），
+    # 所以让位量是个常量，不像另两页那样跟着斜坡动 —— 也是因此它不能在每帧重算：两块面板
+    # 共用时间轴，两处量出来不一样会把市值和股价错开日子。
+    check("开关是**构造参数**（写成属性会读成默认值，而 UIA 全绿）",
+          "bool crossSafeRight = false)" in draw, "开关写成了属性")
+    check("让位量在构造时定一次（两块面板共用同一列）",
+          "_giveWay = crossSafeRight ? 0 : 1;" in draw
+          and "private readonly double _giveWay = 1;" in draw)
 
     # 单只也要挂：`DrawPanel` 里没有那一次调用，「单只没有标注」这个老样子会一直留着而 UIA 全绿。
     panel = re.search(r"private int DrawPanel\(.*?\n    \}", draw, re.S)
@@ -1253,6 +1263,68 @@ def main():
                   "胶囊起于 %s，曲线止于 %s" % (
                       None if cap is None else cap[0],
                       None if span is None else span["columns"][-1]))
+
+    # ---- 1b) 右边那条带可以让出来（开关，默认关） ----------------------------------
+    #
+    # 这一页**没有推进方式**可选，所以开关不受任何东西门控：开着就用满整幅宽。源码断言管的是
+    # 「代码里写了」，真机这一条管的才是「画面真的变宽了」—— 开关写成属性会读成默认值，那时
+    # 源码断言照样绿，而这个开关等于没有。
+    print("右边那条带：")
+
+    def cross(state):
+        """把复选框扳到 `state`，返回有没有真的扳到。"""
+        box = first(win, "CrossCheck")
+
+        if box is None:
+            return False
+
+        pattern = toggle_of(box)
+
+        if pattern is None:
+            return False
+
+        # uiautomation 把枚举成整数：On 是 1，Off 是 0。
+        wanted = 1 if state else 0
+
+        for _ in range(4):
+            if pattern.ToggleState == wanted:
+                return True
+
+            press(box, win)
+            time.sleep(0.4)
+
+        return pattern.ToggleState == wanted
+
+    def capsule_end(path, test=IS_TRACK_0):
+        """这一帧上市值那颗胶囊的右缘，连画面右缘与安全线。"""
+        rows, one_box = curve_rows(path, test)
+        cap = capsule_of(rows, one_box) if rows else None
+
+        if cap is None:
+            return None
+
+        left, right = one_box[0], one_box[1]
+
+        return cap[-1], right, right - round((right - left) * 0.18)
+
+    if not cross(True):
+        check("找得到那个复选框，而且扳得动", False, "CrossCheck 没找到，或没能扳到开")
+    else:
+        path, _ = frame_at(win, "caphistory-cross-on.png", 1.0)
+        wide = capsule_end(path) if path else None
+
+        if wide is None:
+            check("打开开关后量得出胶囊", False, "取不到胶囊")
+        else:
+            end, right, line = wide
+
+            check("打开开关：市值那颗胶囊越过了安全线（画面用满整幅宽）", end > line,
+                  f"胶囊右缘 x={end}，安全线 x={line}")
+            check("越过去了，但没跑出画面", end <= right,
+                  f"胶囊右缘 x={end}，画面右缘 x={right}")
+
+    # 动过的偏好无条件改回。
+    cross(False)
 
     # ---- 2) 长大时会不会动（这一条只有播放途中才现形，末帧是全对的） --------------
     print("生长：")

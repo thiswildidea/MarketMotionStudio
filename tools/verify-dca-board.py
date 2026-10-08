@@ -127,9 +127,10 @@ def source():
           "public enum DcaMotion" in series)
     check("两种：整段铺满与窗口滚动",
           "Grow = 0" in series and "Scroll = 1" in series)
+    # 只盯「走法在构造参数表里」，不把整行签名抄下来 —— 签名会随新开关变长，抄下来的那一行
+    # 会在加一个参数时变红，而它要管的那件事一点没变。
     check("走法是渲染器的**构造参数**（写成属性会读成默认值）",
-          "public DcaRenderer(DcaBoard board, AnimationPlan plan, DcaMotion motion, int window)"
-          in render)
+          "public DcaRenderer(" in render and "DcaMotion motion, int window," in render)
     check("窗口至少两根（一根连不成线）", "_window = Math.Max(2, window)" in render)
     # 窗口三件套（多少格 / 右端 / 左端）**不在这三个渲染器里各算一遍**：持仓与 K 线是同一
     # 套算术，改一处就得改三处，而每页单看都对。它住在 `AnimationPlan.Window`，这里断言的
@@ -215,9 +216,20 @@ def source():
     # 帧宽的 18%（1080 下 194 像素），比右边距的默认值 150 还宽。按画面右缘收的胶囊因此落在
     # 帧宽 98% 处 —— 正好在平台头像和评论按钮底下。现在收在安全线上。
     check("右缘收在**安全线**上，不是画面右缘（右边 18% 是平台自己的按钮栏）",
-          "context.SafeRight - context.Px(LabelEdgePad) - width" in render)
+          "context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width" in render)
     check("让出的那一列把按钮栏算进去了，且三页共用同一处算术（不再各抄一份）",
-          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad))" in render)
+          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay)"
+          in render)
+    # 让位量是个小数而不是布尔：窗口滚动的收尾那一段要把窗口展开成整段，展开完的那一帧
+    # 就是「整段铺满」，所以让位量跟着同一个斜坡收到 0。关着时恒为 1。
+    check("开关是**构造参数**（写成属性会读成默认值，而 UIA 全绿）",
+          "bool crossSafeRight = false)" in render)
+    check("关着时全额让位，整段铺满开着时不让位，滚动按展开的斜坡让",
+          "if (!_crossSafeRight)\n        {\n            return 1;\n        }" in render
+          and "? 1 - Easing.Ramp(t, _plan.FinaleStartMs, AnimationPlan.OpenOutMs)\n            : 0;"
+          in render)
+    check("让位量一帧只算一次",
+          "_giveWay = GiveWay(t);" in render and render.count("GiveWay(t)") == 1)
     check("绘图区让出一列给胶囊（标题、卡片、进度条仍是整幅宽）",
           "Math.Max(1, context.ChartWidth - LabelColumn(session, context))" in render)
     check("那一列按**最终**金额量，所以每帧一样宽（不然曲线会横着滑）",

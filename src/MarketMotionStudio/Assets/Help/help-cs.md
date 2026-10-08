@@ -120,6 +120,7 @@ kapitalizace; pořadí se mění až do posledního snímku. Vzorkování po mě
 Tržní hodnota jedné akcie v oběhu den po dni a pod ní cena akcie na stejné časové ose. Nebo více firem najednou — každá jednou linií, pojmenovanou na konci.
 
 - **Hodnota je dopočítaná, ne uvedená.** Zdroj nemá historický počet akcií pro žádný den. Vyplývá z míry obratu, což je objem jako podíl akcií v oběhu — takže `objem ÷ míra obratu` *je* tento počet a hodnota je denní cena krát tento počet.
+- **Pás na pravé straně lze uvolnit, chcete-li šířku.** Ve výchozím nastavení je vypnutý: platforma kreslí svůj avatar a tlačítka „to se mi líbí“ a komentářů na té straně svislého videa a číslo pod nimi je na telefonu skryté, přestože je tu zcela čitelné. Zapnutý: panely kreslí až k vlastnímu okraji záběru a graf je široký jako záběr.
 
 - **Počet je medián dvaceti dnů.** Míra přichází se dvěma desetinnými místy, takže jeden den nese asi procento šumu, zatímco počet akcií je schodiště: hýbe se při emisi nebo zpětném odkupu a jinak stojí. Medián ponechá stupeň na dni, kdy vznikl.
 
@@ -394,6 +395,7 @@ Nákup jednoho nástroje za pevnou částku v pevných intervalech — každý o
 - Kromě 3, 5 a 10 let a nejdelšího období lze zvolit i **Vlastní**: zadejte počáteční a koncové datum a stiskněte načtení dat. Dostupných je asi 35 let zpět — zdroj vrací zhruba 640 kalendářních dnů na jeden požadavek a průchod jich provede nejvýše dvacet.
 - **Dva způsoby animace.** *Celé období* rozloží celý rozsah najednou; *posuvné okno* drží okno s pevným počtem obchodních dnů a posouvá je od začátku do konce rozsahu — jen tak zůstanou výkyvy dlouhé denní řady čitelné. Okno má význam jen při posouvání a oba způsoby čtou **stejné kurzy** — přepnutí nic nenačítá. **Svislá osa se pro okno nepřepočítává**: odstup mezi oběma čarami *je* výsledkem plánu, a přepočet by ho roztáhl spolu s oknem.
 - **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
+- **Pás na pravé straně lze uvolnit, chcete-li šířku.** Ve výchozím nastavení je vypnutý: platforma kreslí svůj avatar a tlačítka „to se mi líbí“ a komentářů na té straně svislého videa a číslo pod nimi je na telefonu skryté, přestože je tu zcela čitelné. Zapnutý: záběr, který vyplňuje celý rozsah, kreslí od první snímku až k vlastnímu okraji záběru; posuvné okno drží odstup, dokud je oknem, a spolu s oknem se rozevře na plnou šířku — snímek, na kterém video skončí, je tedy celý rozsah od okraje k okraji.
 
 ## Výnos pozice
 
@@ -409,6 +411,7 @@ Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 —
 - Stejné **Vlastní** období platí i pro držbu: zadejte dvě data a stiskněte načtení dat. Pokud byl nástroj uveden na trh později, než je zadané datum, držba začíná jeho prvním obchodním dnem.
 - **Dva způsoby animace.** *Celé období* rozloží celý rozsah najednou, takže tvar křivky na obrazovce je její tvar v čase. *Posuvné okno* drží okno s pevným počtem obchodních dnů a posouvá je od začátku do konce rozsahu — jen tak zůstanou výkyvy dlouhé denní řady čitelné, protože rozložená na dvanáct let jsou tři měsíce poklesu dva pixely. Okno má význam jen při posouvání a oba způsoby čtou **stejné kurzy** — přepnutí nic nenačítá.
 - **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
+- **Pás na pravé straně lze uvolnit, chcete-li šířku.** Ve výchozím nastavení je vypnutý: platforma kreslí svůj avatar a tlačítka „to se mi líbí“ a komentářů na té straně svislého videa a číslo pod nimi je na telefonu skryté, přestože je tu zcela čitelné. Zapnutý: záběr, který vyplňuje celý rozsah, kreslí od první snímku až k vlastnímu okraji záběru; posuvné okno drží odstup, dokud je oknem, a spolu s oknem se rozevře na plnou šířku — snímek, na kterém video skončí, je tedy celý rozsah od okraje k okraji.
 
 ## Video
 

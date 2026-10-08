@@ -118,6 +118,17 @@ public sealed class CapHistoryRenderer : IFrameRenderer
 
     private readonly bool _normalized;
 
+    /// <summary>
+    /// How much of the host's button rail the frame keeps clear: 1 all of it, 0 none.
+    ///
+    /// Fixed rather than read off the frame's time, unlike the two pages with a choice of
+    /// motion: this one fills the span from its first frame on, so there is no stretch
+    /// across which the reservation could shrink. One number for the whole video is also
+    /// what keeps the two panels' capsules on the same column — measured twice, they would
+    /// put a value and a price on different days.
+    /// </summary>
+    private readonly double _giveWay = 1;
+
     private readonly (double Step, double Top) _capScale;
 
     private readonly (double Step, double Top) _priceScale;
@@ -151,12 +162,22 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     /// </summary>
     private int _titleLines;
 
-    public CapHistoryRenderer(CapBoard board, AnimationPlan plan, CapAxis axis = CapAxis.Absolute)
+    /// <param name="crossSafeRight">
+    /// Whether the picture may run into the band the host covers with its button rail. This
+    /// page has no choice of motion to gate it on — it fills the span from the first frame
+    /// on, which is the motion the other two pages' setting is about — so the setting is
+    /// simply whether to keep clear, and it is one number for the whole video rather than a
+    /// fraction that moves.
+    /// </param>
+    public CapHistoryRenderer(
+        CapBoard board, AnimationPlan plan, CapAxis axis = CapAxis.Absolute,
+        bool crossSafeRight = false)
     {
         _board = board;
         _plan = plan;
         _comparing = board.Comparing;
         _normalized = axis is CapAxis.Normalized;
+        _giveWay = crossSafeRight ? 0 : 1;
 
         // Each axis of its own: one step for both would leave one reading's gridlines
         // disagreeing with its own data, which reads as that reading being wrong — and
@@ -462,7 +483,7 @@ public sealed class CapHistoryRenderer : IFrameRenderer
             }
         }
 
-        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad));
+        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay);
 
         return Math.Clamp(need, 0, context.ChartWidth * MostLabelShare);
     }
@@ -531,7 +552,7 @@ public sealed class CapHistoryRenderer : IFrameRenderer
             // line rather than into the rail.
             var left = Math.Min(
                 end.X + context.Px(LabelGap),
-                context.SafeRight - context.Px(LabelEdgePad) - width);
+                context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width);
 
             boxes.Add((Math.Max(context.ChartLeft, left), width));
         }

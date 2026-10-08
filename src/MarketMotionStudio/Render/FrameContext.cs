@@ -72,9 +72,18 @@ public sealed record FrameContext(
     /// never true, and which put those labels at 98% of the frame on a 9:16 vertical, exactly
     /// where the avatar and the comment button sit. The frames looked right in the editor
     /// because the editor draws no such interface.
+    /// <para>
+    /// <paramref name="giveWay"/> is how much of that band the frame still keeps clear, and it
+    /// is a fraction rather than a flag because one motion needs the values between the two
+    /// ends. A scrolling window spends the closing stretch opening out into the whole range,
+    /// and on a page allowed to use the band the frame it ends on is the whole range drawn
+    /// to the frame's own edge — so the reservation shrinks across that stretch rather than
+    /// vanishing at its start. 1 keeps the whole rail clear; 0 ignores it, and the picture
+    /// is as wide as the frame.
     /// </para>
     /// </summary>
-    public double SafeRight => Width * (1 - SafeArea.Right);
+    /// <param name="giveWay">How much of the rail to keep clear: 1 all of it, 0 none.</param>
+    public double SafeRight(double giveWay = 1) => Width * (1 - (SafeArea.Right * giveWay));
 
     /// <summary>
     /// What a column of labels at the plot's right end costs the plot, in frame pixels: the
@@ -99,8 +108,13 @@ public sealed record FrameContext(
     /// </summary>
     /// <param name="widestLabel">The widest label to be drawn, measured in the face it is drawn in.</param>
     /// <param name="gap">What separates a label from the point it rides.</param>
-    public double RightLabelColumn(double widestLabel, double gap) =>
-        widestLabel + gap + (Width * SafeArea.Right) - Margins.Right;
+    /// <param name="giveWay">
+    /// How much of the rail the frame still keeps clear: 1 is all of it, 0 is none, and a
+    /// fraction between the two is a frame that has decided to use part of the band. See
+    /// <see cref="SafeRight"/>.
+    /// </param>
+    public double RightLabelColumn(double widestLabel, double gap, double giveWay = 1) =>
+        widestLabel + gap + (Width * SafeArea.Right * giveWay) - Margins.Right;
 
     /// <summary>
     /// Where the lowest thing in the frame sits: the data-source credit. This is

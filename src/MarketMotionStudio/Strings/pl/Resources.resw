@@ -66,6 +66,7 @@
   <data name="StudioTitleNote.Text"><value>Zostaw puste, aby użyć tytułu domyślnego. Naciśnij Enter, aby złamać tytuł tam, gdzie chcesz; gdy nie mieści się w jednej linii, sam przechodzi do drugiej — najwyżej dwóch — i dopiero wtedy maleje stopień pisma, najwyżej do połowy. Druga linia przesuwa wszystko poniżej o jeden wiersz.</value></data>
   <data name="StudioHideTitle.Header"><value>Ukryj tytuł</value></data>
   <data name="StudioHideTitleNote.Text"><value>Wiersz tytułu wraca do wykresu, a wszystko pod nim przesuwa się w górę na jego miejsce. Dolny margines trzyma dolną krawędź, więc panele rosną. Po odznaczeniu układ wraca dokładnie.</value></data>
+  <data name="SafeRightCross.Content"><value>Pozwól wykresowi przekroczyć prawą linię bezpieczeństwa</value></data>
   <data name="StockTitlePlaceholder"><value>Nazwa pobranej spółki</value></data>
   <data name="StudioVideoSection.Text"><value>Film</value></data>
   <data name="StudioLayoutSection.Text"><value>Układ</value></data>

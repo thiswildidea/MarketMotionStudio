@@ -98,7 +98,24 @@ public sealed class DcaRenderer : IFrameRenderer
 
     private readonly int _window;
 
+    /// <summary>
+    /// Whether the picture may run into the band the host covers with its button rail.
+    /// A constructor argument and not a property: the board and the motion are, and a
+    /// setting the renderer read back off a mutable property would arrive as the default
+    /// on the frame that mattered — with every control still looking right.
+    /// </summary>
+    private readonly bool _crossSafeRight;
+
     private readonly (double Step, double Top) _scale;
+
+    /// <summary>
+    /// How much of that band the frame now being drawn keeps clear: 1 all of it, 0 none.
+    /// Set once per frame, before anything measures the plot, because the plot's width and
+    /// the labels' right edge have to be answers to the same question — a column measured
+    /// against one and a label gathered to the other would disagree about where the line
+    /// ends. See <see cref="GiveWay"/>.
+    /// </summary>
+    private double _giveWay = 1;
 
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
@@ -122,11 +139,21 @@ public sealed class DcaRenderer : IFrameRenderer
     /// </summary>
     public string CurrencyKey { get; set; } = "DcaCurrencyCny";
 
-    public DcaRenderer(DcaBoard board, AnimationPlan plan, DcaMotion motion, int window)
+    /// <param name="crossSafeRight">
+    /// Whether the picture may run into the band the host covers with its button rail. Off,
+    /// the plot stops short of it and the labels come to rest on its near side; on, the plot
+    /// is as wide as the frame and the labels ride to the frame's own edge — which is what
+    /// the page looked like before the band was measured, and what a frame meant for a
+    /// surface with no such rail wants. Scrolling keeps clear until it opens out, because
+    /// until then it is a window rather than the whole range; see <see cref="GiveWay"/>.
+    /// </param>
+    public DcaRenderer(
+        DcaBoard board, AnimationPlan plan, DcaMotion motion, int window, bool crossSafeRight = false)
     {
         _board = board;
         _plan = plan;
         _motion = motion;
+        _crossSafeRight = crossSafeRight;
 
         // Two is the shortest span that can still be drawn as a line.
         _window = Math.Max(2, window);
@@ -165,6 +192,11 @@ public sealed class DcaRenderer : IFrameRenderer
         var bottom = context.BaselineAbove(CreditGap);
         var span = bottom - top;
         var mx = context.ChartLeft;
+
+        // Measured once, here, and read by everything that follows: the plot's width and the
+        // labels' right edge are two answers to one question, and a frame that answered it
+        // twice would draw a line ending somewhere other than where its label is waiting.
+        _giveWay = GiveWay(t);
 
         // The plot stops short of the right edge by the width of the labels' column, so that a
         // label can ride ahead of its own line without ever leaving the frame. Only the data
@@ -490,6 +522,30 @@ public sealed class DcaRenderer : IFrameRenderer
     /// the picture, which is the wrong end to take it from. When the cap does bite, the
     /// labels give way instead: see <see cref="DrawLabels"/>.
     /// </summary>
+    /// <summary>
+    /// How much of the host's button rail the frame now being drawn keeps clear.
+    ///
+    /// Not a flag but a fraction, because scrolling needs the values between the two ends.
+    /// It spends the closing stretch opening its window out into the whole range, and the
+    /// frame a video stops on is then the whole range — the same picture growing draws from
+    /// its first frame on. A frame allowed to use the band therefore has to *become* that
+    /// picture rather than switch to it: the reservation shrinks across the same ramp the
+    /// window opens on, and reaches nothing exactly when the window has finished opening.
+    /// Until the ramp starts, a scrolling frame is still a window, and it keeps clear like
+    /// one — its labels sit as far right as a window's do.
+    /// </summary>
+    private double GiveWay(double t)
+    {
+        if (!_crossSafeRight)
+        {
+            return 1;
+        }
+
+        return _motion is DcaMotion.Scroll
+            ? 1 - Easing.Ramp(t, _plan.FinaleStartMs, AnimationPlan.OpenOutMs)
+            : 0;
+    }
+
     private double LabelColumn(CanvasDrawingSession session, FrameContext context)
     {
         using var nameFormat = Ink.Format(context.Px(LabelSize));
@@ -507,7 +563,7 @@ public sealed class DcaRenderer : IFrameRenderer
                 LabelWidth(session, context, nameFormat, valueFormat, track.Name, FinalProfit(track)));
         }
 
-        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad));
+        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay);
 
         return Math.Clamp(need, 0, context.ChartWidth * 0.45);
     }
@@ -600,9 +656,13 @@ public sealed class DcaRenderer : IFrameRenderer
             // to prevent. A long name with a large amount, and the side margins pushed out, can
             // leave the column narrower than the widest label, and then the label slides back
             // over the point rather than into the rail.
+            //
+            // `GiveWay` is what turns that line back into the frame's own edge on a page
+            // allowed to use the band — wholly, on a frame that fills the span, and by
+            // however much the window has opened out on one that is still opening.
             var left = Math.Min(
                 anchors[i].X + context.Px(LabelGap),
-                context.SafeRight - context.Px(LabelEdgePad) - width);
+                context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width);
 
             boxes.Add(new Rect(Math.Max(context.ChartLeft, left), anchors[i].Y, width, height));
         }

@@ -123,6 +123,7 @@ mercado, com a ordem mudando até o último quadro. Amostragem mensal.
 O valor de mercado em circulação de uma ação dia a dia, com o preço da ação abaixo no mesmo eixo de tempo. Ou várias empresas ao mesmo tempo — uma linha cada, nomeada na ponta.
 
 - **O valor é reconstruído, não citado.** A fonte não tem uma contagem histórica de ações para nenhum dia. Ela vem da taxa de giro, que é o volume como fração das ações em circulação — logo `volume ÷ taxa de giro` *é* essa contagem, e o valor é o preço do dia vezes ela.
+- **A faixa do lado direito pode ser cedida, se você quiser a largura.** Ela vem desligada: a plataforma desenha seu avatar e os botões de curtir e comentar desse lado de um vídeo vertical, e um número sob eles fica escondido no celular, embora aqui esteja perfeitamente legível. Ativada, os painéis desenham até a própria borda do quadro e o gráfico fica tão largo quanto o quadro.
 
 - **A contagem é a mediana de vinte dias.** A taxa vem com duas casas decimais, então um dia traz cerca de um por cento de ruído, enquanto a contagem de ações é uma escada: move-se numa emissão ou recompra e fica parada entre elas. A mediana deixa o degrau no dia em que ocorreu.
 
@@ -414,6 +415,7 @@ Comprar um ativo com valor e frequência fixos — todo dia de pregão, toda sem
 - Além de 3, 5 e 10 anos e do período mais longo, o intervalo pode ser **Personalizado**: informe a data inicial e a final e pressione o botão de buscar dados. Dá para voltar cerca de 35 anos — a fonte entrega cerca de 640 dias corridos por requisição e a varredura faz no máximo vinte.
 - **Dois modos de avanço.** *Todo o período* dispõe o intervalo inteiro de uma vez; *janela deslizante* mantém uma janela de um número fixo de dias de negociação e a percorre do início ao fim do intervalo — é a única forma de uma longa série diária manter as oscilações legíveis. A janela só conta ao deslizar, e os dois modos leem **os mesmos dados**: trocar não baixa nada de novo. **O eixo vertical não é reescalado por janela**: a distância entre as duas linhas *é* o resultado de um plano, e reescalar a alargaria junto com a janela.
 - **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
+- **A faixa do lado direito pode ser cedida, se você quiser a largura.** Ela vem desligada: a plataforma desenha seu avatar e os botões de curtir e comentar desse lado de um vídeo vertical, e um número sob eles fica escondido no celular, embora aqui esteja perfeitamente legível. Ativada, um quadro que preenche todo o intervalo desenha até a própria borda do quadro desde o primeiro quadro; uma janela rolante continua mantendo distância enquanto é uma janela e se abre para a largura total junto com a janela — então o quadro em que o vídeo para é o intervalo inteiro, de borda a borda.
 
 ## Retorno de posição
 
@@ -429,6 +431,7 @@ Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mo
 - O mesmo intervalo **Personalizado** vale para a posição: informe duas datas e pressione buscar dados. Se o ativo passou a ser negociado depois da data informada, a posição começa no seu primeiro dia de negociação.
 - **Dois modos de avanço.** *Todo o período* dispõe o intervalo inteiro de uma vez, então a forma da curva na tela é a sua forma no tempo. *Janela deslizante* mantém uma janela de um número fixo de dias de negociação e a percorre do início ao fim do intervalo — é a única forma de uma longa série diária manter as oscilações legíveis, porque espalhada por doze anos uma queda de três meses são dois pixels. A janela só conta ao deslizar, e os dois modos leem **os mesmos dados**: trocar não baixa nada de novo.
 - **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
+- **A faixa do lado direito pode ser cedida, se você quiser a largura.** Ela vem desligada: a plataforma desenha seu avatar e os botões de curtir e comentar desse lado de um vídeo vertical, e um número sob eles fica escondido no celular, embora aqui esteja perfeitamente legível. Ativada, um quadro que preenche todo o intervalo desenha até a própria borda do quadro desde o primeiro quadro; uma janela rolante continua mantendo distância enquanto é uma janela e se abre para a largura total junto com a janela — então o quadro em que o vídeo para é o intervalo inteiro, de borda a borda.
 
 ## Vídeo
 

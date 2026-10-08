@@ -66,6 +66,7 @@
   <data name="StudioTitleNote.Text"><value>Varsayılan başlığı kullanmak için boş bırakın. Başlığı istediğiniz yerden kırmak için Enter'a basın; tek satıra sığmazsa kendiliğinden ikinci satıra kayar — en fazla iki satır — ve ancak o zaman yazı boyutu küçülür, en çok yarı boyuta kadar. İkinci satır altındaki her şeyi bir satır aşağı iter.</value></data>
   <data name="StudioHideTitle.Header"><value>Başlığı gizle</value></data>
   <data name="StudioHideTitleNote.Text"><value>Başlığın satırı grafiğe geri döner ve altındaki her şey o satıra yukarı kayar. Alt kenar boşluğu alt kenarı sabit tuttuğu için paneller uzar. Kapatılınca yerleşim birebir geri gelir.</value></data>
+  <data name="SafeRightCross.Content"><value>Grafiğin sağ güvenli çizgiyi aşmasına izin ver</value></data>
   <data name="StockTitlePlaceholder"><value>Çekilen hissenin adı</value></data>
   <data name="StudioVideoSection.Text"><value>Video</value></data>
   <data name="StudioLayoutSection.Text"><value>Yerleşim</value></data>

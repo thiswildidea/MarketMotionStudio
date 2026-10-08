@@ -148,6 +148,15 @@
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
+                    <!-- Whether the picture may run into the band the phone's own interface
+                         covers. Off by default: the band is where the avatar and the comment
+                         button sit, and a figure hidden there is hidden on the phone the
+                         video was made for. On, the plot is as wide as the frame. -->
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

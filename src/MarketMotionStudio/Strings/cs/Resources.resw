@@ -66,6 +66,7 @@
   <data name="StudioTitleNote.Text"><value>Nechte prázdné, chcete-li použít výchozí titulek. Stisknutím Enteru titulek zlomíte tam, kde chcete; když se nevejde na jeden řádek, zalomí se sám na druhý — nejvýše dva — a teprve pak ustoupí velikost písma, nejvýše na polovinu. Druhý řádek posune vše pod ním o jeden řádek dolů.</value></data>
   <data name="StudioHideTitle.Header"><value>Skrýt titulek</value></data>
   <data name="StudioHideTitleNote.Text"><value>Řádek titulku se vrátí grafu a vše pod ním se do něj posune nahoru. Dolní okraj drží spodní hranu, takže panely vyrostou. Po odškrtnutí se rozvržení obnoví přesně.</value></data>
+  <data name="SafeRightCross.Content"><value>Nechat graf překročit pravou bezpečnou linii</value></data>
   <data name="StockTitlePlaceholder"><value>Název načtené akcie</value></data>
   <data name="StudioVideoSection.Text"><value>Video</value></data>
   <data name="StudioLayoutSection.Text"><value>Rozvržení</value></data>

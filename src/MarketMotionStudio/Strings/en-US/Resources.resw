@@ -73,6 +73,7 @@
   <data name="StudioTitleNote.Text"><value>Leave it empty to use the default. Press Enter to break it where you want; a title too wide for one line wraps onto a second — two lines at most — and only then does the size give way, to half size at most. A second line pushes everything below it down by one row.</value></data>
   <data name="StudioHideTitle.Header"><value>Hide the title</value></data>
   <data name="StudioHideTitleNote.Text"><value>The title's row goes back to the chart and everything below shifts up into it. The bottom margin holds the lower edge still, so the panels grow taller. Turning it off restores the layout exactly.</value></data>
+  <data name="SafeRightCross.Content"><value>Let the chart cross the right safe line</value></data>
   <data name="StockTitlePlaceholder"><value>The name of the stock fetched</value></data>
   <data name="StudioVideoSection.Text"><value>Video</value></data>
   <data name="StudioLayoutSection.Text"><value>Layout</value></data>

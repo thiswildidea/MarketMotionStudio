@@ -1221,9 +1221,31 @@ def main():
     # 帧宽的 18%（1080 下 194 像素），比右边距的默认值 150 还宽。按画面右缘收的胶囊因此落在
     # 帧宽 98% 处 —— 正好在平台头像和评论按钮底下。现在收在安全线上。
     check("右缘收在**安全线**上，不是画面右缘（右边 18% 是平台自己的按钮栏）",
-          "context.SafeRight - context.Px(LabelEdgePad) - width" in renderer)
+          "context.SafeRight(_giveWay) - context.Px(LabelEdgePad) - width" in renderer)
     check("让出的那一列把按钮栏算进去了，且三页共用同一处算术（不再各抄一份）",
-          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad))" in renderer)
+          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad), _giveWay)"
+          in renderer)
+
+    # ---- 那条带可以让出来（2026-10-08 加的开关） -----------------------------------
+    #
+    # 默认**关**。`giveWay` 是个 0~1 的小数而不是布尔，因为窗口滚动要用到中间那些值：它的
+    # 窗口在收尾那一段展开成整段，展开完的画面正是「整段铺满」那一版，所以让位量跟着同一个
+    # 斜坡收到 0 —— 不是在开始那一刻直接消失（那样画面会跳一下）。
+    check("开关是**构造参数**，不是可读回的属性（写成属性会读成默认值而 UIA 全绿）",
+          "bool crossSafeRight = false)" in renderer)
+    check("关着时全额让位",
+          "if (!_crossSafeRight)\n        {\n            return 1;\n        }" in renderer)
+    check("整段铺满开着时不让位（从第一帧起就用满整幅宽）",
+          "? 1 - Easing.Ramp(t, _plan.FinaleStartMs, AnimationPlan.OpenOutMs)\n            : 0;"
+          in renderer)
+    check("让位量一帧只算一次（绘图区宽度与胶囊右缘必须是同一个答案）",
+          "_giveWay = GiveWay(t);" in renderer
+          and renderer.count("GiveWay(t)") == 1)
+    check("复选框：默认关，且三页共用同一个文案键",
+          'x:Uid="SafeRightCross"' in xaml and 'IsChecked="False"' in xaml)
+    check("复选框的勾选落盘，且页面把**勾选**交给渲染器（不是再读一次偏好）",
+          '_prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);' in page
+          and "private bool CrossSafeRight() => CrossCheck.IsChecked is true;" in page)
     check("绘图区让出一列给胶囊（标题、卡片、进度条仍是整幅宽）",
           "Math.Max(1, context.ChartWidth - LabelColumn(session, context))" in renderer)
     check("那一列按**最终**金额量，所以每帧一样宽（不然曲线会横着滑）",
@@ -1259,9 +1281,11 @@ def main():
     # 推进方式：两种走法看的是同一份数据，所以它们必须是**渲染器的构造参数**而不是取数
     # 参数 —— 构造参数才在每次重画时被读到，见 memory 里那条「影响排名的开关写成属性会读
     # 成默认值」的教训。
+    # 只盯「推进方式在构造参数表里」这一件事，不把整行签名抄下来：签名会随新开关变长，
+    # 抄下来的那一行会在加一个参数时变红，而它要管的那件事一点没变。
     check("推进方式是渲染器的构造参数（不是取数参数）",
-          "public PositionRenderer(PositionBoard board, AnimationPlan plan, PositionMotion motion, int window)"
-          in renderer)
+          "public PositionRenderer(" in renderer
+          and "PositionMotion motion, int window," in renderer)
     check("两种推进方式：整段铺满 / 窗口滚动",
           "public enum PositionMotion" in series and "Grow = 0," in series and "Scroll = 1," in series)
     # 窗口三件套（多少格 / 右端 / 左端）**不在这三个渲染器里各算一遍**。持仓、定投、K线
@@ -1758,6 +1782,124 @@ def main():
               f"安全线 x={right - rail:.0f}（画面右缘 x={right}）；"
               + "、".join(f"第{i + 1}条 左缘 {tip['labels'][i][2]} + 宽 {best_run(tip['frame'].of(TRACKS[i]), tip['labels'][i][1])[0]}"
                          for i in (0, 1, 2)))
+
+    # ---- 7c) 那条带可以让出来（开关） -----------------------------------------------
+    #
+    # 7b 量的是**默认**那一版：三颗胶囊都在安全线左边。这个开关就是用来换掉那一版的，所以
+    # 判据不能只验「默认对」—— 表达式写对、而开关读不回来（写成属性就会读成默认值）时，
+    # 7b 照样全绿，而这个开关等于没有。所以打开之后必须**量到画面真的变宽了**。
+    #
+    # 窗口滚动要验两个进度：滚动途中仍是窗口，照旧让位；拖到头时窗口已经展开成整段，那一帧
+    # 应当与「整段铺满」一模一样地越过安全线。这正是用户要的那句话。
+    print("\n右边那条带")
+
+    def cross(state):
+        """把复选框扳到 `state`，返回有没有真的扳到。"""
+        box = winui.find(win, lambda c: c.AutomationId == "CrossCheck")
+
+        if box is None:
+            return False
+
+        pattern = toggle_of(box)
+
+        if pattern is None:
+            return False
+
+        # uiautomation 枚举成整数：On 是 1，Off 是 0。
+        wanted = 1 if state else 0
+
+        for _ in range(4):
+            if pattern.ToggleState == wanted:
+                return True
+
+            press(box, win)
+            time.sleep(0.4)
+
+        return pattern.ToggleState == wanted
+
+    def capsules(name, count=3):
+        """三颗胶囊的 (左缘, 右缘)，连同画面右缘与安全线。"""
+        tip = measure(win, name, count=count)
+
+        if tip is None:
+            return None
+
+        left, right = tip["box"][0], tip["box"][1]
+        rail = round((right - left) * 0.18)
+        found = []
+
+        for i in range(count):
+            row, edge = tip["labels"][i][1], tip["labels"][i][2]
+
+            if row is None or edge is None:
+                continue
+
+            width, _ = best_run(tip["frame"].of(TRACKS[i]), row)
+            found.append((edge, edge + width))
+
+        return found, right, right - rail
+
+    if not cross(True):
+        check("找得到那个复选框，而且扳得动", False, "CrossCheck 没找到，或没能扳到开")
+    else:
+        scrub(win, 1.0)
+        wide = capsules("verify-position-cross-grow.png")
+
+        if wide is None:
+            check("打开开关后量得出画面", False, "取不到画面")
+        else:
+            caps, right, line = wide
+            beyond = [c for c in caps if c[1] > line]
+            inside = [c for c in caps if c[1] <= right]
+
+            check("整段铺满 + 打开：三颗胶囊都越过了安全线（画面用满整幅宽）",
+                  len(beyond) == 3,
+                  f"安全线 x={line}；" + "、".join(f"第{i + 1}条 右缘 {int(c[1])}"
+                                                for i, c in enumerate(caps)))
+            check("越过去了，但没跑出画面", len(inside) == 3,
+                  f"画面右缘 x={right}；" + "、".join(f"第{i + 1}条 右缘 {int(c[1])}"
+                                                   for i, c in enumerate(caps)))
+
+    # 切推进方式这一下不能静默跳过：下拉的选中项读不回来（见 `motion`），所以「切过去了」
+    # 由窗口框亮不亮来判定，不亮就当没切 —— 否则下面那两条会整段不跑而脚本照样报绿。
+    rolling = motion(win, "窗口滚动") == "窗口滚动" and window_on(win)
+
+    check("切到窗口滚动（窗口框亮起来才算真的切过去了）", rolling,
+          f"窗口框可用={window_on(win)}")
+
+    # 窗口滚动：途中照旧让位，展开成整段之后越过。两个进度都量，缺一个都不算验过 ——
+    # 「拖到头越过」在「途中也让位」不成立时照样绿，而那样画面会在收尾那一段横着滑。
+    if rolling and cross(True) and scrub(win, 0.45):
+        mid = capsules("verify-position-cross-scroll-mid.png")
+
+        if mid is not None:
+            caps, _, line = mid
+            kept = [c for c in caps if c[1] <= line]
+
+            check("窗口滚动 + 打开：滚动途中**仍然让位**（它还是个窗口）", len(kept) == 3,
+                  f"安全线 x={line}；" + "、".join(f"第{i + 1}条 右缘 {int(c[1])}"
+                                                for i, c in enumerate(caps)))
+
+    if scrub(win, 1.0):
+        end = capsules("verify-position-cross-scroll-end.png")
+
+        if end is not None:
+            caps, right, line = end
+            beyond = [c for c in caps if c[1] > line]
+
+            check("窗口滚动 + 打开：拖到头时越过了安全线（展开成整段，与整段铺满同形）",
+                  len(beyond) == 3,
+                  f"安全线 x={line}（画面右缘 x={right}）；"
+                  + "、".join(f"第{i + 1}条 右缘 {int(c[1])}" for i, c in enumerate(caps)))
+
+    # 动过的偏好无条件改回：复选框关掉、推进方式回到整段铺满（窗口框灭掉才算切回去）。
+    cross(False)
+    motion(win, "整段铺满")
+
+    check("收拾干净：复选框关着、推进方式回到整段铺满",
+          not window_on(win), f"窗口框可用={window_on(win)}")
+
+    scrub(win, 1.0)
 
     # ---- 8) 上限：六只画得出来，第七只被拒 -----------------------------------------
     print("\n上限")

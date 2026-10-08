@@ -123,6 +123,7 @@ kapitalizacji; kolejność zmienia się do ostatniej klatki. Próbkowanie miesi�
 Wartość rynkowa akcji w obrocie dzień po dniu, a pod nią kurs na tej samej osi czasu. Albo kilka spółek naraz — każda jedną linią, podpisaną na końcu.
 
 - **Wartość jest odtwarzana, nie podawana.** Źródło nie ma historycznej liczby akcji dla żadnego dnia. Wynika ona ze wskaźnika rotacji, który jest ułamkiem akcji w obrocie — więc `wolumen ÷ wskaźnik rotacji` *to* ta liczba, a wartość to kurs dnia razy ona.
+- **Pas po prawej stronie można oddać, jeśli zależy ci na szerokości.** Domyślnie jest wyłączony: platforma rysuje tam swój awatar oraz przyciski „lubię to” i komentarzy w pionowym wideo, a liczba pod nimi jest na telefonie zasłonięta, choć tutaj widać ją bez problemu. Włączony: panele rysują do samej krawędzi kadru, a wykres jest tak szeroki jak kadr.
 
 - **Liczba to mediana z dwudziestu dni.** Wskaźnik ma dwa miejsca po przecinku, więc jeden dzień niesie około procentu szumu, podczas gdy liczba akcji to schody: rusza się przy emisji lub skupie i stoi w miejscu pomiędzy. Mediana zostawia stopień w dniu, w którym powstał.
 
@@ -411,6 +412,7 @@ Kupowanie jednego instrumentu na stałą kwotę w stałych odstępach — w każ
 - Oprócz 3, 5 i 10 lat oraz najdłuższego zakresu można wybrać **Własny**: podaj datę początkową i końcową, a następnie pobierz dane. Dostępnych jest około 35 lat wstecz — źródło zwraca około 640 dni kalendarzowych na jedno żądanie, a przejście wykonuje ich najwyżej dwadzieścia.
 - **Dwa tryby animacji.** *Cały zakres naraz* rozkłada cały okres za jednym razem; *przesuwne okno* utrzymuje okno o stałej liczbie dni sesyjnych i przesuwa je od początku do końca okresu — tylko tak długa seria dzienna zachowuje czytelne wahania. Okno liczy się tylko przy przewijaniu, a oba tryby czytają **te same dane** — przełączenie nic nie pobiera ponownie. **Oś pionowa nie jest przeliczana dla okna**: odstęp między dwiema liniami *jest* wynikiem planu, a przeliczenie rozciągnęłoby go razem z oknem.
 - **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
+- **Pas po prawej stronie można oddać, jeśli zależy ci na szerokości.** Domyślnie jest wyłączony: platforma rysuje tam swój awatar oraz przyciski „lubię to” i komentarzy w pionowym wideo, a liczba pod nimi jest na telefonie zasłonięta, choć tutaj widać ją bez problemu. Włączony: kadr wypełniający cały zakres rysuje do własnej krawędzi kadru od pierwszej klatki; przesuwne okno zachowuje odstęp, dopóki jest oknem, i wraz z oknem rozwiera się na pełną szerokość — więc klatka, na której zatrzymuje się film, to cały zakres od krawędzi do krawędzi.
 
 ## Zwrot z pozycji
 
@@ -426,6 +428,7 @@ Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku �
 - Ten sam zakres **Własny** działa dla pozycji: podaj dwie daty, a następnie pobierz dane. Jeśli instrument zadebiutował później niż podana data, pozycja zaczyna się w jego pierwszym dniu notowań.
 - **Dwa tryby animacji.** *Cały zakres naraz* rozkłada cały okres za jednym razem, więc kształt krzywej na ekranie to jej kształt w czasie. *Przesuwne okno* utrzymuje okno o stałej liczbie dni sesyjnych i przesuwa je od początku do końca okresu — tylko tak długa seria dzienna zachowuje czytelne wahania: rozłożona na dwanaście lat, trzymiesięczny spadek to dwa piksele. Okno liczy się tylko przy przewijaniu, a oba tryby czytają **te same dane** — przełączenie nic nie pobiera ponownie.
 - **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
+- **Pas po prawej stronie można oddać, jeśli zależy ci na szerokości.** Domyślnie jest wyłączony: platforma rysuje tam swój awatar oraz przyciski „lubię to” i komentarzy w pionowym wideo, a liczba pod nimi jest na telefonie zasłonięta, choć tutaj widać ją bez problemu. Włączony: kadr wypełniający cały zakres rysuje do własnej krawędzi kadru od pierwszej klatki; przesuwne okno zachowuje odstęp, dopóki jest oknem, i wraz z oknem rozwiera się na pełną szerokość — więc klatka, na której zatrzymuje się film, to cały zakres od krawędzi do krawędzi.
 
 ## Film
 

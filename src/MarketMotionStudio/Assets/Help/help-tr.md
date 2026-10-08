@@ -122,6 +122,7 @@ sıralama son kareye kadar değişir. Örnekleme aylıktır.
 Bir hissenin dolaşımdaki piyasa değeri gün gün, altında aynı zaman ekseninde fiyatı. Ya da aynı anda birden çok şirket — her biri ucunda adı yazan bir çizgi.
 
 - **Değer kaynaktan alınmaz, geri çıkarılır.** Kaynağın hiçbir güne ait geçmiş hisse sayısı yok. Sayı devir oranından gelir — devir oranı hacmin dolaşımdaki hisselere oranıdır — yani `hacim ÷ devir oranı` doğrudan bu sayıdır ve değer, günün fiyatının bu sayıyla çarpımıdır.
+- **Sağ kenardaki şerit, genişliği istersen bırakılabilir.** Varsayılan olarak kapalıdır: platform dikey videonun o kenarına avatarını, beğeni ve yorum düğmelerini çizer ve altındaki sayı, burada rahatça okunsa da telefonda gizli kalır. Açıkken paneller karenin kendi kenarına kadar çizer ve grafik kare kadar geniş olur.
 
 - **Sayı yirmi günlük medyandır.** Oran iki ondalıkla gelir, yani bir gün yaklaşık yüzde bir gürültü taşır; oysa hisse sayısı bir merdivendir: sermaye artırımında veya geri alımda sıçrar, arada sabittir. Medyan basamağı olduğu günde bırakır.
 
@@ -399,6 +400,7 @@ Sabit tutarla sabit aralıklarla bir varlık almak — her işlem günü, her ha
 - 3, 5 ve 10 yıl ile en uzun aralığın dışında **Özel** de seçilebilir: başlangıç ve bitiş tarihini verip verileri alın. Yaklaşık 35 yıl geriye gidilebilir — kaynak istek başına yaklaşık 640 takvim günü veriyor ve tarama en çok yirmi istek yapıyor.
 - **İki ilerleme biçimi.** *Aralığın tamamı* tüm dönemi bir anda serer; *kayan pencere* sabit sayıda işlem gününden oluşan bir pencereyi aralığın başından sonuna kadar yürütür — uzun bir günlük serinin dalgalanmalarını okunur tutmanın tek yolu budur. Pencere yalnızca kaydırırken anlam taşır ve iki biçim de **aynı fiyatları** okur — geçiş yeniden veri çekmez. **Dikey eksen pencereye göre yeniden ölçeklenmez**: iki çizgi arasındaki mesafe planın *ta kendisidir*; yeniden ölçeklemek onu pencereyle birlikte genişletirdi.
 - **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
+- **Sağ kenardaki şerit, genişliği istersen bırakılabilir.** Varsayılan olarak kapalıdır: platform dikey videonun o kenarına avatarını, beğeni ve yorum düğmelerini çizer ve altındaki sayı, burada rahatça okunsa da telefonda gizli kalır. Açıkken tüm aralığı dolduran bir kare, ilk karesinden itibaren karenin kendi kenarına kadar çizer; kayan pencere pencere olduğu sürece mesafeyi korur ve pencereyle birlikte tam genişliğe açılır — yani videonun durduğu kare, kenardan kenara tüm aralıktır.
 
 ## Pozisyon Getirisi
 
@@ -414,6 +416,7 @@ Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon �
 - Aynı **Özel** aralık elde tutma için de geçerlidir: iki tarih verip verileri alın. Araç belirttiğiniz tarihten sonra işlem görmeye başladıysa, elde tutma ilk işlem gününde başlar.
 - **İki ilerleme biçimi.** *Aralığın tamamı* tüm dönemi bir anda serer; eğrinin ekrandaki biçimi, zamandaki biçimidir. *Kayan pencere* sabit sayıda işlem gününden oluşan bir pencereyi aralığın başından sonuna kadar yürütür — uzun bir günlük serinin dalgalanmalarını okunur tutmanın tek yolu budur, çünkü on iki yıla yayılmış üç aylık bir düşüş iki pikseldir. Pencere yalnızca kaydırırken anlam taşır ve iki biçim de **aynı fiyatları** okur — geçiş yeniden veri çekmez.
 - **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
+- **Sağ kenardaki şerit, genişliği istersen bırakılabilir.** Varsayılan olarak kapalıdır: platform dikey videonun o kenarına avatarını, beğeni ve yorum düğmelerini çizer ve altındaki sayı, burada rahatça okunsa da telefonda gizli kalır. Açıkken tüm aralığı dolduran bir kare, ilk karesinden itibaren karenin kendi kenarına kadar çizer; kayan pencere pencere olduğu sürece mesafeyi korur ve pencereyle birlikte tam genişliğe açılır — yani videonun durduğu kare, kenardan kenara tüm aralıktır.
 
 ## Video
 
