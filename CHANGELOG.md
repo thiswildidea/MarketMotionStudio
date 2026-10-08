@@ -20,6 +20,90 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.11.0 — 2026-10-08（更新版 / update）
+
+**本版修的是一件「做得对、但只对了一半」的事：三个页面的数字被平台的按钮盖住了。**
+
+竖屏视频在手机上播放时，画面右侧约六分之一常年被头像、点赞、评论那一条占着。这一点在应用里
+完全看不出来 —— 应用里没有那套界面，而这三个页面就是在应用里画出来的。市值历程、定投计划、
+持仓收益三页都把曲线末端的数值标注画到画面最右边，在手机上正好落在那条栏底下。
+
+根因是一句**假注释**。三页各自抄了一份「标注要留多宽」的算术，三份都按**画面右缘**收边，注释里
+写着的理由是「平台那条竖栏本来就在右边距里」。这句从来不是真的：`SafeArea.Right` 是 0.18，1080
+宽的帧下是 194 px，**比默认右边距 150 还宽**。于是标注落在帧宽 98% 处，正压在头像和评论按钮下。
+（同一个文件里上次已经因为一句假注释丢掉过一版改动，所以这次顺手把注释里那个算错的数也改了：
+右边距 260 时并不是「白拿 194 px」，白拿的是右边距本身。）
+
+改法：算术收进 `FrameContext.RightLabelColumn` 一处，三份拷贝都改为调它；收边从画面右缘改到
+`SafeRight`。**两种推进方式都让**，不只是「窗口滚动」——「整段铺满」的最后一帧同样贴着右缘，而
+那是视频停住不动、观众看得最久的一帧。
+
+让位要花掉绘图区四分之一的宽度，而这笔代价不是每一帧都必须付的。所以三页各多了一个开关，
+**默认关**：打开它，图把这一段宽度收回来。开关的类型不是布尔而是 0~1 的小数，因为有一种动效要
+用到中间那些值 ——「窗口滚动」的最后一段会展开成完整区间，那时它画的就是「整段铺满」的形状。
+让位量因此跟着**窗口展开的同一个斜坡**走到 0：滚动途中照旧让位（那时它还是一个窗口），展开完
+画面与整段铺满完全同形。若在开始那一刻直接归零，画面会横跳一下。市值历程没有推进方式可选，
+它天然就是整段铺满，所以那里是构造时定死的常量。
+Version 1.0.11.0 fixes something that was done right and then half undone: on three pages the
+figures sat underneath the platform's buttons.
+
+When a vertical video plays on a phone, the right sixth of the frame is permanently taken by the
+avatar, the like button and the comment button. None of that is visible in the app, because the app
+draws no such interface — and the app is where these three pages were drawn. The market-value,
+savings-plan and holdings pages all drew the labels riding the leading end of their lines to the very
+right of the frame, which is exactly where that band sits.
+
+The cause is **a comment that was not true**. Three pages each kept a copy of the arithmetic that
+answers "how wide a column do the labels need", all three measured it against the frame's own right
+edge, and all three carried the same reason for doing so: that the platform's rail already sat inside
+the right margin. It does not. `SafeArea.Right` is 0.18, which on a 1080-wide frame is 194 px —
+**wider than the default right margin of 150**. The labels therefore came to rest at 98% of the
+frame, under the avatar and the comment button. (A false comment in this file has already cost one
+release, so the wrong number in the new comment went as well: with a right margin of 260 it is not
+194 px that would be paid twice, it is the margin itself.)
+
+The arithmetic now lives in one place, `FrameContext.RightLabelColumn`, and all three copies call it;
+the labels are gathered to `SafeRight` instead of to the frame's edge. **Both advance modes give
+way**, not only the scrolling window: the last frame of a fill-the-whole-span chart sits against the
+right edge too, and that is the frame the video stops on.
+
+Keeping clear costs the plot a quarter of its width, and that is not a price every frame has to pay,
+so each of the three pages now carries a switch for it, **off by default**. The switch is not a
+boolean but a fraction, because one motion needs the values in between: a scrolling window spends its
+closing stretch opening out into the whole range, and what it draws then is the whole range. So the
+reservation shrinks across **the same ramp the window opens on** — the scroll itself keeps clear,
+because while it is scrolling it is still a window — and reaches nothing exactly when the opening
+finishes, leaving the frame identical to a chart drawn over the whole range from the start. Zeroing it
+at the moment the ramp begins would make the picture jump sideways. The market-value page offers no
+choice of advance, being the whole range by nature, so there the value is a constant fixed when the
+renderer is built.
+
+### 修正 / Fixed
+
+- **末端标注不再压在平台那条按钮栏下 / the end labels clear the platform's rail** —— 市值历程、
+  定投计划、持仓收益三页的标注收在帧宽 82% 那条线以内；「整段铺满」与「窗口滚动」两种推进都让。
+  真机实测（持仓页，安全线 x=1065、画面右缘 x=1134）：三颗胶囊右缘 1057 / 1055 / 1058。
+
+### 新增 / Added
+
+- **三页各一个开关 / a switch on each of the three pages** —— 打开即允许图形越过右侧安全线，默认关。
+  「整段铺满」全程用满宽度；「窗口滚动」滚动途中照旧让位，收尾展开成整段的那一段才放开，末帧与整段
+  铺满同形（实测胶囊右缘 1127 / 1124 / 1127，与整段铺满一致；拖到 0.45 处 1048 / 1053 / 1056，
+  仍在安全线内）。市值历程页没有推进方式，打开即生效。
+
+包已构建：`artifacts/MarketMotionStudio_1.0.11.0_x64_arm64_bundle.msixupload`（149.8 MB / 142.9 MiB，
+六个内包）。拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.11.0`，`Package/Properties/
+DisplayName` 仍是字面值 `MarketMotionStudio`；包内 14 份手册、70 张配图、`resources.pri` 与 Win2D
+的 `Microsoft.Graphics.Canvas.dll` 都在。
+
+**这一版带着 1.0.10.0 的全部内容**（订阅那两条修复），所以 1.0.10.0 那个包不必再传，直接从这个
+版本上传即可。
+
+判据：三份真机脚本全过 —— 持仓 151 项、定投 88 项、市值历程 88 项；`verify-docs.py` 182 项 0 失败，
+`verify-resw-uids.py` 14 语言 864 键 0 问题。
+
+---
+
 ## 1.0.10.0 — 2026-10-07（更新版 / update）
 
 **本版修正订阅的两个症状。** 一个是：已经在另一个设备上买过订阅的人，设置页那张写着续订日期、可以
@@ -88,9 +172,10 @@ does.
 - **一次失败的刷新不再把卡片留在折叠状态 / a failed refresh no longer leaves the card collapsed** ——
   结算移进 `finally`，出错也要给卡片一个答案。
 
-包已构建：`artifacts/MarketMotionStudio_1.0.10.0_x64_arm64_bundle.msixupload`（149.8 MB / 142.8 MiB），
-拆包核验包内六个内包的 Identity 都是 `1.0.10.0`。**它还带着 1.0.9.0 的全部内容** —— 市值历程那一页从头就在里面，
-所以 1.0.9.0 那个包不必再传，直接从这个版本上传即可。
+包已构建、但**没有上传**：`artifacts/MarketMotionStudio_1.0.10.0_x64_arm64_bundle.msixupload`
+（149.8 MB / 142.8 MiB），拆包核验包内六个内包的 Identity 都是 `1.0.10.0`。上一版那句「直接从这个
+版本上传即可」没有兑现 —— 上传之前又攒了两批改动（末端标注让位、越过安全线的开关），它们一并进了
+1.0.11.0。**1.0.11.0 带着这一版的全部内容**（订阅那两条修复），所以 1.0.10.0 这个包不必再传。
 
 ---
 

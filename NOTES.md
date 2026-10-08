@@ -422,12 +422,20 @@ This is what can and cannot be claimed as of the last review.
 **Verified here:** both configurations compile; the Store bundle builds and reports
 `PackageSuccessfullyCreated`; the inner x64 package holds all fourteen help documents,
 nineteen logo and splash assets, `resources.pri` and Win2D's native
-`Microsoft.Graphics.Canvas.dll` for x64 and arm64; all fourteen resw files carry 90 keys in
-the same order with no `U+FFFD` and no double-encoded sequences; every `x:Uid` names a
-property its element actually has; all 90 defined keys are reached from either C# or XAML;
-all fourteen help documents parse to the same number of blocks (77 as of the pictures; the count
+`Microsoft.Graphics.Canvas.dll` for x64 and arm64; all fourteen resw files carry **864** keys in
+the same order with no `U+FFFD` and no double-encoded sequences (the count is whatever
+`verify-resw-uids.py` reports — it is not a contract and it grows with every string, so read
+it from the run rather than from this sentence); every `x:Uid` names a
+property its element actually has; every defined key is reached from either C# or XAML;
+all fourteen help documents parse to the same number of blocks (the count
 is not the contract, all fourteen agreeing is); every generated PNG is 32-bit with a
 transparent corner and an opaque centre, and the `.ico` loads.
+
+**1.0.11.0 (2026-10-08).** The upload bundle built and reported `PackageSuccessfullyCreated`.
+Opened rather than trusted: both the x64 and the arm64 inner package report Identity `1.0.11.0` —
+**the version in a file name is not evidence** (1.0.3.0's bundle once carried 1.0.2.0 inside
+every package) — and both hold fourteen help documents, seventy help images, `resources.pri` and
+Win2D. `Package/Properties/DisplayName` is still the literal reserved name.
 
 **Verified by running it**, registered from the debug output and driven through UI Automation:
 

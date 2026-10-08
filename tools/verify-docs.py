@@ -111,6 +111,47 @@ def this_version_news():
     return module.NEWS
 
 
+def previous_version_news():
+    """上一版那一栏说什么，从**上一版那个 port 脚本**取。
+
+    版本号不写死：从 CHANGELOG 的版本序列里取第二新的那个（最新的那条是本版）。这一栏每次
+    发版整段换掉，所以「本版这一句和上一版逐字相同」只有一个解释 —— 那一栏根本没换。
+
+    判据曾以「那一栏里有没有出现页面名」当代理指标：上一版那一栏是一页一页数过来的，所以
+    页面名在 = 旧文案还在。1.0.11.0 把它打回原形 —— 那一版修的正是三个页面上的同一件事，
+    点名是对的，而代理指标把「点名」读成了「没换」。**真正要防的是这一栏没换，那就直接比
+    上一版那一栏**：代理指标会失效，直接比不会。
+
+    上一版那个脚本可能没有留下来（比如那一版不是这样发的），那就跳过而不是判红 —— 这一条
+    防的是没换，不是防档案不全。
+    """
+    versions = re.findall(r"^## (\d+)\.(\d+)\.(\d+)\.(\d+)",
+                          CHANGELOG.read_text(encoding="utf-8"), re.M)
+
+    if len(versions) < 2:
+        return None
+
+    # 与 this_version_news() 同一套算法：四段全拼。
+    tag = "".join(versions[1])
+    script = REPO / "tools" / ("port-store-listing-%s.py" % tag)
+
+    if not script.exists():
+        return None
+
+    saved = sys.argv
+    sys.argv = [sys.argv[0]]
+
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "port_store_listing_prev_" + tag, script)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    finally:
+        sys.argv = saved
+
+    return module.NEWS
+
+
 def page_name(lang, key):
     root = ET.parse(STRINGS / lang / "Resources.resw").getroot()
 
@@ -156,6 +197,7 @@ def listing_checks():
     check("商店文案是 14 个语言段", len(secs) == 14, f"{len(secs)} 段")
 
     NEWS = this_version_news()
+    PREV = previous_version_news()
 
     for n, lang in enumerate(LANGS):
         _, start, end = secs[n]
@@ -199,16 +241,12 @@ def listing_checks():
               f"{len(body)} 字" if body == NEWS[lang]
               else f"文案 {len(body)} 字 / 脚本 {len(NEWS[lang])} 字")
 
-        # 反过来看一遍：上一版那一栏数的是「本版新增一个图表页 + 三页各加了新能力」，而那
-        # 些页在 1.0.5.0 已经上架。这一栏是**换**不是加 —— 那四个页面名再出现，就是一句
-        # 与说明段「十七大图表页」并排自相矛盾的旧版本说明。页面名从 resw 取，不写死汉字。
-        stale = [name for name in
-                 (page_name(lang, key) for key in
-                  ("NavBondRace", "NavMarketTurnover", "NavCandle", "NavPosition"))
-                 if name in body]
-
-        check(f"{lang} 新增功能里没有上一版数过的页面名", not stale,
-              "、".join(stale) if stale else "")
+        # 反过来看一遍：这一栏是**换**不是加，所以它不能和上一版那一栏是同一句。判据曾数
+        # 页面名当代理指标，1.0.11.0 把它打回原形（见 previous_version_news 的注释）——
+        # 本版点名是对的，直接比上一版那一栏才是这一条真正要说的事。
+        check(f"{lang} 新增功能不是上一版那一句",
+              PREV is None or body != PREV[lang],
+              "与上一版逐字相同（那一栏没换）" if PREV and body == PREV[lang] else "")
         check(f"{lang} 新增功能不超过 1500 字", len(body) <= 1500, f"{len(body)} 字")
 
     # 上一版那句"新增八个图表页"式的旧文案，中英文各断一次足够：这一栏是**换**不是加，
