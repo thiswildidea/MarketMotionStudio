@@ -153,6 +153,72 @@ def goto(win, name):
     return True
 
 
+def clear_chips(win):
+    """把清单里开着的名字全关掉，返回关了几个。
+
+    清单是**跨会话共用**的一份，开关的状态不落盘、但一跑之内是活的。这一页的搜索与一键预设
+    都是「把这只放到清单上并画出来」（与持仓收益页同一个语义），所以清单里还开着别人时，点
+    一个预设画出来的就是两只 —— 而这一跑要数的是**一张单标的**的分钟图，上面每一列都该是
+    那一天。来的时候先清干净。
+
+    条件的写法有两个讲究：`winui.find_all` 的条件里抛异常会**中止整趟遍历**，而 `GetPattern`
+    正是会抛的那个调用，所以它只能留在循环体里。另一个是**位置**：视频设置面板里的「隐藏
+    标题」「安全区参考线」也是 `ToggleButton`，也各有 AutomationId —— 关掉它们关的是读者
+    自己的设置，不是清单上的名字。清单这一排在搜索框下缘那一条带里。
+    """
+    search = winui.find(win, lambda c: c.AutomationId == "InstrumentSearch")
+
+    if search is None:
+        return 0
+
+    top = search.BoundingRectangle.bottom
+    off = 0
+
+    for control in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+        try:
+            box = control.BoundingRectangle
+
+            if not control.AutomationId or box.top < top or box.top > top + 160:
+                continue
+
+            pattern = control.GetPattern(auto.PatternId.TogglePattern)
+        except Exception:  # noqa: BLE001
+            continue
+
+        if pattern is not None and pattern.ToggleState == auto.ToggleState.On:
+            pattern.Toggle()
+            off += 1
+            time.sleep(0.4)
+
+    return off
+
+
+def preset_button(win, name):
+    """按显示名找一键预设那个**按钮**。
+
+    只按名字找会撞上清单里的 chip：chip 也是 `ButtonControl`，名字就是标的的名字，而清单是
+    跨会话共享的 —— 上一跑加进去的「上证指数」会一直待在上面。chip 是 `ToggleButton`（没有
+    `InvokePattern`），预设是 `Button`，所以这里只认能 Invoke 的那一个。
+
+    先收齐同名的，再逐个问模式：`winui.find_all` 的条件里抛异常会**中止整趟遍历**，而
+    `GetPattern` 正是会抛的那个调用。
+
+    **同名的不止预设一个**：清单里那只 `ToggleButton` 的名字就是标的的名字，它旁边那个
+    `×` 也一样，而且 `×` 排在预设前面。少了下面这两条筛，`find` 交回来的会是那个 `×` ——
+    点下去是把这只从清单里删掉，然后画面上一只都没选中。
+    """
+    for control in winui.find_all(
+            win, lambda c: c.ControlTypeName == "ButtonControl" and c.Name == name
+            and c.AutomationId):
+        try:
+            if control.GetPattern(auto.PatternId.InvokePattern) is not None:
+                return control
+        except Exception:  # noqa: BLE001
+            pass
+
+    return None
+
+
 def shot(win, name):
     path = os.path.join(REPO, "artifacts", name)
 
@@ -444,8 +510,11 @@ def main():
 
     # 标的也复位到默认预设：脚本要拿状态行上的名字去对源端的代码，而标的偏好是存住的 ——
     # 上一次跑留下的可能是别的标的，甚至是一只手输的代码，那样脚本就无从独立复算。
-    preset = winui.find(
-        win, lambda c: c.ControlTypeName == "ButtonControl" and c.Name == PRESET_FIRST)
+    # 先清干净：清单里还开着别人时，点预设画出来的是两只（它把这一只**加**到画面上，而不是
+    # 换掉画面 —— 与持仓收益页同一个语义）。这一跑要的是单标的的图。
+    clear_chips(win)
+
+    preset = preset_button(win, PRESET_FIRST)
 
     if preset is not None:
         preset.GetInvokePattern().Invoke()

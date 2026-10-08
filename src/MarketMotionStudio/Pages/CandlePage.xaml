@@ -71,9 +71,31 @@
                                     QuerySubmitted="OnSearchSubmitted"
                                     SuggestionChosen="OnSuggestionChosen" />
 
+                    <!-- The reader's own list, shared with the other boards that name an
+                         instrument, and it sits directly under the box that fills it. The chips
+                         are switches, and that is what turns one instrument's candles into a
+                         comparison: pick two and the frame stops drawing candles at all,
+                         because two instruments' prices have no common axis, and draws what
+                         they did as percentages instead. With one pick — the state this opens
+                         in — the page behaves exactly as it did before the row was here.
+
+                         Chips only, with no search box of its own: the box above already names
+                         an instrument, and naming one is what puts it on this list and draws
+                         it. A second box with the same placeholder under the first is one
+                         search offered twice, and nothing on screen says which of the two the
+                         page is listening to. -->
+                    <views:WatchlistPicker x:Name="Watch"
+                                           Selectable="True"
+                                           SearchVisible="False" />
+
                     <!-- One-tap instruments: an index, a stock and a fund from this market,
                          because the question this page is asked with is "what did it do", and
-                         the three are asked about equally often. -->
+                         the three are asked about equally often.
+
+                         Addressed by its code rather than by the name it happens to display:
+                         the name is the one the interface language spells, so anything that
+                         has to reach one of these — a screen reader, a script — would otherwise
+                         have to know fourteen spellings. -->
                     <ItemsControl x:Name="Presets">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -83,6 +105,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="local:MatrixPreset">
                                 <Button Content="{x:Bind Name}"
+                                        AutomationProperties.AutomationId="{x:Bind Code}"
                                         Tag="{x:Bind Code}"
                                         Click="OnPresetClick"
                                         Margin="0,0,8,6" />
@@ -131,15 +154,6 @@
                             x:Uid="StockAddFavourite"
                             HorizontalAlignment="Left"
                             Click="OnAddFavourite" />
-
-                    <!-- The reader's own list, shared with the other boards that name an
-                         instrument. The chips are switches, and that is what turns one
-                         instrument's candles into a comparison: pick two and the frame stops
-                         drawing candles at all, because two instruments' prices have no
-                         common axis, and draws what they did as percentages instead. With one
-                         pick — the state this opens in — the page behaves exactly as it did
-                         before the row was here. -->
-                    <views:WatchlistPicker x:Name="Watch" Selectable="True" />
 
                     <!-- What one candle covers. Changing it re-fetches: the periods are
                          different series on the source, not one series drawn differently. -->
@@ -219,6 +233,21 @@
                     <CheckBox x:Name="VolumeCheck"
                               x:Uid="CandleShowVolume"
                               IsChecked="True"
+                              Click="OnLookChanged" />
+
+                    <!-- Whether the picture may run into the band the phone's own interface
+                         covers — the same switch, naming the same band, as the three boards
+                         that draw a label at a line's leading end.
+
+                         Both pictures here are answered by it. A comparison stops its curve
+                         labels short of the rail, and opens out into the band at the end of a
+                         scrolling run the way those three do. The candles have no label to
+                         place, but the last candles are ink in the same band: off, the plot's
+                         own right edge is brought in to where the rail starts, and on it runs
+                         to the margin the reader set. Off by default, like everywhere else. -->
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
                               Click="OnLookChanged" />
 
                     <Button x:Name="FetchButton"

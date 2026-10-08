@@ -61,10 +61,10 @@ public sealed partial class WatchlistPicker : UserControl
         Watchlist.EnsureLoaded();
         Chips.ItemsSource = Watchlist.Picks;
 
-        // Applied here and again on load: the page writes `Selectable` in XAML, which lands after
-        // this constructor has run and after the chips have been built from the default template.
-        ApplyChipTemplate();
-        Loaded += (_, _) => ApplyChipTemplate();
+        // Applied here and again on load: the page writes `Selectable` and `SearchVisible` in
+        // XAML, which land after this constructor has run.
+        ApplyShape();
+        Loaded += (_, _) => ApplyShape();
 
         _searchDebounce.Tick += async (_, _) =>
         {
@@ -305,9 +305,29 @@ public sealed partial class WatchlistPicker : UserControl
         Changed?.Invoke(this, EventArgs.Empty);
     }
 
-    /// <summary>Swaps in the chip the board asked for.</summary>
-    private void ApplyChipTemplate() =>
+    /// <summary>
+    /// Puts the shape the board asked for in place: the chip it wants, and whether the search
+    /// box comes with it.
+    ///
+    /// Both are properties the page writes in XAML, which lands after this constructor has run
+    /// and after the chips have been built from the default template — see the call site.
+    /// </summary>
+    private void ApplyShape()
+    {
         Chips.ItemTemplate = (DataTemplate)Resources[Selectable ? "PickChip" : "PlainChip"];
+        Search.Visibility = SearchVisible ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    /// <summary>
+    /// Whether the picker brings its own search box.
+    ///
+    /// On everywhere it is used but one page, because on those boards the box is the only way
+    /// onto the list. The candle page already has one: it names one instrument and fetches it,
+    /// and adding to the list is what that same act does — so a second identical box under it
+    /// is one search offered twice, and the reader cannot tell which of the two the page is
+    /// listening to.
+    /// </summary>
+    public bool SearchVisible { get; set; } = true;
 
     /// <summary>Whether one pick is part of what is being drawn, under whichever rule is in force.</summary>
     private bool IsOn(string code)

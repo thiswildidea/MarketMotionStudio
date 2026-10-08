@@ -55,7 +55,11 @@
     </UserControl.Resources>
 
     <!-- One's own list, as chips. Bound to the shared collection, so a pick made on one roster
-         board is on every other one without this control or that page doing anything about it. -->
+         board is on every other one without this control or that page doing anything about it.
+
+         The search box is this control's own, and is what fills the list on the boards that
+         have nowhere else to type. A page that already names an instrument can turn it off —
+         see `SearchVisible` — and be left with the chips alone. -->
     <StackPanel Spacing="8">
         <AutoSuggestBox x:Name="Search"
                         x:Uid="StockSearch"

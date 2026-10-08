@@ -436,7 +436,14 @@ redraws the frame without fetching anything again. The x-axis runs on clock time
 order — with the ninety minutes nobody traded **taken off it**: counting the wall clock from 09:30
 to 15:00 handed the break nearly a third of the width, and a third of the picture bought nothing
 but empty space. The two halves are two hours each, so each gets half the axis and they meet across
-a hairline labelled for what it is.
+a hairline labelled for what it is. The headline figure on a minute chart is the **day's** move and
+not the last bar's: the source's minute rows carry open, close, high, low, volume and amount and no
+change field of their own, so the close before the session is carried into the series alongside the
+bars and read by its **position in the window** rather than by stepping one calendar day back — a
+Friday is not asked for a Thursday it never had, and a day the request limit trimmed still ends at
+15:00, which is the close that matters. Falling back to the previous bar is what every other period
+does, and there it is right; on a five-minute chart it was a five-minute move printed at the size
+of a day's.
 
 It is also the first page with **two animations**, because a candle series raises a question the
 others do not. **Growing** draws one more candle per step until the whole range is on screen —
@@ -444,6 +451,26 @@ right for a range whose end is the point. **Scrolling** holds a fixed-width wind
 forward — right for a long range, where growing would end with several hundred candles squeezed
 into one frame width. Both are drawn from the same progress fraction, so the choice is about what
 the frame shows at a given moment and not about how the picture is produced.
+
+**More than one instrument turns the page into a comparison.** The row of names under the search
+box is the shared list, and here its chips are switches: with two or more on, the frame stops
+drawing candles altogether — two instruments' prices share no axis, and drawing them against one
+would put 贵州茅台's 1,258 next to 京东方A's 4.2 and flatten the second into the baseline. What is
+drawn instead is each one's **cumulative change** from its own opening bar, with the name and the
+move over the whole span riding the leading end of its line. The axis is the **union** of the days,
+not the intersection, or an instrument with ten years of history compared against one with three
+would quietly be cut to three; a day one of them did not trade carries its last value forward,
+because a suspension is not a fall to zero. On the minute periods every track is drawn on the one
+trading day they all have, the newest whole one. Six at most — that is how many hues the palette
+has, and seven tracks drawn in six colours is a picture whose own legend cannot be read.
+
+The band down the right-hand side — the one that belongs to the platform's button rail, and that
+the leader boards let go of — is a choice on this page too, and it answers **both** of its pictures.
+Off, which is the default, a comparison's labels stop short of the rail and the candles' plot ends
+where it begins: at 1080 wide the rail takes 194 pixels and the default right margin is 150, so
+without this the last few candles were being drawn underneath the avatar and the comment button.
+On, both run to the margin the reader set — and a scrolling comparison opens out into the band as
+its window opens out, so the frame the video stops on is the whole span, edge to edge.
 
 A US code typed in the wrong case fetches **nothing**, because the search endpoint answers
 `usaapl.oq` while the chart endpoint will only read `usAAPL.OQ` and returns no bars rather than an
@@ -1098,8 +1125,9 @@ src/MarketMotionStudio/
                    InstrumentCalendar (one instrument's bars as that record),
                    HistoryWalk (years of closes, walked backwards a page at a time),
                    DcaPlanner (the walk, then the plan) and PositionLoader (the walk, then the holding),
-                   CandleSeries (daily/weekly/monthly bars, the two animations' shapes,
-                   and one trading day down to minutes),
+                   CandleSeries (daily/weekly/monthly bars, the two animations' shapes, one
+                   trading day down to minutes, and the close that day opened against),
+                   CandleBoard (several instruments on one axis, as cumulative change),
                    MarketCaps (the fifteen-per-market field, and today's value turned into a history),
                    CapHistory (one company's value and its price on one axis; the share count
                    recovered from the turnover rate, because its history is served nowhere),
@@ -1117,7 +1145,10 @@ src/MarketMotionStudio/
                    with BarRaceRenderer, CalendarHeatmapRenderer and IntradayRenderer
                    (one session's cumulative curve — a clock, so it advances linearly),
                    StageRenderer,
-                   DcaRenderer, PositionRenderer, CandleRenderer, Backdrop (the frame's ground),
+                   DcaRenderer, PositionRenderer, CandleRenderer (one instrument's bars, drawn
+                   four ways), CandleRaceRenderer (several instruments' cumulative change, with a
+                   name and a figure riding each line's leading end),
+                   Backdrop (the frame's ground),
                    SectorRaceRenderer (ranked bars, shared by the race, the market-cap board,
                    the extreme-day board, the index race, the asset-class board, the bond board
                    and the hold-odds board),
@@ -1150,6 +1181,9 @@ tools/
   port-indexrace-*.py    The same, for the index race
   port-marketcap-*.py    One page's strings, instrument names and help chapter, into all fourteen
                          (the pool script carries the 93 candidates that only need zh + en)
+  port-candle-*.py       The same, for the candle page — including the one that adds a single
+                         bullet to its help chapter, which is what a setting that changes nothing
+                         else needs
   port-caphistory-*.py   The same, for the market-value page — including the two readings of the
                          value axis and the comparison mode
   verify-*.py            Drive the UI and assert the feature behaves as documented
@@ -1459,9 +1493,12 @@ first export asks and then remembers.
   ten-year fifteen-listing board is about ninety lines. It is not a problem, but it is the
   loudest thing this app does and worth knowing before reading a log.
 - **Only the A-share and US candle pages have been fetched end to end**, each 18 checks, plus 13 on
-  the day ranges. The Hong Kong one has not; neither has weekly or monthly through the page, nor an
+  the day ranges, and a further 37 on the comparison and the right-hand band — several instruments
+  on one axis, the day's move at the head of a minute chart, and that switch driven both ways (the
+  labelled ends inside the rail when it is off, out into it when it is on, and the same for the
+  candles). The Hong Kong one has not; neither has weekly or monthly through the page, nor an
   export at any format other than the default. **The 1/5/15-minute periods were driven on a real
-  device too** — 68 checks, including the bar count of a session, the offered days matching what the
+  device too** — 69 checks, including the bar count of a session, the offered days matching what the
   source actually returned, the lunch gap measured by counting empty pixel columns, and that changing
   the day redraws without fetching again. Nothing has been exported at those periods, and no other
   market's minute page exists to drive.

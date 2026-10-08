@@ -221,6 +221,13 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
     private CandleMotion ChosenMotion() => Chosen(MotionCombo, CandleMotion.Grow);
 
+    /// <summary>
+    /// Whether the picture may run into the band the platform's own button rail covers. Read by
+    /// both pictures this page draws — see <see cref="CandleRenderer"/> and
+    /// <see cref="CandleRaceRenderer"/> — because both of them put ink in that band.
+    /// </summary>
+    private bool CrossSafeRight() => CrossCheck.IsChecked is true;
+
     private int ChosenMonths() =>
         RangeCombo.SelectedItem is ComboBoxItem { Tag: int months } ? months : 12;
 
@@ -412,7 +419,8 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                 VideoSettings.Duration, board.Count,
                 Math.Max(Math.Abs(board.Peak), Math.Abs(board.Trough)));
 
-            Preview.Renderer = new CandleRaceRenderer(board, plan, ChosenMotion(), ChosenWindow())
+            Preview.Renderer = new CandleRaceRenderer(
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -424,7 +432,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
             Preview.Renderer = new CandleRenderer(
                 fetched, plan, ChosenStyle(), ChosenMotion(), ChosenWindow(),
-                AveragesCheck.IsChecked is true, VolumeCheck.IsChecked is true)
+                AveragesCheck.IsChecked is true, VolumeCheck.IsChecked is true, CrossSafeRight())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -1171,6 +1179,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
         AveragesCheck.IsChecked = _prefs.GetInt("Averages", 1) != 0;
         VolumeCheck.IsChecked = _prefs.GetInt("Volume", 1) != 0;
+        CrossCheck.IsChecked = _prefs.GetInt("CrossSafeRight", 0) != 0;
 
         var code = _prefs.GetString("Code", _market.CandleInstruments[0].Code);
 
@@ -1204,6 +1213,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         _prefs.Save("Day", _day);
         _prefs.Save("Averages", AveragesCheck.IsChecked is true ? 1 : 0);
         _prefs.Save("Volume", VolumeCheck.IsChecked is true ? 1 : 0);
+        _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
         _prefs.Save("Code", _instrumentCode);
         _prefs.Save("Name", _instrumentName);
 

@@ -64,6 +64,7 @@ Bir enstrümanın mumları: günlük, haftalık veya aylık — ya da tek bir i�
 - Her piyasa düzeltilmiş serisinden okunur, bu yüzden bir bölünme günü düşüş olarak çizilmez; temettü de çizilmez.
 - **Aralık** periyoda göre değişir: günlükte 3, 6 veya 12 ay ya da 3, 5 veya 10 yıl; haftalıkta 1, 3, 5 veya 10 yıl; aylıkta 3, 5 veya 10 yıl ya da kaynağın sunduğu en uzun aralık (yaklaşık 13). Bir istek yaklaşık 640 günlük mum getirir ve sayfa geriye doğru sayfa sayfa ilerler, bu yüzden on yıl — yaklaşık 2.500 mum — sınırın içinde kalır.
 - **İki veya daha fazla enstrüman kareyi karşılaştırmaya çevirir.** Listenizdeki adlar anahtardır: ikincisini açın ve kare, mum çizmeyi bırakır — iki enstrümanın fiyatının paylaşabileceği ortak bir eksen yoktur — ve bunun yerine her birinin ne yaptığını birikimli yüzde olarak çizer. Her eğri, kendi ön ucunda adıyla ve gösterilen anda ne kadar önde ya da geride olduğuyla etiketlenir. Dakika periyotlarında hepsi tek bir işlem gününde çizilir: her birinin sahip olduğu en yeni seans.
+- **Sağ kenardaki şerit, genişliği istersen bırakılabilir.** Varsayılan olarak kapalıdır: platform dikey videonun o kenarına avatarını, beğeni ve yorum düğmelerini çizer ve altına çizilen mumlar ile eğri uçları, burada rahatça okunsalar da telefonda gizli kalır. Açıkken bu sayfanın çizdiği iki görüntü de karenin kendi kenarına kadar gider — mumlar ta kendisine, karşılaştırma eğrisinin ucundaki ad ve sayı da onlarla birlikte; kayan pencere pencere olduğu sürece mesafeyi korur ve pencereyle birlikte tam genişliğe açılır.
 
 ## Hacim ve devir
 

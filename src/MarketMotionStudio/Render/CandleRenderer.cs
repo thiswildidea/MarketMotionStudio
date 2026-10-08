@@ -166,6 +166,16 @@ public sealed class CandleRenderer : IFrameRenderer
 
     private readonly bool _showVolume;
 
+    /// <summary>
+    /// Whether the candles may run into the band the host covers with its button rail.
+    ///
+    /// Off by default. The chart has nothing to place in that band — no label rides the last
+    /// candle the way one rides the leading end of a comparison's line — but the candles at the
+    /// near end are ink in it all the same, and the default right margin of 150 is narrower than
+    /// the rail's 194 in a 1080-wide frame. On, the plot runs to the margin the reader set.
+    /// </summary>
+    private readonly bool _crossSafeRight;
+
     /// <summary>The three averages, aligned with the bars and computed once.</summary>
     private readonly double?[][] _averages;
 
@@ -201,9 +211,13 @@ public sealed class CandleRenderer : IFrameRenderer
     /// </summary>
     private int _titleLines;
 
+    /// <param name="crossSafeRight">
+    /// Whether the picture may run into the band the host covers with its button rail. See
+    /// <see cref="_crossSafeRight"/>.
+    /// </param>
     public CandleRenderer(
         CandleSeries series, AnimationPlan plan, CandleStyle style, CandleMotion motion,
-        int window, bool showAverages, bool showVolume)
+        int window, bool showAverages, bool showVolume, bool crossSafeRight = false)
     {
         _series = series;
         _plan = plan;
@@ -212,6 +226,7 @@ public sealed class CandleRenderer : IFrameRenderer
         _window = Math.Max(5, window);
         _showAverages = showAverages;
         _showVolume = showVolume;
+        _crossSafeRight = crossSafeRight;
 
         _averages = [.. AverageLengths.Select(series.Average)];
         _stamps = Stamps(series.Bars);
@@ -403,12 +418,21 @@ public sealed class CandleRenderer : IFrameRenderer
         var bottom = context.BaselineAbove(CreditGap) +
             (_showVolume ? 0 : context.Px(VolumeReclaimed));
 
+        // The plot's right edge: the one place this chart answers the host's button rail.
+        // Off, it is brought in to where the rail starts — never out, so a reader who has
+        // already set a margin wider than the rail keeps the chart they had, and the shorter
+        // of the two answers is the one that holds. On, it is the margin and nothing else.
+        var left = context.ChartLeft;
+        var right = _crossSafeRight
+            ? context.ChartRight
+            : Math.Min(context.ChartRight, context.SafeRight());
+
         return new Frame(
             first, head, count,
             low, high, volume,
             arrived, growth, from, to,
             context.HeaderRow(PlotTopFraction, _titleLines), bottom,
-            context.ChartLeft, context.ChartWidth);
+            left, Math.Max(1, right - left));
     }
 
     /// <summary>
