@@ -95,14 +95,28 @@ public sealed record CandleSeries(
 
     public double Low { get; } = Bars.Count > 0 ? Bars.Min(b => b.Low) : 0;
 
-    /// <summary>Where the range opens — the first bar's open, which is what a range return is measured from.</summary>
+    /// <summary>Where the range opens — the first bar's open.</summary>
     public double Opening { get; } = Bars.Count > 0 ? Bars[0].Open : 0;
 
     public double Closing { get; } = Bars.Count > 0 ? Bars[^1].Close : 0;
 
-    /// <summary>The range's return: the last close over the first open.</summary>
-    public double RangeReturn { get; } =
-        Bars.Count > 0 && Bars[0].Open > 0 ? ((Bars[^1].Close / Bars[0].Open) - 1) * 100 : 0;
+    /// <summary>
+    /// The level this range's percentages are measured from: the close before it when the source
+    /// gave one, its own first open otherwise.
+    ///
+    /// Those are the same number on every daily period, because nothing supplies a close before
+    /// the range there — and they are two different numbers on the intraday ones, where they
+    /// should be. A session is quoted against the close before it, not against its own opening
+    /// auction: measured 2026-10-08, sh000001 was down 0.79% on the day and down 0.71% from its
+    /// open, and 科创50 down 4.82% against 3.73%. The headline of a minutes chart says the first.
+    ///
+    /// Expression-bodied rather than a stored property because it reads <see cref="Opening"/>,
+    /// which a field initializer may not.
+    /// </summary>
+    public double Baseline => PreviousClose > 0 ? PreviousClose : Opening;
+
+    /// <summary>The range's return: the last close over <see cref="Baseline"/>.</summary>
+    public double RangeReturn => Baseline > 0 ? ((Closing / Baseline) - 1) * 100 : 0;
 
     /// <summary>
     /// How far the price travelled, high over low, as a percentage of the low.

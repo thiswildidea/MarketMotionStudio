@@ -316,8 +316,13 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         (DateOnly.FromDateTime(FromDate.Date.DateTime), DateOnly.FromDateTime(ToDate.Date.DateTime));
 
     /// <summary>
-    /// Fills the day control from the sessions that came back, keeping the one being
-    /// drawn where the new list still has it.
+    /// Fills the day control from what is on the frame, keeping the one being drawn where the
+    /// new list still has it.
+    ///
+    /// Two sources and one question. One instrument is drawn on a session the source holds for
+    /// it; a comparison on a day all of its instruments have, and only those — offering one the
+    /// others lack would draw a board with a hole in it. Both lists are days that arrived with
+    /// the fetch, so moving between them is a redraw and nothing else.
     ///
     /// Only whole sessions are offered. A part-day is a chart missing its own opening,
     /// and it would sit in the list as an ordinary date: nothing about the entry would
@@ -325,16 +330,13 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     /// </summary>
     private void FillDays()
     {
-        if (_minutes is not { } session)
-        {
-            return;
-        }
+        IReadOnlyList<MinuteDay> offered = _minutes is { } session ? session.Whole : _board?.Days ?? [];
 
         _filling = true;
 
         DayCombo.Items.Clear();
 
-        foreach (var day in session.Whole)
+        foreach (var day in offered)
         {
             DayCombo.Items.Add(new ComboBoxItem
             {
@@ -343,12 +345,12 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
             });
         }
 
-        var at = session.Whole.ToList().FindIndex(d => d.Id == _day);
+        var at = offered.ToList().FindIndex(d => d.Id == _day);
 
         // The newest, when the one being drawn is not among them: a preference saved
         // on another day is a preference for a day the source has since dropped, and
         // the latest session is the nearest thing to it.
-        DayCombo.SelectedIndex = at >= 0 ? at : DayCombo.Items.Count - 1;
+        DayCombo.SelectedIndex = offered.Count == 0 ? -1 : at >= 0 ? at : offered.Count - 1;
 
         _filling = false;
     }
@@ -362,27 +364,36 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
     /// <summary>
     /// Draws the session chosen, or the latest whole one.
     ///
-    /// Not a fetch: every day in the list arrived in the same request, so moving between
-    /// them costs a redraw and the preview follows the control as it is used.
+    /// Not a fetch, on either picture: every day in the list arrived in the same request, so
+    /// moving between them costs a redraw and the preview follows the control as it is used.
     /// </summary>
     private void ApplyDay()
     {
-        if (_minutes is null)
+        var id = DayCombo.SelectedItem is ComboBoxItem { Tag: string chosen } ? chosen : string.Empty;
+
+        if (_minutes is { } session)
+        {
+            var day = ChosenDay() ?? session.Latest;
+
+            _day = day.Id;
+            _fetched = CandleMinutes.ForDay(session, day);
+        }
+        else if (_board is { } board && id.Length > 0)
+        {
+            _day = id;
+            _board = CandleBoardLoader.On(board, id);
+        }
+        else
         {
             return;
         }
-
-        var day = ChosenDay() ?? _minutes.Latest;
-
-        _day = day.Id;
-        _fetched = CandleMinutes.ForDay(_minutes, day);
 
         ApplyPreviewSettings();
     }
 
     private void OnDayChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (!_ready || _filling || _minutes is null)
+        if (!_ready || _filling || (_minutes is null && _board is null))
         {
             return;
         }
@@ -453,6 +464,11 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         // The window is a term of the scrolling motion alone; offered at any other
         // time it reads as a setting the chart is ignoring.
         WindowBox.IsEnabled = ChosenMotion() is CandleMotion.Scroll;
+
+        // A day control with no days in it is not a choice: before the first fetch there are
+        // none to offer, and greyed it says so instead of standing there looking broken.
+        // Filled by the fetch, by whichever of the two pictures it is.
+        DayCombo.IsEnabled = DayCombo.Items.Count > 0;
 
         // Three more that a comparison does not read: the four styles are ways of drawing
         // *candles*, and a frame of percentages has none, while the averages and the volume
@@ -737,9 +753,15 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         // Set before the guard below rather than after it: restoring a saved custom span
         // selects an entry while the page is still unready, and the two pickers have to
         // come up with it.
+        //
+        // And only while the period actually asks for a span. A minute period takes no dates
+        // at all — its days are the ones the source still holds, and they are chosen from the
+        // list below — so a saved custom span would leave two date pickers on the panel that
+        // the fetch never reads, right underneath the control that replaced them.
         CustomRange.Visibility = ChosenMonths() == CandleLoader.CustomMonths
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+            && !CandleLoader.IsMinute(ChosenPeriod())
+                ? Visibility.Visible
+                : Visibility.Collapsed;
 
         if (!_ready || _filling)
         {
@@ -925,7 +947,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
                 message => ShowStatus(InfoBarSeverity.Informational, message));
 
             var board = await CandleBoardLoader.LoadAsync(
-                Services.Quotes, chosen, period, months, from, to, progress, cancellation);
+                Services.Quotes, chosen, period, months, from, to, progress, cancellation, _day);
 
             if (board.Tracks.Count < 2)
             {
@@ -946,9 +968,14 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
             // drawn the moment the reader dropped back to one pick.
             _fetched = null;
             _minutes = null;
-            _day = string.Empty;
 
-            DayCombo.Items.Clear();
+            // And the day control follows the board rather than being emptied. A comparison
+            // is drawn on one day, and the days on offer are the ones all of these
+            // instruments have: left blank it was a control standing there promising a
+            // choice it was not offering.
+            _day = board.Drawn?.Id ?? string.Empty;
+
+            FillDays();
 
             ApplyPreviewSettings();
 

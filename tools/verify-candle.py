@@ -10,9 +10,14 @@
 import os
 import re
 import subprocess
+import sys
 import time
 
 import uiautomation as auto
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import winui  # noqa: E402 - has to come after the path insert above
 
 APPID = "8166Yxw.MarketMotionStudio_fzc58jprbah1t!App"
 EXE = "MarketMotionStudio.exe"
@@ -234,12 +239,28 @@ def toggle_on(win, automation_id):
 
 
 def shot(win, name):
+    """Take a frame of **this** window.
+
+    Not a bare `CaptureToImage`: that one hands back whichever window happens to be on top,
+    and a run of this script is not the only thing on the machine. One run wrote the editor
+    into `verify-candle-end-scroll.png` — same size, so nothing downstream complained, and the
+    two frames then "differed" by 82%, which reads as "the scrolling motion broke the drawing"
+    while the app was drawing exactly what it should. `winui.capture` is the shared answer:
+    it raises the window, takes the shot, and checks the picture is a frame of it — retrying
+    if it is not. It returns the path only when the picture passed, so a wrong frame turns
+    into a red line here instead of a confident measurement taken from somebody else's window.
+    """
     path = os.path.join(OUT, name)
+    ok = winui.capture(win, path)
+
+    # `capture` 把自己置顶才抓得准，抓完要还回去：留一个置顶的窗口在那儿，是给下一个
+    # 在这个屏幕上干活的人留的意外。
     try:
-        win.CaptureToImage(path)
-        return path
+        win.SetTopmost(False)
     except Exception:
-        return None
+        pass
+
+    return path if ok else None
 
 
 def scrub_to(win, progress):
@@ -323,16 +344,38 @@ def main():
 
     check("导航到 K 线页", goto_page())
 
+    # 窗口不在前台时 UIA 给的矩形全是 0，Combo 的弹出层也常常根本没展开 —— 那时 `pick`
+    # 静默地什么都没做（它自己不报失败）。先叫到前台，再复位，且**验了才算数**。
+    try:
+        auto.SetForegroundWindow(win.NativeWindowHandle)
+        win.SetFocus()
+    except Exception:
+        pass
+
+    time.sleep(1.0)
+
     # 这个页面把四个下拉的选择都存下来了，所以「默认」只在从没存过时才是默认值：
     # 上一轮跑完停在「月K / 面积图」，这一轮恢复出来的就是月K和面积图，不是默认
     # 写错了。先显式复位到默认，下面三个检查才真的在检查默认值本身；顺带也把
     # 「恢复出来的值能落到预览上」这条路径走了一遍。
+    #
+    # 复位**重试三次**：`pick` 不报失败，一次没点上就静默地停在旧值上，于是「推进方式默认
+    # 逐根铺满」报红而页面其实好好的 —— 读出来的值又是页面自己的话，看不出是页面错了还是
+    # 脚本没点上。点上为止，三次都点不上就让下面那条照旧红，红在明处。
+    def reset_combo(combo_id, label):
+        for _ in range(3):
+            if combo_value(win, combo_id) == label:
+                return True
+
+            pick(win, combo_id, label)
+            time.sleep(1.5)
+
+        return combo_value(win, combo_id) == label
+
     for combo, label in (("PeriodCombo", "日K"),
                          ("StyleCombo", "蜡烛图"),
                          ("MotionCombo", "逐根铺满")):
-        if combo_value(win, combo) != label:
-            pick(win, combo, label)
-            time.sleep(1.2)
+        reset_combo(combo, label)
 
     # 改周期会自己取一次数，等它落地，别和下面那次点取数撞在一起。
     time.sleep(3.0)

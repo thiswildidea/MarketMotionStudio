@@ -12,10 +12,11 @@ namespace MarketMotionStudio.Market;
 /// against the bottom of it — a picture of the two *levels*, which nobody asked for, and
 /// one whose vertical distance at any date is meaningless.
 ///
-/// Measured from the instrument's own first bar's **open** on this board, which is
-/// <see cref="CandleSeries.RangeReturn"/>'s basis too: two scales that disagreed about
-/// where zero is would put two curves on one axis that could not be read against each
-/// other.
+/// Measured from the level <see cref="CandleSeries.RangeReturn"/> measures from — the close
+/// before the range when the source gave one, the range's own first open otherwise. The two
+/// paths have to agree about it: two scales that put zero in different places would put two
+/// curves on one axis that could not be read against each other. On the intraday board it is
+/// the previous close, which is what makes a day's comparison a comparison of the day.
 /// </summary>
 /// <param name="First">
 /// The axis position this instrument's own history starts on, which is not the board's
@@ -23,14 +24,14 @@ namespace MarketMotionStudio.Market;
 /// board's opening stretch. Before it the track holds <see cref="double.NaN"/>, which
 /// draws nothing and wins no comparison.
 /// </param>
+/// <param name="Baseline">The price every one of <paramref name="Returns"/> is a percentage of.</param>
 public sealed record CandleTrack(
     string Code,
     string Name,
     IReadOnlyList<double> Returns,
     int First,
     int Last,
-    double Opening,
-    double Closing)
+    double Baseline)
 {
     /// <summary>What this instrument is ahead or behind by over the whole board.</summary>
     public double Final => Returns[Last];
@@ -77,12 +78,23 @@ public sealed record CandleTrack(
 /// What the axis is labelled with — a date for the daily periods, a clock time for the
 /// intraday ones, which is what one session's axis is counted in.
 /// </param>
+/// <param name="Sessions">
+/// What the intraday board was built from, kept so that another of its days can be drawn
+/// without asking the source again; null on a daily board, whose axis is a span rather than
+/// a session. See <see cref="Days"/>.
+/// </param>
+/// <param name="Drawn">
+/// The session every curve on an intraday board is drawn on, or null on a daily one. The
+/// day control shows it, and it is the only day the board is a picture of.
+/// </param>
 public sealed record CandleBoard(
     IReadOnlyList<string> Stamps,
     IReadOnlyList<DateOnly> Dates,
     IReadOnlyList<CandleTrack> Tracks,
     CandlePeriod Period,
-    IReadOnlyList<string> Skipped)
+    IReadOnlyList<string> Skipped,
+    IReadOnlyList<MinuteSession>? Sessions = null,
+    MinuteDay? Drawn = null)
 {
     public int Count => Stamps.Count;
 
@@ -92,6 +104,14 @@ public sealed record CandleBoard(
     public DateOnly Start => Dates[0];
 
     public DateOnly End => Dates[^1];
+
+    /// <summary>
+    /// The days this board can be drawn on, newest first — what the day control offers on an
+    /// intraday board, and empty on a daily one. Every one of them arrived with the fetch, so
+    /// moving between them is a redraw; see <see cref="CandleBoardLoader.On"/>.
+    /// </summary>
+    public IReadOnlyList<MinuteDay> Days =>
+        Sessions is { Count: > 0 } sessions ? CandleBoardLoader.SharedDays(sessions) : [];
 
     /// <summary>The axis's top and bottom: the furthest any curve got, either way.</summary>
     public double Peak => Tracks.Count == 0 ? 0 : Tracks.Max(t => t.Peak);
@@ -128,6 +148,11 @@ public static class CandleBoardLoader
     /// the last few sessions the source still holds, and the board then draws the day they
     /// all share.
     /// </param>
+    /// <param name="day">
+    /// Which of the days they share to draw, or empty for the newest. A saved preference
+    /// naming a session the source has since dropped — or that these particular instruments
+    /// do not share — falls back to the newest rather than drawing nothing.
+    /// </param>
     public static async Task<CandleBoard> LoadAsync(
         TencentKline kline,
         IReadOnlyList<RaceEntry> entries,
@@ -136,15 +161,13 @@ public static class CandleBoardLoader
         DateOnly from,
         DateOnly to,
         IProgress<string> progress,
-        CancellationToken cancellation)
+        CancellationToken cancellation,
+        string day = "")
     {
-        var minute = CandleLoader.IsMinute(period);
-        var series = new List<CandleSeries>(entries.Count);
-        var skipped = new List<string>();
-
-        if (minute)
+        if (CandleLoader.IsMinute(period))
         {
             var sessions = new List<MinuteSession>(entries.Count);
+            var missing = new List<string>();
 
             foreach (var entry in entries)
             {
@@ -158,42 +181,116 @@ public static class CandleBoardLoader
                     // One listing with no minutes is not the board's failure: index futures
                     // have them, the BSE 50 does not, and neither Hong Kong nor New York does
                     // at all. Named in the status line rather than thrown.
-                    skipped.Add(entry.Name);
+                    missing.Add(entry.Name);
                 }
             }
 
-            var day = SharedDay(sessions);
+            var days = SharedDays(sessions);
 
-            if (day is null)
-            {
-                return new CandleBoard([], [], [], period, skipped);
-            }
+            var chosen = days.FirstOrDefault(d => string.Equals(d.Id, day, StringComparison.Ordinal))
+                ?? days.FirstOrDefault();
 
-            foreach (var session in sessions)
-            {
-                var mine = session.Find(day.Id) ?? session.Days[0];
-
-                series.Add(CandleMinutes.ForDay(session, mine));
-            }
+            return chosen is null
+                ? new CandleBoard([], [], [], period, missing)
+                : Build(sessions, period, missing, chosen);
         }
-        else
+
+        var series = new List<CandleSeries>(entries.Count);
+        var skipped = new List<string>();
+
+        foreach (var entry in entries)
         {
-            foreach (var entry in entries)
+            try
             {
-                try
-                {
-                    series.Add(months == CandleLoader.CustomMonths
-                        ? await CandleLoader.LoadAsync(
-                            kline, entry.Code, entry.Name, period, from, to, progress, cancellation)
-                        : await CandleLoader.LoadAsync(
-                            kline, entry.Code, entry.Name, period, months, progress, cancellation));
-                }
-                catch (Exception)
-                {
-                    skipped.Add(entry.Name);
-                }
+                series.Add(months == CandleLoader.CustomMonths
+                    ? await CandleLoader.LoadAsync(
+                        kline, entry.Code, entry.Name, period, from, to, progress, cancellation)
+                    : await CandleLoader.LoadAsync(
+                        kline, entry.Code, entry.Name, period, months, progress, cancellation));
+            }
+            catch (Exception)
+            {
+                skipped.Add(entry.Name);
             }
         }
+
+        return Compose(series, period, skipped);
+    }
+
+    /// <summary>
+    /// The whole board on another of its days: a redraw, not a fetch.
+    ///
+    /// Every day the control offers arrived with the requests that built the board, so moving
+    /// between them costs the painting and nothing else. Asking again would be six more requests
+    /// for rows already in hand — and, since the source keeps only the last few sessions, a
+    /// second request is also the one thing that could quietly answer with a different window.
+    ///
+    /// A day the board does not offer leaves it as it was, rather than drawing an empty frame.
+    /// </summary>
+    public static CandleBoard On(CandleBoard board, string day)
+    {
+        if (board.Sessions is not { Count: > 0 } sessions)
+        {
+            return board;
+        }
+
+        var wanted = SharedDays(sessions)
+            .FirstOrDefault(d => string.Equals(d.Id, day, StringComparison.Ordinal));
+
+        return wanted is null ? board : Build(sessions, board.Period, board.Skipped, wanted);
+    }
+
+    /// <summary>
+    /// The days every instrument on the board has, newest first: what a multi-instrument minutes
+    /// chart may be drawn on.
+    ///
+    /// Shared rather than each one's own latest, because "these three, on one day" is the
+    /// question — a frame comparing Monday's move on one listing against Tuesday's on another
+    /// is not a comparison, and its axis would be two different days spliced together. Whole
+    /// sessions first and part-days only if they share no whole one: a chart missing its own
+    /// opening would sit in the list as an ordinary date. These are also the order the board
+    /// takes its default from, so the first of them is the day it opens on.
+    /// </summary>
+    public static IReadOnlyList<MinuteDay> SharedDays(IReadOnlyList<MinuteSession> sessions)
+    {
+        if (sessions.Count == 0)
+        {
+            return [];
+        }
+
+        foreach (var whole in new[] { true, false })
+        {
+            var offered = whole ? sessions[0].Whole : sessions[0].Days;
+
+            var shared = offered
+                .Where(d => sessions.All(
+                    s => s.Days.Any(o => string.Equals(o.Id, d.Id, StringComparison.Ordinal))))
+                .OrderByDescending(d => d.Date)
+                .ToList();
+
+            if (shared.Count > 0)
+            {
+                return shared;
+            }
+        }
+
+        return [];
+    }
+
+    /// <summary>One day of every instrument on the board, onto one axis.</summary>
+    private static CandleBoard Build(
+        IReadOnlyList<MinuteSession> sessions, CandlePeriod period,
+        IReadOnlyList<string> skipped, MinuteDay day) =>
+        Compose(
+            [.. sessions.Select(s => CandleMinutes.ForDay(s, s.Find(day.Id) ?? s.Days[0]))],
+            period, skipped, sessions, day);
+
+    /// <summary>The board a set of series makes, on the union of the axis they have.</summary>
+    private static CandleBoard Compose(
+        List<CandleSeries> series, CandlePeriod period, IReadOnlyList<string> skipped,
+        IReadOnlyList<MinuteSession>? sessions = null, MinuteDay? drawn = null)
+    {
+        var minute = CandleLoader.IsMinute(period);
 
         series = [.. series.Where(s => s.Count > 0)];
 
@@ -218,44 +315,7 @@ public static class CandleBoardLoader
             tracks.Add(Track(one, place, minute));
         }
 
-        return new CandleBoard(stamps, dates, tracks, period, skipped);
-    }
-
-    /// <summary>
-    /// The session every instrument on the board has, newest first: the day a multi-instrument
-    /// minutes chart is a picture of.
-    ///
-    /// Shared rather than each one's own latest, because "these three, on one day" is the
-    /// question — a frame comparing Monday's move on one listing against Tuesday's on another
-    /// is not a comparison, and its axis would be two different days spliced together. Whole
-    /// sessions are preferred; if they share none, the newest day they all have any part of is
-    /// used, which is a shorter picture rather than no picture.
-    /// </summary>
-    private static MinuteDay? SharedDay(IReadOnlyList<MinuteSession> sessions)
-    {
-        if (sessions.Count == 0)
-        {
-            return null;
-        }
-
-        foreach (var pool in new[] { true, false })
-        {
-            var offered = pool
-                ? sessions[0].Whole
-                : [.. sessions[0].Days];
-
-            for (var i = offered.Count - 1; i >= 0; i--)
-            {
-                var id = offered[i].Id;
-
-                if (sessions.All(s => s.Days.Any(d => string.Equals(d.Id, id, StringComparison.Ordinal))))
-                {
-                    return sessions[0].Find(id);
-                }
-            }
-        }
-
-        return null;
+        return new CandleBoard(stamps, dates, tracks, period, skipped, sessions, drawn);
     }
 
     /// <summary>
@@ -305,9 +365,12 @@ public static class CandleBoardLoader
     /// <summary>
     /// One instrument's cumulative return on the board's axis.
     ///
-    /// Its own first bar is its zero, wherever on the axis that falls, and the gap between
-    /// two of its bars is carried forward rather than drawn as a hole: a listing suspended
-    /// for a fortnight did not return to zero while it was away.
+    /// Its own first bar is where the curve starts, wherever on the axis that falls, and the gap
+    /// between two of its bars is carried forward rather than drawn as a hole: a listing
+    /// suspended for a fortnight did not return to zero while it was away.
+    ///
+    /// The percentages are of <see cref="CandleSeries.Baseline"/> and not of the first bar's
+    /// open — the difference being the whole of the intraday board. See there.
     /// </summary>
     private static CandleTrack Track(
         CandleSeries one, Dictionary<string, int> place, bool minute)
@@ -319,7 +382,7 @@ public static class CandleBoardLoader
             returns[i] = double.NaN;
         }
 
-        var opening = one.Bars[0].Open;
+        var baseline = one.Baseline;
         var first = -1;
         var last = -1;
 
@@ -334,7 +397,7 @@ public static class CandleBoardLoader
                 continue;
             }
 
-            returns[at] = opening > 0 ? ((bar.Close / opening) - 1) * 100 : 0;
+            returns[at] = baseline > 0 ? ((bar.Close / baseline) - 1) * 100 : 0;
 
             if (first < 0)
             {
@@ -364,7 +427,6 @@ public static class CandleBoardLoader
             }
         }
 
-        return new CandleTrack(
-            one.Code, one.Name, returns, first, last, opening, one.Bars[^1].Close);
+        return new CandleTrack(one.Code, one.Name, returns, first, last, baseline);
     }
 }

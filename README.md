@@ -443,7 +443,10 @@ bars and read by its **position in the window** rather than by stepping one cale
 Friday is not asked for a Thursday it never had, and a day the request limit trimmed still ends at
 15:00, which is the close that matters. Falling back to the previous bar is what every other period
 does, and there it is right; on a five-minute chart it was a five-minute move printed at the size
-of a day's.
+of a day's. That close is also what the range cards at the end of the run are measured from: over
+one session "the range's return" and "the day's change" are the same number, and measuring them
+from the opening bar while the headline above them did not put two answers to one question on one
+frame.
 
 It is also the first page with **two animations**, because a candle series raises a question the
 others do not. **Growing** draws one more candle per step until the whole range is on screen —
@@ -456,13 +459,23 @@ the frame shows at a given moment and not about how the picture is produced.
 box is the shared list, and here its chips are switches: with two or more on, the frame stops
 drawing candles altogether — two instruments' prices share no axis, and drawing them against one
 would put 贵州茅台's 1,258 next to 京东方A's 4.2 and flatten the second into the baseline. What is
-drawn instead is each one's **cumulative change** from its own opening bar, with the name and the
-move over the whole span riding the leading end of its line. The axis is the **union** of the days,
+drawn instead is each one's **cumulative change** from a zero the single-instrument chart also
+uses — the close before the range when the source gave one, the range's own opening bar otherwise —
+because two of this page's pictures disagreeing about where zero is, over the same instrument and
+the same day, is not a difference of opinion a reader can settle. On a daily span both are the same
+number. On a minute chart they are not, and it is the previous close that a session is quoted by:
+measured 2026-10-08, sh000001 was down **0.79%** on the day and 0.71% from its own opening
+auction, 科创50 4.82% against 3.73%. The name and the move over the whole span ride the leading end
+of the line. The axis is the **union** of the days,
 not the intersection, or an instrument with ten years of history compared against one with three
 would quietly be cut to three; a day one of them did not trade carries its last value forward,
-because a suspension is not a fall to zero. On the minute periods every track is drawn on the one
-trading day they all have, the newest whole one. Six at most — that is how many hues the palette
-has, and seven tracks drawn in six colours is a picture whose own legend cannot be read.
+because a suspension is not a fall to zero. On the minute periods every track is drawn on one
+trading day, and the day control lists **the days they all have** — a comparison of Monday's move
+on one listing against Tuesday's on another is not a comparison, and its axis would be two days
+spliced together. It opens on the newest whole one and moving through them redraws without asking
+the source again, since every one of them arrived in the same requests that built the board. Six at
+most — that is how many hues the palette has, and seven tracks drawn in six colours is a picture
+whose own legend cannot be read.
 
 The band down the right-hand side — the one that belongs to the platform's button rail, and that
 the leader boards let go of — is a choice on this page too, and it answers **both** of its pictures.

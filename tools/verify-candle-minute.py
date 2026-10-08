@@ -127,16 +127,33 @@ def combo_selected(win, combo):
     and the value pattern answers nothing — the same trap `winui` documents on the
     market combo, where an empty read was indistinguishable from "nothing to restore".
     Expanding and looking for the selected row is the only reading that works.
+
+    **行要按「列」筛。** `winui.popup_items` 是**有意**把左侧导航一起收进来的（同一次遍历
+    里两类行混在一个袋子里），而导航当前那一页本身就是一个「被选中的 `ListItemControl`」——
+    于是弹出层没打开时（窗口不在前台、或者展开跑到前面去了），这里交回的是**页面的名字**：
+    实测拿到过「周期 = K线」。弹出层的行落在下拉自己那一列里，所以要求行的左缘不在下拉的
+    左缘左边，就分得开。展开也重试三次：`combo_items` 一有行就返回，而导航那几行一直在。
     """
     if combo is None:
         return None
 
-    for item in winui.combo_items(win, combo):
-        try:
-            if item.GetSelectionItemPattern().IsSelected:
-                return item.Name
-        except Exception:  # noqa: BLE001 - a row can go stale mid-walk
-            continue
+    try:
+        edge = combo.BoundingRectangle.left
+    except Exception:  # noqa: BLE001
+        edge = None
+
+    for _ in range(3):
+        for item in winui.combo_items(win, combo, seconds=2):
+            try:
+                if edge is not None and item.BoundingRectangle.left < edge - 8:
+                    continue
+
+                if item.GetSelectionItemPattern().IsSelected:
+                    return item.Name
+            except Exception:  # noqa: BLE001 - a row can go stale mid-walk
+                continue
+
+        time.sleep(0.8)
 
     return None
 
@@ -153,10 +170,14 @@ def goto(win, name):
     return True
 
 
-def clear_chips(win):
-    """把清单里开着的名字全关掉，返回关了几个。
+def clear_chips(win, tries=6):
+    """把清单里开着的名字全关掉，**数到 0 才算**，返回 `(是否关干净, 说明)`。
 
-    清单是**跨会话共用**的一份，开关的状态不落盘、但一跑之内是活的。这一页的搜索与一键预设
+    说明那一半是给失败看的：这一条红的时候有两个完全不同的原因 —— 开关真的关不掉，或者
+    一个 chip 都没读出来（窗口不在前台、清单还没画）。两者的「没关干净」长得一样。
+
+    清单是**跨会话共用**的一份，而且开关的状态**跟内容一起落盘**（原来这里写的是「不落盘」
+    —— 实测刚进页面时「创业板指」就开着，那是上一轮留下的）。这一页的搜索与一键预设
     都是「把这只放到清单上并画出来」（与持仓收益页同一个语义），所以清单里还开着别人时，点
     一个预设画出来的就是两只 —— 而这一跑要数的是**一张单标的**的分钟图，上面每一列都该是
     那一天。来的时候先清干净。
@@ -165,32 +186,55 @@ def clear_chips(win):
     正是会抛的那个调用，所以它只能留在循环体里。另一个是**位置**：视频设置面板里的「隐藏
     标题」「安全区参考线」也是 `ToggleButton`，也各有 AutomationId —— 关掉它们关的是读者
     自己的设置，不是清单上的名字。清单这一排在搜索框下缘那一条带里。
+
+    **关完要数一次**：页面刚打开那一下共享清单还是异步读的，这时 chips 一个都读不到 ——
+    「全关掉」于是等于什么都没做，而随后的第一次点击会把新那只加到**已经开着的**那只上
+    （点一个预设出来两条曲线）。    数出来是 0 才算数，不是 0 就再来一遍。
     """
-    search = winui.find(win, lambda c: c.AutomationId == "InstrumentSearch")
+    seen = 0
 
-    if search is None:
-        return 0
+    for _ in range(tries):
+        search = winui.find(win, lambda c: c.AutomationId == "InstrumentSearch")
 
-    top = search.BoundingRectangle.bottom
-    off = 0
-
-    for control in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
-        try:
-            box = control.BoundingRectangle
-
-            if not control.AutomationId or box.top < top or box.top > top + 160:
-                continue
-
-            pattern = control.GetPattern(auto.PatternId.TogglePattern)
-        except Exception:  # noqa: BLE001
+        if search is None:
+            time.sleep(1.5)
             continue
 
-        if pattern is not None and pattern.ToggleState == auto.ToggleState.On:
-            pattern.Toggle()
-            off += 1
-            time.sleep(0.4)
+        top = search.BoundingRectangle.bottom
+        live = 0
+        turned = 0
 
-    return off
+        for control in winui.find_all(win, lambda c: c.ControlTypeName == "ButtonControl"):
+            try:
+                box = control.BoundingRectangle
+
+                if not control.AutomationId or box.top < top or box.top > top + 160:
+                    continue
+
+                pattern = control.GetPattern(auto.PatternId.TogglePattern)
+            except Exception:  # noqa: BLE001
+                continue
+
+            if pattern is None:
+                continue
+
+            live += 1
+
+            if pattern.ToggleState == auto.ToggleState.On:
+                pattern.Toggle()
+                turned += 1
+                time.sleep(0.4)
+
+        time.sleep(1.0)
+        seen = max(seen, live)
+
+        if live and not turned:
+            return True, f"关干净了（清单上 {live} 只）"
+
+    if seen == 0:
+        return False, "一个 chip 都没读出来（窗口不在前台，或清单还没画）"
+
+    return False, f"关了 {tries} 遍还剩 {seen} 只里的一只开着"
 
 
 def preset_button(win, name):
@@ -220,23 +264,21 @@ def preset_button(win, name):
 
 
 def shot(win, name):
+    """Take a frame of **this** window — 见 `winui.capture`。
+
+    这两句 `SetActive` / `SetTopmost` 原本就在这儿，但**抓回来的是不是这个窗口没人验**：
+    别的窗口盖上来时 `CaptureToImage` 交回的是盖在上面那一个，尺寸还一样，于是下游照量不误。
+    换成共用的那一处：它会重试，且只在这张图确实是这个窗口的一帧时返回路径。
+    """
     path = os.path.join(REPO, "artifacts", name)
-
-    try:
-        win.SetActive()
-        win.SetTopmost(True)
-        time.sleep(0.6)
-    except Exception:  # noqa: BLE001
-        pass
-
-    win.CaptureToImage(path)
+    ok = winui.capture(win, path)
 
     try:
         win.SetTopmost(False)
     except Exception:  # noqa: BLE001
         pass
 
-    return path
+    return path if ok else None
 
 
 def rgb(image):
@@ -331,9 +373,17 @@ def gap(columns):
 
 
 def differ(a, b):
-    """How much of one frame the other is not, in the plot band."""
-    a = rgb(a)
-    b = rgb(b)
+    """How much of one frame the other is not, in the plot band.
+
+    收的是 `shot` 交回来的**路径**（也可以是图片），其中任一张是 `None` —— `shot` 只在
+    那张图确实是这个窗口的一帧时才返回路径 —— 时算「全都不一样」：没得比和比出来一样是
+    两件事，后者会让「换一天画面变了」在什么都没量到时变绿。
+    """
+    if a is None or b is None:
+        return 1.0
+
+    a = rgb(Image.open(a)) if isinstance(a, str) else rgb(a)
+    b = rgb(Image.open(b)) if isinstance(b, str) else rgb(b)
 
     left = a.load()
     right = b.load()
@@ -422,9 +472,19 @@ def main():
 
     # 换一天是重画不是重新取数。若这里改成发请求，"换一天"会慢一倍，而更重要的是
     # 断网时换一天就画不出来 —— 那些日子明明都已经取回来了。
+    # 两条锚都是**整行**的：加了比较画面之后，守卫多了一个分支（`_board` 那条）、重画那一句
+    # 的入参从字段 `_minutes` 换成了模式匹配出来的 `session`。只锚前半句的话，守卫改成
+    # 「有没有取过数都不管」也还是绿的。
     check("换交易日不重新取数（同一份数据重画）",
-          "if (!_ready || _filling || _minutes is null)" in page
-          and "CandleMinutes.ForDay(_minutes, day)" in page)
+          "if (!_ready || _filling || (_minutes is null && _board is null))" in page
+          and "CandleMinutes.ForDay(session, day)" in page
+          and "CandleBoardLoader.On(board, id)" in page,
+          "；".join(missing for missing, ok in (
+              ("OnDayChanged 的守卫还是老那一句",
+               "if (!_ready || _filling || (_minutes is null && _board is null))" in page),
+              ("ForDay 那一句对不上", "CandleMinutes.ForDay(session, day)" in page),
+              ("比较画面的重画路径不在", "CandleBoardLoader.On(board, id)" in page),
+          ) if not ok))
 
     # 周期是分钟档时把区间下拉换成交易日下拉。留着区间下拉就是留一个没人用的控件。
     check("分钟档把区间下拉换成交易日下拉",
@@ -512,7 +572,8 @@ def main():
     # 上一次跑留下的可能是别的标的，甚至是一只手输的代码，那样脚本就无从独立复算。
     # 先清干净：清单里还开着别人时，点预设画出来的是两只（它把这一只**加**到画面上，而不是
     # 换掉画面 —— 与持仓收益页同一个语义）。这一跑要的是单标的的图。
-    clear_chips(win)
+    clean, why = clear_chips(win)
+    check("来的时候清单是干净的（开关状态跟内容一起落盘）", clean, why)
 
     preset = preset_button(win, PRESET_FIRST)
 
@@ -597,8 +658,11 @@ def main():
     check("画面画的那一天就是下拉选中的那一天",
           current is not None and current.replace("-", "") == day.replace("-", ""),
           f"控件 {current} / 画面 {day}")
+    # 锚点是**整行**：这一行在加「比较画面的交易日」那次多了一个分支（一天都没有时置灰，
+    # 不再硬选最后一项），只锚 `at >= 0` 那半句的话，改成 `Items.Count - 1` 也还是绿的。
     check("存的那天不在了就回退到最近一个完整交易日",
-          "DayCombo.SelectedIndex = at >= 0 ? at : DayCombo.Items.Count - 1" in page)
+          "DayCombo.SelectedIndex = offered.Count == 0 ? -1 : at >= 0 ? at : offered.Count - 1"
+          in page)
 
     check("下拉里列的就是源端那几天（且是最早的在前）",
           len(offered) == len(whole) and offered[0] == sorted(whole)[0][:4] + "-" +
@@ -606,6 +670,14 @@ def main():
           f"{len(offered)} 项：{offered[0] if offered else '—'} … {offered[-1] if offered else '—'}")
 
     first = shot(win, "verify-candle-minute-5m.png")
+
+    # 同一天再拍一张：这是「什么都没改」的量，下面的阈值从**它**算出来，不写死一个数。
+    # 同一个「换一天」的动作在不同一轮里量到过 4.0% 和 2.1% —— 两天的蜡烛形状本来就差得
+    # 有多有少，写死 3% 于是开始随机红，而画面每一轮都是对的。同一天的抖动实测 0.0–0.3%。
+    same = shot(win, "verify-candle-minute-5m-same.png")
+    noise = differ(first, same)
+
+    check("同一天连拍两张几乎一样（取景这一步是稳的）", noise < 0.01, f"{noise:.2%}")
 
     # ---- 换一天：画面必须变，且不能重新取数 ------------------------------------------
     #
@@ -617,12 +689,16 @@ def main():
         time.sleep(2.0)
 
         second = shot(win, "verify-candle-minute-5m-switched.png")
-        changed = differ(Image.open(first), Image.open(second))
+        changed = differ(first, second)
 
         # 阈值不高，因为两天共用一套构图：纵轴各自归一化到当天的最高最低，横轴都是同一个
-        # 交易日，所以位置固定、变的只有蜡烛body 与上下影。零才是"没换图"。
+        # 交易日，所以位置固定、变的只有蜡烛 body 与上下影 —— 零才是"没换图"。界取
+        # `max(1%, 同一天抖动 × 5)`：既盖住取景本身的抖动，又比它大一个量级。
+        floor = max(0.01, noise * 5)
+
         check(f"换到 {target} 画面真的变了（说明画的是那天，不是缓存的图）",
-              changed > 0.03, f"{changed:.1%} 的像素变了")
+              changed > floor,
+              f"{changed:.2%} 的像素变了（同一天的抖动 {noise:.2%}，界 {floor:.2%}）")
         check("换日期不触发取数（状态行还是上一次那条）",
               FETCHED.search(status_text(win)) is not None)
 
@@ -645,20 +721,27 @@ def main():
     # 这条以前是反的：断言「空档要够宽」。改轴之后反过来了 —— 90 分钟没人交易原本吃掉画面
     # 的 27%，现在上下午各占一半，中间只剩一条缝（LunchSeam = 2%）。缝必须还在，否则上午
     # 会被读成直接连着下午。
-    columns = candle_columns(Image.open(shot(win, "verify-candle-minute-5m-final.png")))
-    widest, at, span = gap(columns)
+    final = shot(win, "verify-candle-minute-5m-final.png")
+    columns = candle_columns(Image.open(final)) if final else []
 
-    check("画面里不再有那一大片没交易的空档",
-          widest < span * 0.10, f"最宽空档 {widest} 列 / 绘制区 {span} 列 = {widest / span:.1%}")
+    if not columns:
+        check("午休那两条能算（截到的是这个窗口的一帧）", False,
+              "照片没抓成，下面两条无从算起")
+    else:
+        widest, at, span = gap(columns)
 
-    drawn = [i for i, count in enumerate(columns) if count > 0]
-    inner = columns[drawn[0]:drawn[-1] + 1]
-    wide = max(1, int(len(inner) * 0.04))
-    band = inner[max(0, (len(inner) // 2) - wide):(len(inner) // 2) + wide]
-    seam = sum(1 for count in band if count == 0)
+        check("画面里不再有那一大片没交易的空档",
+              widest < span * 0.10,
+              f"最宽空档 {widest} 列 / 绘制区 {span} 列 = {widest / span:.1%}")
 
-    check("午休还在，只是变成正中的一条缝（上下午没有连成一段）",
-          seam > 0, f"正中 ±4% 里有 {seam}/{len(band)} 列是空的")
+        drawn = [i for i, count in enumerate(columns) if count > 0]
+        inner = columns[drawn[0]:drawn[-1] + 1]
+        wide = max(1, int(len(inner) * 0.04))
+        band = inner[max(0, (len(inner) // 2) - wide):(len(inner) // 2) + wide]
+        seam = sum(1 for count in band if count == 0)
+
+        check("午休还在，只是变成正中的一条缝（上下午没有连成一段）",
+              seam > 0, f"正中 ±4% 里有 {seam}/{len(band)} 列是空的")
 
     # ---- 另外两档 ----------------------------------------------------------------
     #
