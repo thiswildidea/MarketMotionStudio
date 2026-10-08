@@ -435,6 +435,7 @@ Kadr jest zawsze 9:16. Wszystko inne ustalasz sam.
 - Marginesy są zapisane względem kadru 1080×1920 i skalowane do rozdzielczości eksportu, więc raz dobrany układ obowiązuje w każdym rozmiarze. Lewy margines decyduje też, gdzie trafiają opisy osi: za mały, i liczby wyjdą poza kadr.
 - Linie bezpiecznego obszaru obrysowują to, co aplikacja na telefonie zakrywa własnym interfejsem. Rysują się w podglądzie i nigdy w pliku.
 - Tytuł może mieć więcej niż jedną linię: w polu tytułu naciśnij Enter, aby złamać go tam, gdzie chcesz. Jeśli nie mieści się w jednej linii, sam przechodzi do drugiej — najwyżej dwóch; dopiero gdy i dwie nie wystarczą, maleje stopień pisma. Druga linia przesuwa wszystko poniżej o jeden wiersz, więc wykres jest o tyle niższy.
+- **Nazwa i liczba na końcu linii zatrzymują się przed interfejsem platformy.** Aplikacja na telefon rysuje swój awatar oraz przyciski „lubię to” i komentarzy po prawej stronie pionowego wideo, więc obszar rysowania kończy się przed prawym brzegiem kadru, a bieżący punkt krzywej — wraz z nazwą i liczbą — zatrzymuje się na lewo od tego pasa. Wykres jest węższy od kadru i dlatego.
 
 - Wszystko aż do ostatniego kroku jest darmowe: pobieranie danych, odtwarzanie animacji, zapisanie okładki. **Eksport** to jedyne miejsce, które prosi o miesięczną subskrypcję; po kliknięciu wyjaśnia, co ona kupuje i ile kosztuje. Odnawia się, dopóki nie anulujesz jej w Microsoft Store.
 

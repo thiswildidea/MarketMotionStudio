@@ -438,6 +438,7 @@ O quadro é sempre 9:16. Todo o resto é você que decide.
 - As margens são anotadas contra um quadro de 1080×1920 e escalonadas para a resolução de exportação, então um layout ajustado uma vez vale em qualquer tamanho. A margem esquerda também decide onde caem os rótulos do eixo: pequena demais, e os números saem do quadro.
 - As guias de área segura delimitam o que um aplicativo de celular cobre com a própria interface. São desenhadas na prévia e nunca em um arquivo.
 - O título pode ter mais de uma linha: pressione Enter no campo do título para quebrá-lo onde quiser. Se não couber em uma linha, ele quebra sozinho em uma segunda, no máximo duas; só quando duas também não bastam é que o tamanho cede. Uma segunda linha empurra uma linha para baixo tudo o que vem depois, e o gráfico fica mais baixo na mesma medida.
+- **O nome e o número no fim de uma linha param antes da interface da plataforma.** Um aplicativo de celular desenha o próprio avatar e os botões de curtir e comentar na lateral direita de um vídeo vertical, então a área de desenho termina antes da borda direita do quadro e o ponto atual de uma curva — com o nome e o número que o acompanham — fica à esquerda dessa faixa. O gráfico é mais estreito que o quadro, e é por isso.
 
 - Tudo até o último passo é gratuito: buscar dados, reproduzir a animação, salvar a imagem de capa. **Exportar** é o único lugar que pede uma assinatura mensal, e ao tocá-lo ele diz o que compra e quanto custa. Ela renova até você cancelá-la na Microsoft Store.
 

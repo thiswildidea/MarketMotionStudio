@@ -421,7 +421,10 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     private sealed record CapEnd(string Name, string Figure, Color Colour, double X, double Y);
 
     /// <summary>
-    /// How much room the capsules need, so the plot can stop short of it.
+    /// How much room the capsules need, so the plot can stop short of it — short enough that
+    /// they come to rest clear of the band the host's own interface covers, not merely clear
+    /// of the frame's edge. The arithmetic is <see cref="FrameContext.RightLabelColumn"/>'s,
+    /// shared with the two other pages that ride a label at a line's leading end.
     ///
     /// Measured from the **last** figures rather than from this frame's, so the column is
     /// the same width on every frame. A column that grew with the figures would narrow
@@ -459,9 +462,9 @@ public sealed class CapHistoryRenderer : IFrameRenderer
             }
         }
 
-        var need = widest + context.Px(LabelGap + LabelEdgePad);
+        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad));
 
-        return Math.Clamp(need - context.Margins.Right, 0, context.ChartWidth * MostLabelShare);
+        return Math.Clamp(need, 0, context.ChartWidth * MostLabelShare);
     }
 
     /// <summary>
@@ -521,13 +524,14 @@ public sealed class CapHistoryRenderer : IFrameRenderer
         {
             var width = LabelWidth(session, context, nameFormat, valueFormat, end.Name, end.Figure);
 
-            // Its right edge is what has to stay inside the frame, so that is the edge
-            // that gives way: a long name alongside a large figure can leave the column
-            // narrower than the capsule, and then it slides back over the line rather
-            // than off the picture.
+            // Its right edge is what gives way, and it gives way to the **safe line** rather
+            // than to the frame's edge: past that line is the band the platform covers with
+            // its avatar and its comment button. A long name alongside a large figure can
+            // leave the column narrower than the capsule, and then it slides back over the
+            // line rather than into the rail.
             var left = Math.Min(
                 end.X + context.Px(LabelGap),
-                context.Width - context.Px(LabelEdgePad) - width);
+                context.SafeRight - context.Px(LabelEdgePad) - width);
 
             boxes.Add((Math.Max(context.ChartLeft, left), width));
         }

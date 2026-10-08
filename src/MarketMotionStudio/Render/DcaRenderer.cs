@@ -474,19 +474,21 @@ public sealed class DcaRenderer : IFrameRenderer
 
     /// <summary>
     /// How much of the frame's right-hand side the end labels need, in frame pixels — the
-    /// amount the plot gives up so that a label can ride ahead of its own line without
-    /// running off the edge.
+    /// amount the plot gives up so that a label can ride ahead of its own line and come to
+    /// rest short of the band the host's own interface covers, rather than short of the
+    /// frame's edge.
     ///
     /// Measured from the **final** amounts rather than from this frame's, so the column is the
     /// same width on every frame. A column that grew with the figures would narrow the plot
     /// while the labels were still moving along it, and the lines would slide sideways as they
     /// were being read.
     ///
-    /// The right margin already keeps a band empty for the last value, so the plot gives up
-    /// only what that margin cannot cover — and never more than a fixed share of its own
-    /// width, because past that point a longer name is being answered by shrinking the
-    /// picture, which is the wrong end to take it from. When the cap does bite, the labels
-    /// give way instead: see <see cref="DrawLabels"/>.
+    /// The right margin keeps part of the band empty and the plot gives up only what that
+    /// margin cannot cover — see <see cref="FrameContext.RightLabelColumn"/>, which owns the
+    /// arithmetic now that three pages depend on it — and never more than a fixed share of
+    /// its own width, because past that point a longer name is being answered by shrinking
+    /// the picture, which is the wrong end to take it from. When the cap does bite, the
+    /// labels give way instead: see <see cref="DrawLabels"/>.
     /// </summary>
     private double LabelColumn(CanvasDrawingSession session, FrameContext context)
     {
@@ -505,9 +507,9 @@ public sealed class DcaRenderer : IFrameRenderer
                 LabelWidth(session, context, nameFormat, valueFormat, track.Name, FinalProfit(track)));
         }
 
-        var need = widest + context.Px(LabelGap + LabelEdgePad);
+        var need = context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad));
 
-        return Math.Clamp(need - context.Margins.Right, 0, context.ChartWidth * 0.45);
+        return Math.Clamp(need, 0, context.ChartWidth * 0.45);
     }
 
     /// <summary>
@@ -591,15 +593,16 @@ public sealed class DcaRenderer : IFrameRenderer
             // shortened to leave for it: by the end of the animation that column is past the
             // plot's last one, so a label never covers the line it is about.
             //
-            // Its right edge is the one that has to stay inside the frame, and it is the one
-            // that gives way — measured to the **frame's** edge, not the plot's: the band the
-            // right margin keeps empty is where these labels live. A long name with a large
-            // amount, and the side margins pushed out, can leave the column narrower than the
-            // widest label, and then the label slides back over the point rather than off the
-            // edge of the picture.
+            // Its right edge is the one that gives way, and it gives way to the **safe line**
+            // rather than to the frame's edge: past that line is the band the platform covers
+            // with its avatar and its comment button, and a 9:16 video whose figure is readable
+            // in the editor and hidden on the phone it was made for is the failure this exists
+            // to prevent. A long name with a large amount, and the side margins pushed out, can
+            // leave the column narrower than the widest label, and then the label slides back
+            // over the point rather than into the rail.
             var left = Math.Min(
                 anchors[i].X + context.Px(LabelGap),
-                context.Width - context.Px(LabelEdgePad) - width);
+                context.SafeRight - context.Px(LabelEdgePad) - width);
 
             boxes.Add(new Rect(Math.Max(context.ChartLeft, left), anchors[i].Y, width, height));
         }

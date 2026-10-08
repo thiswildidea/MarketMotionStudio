@@ -211,8 +211,13 @@ def source():
     # 正常 —— 三条线、三个胶囊都在，只有把它们之间的距离量出来才知道胶囊压没压曲线。
     check("胶囊锚在自己曲线头的**右边**（左缘 = 头 + LabelGap）",
           "anchors[i].X + context.Px(LabelGap)" in render)
-    check("右缘按**画面**右缘收，不是绘图区右缘（那条竖栏本来就在右边距里）",
-          "context.Width - context.Px(LabelEdgePad) - width" in render)
+    # 「那条竖栏本来就在右边距里」曾经是这一条写下的理由，而它是错的：安全区右边那条栏是
+    # 帧宽的 18%（1080 下 194 像素），比右边距的默认值 150 还宽。按画面右缘收的胶囊因此落在
+    # 帧宽 98% 处 —— 正好在平台头像和评论按钮底下。现在收在安全线上。
+    check("右缘收在**安全线**上，不是画面右缘（右边 18% 是平台自己的按钮栏）",
+          "context.SafeRight - context.Px(LabelEdgePad) - width" in render)
+    check("让出的那一列把按钮栏算进去了，且三页共用同一处算术（不再各抄一份）",
+          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad))" in render)
     check("绘图区让出一列给胶囊（标题、卡片、进度条仍是整幅宽）",
           "Math.Max(1, context.ChartWidth - LabelColumn(session, context))" in render)
     check("那一列按**最终**金额量，所以每帧一样宽（不然曲线会横着滑）",
@@ -461,6 +466,11 @@ def main():
     # 所以要求「认得出白点的那几条都在自己头右边」，而不是六条。
     if six is not None:
         ahead = []
+        clear = []
+
+        # 平台自己那条竖栏：帧宽的 18%。判「右缘在安全线左边」才是需求本身 —— 头像、点赞、
+        # 评论都盖在这一条里，落进去等于看不到，而编辑器的预览里看不出任何问题。
+        rail = (six["box"][1] - six["box"][0]) * 0.18
 
         for i in range(6):
             # 第三个值叫 `edge` 不叫 `start`：`main` 里那个 `start` 是整段区间的起点（一个
@@ -475,10 +485,21 @@ def main():
             if edge > head + 4:
                 ahead.append(i)
 
+            # 那一行上最长的那一段约等于胶囊的宽（两端圆角不在里面，只会偏短 —— 这一条判的
+            # 是「没进按钮栏」，宁松不紧）。
+            width, _ = vp.best_run(six["frame"].of(vp.TRACKS[i]), row)
+
+            if width and edge + width <= six["box"][1] - rail:
+                clear.append(i)
+
         check("有白点的那几份，胶囊都在自己曲线头的右边（不再压曲线）", len(ahead) >= 5,
               f"认到 {len(six['dotx'])} 个白点，{len(ahead)} 条在头右边："
               + "、".join(f"第{i + 1}条 头 x={six['dotx'].get(i)} → 胶囊 x={six['labels'][i][2]}"
                          for i in range(6) if i in ahead))
+        check("六份的胶囊右缘都在安全线左边（不进平台那条按钮栏）", len(clear) >= 5,
+              f"安全线 x={six['box'][1] - rail:.0f}（画面右缘 x={six['box'][1]}）；"
+              + "、".join(f"第{i + 1}条 左缘 {six['labels'][i][2]}"
+                         for i in range(6) if i not in clear))
 
     # ---- 第七份：拒绝 ----
     print("\n上限")

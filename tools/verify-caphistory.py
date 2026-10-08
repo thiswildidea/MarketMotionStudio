@@ -1093,6 +1093,16 @@ def source_checks():
     check("两块面板与日期行共用同一列",
           draw.count("Math.Max(1, context.ChartWidth - column)") >= 2)
 
+    # 右缘收在哪：曾经两页（定投、持仓）都把它收到**画面**右缘，理由写的是「那条竖栏本来就在
+    # 右边距里」——而那是错的，安全区右边那条栏是帧宽 18%（1080 下 194 像素），比右边距默认
+    # 150 还宽，胶囊于是落在帧宽 98%、正好在平台头像与评论按钮底下。三页现在共用一处算术。
+    check("右缘收在**安全线**上，不是画面右缘（右边 18% 是平台自己的按钮栏）",
+          "context.SafeRight - context.Px(LabelEdgePad) - width" in draw,
+          "还在按画面右缘收")
+    check("让出的那一列把按钮栏算进去了，且三页共用同一处算术（不再各抄一份）",
+          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad))" in draw,
+          "还在各抄一份 need = widest + … - Margins.Right")
+
     # 单只也要挂：`DrawPanel` 里没有那一次调用，「单只没有标注」这个老样子会一直留着而 UIA 全绿。
     panel = re.search(r"private int DrawPanel\(.*?\n    \}", draw, re.S)
 
@@ -1271,7 +1281,15 @@ def main():
         second_run = curve_columns(
             late, box, jump, head_late["columns"] if head_late else None)
 
-        check("认得出这条曲线", len(first_run) >= 60, "只连出 %d 列" % len(first_run))
+        # 下限按画面的比例算，不按列数写死：绘图区为了把胶囊让到安全线左边，比过去窄了四分之
+        # 一（`FrameContext.RightLabelColumn`），于是同一个进度画出来的链就是短了 —— 一条按旧宽
+        # 度标定出来的 60 列会红在一帧完全正常的画面上。这条判据只负责证明「像素认出来的是一条
+        # 线、不是一个字」，真正的那条回归（早帧的列后来有没有挪位）在下面，靠的是比较而不是
+        # 长度。认出的是胶囊而不是曲线的可能性由 `line_span` 先摘掉胶囊、再由 `within` 收窄来挡。
+        floor = round((box[1] - box[0]) * 0.10)
+
+        check("认得出这条曲线", len(first_run) >= floor,
+              "只连出 %d 列，一条线至少要横跨画面的 %d 列" % (len(first_run), floor))
 
         # 正向断言，且必须先于「没有挪动」那一条成立：搓擦条万一没生效，两帧会一模一样，而一
         # 模一样的两帧当然「一个点也没动」—— 那是一次通过，不是一个证明。

@@ -60,6 +60,49 @@ public sealed record FrameContext(
     public double ChartWidth => Math.Max(1, ChartRight - ChartLeft);
 
     /// <summary>
+    /// The frame's own right edge, brought in to the near side of the band the host covers
+    /// with its button rail — the line anything drawn on the right-hand side has to stop at.
+    ///
+    /// <para>
+    /// The rail is not hypothetical and not small: <see cref="SafeArea.Right"/> of a 1080-wide
+    /// frame is 194 px, which is <b>more than the default right margin of 150</b>. That is the
+    /// whole reason this exists. Three pages reserved a column for the labels riding their
+    /// lines' leading ends and measured it against the frame's own edge, on the stated
+    /// assumption that the rail "is already inside the right margin" — an assumption that was
+    /// never true, and which put those labels at 98% of the frame on a 9:16 vertical, exactly
+    /// where the avatar and the comment button sit. The frames looked right in the editor
+    /// because the editor draws no such interface.
+    /// </para>
+    /// </summary>
+    public double SafeRight => Width * (1 - SafeArea.Right);
+
+    /// <summary>
+    /// What a column of labels at the plot's right end costs the plot, in frame pixels: the
+    /// widest of them, the gap that separates it from the line it belongs to, and the part of
+    /// the host's button rail that the frame's own right margin does not already keep clear.
+    ///
+    /// <para>
+    /// Stated as a cost rather than as a width so that it can be subtracted from
+    /// <see cref="ChartWidth"/> as it stands: the answer is what the plot must give up on top
+    /// of the margin it has already given up. The margin and the rail are subtracted rather
+    /// than added because they overlap — a right margin of 260 already covers the whole rail,
+    /// and what the plot must then give up is 90, not 350: adding instead of subtracting would
+    /// charge the margin a second time and take 260 px off the picture to buy nothing.
+    /// </para>
+    /// <para>
+    /// The consequence, which is the point of the whole exercise: a label placed
+    /// <paramref name="gap"/> past the plot's right edge now comes to rest
+    /// <paramref name="widestLabel"/> further right, which is the near side of the rail
+    /// exactly — whatever the margin is set to. The plot gives up the difference and the
+    /// label never enters the band the platform covers.
+    /// </para>
+    /// </summary>
+    /// <param name="widestLabel">The widest label to be drawn, measured in the face it is drawn in.</param>
+    /// <param name="gap">What separates a label from the point it rides.</param>
+    public double RightLabelColumn(double widestLabel, double gap) =>
+        widestLabel + gap + (Width * SafeArea.Right) - Margins.Right;
+
+    /// <summary>
     /// Where the lowest thing in the frame sits: the data-source credit. This is
     /// what the bottom margin measures to, which is what makes all three margins
     /// mean the same thing.

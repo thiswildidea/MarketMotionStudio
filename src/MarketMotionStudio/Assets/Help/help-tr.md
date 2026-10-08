@@ -423,6 +423,7 @@ Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.
 - Kenar boşlukları 1080×1920 karesine göre yazılır ve dışa verme çözünürlüğüne oranlanır; bir kez ayarlanan yerleşim her boyutta geçerlidir. Sol kenar boşluğu ayrıca eksen etiketlerinin nereye düşeceğini belirler: çok küçükse sayılar kareden çıkar.
 - Güvenli alan kılavuzları, bir telefon uygulamasının kendi arayüzüyle kapattığı yeri gösterir. Ön izlemede çizilir, dosyaya hiç girmez.
 - Başlık birden çok satır olabilir: başlık kutusunda Enter'a basarak istediğiniz yerden kırın. Tek satıra sığmazsa kendiliğinden ikinci satıra kayar, en fazla iki satır; iki satır da yetmezse yazı boyutu küçülür. İkinci satır altındaki her şeyi bir satır aşağı iter, grafik de o kadar kısalır.
+- **Bir çizginin ucundaki ad ve sayı, platformun kendi arayüzünün önünde durur.** Bir telefon uygulaması avatarını, beğeni ve yorum düğmelerini dikey videonun sağ kenarına çizer; bu yüzden çizim alanı karenin sağ kenarından önce biter ve bir eğrinin güncel noktası — yanındaki ad ve sayıyla birlikte — o şeridin solunda durur. Grafik kareden dardır ve nedeni budur.
 
 - Son adıma kadar her şey ücretsiz: veri çekmek, animasyonu oynatmak, kapak görselini kaydetmek. **Dışa aktar**, aylık abonelik isteyen tek yerdir; düğmeye basıldığında ne satın aldığı ve ne kadara mal olduğu söylenir. Microsoft Store'da iptal edene kadar yenilenir.
 

@@ -714,6 +714,29 @@ def status_until(win, patterns, seconds=300):
     return None
 
 
+def set_title(win, text):
+    """把标题框写成 `text`。走 `ValuePattern` 不走键盘 —— `SendKeys` + 剪贴板在这台
+    机器上贴进去的是一段没见过的旧文本。
+
+    为什么要显式写：**标题框会恢复上次会话留下的值**（它是落盘的偏好）。「什么都不设」
+    量到的是那段旧文本，于是「默认标题写着这一只」这类判据验的其实是「上一次谁用过这台
+    机器」—— 10-05 那次九项失败的总根因就是它。
+    """
+    box = winui.find(win, lambda c: c.AutomationId == "TitleBox", limit=40)
+
+    if box is None:
+        return False
+
+    try:
+        box.GetValuePattern().SetValue(text)
+    except Exception:  # noqa: BLE001
+        return False
+
+    time.sleep(0.8)
+
+    return True
+
+
 def goto(win, name):
     item = winui.find(win, lambda c: c.ControlTypeName == "ListItemControl" and c.Name == name)
 
@@ -1194,8 +1217,13 @@ def main():
     # 三个胶囊」，只有把它们之间的距离量出来才知道胶囊是不是又压回曲线上去了。
     check("胶囊锚在自己曲线头的**右边**（左缘 = 头 + LabelGap）",
           "anchors[i].X + context.Px(LabelGap)" in renderer)
-    check("右缘按**画面**右缘收，不是绘图区右缘（那条竖栏本来就在右边距里）",
-          "context.Width - context.Px(LabelEdgePad) - width" in renderer)
+    # 「那条竖栏本来就在右边距里」曾经是这一条写下的理由，而它是错的：安全区右边那条栏是
+    # 帧宽的 18%（1080 下 194 像素），比右边距的默认值 150 还宽。按画面右缘收的胶囊因此落在
+    # 帧宽 98% 处 —— 正好在平台头像和评论按钮底下。现在收在安全线上。
+    check("右缘收在**安全线**上，不是画面右缘（右边 18% 是平台自己的按钮栏）",
+          "context.SafeRight - context.Px(LabelEdgePad) - width" in renderer)
+    check("让出的那一列把按钮栏算进去了，且三页共用同一处算术（不再各抄一份）",
+          "context.RightLabelColumn(widest, context.Px(LabelGap + LabelEdgePad))" in renderer)
     check("绘图区让出一列给胶囊（标题、卡片、进度条仍是整幅宽）",
           "Math.Max(1, context.ChartWidth - LabelColumn(session, context))" in renderer)
     check("那一列按**最终**金额量，所以每帧一样宽（不然曲线会横着滑）",
@@ -1300,6 +1328,11 @@ def main():
     check("点一键预设就取数", True, data["status"][:70])
     check("取的是单只口径（没有「N 只标的」）", "只标的" not in data["status"])
     check("清单里只有这一只且被勾上", ticked(win) == [PRESETS[0][0]], str(ticked(win)))
+    # 默认标题是**占位符**，而占位符只有框里没字的时候才进 UIA 树：实测框里写着上次留下的
+    # 标题时，整棵树里找不到「持仓收益：中国平安」；清空之后它立刻出现。所以下面几条默认标题
+    # 断言之前必须先清空 —— 不清，验的是上一次谁用过这台机器。
+    check("标题框先清空（它会把上次会话留下的值恢复回来）", set_title(win, ""), "找不到标题框")
+
     check("默认标题写着这一只",
           any(f"持仓收益：{PRESETS[0][1]}" in t for t in texts(win)),
           next((t for t in texts(win) if "持仓收益" in t), "（没有）"))
@@ -1682,7 +1715,11 @@ def main():
         check("满进度那一帧量得出", False, "取不到画面")
     else:
         right = tip["box"][1]
-        ahead, inside = [], []
+
+        # 平台自己那条竖栏：帧宽的 18%。下面那一条判的是「没跑出画面」，这一条判的才是需求
+        # 本身 —— 头像、点赞、评论都盖在这一条里，落进去等于看不到。
+        rail = (tip["box"][1] - tip["box"][0]) * 0.18
+        ahead, inside, clear = [], [], []
 
         for i in (0, 1, 2):
             # 变量别叫 `start`：`main` 里那个是整段区间的起点（一个日期），在这里被一个列号
@@ -1704,12 +1741,22 @@ def main():
             if edge + width <= right:
                 inside.append(i)
 
+            if edge + width <= right - rail:
+                clear.append(i)
+
         check("满进度时三颗胶囊都在自己曲线头的右边（不再压曲线）", len(ahead) == 3,
               "、".join(f"第{i + 1}条 头 x={tip['dotx'].get(i)} → 胶囊 x={tip['labels'][i][2]}"
                        for i in (0, 1, 2)))
         check("三颗胶囊都没跑出画面（右边那条竖栏正是留给它们的）", len(inside) == 3,
               f"画面右缘 x={right}；"
               + "、".join(f"第{i + 1}条 左缘 {tip['labels'][i][2]}"
+                         for i in (0, 1, 2)))
+
+        # 需求那一条：收到**安全线**上，不是画面右缘。旧写法收到的终点是画面右缘，实测三颗
+        # 都落在帧宽 98% 处 —— 编辑器的预览里看不出任何问题，那是平台的播放器才盖上去的东西。
+        check("三颗胶囊的右缘都在安全线左边（不进平台那条按钮栏）", len(clear) == 3,
+              f"安全线 x={right - rail:.0f}（画面右缘 x={right}）；"
+              + "、".join(f"第{i + 1}条 左缘 {tip['labels'][i][2]} + 宽 {best_run(tip['frame'].of(TRACKS[i]), tip['labels'][i][1])[0]}"
                          for i in (0, 1, 2)))
 
     # ---- 8) 上限：六只画得出来，第七只被拒 -----------------------------------------
@@ -1776,17 +1823,39 @@ def main():
           hit is not None and hit.group(1) == "6" and hit.group(2) == "7",
           f"{hit.group(1)} / {hit.group(2)}" if hit else "（没匹配上）")
 
-    # 被拒之后画面不该变。**这一条比数白点硬**：多画一只的画面白点数可能一模一样（两只
-    # 叠在一起），而标题是页面自己按那份持仓板写上去的 —— 板没重建，标题就还是「等 6 只」。
+    # 被拒之后画面不该变。**这一条是硬的**：多画一只的画面白点数可能一模一样（两只叠在一起），
+    # 而标题是页面自己按那份持仓板写上去的 —— 板没重建，标题就还是「等 6 只」。下面那条白点
+    # 是**软**的（两次实拍的画布大小就不一样），所以它现在只比「点还在原来的高度上」。
     check("被拒之后标题还是「等 6 只」（没有悄悄画前六只）",
           any("等 6 只" in t for t in texts(win)),
           next((t for t in texts(win) if "等" in t), "（没有）"))
 
     after = measure(win, "verify-position-limit.png", count=6)
 
-    check("被拒之后白点数没变",
-          after is not None and len(after["dots"]) == len(before),
-          f"{len(before)} → {len(after['dots']) if after else '—'}")
+    # **不能比白点的个数。** 这一条以前比的是个数，而两次实拍量到的根本不是同一块画布：
+    # 被拒时状态条自己长出来，预览按 9:16 等比缩 —— 实测画布宽 421 → 383（矮 9%，宽跟着
+    # 矮 9%）。同一张画面缩 9% 之后，两个本来刚好分得开的白点在屏幕上并成一个连通块，个数
+    # 掉一个，而画面一个像素都没变。个数一直在 5 和 4 之间看运气，**这不是判据，是同义反复
+    # 的巧合**。
+    #
+    # 改成按**画面高度的比例**比位置：白点相对画面的落点不变才说明画面没变，且与画布多大
+    # 无关。容差 2%（实测最大差 1.0%，那是整数像素加等比缩放的量化）。
+    def spread(m):
+        top, bottom = m["box"][2], m["box"][3]
+        height = max(1, bottom - top)
+
+        return [(d[1] - top) / height for d in m["dots"]]
+
+    if six is None or after is None or not after["dots"]:
+        check("被拒之后画面没变（每个白点都还在原来的高度上）", False,
+              f"被拒前 {len(before)} 个 / 被拒后取不到画面")
+    else:
+        was, now = spread(six), spread(after)
+        moved = [y for y in now if min(abs(y - w) for w in was) > 0.02]
+
+        check("被拒之后画面没变（每个白点都还在原来的高度上）", not moved,
+              f"被拒前 {len(was)} 个 / 被拒后 {len(now)} 个；挪了位置的："
+              + ("、".join(f"{y:.3f}" for y in moved) or "无"))
 
     # ---- 9) 重启后清单还在 ----------------------------------------------------------
     print("\n重启")

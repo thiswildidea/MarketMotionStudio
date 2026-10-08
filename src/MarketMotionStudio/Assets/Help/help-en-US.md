@@ -442,6 +442,7 @@ The frame is always 9:16. Everything else is yours to set.
 - Margins are written against a 1080×1920 frame and scaled to the resolution you export at, so a layout tuned once holds at every size. The left margin also decides where the axis labels land — set it too small and the numbers leave the frame.
 - The safe-area guides outline what a phone app covers with its own interface. They are drawn in the preview and never in a file.
 - The title can be more than one line: press Enter in the title box to break it where you want. A title too wide for one line wraps onto a second, two lines at most; only when two still will not hold it does the size give way. A second line pushes everything below it down by one row, so the chart is that much shorter.
+- **The name and the figure at a line's end stop short of the platform's own interface.** A phone app draws its avatar and its like and comment buttons down the right-hand side of a vertical video, so the plotting area ends before the frame's right edge and the live point of a curve — with the name and the figure riding it — comes to rest to the left of that band. The chart is narrower than the frame, and that is why.
 
 - Everything up to the last step is free: fetching data, playing the animation, saving a cover image. **Export** is the one place that asks for a monthly subscription, and pressing it says what that buys and what it costs. It renews until you cancel it in Microsoft Store.
 

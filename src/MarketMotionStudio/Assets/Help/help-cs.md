@@ -418,6 +418,7 @@ Záběr je vždy 9:16. Všechno ostatní určujete vy.
 - Okraje se zapisují proti záběru 1080×1920 a přepočítávají se na rozlišení exportu, takže jednou vyladěné rozvržení platí v každé velikosti. Levý okraj také rozhoduje, kam dopadnou popisky osy: příliš malý, a čísla opustí záběr.
 - Vodítka bezpečné oblasti vyznačují, co aplikace v telefonu zakryje vlastním rozhraním. Kreslí se v náhledu a nikdy do souboru.
 - Titulek může být na více řádcích: v poli titulku stiskněte Enter a zlomte ho tam, kde chcete. Když se nevejde na jeden řádek, zalomí se sám na druhý, nejvýše na dva; teprve když ani dva nestačí, ustoupí velikost písma. Druhý řádek posune vše pod ním o jeden řádek dolů, takže graf je o tolik nižší.
+- **Název a číslo na konci křivky se zastaví před rozhraním platformy.** Aplikace v telefonu kreslí svůj avatar a tlačítka „to se mi líbí“ a komentářů po pravé straně svislého videa, takže kreslicí plocha končí před pravým okrajem záběru a aktuální bod křivky — spolu s názvem a číslem — se zastaví vlevo od toho pásu. Graf je užší než záběr, a proto.
 
 - Vše až do posledního kroku je zdarma: načtení dat, přehrání animace, uložení titulního obrázku. **Export** je jediné místo, které žádá měsíční předplatné, a po stisku vysvětlí, co kupuje a kolik stojí. Obnovuje se, dokud ho v Microsoft Storu nezrušíte.
 
