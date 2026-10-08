@@ -921,10 +921,18 @@ public sealed class CandleRenderer : IFrameRenderer
 
         DrawQuotes(session, context, bar, cx, a);
 
-        // The move of the candle being shown, over the one before it. The first has
-        // nothing before it, so it is measured against its own open — which is the
-        // same thing on the only candle that has no yesterday.
-        var before = index > 0 ? _series.Bars[index - 1].Close : bar.Open;
+        // The move of the candle being shown, over the one before it — except on the
+        // intraday periods, where "the one before it" is five minutes ago and the figure
+        // everybody reads this frame for is the session's. Those carry the close of the
+        // session before, and it wins when it is known: a day is the span a minutes chart
+        // is a picture of, and a number answering about a fifth of an hour of it, in the
+        // type size of a headline, is a wrong answer wearing the right font.
+        //
+        // The first candle of any series has nothing before it, so it is measured against
+        // its own open — which is the same thing on the only candle that has no yesterday.
+        var before = _series.PreviousClose > 0
+            ? _series.PreviousClose
+            : index > 0 ? _series.Bars[index - 1].Close : bar.Open;
         var move = before > 0 ? ((bar.Close / before) - 1) * 100 : 0;
         var text = (move >= 0 ? "+" : string.Empty) + move.ToString("0.00", CultureInfo.InvariantCulture) + "%";
         var colour = move >= 0 ? Up : Down;

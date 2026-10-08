@@ -71,8 +71,18 @@ public sealed record CandleRange(int Months, string Key);
 /// <param name="Name">The instrument's name, for the title and the file name.</param>
 /// <param name="Period">What one candle covers.</param>
 /// <param name="Bars">The candles, oldest first, on the venue's adjusted series.</param>
+/// <param name="PreviousClose">
+/// What the instrument closed at in the session before the first of these bars — the figure a
+/// day's change is measured against, and the one the minute endpoint does not carry: its rows
+/// hold four prices, a volume and a turnover, and no change.
+///
+/// Zero means unknown, and then the frame falls back to the bar before the one being shown,
+/// which is the right answer on every period except the intraday ones — there the bar before is
+/// five minutes ago, and a session's move read off it is a number nobody asked for.
+/// </param>
 public sealed record CandleSeries(
-    string Code, string Name, CandlePeriod Period, IReadOnlyList<TencentKline.CandleBar> Bars)
+    string Code, string Name, CandlePeriod Period, IReadOnlyList<TencentKline.CandleBar> Bars,
+    double PreviousClose = 0)
 {
     public int Count => Bars.Count;
 
@@ -536,6 +546,34 @@ public sealed record MinuteSession(
     /// found.
     /// </summary>
     public MinuteDay Latest => Whole.Count > 0 ? Whole[^1] : Days[^1];
+
+    /// <summary>
+    /// What this instrument closed at in the session before <paramref name="day"/>, or zero when
+    /// that session is not in the window — which is the figure a *day's* change is measured
+    /// against, and which the minute rows themselves do not carry: see
+    /// <see cref="CandleSeries.PreviousClose"/>.
+    ///
+    /// The day before is asked for by position in the window rather than by going back a
+    /// calendar day, because the window is what the source still holds and a Friday has no
+    /// Saturday in it. A day cut short at its head by the request's own length still ends at
+    /// 15:00, so its close is still the close — which is why the one before the oldest whole
+    /// day counts even though that day is not offered to be drawn.
+    /// </summary>
+    public double CloseBefore(MinuteDay day)
+    {
+        var at = -1;
+
+        for (var i = 0; i < Days.Count; i++)
+        {
+            if (string.Equals(Days[i].Id, day.Id, StringComparison.Ordinal))
+            {
+                at = i;
+                break;
+            }
+        }
+
+        return at > 0 && Days[at - 1].Bars.Count > 0 ? Days[at - 1].Bars[^1].Close : 0;
+    }
 }
 
 /// <summary>
@@ -610,5 +648,5 @@ public static class CandleMinutes
     /// rather than a range — which is what a video of one session is.
     /// </summary>
     public static CandleSeries ForDay(MinuteSession session, MinuteDay day) =>
-        new(session.Code, session.Name, session.Period, day.Bars);
+        new(session.Code, session.Name, session.Period, day.Bars, session.CloseBefore(day));
 }
