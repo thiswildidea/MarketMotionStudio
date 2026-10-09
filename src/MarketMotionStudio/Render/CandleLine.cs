@@ -51,16 +51,68 @@ public static class CandleLine
     public const double SubtitleRow = 0.20;
 
     /// <summary>
-    /// The title and the line under it, which both layouts draw the same way: the codes saying
-    /// what is being compared, and the period.
+    /// The day the frame is a picture of, one <see cref="FrameContext.HeaderRowPitch"/> under the
+    /// subtitle.
+    ///
+    /// A comparison said what it was about (the codes) and on what period, and left *when* it was
+    /// to the axis along its foot — which is the one thing the single-instrument frame states in
+    /// its header and the comparison did not. The dates under the plot are a scale, not a
+    /// statement: they are read off the bottom of the picture, they move with the window, and a
+    /// viewer who is told the codes and the period still cannot say which day the curves are.
+    /// </summary>
+    public const double DateRow = 0.235;
+
+    /// <summary>
+    /// The moment the frame has reached, under <see cref="DateRow"/>: where in the session the
+    /// picture has got to on a minute board, or the last day of the span on a daily, weekly or
+    /// monthly one.
+    ///
+    /// Two rows on every period, at a size and a spacing the period does not change, so the block
+    /// costs the same height whichever period is on the frame and switching period cannot move the
+    /// plot out from under it.
+    ///
+    /// Further under <see cref="DateRow"/> than the header's own pitch, because the row is set at
+    /// headline size instead: at a pitch of 0.035 the <see cref="MomentSize"/>-pixel line would be
+    /// drawn through the date above it. The plot starts lower for the same reason — the two
+    /// renderers' <c>PlotTopFraction</c>.
+    /// </summary>
+    public const double MomentRow = 0.305;
+
+    /// <summary>The date's own size, in baseline pixels. Under the 34 the single-instrument frame
+    /// draws its date at: that one has the row to itself between the subtitle and the four prices,
+    /// whereas this block is two rows stacked inside the same air.</summary>
+    public const double DateSize = 30;
+
+    /// <summary>
+    /// The moment's size, in baseline pixels: the 128 the four frames that state one headline
+    /// figure state it at, and for the same reason — it *is* the figure this frame exists to
+    /// state.
+    ///
+    /// It used to be 22, a size under the subtitle's, on the stated argument that it qualified the
+    /// date rather than competing with it. What that argument missed is what the two rows are for:
+    /// the date says which day the frame is about, and the row under it says where in that day the
+    /// picture has got to — which is the one thing a viewer follows while the video plays, and at
+    /// 22 px it was the smallest line in the header.
+    /// </summary>
+    public const double MomentSize = 128;
+
+    /// <summary>
+    /// The title and the lines under it, which both layouts draw the same way: the codes saying
+    /// what is being compared and on what period, then which stretch of time it is a picture of.
     ///
     /// Capped at three codes and counted past that, because six upper-case codes under a title is
     /// a second title. The apart layout never reaches the cap — <see cref="CandleBoardLoader.MostPanels"/>
     /// is three — and passes through the same line rather than having one of its own.
     /// </summary>
+    /// <param name="moment">
+    /// Which point of the board the frame has drawn up to, as the window's right-hand edge — the
+    /// same number the curves' leading ends are placed from, so that the clock in the header and
+    /// the ink under it agree about what "now" is. Fractional, because the window's edge leads the
+    /// arriving point by the part of it that has come through.
+    /// </param>
     public static void Header(
         CanvasDrawingSession session, FrameContext context, TitleBlock title,
-        CandleBoard board, string resolved, bool showTitle, int titleLines, double t)
+        CandleBoard board, string resolved, bool showTitle, int titleLines, double t, double moment)
     {
         var a = Easing.Ramp(t, 0, 1000);
 
@@ -81,6 +133,58 @@ public static class CandleLine
                 string.Join(" / ", codes),
                 Strings.Get(CandleLoader.NameKey(board.Period))),
             context.Width / 2, context.HeaderRow(SubtitleRow, titleLines), small, Palette.Muted, a);
+
+        TimeBlock(session, context, board, titleLines, moment, a);
+    }
+
+    /// <summary>
+    /// Which moment the frame has reached: the day it is a picture of on top, and under it where
+    /// in that day the picture has got to — the minute the session has rolled to on a minute
+    /// board, or the day the span ends on a daily, weekly or monthly one.
+    ///
+    /// The second row used to be the stretch the frame covers — "09:30 - 15:00" — which is a
+    /// statement about the source's session rather than about the picture: the frame three
+    /// quarters of the way through an afternoon said exactly what the frame it ends on said, and
+    /// the one figure a viewer follows while the video plays is how far into the session it has
+    /// come. It is now the window's right-hand edge, which is where the curves' leading ends are:
+    /// a header whose clock disagreed with the ink under it would be worse than either.
+    ///
+    /// A span of years has no clock to show, and there the second row is the span's last day —
+    /// what the frame is *as of*. So the rule is one rule: the second row states the newest moment
+    /// on the frame, in whatever unit that frame counts in.
+    ///
+    /// Empty boards draw nothing: a board with no axis has no day to name, and the header is
+    /// drawn before either layout has decided whether it has anything to plot.
+    /// </summary>
+    private static void TimeBlock(
+        CanvasDrawingSession session, FrameContext context, CandleBoard board, int titleLines,
+        double moment, double opacity)
+    {
+        if (board.Count <= 0)
+        {
+            return;
+        }
+
+        var cx = context.Width / 2;
+
+        using var dayFormat = Ink.Format(context.Px(DateSize));
+        using var momentFormat = Ink.Format(context.Px(MomentSize), bold: true);
+
+        // On a minute board the whole axis is one session, so the first date on it *is* the day
+        // the frame is a picture of — the day the picker chose.
+        Ink.Centred(session, CandleLoader.Iso(board.Start), cx,
+            context.HeaderRow(DateRow, titleLines), dayFormat, Palette.Moving, opacity);
+
+        // Clamped rather than trusted: the frames before the first point has arrived carry an edge
+        // of -1, and a window that has run off the end of the board must still name a real minute.
+        var at = Math.Clamp((int)Math.Round(moment), 0, board.Count - 1);
+
+        var until = board.Intraday
+            ? board.Stamps[at]
+            : CandleLoader.Iso(board.End);
+
+        Ink.Centred(session, until, cx, context.HeaderRow(MomentRow, titleLines),
+            momentFormat, Palette.Title, opacity);
     }
 
     /// <summary>

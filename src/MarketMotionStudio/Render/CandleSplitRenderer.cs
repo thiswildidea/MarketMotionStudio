@@ -36,7 +36,7 @@ public sealed class CandleSplitRenderer : IFrameRenderer
     public const double CreditGap = TrackCards.CreditGap;
 
     /// <summary>Where the panels start, as a fraction of frame height.</summary>
-    private const double PlotTopFraction = 0.30;
+    private const double PlotTopFraction = 0.34;
 
     /// <summary>
     /// Air between two panels, in baseline pixels.
@@ -114,21 +114,6 @@ public sealed class CandleSplitRenderer : IFrameRenderer
 
         var introA = Easing.Ramp(t, 0, 1000);
 
-        CandleLine.Header(session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t);
-
-        // The instruments the frame is about. The page has already taken the board down to
-        // MostPanels where there were more picks than panels; the clamp is here as well so that a
-        // renderer handed a wider board draws three panels rather than three panels and a fourth
-        // on top of one of them.
-        var tracks = _board.Tracks.Take(CandleBoardLoader.MostPanels).ToList();
-
-        if (tracks.Count == 0)
-        {
-            DrawProgress(session, context, t);
-
-            return;
-        }
-
         var n = _board.Count;
         var moving = -1;
 
@@ -152,9 +137,30 @@ public sealed class CandleSplitRenderer : IFrameRenderer
             eased[i] = Easing.OutCubic(Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), _plan.BarMs));
         }
 
+        // Computed up here rather than where it is drawn from, because the header states the moment
+        // the window has rolled to and is drawn before any panel. `-1` before the first point has
+        // arrived is not a window; it is the absence of one, and the header is handed a real minute
+        // either way.
         var (count, head, first) = moving < 0
             ? ((double)n, -1d, 0d)
             : _plan.Window(_motion is CandleMotion.Scroll, _window, n, moving + eased[moving], t);
+
+        CandleLine.Header(
+            session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t,
+            Math.Max(0, head));
+
+        // The instruments the frame is about. The page has already taken the board down to
+        // MostPanels where there were more picks than panels; the clamp is here as well so that a
+        // renderer handed a wider board draws three panels rather than three panels and a fourth
+        // on top of one of them.
+        var tracks = _board.Tracks.Take(CandleBoardLoader.MostPanels).ToList();
+
+        if (tracks.Count == 0)
+        {
+            DrawProgress(session, context, t);
+
+            return;
+        }
 
         var left = Math.Max(0, (int)Math.Ceiling(first));
 

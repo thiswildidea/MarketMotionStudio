@@ -374,6 +374,23 @@ def canvas_box(whole):
     cannot survive.
 
     Returns None when the picture does not look like a captured canvas.
+
+    *Which* way round the walk goes is decided by the picture, and that is newer than the rest
+    of this function. It used to be one way only — out from the centre until the light ran
+    on — on the stated fact that the chrome is near-white and the canvas near-black. That
+    stopped being a fact the day the window began showing the desktop through itself: the
+    chrome then measures about 190 instead of 250, which is **either side of the threshold
+    depending on what is on the desktop and where**, so one side of the window answers and the
+    other walks off the edge of the picture. The box comes back as the whole window — still
+    inside it, so `looks_like_a_frame` still passes — and every measurement taken from it is
+    confident nonsense: a safe line at 1645 against a canvas that ends at 1134, and a "the two
+    frames differ" that reads 0.6% because nine tenths of what is being compared is chrome.
+
+    So the canvas is also looked for the way round it was not: by its own near-black. The
+    aspect is what tells the two answers apart, and it is safe to ask for because every size
+    this app offers is 9:16 (`VideoFormat.Sizes` — 720×1280, 1080×1920, 1440×2560). The old
+    walk stays the first answer so that nothing moves where it has always worked, and the
+    near-black one takes over when the old one did not come back with a frame in it.
     """
     width, height = whole.size
     pixels = whole.load()
@@ -383,42 +400,135 @@ def canvas_box(whole):
 
         return (r + g + b) / 3 > 200
 
+    def backdrop(x, y):
+        r, g, b = pixels[x, y]
+
+        return (r + g + b) / 3 < 70
+
+    def chrome(x, y):
+        """The canvas by way of what is around it — the walk the other one takes.
+
+        Kept as its own predicate rather than as `not light` at the call, because the two walks
+        mean the opposite thing by the pixel they are handed: this one stops on the chrome and
+        `backdrop` stops on anything that is not the frame. Passing the same predicate to both
+        and letting one of them invert it is how this function came to hand back no canvas at
+        all for a frame whose middle is a curve.
+        """
+        return not light(x, y)
+
     # 5% of the height: no canvas is 50 pixels of unbroken light, and the chrome always is.
     edge = max(12, height // 20)
 
-    def walk(x, y, dx, dy):
+    def walk(x, y, dx, dy, inside):
         last = x if dx else y
         streak = 0
 
         while 0 <= x < width and 0 <= y < height:
-            if light(x, y):
+            if inside(x, y):
+                streak = 0
+                last = x if dx else y
+            else:
                 streak += 1
 
                 if streak >= edge:
                     break
-            else:
-                streak = 0
-                last = x if dx else y
 
             x += dx
             y += dy
 
         return last
 
-    centre_x, centre_y = width // 2, height // 2
+    def walked(inside):
+        if not inside(width // 2, height // 2):
+            return None
 
-    if light(centre_x, centre_y):
-        return None
+        left = walk(width // 2, height // 2, -1, 0, inside)
+        right = walk(width // 2, height // 2, 1, 0, inside)
+        top = walk(width // 2, height // 2, 0, -1, inside)
+        bottom = walk(width // 2, height // 2, 0, 1, inside)
 
-    left = walk(centre_x, centre_y, -1, 0)
-    right = walk(centre_x, centre_y, 1, 0)
-    top = walk(centre_x, centre_y, 0, -1)
-    bottom = walk(centre_x, centre_y, 0, 1)
+        if right - left < 40 or bottom - top < 40:
+            return None
 
-    if right - left < 40 or bottom - top < 40:
-        return None
+        return left, right, top, bottom
 
-    return left, right, top, bottom
+    def bands():
+        """The canvas as the one large near-black rectangle, counted rather than walked to.
+
+        The walk above starts from a single pixel, and that pixel can be sitting on ink: a curve
+        through the middle of the frame is not backdrop, and a walk that never starts hands back
+        no canvas at all — which is exactly what happened on a frame whose curves cross the
+        centre. Counting rows and columns asks the whole picture at once, so nothing depends on
+        where one pixel happens to land.
+
+        8% of the width: the canvas is about a fifth of a window, and the chrome carries dark
+        controls of its own, so a higher bar finds nothing at all.
+
+        **The height is derived from the width, not counted.** Counting downwards runs into the
+        same thing the walk does: under the preview sits the page, and the row of controls there
+        is dark again across exactly the same columns, so the count carries straight on past the
+        canvas and hands back a box 130 pixels too tall. The other end is just as bad on a frame
+        that ends on its cards, whose fill is light enough to drop those rows below the bar. The
+        width is the one edge that is unambiguous — nothing else in the window is 383 dark pixels
+        across — and 9:16 turns it into the height, which is a fact about the format rather than
+        something to be measured again.
+        """
+        rows = [y for y in range(height)
+                if sum(1 for x in range(width) if backdrop(x, y)) > 0.08 * width]
+
+        if not rows:
+            return None
+
+        top = rows[0]
+        bottom = rows[-1]
+        left = right = None
+
+        # Twice: the columns are counted over a band whose height came from the last guess, and
+        # the guess is what they then correct. It settles in one step on every capture measured.
+        for _ in range(2):
+            mid0 = top + ((bottom - top) // 4)
+            mid1 = bottom - ((bottom - top) // 4)
+            tall = max(1, mid1 - mid0)
+            across = [x for x in range(width)
+                      if sum(1 for y in range(mid0, mid1) if backdrop(x, y)) > 0.6 * tall]
+
+            if not across:
+                return None
+
+            left, right = across[0], across[-1]
+
+            # Clamped, because a whole window can be dark enough to be counted as one row and
+            # the width that comes out of it then asks for a canvas taller than the picture.
+            bottom = min(top + int(round((right - left) / 0.5625)), height - 1)
+
+        if bottom - top < 40 or right - left < 40:
+            return None
+
+        return left, right, top, bottom
+
+    def upright(box):
+        """Is this box shaped like a frame of this app?
+
+        Two pixels of slack in the ratio: the canvas is rounded to whole pixels by the
+        preview, and a 680-tall canvas is 383 or 382 across depending on where it landed.
+        """
+        left, right, top, bottom = box
+
+        return abs(((right - left) / max(1, bottom - top)) - 0.5625) < 0.02
+
+    found = walked(chrome)
+
+    if found is not None and upright(found):
+        return found
+
+    # A frame drawn on a light backdrop has no near-black to count, and `bands` answers None
+    # for it — which is why this is a second answer rather than a replacement.
+    dark = bands()
+
+    if dark is not None and upright(dark):
+        return dark
+
+    return found
 
 
 def looks_like_a_frame(picture, box):
@@ -484,7 +594,7 @@ def capture(win, path, tries=4):
     return False
 
 
-def frame_bottom(whole, box=None, run=4, light=200):
+def frame_bottom(whole, box=None, run=4, light=200, slack=8):
     """The canvas's last row — the bottom edge `canvas_box` gets wrong.
 
     `canvas_box` walks out from the canvas's centre and stops each walk at the first **long
@@ -503,6 +613,17 @@ def frame_bottom(whole, box=None, run=4, light=200):
     the row above them is the canvas's last. The answer is exact: it lands within a pixel of
     the height the frame's own 9:16 says it should be, which is what lets a script assert
     the aspect ratio instead of assuming it.
+
+    **And that is now the only thing it does**, because `canvas_box` stopped walking to the
+    bottom: it takes the width — the one edge nothing else in the window is — and turns it into
+    the height by the format's own 9:16, which is a fact rather than a measurement. So the row
+    this walk finds is now one *page* below the canvas rather than a correction of it: with the
+    row of dark controls sitting between the two, the walk steps over them and stops at the page
+    under them (measured 924 against a canvas that ends at 851, 73 pixels too low). Answering
+    with that would put the full-width progress bar back inside the crop this function exists to
+    keep it out of, so it is only taken when the walk agrees with the box; otherwise the box
+    stands. Kept rather than deleted because a caller still wants the *agreement* asked for: the
+    box's bottom is a fact about the format, and the walk is the capture saying the same thing.
 
     Returns the row index of the canvas's last row, or `box[3]` when nothing light is found
     below the canvas.
@@ -531,7 +652,9 @@ def frame_bottom(whole, box=None, run=4, light=200):
             streak += 1
 
             if streak >= run:
-                return y - run
+                found = y - run
+
+                return bottom if found > bottom + slack else found
         else:
             streak = 0
 

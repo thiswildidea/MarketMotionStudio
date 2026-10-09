@@ -689,6 +689,127 @@ def band_diff(a, b, floor=40):
     return changed / max(1, total)
 
 
+def amber(r, g, b):
+    """`Palette.Moving` 那个琥珀 —— 单标的表头日期也是这个色。"""
+    return r > 170 and 110 < g < 225 and b < 120 and (r - b) > 90
+
+
+def cool(r, g, b):
+    """`Palette.Muted` 那种偏蓝的灰：副标题、轴标签、网格都是它。"""
+    return (b - r) > 25 and 90 < max(r, g, b) < 235
+
+
+def header_bands(name, lo=0.10, hi=0.33):
+    """画面上半段里每一条墨迹带：起、止、高几个像素、墨迹几个、其中琥珀几个、偏冷几个、列剖面。
+
+    比例都是画面高度的比例 —— 两次实拍的画布可能不一样大（状态条一长，预览就按 9:16 缩），
+    按像素写就会红在一个没坏的画面上。而**列剖面**是这一处的新东西：比「两条带是不是同一幅
+    墨」要的是逐列的墨，不是总数 —— 同一个钟点的墨迹总数在两次实拍之间可以一模一样（`15:00`
+    与 `11:00` 就是一例），差的是哪一列有墨。
+
+    `hi` 停在绘图区（`PlotTopFraction` 0.34）之上：再往下扫，轴与曲线连成的墨会把这一块并进去。
+
+    画布那块矩形问 `winui.canvas_box`，下缘用**它自己给的那个**。它现在的下缘是由宽度按 9:16
+    反推出来的（见那里的注释），而 `frame_bottom` 那趟往下走会跨过画布下面那排控件、走到页面
+    上（实测把 851 说成 924，低 73 像素）—— 认错下缘等于把比例的分母换掉，两条带的位置会
+    一起错一成。
+    """
+    if name is None:
+        return None, None
+
+    whole = Image.open(name if os.path.isabs(name) else os.path.join(OUT, name)).convert("RGB")
+    box = winui.canvas_box(whole)
+
+    if box is None:
+        return None, None
+
+    left, right, top, bottom = box
+    height = bottom - top
+    pixels = whole.load()
+    rows = []
+
+    for y in range(int(top + (height * lo)), int(top + (height * hi))):
+        ink = gold = blue = 0
+        across = []
+
+        for x in range(left + 2, right - 2):
+            r, g, b = pixels[x, y]
+
+            # 一行里两个以上亮像素才算墨：抗锯齿的边缘是一个一个的孤立点。
+            if max(r, g, b) < 110:
+                across.append(0)
+
+                continue
+
+            ink += 1
+            across.append(1)
+
+            if amber(r, g, b):
+                gold += 1
+
+            if cool(r, g, b):
+                blue += 1
+
+        rows.append((y, ink, gold, blue, across))
+
+    out = []
+    run = None
+
+    for y, ink, gold, blue, across in rows:
+        if ink >= 2:
+            if run is None:
+                run = [y, y, 0, 0, 0, []]
+
+            run[1] = y
+            run[2] += ink
+            run[3] += gold
+            run[4] += blue
+            run[5].append(across)
+        elif run is not None:
+            out.append(tuple(run))
+            run = None
+
+    if run is not None:
+        out.append(tuple(run))
+
+    width = max(1, right - left)
+    step = width / 48
+    bands = []
+
+    for begin, end, ink, gold, blue, across in out:
+        if ink < 12:
+            continue
+
+        profile = [0] * 48
+
+        for row in across:
+            for i in range(48):
+                profile[i] += sum(row[int(i * step):int((i + 1) * step)])
+
+        bands.append({
+            "lo": (begin - top) / height,
+            "hi": (end - top) / height,
+            "tall": end - begin + 1,
+            "ink": ink,
+            "gold": gold,
+            "blue": blue,
+            "profile": profile,
+        })
+
+    return bands, box
+
+
+def spread(one, two):
+    """两条带的墨差多少，0..1：48 格列剖面逐格差的绝对值之和 ÷ 两幅的墨迹总数。
+
+    与 `band_diff` 不同，它比的是**同一条带自己**在两个进度下的墨，所以别处变了不算 —— 这一条
+    要问的正是「那一行变了没有」，而整幅或整条画布带在别的地方也在变（曲线、轴、卡片都跟着
+    进度动），拿它们当尺子量不出「这一行」。
+    """
+    return (sum(abs(p - q) for p, q in zip(one["profile"], two["profile"]))
+            / max(1, one["ink"] + two["ink"]))
+
+
 def main():
     # ---- 源码：当日涨跌幅 ------------------------------------------------------------
     series = read("Market", "CandleSeries.cs")
@@ -837,6 +958,68 @@ def main():
           and "public const double CreditGap = 430;" in render
           and "AboveCredit = 192" in cards and "DateRowRoom = 238" in cards)
 
+    # ---- 源码：头部那两行时间（用户报「多标的时候没有时间」） ------------------------
+    #
+    # 单标的的画面在表头就写着那根 K 线的日期（`CandleRenderer.DateRow`，琥珀色 34 px），比较
+    # 画面只写了代码与周期，把「哪一段」整个交给了脚下那条日期轴。而那条轴是**刻度**，不是一句
+    # 话：它跟着窗口走，收尾展开时才铺满整段，而且一个被问「这是哪天」的人不会去读轴。
+    #
+    # 用户随后又报了两件事（2026-10-09）：「9:30 - 15:00 太小」与「要时时刻刻的钟点，而不是
+    # 9:30 - 15:00」。于是第二行从**区间**改成**画面画到的那一刻** —— 窗口的右缘，也就是每条
+    # 曲线领头处所在的那一列 —— 并按画面大字的字号（128）画。区间那句话的毛病是它说的不是画面：
+    # 下午走了四分之三的那一帧与整段的末帧写着同一句话，而观众跟着看的正是「走到哪儿了」。
+    #
+    # 分岔只在一处（`board.Intraday`）：分钟线写那一刻的钟点，日/周/月线写区间的末一天 ——
+    # 后者的「最新时刻」本来就是一个日期，所以还是同一条规则。两种排布共用一处画
+    # （`CandleLine.Header`）—— 一份一份地问，第二份就会有自己的答案。
+    check("多标的头部有日期与大字两行（一处画，两种排布共用）",
+          "public const double DateRow = 0.235;" in line
+          and "public const double MomentRow = 0.305;" in line
+          and "public const double MomentSize = 128;" in line
+          and "TimeBlock(session, context, board, titleLines, moment, a);" in line
+          and line.count("private static void TimeBlock(") == 1)
+    check("第二行是**画面画到的那一刻**，不是一整段区间（分岔只在一处）",
+          "board.Intraday" in line
+          and "board.Stamps[at]" in line
+          and "CandleLoader.Iso(board.End)" in line
+          and 'board.Stamps[0] + " - " + board.Stamps[^1]' not in line)
+    check("那个「一刻」就是窗口的右缘（头部与曲线领头处说的是同一件事）",
+          "double t, double moment)" in line
+          and racer.count("Math.Max(0, head));") == 1
+          and split.count("Math.Max(0, head));") == 1)
+    check("空板子不画这两行（头部在两种排布决定画不画之前就画了）",
+          "if (board.Count <= 0)" in line)
+
+    # 两行都得落在绘图区**上面**，否则标题压着曲线。行数是从源文件里读出来的再比，不是把
+    # 0.235 / 0.305 抄一遍 —— 抄一遍的话，谁把某一行挪到绘图区里，这条还绿着。
+    rows_of = lambda src, key: float(  # noqa: E731 - 一处算术，不要两份
+        re.search(key + r" = ([0-9.]+);", src).group(1))
+
+    check("两行都在绘图区之上（标题不压着曲线）",
+          rows_of(line, "DateRow") < rows_of(line, "MomentRow")
+          and rows_of(line, "MomentRow") < rows_of(racer, "PlotTopFraction")
+          and rows_of(line, "MomentRow") < rows_of(split, "PlotTopFraction"),
+          f"日期 {rows_of(line, 'DateRow')} / 大字 {rows_of(line, 'MomentRow')}"
+          f" / 绘图区 {rows_of(racer, 'PlotTopFraction')}")
+
+    # 两行现在**不是**一个 pitch 的距离，而这一点是要验的：第二行是大字（128），而一行字占了
+    # 行距就装不下它的墨 —— 照抄一个 pitch（0.035 ≈ 67 px）的话，那行字会画进上面那行日期里，
+    # 而画面看着像「日期重影」。所以问的是「间距够不够那行字自己的高度」，不是「是不是 0.035」。
+    check("两行的间距够那行大字的墨（不是照抄一个行距）",
+          "public const double HeaderRowPitch = 0.035;" in frame_ctx
+          and (rows_of(line, "MomentRow") - rows_of(line, "DateRow")) * 1920
+          > rows_of(line, "MomentSize") * 0.72,
+          f"间距 {(rows_of(line, 'MomentRow') - rows_of(line, 'DateRow')) * 1920:.0f} px，"
+          f"那行字高 {rows_of(line, 'MomentSize') * 0.72:.0f} px")
+
+    # 字号本身：那一行得是这一块的头号 —— 比日期大一倍以上、加粗。用户说的原话是「和持仓收益
+    # 百分比大小」，而持仓页那个数字是 128 加粗；这条不问 128 抄对没有（那有上面一条），问的
+    # 是「它有没有大到成为这块的头号」。
+    check("那行大字是这一块的头号（比日期大一倍以上，且加粗）",
+          rows_of(line, "MomentSize") >= rows_of(line, "DateSize") * 2
+          and "Ink.Format(context.Px(MomentSize), bold: true)" in line,
+          f"{rows_of(line, 'MomentSize')} 对日期 {rows_of(line, 'DateSize')}")
+
     # ---- 源码：这个选择在页面上 ------------------------------------------------------
     check("排布下拉是比较画面自己的设置（一只时是灰的，与「画法」那条相反）",
           "SplitCombo.IsEnabled = _board is not null;" in page
@@ -936,6 +1119,16 @@ def main():
           winui.combo_pick(win, vc.find(lambda c: c.AutomationId == "MotionCombo", win),
                            "逐根铺满") is not None)
 
+    # 越线开关同样先拨回关，而且理由更硬：它是这一跑里**唯一能把墨迹推出安全线**的东西
+    # （打开时末端标注跑到画面右缘，x=1129 对安全线 1065），而下面那两条「末端标注在安全线
+    # 以内」问的正是关着的样子。实测红过一次：上一跑到一半被锁屏掐断，开关留在开上，而落盘的
+    # 偏好是跨会话的 —— 于是这两条量到 1129，而同一份脚本后面复位过的那一处量到 1065。**默认
+    # 值只在「从没跑过别的判据」时才成立**，与推进方式是同一件事。
+    #
+    # 放在 `panel_top` **之前**，也是同一个理由：拨开关要与面板交互，交互会把面板滚下去。
+    check("越线开关先拨回关（末端标注那两条问的是关着的样子）",
+          cross(win, False) == auto.ToggleState.Off)
+
     # 面板的起点也定死：清单与一键预设都是**虚拟化**的一排，滚到哪儿决定了哪几项被实例化，
     # 而按位置认控件的那两处又都以检索框下缘当零点。从同一个地方起，这一跑的每一步才和
     # 上一次可比。
@@ -1033,6 +1226,81 @@ def main():
 
     check("多标的 × 5 分钟取到了", bool(minutes) and not BAD.search(minutes or ""),
           minutes or "(状态条空)")
+
+    # ---- 头部那两行：日期不动，大字钟点跟着画面走（真机） ------------------------------
+    #
+    # 用户在两句报里说了三件事：「多标的时候图表和标题没有时间」、「9:30 - 15:00 太小」、
+    # 「要时时刻刻的钟点，而不是 9:30 - 15:00」。所以这一条问的是三件事，而不是「第 0.235 行
+    # 有没有字」：
+    #
+    #   1. 日期下面那一行是这块里**最高**的一条墨（字号就是在这件事上看得见的）；
+    #   2. 日期那一行**不随进度变** —— 它是「这是哪一天」，一个事实；
+    #   3. 大字那一行**随进度变** —— 它是「走到哪儿了」。
+    #
+    # 第 2 条是第 3 条的**对照**，而且是一个硬的对照：两幅真的不同的画面之间，日期那一行的墨
+    # 实测一格不差（0.0000），因为两幅画的都是同一天。只验第 3 条的话，「两幅画面本来就处处
+    # 不同」也能让它绿；只验「有两条带」的话，把钟点写死在 15:00 也照样绿。
+    #
+    # 三个进度而不是两个：第二行要跟着走，那它在**每一对**之间都该变。
+    #
+    # 认颜色、认高矮，不认字：预览画布没有自动化节点。日期是唯一琥珀色的那条，大字是它下面墨
+    # 最多的那条。比的是**同一条带自己**在不同进度下的列剖面（`spread`），不是整幅差 —— 曲线、
+    # 轴、卡片都在跟着进度动，用它们当尺子量不出「这一行」变了没有。
+    # 三个进度而不是两个，而且**三个值互不相同**：同一个值再设一次不触发控件的变更，于是
+    # `Playback.Seek` 不会被调到（它才是那句把画面钉住的话），抓回来的可能是上一次那一幅。
+    # 实测过：同一个 0.35 连拍两次，第二张是另一幅画面。
+    shots = []
+
+    for tag, at in (("end", 1.0), ("mid", 0.6), ("early", 0.3)):
+        vc.scrub_to(win, at)
+        bands, box = header_bands(vc.shot(win, f"verify-candle-multi-moment-{tag}.png"))
+        shots.append((at, bands, box))
+
+    check("三个进度都认得出画布（量那两行得先有画布）",
+          all(bands is not None for _, bands, _ in shots))
+
+    if all(bands is not None for _, bands, _ in shots):
+        # 三次实拍的画布得一样大：列剖面按画布宽分 48 格，宽度一换，两次的格子里装的就是不同的
+        # 东西，比出来的差是取样差不是画面差。
+        check("三次实拍的画布一样大（列剖面比的是同一块地方）",
+              len({box for _, _, box in shots}) == 1,
+              str([box for _, _, box in shots]))
+
+        def parts(bands):
+            sub = next((b for b in bands if b["blue"] >= 40), None)
+            day = next((b for b in bands if b["gold"] >= 40
+                        and (sub is None or b["lo"] > sub["hi"])), None)
+            below = [b for b in bands if day is not None and b["lo"] > day["hi"]]
+            big = max(below, key=lambda b: b["tall"]) if below else None
+
+            return day, big
+
+        seen = [parts(bands) for _, bands, _ in shots]
+
+        check("副标题下面有日期那一行（琥珀色，画面上只有它是这个色）",
+              all(day is not None for day, _ in seen),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 琥珀 {b['gold']}"
+                        for b in shots[0][1]) or "一条墨迹带都没有")
+
+        check("日期下面那一行是这块里最高的一条墨（比日期高一倍以上）",
+              all(day is not None and big is not None and big["tall"] >= day["tall"] * 2
+                  for day, big in seen),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 高 {b['tall']} px"
+                        for b in shots[0][1]))
+
+        # 两个差都先算出来再断言：`check` 的第三个参数是**当场求值**的实参，写进那一行里
+        # 会在「根本认不出那两行」的那一跑上先把 `spread(None, …)` 抛出来。
+        kept = (spread(seen[0][0], seen[1][0]), spread(seen[0][0], seen[2][0])) \
+            if all(day is not None for day, _ in seen) else None
+        moved = (spread(seen[0][1], seen[1][1]), spread(seen[0][1], seen[2][1])) \
+            if all(big is not None for _, big in seen) else None
+
+        check("日期那一行不随进度变（它是「这是哪一天」，不是「走到哪儿了」）",
+              kept is not None and max(kept) < 0.01,
+              "认不出日期那一条" if kept is None else "、".join(f"差 {d:.4f}" for d in kept))
+        check("大字那一行随进度变（那个钟点跟着画面走，不是写死的区间）",
+              moved is not None and min(moved) > 0.03,
+              "认不出大字那一条" if moved is None else "、".join(f"差 {d:.4f}" for d in moved))
 
     day_combo = vc.find(lambda c: c.AutomationId == "DayCombo", win)
     offered = winui.combo_labels(win, day_combo) if day_combo is not None else []
@@ -1225,7 +1493,11 @@ def main():
 
     # 双向验：只验「打开后更靠右」的话，「开关根本没接上、两次都靠右」照样绿；只验「关着时
     # 在安全线内」的话，「开关接反了、关着反而越线」也绿。
-    check("越线开关默认是关的", cross(win, False) == auto.ToggleState.Off)
+    # 这一条**不叫「默认是关的」**：它先把开关拨到关再读回来，问的是「拨得回去」，而默认值早
+    # 在上面复位那一步就被改过了 —— 那样的名字会在「默认值其实是开」时照样绿，而这句话本身
+    # 是假的。默认值要验，得在跑过任何判据之前量。
+    check("越线开关拨回关（下面两条像素都在这个前提下量）",
+          cross(win, False) == auto.ToggleState.Off)
 
     vc.scrub_to(win, 1.0)
     _, far_off, _, _ = analyse(vc.shot(win, "verify-candle-cross-off.png"))

@@ -44,8 +44,16 @@ public sealed class CandleRaceRenderer : IFrameRenderer
     /// </summary>
     public const double CreditGap = TrackCards.CreditGap;
 
-    /// <summary>Where the plot area starts, as a fraction of frame height.</summary>
-    private const double PlotTopFraction = 0.30;
+    /// <summary>
+    /// Where the plot area starts, as a fraction of frame height.
+    ///
+    /// It was 0.30, measured against a header whose last line was 22 px. That line is now the
+    /// frame's headline figure at <see cref="CandleLine.MomentSize"/> — the same 128 the frames
+    /// that state one figure state it at — so the plot starts lower by the air a 128-pixel line
+    /// takes. The plot gives up 0.04 of the frame and the header stops drawing through itself;
+    /// see <see cref="CandleLine.MomentRow"/>.
+    /// </summary>
+    private const double PlotTopFraction = 0.34;
 
     private readonly CandleBoard _board;
 
@@ -109,14 +117,6 @@ public sealed class CandleRaceRenderer : IFrameRenderer
             session, context, [.. _board.Tracks.Select(track => (track.Name, track.Final))], _giveWay));
         var introA = Easing.Ramp(t, 0, 1000);
 
-        CandleLine.Header(session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t);
-
-        var (lo, hi, step) = Bounds();
-
-        double Level(double value) => bottom - (((value - lo) / (hi - lo)) * span);
-
-        CandleLine.Axis(session, context, lo, hi, step, Level, plotW, introA);
-
         var n = _board.Count;
         var moving = -1;
 
@@ -130,16 +130,7 @@ public sealed class CandleRaceRenderer : IFrameRenderer
             moving = i;
         }
 
-        if (moving < 0)
-        {
-            CandleLine.XLabels(session, context, _board, _plan, t, bottom, plotW, introA, n, 0, -1);
-            DrawClosing(session, context, t);
-            DrawProgress(session, context, t);
-
-            return;
-        }
-
-        var eased = new double[moving + 1];
+        var eased = new double[Math.Max(1, moving + 1)];
 
         for (var i = 0; i <= moving; i++)
         {
@@ -148,8 +139,33 @@ public sealed class CandleRaceRenderer : IFrameRenderer
 
         // The window: shared with the two pages offering the same choice, so that a motion
         // means the same thing everywhere it is offered.
-        var (count, head, first) = _plan.Window(
-            _motion is CandleMotion.Scroll, _window, n, moving + eased[moving], t);
+        //
+        // Computed up here rather than where it is drawn from, because the header states the moment
+        // the window has rolled to and is drawn before the plot. `-1` before the first point has
+        // arrived is not a window; it is the absence of one, and the header is handed a real minute
+        // either way.
+        var (count, head, first) = moving < 0
+            ? ((double)n, -1d, 0d)
+            : _plan.Window(_motion is CandleMotion.Scroll, _window, n, moving + eased[moving], t);
+
+        CandleLine.Header(
+            session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t,
+            Math.Max(0, head));
+
+        var (lo, hi, step) = Bounds();
+
+        double Level(double value) => bottom - (((value - lo) / (hi - lo)) * span);
+
+        CandleLine.Axis(session, context, lo, hi, step, Level, plotW, introA);
+
+        if (moving < 0)
+        {
+            CandleLine.XLabels(session, context, _board, _plan, t, bottom, plotW, introA, n, 0, -1);
+            DrawClosing(session, context, t);
+            DrawProgress(session, context, t);
+
+            return;
+        }
 
         // Where the window's left edge falls, rounded **up**: a point to the left of it lands
         // off the plot, over the axis labels, and the curve has to start at the chart's edge.

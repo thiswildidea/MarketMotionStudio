@@ -490,6 +490,23 @@ the status line rather than silently left out. The x axis is not duplicated eith
 one label column for the whole frame, so a date is at one x across the picture, and the date row is
 drawn once, under the bottom panel.
 
+**Which stretch of time it is a picture of.** A comparison said what it was about — the codes — and
+on what period, and left *when* it was to the axis along its foot. That axis is a scale, not a
+statement: it moves with the window, and only covers the whole span once the run opens out at the
+end. So the header carries two rows of its own, drawn by the one `CandleLine.Header` both layouts
+share. The minute periods name the trading day, and under it the clock the frame has reached — the
+window's right-hand edge, the same number the curves' leading ends are placed from, so the header
+and the ink under it agree about what "now" is. It is not the market's trading hours: a session the
+source only partly holds draws the shorter stretch it has, and four hours of trading written above
+two thirds of a picture is a header disagreeing with the curve under it. That second row is set at
+the 128 the four frames that state one headline figure state theirs at — it *is* the figure this
+frame moves, and it changes as the picture plays instead of standing for the whole session; at the
+22 it started at, the one thing a viewer watches was the smallest line in the header. The daily,
+weekly and monthly periods have no clock to show, and name the first and last day of the span
+instead: two rows either way, so the block costs the same height whichever period is on the frame,
+and switching period cannot move the plot out from under it. The row being that size is also why the
+plot's top moved down with it — `PlotTopFraction`, on both renderers.
+
 Both layouts end on the **same row of cards**: the name, the percentage, and the amount it moved, in
 the order the tracks are drawn and in their own colours. While the curves move, the names ride their
 leading ends, which is where a reader is looking — but a figure that is still moving is a figure that
