@@ -437,7 +437,19 @@ Opened rather than trusted: both the x64 and the arm64 inner package report Iden
 **the version in a file name is not evidence** — and both hold fourteen help documents, seventy help
 images, `resources.pri` and Win2D. `Package/Properties/DisplayName` is still the literal reserved
 name. This one carries everything that landed after 1.0.11.0 was uploaded: the comparison board, its
-baseline, the stacked layout and the card row.
+baseline, the stacked layout and the card row. It has since been **submitted** (in review), and the
+one thing that landed after it — the block that says where a comparison has got to — moved to
+1.0.13.0 rather than being folded into this entry.
+
+**1.0.13.0 (2026-10-10).** The upload bundle built and reported `PackageSuccessfullyCreated`:
+`artifacts/MarketMotionStudio_1.0.13.0_x64_arm64_bundle.msixupload`, 149.9 MB, six inner packages.
+Both the x64 and the arm64 inner package report Identity `1.0.13.0` — the version in a file name is
+not evidence — and both hold fourteen help documents, seventy help images, `resources.pri` and
+Win2D. `Package/Properties/DisplayName` is still the literal reserved name; `uap:VisualElements`
+stays `ms-resource:AppDisplayName`, which reservation does not check. What separates it from the
+1.0.12.0 bundle already submitted is legible in the shipped `MarketMotionStudio.dll`: this one
+carries `ClockSize` and `TimeBlock`, that one carries neither, and `FrameSpan` is in both — the
+export fix went out with 1.0.12.0, the header block did not.
 
 **1.0.11.0 (2026-10-08).** The upload bundle built and reported `PackageSuccessfullyCreated`.
 Opened rather than trusted: both the x64 and the arm64 inner package report Identity `1.0.11.0` —

@@ -38,7 +38,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版 K 线页可以一次比较多个标的：多选几只就画在一起，每只从自己的起点算涨跌幅——价格不同的标的没有共同的纵轴。排布可选「同一张图」，也可选每只一张图、上下排列，最多三只，多出来的会点名说明；两种排布最后都有一排卡片，写明每只涨了百分之多少、涨跌了多少。涨跌改从前一个交易日的收盘价算起：一天的涨跌本来就是相对昨收，不是相对当天开盘；分钟档的表头也因此读当日涨跌幅。另外，手机上看竖屏视频时画面右侧约六分之一常年是头像、点赞和评论那一条，此前 K线、成交额、日内、定投、持仓五页底部的数字卡片都画到画面最右边，正好落在下面；现在五页都收在那条线以内。若视频不落在有那套界面的地方，K线页可以把这段宽度收回来。
+本版 K 线页一次比较多只标的时，画面上方会说出「画面走到哪儿了」：日线、周线、月线那一行跟着画面走，写的是正在画的那一天，不是区间从哪天起；1／5／15 分钟档上面是那一个交易日的日期，下面多一行钟点，跟着画面一分钟一分钟地走。只有多标的的画面加这一块 —— 单标的的画面本来就有日期。
 
 ### 产品功能
 
@@ -85,7 +85,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版 K 線頁可以一次比較多個標的：多選幾檔就畫在一起，每檔從自己的起點算漲跌幅——價格不同的標的沒有共同的縱軸。排布可選「同一張圖」，也可選每檔一張圖、上下排列，最多三檔，多出來的會點名說明；兩種排布最後都有一排卡片，寫明每檔漲了百分之多少、漲跌了多少。漲跌改從前一個交易日的收盤價算起：一天的漲跌本來就是相對昨收，不是相對當天開盤；分鐘檔的表頭也因此讀當日漲跌幅。另外，手機上看直式影片時畫面右側約六分之一常年是頭像、按讚和留言那一條，此前 K線、成交額、日內、定期定額、持倉五頁底部的數字卡片都畫到畫面最右邊，正好落在下面；現在五頁都收在那條線以內。若影片不落在有那套介面的地方，K線頁可以把這段寬度收回來。
+本版 K 線頁一次比較多檔標的時，畫面上方會說出「畫面走到哪兒了」：日線、週線、月線那一行跟著畫面走，寫的是正在畫的那一天，不是區間從哪天起；1／5／15 分鐘檔上面是那一個交易日的日期，下面多一行時刻，跟著畫面一分鐘一分鐘地走。只有多標的的畫面加這一塊 —— 單標的的畫面本來就有日期。
 
 ### 產品功能
 
@@ -132,7 +132,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-This version lets the candle page compare several instruments at once: pick more than one and they are drawn together, each measured as a change from its own starting point, because instruments at different prices share no axis. The layout is either every instrument on one chart, or one chart each, stacked — three at most, and any beyond that are named rather than silently left out. Either way the animation ends on a row of cards giving each instrument's percentage and the amount it moved. Change is now measured from the previous session's close, which is what a day's move means — not from the day's own opening — and the minute view's headline reads the day's move for the same reason. Separately: on a phone the right sixth of a vertical video is permanently the avatar, the like button and the comment button, and the row of figures at the foot of the candle, turnover, intraday, savings-plan and holdings pages ran to the very edge of the frame, exactly under it. All five now keep it inside that line, and the candle page hands the width back when a video is not going anywhere with that interface.
+This version adds one line to a frame comparing several instruments: it says where the picture has got to. On the daily, weekly and monthly periods the date walks with the animation and names the candle being drawn, not the first day of the range. On the 1-, 5- and 15-minute periods the top row names the trading day and a row under it gives the time of day, moving minute by minute with the picture. Only frames with several instruments get it — a frame with one has always carried its own date.
 
 ### Product features
 
@@ -179,7 +179,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-今回のバージョンでは、ローソク足ページで複数の銘柄を一度に比較できます。複数を選ぶと同じ画面に描かれ、価格帯の違う銘柄に共通の軸はないため、それぞれが自分の始点からの騰落率で描かれます。並べ方は「1枚のチャート」と「銘柄ごとに1枚、上下に並べる」から選べ、後者は最大3銘柄までで、それ以上は名前を挙げて説明します。どちらの場合も最後にカードが1列並び、銘柄ごとの騰落率と価格の増減が示されます。また、騰落の基準を前営業日の終値に変更しました。一日の値動きは当日の始値ではなく前日終値との差だからです。分足のヘッダーも同じ理由で当日の値動きを示します。さらに、スマートフォンで縦型動画を見るとき画面右側の約六分の一は常にアイコン・いいね・コメントの帯に覆われますが、ローソク足、売買代金、日内、積立、保有の5ページ下部の数値カードは画面の右端まで描かれており、まさにその下に置かれていました。5ページともその線の内側に収めました。その帯のない場所に投稿する場合は、ローソク足ページでこの幅を取り戻せます。
+今回のバージョンでは、複数の銘柄を比較する画面の上部に「今どこまで描いたか」が表示されます。日足・週足・月足では日付の行がアニメーションとともに動き、期間の初日ではなく今描いている足の日付を示します。1分・5分・15分では上段にその取引日の日付、下段に時刻が表示され、時刻は画面とともに一分ずつ進みます。この表示は複数銘柄を比較する画面だけで、銘柄が一つの画面には以前から日付が表示されています。
 
 ### 製品の機能
 
@@ -226,7 +226,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이번 버전에서는 캔들 페이지에서 여러 종목을 한 번에 비교할 수 있습니다. 여러 개를 고르면 한 화면에 함께 그려지고, 가격대가 다른 종목에는 공통 축이 없으므로 각 종목이 자기 시작점からの 등락률로 그려집니다. 배치는 「한 장의 차트」와 「종목마다 한 장, 위아래로 배치」중에서 고를 수 있고, 후자는 최대 3종목까지이며 넘치는 종목은 이름을 밝힙니다. 두 방식 모두 마지막에 카드 한 줄이 놓여 종목별 등락률과 가격 변동액을 보여줍니다. 또한 등락의 기준을 직전 거래일 종가로 바꿨습니다. 하루의 등락은 당일 시가가 아니라 전일 종가와의 차이이기 때문입니다. 분 단위 차트의 머리글도 같은 이유로 당일 등락을 보여줍니다. 아울러 휴대폰에서 세로 영상을 볼 때 화면 오른쪽 약 6분의 1은 늘 프로필·좋아요·댓글 띠가 차지하는데, 캔들·거래대금·일중·적립·보유 다섯 페이지 아래쪽의 숫자 카드는 화면 맨 오른쪽까지 그려져 바로 그 아래에 놓여 있었습니다. 다섯 페이지 모두 그 선 안쪽으로 옮겼습니다. 그런 띠가 없는 곳에 올릴 때는 캔들 페이지에서 이 폭을 되돌릴 수 있습니다.
+이번 버전에서는 여러 종목을 비교하는 화면 위에 「화면이 어디까지 왔는지」가 표시됩니다. 일·주·월 봉에서 날짜 줄은 애니메이션과 함께 움직이며, 구간의 첫날이 아니라 지금 그리고 있는 봉의 날짜를 보여줍니다. 1·5·15분 봉에서는 위 줄에 그 거래일의 날짜, 아래 줄에 시각이 표시되고, 시각은 화면과 함께 일 분씩 움직입니다. 이 표시는 여러 종목을 비교하는 화면에만 추가되며, 종목이 하나인 화면에는 원래 날짜가 표시되어 있습니다.
 
 ### 제품 기능
 
@@ -273,7 +273,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Diese Version lässt die Kerzen-Seite mehrere Werte auf einmal vergleichen: Wählt man mehrere, werden sie gemeinsam gezeichnet, jeder als Veränderung ab seinem eigenen Startpunkt, denn Werte mit unterschiedlichen Kursen teilen keine Achse. Die Anordnung ist wählbar: alle in einem Diagramm, oder ein eigenes Diagramm je Wert, untereinander, höchstens drei; weitere werden namentlich genannt statt stillschweigend weggelassen. Beide enden auf einer Kartenreihe, die je Wert die Prozentzahl und den Betrag nennt. Die Veränderung wird nun ab dem Schlusskurs des vorherigen Handelstags gemessen — eine Tagesveränderung ist die zum Schlusskurs des Vortags, nicht zum eigenen Eröffnungskurs — und die Überschrift der Minutenansicht liest deshalb ebenfalls die Veränderung des Tages. Außerdem: Auf dem Telefon belegt das rechte Sechstel eines senkrechten Videos dauerhaft die Leiste mit Profilbild, Gefällt-mir-Schaltfläche und Kommentarschaltfläche; die Zahlenkarten am Fuß der Seiten Kerzen, Umsatz, Intraday, Sparplan und Position reichten bisher bis zum äußersten Rand des Bildes und lagen genau darunter. Alle fünf bleiben nun innerhalb dieser Linie, und für Videos ohne solche Leiste gibt die Kerzen-Seite die Breite zurück.
+Diese Version fügt dem Bild, das mehrere Werte vergleicht, eine Zeile hinzu: es sagt jetzt, wo es angekommen ist. Bei Tages-, Wochen- und Monatskerzen läuft die Datumszeile mit der Animation mit und nennt den Tag der Kerze, die gerade gezeichnet wird — nicht den ersten Tag des Zeitraums. Bei 1, 5 und 15 Minuten nennt die obere Zeile den Handelstag und eine Zeile darunter die Uhrzeit, die mit dem Bild Minute für Minute weiterläuft. Nur Bilder mit mehreren Werten erhalten sie; ein Bild mit einem Wert trug sein Datum schon immer.
 
 ### Produktfunktionen
 
@@ -320,7 +320,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Cette version permet à la page Chandeliers de comparer plusieurs instruments à la fois : choisissez-en plusieurs et ils sont tracés ensemble, chacun mesuré depuis son propre point de départ, car des instruments à des cours différents n'ont pas d'axe commun. La disposition se choisit : tous sur un même graphique, ou un graphique par instrument, empilés, trois au maximum — les suivants sont nommés au lieu d'être omis en silence. Dans les deux cas, l'animation se termine sur une rangée de cartes donnant, pour chacun, le pourcentage et le montant. La variation se mesure désormais depuis la clôture de la séance précédente : la variation d'une journée se mesure au cours de clôture de la veille, pas à l'ouverture du jour — et l'en-tête de la vue minutes lit donc lui aussi la variation du jour. Par ailleurs, sur un téléphone, le sixième droit d'une vidéo verticale est occupé en permanence par la barre de l'avatar, du bouton J'aime et du bouton Commentaire ; les cartes de chiffres au bas des pages Chandeliers, Volume d'échanges, Intrajournalier, Plan d'épargne et Position allaient jusqu'au bord même du cadre, c'est-à-dire exactement dessous. Les cinq restent désormais en deçà de cette ligne, et la page Chandeliers rend la largeur pour une vidéo qui ne va pas là où cette barre existe.
+Cette version ajoute une ligne à l'image qui compare plusieurs instruments : elle dit maintenant où elle en est. En journalier, hebdomadaire et mensuel, la ligne de date suit l'animation et nomme la bougie en cours de tracé, et non le premier jour de la période. En 1, 5 et 15 minutes, la ligne du haut nomme le jour de bourse et une ligne en dessous donne l'heure, qui avance minute par minute avec l'image. Seules les images à plusieurs instruments en bénéficient ; avec un seul instrument, la date a toujours été là.
 
 ### Fonctionnalités
 
@@ -367,7 +367,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Questa versione permette alla pagina Candele di confrontare più strumenti insieme: scegliendone diversi vengono disegnati insieme, ciascuno misurato dal proprio punto di partenza, perché strumenti con prezzi diversi non hanno un asse comune. La disposizione si sceglie: tutti in un grafico, oppure un grafico per strumento, impilati, al massimo tre — quelli in più sono indicati per nome invece di essere omessi in silenzio. In entrambi i casi l'animazione si chiude su una fila di schede che riporta, per ciascuno, la percentuale e l'importo. La variazione ora si misura dalla chiusura della seduta precedente: la variazione di una giornata si misura rispetto alla chiusura del giorno prima, non all'apertura del giorno — e per lo stesso motivo l'intestazione della vista a minuti legge la variazione del giorno. Inoltre, sul telefono il sesto destro di un video verticale è occupato in permanenza dalla barra con l'immagine del profilo, il pulsante Mi piace e il pulsante Commento; le schede di cifre in fondo alle pagine Candele, Volumi, Intraday, Piano di accumulo e Posizione arrivavano fino al bordo stesso del fotogramma, cioè esattamente sotto. Tutte e cinque restano ora entro quella linea, e la pagina Candele restituisce la larghezza per i video che non vanno dove quella barra c'è.
+Questa versione aggiunge una riga all'immagine che confronta più strumenti: ora dice a che punto è. Nei periodi giornaliero, settimanale e mensile la riga della data segue l'animazione e indica la candela che si sta disegnando, non il primo giorno dell'intervallo. Nei periodi da 1, 5 e 15 minuti la riga superiore indica il giorno di borsa e una riga sotto di essa l'ora, che avanza minuto per minuto con l'immagine. Solo le immagini con più strumenti la ricevono: con un solo strumento la data c'è sempre stata.
 
 ### Funzionalità del prodotto
 
@@ -414,7 +414,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Esta versión permite que la página de Velas compare varios instrumentos a la vez: al elegir varios se dibujan juntos, cada uno medido desde su propio punto de partida, porque instrumentos con precios distintos no comparten eje. La disposición se elige: todos en un gráfico, o un gráfico por instrumento, apilados, tres como máximo — los que sobran se indican por su nombre en lugar de omitirse en silencio. En ambos casos la animación termina en una fila de tarjetas con el porcentaje y el importe de cada uno. La variación se mide ahora desde el cierre de la sesión anterior: la variación de un día se mide respecto al cierre de la víspera, no respecto a la apertura del día — y por lo mismo el encabezado de la vista de minutos lee también la variación del día. Además, en el teléfono el sexto derecho de un vídeo vertical lo ocupa siempre la barra del avatar, del botón Me gusta y del botón de comentarios; las tarjetas de cifras al pie de las páginas Velas, Volumen, Intradía, Plan de ahorro y Posición llegaban hasta el mismo borde del fotograma, es decir, justo debajo. Las cinco se quedan ahora dentro de esa línea, y la página de Velas devuelve el ancho para los vídeos que no van a un sitio con esa barra.
+Esta versión añade una línea a la imagen que compara varios instrumentos: ahora dice por dónde va. En periodos diario, semanal y mensual, la línea de la fecha avanza con la animación y nombra la vela que se está dibujando, no el primer día del rango. En periodos de 1, 5 y 15 minutos la línea superior da el día de negociación y una línea debajo la hora, que avanza minuto a minuto con la imagen. Solo la reciben las imágenes con varios instrumentos; con uno solo la fecha ya estaba.
 
 ### Funciones del producto
 
@@ -460,7 +460,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Esta versão permite que a página de Candles compare vários instrumentos de uma vez: ao escolher vários, eles são desenhados juntos, cada um medido a partir do seu próprio ponto de partida, porque instrumentos com preços diferentes não compartilham um eixo. O layout pode ser escolhido: todos em um gráfico, ou um gráfico por instrumento, empilhados, no máximo três — os excedentes são indicados pelo nome em vez de serem omitidos em silêncio. Nos dois casos a animação termina em uma fileira de cartões com o percentual e o valor de cada um. A variação agora é medida a partir do fechamento da sessão anterior: a variação de um dia se mede em relação ao fechamento da véspera, não à abertura do dia — e pelo mesmo motivo o cabeçalho da vista de minutos também lê a variação do dia. Além disso, no telefone o sexto direito de um vídeo vertical é ocupado permanentemente pela barra do avatar, do botão de curtida e do botão de comentário; os cartões de números no rodapé das páginas Candles, Volume, Intraday, Plano de aportes e Posição iam até a própria borda do quadro, ou seja, exatamente abaixo. As cinco agora ficam dentro dessa linha, e a página de Candles devolve a largura para os vídeos que não vão a um lugar com essa barra.
+Esta versão acrescenta uma linha à imagem que compara vários instrumentos: agora ela diz onde está. Nos períodos diário, semanal e mensal, a linha da data acompanha a animação e mostra a vela que está sendo desenhada, não o primeiro dia do intervalo. Nos períodos de 1, 5 e 15 minutos, a linha de cima dá o dia de negociação e uma linha abaixo a hora, que avança minuto a minuto com a imagem. Só as imagens com vários instrumentos a recebem; com um único instrumento a data sempre esteve lá.
 
 ### Funcionalidades do produto
 
@@ -507,7 +507,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Ta wersja pozwala stronie Świece porównywać kilka instrumentów naraz: po wybraniu kilku są rysowane razem, każdy mierzony od własnego punktu startowego, bo instrumenty o różnych cenach nie mają wspólnej osi. Układ wybiera się: wszystkie na jednym wykresie albo osobny wykres dla każdego, jeden pod drugim, najwyżej trzy — pozostałe są wymienione z nazwy, a nie pominięte po cichu. W obu przypadkach animacja kończy się rzędem kart z procentem i kwotą dla każdego. Zmianę mierzy się teraz od zamknięcia poprzedniej sesji: zmiana dnia to różnica względem wczorajszego zamknięcia, nie względem otwarcia dnia — i z tego samego powodu nagłówek widoku minutowego pokazuje zmianę dnia. Poza tym na telefonie prawa szósta część pionowego wideo jest stale zajęta przez pasek z awatarem, przyciskiem polubienia i przyciskiem komentarza; karty z liczbami na dole stron Świece, Obroty, W ciągu dnia, Plan oszczędzania i Pozycja sięgały do samej krawędzi kadru, czyli dokładnie pod ten pasek. Wszystkie pięć zostaje teraz wewnątrz tej linii, a strona Świec oddaje szerokość, gdy wideo nie trafia tam, gdzie ten pasek jest.
+Ta wersja dodaje jedną linię do obrazu porównującego kilka instrumentów: mówi on teraz, dokąd doszedł. W okresach dziennym, tygodniowym i miesięcznym linia daty porusza się razem z animacją i podaje dzień właśnie rysowanej świecy, a nie pierwszy dzień zakresu. W okresach 1, 5 i 15 minut górna linia podaje dzień sesji, a poniżej jest godzina, która przesuwa się z obrazem minuta po minucie. Dotyczy to tylko obrazów z kilkoma instrumentami — przy jednym instrumencie data była od zawsze.
 
 ### Funkcje produktu
 
@@ -554,7 +554,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Tato verze umožňuje stránce Svíce porovnat více nástrojů najednou: vyberete-li jich více, jsou nakresleny společně, každý měřený od vlastního počátečního bodu, protože nástroje s různými cenami nemají společnou osu. Uspořádání lze zvolit: všechny v jednom grafu, nebo vlastní graf pro každý, pod sebou, nejvýše tři — další jsou uvedeny jménem, místo aby byly potichu vynechány. V obou případech animace končí řadou karet s procentem a částkou pro každý. Změna se nyní měří od závěrečného kurzu předchozího obchodního dne: změna dne se měří ke včerejšímu závěru, ne k otevření dne — a ze stejného důvodu záhlaví minutového zobrazení čte denní změnu. Kromě toho: na telefonu je pravá šestina svislého videa trvale obsazena pruhem s avatarem, tlačítkem To se mi líbí a tlačítkem komentáře; karty s čísly na spodku stránek Svíce, Obrat, V průběhu dne, Plán spoření a Pozice sahaly až k samému okraji snímku, tedy přesně pod něj. Všech pět nyní zůstává uvnitř této linie a stránka Svíc vrací šířku, když video neputuje tam, kde je tento pruh.
+Tato verze přidává jeden řádek obrazu, který porovnává více nástrojů: říká nyní, kam došel. V denním, týdenním a měsíčním období se řádek s datem pohybuje s animací a uvádí den právě kreslené svíce, nikoli první den rozsahu. V obdobích 1, 5 a 15 minut horní řádek uvádí obchodní den a pod ním čas, který postupuje s obrazem minutu po minutě. Dostane jej jen obraz s více nástroji; u jednoho nástroje tam datum bylo vždy.
 
 ### Funkce produktu
 
@@ -601,7 +601,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-В этой версии страница «Свечи» умеет сравнивать несколько инструментов сразу: выберите несколько — и они рисуются вместе, каждый как изменение от собственной начальной точки, потому что у инструментов с разной ценой нет общей оси. Раскладку можно выбрать: все на одном графике либо отдельный график для каждого, друг под другом, не более трёх — остальные называются по имени, а не отбрасываются молча. В обоих случаях анимация заканчивается рядом карточек с процентами и суммой по каждому. Изменение теперь считается от закрытия предыдущей сессии: изменение дня считается ко вчерашнему закрытию, а не к открытию дня — поэтому и заголовок минутного вида показывает изменение дня. Кроме того, на телефоне правая шестая часть вертикального видео занята полосой с аватаром, кнопкой «Нравится» и кнопкой комментария; карточки с цифрами внизу страниц «Свечи», «Оборот», «Внутри дня», «План сбережений» и «Позиция» доходили до самого края кадра, то есть оказывались точно под ней. Теперь все пять остаются внутри этой линии, а страница «Свечи» возвращает ширину, когда видео не попадает туда, где такой полосы нет.
+В этой версии у кадра, сравнивающего несколько инструментов, появилась строка, которая говорит, до какого момента дошёл рисунок. На дневном, недельном и месячном периодах строка с датой движется вместе с анимацией и называет день рисуемой свечи, а не первый день диапазона. На периодах 1, 5 и 15 минут верхняя строка называет торговый день, а под ней идёт время, которое идёт вместе с рисунком минута за минутой. Это касается только кадров с несколькими инструментами; у одного инструмента дата была и раньше.
 
 ### Функции продукта
 
@@ -648,7 +648,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümde Mum sayfası birden fazla enstrümanı aynı anda karşılaştırabiliyor: birkaçını seçtiğinizde birlikte çizilir, her biri kendi başlangıç noktasından ölçülür, çünkü farklı fiyatlardaki enstrümanların ortak bir ekseni yoktur. Düzen seçilebilir: hepsi tek bir grafikte ya da her birine kendi grafiği, alt alta, en çok üç — fazlası sessizce atılmaz, adıyla belirtilir. İki durumda da animasyon, her birinin yüzdesini ve tutarını veren bir kart sırasıyla biter. Değişim artık önceki seansın kapanışından ölçülüyor: bir günün değişimi o günün açılışına değil dünkü kapanışa göre ölçülür — aynı nedenle dakika görünümünün başlığı da günün değişimini okur. Ayrıca telefonda dikey bir videonun sağ altıda biri sürekli olarak avatar, beğeni düğmesi ve yorum düğmesinden oluşan şeritle doludur; Mum, Hacim, Gün içi, Birikim planı ve Pozisyon sayfalarının altındaki sayı kartları karenin ta kenarına kadar uzanıyor, yani tam olarak onun altında kalıyordu. Beşi de artık bu çizginin içinde kalıyor ve video böyle bir şeridin olmadığı bir yere gidiyorsa Mum sayfası genişliği geri veriyor.
+Bu sürümde birden fazla enstrümanı karşılaştıran kareye bir satır ekleniyor: kare artık nereye geldiğini söylüyor. Günlük, haftalık ve aylık dönemlerde tarih satırı animasyonla birlikte ilerler ve aralığın ilk gününü değil, çizilmekte olan mumun gününü söyler. 1, 5 ve 15 dakikalık dönemlerde üst satır işlem gününü, altındaki satır da kareyle birlikte dakika dakika ilerleyen saati verir. Bu yalnızca birden fazla enstrümanın olduğu karelerde görünür; tek enstrümanın karesinde tarih zaten vardı.
 
 ### Ürün özellikleri
 

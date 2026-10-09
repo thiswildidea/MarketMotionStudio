@@ -20,6 +20,87 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.13.0 — 2026-10-10（更新版 / update）
+
+**本版只做一件事：让多标的的画面说出「画面走到哪儿了」。** 单标的的画面表头本来就写着那根 K 线的日期；多标的的画面此前只写代码与周期，把「哪一段」整个交给脚下那条日期轴 —— 而那条轴是刻度，不是一句话。这一块是 1.0.12.0 提交之后才落的，所以它自己开一个版本：已经交上去的那一版的记录不再动，除了把这一块从它那里搬走。
+
+**This version does one thing: a comparison says where the picture has got to.** The single-instrument frame already carried the date of the candle it was drawing; a comparison stated the codes and the period and left *when* it was to the axis along its foot, which is a scale rather than a statement. It landed after 1.0.12.0 was submitted, so it has a version of its own — the record of the version already sent is left alone, except that this block moves out of it.
+
+**多标的的画面标出「画面走到哪儿了」。** 单标的的画面表头本来就写着那根 K 线的日期；多标的的
+画面只写了代码与周期，把「哪一段」整个交给脚下那条日期轴 —— 而那条轴是**刻度**不是一句话：它跟着
+窗口走，只有收尾展开时才覆盖整段。现在头部那一块由两种排布共用的一处 `CandleLine.Header` 画，
+**两行读的是同一个数**：窗口的右缘，也就是曲线末端落点用的那个数，所以表头与它下面的墨说的是同一
+个「现在」。而这一件事有两种样子，是板子的轴以什么计数推出来的，不是一个可能写反的分支：
+
+- **分钟档（1／5／15 分钟）**：整条轴都在同一天，所以上面那行是那**一个交易日**的日期（不动），
+  下面那行是画面**此刻画到的钟点**（跟着画面一分钟一分钟地走）。
+- **日／周／月档**：轴是以天计的，于是那一行自己就动 —— 它是「画面画到哪一天」，正是单标的表头
+  一直在说的那句（写的是正在画的那根，不是区间的第一根）。它起初写的是**区间的起始日**，而那是
+  整个画面上唯一一句与画面无关的话：整段视频里它一个字都不变。
+
+第二行是**分钟档**独有的：那三档的「最新一刻」本来就是一个日期，而上面那行已经在说日期了 —— 两个
+同样形状的日期叠着，读出来是「同一个日期写了两遍」。这一行改到**第四版**才落在这里：第一版是区间
+（`9:30 - 15:00`，说的是源端的交易时段而不是画面 —— 源端只留最近几个交易日，最老那天被请求长度
+切掉头、正在走的那天更短，在只画了三分之二的画面上方写「四个小时的交易」是一句话与它下面的曲线
+互相矛盾）；第二版把它改成「那一刻」并按画面的**大字**画（128，与另外几个画「一个数字」的页面同字
+号），而一行大字要它自己的空气、绘图区顶让到 0.34 —— 日 K 那档十个字的日期（`2026-10-08`）在那个
+字号下右缘越过安全线 0.021（1080 下约 23 px），进了平台那条按钮栏；第三版回到 22 px 的注脚位置、
+绘图区顶也回到 0.30。现在是 **26 px** —— 仍是日期的注脚（日期 30），只是把那一句说响一点。
+
+颜色是用户点名要的：持仓页那个大数字的珊瑚红（`Palette.Emphasis`，**同一个常量**，不是各挑一个
+看起来一样的颜色）—— 它与上面琥珀色的日期正好是那一页那两行的配色。钟点没有正负，六条曲线的比较
+也没有唯一方向，所以这个颜色不跟涨跌走。
+
+**A comparison says where the picture has got to.** The single-instrument frame already carried
+the date of the candle it was drawing in its header; a comparison stated the codes and the period,
+and left *when* it was to the axis along its foot. That axis is a scale, not a statement: it moves
+with the window, and only covers the whole span once the run opens out at the end. So the header now
+carries a block of its own, drawn by the one `CandleLine.Header` both layouts share, and **both of
+its rows read one number**: the window's right-hand edge, the same number the curves' leading ends
+are placed from, so the header and the ink under it agree about what "now" is. Which of two shapes
+that takes is a consequence of what the board's axis counts in rather than a branch that could be got
+the wrong way round:
+
+- **The minute periods — 1, 5 and 15** — have every point of their axis on one day, so the top row
+  names the day the picker chose and stands still while the clock under it walks minute by minute.
+- **The daily, weekly and monthly periods** count in days, so the row walks with the picture: it says
+  which day the frame has reached, which is what the single-instrument header has always said, naming
+  the candle it is drawing rather than the first candle of its range. It was the span's first day for
+  two revisions, which made it the one line on the frame that said nothing about the frame and stood
+  there unchanged for the whole of it.
+
+The second row belongs to the minute periods alone: on the others the newest moment *is* a day, and
+the row above already names one — two dates of the same shape stacked on each other read as a date
+repeated rather than as a stretch. This took four revisions to land there. The first wrote the
+stretch the frame covers — "09:30 - 15:00" — which is a statement about the source's session rather
+than about the frame: the source holds only the last few trading days, the oldest of them cut short
+at the head by the requested length and the day in progress shorter still, and four hours of trading
+written above two thirds of a picture is a header disagreeing with the curve under it. The second
+made it the frame's **headline size** — the 128 the four frames that state one figure state theirs at
+— and a line that size needs its air, so the plot's top went from 0.30 to 0.34; on the daily periods
+the ten-character date came out at 0.162..0.841 of the frame, past the safe line at 0.82 and into the
+platform's button rail. The third put it back at 22 px, under the date rather than over it, and the
+plot's top back at 0.30 with it. It is **26 px** now — still a note under the date's 30, saying the
+same thing one size louder.
+
+Its colour is the one asked for by name, the coral the holdings frame states its return in —
+`Palette.Emphasis`, the same constant rather than a second colour that happens to look like it —
+which pairs with the amber date above it exactly as those two lines do on that page. A clock has no
+sign to take its colour from, and a comparison of six instruments has no one direction.
+
+### 修正 / Fixed
+
+- **多标的的画面标出「画面走到哪儿了」/ a comparison says where the picture has got to** —— 标题下
+  加一块，两种排布共用一处，两行读同一个数（窗口的右缘）：分钟档是那一个交易日的日期（不动）+ 画面
+  **此刻画到**的钟点（26 px，珊瑚红，跟着画面走）；日／周／月档只有那一行日期，而它自己跟着画面走
+  —— 写的是画到哪一天，不是区间从哪天起。只有多标的的画面加它 —— 单标的的画面本来就有日期。
+
+包：`artifacts/MarketMotionStudio_1.0.13.0_x64_arm64_bundle.msixupload`（149.9 MB / 142.9 MiB，六个内包；构建前照旧删 `Upload`×4 / `ForBundle`×2 与 `*.appxrecipe`）。拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.13.0`，`Package/Properties/DisplayName` 仍是字面值 `MarketMotionStudio`（`uap:VisualElements` 仍是 `ms-resource:AppDisplayName`，只有那一处要字面值）；包内 14 份手册、70 张配图、`resources.pri` 与 Win2D 的 `Microsoft.Graphics.Canvas.dll` 都在。两版包的边界在 `MarketMotionStudio.dll` 里看得见：这一份带着 `ClockSize` 与 `TimeBlock`，1.0.12.0 那份一个都没有，而 `FrameSpan` 两份都有 —— 也就是说导出那个修复跟着 1.0.12.0 一起上了，这一块没有。
+
+判据：`tools/verify-candle-multi.py` 真机 131 项 0 失败 —— 三个不同进度下，分钟档的日期差 0.0000（它是**对照**：整条轴同一天，本来就不该动）而钟点差 0.0932／0.1056；日 K 档的日期差 0.2351／0.1807，且画面上只有三行带（没有第二行）。源码四条锚：`ClockRow=0.27`、`ClockSize=26`、`Palette.Emphasis`、`board.Dates[at]`，另有「日／周／月 只留日期行」与「两个渲染器各一次 `Math.Max(0, head)`」。`verify-docs.py` 182 项 0 失败。商店文案 14 语言那一栏由 `tools/port-store-listing-10130.py` 改写。
+
+---
+
 ## 1.0.12.0 — 2026-10-09（更新版 / update）
 
 **本版做了两件各自独立的事：让 K 线页一次比较多只标的，以及把五页底部的数字卡片从手机那条按钮
@@ -109,68 +190,6 @@ in one place, `FrameContext.CardRowRight`, and all five copies call it. Unlike t
 pages in 1.0.11.0, this needs no switch: the cards share what is left, so four cards each lose about
 eleven pixels and no line moves.
 
-**六、多标的的画面标出「画面走到哪儿了」。** 单标的的画面表头本来就写着那根 K 线的日期；多标的的
-画面只写了代码与周期，把「哪一段」整个交给脚下那条日期轴 —— 而那条轴是**刻度**不是一句话：它跟着
-窗口走，只有收尾展开时才覆盖整段。现在头部那一块由两种排布共用的一处 `CandleLine.Header` 画，
-**两行读的是同一个数**：窗口的右缘，也就是曲线末端落点用的那个数，所以表头与它下面的墨说的是同一
-个「现在」。而这一件事有两种样子，是板子的轴以什么计数推出来的，不是一个可能写反的分支：
-
-- **分钟档（1／5／15 分钟）**：整条轴都在同一天，所以上面那行是那**一个交易日**的日期（不动），
-  下面那行是画面**此刻画到的钟点**（跟着画面一分钟一分钟地走）。
-- **日／周／月档**：轴是以天计的，于是那一行自己就动 —— 它是「画面画到哪一天」，正是单标的表头
-  一直在说的那句（写的是正在画的那根，不是区间的第一根）。它起初写的是**区间的起始日**，而那是
-  整个画面上唯一一句与画面无关的话：整段视频里它一个字都不变。
-
-第二行是**分钟档**独有的：那三档的「最新一刻」本来就是一个日期，而上面那行已经在说日期了 —— 两个
-同样形状的日期叠着，读出来是「同一个日期写了两遍」。这一行改到**第四版**才落在这里：第一版是区间
-（`9:30 - 15:00`，说的是源端的交易时段而不是画面 —— 源端只留最近几个交易日，最老那天被请求长度
-切掉头、正在走的那天更短，在只画了三分之二的画面上方写「四个小时的交易」是一句话与它下面的曲线
-互相矛盾）；第二版把它改成「那一刻」并按画面的**大字**画（128，与另外几个画「一个数字」的页面同字
-号），而一行大字要它自己的空气、绘图区顶让到 0.34 —— 日 K 那档十个字的日期（`2026-10-08`）在那个
-字号下右缘越过安全线 0.021（1080 下约 23 px），进了平台那条按钮栏；第三版回到 22 px 的注脚位置、
-绘图区顶也回到 0.30。现在是 **26 px** —— 仍是日期的注脚（日期 30），只是把那一句说响一点。
-
-颜色是用户点名要的：持仓页那个大数字的珊瑚红（`Palette.Emphasis`，**同一个常量**，不是各挑一个
-看起来一样的颜色）—— 它与上面琥珀色的日期正好是那一页那两行的配色。钟点没有正负，六条曲线的比较
-也没有唯一方向，所以这个颜色不跟涨跌走。
-
-**Six — a comparison says where the picture has got to.** The single-instrument frame already carried
-the date of the candle it was drawing in its header; a comparison stated the codes and the period,
-and left *when* it was to the axis along its foot. That axis is a scale, not a statement: it moves
-with the window, and only covers the whole span once the run opens out at the end. So the header now
-carries a block of its own, drawn by the one `CandleLine.Header` both layouts share, and **both of
-its rows read one number**: the window's right-hand edge, the same number the curves' leading ends
-are placed from, so the header and the ink under it agree about what "now" is. Which of two shapes
-that takes is a consequence of what the board's axis counts in rather than a branch that could be got
-the wrong way round:
-
-- **The minute periods — 1, 5 and 15** — have every point of their axis on one day, so the top row
-  names the day the picker chose and stands still while the clock under it walks minute by minute.
-- **The daily, weekly and monthly periods** count in days, so the row walks with the picture: it says
-  which day the frame has reached, which is what the single-instrument header has always said, naming
-  the candle it is drawing rather than the first candle of its range. It was the span's first day for
-  two revisions, which made it the one line on the frame that said nothing about the frame and stood
-  there unchanged for the whole of it.
-
-The second row belongs to the minute periods alone: on the others the newest moment *is* a day, and
-the row above already names one — two dates of the same shape stacked on each other read as a date
-repeated rather than as a stretch. This took four revisions to land there. The first wrote the
-stretch the frame covers — "09:30 - 15:00" — which is a statement about the source's session rather
-than about the frame: the source holds only the last few trading days, the oldest of them cut short
-at the head by the requested length and the day in progress shorter still, and four hours of trading
-written above two thirds of a picture is a header disagreeing with the curve under it. The second
-made it the frame's **headline size** — the 128 the four frames that state one figure state theirs at
-— and a line that size needs its air, so the plot's top went from 0.30 to 0.34; on the daily periods
-the ten-character date came out at 0.162..0.841 of the frame, past the safe line at 0.82 and into the
-platform's button rail. The third put it back at 22 px, under the date rather than over it, and the
-plot's top back at 0.30 with it. It is **26 px** now — still a note under the date's 30, saying the
-same thing one size louder.
-
-Its colour is the one asked for by name, the coral the holdings frame states its return in —
-`Palette.Emphasis`, the same constant rather than a second colour that happens to look like it —
-which pairs with the amber date above it exactly as those two lines do on that page. A clock has no
-sign to take its colour from, and a comparison of six instruments has no one direction.
-
 ### 新增 / Added
 
 - **K 线页可以一次比较多只标的 / the candle page compares several instruments** —— 清单那一排变成可
@@ -198,10 +217,6 @@ sign to take its colour from, and a comparison of six instruments has no one dir
   platform's rail** —— K线、成交额、日内、定投、持仓五页的四张统计卡此前按 `ChartWidth` 铺到画面
   右缘（1080 帧下 930），安全线在 885.6，右缘落在栏内 44 px；现在五处都改调
   `FrameContext.CardRowRight()`，算术只在一处。
-- **多标的的画面标出「画面走到哪儿了」/ a comparison says where the picture has got to** —— 标题下
-  加一块，两种排布共用一处，两行读同一个数（窗口的右缘）：分钟档是那一个交易日的日期（不动）+ 画面
-  **此刻画到**的钟点（26 px，珊瑚红，跟着画面走）；日／周／月档只有那一行日期，而它自己跟着画面走
-  —— 写的是画到哪一天，不是区间从哪天起。只有多标的的画面加它 —— 单标的的画面本来就有日期。
 - **分钟档的表头读当日涨跌幅 / the minute headline reads the day's move** —— 表头取的是屏幕前一根，
   5 分钟档下就是五分钟前。2026-10-08 的上证指数画面上写 +0.07%，当日实际 −0.79%。分钟行不带涨跌
   字段，前收要从会话里取：`MinuteSession.CloseBefore(day)` 按窗口里的位置找，不按日历回退一天，
@@ -212,11 +227,11 @@ sign to take its colour from, and a comparison of six instruments has no one dir
   取回来就填上；换一天不重新取数。
 
 包：`artifacts/MarketMotionStudio_1.0.12.0_x64_arm64_bundle.msixupload`（149.8 MB / 142.9 MiB，
-六个内包）。第六段是包构建之后才落的，**上传前必须重编** —— 1.0.12.0 **从未上传**，所以重编同一个
-版本号是允许的（「重编同一个号」只在还没上传时成立）。重编前照旧要删 `Upload`×4 / `ForBundle`×2
-与 `*.appxrecipe`。拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.12.0`，`Package/Properties/
-DisplayName` 仍是字面值 `MarketMotionStudio`；包内 14 份手册、70 张配图、`resources.pri` 与 Win2D
-的 `Microsoft.Graphics.Canvas.dll` 都在。
+六个内包），**已提交**（审核中）。拆包核验 x64 与 arm64 两个内包的 Identity 都是 `1.0.12.0`，
+`Package/Properties/DisplayName` 仍是字面值 `MarketMotionStudio`；包内 14 份手册、70 张配图、
+`resources.pri` 与 Win2D 的 `Microsoft.Graphics.Canvas.dll` 都在。多标的的表头那一块是**提交之后**
+落的，已经从这一条搬走 —— 见 **1.0.13.0**；边界怎么定的：包里那份 `MarketMotionStudio.dll` 带着
+`FrameSpan`（导出那个修复跟着这一版一起上去了），却没有 `ClockSize` 与 `TimeBlock`。
 
 判据：K线 22 项、分钟线 71 项、成交额日内 48 项、持仓 151 项、定投 87 项全过。K线多标的这一份
 本轮新增四条**源码**断言 —— 守卫只有一处 / 那一处同时读两条来源 / 视频与封面两个文件名都从它取
