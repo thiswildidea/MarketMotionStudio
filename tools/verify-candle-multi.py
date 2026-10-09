@@ -69,9 +69,16 @@ SAFE = 0.82
 PERIOD_DAILY = "日K"
 PERIOD_5 = "5 分钟"
 
-# 两种画面的绘图区顶：比较画面 0.34（`PlotTopFraction`）、蜡烛图 0.385。取更靠上那一个 ——
+# 两种画面的绘图区顶：比较画面 0.30（`PlotTopFraction`）、蜡烛图 0.385。取更靠上那一个 ——
 # 判据要的是「表头那一块不数」，而不是「把某一页的绘图区也切掉一条」。
-PLOT_TOP = 0.34
+PLOT_TOP = 0.30
+
+# 一行墨里珊瑚占多大一份才算「这一行是珊瑚色的」。**量出来的，不是挑的**：实测那一行
+# （22 px，画面缩到 9:16 的 681 px 高）珊瑚只占 0.23 / 0.32 —— 字小，笔画只有一像素宽，
+# 抗锯齿的边缘与近黑底一混就不算珊瑚了；而大字那一版（128 px）同一行占 0.85。
+# 对照是上面那行日期：0.00（琥珀的 g 是 191，进不了珊瑚那一条）。阈值取在两者之间、靠近
+# 对照那一侧，值本身不猜 —— 它只要能把「有珊瑚」与「一点也没有」分开。
+CORAL_SHARE = 0.12
 
 # 收尾那排卡片所在的横带，画面高度的比例。绘图区在它上面结束（曲线与末端标签都夹在
 # 绘图区里），进度条在它下面（恒被 `band_hues` 排除）。页边距那四个偏好怎么调，卡片都
@@ -567,8 +574,8 @@ def analyse(name):
     **表头那一块不数**（从 `PLOT_TOP` 往下才开始，那是这一页的绘图区顶）。它原来是近白的、彩度
     不够，天然进不了账；改成珊瑚红之后就进了 —— 实测日 K 那一帧最右的彩色墨迹于是从末端标注的
     1065 变成表头那个大日期的 1073，「末端标注在安全线以内」那条断言量的就不是标注了。**改了颜色
-    而没有改这一处，两条断言会静默换掉主语。** 绘图区顶取 0.34 是这一跑量的两种画面里**更靠上**的
-    那一个（比较画面 0.34、蜡烛图 0.385），所以没有一帧的绘图区被切掉。
+    而没有改这一处，两条断言会静默换掉主语。** 绘图区顶取 0.30 是这一跑量的两种画面里**更靠上**的
+    那一个（比较画面 0.30、蜡烛图 0.385），所以没有一帧的绘图区被切掉。
 
     `name` 收的是 `vc.shot` 交回来的路径：它只在照片确实是**这个窗口**的一帧时才给路径
     （见 `winui.capture`）。给不出时这里交出四个 None，调用方那些比较于是红在明处 ——
@@ -723,7 +730,7 @@ def cool(r, g, b):
     return (b - r) > 25 and 90 < max(r, g, b) < 235
 
 
-def header_bands(name, lo=0.10, hi=0.33):
+def header_bands(name, lo=0.10, hi=0.29):
     """画面上半段里每一条墨迹带：起、止、高几个像素、墨迹几个、其中琥珀几个、偏冷几个、列剖面。
 
     比例都是画面高度的比例 —— 两次实拍的画布可能不一样大（状态条一长，预览就按 9:16 缩），
@@ -731,7 +738,8 @@ def header_bands(name, lo=0.10, hi=0.33):
     墨」要的是逐列的墨，不是总数 —— 同一个钟点的墨迹总数在两次实拍之间可以一模一样（`15:00`
     与 `11:00` 就是一例），差的是哪一列有墨。
 
-    `hi` 停在绘图区（`PlotTopFraction` 0.34）之上：再往下扫，轴与曲线连成的墨会把这一块并进去。
+    `hi` 停在绘图区（`PlotTopFraction` 0.30）之上：再往下扫，轴与曲线连成的墨会把这一块并进去。
+    它跟着那个常量走 —— 表头那两行是在绘图区**上面**画的，绘图区一挪，`hi` 就得跟着挪。
 
     画布那块矩形问 `winui.canvas_box`，下缘用**它自己给的那个**。它现在的下缘是由宽度按 9:16
     反推出来的（见那里的注释），而 `frame_bottom` 那趟往下走会跨过画布下面那排控件、走到页面
@@ -995,59 +1003,61 @@ def main():
     #
     # 用户随后又报了两件事（2026-10-09）：「9:30 - 15:00 太小」与「要时时刻刻的钟点，而不是
     # 9:30 - 15:00」。于是第二行从**区间**改成**画面画到的那一刻** —— 窗口的右缘，也就是每条
-    # 曲线领头处所在的那一列 —— 并按画面大字的字号（128）画。区间那句话的毛病是它说的不是画面：
-    # 下午走了四分之三的那一帧与整段的末帧写着同一句话，而观众跟着看的正是「走到哪儿了」。
+    # 曲线领头处所在的那一列。区间那句话的毛病是它说的不是画面：下午走了四分之三的那一帧与
+    # 整段的末帧写着同一句话，而观众跟着看的正是「走到哪儿了」。
     #
-    # 分岔只在一处（`board.Intraday`）：分钟线写那一刻的钟点，日/周/月线写区间的末一天 ——
-    # 后者的「最新时刻」本来就是一个日期，所以还是同一条规则。两种排布共用一处画
-    # （`CandleLine.Header`）—— 一份一份地问，第二份就会有自己的答案。
-    check("多标的头部有日期与大字两行（一处画，两种排布共用）",
+    # 再一轮（同一天）：这一行**只有分钟档有**。日/周/月的「最新一刻」本来就是一个日期，而
+    # 上面那行已经在说日期了 —— 两个同样形状的日期叠着，读出来是「同一个日期写了两遍」；
+    # 大字那一版还让日 K 档那十个字（`2026-10-08`）越过了安全线。分岔因此只在一处
+    # （`board.Intraday`），两种排布共用一处画（`CandleLine.Header`）—— 一份一份地问，第二份
+    # 就会有自己的答案。
+    check("多标的头部有日期那一行，分钟档多一行钟点（一处画，两种排布共用）",
           "public const double DateRow = 0.235;" in line
-          and "public const double MomentRow = 0.305;" in line
-          and "public const double MomentSize = 128;" in line
+          and "public const double ClockRow = 0.27;" in line
+          and "public const double ClockSize = 22;" in line
           and "TimeBlock(session, context, board, titleLines, moment, a);" in line
           and line.count("private static void TimeBlock(") == 1)
-    check("第二行是**画面画到的那一刻**，不是一整段区间（分岔只在一处）",
-          "board.Intraday" in line
-          and "board.Stamps[at]" in line
-          and "CandleLoader.Iso(board.End)" in line
+    check("第二行只在分钟档画（日/周/月 只留日期那一行）",
+          "if (!board.Intraday)" in line
+          and "CandleLoader.Iso(board.End)" not in line
           and 'board.Stamps[0] + " - " + board.Stamps[^1]' not in line)
-    check("那个「一刻」就是窗口的右缘（头部与曲线领头处说的是同一件事）",
-          "double t, double moment)" in line
+    check("那一行是**画面画到的那一刻**（窗口的右缘，与曲线领头处说的是同一件事）",
+          "board.Stamps[at]" in line
+          and "double t, double moment)" in line
           and racer.count("Math.Max(0, head));") == 1
           and split.count("Math.Max(0, head));") == 1)
-    check("空板子不画这两行（头部在两种排布决定画不画之前就画了）",
+    check("空板子不画这一块（头部在两种排布决定画不画之前就画了）",
           "if (board.Count <= 0)" in line)
 
     # 两行都得落在绘图区**上面**，否则标题压着曲线。行数是从源文件里读出来的再比，不是把
-    # 0.235 / 0.305 抄一遍 —— 抄一遍的话，谁把某一行挪到绘图区里，这条还绿着。
+    # 0.235 / 0.27 抄一遍 —— 抄一遍的话，谁把某一行挪到绘图区里，这条还绿着。
     rows_of = lambda src, key: float(  # noqa: E731 - 一处算术，不要两份
         re.search(key + r" = ([0-9.]+);", src).group(1))
 
     check("两行都在绘图区之上（标题不压着曲线）",
-          rows_of(line, "DateRow") < rows_of(line, "MomentRow")
-          and rows_of(line, "MomentRow") < rows_of(racer, "PlotTopFraction")
-          and rows_of(line, "MomentRow") < rows_of(split, "PlotTopFraction"),
-          f"日期 {rows_of(line, 'DateRow')} / 大字 {rows_of(line, 'MomentRow')}"
+          rows_of(line, "DateRow") < rows_of(line, "ClockRow")
+          and rows_of(line, "ClockRow") < rows_of(racer, "PlotTopFraction")
+          and rows_of(line, "ClockRow") < rows_of(split, "PlotTopFraction"),
+          f"日期 {rows_of(line, 'DateRow')} / 钟点 {rows_of(line, 'ClockRow')}"
           f" / 绘图区 {rows_of(racer, 'PlotTopFraction')}")
 
-    # 两行现在**不是**一个 pitch 的距离，而这一点是要验的：第二行是大字（128），而一行字占了
-    # 行距就装不下它的墨 —— 照抄一个 pitch（0.035 ≈ 67 px）的话，那行字会画进上面那行日期里，
-    # 而画面看着像「日期重影」。所以问的是「间距够不够那行字自己的高度」，不是「是不是 0.035」。
-    check("两行的间距够那行大字的墨（不是照抄一个行距）",
+    # 两行相距一个行距（0.035 ≈ 67 px），这里问的不是「是不是 0.035」而是「够不够那一行自己
+    # 的墨」：把字号调大而不动行距，那行字就画进了上面那行日期里，画面看着像「日期重影」。
+    check("两行的间距够那一行自己的墨（不是照抄一个行距）",
           "public const double HeaderRowPitch = 0.035;" in frame_ctx
-          and (rows_of(line, "MomentRow") - rows_of(line, "DateRow")) * 1920
-          > rows_of(line, "MomentSize") * 0.72,
-          f"间距 {(rows_of(line, 'MomentRow') - rows_of(line, 'DateRow')) * 1920:.0f} px，"
-          f"那行字高 {rows_of(line, 'MomentSize') * 0.72:.0f} px")
+          and (rows_of(line, "ClockRow") - rows_of(line, "DateRow")) * 1920
+          > rows_of(line, "ClockSize") * 0.72,
+          f"间距 {(rows_of(line, 'ClockRow') - rows_of(line, 'DateRow')) * 1920:.0f} px，"
+          f"那行字高 {rows_of(line, 'ClockSize') * 0.72:.0f} px")
 
-    # 字号本身：那一行得是这一块的头号 —— 比日期大一倍以上、加粗。用户说的原话是「和持仓收益
-    # 百分比大小」，而持仓页那个数字是 128 加粗；这条不问 128 抄对没有（那有上面一条），问的
-    # 是「它有没有大到成为这块的头号」。
-    check("那行大字是这一块的头号（比日期大一倍以上，且加粗）",
-          rows_of(line, "MomentSize") >= rows_of(line, "DateSize") * 2
-          and "Ink.Format(context.Px(MomentSize), bold: true)" in line,
-          f"{rows_of(line, 'MomentSize')} 对日期 {rows_of(line, 'DateSize')}")
+    # 字号本身：钟点是日期的**注脚**，不是这一块的头号 —— 它比日期小，也不加粗。这一条问的是
+    # 「它有没有退回成大字」，因为上一轮它正是 128 加粗；问的是源码里那个数，不是画面上那块
+    # 墨（画面上那一条下面是第 1271 行起那一段）。
+    check("钟点那一行不是这一块的头号（比日期小，且不加粗）",
+          rows_of(line, "ClockSize") <= rows_of(line, "DateSize")
+          and "Ink.Format(context.Px(ClockSize))" in line
+          and "Ink.Format(context.Px(ClockSize), bold" not in line,
+          f"{rows_of(line, 'ClockSize')} 对日期 {rows_of(line, 'DateSize')}")
 
     # 颜色（用户随后报的第三件事：「这个时间能不能换个颜色，和持仓收益百分比一个颜色」）。
     # 持仓页那个大数字走的是 `Gain = Palette.Emphasis`，所以这里要的正是同一个常量 —— 不是
@@ -1055,10 +1065,10 @@ def main():
     # 常量**，而不是两边各挑了一个看起来一样的颜色（那样一改调色板就分开了）。
     position = read("Render", "PositionRenderer.cs")
 
-    check("第二行与持仓页那个大数字引用同一个常量（不是各挑一个像的颜色）",
-          "MomentColour = Palette.Emphasis" in line
-          and "momentFormat, MomentColour, opacity" in line
-          and "momentFormat, Palette." not in line
+    check("钟点那一行与持仓页那个大数字引用同一个常量（不是各挑一个像的颜色）",
+          "ClockColour = Palette.Emphasis" in line
+          and "clockFormat, ClockColour, opacity" in line
+          and "clockFormat, Palette." not in line
           and "Color Gain = Palette.Emphasis" in position)
 
     # ---- 源码：这个选择在页面上 ------------------------------------------------------
@@ -1268,25 +1278,28 @@ def main():
     check("多标的 × 5 分钟取到了", bool(minutes) and not BAD.search(minutes or ""),
           minutes or "(状态条空)")
 
-    # ---- 头部那两行：日期不动，大字钟点跟着画面走（真机） ------------------------------
+    # ---- 头部那两行：日期不动，钟点跟着画面走（真机，分钟档） --------------------------
     #
-    # 用户在两句报里说了三件事：「多标的时候图表和标题没有时间」、「9:30 - 15:00 太小」、
-    # 「要时时刻刻的钟点，而不是 9:30 - 15:00」。所以这一条问的是三件事，而不是「第 0.235 行
-    # 有没有字」：
+    # 用户在三句报里说了四件事：「多标的时候图表和标题没有时间」、「9:30 - 15:00 太小」、
+    # 「要时时刻刻的钟点，而不是 9:30 - 15:00」，以及最后这句「日/周/月 还原之前状况」。所以
+    # 这一段问的是四件事，而不是「第 0.235 行有没有字」：
     #
-    #   1. 日期下面那一行是这块里**最高**的一条墨（字号就是在这件事上看得见的）；
-    #   2. 日期那一行**不随进度变** —— 它是「这是哪一天」，一个事实；
-    #   3. 大字那一行**随进度变** —— 它是「走到哪儿了」。
+    #   1. 日期那一行**不随进度变** —— 它是「这是哪一天」，一个事实；
+    #   2. 日期下面还有**一行钟点**（珊瑚色），它**随进度变** —— 它是「走到哪儿了」；
+    #   3. 钟点那一行**没有大到成为这一块的大字** —— 它是日期的注脚，不是头号；
+    #   4. 日/周/月 档没有第二行 —— 那一段在下面「回到日K」之后量。
     #
-    # 第 2 条是第 3 条的**对照**，而且是一个硬的对照：两幅真的不同的画面之间，日期那一行的墨
-    # 实测一格不差（0.0000），因为两幅画的都是同一天。只验第 3 条的话，「两幅画面本来就处处
+    # 第 1 条是第 2 条的**对照**，而且是一个硬的对照：两幅真的不同的画面之间，日期那一行的墨
+    # 实测一格不差（0.0000），因为两幅画的都是同一天。只验第 2 条的话，「两幅画面本来就处处
     # 不同」也能让它绿；只验「有两条带」的话，把钟点写死在 15:00 也照样绿。
     #
     # 三个进度而不是两个：第二行要跟着走，那它在**每一对**之间都该变。
     #
-    # 认颜色、认高矮，不认字：预览画布没有自动化节点。日期是唯一琥珀色的那条，大字是它下面墨
-    # 最多的那条。比的是**同一条带自己**在不同进度下的列剖面（`spread`），不是整幅差 —— 曲线、
-    # 轴、卡片都在跟着进度动，用它们当尺子量不出「这一行」变了没有。
+    # 认颜色、认位置、认高矮，不认字：预览画布没有自动化节点。日期是唯一琥珀色的那条，钟点是
+    # 它**下面那一条**（按位置认，颜色另一条判据里问）；不按高矮挑 —— 22 px 的一行在这块里不是
+    # 最高的墨，上一版那个「挑最高的一条」在这里会挑到别的带上去。比的是**同一条带自己**在不同
+    # 进度下的列剖面（`spread`），不是整幅差 —— 曲线、轴、卡片都在跟着进度动，用它们当尺子量
+    # 不出「这一行」变了没有。
     # 三个进度而不是两个，而且**三个值互不相同**：同一个值再设一次不触发控件的变更，于是
     # `Playback.Seek` 不会被调到（它才是那句把画面钉住的话），抓回来的可能是上一次那一幅。
     # 实测过：同一个 0.35 连拍两次，第二张是另一幅画面。
@@ -1311,10 +1324,12 @@ def main():
             sub = next((b for b in bands if b["blue"] >= 40), None)
             day = next((b for b in bands if b["gold"] >= 40
                         and (sub is None or b["lo"] > sub["hi"])), None)
-            below = [b for b in bands if day is not None and b["lo"] > day["hi"]]
-            big = max(below, key=lambda b: b["tall"]) if below else None
 
-            return day, big
+            # 钟点按**位置**认（日期下面那一条），颜色另外问 —— 按颜色认会在颜色坏掉的那一跑上
+            # 连「有没有第二行」都答不出来，而那正是这一条最该答的问题。
+            clock = next((b for b in bands if day is not None and b["lo"] > day["hi"]), None)
+
+            return day, clock
 
         seen = [parts(bands) for _, bands, _ in shots]
 
@@ -1323,9 +1338,17 @@ def main():
               "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 琥珀 {b['gold']}"
                         for b in shots[0][1]) or "一条墨迹带都没有")
 
-        check("日期下面那一行是这块里最高的一条墨（比日期高一倍以上）",
-              all(day is not None and big is not None and big["tall"] >= day["tall"] * 2
-                  for day, big in seen),
+        check("日期下面还有一行钟点（珊瑚色，分钟档才有）",
+              all(clock is not None for _, clock in seen),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
+                        for b in shots[0][1]) or "一条墨迹带都没有")
+
+        # 钟点不是这一块的大字：它是日期的注脚。上一轮它是 128 px 加粗 —— 那一版在日 K 档上
+        # 把十个字写过了安全线。这里问的是**高矮之比**，不是像素数：两次实拍的画布可以不一样
+        # 大（见上面那条），而「比日期高两倍」是一个比例。
+        check("钟点那一行没有大到成为大字（高不到日期的两倍）",
+              all(day is not None and clock is not None
+                  and clock["tall"] < day["tall"] * 2 for day, clock in seen),
               "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 高 {b['tall']} px"
                         for b in shots[0][1]))
 
@@ -1334,27 +1357,27 @@ def main():
         kept = (spread(seen[0][0], seen[1][0]), spread(seen[0][0], seen[2][0])) \
             if all(day is not None for day, _ in seen) else None
         moved = (spread(seen[0][1], seen[1][1]), spread(seen[0][1], seen[2][1])) \
-            if all(big is not None for _, big in seen) else None
+            if all(clock is not None for _, clock in seen) else None
 
         check("日期那一行不随进度变（它是「这是哪一天」，不是「走到哪儿了」）",
               kept is not None and max(kept) < 0.01,
               "认不出日期那一条" if kept is None else "、".join(f"差 {d:.4f}" for d in kept))
-        check("大字那一行随进度变（那个钟点跟着画面走，不是写死的区间）",
+        check("钟点那一行随进度变（那个钟点跟着画面走，不是写死的区间）",
               moved is not None and min(moved) > 0.03,
-              "认不出大字那一条" if moved is None else "、".join(f"差 {d:.4f}" for d in moved))
+              "认不出钟点那一条" if moved is None else "、".join(f"差 {d:.4f}" for d in moved))
 
         # 颜色（用户报的第三件事）。两条合起来说一件事：这两行**不是同一种墨**，谁是谁分得
-        # 开 —— 只验「大字是珊瑚」的话，把两行都涂成珊瑚照样绿，而那样一眼看去是一个两行的
+        # 开 —— 只验「钟点是珊瑚」的话，把两行都涂成珊瑚照样绿，而那样一眼看去是一个两行的
         # 日期块。日期那一条的琥珀门槛比珊瑚严（`amber` 要 g>150、珊瑚的 g 是 107），所以这
         # 两条判的是互斥的两件事，不是同一件事的两个阈值。
-        check("大字那一行是珊瑚红 —— 与持仓页那个大数字同色（不再是近白）",
-              all(big is not None and big["coral"] >= big["ink"] * 0.5
-                  for _, big in seen),
+        check("钟点那一行是珊瑚红 —— 与持仓页那个大数字同色（不再是近白）",
+              all(clock is not None and clock["coral"] >= clock["ink"] * CORAL_SHARE
+                  for _, clock in seen),
               "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
                         for b in shots[0][1]) or "一条墨迹带都没有")
 
         check("日期那一行仍是琥珀（两行不是同一种墨）",
-              all(day is not None and day["coral"] <= day["ink"] * 0.2
+              all(day is not None and day["coral"] <= day["ink"] * 0.1
                   for day, _ in seen),
               "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
                         for b in shots[0][1]) or "一条墨迹带都没有")
@@ -1430,6 +1453,35 @@ def main():
     check("回到日K（蜡烛那几条要在日K上量）",
           vm.combo_selected(win, period_combo) == PERIOD_DAILY,
           str(vm.combo_selected(win, period_combo)))
+
+    # ---- 日/周/月：表头只有日期那一行（用户最后那句「还原之前状况」） ------------------
+    #
+    # 上一轮把「最新时刻」一律写成第二行，于是日/周/月 那一行的「最新时刻」就是一个日期 ——
+    # 而上面那行已经在说日期了：两个同样形状的日期叠着，读出来是「同一个日期写了两遍」，大字
+    # 那一版还让日 K 档那十个字（`2026-10-08`）越过安全线（实测右缘 0.841，安全线 0.82）。
+    # 于是第二行退回成**分钟档**才有的东西 —— 只有分钟板的轴是以分钟计的，也只有它有钟点可说。
+    #
+    # 问的是「日期下面**没有**第二条带」，不是「下面那条带是空的」：后者在根本没画出日期的那
+    # 一跑上也是绿的。
+    vc.scrub_to(win, 1.0)
+    daily_bands, _ = header_bands(vc.shot(win, "verify-candle-multi-daily-header.png"))
+
+    check("日K 那一帧认得出画布（量表头得先有画布）", daily_bands is not None)
+
+    if daily_bands is not None:
+        daily_day = next((b for b in daily_bands if b["gold"] >= 40), None)
+        below = [b for b in daily_bands if daily_day is not None and b["lo"] > daily_day["hi"]]
+
+        check("日K 表头有日期那一行（琥珀色）", daily_day is not None,
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 琥珀 {b['gold']}" for b in daily_bands)
+              or "一条墨迹带都没有")
+        check("日K 表头只有那一行（下面没有第二条）",
+              daily_day is not None and not below,
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 墨 {b['ink']}" for b in below) or "没有")
+        check("日K 表头没有那条珊瑚色的钟点（钟点只有分钟档有）",
+              not any(b["coral"] >= b["ink"] * CORAL_SHARE for b in daily_bands),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
+                        for b in daily_bands) or "一条墨迹带都没有")
 
     # ---- 分图：一个下拉，两种排布，和收尾那排卡片 ------------------------------------
     #

@@ -493,22 +493,21 @@ drawn once, under the bottom panel.
 **Which stretch of time it is a picture of.** A comparison said what it was about — the codes — and
 on what period, and left *when* it was to the axis along its foot. That axis is a scale, not a
 statement: it moves with the window, and only covers the whole span once the run opens out at the
-end. So the header carries two rows of its own, drawn by the one `CandleLine.Header` both layouts
+end. So the header carries a row of its own, drawn by the one `CandleLine.Header` both layouts
 share. The minute periods name the trading day, and under it the clock the frame has reached — the
 window's right-hand edge, the same number the curves' leading ends are placed from, so the header
 and the ink under it agree about what "now" is. It is not the market's trading hours: a session the
 source only partly holds draws the shorter stretch it has, and four hours of trading written above
-two thirds of a picture is a header disagreeing with the curve under it. That second row is set at
-the 128 the four frames that state one headline figure state theirs at, in the coral the holdings
-frame states its return in — `Palette.Emphasis`, the same constant rather than a colour that
-happens to look like it, so the two cannot drift apart — and it pairs with the amber date above it
-exactly as those two lines do on that page. It *is* the figure this
-frame moves, and it changes as the picture plays instead of standing for the whole session; at the
-22 it started at, the one thing a viewer watches was the smallest line in the header. The daily,
-weekly and monthly periods have no clock to show, and name the first and last day of the span
-instead: two rows either way, so the block costs the same height whichever period is on the frame,
-and switching period cannot move the plot out from under it. The row being that size is also why the
-plot's top moved down with it — `PlotTopFraction`, on both renderers.
+two thirds of a picture is a header disagreeing with the curve under it. That second row moves as
+the picture plays instead of standing for the whole session, and it is drawn in the coral the
+holdings frame states its return in — `Palette.Emphasis`, the same constant rather than a colour
+that happens to look like it, so the two cannot drift apart — pairing with the amber date above it
+exactly as those two lines do on that page. It is set under the date, not over it: a comparison
+exists to state how several instruments did against each other, and the clock qualifies the day
+rather than competing with it. The daily, weekly and monthly periods have no clock to show and carry
+the date alone — their newest moment is a day the row above already names, and one more date of the
+same shape under it reads as a date repeated rather than as a stretch. The rows' height is also why
+the plot's top sits where it does — `PlotTopFraction`, on both renderers.
 
 Both layouts end on the **same row of cards**: the name, the percentage, and the amount it moved, in
 the order the tracks are drawn and in their own colours. While the curves move, the names ride their

@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 r"""给 14 份帮助手册的「K 线走势」那一章补一条：比较画面现在写着它是哪一段。
 
-**为什么非说不可**：新加的那两行里，**第二行不是自明的**。分钟线那一行是画面**此刻画到的钟点**，
-跟着画面走（它是窗口的右缘，不是「9:30 - 15:00」那种写死的交易时段）；日／周／月线那一行是
-区间的起止两天 —— 上下排着两个同样格式的日期，不说明的话读的人只能猜它们谁是头谁是尾（猜错
-了就是把图读反）。而这一处又说不得一个字：画面上没有标签的地方，写「起」「止」就又要 14 份
-翻译，还要占掉那两行的宽度。
+**为什么非说不可**：多标的的画面在标题下面多了一块东西，而**这块东西是什么，画面上一个字都
+没有**。分钟档是两行：上面那一行是「哪一天」，下面那一行是画面**此刻画到的钟点**（跟着画面
+走，不是「9:30 - 15:00」那种写死的交易时段）；日／周／月档只有上面那一行，写区间的**起始
+日**。不说明的话，读到的人只会当第二行是上面那行的注脚，或者反过来把它读成「收盘时间」。
 
-**第二行的字号也是要说的**：它是画面的大字 —— 与另外几个画「一个数字」的页面同字号。不写这
-一句，读到的人只会当它是日期的注脚（它原来就是 22px 的一行小字，比副标题还小）。
-
-**改过一次**：这一条已经进过一次手册（那时第二行还是「当天交易的钟点」，没说字号也不跟着
-走）。所以脚本认得旧那一句 —— 撞见就**原地替换**，不是再插一条（插两条 = 画面上同一件事说两
-遍，而 `git diff` 照样是纯新增，看不出来）。
+**为什么日／周／月只有一行**：那三档的「最新一刻」本来就是一个日期，而上面那行已经在说日期
+了 —— 两个同样形状的日期叠着，读出来是「同一个日期写了两遍」。这是这一条第三次改：第一次
+（第二行是区间「9:30 - 15:00」）、第二次（区间改成那一刻、字号提到画面大字）都进过手册，
+所以脚本认得**上一次那一句** —— 撞见就**原地替换**，不是再插一条（插两条 = 画面上同一件事
+说两遍，而 `git diff` 照样是纯新增，看不出来）。
 
 **为什么按章节号定位**：`listingtext.chapter_of("NavCandle")` 从导航顺序算，导航顺序就是章节
 顺序。写 14 个语言的标题字符串就是 14 处会失配的地方。
@@ -45,6 +43,92 @@ ROOT = lt.HELP
 CHAPTER = lt.chapter_of("NavCandle")
 
 LINE = {
+    "zh-Hans": "- **比较画面说得出这是哪一段。** 分钟线（1／5／15 分钟）标题下面写两行：上面是那"
+               "**一个交易日**的日期，下面一行是画面**此刻画到的钟点** —— 跟着画面一分钟一分钟往"
+               "前走；日／周／月线只有上面那一行，写区间的**起始日**。只有多标的的画面加这一块 ——"
+               " 单标的的画面本来就把日期写在表头。",
+    "zh-Hant": "- **比較畫面說得出這是哪一段。** 分鐘線（1／5／15 分鐘）標題下面寫兩行：上面是那"
+               "**一個交易日**的日期，下面一行是畫面**此刻畫到的鐘點** —— 跟著畫面一分鐘一分鐘往"
+               "前走；日／週／月線只有上面那一行，寫區間的**起始日**。只有多標的的畫面加這一塊 ——"
+               " 單標的的畫面本來就把日期寫在表頭。",
+    "en-US": "- **A comparison says which stretch of time it is a picture of.** The minute periods "
+             "(1, 5 and 15) write two lines under the headline: that one trading day on top, and "
+             "under it the clock the frame has reached at this moment, walking with the picture "
+             "minute by minute. The daily, weekly and monthly periods write the top line only: the "
+             "first day of the span. Only the multi-instrument frames add this block — the "
+             "single-instrument frame already carries the date of the candle it is drawing.",
+    "ja": "- **複数銘柄の画面は、それがどの期間の絵なのかを言う。** 分足（1／5／15 分）は見出しの下"
+          "に二行書く：上はその**一日**の日付、その下は画面が**いま描いている時刻** —— 絵とともに"
+          "一分ずつ進む。日足・週足・月足は上の一行だけ、区間の**最初の日**を書く。この塊が加わる"
+          "のは複数銘柄の画面だけ —— 単一銘柄の画面はもともと表頭にそのローソク足の日付を出して"
+          "いる。",
+    "ko": "- **비교 화면은 어느 구간을 그린 것인지 말해 준다.** 분봉(1／5／15분)은 제목 아래 두 줄을"
+          " 적는다: 위는 그 **하루**의 날짜, 아래는 화면이 **지금 그리고 있는 시각** —— 그림과 함께"
+          " 1분씩 나아간다. 일봉·주봉·월봉은 위의 한 줄만, 구간의 **첫날**을 적는다. 이 묶음이 붙는"
+          " 것은 여러 종목을 그릴 때뿐 —— 종목 하나의 화면은 원래 머리에 그 봉의 날짜를 적고 있다.",
+    "de": "- **Ein Vergleich sagt, welcher Zeitabschnitt er ist.** Die Minuten-Perioden (1, 5 und "
+          "15) schreiben zwei Zeilen unter die Überschrift: oben jenen **einen Handelstag**, "
+          "darunter die **Uhrzeit, die das Bild gerade erreicht** —— sie geht mit dem Bild Minute "
+          "für Minute weiter. Die Tages-, Wochen- und Monats-Perioden schreiben nur die obere "
+          "Zeile: den **ersten Tag** des Zeitraums. Diesen Block bekommen nur die Rahmen mit "
+          "mehreren Instrumenten —— der Rahmen für ein einzelnes Instrument trägt das Datum der "
+          "Kerze, die er zeichnet, schon in seiner Kopfzeile.",
+    "fr": "- **Une comparaison dit de quelle période elle est l'image.** Les périodes en minutes "
+          "(1, 5 et 15) écrivent deux lignes sous le titre : en haut ce **seul jour de bourse**, "
+          "en dessous l'**heure que l'image atteint à cet instant** —— elle avance avec l'image "
+          "minute par minute. Les périodes quotidienne, hebdomadaire et mensuelle n'écrivent que "
+          "la ligne du haut : le **premier jour** de l'intervalle. Seules les images à plusieurs "
+          "instruments ajoutent ce bloc —— l'image d'un seul instrument porte déjà la date de la "
+          "bougie qu'elle trace dans son en-tête.",
+    "it": "- **Un confronto dice di quale intervallo di tempo è l'immagine.** I periodi al minuto "
+          "(1, 5 e 15) scrivono due righe sotto il titolo: sopra quel **singolo giorno di borsa**, "
+          "sotto l'**orario che l'immagine raggiunge in questo momento** —— avanza con l'immagine "
+          "minuto per minuto. I periodi giornaliero, settimanale e mensile scrivono solo la riga "
+          "superiore: il **primo giorno** dell'intervallo. Questo blocco lo aggiungono solo i "
+          "fotogrammi con più strumenti —— quello con un solo strumento porta già la data della "
+          "candela che sta disegnando nella sua intestazione.",
+    "es": "- **Una comparación dice de qué tramo de tiempo es la imagen.** Los periodos de minutos "
+          "(1, 5 y 15) escriben dos líneas bajo el título: arriba ese **único día de negociación**, "
+          "debajo la **hora que el cuadro alcanza en este momento** —— avanza con el cuadro minuto "
+          "a minuto. Los periodos diario, semanal y mensual escriben solo la línea de arriba: el "
+          "**primer día** del intervalo. Este bloque lo añaden solo los fotogramas con varios "
+          "instrumentos —— el de un solo instrumento ya lleva la fecha de la vela que está "
+          "dibujando en su encabezado.",
+    "pt-BR": "- **Uma comparação diz de qual intervalo de tempo ela é a imagem.** Os períodos de "
+             "minutos (1, 5 e 15) escrevem duas linhas sob o título: em cima aquele **único dia de "
+             "negociação**, embaixo a **hora que o quadro alcança neste momento** —— ela avança com "
+             "o quadro minuto a minuto. Os períodos diário, semanal e mensal escrevem só a linha de "
+             "cima: o **primeiro dia** do intervalo. Esse bloco só é acrescentado pelos quadros com "
+             "vários instrumentos —— o de um único instrumento já traz a data da vela que está "
+             "desenhando no seu cabeçalho.",
+    "pl": "- **Porównanie mówi, który odcinek czasu przedstawia.** Okresy minutowe (1, 5 i 15) piszą "
+          "dwie linijki pod nagłówkiem: u góry ten **jeden dzień sesji**, pod nim **godzinę, do "
+          "której kadr właśnie doszedł** —— posuwa się wraz z obrazem minuta po minucie. Okresy "
+          "dzienny, tygodniowy i miesięczny piszą tylko górną linijkę: **pierwszy dzień** zakresu. "
+          "Ten blok dostają tylko kadry z kilkoma instrumentami —— kadr z jednym instrumentem już "
+          "nosi datę rysowanej świecy w nagłówku.",
+    "cs": "- **Srovnání říká, který úsek času zobrazuje.** Minutové periody (1, 5 a 15) píší dva "
+          "řádky pod nadpisem: nahoře ten **jeden obchodní den**, pod ním **čas, kterého obraz "
+          "právě dosáhl** —— postupuje s obrazem minutu po minutě. Denní, týdenní a měsíční periody "
+          "píší jen horní řádek: **první den** rozsahu. Tento blok dostávají jen obrazy s více "
+          "nástroji —— obraz s jedním nástrojem už nese datum kreslené svíčky ve své hlavičce.",
+    "ru": "- **Сравнение говорит, какой отрезок времени оно показывает.** Минутные периоды (1, 5 и "
+          "15) пишут две строки под заголовком: сверху тот **один торговый день**, под ним "
+          "**время, которого кадр сейчас достиг** —— оно идёт вместе с кадром минута за минутой. "
+          "Дневной, недельный и месячный периоды пишут только верхнюю строку: **первый день** "
+          "интервала. Этот блок получают только кадры с несколькими инструментами —— кадр с одним "
+          "инструментом уже несёт дату рисуемой свечи в своём заголовке.",
+    "tr": "- **Karşılaştırma, hangi zaman aralığının resmi olduğunu söyler.** Dakika periyotları "
+          "(1, 5 ve 15) başlığın altına iki satır yazar: üstte o **tek işlem günü**, altında "
+          "karenin **o anda ulaştığı saat** —— kare ilerledikçe dakika dakika ilerler. Günlük, "
+          "haftalık ve aylık periyotlar yalnızca üst satırı yazar: aralığın **ilk günü**. Bu bloğu "
+          "yalnızca birden çok enstrümanlı kareler ekler —— tek enstrümanlı kare, çizdiği mumun "
+          "tarihini zaten başlığında taşır.",
+}
+
+# 这一条已经进过两次手册：第一次第二行是区间「9:30 - 15:00」，第二次它是「那一刻」且字号提到了
+# 画面大字。撞见**上一次那一句**就原地换掉，不是再插一条 —— 插两条是画面上同一件事说两遍。
+OLD = {
     "zh-Hans": "- **比较画面说得出这是哪一段。** 标题下面两行：分钟线写那**一个交易日**的日期，下面"
                "一行是画面**此刻画到的钟点** —— 画面的大字，跟着画面走；日／周／月线写区间的**起止"
                "两天**。只有多标的的画面加这两行 —— 单标的的画面本来就把日期写在表头。",
@@ -126,80 +210,6 @@ LINE = {
           "başlığında taşır.",
 }
 
-# 这一条进过一次手册，那时第二行还是「当天交易的钟点」、也没说字号。撞见旧那一句就**原地换掉**，
-# 不是再插一条 —— 插两条是画面上同一件事说两遍。
-OLD = {
-    "zh-Hans": "- **比较画面说得出这是哪一段。** 标题下面两行：分钟线写那**一个交易日**的日期和画面"
-               "实际画到的钟点，日／周／月线写区间的**起止两天**。只有多标的的画面加这两行 —— 单标"
-               "的的画面本来就把日期写在表头。",
-    "zh-Hant": "- **比較畫面說得出這是哪一段。** 標題下面兩行：分鐘線寫那**一個交易日**的日期和畫面"
-               "實際畫到的鐘點，日／週／月線寫區間的**起止兩天**。只有多標的的畫面加這兩行 —— 單標"
-               "的的畫面本來就把日期寫在表頭。",
-    "en-US": "- **A comparison says which stretch of time it is a picture of.** Two lines under the "
-             "headline: the minute periods name that one trading day and the clock the frame "
-             "actually reaches, while the daily, weekly and monthly ones name the first and last "
-             "day of the span. Only the multi-instrument frames add these two — the "
-             "single-instrument frame already carries the date of the candle it is drawing.",
-    "ja": "- **複数銘柄の画面は、それがどの期間の絵なのかを言う。** 見出しの下に二行：分足はその**"
-          "一日**の日付と画面が実際に描いている時刻を書き、日足・週足・月足は区間の**最初と最後の"
-          "日**を書く。この二行が加わるのは複数銘柄の画面だけ —— 単一銘柄の画面はもともと表頭に"
-          "そのローソク足の日付を出している。",
-    "ko": "- **비교 화면은 어느 구간을 그린 것인지 말해 준다.** 제목 아래 두 줄: 분봉은 그 **하루**의"
-          " 날짜와 화면이 실제로 그린 시각을, 일봉·주봉·월봉은 구간의 **첫날과 마지막 날**을 적는다."
-          " 이 두 줄이 붙는 것은 여러 종목을 그릴 때뿐 —— 종목 하나의 화면은 원래 머리에 그 봉의"
-          " 날짜를 적고 있다.",
-    "de": "- **Ein Vergleich sagt, welcher Zeitabschnitt er ist.** Zwei Zeilen unter der Überschrift:"
-          " Die Minuten-Perioden nennen jenen **einen Handelstag** und die Uhrzeit, die das Bild "
-          "tatsächlich erreicht, die Tages-, Wochen- und Monats-Perioden nennen den **ersten und "
-          "den letzten Tag** des Zeitraums. Diese zwei Zeilen bekommen nur die Rahmen mit mehreren "
-          "Instrumenten —— der Rahmen für ein einzelnes Instrument trägt das Datum der Kerze, die "
-          "er zeichnet, schon in seiner Kopfzeile.",
-    "fr": "- **Une comparaison dit de quelle période elle est l'image.** Deux lignes sous le titre : "
-          "les périodes en minutes nomment ce **seul jour de bourse** et les heures que l'image "
-          "atteint réellement, les périodes quotidienne, hebdomadaire et mensuelle nomment le "
-          "**premier et le dernier jour** de l'intervalle. Seules les images à plusieurs instruments "
-          "ajoutent ces deux lignes —— l'image d'un seul instrument porte déjà la date de la bougie "
-          "qu'elle trace dans son en-tête.",
-    "it": "- **Un confronto dice di quale intervallo di tempo è l'immagine.** Due righe sotto il "
-          "titolo: i periodi al minuto indicano quel **singolo giorno di borsa** e l'orario che "
-          "l'immagine raggiunge davvero, quelli giornaliero, settimanale e mensile indicano il "
-          "**primo e l'ultimo giorno** dell'intervallo. Queste due righe le aggiungono solo i "
-          "fotogrammi con più strumenti —— quello con un solo strumento porta già la data della "
-          "candela che sta disegnando nella sua intestazione.",
-    "es": "- **Una comparación dice de qué tramo de tiempo es la imagen.** Dos líneas bajo el título:"
-          " los periodos de minutos nombran ese **único día de negociación** y la hora que el cuadro "
-          "alcanza realmente, mientras que los periodos diario, semanal y mensual nombran el "
-          "**primer y el último día** del intervalo. Estas dos líneas las añaden solo los fotogramas "
-          "con varios instrumentos —— el de un solo instrumento ya lleva la fecha de la vela que "
-          "está dibujando en su encabezado.",
-    "pt-BR": "- **Uma comparação diz de qual intervalo de tempo ela é a imagem.** Duas linhas sob o "
-             "título: os períodos de minutos nomeiam aquele **único dia de negociação** e a hora que "
-             "o quadro realmente alcança, enquanto os períodos diário, semanal e mensal nomeiam o "
-             "**primeiro e o último dia** do intervalo. Essas duas linhas só são acrescentadas pelos "
-             "quadros com vários instrumentos —— o de um único instrumento já traz a data da vela que "
-             "está desenhando no seu cabeçalho.",
-    "pl": "- **Porównanie mówi, który odcinek czasu przedstawia.** Dwie linijki pod nagłówkiem: "
-          "okresy minutowe podają ten **jeden dzień sesji** i godzinę, którą kadr rzeczywiście "
-          "obejmuje, a okresy dzienny, tygodniowy i miesięczny podają **pierwszy i ostatni dzień** "
-          "zakresu. Te dwie linijki dostają tylko kadry z kilkoma instrumentami —— kadr z jednym "
-          "instrumentem już nosi datę rysowanej świecy w nagłówku.",
-    "cs": "- **Srovnání říká, který úsek času zobrazuje.** Dva řádky pod nadpisem: minutové periody "
-          "uvádějí ten **jeden obchodní den** a čas, který obraz skutečně dosáhne, denní, týdenní a "
-          "měsíční periody uvádějí **první a poslední den** rozsahu. Tyto dva řádky přidávají jen "
-          "obrazy s více nástroji —— obraz s jedním nástrojem už nese datum kreslené svíčky ve své "
-          "hlavičce.",
-    "ru": "- **Сравнение говорит, какой отрезок времени оно показывает.** Две строки под заголовком: "
-          "минутные периоды называют тот **один торговый день** и время, которого кадр действительно "
-          "достигает, а дневной, недельный и месячный — **первый и последний день** интервала. Эти "
-          "две строки добавляют только кадры с несколькими инструментами —— кадр с одним "
-          "инструментом уже несёт дату рисуемой свечи в своём заголовке.",
-    "tr": "- **Karşılaştırma, hangi zaman aralığının resmi olduğunu söyler.** Başlığın altında iki "
-          "satır: dakika periyotları o **tek işlem gününü** ve karenin gerçekten ulaştığı saati, "
-          "günlük, haftalık ve aylık periyotlar ise aralığın **ilk ve son gününü** yazar. Bu iki "
-          "satırı yalnızca birden çok enstrümanlı kareler ekler —— tek enstrümanlı kare, çizdiği "
-          "mumun tarihini zaten başlığında taşır.",
-}
-
 
 def insert(block, line):
     """插在这一章**第一段连续的 `- ` 列表**的末尾。"""
@@ -249,13 +259,13 @@ def main():
             continue
 
         if OLD[tag] in spun:
-            at = spun.index(OLD[tag])
-            block[at] = LINE[tag]
-            lines[starts[CHAPTER]:end] = block
-            print(f"{tag:9} rewritten")
+            block[spun.index(OLD[tag])] = LINE[tag]
+            note = "rewritten"
         else:
-            lines[starts[CHAPTER]:end] = insert(block, LINE[tag])
-            print(f"{tag:9} written")
+            block = insert(block, LINE[tag])
+            note = "written"
+
+        lines[starts[CHAPTER]:end] = block
 
         rebuilt = "\n".join(lines)
 
@@ -263,7 +273,7 @@ def main():
             rebuilt = rebuilt.replace("\n", "\r\n")
 
         path.write_bytes((b"\xef\xbb\xbf" if had_bom else b"") + rebuilt.encode("utf-8"))
-        print(f"{tag:9} written")
+        print(f"{tag:9} {note}")
 
 
 if __name__ == "__main__":

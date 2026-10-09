@@ -35,8 +35,13 @@ public sealed class CandleSplitRenderer : IFrameRenderer
     /// <summary>Distance from the chart's foot down to the credit: the date row, the cards, the credit.</summary>
     public const double CreditGap = TrackCards.CreditGap;
 
-    /// <summary>Where the panels start, as a fraction of frame height.</summary>
-    private const double PlotTopFraction = 0.34;
+    /// <summary>
+    /// Where the panels start, as a fraction of frame height. Back to 0.30 with the header's last
+    /// line: it was 0.34 while that line was set at headline size, and a comparison of three
+    /// panels has less room per panel than one chart has, not more. See
+    /// <see cref="CandleLine.ClockRow"/>.
+    /// </summary>
+    private const double PlotTopFraction = 0.30;
 
     /// <summary>
     /// Air between two panels, in baseline pixels.

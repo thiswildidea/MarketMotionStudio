@@ -47,13 +47,12 @@ public sealed class CandleRaceRenderer : IFrameRenderer
     /// <summary>
     /// Where the plot area starts, as a fraction of frame height.
     ///
-    /// It was 0.30, measured against a header whose last line was 22 px. That line is now the
-    /// frame's headline figure at <see cref="CandleLine.MomentSize"/> — the same 128 the frames
-    /// that state one figure state it at — so the plot starts lower by the air a 128-pixel line
-    /// takes. The plot gives up 0.04 of the frame and the header stops drawing through itself;
-    /// see <see cref="CandleLine.MomentRow"/>.
+    /// It was 0.34 while the header's last line was set at headline size, and is 0.30 again now
+    /// that it is the 22-px clock it was before that: the plot gives the header the air its rows
+    /// take and no more, and four hundredths of the frame is a hundred and fifty pixels of curve
+    /// spent on a line that says what time it is. See <see cref="CandleLine.ClockRow"/>.
     /// </summary>
-    private const double PlotTopFraction = 0.34;
+    private const double PlotTopFraction = 0.30;
 
     private readonly CandleBoard _board;
 
