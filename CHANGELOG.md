@@ -123,7 +123,9 @@ eleven pixels and no line moves.
 第二行用画面的**大字**（128，与另外几个画「一个数字」的页面同字号）。它起初是一行 22 px 的小字 ——
 比副标题还小，理由写的是「它修饰日期、不与日期争」。那句理由漏掉了这两行各自是干什么的：日期说
 的是画面关于哪一天，下面那行说的是画面走到了这一天的哪里，而后者正是播放时唯一在动的那一行。
-128 的那一行要有它的空气，绘图区顶因此从 0.30 让到 0.34。
+128 的那一行要有它的空气，绘图区顶因此从 0.30 让到 0.34。颜色是用户点名要的：持仓页那个大数字的
+珊瑚红（`Palette.Emphasis`，**同一个常量**，不是各挑一个看起来一样的颜色）—— 它与上面琥珀色的日期
+正好是那一页那两行的配色。
 
 **Six — a comparison says which stretch of time it is a picture of.** The single-instrument frame
 already carried the date of the candle it was drawing in its header; a comparison stated the codes
@@ -147,7 +149,10 @@ figure state theirs at. It started as a 22-pixel line — smaller than the subti
 argument that it qualified the date rather than competing with it. What that argument missed is what
 the two rows are for: the date says which day the frame is about, and the row under it says where in
 that day the picture has got to, which is the one line that moves while the video plays. A 128-pixel
-line needs its air, so the plot's top moved from 0.30 to 0.34.
+line needs its air, so the plot's top moved from 0.30 to 0.34. Its colour is the one asked for by
+name, the coral the holdings frame states its return in — `Palette.Emphasis`, the same constant
+rather than a second colour that happens to look like it — which pairs with the amber date above it
+exactly as those two lines do on that page.
 
 ### 新增 / Added
 

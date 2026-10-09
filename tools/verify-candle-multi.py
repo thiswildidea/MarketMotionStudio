@@ -69,6 +69,10 @@ SAFE = 0.82
 PERIOD_DAILY = "日K"
 PERIOD_5 = "5 分钟"
 
+# 两种画面的绘图区顶：比较画面 0.34（`PlotTopFraction`）、蜡烛图 0.385。取更靠上那一个 ——
+# 判据要的是「表头那一块不数」，而不是「把某一页的绘图区也切掉一条」。
+PLOT_TOP = 0.34
+
 # 收尾那排卡片所在的横带，画面高度的比例。绘图区在它上面结束（曲线与末端标签都夹在
 # 绘图区里），进度条在它下面（恒被 `band_hues` 排除）。页边距那四个偏好怎么调，卡片都
 # 落在这条带里 —— 所以这里可以按比例写，而不必去问「卡片到底在第几行」。
@@ -560,6 +564,12 @@ def analyse(name):
     只数**有彩度**的像素：画布是近黑的，网格和轴标签是灰的，进度条在画面下缘之外 ——
     剩下的彩色就是曲线本身和骑在它们末端的那一圈标注边框。
 
+    **表头那一块不数**（从 `PLOT_TOP` 往下才开始，那是这一页的绘图区顶）。它原来是近白的、彩度
+    不够，天然进不了账；改成珊瑚红之后就进了 —— 实测日 K 那一帧最右的彩色墨迹于是从末端标注的
+    1065 变成表头那个大日期的 1073，「末端标注在安全线以内」那条断言量的就不是标注了。**改了颜色
+    而没有改这一处，两条断言会静默换掉主语。** 绘图区顶取 0.34 是这一跑量的两种画面里**更靠上**的
+    那一个（比较画面 0.34、蜡烛图 0.385），所以没有一帧的绘图区被切掉。
+
     `name` 收的是 `vc.shot` 交回来的路径：它只在照片确实是**这个窗口**的一帧时才给路径
     （见 `winui.capture`）。给不出时这里交出四个 None，调用方那些比较于是红在明处 ——
     拿着一张别的窗口（或上一轮的旧图）量出来的数，比红着更糟。
@@ -587,7 +597,7 @@ def analyse(name):
     hues = {}
     far = left
 
-    for y in range(top, floor, 2):
+    for y in range(int(top + (height * PLOT_TOP)), floor, 2):
         for x in range(left, right, 2):
             r, g, b = pixels[x, y]
 
@@ -690,8 +700,22 @@ def band_diff(a, b, floor=40):
 
 
 def amber(r, g, b):
-    """`Palette.Moving` 那个琥珀 —— 单标的表头日期也是这个色。"""
-    return r > 170 and 110 < g < 225 and b < 120 and (r - b) > 90
+    """`Palette.Moving` 那个琥珀 —— 单标的表头日期也是这个色。
+
+    g 的下界从 110 提到 150 是**为了与珊瑚分开**：`Palette.Emphasis` 是 `0xFF6B6B`，g 正好 107 ——
+    离 110 只差 3，抗锯齿再往亮的那边偏一点，那一行就会被读成琥珀，而「日期是唯一琥珀的那条」
+    正是下面认那两行靠的东西。琥珀自己（`0xFBBF24`）的 g 是 191，150 离它还很远。
+    """
+    return r > 170 and g > 150 and b < 120 and (r - b) > 90
+
+
+def coral(r, g, b):
+    """`Palette.Emphasis` 那个珊瑚红 —— 持仓收益页那个大数字也是这个色。
+
+    与 `amber` 判的是两件互斥的事（琥珀的 g 是 191，这里要求 g < 150），不是同一件事的两个阈值：
+    两条判据都能命中同一行的话，「这一行是珊瑚」这句话就没在说颜色了。
+    """
+    return r > 200 and 70 < g < 150 and 70 < b < 150 and abs(g - b) < 30 and (r - g) > 80
 
 
 def cool(r, g, b):
@@ -729,7 +753,7 @@ def header_bands(name, lo=0.10, hi=0.33):
     rows = []
 
     for y in range(int(top + (height * lo)), int(top + (height * hi))):
-        ink = gold = blue = 0
+        ink = gold = blue = red = 0
         across = []
 
         for x in range(left + 2, right - 2):
@@ -747,24 +771,28 @@ def header_bands(name, lo=0.10, hi=0.33):
             if amber(r, g, b):
                 gold += 1
 
+            if coral(r, g, b):
+                red += 1
+
             if cool(r, g, b):
                 blue += 1
 
-        rows.append((y, ink, gold, blue, across))
+        rows.append((y, ink, gold, blue, red, across))
 
     out = []
     run = None
 
-    for y, ink, gold, blue, across in rows:
+    for y, ink, gold, blue, red, across in rows:
         if ink >= 2:
             if run is None:
-                run = [y, y, 0, 0, 0, []]
+                run = [y, y, 0, 0, 0, 0, []]
 
             run[1] = y
             run[2] += ink
             run[3] += gold
             run[4] += blue
-            run[5].append(across)
+            run[5] += red
+            run[6].append(across)
         elif run is not None:
             out.append(tuple(run))
             run = None
@@ -776,7 +804,7 @@ def header_bands(name, lo=0.10, hi=0.33):
     step = width / 48
     bands = []
 
-    for begin, end, ink, gold, blue, across in out:
+    for begin, end, ink, gold, blue, red, across in out:
         if ink < 12:
             continue
 
@@ -793,6 +821,7 @@ def header_bands(name, lo=0.10, hi=0.33):
             "ink": ink,
             "gold": gold,
             "blue": blue,
+            "coral": red,
             "profile": profile,
         })
 
@@ -1019,6 +1048,18 @@ def main():
           rows_of(line, "MomentSize") >= rows_of(line, "DateSize") * 2
           and "Ink.Format(context.Px(MomentSize), bold: true)" in line,
           f"{rows_of(line, 'MomentSize')} 对日期 {rows_of(line, 'DateSize')}")
+
+    # 颜色（用户随后报的第三件事：「这个时间能不能换个颜色，和持仓收益百分比一个颜色」）。
+    # 持仓页那个大数字走的是 `Gain = Palette.Emphasis`，所以这里要的正是同一个常量 —— 不是
+    # 一个「也是红/橙的」值。判据跨两个文件问同一件事：这一行与那一页那个数字**引用同一个
+    # 常量**，而不是两边各挑了一个看起来一样的颜色（那样一改调色板就分开了）。
+    position = read("Render", "PositionRenderer.cs")
+
+    check("第二行与持仓页那个大数字引用同一个常量（不是各挑一个像的颜色）",
+          "MomentColour = Palette.Emphasis" in line
+          and "momentFormat, MomentColour, opacity" in line
+          and "momentFormat, Palette." not in line
+          and "Color Gain = Palette.Emphasis" in position)
 
     # ---- 源码：这个选择在页面上 ------------------------------------------------------
     check("排布下拉是比较画面自己的设置（一只时是灰的，与「画法」那条相反）",
@@ -1301,6 +1342,22 @@ def main():
         check("大字那一行随进度变（那个钟点跟着画面走，不是写死的区间）",
               moved is not None and min(moved) > 0.03,
               "认不出大字那一条" if moved is None else "、".join(f"差 {d:.4f}" for d in moved))
+
+        # 颜色（用户报的第三件事）。两条合起来说一件事：这两行**不是同一种墨**，谁是谁分得
+        # 开 —— 只验「大字是珊瑚」的话，把两行都涂成珊瑚照样绿，而那样一眼看去是一个两行的
+        # 日期块。日期那一条的琥珀门槛比珊瑚严（`amber` 要 g>150、珊瑚的 g 是 107），所以这
+        # 两条判的是互斥的两件事，不是同一件事的两个阈值。
+        check("大字那一行是珊瑚红 —— 与持仓页那个大数字同色（不再是近白）",
+              all(big is not None and big["coral"] >= big["ink"] * 0.5
+                  for _, big in seen),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
+                        for b in shots[0][1]) or "一条墨迹带都没有")
+
+        check("日期那一行仍是琥珀（两行不是同一种墨）",
+              all(day is not None and day["coral"] <= day["ink"] * 0.2
+                  for day, _ in seen),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
+                        for b in shots[0][1]) or "一条墨迹带都没有")
 
     day_combo = vc.find(lambda c: c.AutomationId == "DayCombo", win)
     offered = winui.combo_labels(win, day_combo) if day_combo is not None else []

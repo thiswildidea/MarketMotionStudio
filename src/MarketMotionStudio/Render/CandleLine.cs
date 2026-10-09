@@ -97,6 +97,19 @@ public static class CandleLine
     public const double MomentSize = 128;
 
     /// <summary>
+    /// The moment's colour: the coral the holdings frame states its return in — the colour asked
+    /// for by name, after the first version of this row went out near-white.
+    ///
+    /// It pairs with the amber above it exactly as those two lines do on that frame, the date in
+    /// <see cref="Palette.Moving"/> and the figure under it in this, so a reader who has seen one
+    /// of these frames reads the other without being told which line is which.
+    ///
+    /// A fixed colour rather than a sign: a clock has no gain to be up or down on, and a comparison
+    /// of six instruments has no one direction to take a colour from.
+    /// </summary>
+    public static readonly Color MomentColour = Palette.Emphasis;
+
+    /// <summary>
     /// The title and the lines under it, which both layouts draw the same way: the codes saying
     /// what is being compared and on what period, then which stretch of time it is a picture of.
     ///
@@ -184,7 +197,7 @@ public static class CandleLine
             : CandleLoader.Iso(board.End);
 
         Ink.Centred(session, until, cx, context.HeaderRow(MomentRow, titleLines),
-            momentFormat, Palette.Title, opacity);
+            momentFormat, MomentColour, opacity);
     }
 
     /// <summary>

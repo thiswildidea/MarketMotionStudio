@@ -499,7 +499,10 @@ window's right-hand edge, the same number the curves' leading ends are placed fr
 and the ink under it agree about what "now" is. It is not the market's trading hours: a session the
 source only partly holds draws the shorter stretch it has, and four hours of trading written above
 two thirds of a picture is a header disagreeing with the curve under it. That second row is set at
-the 128 the four frames that state one headline figure state theirs at — it *is* the figure this
+the 128 the four frames that state one headline figure state theirs at, in the coral the holdings
+frame states its return in — `Palette.Emphasis`, the same constant rather than a colour that
+happens to look like it, so the two cannot drift apart — and it pairs with the amber date above it
+exactly as those two lines do on that page. It *is* the figure this
 frame moves, and it changes as the picture plays instead of standing for the whole session; at the
 22 it started at, the one thing a viewer watches was the smallest line in the header. The daily,
 weekly and monthly periods have no clock to show, and name the first and last day of the span
