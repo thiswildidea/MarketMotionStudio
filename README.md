@@ -493,21 +493,32 @@ drawn once, under the bottom panel.
 **Which stretch of time it is a picture of.** A comparison said what it was about — the codes — and
 on what period, and left *when* it was to the axis along its foot. That axis is a scale, not a
 statement: it moves with the window, and only covers the whole span once the run opens out at the
-end. So the header carries a row of its own, drawn by the one `CandleLine.Header` both layouts
-share. The minute periods name the trading day, and under it the clock the frame has reached — the
-window's right-hand edge, the same number the curves' leading ends are placed from, so the header
-and the ink under it agree about what "now" is. It is not the market's trading hours: a session the
-source only partly holds draws the shorter stretch it has, and four hours of trading written above
-two thirds of a picture is a header disagreeing with the curve under it. That second row moves as
-the picture plays instead of standing for the whole session, and it is drawn in the coral the
-holdings frame states its return in — `Palette.Emphasis`, the same constant rather than a colour
-that happens to look like it, so the two cannot drift apart — pairing with the amber date above it
-exactly as those two lines do on that page. It is set under the date, not over it: a comparison
-exists to state how several instruments did against each other, and the clock qualifies the day
-rather than competing with it. The daily, weekly and monthly periods have no clock to show and carry
-the date alone — their newest moment is a day the row above already names, and one more date of the
-same shape under it reads as a date repeated rather than as a stretch. The rows' height is also why
-the plot's top sits where it does — `PlotTopFraction`, on both renderers.
+end. So the header carries a block of its own, drawn by the one `CandleLine.Header` both layouts
+share. Both of its rows are read at one number — the window's right-hand edge, the same number the
+curves' leading ends are placed from, so the header and the ink under it agree about what "now" is
+— and which of two behaviours that gives them is a consequence of what the board's axis counts in
+rather than a branch that could be got the wrong way round. On a minute board every point of the
+axis falls on one day, so the top row names the day the picker chose and stands still while the
+clock under it walks minute by minute. On a daily, weekly or monthly board the axis counts in days
+and the row walks with the picture: the same statement in a coarser unit, and the one the
+single-instrument frame has always made in its header, which names the candle it is drawing rather
+than the first candle of its range. It was the span's first day for two revisions, which made it the
+one line on the frame that said nothing about the frame and stood there unchanged for the whole of
+it.
+
+The second row belongs to the minute periods alone: the daily, weekly and monthly ones have no clock
+to state, their newest moment being a day the row above already names, and a second date of the same
+shape under it reads as a date repeated rather than as a stretch. It is not the market's trading
+hours — "09:30 - 15:00" — which is a statement about the source's session rather than about the
+frame: the one three quarters of the way through an afternoon said exactly what the frame it ends on
+said, and four hours of trading written above two thirds of a picture is a header disagreeing with
+the curve under it. It is drawn in the coral the holdings frame states its return in —
+`Palette.Emphasis`, the same constant rather than a colour that happens to look like it, so the two
+cannot drift apart — pairing with the amber date above it exactly as those two lines do on that
+page. And it is set at 26 under the date's 30 rather than over it: a comparison exists to state how
+several instruments did against each other, and the clock qualifies the day rather than competing
+with it. The plot's top sits where it does for the same reason — `PlotTopFraction`, on both
+renderers.
 
 Both layouts end on the **same row of cards**: the name, the percentage, and the amount it moved, in
 the order the tracks are drawn and in their own colours. While the curves move, the names ride their

@@ -51,7 +51,7 @@ public static class CandleLine
     public const double SubtitleRow = 0.20;
 
     /// <summary>
-    /// The day the frame is a picture of, one <see cref="FrameContext.HeaderRowPitch"/> under the
+    /// The day the frame has reached, one <see cref="FrameContext.HeaderRowPitch"/> under the
     /// subtitle.
     ///
     /// A comparison said what it was about (the codes) and on what period, and left *when* it was
@@ -59,6 +59,11 @@ public static class CandleLine
     /// its header and the comparison did not. The dates under the plot are a scale, not a
     /// statement: they are read off the bottom of the picture, they move with the window, and a
     /// viewer who is told the codes and the period still cannot say which day the curves are.
+    ///
+    /// Read at the window's right-hand edge, so this row moves as the picture does — see
+    /// <see cref="TimeBlock"/>. On a minute board that edge is a minute of one session, so the day
+    /// it falls on is the day the picker chose and the row stands still; on a daily, weekly or
+    /// monthly board it is a different day on every frame of the video.
     /// </summary>
     public const double DateRow = 0.235;
 
@@ -66,8 +71,7 @@ public static class CandleLine
     /// The clock the frame has reached, one <see cref="FrameContext.HeaderRowPitch"/> under
     /// <see cref="DateRow"/> — and only on a minute board, which is the only board whose axis
     /// counts in minutes. The daily, weekly and monthly ones stop at the date: the newest moment
-    /// on those is a day the first row already names, and a second row of one more date under it
-    /// reads as the same date written twice.
+    /// on those is a day, and <see cref="DateRow"/> is already that day.
     /// </summary>
     public const double ClockRow = 0.27;
 
@@ -81,6 +85,10 @@ public static class CandleLine
     /// rather than competing with it — the day says which day the frame is a picture of, and this
     /// says where in that day the picture has got to.
     ///
+    /// 22 until it was asked for at 26, which is the same statement one size louder. Both are
+    /// under <see cref="DateSize"/>, so the two rows still say which of them is the frame's
+    /// statement and which is the note under it.
+    ///
     /// It was briefly 128 bold, the size the four frames that state one headline figure state
     /// theirs at, on the argument that this is the figure the frame exists to state. It is not: a
     /// comparison exists to state how several instruments did against each other, and a clock
@@ -88,7 +96,7 @@ public static class CandleLine
     /// — on the periods where it names a day instead of an hour — wrote ten characters wider than
     /// the frame has room for, into the button rail along its right.
     /// </summary>
-    public const double ClockSize = 22;
+    public const double ClockSize = 26;
 
     /// <summary>
     /// The clock's colour: the coral the holdings frame states its return in — the colour asked
@@ -145,20 +153,25 @@ public static class CandleLine
     }
 
     /// <summary>
-    /// Which moment the frame is a picture of: the day on top, and — on a minute board only — the
-    /// clock it has reached under it.
+    /// The day the frame has reached, and — on a minute board only — the clock it has reached with
+    /// it.
     ///
-    /// The second row used to be the stretch the frame covers — "09:30 - 15:00" — which is a
-    /// statement about the source's session rather than about the picture: the frame three
-    /// quarters of the way through an afternoon said exactly what the frame it ends on said, and
-    /// the one figure a viewer follows while the video plays is how far into the session it has
-    /// come. It is now the window's right-hand edge, which is where the curves' leading ends are:
-    /// a header whose clock disagreed with the ink under it would be worse than either.
+    /// Both are read at the window's right-hand edge, which is where the curves' leading ends are:
+    /// a header whose clock disagreed with the ink under it would be worse than either. On a
+    /// minute board every point of the axis is on one day, so the day is the one the picker chose
+    /// and that row stands still; on a daily, weekly or monthly board the axis counts in days, and
+    /// the row walks with the picture. The same statement in a coarser unit — and the same one the
+    /// single-instrument frame makes in its header, which names the candle it is drawing rather
+    /// than the first candle of its range. Writing the first day of the span instead was the one
+    /// thing on the frame that said nothing about the frame, and stood there unchanging for the
+    /// whole of it.
     ///
-    /// Only the minute board has it. A span of days, weeks or months has no clock to show, and
-    /// there the block is the date alone: a second row naming the span's last day under a first
-    /// row naming its first is two dates of one shape stacked on top of each other, which reads
-    /// as a date repeated rather than as a stretch.
+    /// The second row is the minute board's alone. It started as the stretch the frame covers —
+    /// "09:30 - 15:00" — which is a statement about the source's session rather than about the
+    /// frame: the one three quarters of the way through an afternoon said exactly what the frame
+    /// it ends on said, and the one figure a viewer follows while the video plays is how far into
+    /// the session it has come. It states that figure now. The other three periods have no clock
+    /// to state: their newest moment is a day, and the row above is already that day.
     ///
     /// Empty boards draw nothing: a board with no axis has no day to name, and the header is
     /// drawn before either layout has decided whether it has anything to plot.
@@ -176,9 +189,15 @@ public static class CandleLine
 
         using var dayFormat = Ink.Format(context.Px(DateSize));
 
-        // On a minute board the whole axis is one session, so the first date on it *is* the day
-        // the frame is a picture of — the day the picker chose.
-        Ink.Centred(session, CandleLoader.Iso(board.Start), cx,
+        // Clamped rather than trusted: the frames before the first point has arrived carry an edge
+        // of -1, and a window that has run off the end of the board must still name a real point.
+        var at = Math.Clamp((int)Math.Round(moment), 0, board.Count - 1);
+
+        // One expression, and which of the two behaviours it has is a consequence of what the
+        // board's axis counts in rather than a branch that could be got the wrong way round: on a
+        // minute board every point of the axis is on the same day, so this names the day the
+        // picker chose; on the others it names the day the window has reached.
+        Ink.Centred(session, CandleLoader.Iso(board.Dates[at]), cx,
             context.HeaderRow(DateRow, titleLines), dayFormat, Palette.Moving, opacity);
 
         // A board that counts in days, weeks or months has no clock to state: its newest moment is
@@ -189,10 +208,6 @@ public static class CandleLine
         }
 
         using var clockFormat = Ink.Format(context.Px(ClockSize));
-
-        // Clamped rather than trusted: the frames before the first point has arrived carry an edge
-        // of -1, and a window that has run off the end of the board must still name a real minute.
-        var at = Math.Clamp((int)Math.Round(moment), 0, board.Count - 1);
 
         Ink.Centred(session, board.Stamps[at], cx, context.HeaderRow(ClockRow, titleLines),
             clockFormat, ClockColour, opacity);

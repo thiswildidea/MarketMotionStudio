@@ -808,19 +808,23 @@ def header_bands(name, lo=0.10, hi=0.29):
     if run is not None:
         out.append(tuple(run))
 
-    width = max(1, right - left)
-    step = width / 48
     bands = []
 
     for begin, end, ink, gold, blue, red, across in out:
         if ink < 12:
             continue
 
-        profile = [0] * 48
+        # 剖面**一像素一列**，不按画布宽均分成若干格。均分看着省事，但那是拿画布当尺子量一行字：
+        # 画布 383 px 宽、这一行只占中间约 30 px，分 48 格时它整个落在四格里 —— 于是「5 换成 3」
+        # 只让某格少几个像素，差被同一格吃掉。实测 `15:00` 与 `13:40` 在 48 格下的剖面差只有
+        # **0.0186**，而 `10:50` 与 `15:00` 是 0.0559：同一件事（钟点变了）量出两个数量级，阈值
+        # 卡在中间的那一跑就会红在一个没坏的画面上 —— 而画面是对的（三张实拍是 15:00 / 13:40 /
+        # 10:50）。逐像素就没有「格子吃掉差」这回事：墨从这一列挪到那一列，差原样留下来。
+        profile = [0] * len(across[0])
 
         for row in across:
-            for i in range(48):
-                profile[i] += sum(row[int(i * step):int((i + 1) * step)])
+            for i, lit in enumerate(row):
+                profile[i] += lit
 
         bands.append({
             "lo": (begin - top) / height,
@@ -837,11 +841,14 @@ def header_bands(name, lo=0.10, hi=0.29):
 
 
 def spread(one, two):
-    """两条带的墨差多少，0..1：48 格列剖面逐格差的绝对值之和 ÷ 两幅的墨迹总数。
+    """两条带的墨差多少，0..1：逐列剖面之差的和 ÷ 两幅的墨迹总数。
 
     与 `band_diff` 不同，它比的是**同一条带自己**在两个进度下的墨，所以别处变了不算 —— 这一条
     要问的正是「那一行变了没有」，而整幅或整条画布带在别的地方也在变（曲线、轴、卡片都跟着
     进度动），拿它们当尺子量不出「这一行」。
+
+    分母是两幅的墨迹总数，所以这个数只跟「整条带里有多大一份墨挪了位置」有关，与这行字写了几笔
+    无关 —— 日期那一行（不动）实测 0.0000，钟点那一行（动）逐像素下是零点几，阈值取在中间。
     """
     return (sum(abs(p - q) for p, q in zip(one["profile"], two["profile"]))
             / max(1, one["ink"] + two["ink"]))
@@ -1011,16 +1018,29 @@ def main():
     # 大字那一版还让日 K 档那十个字（`2026-10-08`）越过了安全线。分岔因此只在一处
     # （`board.Intraday`），两种排布共用一处画（`CandleLine.Header`）—— 一份一份地问，第二份
     # 就会有自己的答案。
+    #
+    # 第三轮（还是同一天）：用户接着说「日/周/月 的年月日应该动起来」。于是**日期那一行自己**
+    # 改读窗口右缘那一天（`board.Dates[at]`）—— 同一个表达式在两种板子上做两件事：分钟板整条
+    # 轴都在同一天，读出的是选取器挑的那天、站着不动；日/周/月 的轴以天计，这行就跟着画面走。
+    # 写区间起始日（`Iso(board.Start)`）的那版，是画面上唯一一句与画面无关的话：它在整段视频
+    # 里一个字都不变。
     check("多标的头部有日期那一行，分钟档多一行钟点（一处画，两种排布共用）",
           "public const double DateRow = 0.235;" in line
           and "public const double ClockRow = 0.27;" in line
-          and "public const double ClockSize = 22;" in line
+          and "public const double ClockSize = 26;" in line
           and "TimeBlock(session, context, board, titleLines, moment, a);" in line
           and line.count("private static void TimeBlock(") == 1)
     check("第二行只在分钟档画（日/周/月 只留日期那一行）",
           "if (!board.Intraday)" in line
           and "CandleLoader.Iso(board.End)" not in line
           and 'board.Stamps[0] + " - " + board.Stamps[^1]' not in line)
+
+    # 日期那一行读的是**画面画到的那一天**，不是区间的起始日 —— 用户第三轮要的正是这件事。
+    # 问「它用的是 `Dates[at]`」而不只是「它不等于 `Start`」：后者在把这一块整个删掉时也是绿的，
+    # 而「删掉」正是这里最不能悄悄发生的事。
+    check("日期那一行读的是画面画到的那一天（不是区间起始日）",
+          "CandleLoader.Iso(board.Dates[at])" in line
+          and "CandleLoader.Iso(board.Start)" not in line)
     check("那一行是**画面画到的那一刻**（窗口的右缘，与曲线领头处说的是同一件事）",
           "board.Stamps[at]" in line
           and "double t, double moment)" in line
@@ -1280,9 +1300,9 @@ def main():
 
     # ---- 头部那两行：日期不动，钟点跟着画面走（真机，分钟档） --------------------------
     #
-    # 用户在三句报里说了四件事：「多标的时候图表和标题没有时间」、「9:30 - 15:00 太小」、
-    # 「要时时刻刻的钟点，而不是 9:30 - 15:00」，以及最后这句「日/周/月 还原之前状况」。所以
-    # 这一段问的是四件事，而不是「第 0.235 行有没有字」：
+    # 用户在几句报里说了五件事：「多标的时候图表和标题没有时间」、「9:30 - 15:00 太小」、
+    # 「要时时刻刻的钟点，而不是 9:30 - 15:00」、「日/周/月 还原之前状况」，以及这一句的
+    # 「时分字体调到 26」。所以这一段问的是四件事，而不是「第 0.235 行有没有字」：
     #
     #   1. 日期那一行**不随进度变** —— 它是「这是哪一天」，一个事实；
     #   2. 日期下面还有**一行钟点**（珊瑚色），它**随进度变** —— 它是「走到哪儿了」；
@@ -1292,6 +1312,11 @@ def main():
     # 第 1 条是第 2 条的**对照**，而且是一个硬的对照：两幅真的不同的画面之间，日期那一行的墨
     # 实测一格不差（0.0000），因为两幅画的都是同一天。只验第 2 条的话，「两幅画面本来就处处
     # 不同」也能让它绿；只验「有两条带」的话，把钟点写死在 15:00 也照样绿。
+    #
+    # 第三轮改完之后，两行读的是**同一个数**（窗口右缘 `at`）：分钟板整条轴都在同一天，所以上面
+    # 那行读出来是同一个日期、不动，下面那行读出来是不同的钟点、动。第 1 条因此不再是一条自己
+    # 主张的规矩，而是「这两行读同一个数」这件事在分钟板上的结果 —— 同一个数在日 K 板上的结果
+    # 是**动**，那是下面 1457 行起那一段的第 2 条。两条合起来才把「一个表达式、两种行为」说圆。
     #
     # 三个进度而不是两个：第二行要跟着走，那它在**每一对**之间都该变。
     #
@@ -1354,6 +1379,11 @@ def main():
 
         # 两个差都先算出来再断言：`check` 的第三个参数是**当场求值**的实参，写进那一行里
         # 会在「根本认不出那两行」的那一跑上先把 `spread(None, …)` 抛出来。
+        #
+        # 门槛 0.03 是从**这一跑量到的两个数之间**取的，不是从上一版的记忆里抄的：对照那一行（日期）
+        # 逐像素是 0.0000，被测那一行（钟点）是 0.0932（`15:00` 对 `13:40`）与 0.1056（对 `10:50`）。
+        # 余量三倍。它有前车之鉴 —— 48 格剖面时代这两个数是 0.0186 与 0.0559，同一个阈值卡在中间
+        # 就会在画面完全正确的那一跑上红（三张实拍确实是 15:00 / 13:40 / 10:50）。
         kept = (spread(seen[0][0], seen[1][0]), spread(seen[0][0], seen[2][0])) \
             if all(day is not None for day, _ in seen) else None
         moved = (spread(seen[0][1], seen[1][1]), spread(seen[0][1], seen[2][1])) \
@@ -1454,34 +1484,73 @@ def main():
           vm.combo_selected(win, period_combo) == PERIOD_DAILY,
           str(vm.combo_selected(win, period_combo)))
 
-    # ---- 日/周/月：表头只有日期那一行（用户最后那句「还原之前状况」） ------------------
+    # ---- 日/周/月：表头只有日期那一行，而这一行跟着画面走 --------------------------------
     #
     # 上一轮把「最新时刻」一律写成第二行，于是日/周/月 那一行的「最新时刻」就是一个日期 ——
     # 而上面那行已经在说日期了：两个同样形状的日期叠着，读出来是「同一个日期写了两遍」，大字
     # 那一版还让日 K 档那十个字（`2026-10-08`）越过安全线（实测右缘 0.841，安全线 0.82）。
     # 于是第二行退回成**分钟档**才有的东西 —— 只有分钟板的轴是以分钟计的，也只有它有钟点可说。
     #
+    # 这一轮（用户第三句报）要的是**这一行自己动起来**：日/周/月 那一行的「最新一刻」本来就是
+    # 一个日期，写区间起始日就等于说了一句与画面无关的话 —— 它在整段视频里一个字都不变。现在
+    # 它读窗口右缘那一天，与单标的表头是同一句：写的是画面画到哪儿，不是区间从哪儿起。
+    #
+    # 两件事一起验，而且第 2 条是这一段真正新增的那条：
+    #
+    #   1. 日 K 表头**只有一行**（下面没有第二条）；
+    #   2. 那**一行**随进度变 —— 它是「画面画到哪儿了」。
+    #
+    # 第 2 条与分钟档那两条是一对**同一个数的两种行为**：同一个表达式，在分钟板上不动（整条轴
+    # 都在同一天）、在日 K 板上动。两边合起来才把「一个表达式、两种行为」说圆 —— 只验一边的话，
+    # 把 `Dates[at]` 换回 `Dates[0]` 只会在日 K 这一边红，而那正是会被漏掉的那一半。
+    #
     # 问的是「日期下面**没有**第二条带」，不是「下面那条带是空的」：后者在根本没画出日期的那
-    # 一跑上也是绿的。
-    vc.scrub_to(win, 1.0)
-    daily_bands, _ = header_bands(vc.shot(win, "verify-candle-multi-daily-header.png"))
+    # 一跑上也是绿的。三个进度互不相同（同一个值再设一次不触发变更，抓回来的可能是上一幅）。
+    daily_shots = []
 
-    check("日K 那一帧认得出画布（量表头得先有画布）", daily_bands is not None)
+    for tag, at in (("end", 1.0), ("mid", 0.6), ("early", 0.3)):
+        vc.scrub_to(win, at)
+        daily_shots.append((at, *header_bands(vc.shot(win, f"verify-candle-multi-daily-{tag}.png"))))
 
-    if daily_bands is not None:
-        daily_day = next((b for b in daily_bands if b["gold"] >= 40), None)
-        below = [b for b in daily_bands if daily_day is not None and b["lo"] > daily_day["hi"]]
+    check("日K 三个进度都认得出画布（量表头得先有画布）",
+          all(bands is not None for _, bands, _ in daily_shots))
 
-        check("日K 表头有日期那一行（琥珀色）", daily_day is not None,
-              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 琥珀 {b['gold']}" for b in daily_bands)
+    if all(bands is not None for _, bands, _ in daily_shots):
+        check("日K 三次实拍的画布一样大（列剖面比的是同一块地方）",
+              len({box for _, _, box in daily_shots}) == 1,
+              str([box for _, _, box in daily_shots]))
+
+        days = [next((b for b in bands if b["gold"] >= 40), None)
+                for _, bands, _ in daily_shots]
+        belows = [[b for b in bands if d is not None and b["lo"] > d["hi"]]
+                  for (_, bands, _), d in zip(daily_shots, days)]
+
+        check("日K 表头有日期那一行（琥珀色）",
+              all(d is not None for d in days),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 琥珀 {b['gold']}" for b in daily_shots[0][1])
               or "一条墨迹带都没有")
         check("日K 表头只有那一行（下面没有第二条）",
-              daily_day is not None and not below,
-              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 墨 {b['ink']}" for b in below) or "没有")
+              all(d is not None and not below for d, below in zip(days, belows)),
+              "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 墨 {b['ink']}"
+                        for below in belows for b in below) or "没有")
         check("日K 表头没有那条珊瑚色的钟点（钟点只有分钟档有）",
-              not any(b["coral"] >= b["ink"] * CORAL_SHARE for b in daily_bands),
+              not any(b["coral"] >= b["ink"] * CORAL_SHARE
+                      for _, bands, _ in daily_shots for b in bands),
               "、".join(f"{b['lo']:.3f}..{b['hi']:.3f} 珊瑚 {b['coral']}/{b['ink']}"
-                        for b in daily_bands) or "一条墨迹带都没有")
+                        for b in daily_shots[0][1]) or "一条墨迹带都没有")
+
+        # 那一行随进度变 —— 这一轮改的正是这件事。对照组就在同一份脚本里：分钟档同一行实测
+        # 一格不差（0.0000），因为分钟板整条轴都在同一天。两个阈值同一个来源 —— 都是「这个数
+        # 在这一行上差多少」，一动一不动，界取中间（0.01 / 0.03）留出的余量是实测值的几倍。
+        walked = (spread(days[0], days[1]), spread(days[0], days[2])) \
+            if all(d is not None for d in days) else None
+
+        check("日K 那一行随进度变（年月日跟着画面走，不是写死的区间起始日）",
+              walked is not None and min(walked) > 0.03,
+              "认不出日期那一条" if walked is None
+              else "、".join(f"差 {d:.4f}" for d in walked))
+
+    vc.scrub_to(win, 1.0)
 
     # ---- 分图：一个下拉，两种排布，和收尾那排卡片 ------------------------------------
     #
@@ -1511,6 +1580,17 @@ def main():
           len(labels) == 2, "、".join(labels) or "0 项")
     check("比较时排布下拉是能选的（它属于比较，不属于蜡烛图）",
           vc.enabled(win, "SplitCombo") is not False, str(vc.enabled(win, "SplitCombo")))
+
+    # 排布**也是落盘的偏好**，而这一段有三条断言的前提是「进来时是合图」：合图时那条说明收着、
+    # 切到分图画面真的重画、切回合图画回同一张。上一跑若在半途断了（实测崩过一跑），偏好就留在
+    # 分图上 —— 于是这三条一起红，而页面是好的（那一跑的分图三条量到的正是 0.0% / 5.5%，即
+    # 「它已经在分图上了」）。与推进方式、越线开关、周期同一条规矩：**量之前先摆回要量的那一种**。
+    #
+    # 挑「与当前不同的那一项」才拨，与交易日那一处同理（选同一项不触发变更，拨了等于没拨）。
+    if len(labels) == 2 and vm.combo_selected(win, split_combo) != labels[0]:
+        winui.combo_pick(win, split_combo, labels[0])
+        time.sleep(2.0)
+
     check("合图时不解释分图（那条说明是收起来的）",
           vc.find(lambda c: c.AutomationId == "SplitNote", win) is None)
 
@@ -1734,7 +1814,12 @@ def main():
     need = max(0, 4 - len(on))
     head = todo[:1] if len(on) < 2 else []
     tail = todo[len(head):need]
-    clicked = list(head) + list(tail)
+
+    # 点过的这几只，**身份在这里就固定成值**（`AutomationId` 与名字）。小结那一句要用它们，
+    # 而它是在这一段跑完之后才写的 —— 中间切了排布、取了几次数，那一排是虚拟化列表，控件实例
+    # 可能已经换过一批，那时候再回头读 `row.Name` 会抛 `COMError`：话说不出来，整份判据从中间
+    # 断掉。读到的东西当场变成值，之后不再回头问控件。
+    clicked = [(row.AutomationId, row.Name) for row in list(head) + list(tail)]
 
     if len(rows) < 4:
         check("页面上至少有四个一键预设（这一段要凑够四只）", False, f"{len(rows)} 个")
@@ -1747,12 +1832,20 @@ def main():
         stale = vc.status_text(win)
 
         for row in head:
-            vc.click(row, 1.0)
+            # 名字在**点它之前**读。取数一旦失败，那一项可能已经不在了（面板重建、列表滚动过），
+            # 而失败分支里读 UIA 属性会抛 `COMError` —— 于是「取数失败了」这句话本身报不出来，
+            # 整份判据从中间断掉，前面量过的几十条一起不作数。失败分支是最需要说得出话的那一支。
+            name = row.Name
+
+            if not vc.click(row, 1.0):
+                check(f"点得动「{name}」（它还在那一排里）", False)
+                break
+
             got = vc.wait_status(win, unlike=stale, seconds=180)
             stale = got or stale
 
             if not got or BAD.search(got):
-                check(f"加上「{row.Name}」之后取数正常", False, got or "(状态条空)")
+                check(f"加上「{name}」之后取数正常", False, got or "(状态条空)")
                 break
 
         on2 = [c for c in chips(win) if c[2].ToggleState == auto.ToggleState.On]
@@ -1765,12 +1858,19 @@ def main():
             check("切到分图（点名只在分图下发生）", False)
         else:
             for row in tail:
-                vc.click(row, 1.0)
+                # 同上一处：名字先读下来。这一支比上一支更容易撞上 —— 它是在**切了排布之后**
+                # 点预设，而切排布会让页面重画，`presets` 那一排的实例可能已经换过一批。
+                name = row.Name
+
+                if not vc.click(row, 1.0):
+                    check(f"点得动「{name}」（它还在那一排里）", False)
+                    break
+
                 got = vc.wait_status(win, unlike=stale, seconds=180)
                 stale = got or stale
 
                 if not got or BAD.search(got):
-                    check(f"加上「{row.Name}」之后取数正常", False, got or "(状态条空)")
+                    check(f"加上「{name}」之后取数正常", False, got or "(状态条空)")
                     break
 
             # 清单上本来就已经开着四只时没有第四只可点，而「点名」是**取数时**由页面说的（图
@@ -1896,20 +1996,20 @@ def main():
     # 而这一段点进去的预设，落在的是**共享清单**上（一键预设点一下就是「放到清单上并画出来」），
     # 用完了要摘掉：共享清单是读者自己的数据，判据不该给它留下东西。摘的只有**这一跑带进来的
     # 那几只**（`before` 是这一段开始时的清单），读者原本就在清单上的预设一只都不碰。
-    ours = [row for row in clicked if row.AutomationId not in before]
+    ours = [(ident, name) for ident, name in clicked if ident not in before]
 
     if ours:
-        for row in ours:
-            drop_chip(win, row.AutomationId, row.Name)
+        for ident, name in ours:
+            drop_chip(win, ident, name)
 
         time.sleep(1.0)
 
         still = {c[0] for c in chips(win)}
 
         check("这一跑带进清单的预设又摘掉了（共享清单是读者自己的）",
-              not any(row.AutomationId in still for row in ours),
-              f"带进 {[r.Name for r in ours]}，还留着 "
-              f"{[r.Name for r in ours if r.AutomationId in still]}")
+              not any(ident in still for ident, _ in ours),
+              f"带进 {[name for _, name in ours]}，还留着 "
+              f"{[name for ident, name in ours if ident in still]}")
 
     passed = sum(1 for _, ok, _ in CHECKS if ok)
     print(f"\n通过 {passed} 项，失败 {len(CHECKS) - passed} 项")

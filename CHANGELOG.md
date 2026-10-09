@@ -109,52 +109,62 @@ in one place, `FrameContext.CardRowRight`, and all five copies call it. Unlike t
 pages in 1.0.11.0, this needs no switch: the cards share what is left, so four cards each lose about
 eleven pixels and no line moves.
 
-**六、多标的的画面标出「这是哪一段」。** 单标的的画面表头本来就写着那根 K 线的日期；多标的的画面
-只写了代码与周期，把「哪一段」整个交给脚下那条日期轴 —— 而那条轴是**刻度**不是一句话：它跟着
-窗口走，只有收尾展开时才覆盖整段。现在头部那一块由两种排布共用的一处 `CandleLine.Header` 画：
-分钟档（1／5／15 分钟）是两行，上面是那**一个交易日**的日期，下面是画面**此刻画到的钟点**；
-日／周／月档只有上面那一行，写区间的**起始日**。
+**六、多标的的画面标出「画面走到哪儿了」。** 单标的的画面表头本来就写着那根 K 线的日期；多标的的
+画面只写了代码与周期，把「哪一段」整个交给脚下那条日期轴 —— 而那条轴是**刻度**不是一句话：它跟着
+窗口走，只有收尾展开时才覆盖整段。现在头部那一块由两种排布共用的一处 `CandleLine.Header` 画，
+**两行读的是同一个数**：窗口的右缘，也就是曲线末端落点用的那个数，所以表头与它下面的墨说的是同一
+个「现在」。而这一件事有两种样子，是板子的轴以什么计数推出来的，不是一个可能写反的分支：
 
-那个钟点是**窗口的右缘** —— 曲线末端落点用的同一个数，所以表头与它下面的墨说的是同一个「现在」，
-播放时它跟着画面一分钟一分钟地走。它不是市场的交易时段（`9:30 - 15:00`）：源端只留最近几个交易
-日，最老那天被请求长度切掉头、正在走的那天更短，在只画了三分之二的画面上方写「四个小时的交易」
-是一句话与它下面的曲线互相矛盾。
+- **分钟档（1／5／15 分钟）**：整条轴都在同一天，所以上面那行是那**一个交易日**的日期（不动），
+  下面那行是画面**此刻画到的钟点**（跟着画面一分钟一分钟地走）。
+- **日／周／月档**：轴是以天计的，于是那一行自己就动 —— 它是「画面画到哪一天」，正是单标的表头
+  一直在说的那句（写的是正在画的那根，不是区间的第一根）。它起初写的是**区间的起始日**，而那是
+  整个画面上唯一一句与画面无关的话：整段视频里它一个字都不变。
 
-日／周／月只有一行，是因为那三档的「最新一刻」本来就是一个日期，而上面那行已经在说日期了 ——
-两个同样形状的日期叠着，读出来是「同一个日期写了两遍」。这一条改到第三版才落在这里：第一版
-第二行是区间，第二版把它改成「那一刻」并按画面的**大字**画（128，与另外几个画「一个数字」的页面
-同字号），而一行大字要它自己的空气、绘图区顶让到 0.34 —— 日 K 那档十个字的日期（`2026-10-08`）
-在那个字号下右缘越过安全线 0.021（1080 下约 23 px），进了平台那条按钮栏。现在它回到 **22 px**、
-回到日期的**注脚**位置（不是这一块的头号），绘图区顶也跟着回到 0.30。
+第二行是**分钟档**独有的：那三档的「最新一刻」本来就是一个日期，而上面那行已经在说日期了 —— 两个
+同样形状的日期叠着，读出来是「同一个日期写了两遍」。这一行改到**第四版**才落在这里：第一版是区间
+（`9:30 - 15:00`，说的是源端的交易时段而不是画面 —— 源端只留最近几个交易日，最老那天被请求长度
+切掉头、正在走的那天更短，在只画了三分之二的画面上方写「四个小时的交易」是一句话与它下面的曲线
+互相矛盾）；第二版把它改成「那一刻」并按画面的**大字**画（128，与另外几个画「一个数字」的页面同字
+号），而一行大字要它自己的空气、绘图区顶让到 0.34 —— 日 K 那档十个字的日期（`2026-10-08`）在那个
+字号下右缘越过安全线 0.021（1080 下约 23 px），进了平台那条按钮栏；第三版回到 22 px 的注脚位置、
+绘图区顶也回到 0.30。现在是 **26 px** —— 仍是日期的注脚（日期 30），只是把那一句说响一点。
 
 颜色是用户点名要的：持仓页那个大数字的珊瑚红（`Palette.Emphasis`，**同一个常量**，不是各挑一个
 看起来一样的颜色）—— 它与上面琥珀色的日期正好是那一页那两行的配色。钟点没有正负，六条曲线的比较
 也没有唯一方向，所以这个颜色不跟涨跌走。
 
-**Six — a comparison says which stretch of time it is a picture of.** The single-instrument frame
-already carried the date of the candle it was drawing in its header; a comparison stated the codes
-and the period, and left *when* it was to the axis along its foot. That axis is a scale, not a
-statement: it moves with the window, and only covers the whole span once the run opens out at the
-end. So the header now carries a block of its own, drawn by the one `CandleLine.Header` both layouts
-share. The minute periods — 1, 5 and 15 — write two rows: that one trading day, and under it the
-clock the frame has reached. The daily, weekly and monthly periods write the top row alone, the
-first day of the span.
+**Six — a comparison says where the picture has got to.** The single-instrument frame already carried
+the date of the candle it was drawing in its header; a comparison stated the codes and the period,
+and left *when* it was to the axis along its foot. That axis is a scale, not a statement: it moves
+with the window, and only covers the whole span once the run opens out at the end. So the header now
+carries a block of its own, drawn by the one `CandleLine.Header` both layouts share, and **both of
+its rows read one number**: the window's right-hand edge, the same number the curves' leading ends
+are placed from, so the header and the ink under it agree about what "now" is. Which of two shapes
+that takes is a consequence of what the board's axis counts in rather than a branch that could be got
+the wrong way round:
 
-That clock is **the window's right-hand edge** — the same number the curves' leading ends are placed
-from, so the header and the ink under it agree about what "now" is, and it walks minute by minute as
-the picture plays. It is not the market's trading hours: the source holds only the last few trading
-days, the oldest of them cut short at the head by the requested length and the day in progress
-shorter still, and four hours of trading written above two thirds of a picture is a header
-disagreeing with the curve under it.
+- **The minute periods — 1, 5 and 15** — have every point of their axis on one day, so the top row
+  names the day the picker chose and stands still while the clock under it walks minute by minute.
+- **The daily, weekly and monthly periods** count in days, so the row walks with the picture: it says
+  which day the frame has reached, which is what the single-instrument header has always said, naming
+  the candle it is drawing rather than the first candle of its range. It was the span's first day for
+  two revisions, which made it the one line on the frame that said nothing about the frame and stood
+  there unchanged for the whole of it.
 
-The daily, weekly and monthly periods carry the date alone because on those the newest moment *is* a
-day, and the row above already names one: two dates of the same shape stacked on each other read as
-a date repeated rather than as a stretch. This took three revisions to land there. The second one
-made the row the frame's **headline size** — the 128 the four frames that state one figure state
-theirs at — and a line that size needs its air, so the plot's top went from 0.30 to 0.34; on the
-daily periods the ten-character date came out at 0.162..0.841 of the frame, past the safe line at
-0.82 and into the platform's button rail. It is back at **22 px**, under the date rather than over
-it, and the plot's top is back at 0.30 with it.
+The second row belongs to the minute periods alone: on the others the newest moment *is* a day, and
+the row above already names one — two dates of the same shape stacked on each other read as a date
+repeated rather than as a stretch. This took four revisions to land there. The first wrote the
+stretch the frame covers — "09:30 - 15:00" — which is a statement about the source's session rather
+than about the frame: the source holds only the last few trading days, the oldest of them cut short
+at the head by the requested length and the day in progress shorter still, and four hours of trading
+written above two thirds of a picture is a header disagreeing with the curve under it. The second
+made it the frame's **headline size** — the 128 the four frames that state one figure state theirs at
+— and a line that size needs its air, so the plot's top went from 0.30 to 0.34; on the daily periods
+the ten-character date came out at 0.162..0.841 of the frame, past the safe line at 0.82 and into the
+platform's button rail. The third put it back at 22 px, under the date rather than over it, and the
+plot's top back at 0.30 with it. It is **26 px** now — still a note under the date's 30, saying the
+same thing one size louder.
 
 Its colour is the one asked for by name, the coral the holdings frame states its return in —
 `Palette.Emphasis`, the same constant rather than a second colour that happens to look like it —
@@ -188,9 +198,10 @@ sign to take its colour from, and a comparison of six instruments has no one dir
   platform's rail** —— K线、成交额、日内、定投、持仓五页的四张统计卡此前按 `ChartWidth` 铺到画面
   右缘（1080 帧下 930），安全线在 885.6，右缘落在栏内 44 px；现在五处都改调
   `FrameContext.CardRowRight()`，算术只在一处。
-- **多标的的画面标出「这是哪一段」/ a comparison names the stretch it draws** —— 标题下加一块，两种
-  排布共用一处：分钟档是那一个交易日的日期 + 画面**此刻画到**的钟点（22 px，珊瑚红，跟着画面走），
-  日／周／月档只有那一行日期（写区间的起始日）。只有多标的的画面加它 —— 单标的的画面本来就有日期。
+- **多标的的画面标出「画面走到哪儿了」/ a comparison says where the picture has got to** —— 标题下
+  加一块，两种排布共用一处，两行读同一个数（窗口的右缘）：分钟档是那一个交易日的日期（不动）+ 画面
+  **此刻画到**的钟点（26 px，珊瑚红，跟着画面走）；日／周／月档只有那一行日期，而它自己跟着画面走
+  —— 写的是画到哪一天，不是区间从哪天起。只有多标的的画面加它 —— 单标的的画面本来就有日期。
 - **分钟档的表头读当日涨跌幅 / the minute headline reads the day's move** —— 表头取的是屏幕前一根，
   5 分钟档下就是五分钟前。2026-10-08 的上证指数画面上写 +0.07%，当日实际 −0.79%。分钟行不带涨跌
   字段，前收要从会话里取：`MinuteSession.CloseBefore(day)` 按窗口里的位置找，不按日历回退一天，
