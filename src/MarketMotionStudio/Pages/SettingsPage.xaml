@@ -6,13 +6,88 @@
     xmlns:mux="using:Microsoft.UI.Xaml.Controls"
     xmlns:views="using:MarketMotionStudio.Views">
 
-    <ScrollViewer>
-        <!-- Centred rather than pinned left. The page is a column of cards that
-             never grows past this width, and on a wide window a column sitting
-             against the navigation pane reads as a dialog that lost its parent. -->
-        <StackPanel Padding="24" Spacing="16" MaxWidth="720" HorizontalAlignment="Center">
+    <!-- Two rows, and the second one scrolls. The sentence about the restart is
+         **outside** the scroller on purpose, and that is the whole point of this
+         layout.
 
-            <TextBlock x:Uid="SettingsPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+         It used to be the last child of the column, so it opened off the bottom of
+         the window: the market and language cards are the first two and the strip
+         was below four more cards of appearance, video and contact. Changing the
+         market or the language therefore looked like it did nothing — the choice
+         was stored, the pages kept their old market, and the one line saying why
+         was several screens below where the user was looking. Reported as "I
+         can't see it, it feels like it didn't take effect".
+
+         Docked at the top it cannot be missed: it appears directly above the
+         cards being changed, stays put while the rest of the page scrolls, and
+         carries the button that performs the restart. -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <mux:InfoBar x:Name="RestartNotice"
+                     Grid.Row="0"
+                     Margin="24,16,24,0"
+                     MaxWidth="720"
+                     HorizontalAlignment="Center"
+                     IsOpen="False"
+                     IsClosable="False">
+            <mux:InfoBar.ActionButton>
+                <!-- The restart is the act that applies the choice, so it is
+                     offered here rather than described and left to the user to
+                     perform. Shown or hidden by `SettingsPage.Note`, which is the
+                     only place that decides what this strip says — the button and
+                     the sentence have to agree about whether a restart is what
+                     settles the thing being said. -->
+                <Button x:Uid="SettingsLanguageRestartNow"
+                        Visibility="Collapsed"
+                        Click="OnRestartNow" />
+            </mux:InfoBar.ActionButton>
+        </mux:InfoBar>
+
+        <!-- Named so a test can scroll it by name rather than by "the first
+             ScrollViewer", which stops meaning the same thing the moment a card
+             grows one of its own. -->
+        <ScrollViewer x:Name="SettingsScroll" Grid.Row="1">
+            <!-- Centred rather than pinned left. The page is a column of cards that
+                 never grows past this width, and on a wide window a column sitting
+                 against the navigation pane reads as a dialog that lost its parent. -->
+            <StackPanel Padding="24" Spacing="16" MaxWidth="720" HorizontalAlignment="Center">
+
+                <TextBlock x:Uid="SettingsPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+
+            <!-- The market is the first card rather than the fifth.
+
+                 It is the one setting that decides which pages exist at all — a
+                 page the chosen market has no data for is not offered — so it is
+                 the choice that changes most about what the app is, and the one
+                 most worth finding before anything else.
+
+                 It used to sit below the appearance cards on the argument that
+                 the four above it are "how it looks". That argument held until
+                 somebody had to scroll past three cards of styling to reach the
+                 only control that changes what the app can do. Restarting is a
+                 cost, but paying it first is cheaper than paying it after
+                 choosing a theme that turned out to be for the wrong market.
+
+                 Asked before the language card deliberately: this one is not
+                 free, and the sooner its restart is offered the less of the page
+                 has to be re-read afterwards, in a language that is now wrong. -->
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsMarketLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <ComboBox x:Name="MarketCombo" MinWidth="240" SelectionChanged="OnMarketChanged" />
+                    <TextBlock x:Uid="SettingsMarketNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
 
             <Border Padding="16" CornerRadius="4"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -384,24 +459,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- The market is asked before the appearance settings rather than after,
-                 because it decides which pages exist at all: a page the chosen market
-                 has no data for is not offered, so it is the choice that changes most
-                 about what the app is. -->
-            <Border Padding="16" CornerRadius="4"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
-                <StackPanel Spacing="10">
-                    <TextBlock x:Uid="SettingsMarketLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                    <ComboBox x:Name="MarketCombo" MinWidth="240" SelectionChanged="OnMarketChanged" />
-                    <TextBlock x:Uid="SettingsMarketNote"
-                               TextWrapping="Wrap"
-                               Style="{StaticResource CaptionTextBlockStyle}"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                </StackPanel>
-            </Border>
-
             <Border Padding="16" CornerRadius="4"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderThickness="1"
@@ -515,18 +572,7 @@
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                 </StackPanel>
             </Border>
-
-            <mux:InfoBar x:Name="Status" IsOpen="False" IsClosable="False">
-                <mux:InfoBar.ActionButton>
-                    <!-- The restart is the act that applies the language, so it is
-                         offered here rather than described and left to the user to
-                         perform. -->
-                    <Button x:Name="RestartButton"
-                            x:Uid="SettingsLanguageRestartNow"
-                            Visibility="Collapsed"
-                            Click="OnRestartNow" />
-                </mux:InfoBar.ActionButton>
-            </mux:InfoBar>
-        </StackPanel>
-    </ScrollViewer>
+                </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

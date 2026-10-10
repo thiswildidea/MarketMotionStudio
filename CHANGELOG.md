@@ -20,6 +20,41 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.15.0 — 2026-10-11（更新版 / update）
+
+**本版只做一件事：改了市场或语言之后那条「重启应用」的提示，现在钉在设置页最顶端。** 它不
+再是滚动区里的最后一张卡，而是滚动区**外面**的一行：改完立刻看得见，页面往下滚多远它都停在原处。
+
+**This version does one thing: the "restart the app" notice shown after changing the market or the
+language is now pinned to the top of Settings.** It is no longer the last card inside the scrolling
+area; it is a row **outside** it. It is on screen the moment you change something, and it stays where
+it is however far the page is scrolled.
+
+**为什么「有时看不到」不是没生效。** 设置页的顺序是「改这一项要动多少东西」的降序：语言和
+市场靠前，提示条排在另外四张卡之后。改完市场和语言那一眼，它根本不在同一屏 —— 提示确实弹了，
+只是在下面四张卡的位置。这不是一条文案能补的，是位置问题。
+
+**Why "it sometimes isn't there" was not a failure to fire.** The cards in Settings are ordered by
+how much a change to that one touches: language and market come early, and the notice sat four cards
+past them. At the moment you changed the market or the language it was simply not on the same screen.
+It did open — four cards down. That is a position, and no wording fixes a position.
+
+**钉住靠的是它不在滚动区里，不是靠滚动时把它挪回去。** 页面根从 `ScrollViewer` 换成两行 `Grid`
+（`Auto` + `*`）：提示条在第 0 行，滚动区在第 1 行。滚动的是第 1 行，它跟着第 0 行什么都不做。
+七个调用点统一走一处 `Note(severity, message, restart)`，「立即重启」按钮要不要露出来全库只剩 1 处
+判断。
+
+**It is pinned because it is not in the scrolling area, not because it is moved back while scrolling.**
+The page root went from a `ScrollViewer` to a two-row `Grid` (`Auto` + `*`): the notice is row 0, the
+scrolling area row 1. Row 1 scrolls; row 0 does nothing at all. All seven call sites now go through one
+`Note(severity, message, restart)`, leaving a single place in the whole codebase that decides whether
+the "Restart now" button is shown.
+
+判据 `tools/verify-restart-notice.py`（25 项全通过）：条子顶边 y=90 / 窗口高 1038；滚动时滚动区里的
+市场下拉从 y=302 走到 −1774（**页面真滚了 2076 px**）；条子 y 90 → 90。
+
+---
+
 ## 1.0.14.0 — 2026-10-10（更新版 / update）
 
 **本版只做一件事：手册搬到网页上。** 14 种语言的使用手册（26 章，每章配图）既随应用一起提供，也发布在网页上；应用里打开的那份**先取网页**，取不到就用包内那份。往后手册的改动不必等下一个版本才会生效。

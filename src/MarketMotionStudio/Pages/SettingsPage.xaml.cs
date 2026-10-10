@@ -224,10 +224,34 @@ public sealed partial class SettingsPage : Page
             return;
         }
 
-        Status.Severity = InfoBarSeverity.Informational;
-        Status.Message = message;
-        RestartButton.Visibility = Visibility.Collapsed;
-        Status.IsOpen = true;
+        Note(InfoBarSeverity.Informational, message);
+    }
+
+    /// <summary>
+    /// The strip at the **top** of the page, for anything worth saying about a choice
+    /// on it — and the only place that decides what the strip looks like.
+    ///
+    /// One route rather than seven copies of four assignments, because the button's
+    /// visibility is part of the sentence and not part of any one caller: a strip that
+    /// offers "restart now" under a message that has nothing to do with restarting is
+    /// worse than no button at all. Every caller therefore says only *what to say* and
+    /// *whether a restart would settle it*.
+    /// </summary>
+    /// <param name="severity">How loud the strip is.</param>
+    /// <param name="message">The sentence already resolved into the current language.</param>
+    /// <param name="restart">Whether this is something a restart applies.</param>
+    private void Note(InfoBarSeverity severity, string message, bool restart = false)
+    {
+        RestartNotice.Severity = severity;
+        RestartNotice.Message = message;
+        RestartNotice.ActionButton.Visibility = restart ? Visibility.Visible : Visibility.Collapsed;
+        RestartNotice.IsOpen = true;
+    }
+
+    /// <summary>The page's own strip, for something worth telling but not stopping anything.</summary>
+    private void Note(string key)
+    {
+        Note(InfoBarSeverity.Warning, Strings.Get(key));
     }
 
     /// <summary>
@@ -264,10 +288,7 @@ public sealed partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            Status.Severity = InfoBarSeverity.Error;
-            Status.Message = Strings.Format("SettingsOutputFailed", Strings.Reason(ex));
-            RestartButton.Visibility = Visibility.Collapsed;
-            Status.IsOpen = true;
+            Note(InfoBarSeverity.Error, Strings.Format("SettingsOutputFailed", Strings.Reason(ex)));
         }
     }
 
@@ -341,10 +362,7 @@ public sealed partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            Status.Severity = InfoBarSeverity.Warning;
-            Status.Message = Strings.Format("SettingsBackgroundFailed", Strings.Reason(ex));
-            RestartButton.Visibility = Visibility.Collapsed;
-            Status.IsOpen = true;
+            Note(InfoBarSeverity.Warning, Strings.Format("SettingsBackgroundFailed", Strings.Reason(ex)));
             return false;
         }
 
@@ -642,15 +660,6 @@ public sealed partial class SettingsPage : Page
         }
     }
 
-    /// <summary>The page's own strip, for something worth telling but not stopping anything.</summary>
-    private void Note(string key)
-    {
-        Status.Severity = InfoBarSeverity.Warning;
-        Status.Message = Strings.Get(key);
-        RestartButton.Visibility = Visibility.Collapsed;
-        Status.IsOpen = true;
-    }
-
     /// <summary>
     /// Every font on this machine, into the combo, each item drawn in the font it
     /// names.
@@ -831,9 +840,24 @@ public sealed partial class SettingsPage : Page
         // why the whole card reads as it does rather than only its switch.
         WatermarkToggle.IsEnabled = WatermarkSettings.Optional;
 
-        if (!WatermarkSettings.Optional)
+        // **Written back whichever way the subscription went, and this is not the
+        // same thing as the line above.** While there is no subscription the
+        // switch is locked and has to be *shown* the answer (`Enabled` is true
+        // regardless at that point). Once there is one, the stored answer becomes
+        // the truth — and the switch was set from the other answer when the page
+        // opened, because the licence had not been read yet. Left alone it reads
+        // "on" over a mark that is not drawn, and the strip below it is empty:
+        // the card says the opposite of the frame, and the only way to find out
+        // is to toggle it off and back on.
+        //
+        // `_loading` suppresses the write that would otherwise come back out of
+        // this as a preference, the same way the slider below does it.
+        if (WatermarkToggle.IsOn != WatermarkSettings.Enabled)
         {
+            var restoring = _loading;
+            _loading = true;
             WatermarkToggle.IsOn = WatermarkSettings.Enabled;
+            _loading = restoring;
         }
 
         // Written back to the slider rather than only read from it: the value it
@@ -1114,10 +1138,13 @@ public sealed partial class SettingsPage : Page
         // Stored but not applied, for the reason MarketSettings gives: the pages
         // build their lists as they are constructed and the shell keeps them alive,
         // so changing one list here would leave the rest pointing at the old market.
-        Status.Severity = InfoBarSeverity.Informational;
-        Status.Message = Strings.Get("SettingsMarketRestart.Text");
-        RestartButton.Visibility = Visibility.Visible;
-        Status.IsOpen = true;
+        //
+        // Which is exactly why this has to be said **at the top of the page and loud
+        // enough to see**: nothing on screen changes when the market does, so without
+        // a sentence where the user is looking, picking a market looks like it did
+        // nothing at all. The strip is docked above the cards for this, the language
+        // and any other choosing that only takes effect on the way back up.
+        Note(InfoBarSeverity.Informational, Strings.Get("SettingsMarketRestart.Text"), restart: true);
     }
 
     private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
@@ -1134,10 +1161,7 @@ public sealed partial class SettingsPage : Page
         // Stored but not applied: see LanguageSettings.Choose. Nothing on screen
         // changes yet, so the restart that changes all of it is offered rather than
         // only described.
-        Status.Severity = InfoBarSeverity.Informational;
-        Status.Message = Strings.Get("SettingsLanguageRestart.Text");
-        RestartButton.Visibility = Visibility.Visible;
-        Status.IsOpen = true;
+        Note(InfoBarSeverity.Informational, Strings.Get("SettingsLanguageRestart.Text"), restart: true);
     }
 
     /// <summary>
@@ -1172,10 +1196,8 @@ public sealed partial class SettingsPage : Page
         {
             // A machine with no mail client is a real machine. Saying so beats a
             // click that appears to do nothing.
-            Status.Severity = InfoBarSeverity.Warning;
-            Status.Message = Strings.Format("SettingsContactFailed", ContactAddress, Strings.Reason(ex));
-            RestartButton.Visibility = Visibility.Collapsed;
-            Status.IsOpen = true;
+            Note(InfoBarSeverity.Warning,
+                 Strings.Format("SettingsContactFailed", ContactAddress, Strings.Reason(ex)));
         }
     }
 
@@ -1185,9 +1207,9 @@ public sealed partial class SettingsPage : Page
         // be left behind in the previous language.
         var failure = AppInstance.Restart(string.Empty);
 
-        // Restart only returns when it did not happen.
-        Status.Severity = InfoBarSeverity.Error;
-        Status.Message = Strings.Format("SettingsRestartFailed", failure);
-        RestartButton.Visibility = Visibility.Collapsed;
+        // Restart only returns when it did not happen. The button goes with it: it
+        // is still on screen at this point, and offering the act again after it has
+        // just failed would be offering the same failure.
+        Note(InfoBarSeverity.Error, Strings.Format("SettingsRestartFailed", failure));
     }
 }

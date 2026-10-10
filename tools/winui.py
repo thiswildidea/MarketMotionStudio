@@ -161,6 +161,95 @@ def find_all(control, condition, depth=0, limit=25, out=None):
     return out
 
 
+def invoke_click(control, settle=0.4):
+    """Click a control that is not necessarily a button. Returns False if none of it landed.
+
+    Navigation items are why this exists and why the order inside it matters. A WinUI 3
+    `NavigationViewItem` is a **list item**, not a button: it answers `SelectionItemPattern`
+    and does *not* answer `InvokePattern`. `verify-restart-notice.py` tried `Invoke` alone and
+    reported "the settings page is not in the navigation pane" — which has nothing to do with
+    the code under test; the item was found every time (`ListItemControl`, `AutomationId`
+    `NavSettingsItem`) and clicking it was what failed.
+
+    `Click` is last because it is the bluntest: it is also the one that silently does nothing
+    when the control's rectangle is empty, so a caller that leans on it cannot tell "clicked"
+    from "the control is off-screen". Callers that need to know should read whatever they want
+    to report **before** they click — a control that has been rebuilt by the click is gone when
+    the failure branch goes to name it.
+    """
+    if control is None:
+        return False
+
+    for pattern_id, act in ((auto.PatternId.InvokePattern, "Invoke"),
+                            (auto.PatternId.SelectionItemPattern, "Select")):
+        try:
+            pattern = control.GetPattern(pattern_id)
+
+            if pattern is not None:
+                getattr(pattern, act)()
+                time.sleep(settle)
+
+                return True
+        except Exception:  # noqa: BLE001
+            pass
+
+    try:
+        control.Click(simulateMove=False, waitTime=settle)
+
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def scrollable(win, inside=None):
+    """The scroll container holding `inside`, or any scroll container if `inside` is None.
+
+    Found by **what it can do**, not by what it is called. The settings page's scroller is a
+    `PaneControl` in the automation tree with an empty name — it is not a
+    `ScrollViewerControl` and it does not carry the `x:Name` a caller would look for — so a
+    search by either hands back nothing, no scroll ever happens, and every control below the
+    fold keeps reporting a rectangle of (0,0,0,0): indistinguishable from "not there".
+
+    `inside` matters because a page can hold more than one thing that scrolls; scrolling the
+    wrong one moves nothing that the assertion is looking at. It is matched by **runtime id**
+    and not by `is`: the walk builds a fresh wrapper object around the same element on every
+    pass, so two handles on one control are never the same object, and `c is inside` fails on
+    a control that is plainly there.
+    """
+    def scrolls(control):
+        """Written out rather than inlined: a condition that raises stops `find_all` dead.
+
+        It swallows the exception and hands back what it had, so one control that has gone
+        away mid-walk quietly turns "find every scroller" into "find the ones above it".
+        """
+        try:
+            pattern = control.GetPattern(auto.PatternId.ScrollPattern)
+
+            return pattern is not None and pattern.VerticallyScrollable
+        except Exception:  # noqa: BLE001
+            return False
+
+    def runtime_id(control):
+        try:
+            return tuple(control.GetRuntimeId())
+        except Exception:  # noqa: BLE001
+            return None
+
+    marker = runtime_id(inside) if inside is not None else None
+
+    if inside is not None and marker is None:
+        return None
+
+    for found in find_all(win, scrolls):
+        if marker is None:
+            return found
+
+        if any(runtime_id(c) == marker for c in find_all(found, lambda c: True)):
+            return found
+
+    return None
+
+
 def popup_items(win):
     """Every list row the process is showing, the navigation pane's included.
 
@@ -349,6 +438,54 @@ def value(combo):
         return None
 
 
+def _widest_run(indices, gap=1):
+    """The (first, last) of the longest unbroken stretch of ascending indices.
+
+    Used for the **columns**, where the canvas is one long run: nothing inside the window is
+    dark across as many columns as the canvas is (`_probe-first.png`: 369 of 1484), while the
+    capture's own left and right edge columns — the window's border, drawn over the desktop
+    behind it — are dark over most of the height but are runs of one. First-to-last would
+    therefore answer 0..1483 for a canvas at 540..909.
+
+    The rows do not use this and must not: the canvas is crossed by the chart's own light
+    gridlines, so it reads as several runs there and the widest one is a fraction of it
+    (`verify-candle-daily.png` would answer 261 where the canvas starts at 170). The rows are
+    taken as a span, over the columns this function has already fixed.
+
+    **`gap` is how many ascending steps may be missing inside one run, and it is 3 for the
+    columns — the canvas is one rectangle and a stroke of ink inside it must not be read as
+    the rectangle ending.** Measured on `probe-dots-1.png`: column 1077 is dark over 0.38 of
+    the canvas's rows while 1076 and 1078 are at 0.97, so at `gap=1` the canvas (733..1152,
+    419 across) comes back as two runs of 344 and 75 and the box is a fifth too narrow.
+    `verify-position-limit.png` is the same picture of the same thing: column 1021 at 494 of
+    1020 against 751..1134 at 631 of 681, splitting a 384-wide canvas into 270 and 113.
+    Everything downstream — the capsule column, the safe line, the progress bar — is then
+    scaled off a canvas that is missing its right-hand strip, and the frame was drawn
+    perfectly. Three tolerates two columns of ink, which is more than a 1-pixel axis line or
+    a capsule border needs and far less than the gap between two objects: the thumbnail grid
+    on a settings page runs 16 columns at this bar, separated by tens of light pixels, so a
+    gap cannot join its tiles into a canvas and the `< 40` width test below still refuses it.
+
+    This tolerance is needed in **both** column passes and dropping it from either one is a
+    regression that reads as a different bug. Without it in the second pass,
+    `probe-dots-1.png` comes back 343 across where the canvas is 419; without it in the first,
+    `verify-assetrace-final.png` gets a band so narrow that the second pass cannot recover the
+    frame either. Confining the second pass to the first pass's columns was also tried and
+    cannot work at all — it can only narrow, and widening is the entire point of taking it.
+    """
+    runs = [[indices[0]]]
+
+    for value in indices[1:]:
+        if value - runs[-1][-1] <= gap:
+            runs[-1].append(value)
+        else:
+            runs.append([value])
+
+    longest = max(runs, key=len)
+
+    return longest[0], longest[-1]
+
+
 def canvas_box(whole):
     """The preview canvas inside a captured window, as (left, right, top, bottom).
 
@@ -472,33 +609,151 @@ def canvas_box(whole):
         width is the one edge that is unambiguous — nothing else in the window is 383 dark pixels
         across — and 9:16 turns it into the height, which is a fact about the format rather than
         something to be measured again.
-        """
-        rows = [y for y in range(height)
-                if sum(1 for x in range(width) if backdrop(x, y)) > 0.08 * width]
 
-        if not rows:
+        **The columns are measured first, over the whole picture; the rows are then measured
+        over the columns.** That order is the fix for a pair of errors that looked unrelated and
+        were the same error twice. The capture's own edge lines are dark — the window's border,
+        drawn over the desktop behind it, a few pixels outside the window in a picture that is
+        1484×932 of a 1500×940 window — so a pass that walks the *whole* width or the *whole*
+        height picks them up and hands back the picture for a canvas that is a fifth of it:
+
+        - the rows, measured over the whole width, answered `top=171, bottom=931` for a canvas
+          ending at 829 (`_probe-first.png`), because row 931 is the window's bottom border and
+          counts as dark across the full width;
+        - the columns, measured over a band that had taken that 931 in, answered `left=0,
+          right=1483`, because with the band pushed down to y=361..741 the settings page's dark
+          *photo backdrop* beside the canvas is dark over the same rows as the canvas is.
+
+        And that second one is a consequence of the first, which is why fixing them separately
+        went wrong twice. Asked in this order, both go away by themselves: over the full width
+        the canvas is the one long run of dark columns (nothing else in the window is 369 dark
+        pixels across), and once the rows are then asked for **only over those columns**, the
+        border rows stop counting — they are dark where the window is, not where the canvas is.
+        `_probe-first.png` comes out `171..829` with no trimming at all, and the two calls that
+        used to be here to discard stray edges are gone because nothing stray is left.
+
+        Measured: `verify-candle-daily.png` 170..850, `_probe-first.png` 171..829,
+        `verify-watermark-off.png` 170..820 — against canvases that a hand-run of the same test
+        puts at exactly those rows.
+
+        **The bar across the columns is a share of the picture's height, and not of the
+        canvas's own.** Counting each column over the whole picture is what makes the canvas
+        stand out, and the alternative — the same bar taken from the tallest column — is worse
+        on the pictures that matter. A canvas showing a flat line, or one whose bottom third is
+        a card, has columns that are not dark all the way down (measured lowest canvas column:
+        515 of 1020 against a tallest of 684), so half of the tallest is a bar the canvas's own
+        edges fail while a near-black picture does not; and on a page that is mostly a dark
+        *settings* panel — `validate-settings.png` — the darkest column of the whole picture is
+        inside that panel, which moves the bar and takes the canvas's own columns out with it
+        (measured: the whole canvas vanishes, 1867 columns of panel answering instead).
+
+        **One column of ink is not the edge of the canvas, and the run has to tolerate it.**
+        Counting each column over the whole picture is what makes the canvas stand out, and it
+        is also what lets a single vertical stroke inside the canvas fall under the bar while
+        both its neighbours clear it — so the canvas comes back as two runs and the box loses
+        its right-hand strip. Measured twice, on two different pictures: `verify-position-limit.png`
+        (column 1021 at 494 of 1020, inside a frame that is 631 of 681 dark) and
+        `probe-dots-1.png` (column 1077 at 0.38 against neighbours at 0.97). See `_widest_run`
+        for why the tolerance belongs there and not in a second pass.
+        """
+        # **The columns are what the picture gives, and the rows are what those columns give.**
+        #
+        # Columns first, over the whole picture. The canvas is the widest run of dark columns and
+        # the capture's two edge columns are runs of one on either side of a page that is not dark
+        # _where the canvas is_ — `_probe-first.png` measures 234 and 320 of 922 dark for the
+        # edges against 922 of 922 for every canvas column, so first-to-last answers 0..1483.
+        deep = [x for x in range(width)
+                if sum(1 for y in range(height) if backdrop(x, y)) > 0.5 * height]
+
+        if not deep:
             return None
 
-        top = rows[0]
-        bottom = rows[-1]
-        left = right = None
+        left, right = _widest_run(deep, gap=3)
 
-        # Twice: the columns are counted over a band whose height came from the last guess, and
-        # the guess is what they then correct. It settles in one step on every capture measured.
-        for _ in range(2):
-            mid0 = top + ((bottom - top) // 4)
-            mid1 = bottom - ((bottom - top) // 4)
-            tall = max(1, mid1 - mid0)
-            across = [x for x in range(width)
-                      if sum(1 for y in range(mid0, mid1) if backdrop(x, y)) > 0.6 * tall]
+        if right - left < 40:
+            return None
 
-            if not across:
-                return None
+        # Rows next, counted over those columns only. Half the canvas's own width is the bar: a
+        # frame's ink is thin, so a row inside it is mostly backdrop, while the page above and
+        # below is light across the same columns.
+        span = right - left + 1
+        # The top is the first row that is dark across the canvas **and stays that way** — the run
+        # test is what makes it the canvas rather than the capture's own top edge. Row 0 of
+        # `_probe-first.png` is dark across all 369 canvas columns (it is the window's own border,
+        # and it is dark where the canvas is because the canvas is below it), so "the first dark
+        # row" answers 0 and puts the box 171 pixels high. What row 0 is not is *followed* by dark
+        # rows: rows 1 to 170 are the light page. In the canvas they are dark all the way down,
+        # gridlines or not — a gridline is 1–6 rows, so a window of 20 rows is never broken by one.
+        def across(y, width_left=left, width_right=right, width_span=None):
+            bar = 0.5 * (width_span if width_span is not None else width_right - width_left + 1)
 
-            left, right = across[0], across[-1]
+            return sum(1 for x in range(width_left, width_right + 1)
+                       if backdrop(x, y)) > bar
 
-            # Clamped, because a whole window can be dark enough to be counted as one row and
-            # the width that comes out of it then asks for a canvas taller than the picture.
+        window = 20
+        top = None
+
+        # Asked **downwards from row 0**, and the run test is what makes that safe. Row 0 of a
+        # capture is the window's own border, dark across the canvas's columns because the canvas
+        # is below it, so "the first dark row" would answer 0 and put the box 170 high. What row 0
+        # is not is *followed* by dark rows — rows 1 to 169 are the light page — and twenty rows of
+        # which twelve must be dark is a test a border row fails and no row inside the canvas
+        # fails, gridlines included (a gridline is 1–6 rows, so it never empties a window of 20).
+        #
+        # Starting from the **middle** instead was tried and is wrong in a way that costs a whole
+        # afternoon to find: the middle row of the picture *is* a row of the canvas, so the scan
+        # answers `height // 2` at once and stops. Measured on `verify-position-three.png`: top
+        # 510 against a canvas that starts at 170, a bottom then clamped to 1019, and a box that
+        # is not 9:16 — so `upright` refused it, `canvas_box` fell back to `walked`'s answer, and
+        # every frame in the corpus came back as the entire window (1086×924 of a 1920×1020
+        # picture, `looks_like_a_frame` still passing it). A page with no canvas in it is kept out
+        # by the width guard above, not by where the row scan starts.
+        for y in range(height):
+            if across(y, width_span=span) and sum(1 for yy in range(y, min(height, y + window))
+                                                  if across(yy, width_span=span)) >= window * 0.6:
+                top = y
+                break
+
+        if top is None:
+            return None
+
+        # The bottom is the height that the width implies, by the format's own 9:16 — a fact
+        # rather than a measurement. Measured, it is worse at both ends: the walk overshoots into
+        # the row of dark controls under the preview, and a frame that ends on its light cards
+        # undershoots. The width is the one edge nothing else in the window shares.
+        bottom = min(top + int(round((right - left) / 0.5625)), height - 1)
+
+        # **And the columns are counted a second time, inside the rows that were found** — over
+        # the whole width, with the same tolerance, and the bottom derived again from the width
+        # it ends up with. Neither pass is enough alone, and the two pictures that prove it
+        # point in opposite directions:
+        #
+        # - `verify-assetrace-final.png`: over the whole picture the canvas's own columns break
+        #   into 751..866 and 874..1134 — a **seven**-column gap, too wide for any tolerance to
+        #   be honest about — so one pass answers 874..1134 and loses a third of the frame.
+        #   Counted over the canvas's rows instead, 751..1134 is one run of 384.
+        # - `probe-dots-1.png`: the same count over the rows is *also* short, because the band it
+        #   counts in was derived from the first pass's too-narrow width — and that pass's own
+        #   gap is a single column of ink at 1077. Hence the same `gap` here: without it the
+        #   second pass hands back 733..1076 where the canvas is 733..1152.
+        #
+        # Unclamped, because a pass confined to `left..right` can only narrow and the whole
+        # point is the frame that needs widening. What keeps a stray column out is the run, not
+        # a clamp: measured on `verify-position-limit.png`, column 1135 — one past the frame —
+        # is dark over **0** of the 479 rows against 380+ for the frame's own last column, so
+        # there is nothing beside a canvas for a run to climb onto.
+        inner = [x for x in range(width)
+                 if sum(1 for y in range(top, bottom + 1) if backdrop(x, y)) > 0.5 * (bottom - top + 1)]
+
+        if inner:
+            left, right = _widest_run(inner, gap=3)
+
+            # The bottom was worked out from the **first** pass's width, so a pass that widens
+            # the box leaves a height belonging to the narrower one: `verify-position-three.png`
+            # came back 384 wide against a 681-tall bottom, which is not 9:16, so `upright`
+            # refused it, `canvas_box` fell back to `walked`'s answer — the entire window, still
+            # inside the picture, so `capture` accepted it — and every measurement taken from it
+            # was confident nonsense.
             bottom = min(top + int(round((right - left) / 0.5625)), height - 1)
 
         if bottom - top < 40 or right - left < 40:
@@ -589,6 +844,57 @@ def capture(win, path, tries=4):
             continue
 
         if looks_like_a_frame(picture, canvas_box(picture)):
+            return True
+
+    return False
+
+
+def shot(win, path, tries=4, slack=24):
+    """A picture of **this** window, for the pages that have no canvas in them.
+
+    `capture` cannot be used there: it accepts a shot only when `canvas_box` finds a frame
+    inside it, and a settings page has no frame — so `capture` retries four times, fails, and
+    the script reports "抓不到设置页" while the page is up and perfectly visible. That is
+    what sent `verify-restart-notice.py` back twice with two failures that were the harness
+    refusing its own screenshots.
+
+    The acceptance test here is the one thing a shot of *this* window always has whatever is
+    drawn in it: **its size**. `CaptureToImage` hands back the topmost window, and the editor
+    over the app measures 1920×1080 against the app's own 1920×1020, so a size that is not
+    this window's is not this window. Maximised windows are the hole in it — a maximised app
+    and a lock screen are both the size of the display — and `launch` calls `keep_awake` for
+    exactly that reason.
+
+    Returns False when nothing of this size came back; the file is written either way.
+    """
+    from PIL import Image
+
+    try:
+        rect = win.BoundingRectangle
+        wide = rect.right - rect.left
+        tall = rect.bottom - rect.top
+    except Exception:  # noqa: BLE001
+        wide = tall = None
+
+    for attempt in range(tries):
+        for call in (win.SetActive, lambda: win.SetTopmost(True)):
+            try:
+                call()
+            except Exception:  # noqa: BLE001
+                pass
+
+        time.sleep(0.6 + (0.5 * attempt))
+
+        try:
+            win.CaptureToImage(path)
+            picture = Image.open(path).convert("RGB")
+        except Exception:  # noqa: BLE001
+            continue
+
+        if wide is None:
+            return True
+
+        if (abs(picture.size[0] - wide) <= slack and abs(picture.size[1] - tall) <= slack):
             return True
 
     return False

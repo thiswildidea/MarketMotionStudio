@@ -6,6 +6,7 @@ Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara 
 
 Ayarlarda uygulamanın hangi piyasadan fiyat aldığı seçilir; varsayılan A hisseleri. Değişiklik uygulama yeniden başlatıldıktan sonra geçerli olur.
 
+- **Seçim kaydedilir, uygulanmaz.** Uygulama yeniden başlatılana kadar ekranda hiçbir şey değişmez; bu yüzden bunu söyleyen satır **Ayarlar sayfasının en üstünde**, kartların üzerinde görünür ve sayfayı kaydırdığınızda orada sabit kalır; yanındaki düğme uygulamayı sizin için yeniden başlatır.
 - **A hisseleri**: sekiz sayfanın tümü kullanılabilir.
 - **Hong Kong**: getiri matrisi ve takvim çalışır; sektör yarışı dört Hang Seng alt endeksiyle koşulur; **tüm piyasa için veri yok, bu yüzden o sayfa gizlenir**.
 - **ABD**: getiri matrisi ve takvim çalışır; sektör yarışı on SPDR sektör ETF'i ile koşulur; hacim sayfasında yalnızca günlük mod kalır, çünkü dakikalık uç nokta ABD verisi sunmaz; **tutarlar dolar cinsindendir ve tüm piyasa hacmi sayfası gizlenir**.

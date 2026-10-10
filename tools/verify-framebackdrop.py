@@ -155,11 +155,27 @@ def goto_settings(win):
 
 
 def goto_first_page(win):
-    """回到第一个图表页（市场成交额）。"""
+    """回到第一个图表页（市场成交额）。
+
+    **翻完页要抬前台。** 点导航只把页面切过去，焦点与前台窗口还是脚本自己那个控制台；
+    而 `CaptureToImage` 抓的是**当时在最上面的那个窗口**。少了这一步，后面每次取图
+    拿到的都是上一张 —— 页面明明翻过去了，图上却还是原来那一页，而按像素断言的调用方
+    会把上一张的数字当成这一张的，报出一批看着很确定的「差异 0.00%」。
+
+    用 `SetActive` 而不是 `SetTopmost`：前者是正常的「切到这个窗口」，不会留一个
+    置顶状态给后面的取景添麻烦。
+    """
     items = find_all(lambda c: c.ControlTypeName == "ListItemControl", win, limit=8)
     assert items, "导航项未找到"
     invoke_click(items[0])
-    time.sleep(2)
+    time.sleep(1.0)
+
+    try:
+        win.SetActive()
+    except Exception:  # noqa: BLE001 - 抬不起来是取景那一步的事，这里不抛
+        pass
+
+    time.sleep(1.2)
 
 
 def scroll_settings(win, percent):

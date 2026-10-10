@@ -6,6 +6,7 @@ Ta aplikacja zamienia wskaźniki rynku akcji A w pionowe filmy na telefon. Wybie
 
 W ustawieniach wybiera się, z którego rynku aplikacja pobiera notowania; domyślnie akcje A. Zmiana działa po ponownym uruchomieniu aplikacji.
 
+- **Wybór jest zapisywany, nie stosowany.** Na ekranie nic się nie zmieni, dopóki aplikacja nie zostanie ponownie uruchomiona, więc odpowiedni komunikat pojawia się **na górze strony ustawień**, nad kartami i pozostaje tam podczas przewijania, z przyciskiem, który uruchomi aplikację ponownie za Ciebie.
 - **Akcje A**: dostępnych jest wszystkich osiem stron.
 - **Hongkong**: macierz stóp zwrotu i kalendarz działają; wyścig sektorów korzysta z czterech subindeksów Hang Seng; **nie ma danych dla całego rynku, więc ta strona jest ukryta**.
 - **USA**: macierz stóp zwrotu i kalendarz działają; wyścig sektorów korzysta z dziesięciu sektorowych ETF-ów SPDR; strona wolumenu ma tylko tryb dzienny, bo minutowy endpoint nie obsługuje danych z USA; **kwoty są w dolarach, a strona obrotu całego rynku jest ukryta**.

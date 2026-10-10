@@ -6,6 +6,7 @@ Questa app trasforma gli indicatori del mercato delle azioni A in video vertical
 
 Nelle impostazioni si sceglie da quale mercato l'app prende le quotazioni; come predefinite, le azioni A. La modifica ha effetto dopo il riavvio dell'app.
 
+- **La scelta viene memorizzata, non applicata.** Sullo schermo non cambia nulla finché l'app non viene riavviata, quindi la riga che lo dice compare **in cima alla pagina delle impostazioni**, sopra le schede e resta lì mentre scorri, con un pulsante che riavvia l'app per te.
 - **Azioni A**: tutte e otto le pagine sono disponibili.
 - **Hong Kong**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa i quattro sottoindici Hang Seng; **non esiste un dato per l'intero mercato, quindi quella pagina è nascosta**.
 - **Stati Uniti**: la matrice dei rendimenti e il calendario funzionano; la gara di settori usa dieci ETF settoriali SPDR; la pagina dei volumi conserva solo la modalità giornaliera, perché l'endpoint dei minuti non serve dati statunitensi; **gli importi sono in dollari e la pagina del controvalore del mercato è nascosta**.

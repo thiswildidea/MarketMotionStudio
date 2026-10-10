@@ -6,6 +6,7 @@ Cette application transforme des indicateurs du marché des actions A en vidéos
 
 Les paramètres déterminent de quel marché l'application tire ses cotations ; les actions A par défaut. Le changement prend effet après le redémarrage de l'application.
 
+- **Le choix est enregistré, pas appliqué.** Rien ne change à l'écran avant le redémarrage de l'application : la phrase qui le dit s'affiche donc **en haut de la page de paramètres**, au-dessus des cartes et y reste fixée pendant le défilement, avec un bouton qui redémarre l'application pour vous.
 - **Actions A** : les huit pages sont disponibles.
 - **Hong Kong** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise les quatre sous-indices Hang Seng ; **il n'existe pas de chiffre pour l'ensemble du marché, cette page est donc masquée**.
 - **États-Unis** : la matrice des rendements et le calendrier fonctionnent ; la course de secteurs utilise dix ETF sectoriels SPDR ; la page des volumes ne garde que le mode quotidien, car le point d'accès minute ne sert pas de données américaines ; **les montants sont en dollars et la page du volume d'échanges du marché est masquée**.

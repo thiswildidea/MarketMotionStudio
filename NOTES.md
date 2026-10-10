@@ -441,6 +441,17 @@ baseline, the stacked layout and the card row. It has since been **submitted** (
 one thing that landed after it — the block that says where a comparison has got to — moved to
 1.0.13.0 rather than being folded into this entry.
 
+**1.0.15.0 (2026-10-11).** The upload bundle built and reported `PackageSuccessfullyCreated`:
+`artifacts/MarketMotionStudio_1.0.15.0_x64_arm64_bundle.msixupload`, 155.1 MB, six inner packages.
+Opened rather than trusted: the x64 inner package reports Identity `1.0.15.0` — **the version in a
+file name is not evidence** — and holds fourteen help documents, seventy help images, `resources.pri`
+and Win2D. `Package/Properties/DisplayName` is still the literal reserved name. What separates this
+bundle from the 1.0.14.0 one already submitted is legible in the shipped `MarketMotionStudio.dll`:
+this one carries `RestartNotice` and `SettingsScroll`, that one carries neither, and
+`PublishedAsync`, `RemoteWait`, `ClockSize`, `TimeBlock` and `FrameSpan` are in both — the manual on
+the web went out with 1.0.14.0, the pinned restart notice did not. Both dlls are the same length,
+which is why the length is never the thing to look at.
+
 **1.0.14.0 (2026-10-10).** The upload bundle built and reported `PackageSuccessfullyCreated`:
 `artifacts/MarketMotionStudio_1.0.14.0_x64_arm64_bundle.msixupload`, 155.1 MB, six inner packages.
 Both the x64 and the arm64 inner package report Identity `1.0.14.0` — the version in a file name is

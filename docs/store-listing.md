@@ -38,7 +38,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版把 14 种语言的使用手册一并发布到网页上：手册既随应用一起提供，也在网页上有一份，应用里打开的那份先取网页，取不到就用应用自带的 —— 以后手册的改动不必等下一个版本才会生效。这一版也把手册里的配图全部重拍了一遍。
+设置里改了市场或语言之后，那条「重启应用」的提示现在钉在设置页最顶端：改完立刻看得见，页面往下滚多远它都停在原处。以前它排在滚动区的最后，改完那一眼并不在同一屏。提示条上还有一个「立即重启」按钮，不用自己去关应用。
 
 ### 产品功能
 
@@ -85,7 +85,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版把 14 種語言的使用手冊一併發布到網頁上：手冊既隨應用程式一起提供，也在網頁上有一份，應用程式裡打開的那份先取網頁，取不到就用應用程式自帶的 —— 以後手冊的改動不必等下一個版本才會生效。這一版也把手冊裡的配圖全部重拍了一遍。
+設定裡改了市場或語言之後，那條「重新啟動應用程式」的提示現在釘在設定頁最頂端：改完立刻看得見，頁面往下捲多遠它都停在原處。以前它排在捲動區的最後，改完那一眼並不在同一個畫面。提示條上還有一個「立即重新啟動」按鈕，不必自己關掉應用程式。
 
 ### 產品功能
 
@@ -132,7 +132,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-This version publishes the manual for all 14 languages on the web as well: the manual ships with the app and also lives on the web, and the copy you open in the app is taken from the web when it can be, falling back to the one inside the app when it cannot — so changes to the manual no longer have to wait for the next version. The pictures in the manual have been retaken for this version too.
+The “restart the app” notice shown after you change the market or the language is now pinned to the top of Settings: it is on screen the moment you change something, and it stays put however far the page is scrolled. It used to be the last card inside the scrolling area, four cards below the one you had just changed. The notice also carries a Restart now button, so you do not have to close the app yourself.
 
 ### Product features
 
@@ -179,7 +179,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-今回のバージョンでは、14 言語のマニュアルをウェブにも公開しました。マニュアルはアプリに同梱されるとともにウェブ上にも置かれ、アプリで開くものはウェブから取得し、取得できない場合はアプリ内のものを使います。これにより、マニュアルの変更が次のバージョンを待たずに反映されるようになりました。また、マニュアル内の図版もすべて撮り直しました。
+設定で市場や言語を変更したあとに出る「アプリを再起動してください」という通知が、設定ページの最上部に固定されました。変更した瞬間に画面に表示され、ページをどこまでスクロールしてもその位置に留まります。以前はスクロール領域の最後にあり、変更した直後の画面には入っていませんでした。通知には「今すぐ再起動」ボタンも付きました。
 
 ### 製品の機能
 
@@ -226,7 +226,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이번 버전에서는 14개 언어의 설명서를 웹에도 함께 공개했습니다. 설명서는 앱에 포함되어 제공되는 동시에 웹에도 있으며, 앱에서 여는 설명서는 웹에서 가져오고 가져올 수 없으면 앱 안의 것을 사용합니다. 이제 설명서의 변경이 다음 버전을 기다리지 않아도 됩니다. 설명서의 그림도 이번 버전에서 모두 다시 캡처했습니다.
+시장이나 언어를 바꿀 때 나오는 ‘앱을 다시 시작하세요’ 안내가 이제 설정 페이지 맨 위에 고정됩니다. 바꾸는 순간 화면에 보이고, 페이지를 아무리 아래로 스크롤해도 그 자리에 그대로 있습니다. 예전에는 스크롤 영역의 맨 마지막에 있어 방금 바꾼 항목과 같은 화면에 없었습니다. 안내에 ‘지금 다시 시작’ 버튼도 함께 붙었습니다.
 
 ### 제품 기능
 
@@ -273,7 +273,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Diese Version veröffentlicht das Handbuch in allen 14 Sprachen auch im Web: Es wird mit der App geliefert und liegt zugleich im Web, und was in der App geöffnet wird, holt die App aus dem Web und greift nur, wenn das nicht gelingt, auf die eingebaute Kopie zurück. Änderungen am Handbuch müssen damit nicht mehr auf die nächste Version warten. Die Bilder im Handbuch wurden für diese Version ebenfalls neu aufgenommen.
+Der Hinweis „App neu starten“, der nach dem Ändern des Marktes oder der Sprache erscheint, steht jetzt oben in den Einstellungen: Er ist in dem Moment sichtbar, in dem du etwas änderst, und bleibt dort, egal wie weit die Seite gescrollt wird. Früher war er die letzte Karte im Scrollbereich, vier Karten unter der gerade geänderten. Der Hinweis hat außerdem die Schaltfläche „Jetzt neu starten“.
 
 ### Produktfunktionen
 
@@ -320,7 +320,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Cette version publie aussi le manuel dans les 14 langues sur le web : il est fourni avec l'application et se trouve en même temps en ligne, et celui que vous ouvrez dans l'application est pris sur le web lorsque c'est possible, à défaut c'est la copie intégrée qui est utilisée. Les modifications du manuel n'ont ainsi plus à attendre la version suivante. Les images du manuel ont également été refaites pour cette version.
+La mention « redémarrer l’application » affichée après un changement de marché ou de langue est maintenant épinglée en haut des paramètres : elle apparaît dès le changement et reste en place, quelle que soit la distance de défilement de la page. Elle était auparavant la dernière carte de la zone de défilement, quatre cartes sous celle que vous veniez de modifier. La mention porte aussi un bouton « Redémarrer maintenant ».
 
 ### Fonctionnalités
 
@@ -367,7 +367,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Questa versione pubblica anche sul web il manuale in tutte le 14 lingue: il manuale è fornito con l'applicazione e si trova allo stesso tempo online, e quello che aprite nell'applicazione è preso dal web quando è possibile, altrimenti viene usata la copia incorporata. Le modifiche al manuale non devono così più attendere la versione successiva. Anche le immagini del manuale sono state rifatte per questa versione.
+L’avviso «riavvia l’app» mostrato dopo aver cambiato mercato o lingua è ora fissato in cima alle impostazioni: compare nel momento stesso in cui fai la modifica e resta lì, qualunque sia lo scorrimento della pagina. Prima era l’ultima scheda dell’area scorrevole, quattro schede sotto quella che avevi appena modificato. L’avviso ha anche un pulsante «Riavvia ora».
 
 ### Funzionalità del prodotto
 
@@ -414,7 +414,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Esta versión publica también en la web el manual en los 14 idiomas: se entrega con la aplicación y a la vez está en línea, y el que se abre en la aplicación se toma de la web cuando es posible; si no, se usa la copia incluida. Así los cambios del manual ya no tienen que esperar a la siguiente versión. Las imágenes del manual también se han rehecho en esta versión.
+El aviso «reinicia la aplicación» que aparece al cambiar el mercado o el idioma ahora está fijado en la parte superior de la configuración: se ve en el momento en que haces el cambio y se queda ahí por mucho que se desplace la página. Antes era la última tarjeta del área de desplazamiento, cuatro tarjetas por debajo de la que acababas de cambiar. El aviso incluye además un botón «Reiniciar ahora».
 
 ### Funciones del producto
 
@@ -460,7 +460,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Esta versão também publica na web o manual nos 14 idiomas: ele acompanha o aplicativo e ao mesmo tempo está online, e o que você abre no aplicativo é obtido da web quando possível; caso contrário, usa-se a cópia embutida. Assim, as alterações no manual não precisam mais esperar pela próxima versão. As imagens do manual também foram refeitas nesta versão.
+O aviso «reinicie o aplicativo» exibido ao alterar o mercado ou o idioma agora fica fixado no topo das configurações: aparece no momento em que você faz a alteração e permanece lá, não importa o quanto a página role. Antes era o último cartão da área de rolagem, quatro cartões abaixo do que você acabou de alterar. O aviso também traz um botão «Reiniciar agora».
 
 ### Funcionalidades do produto
 
@@ -507,7 +507,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Ta wersja publikuje również w sieci podręcznik we wszystkich 14 językach: jest dostarczany z aplikacją i jednocześnie dostępny online, a ten otwierany w aplikacji jest pobierany z sieci, gdy się da, a w przeciwnym razie używana jest wbudowana kopia. Dzięki temu zmiany w podręczniku nie muszą czekać na następną wersję. Ilustracje w podręczniku również zostały w tej wersji wykonane od nowa.
+Komunikat „uruchom aplikację ponownie”, który pojawia się po zmianie rynku lub języka, jest teraz przypięty na górze ustawień: widać go w momencie zmiany i zostaje na miejscu, niezależnie od tego, jak daleko przewiniesz stronę. Dawniej był ostatnią kartą w obszarze przewijania, cztery karty poniżej tej, którą właśnie zmieniłeś. Komunikat ma też przycisk „Uruchom ponownie teraz”.
 
 ### Funkcje produktu
 
@@ -554,7 +554,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Tato verze zveřejňuje příručku ve všech 14 jazycích také na webu: je dodávána s aplikací a zároveň je dostupná online, a ta, kterou otevřete v aplikaci, se bere z webu, když to jde, jinak se použije vestavěná kopie. Změny v příručce tak nemusí čekat na další verzi. Obrázky v příručce byly pro tuto verzi rovněž pořízeny znovu.
+Oznámení „restartujte aplikaci“, které se zobrazí po změně trhu nebo jazyka, je nyní připnuté v horní části nastavení: je vidět v okamžiku změny a zůstává na místě, ať stránku posunete kamkoli. Dříve bylo poslední kartou v oblasti posouvání, čtyři karty pod tou, kterou jste právě změnili. Oznámení má také tlačítko „Restartovat“.
 
 ### Funkce produktu
 
@@ -601,7 +601,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-В этой версии руководство на всех 14 языках публикуется также в интернете: оно поставляется вместе с приложением и одновременно доступно онлайн; то, что открывается в приложении, берётся из интернета, когда это возможно, а иначе используется встроенная копия. Благодаря этому изменения в руководстве больше не должны ждать следующей версии. Иллюстрации в руководстве для этой версии тоже сделаны заново.
+Сообщение «перезапустите приложение», которое появляется после смены рынка или языка, теперь закреплено в верхней части настроек: оно видно в момент изменения и остаётся на месте, как далеко ни прокрутите страницу. Раньше оно было последней карточкой в прокручиваемой области — на четыре карточки ниже той, которую вы только что изменили. В сообщении есть и кнопка «Перезапустить».
 
 ### Функции продукта
 
@@ -648,7 +648,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümde 14 dilin tümündeki kılavuz web'de de yayımlanıyor: kılavuz uygulamayla birlikte geliyor ve aynı zamanda çevrimiçi olarak da bulunuyor; uygulamada açılan, mümkün olduğunda web'den alınıyor, alınamadığında yerleşik kopya kullanılıyor. Böylece kılavuzdaki değişikliklerin bir sonraki sürümü beklemesi gerekmiyor. Kılavuzdaki görseller de bu sürüm için yeniden çekildi.
+Pazarı veya dili değiştirdikten sonra görünen «uygulamayı yeniden başlatın» bildirimi artık Ayarlar’ın en üstüne sabitlendi: değişikliği yaptığınız anda görünür ve sayfayı ne kadar kaydırırsanız kaydırın yerinde kalır. Eskiden kaydırma alanının son kartıydı — az önce değiştirdiğiniz kartın dört kart altında. Bildirimde ayrıca «Şimdi yeniden başlat» düğmesi var.
 
 ### Ürün özellikleri
 
