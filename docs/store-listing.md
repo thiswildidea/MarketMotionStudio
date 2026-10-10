@@ -38,7 +38,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版 K 线页一次比较多只标的时，画面上方会说出「画面走到哪儿了」：日线、周线、月线那一行跟着画面走，写的是正在画的那一天，不是区间从哪天起；1／5／15 分钟档上面是那一个交易日的日期，下面多一行钟点，跟着画面一分钟一分钟地走。只有多标的的画面加这一块 —— 单标的的画面本来就有日期。
+本版把 14 种语言的使用手册一并发布到网页上：手册既随应用一起提供，也在网页上有一份，应用里打开的那份先取网页，取不到就用应用自带的 —— 以后手册的改动不必等下一个版本才会生效。这一版也把手册里的配图全部重拍了一遍。
 
 ### 产品功能
 
@@ -85,7 +85,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版 K 線頁一次比較多檔標的時，畫面上方會說出「畫面走到哪兒了」：日線、週線、月線那一行跟著畫面走，寫的是正在畫的那一天，不是區間從哪天起；1／5／15 分鐘檔上面是那一個交易日的日期，下面多一行時刻，跟著畫面一分鐘一分鐘地走。只有多標的的畫面加這一塊 —— 單標的的畫面本來就有日期。
+本版把 14 種語言的使用手冊一併發布到網頁上：手冊既隨應用程式一起提供，也在網頁上有一份，應用程式裡打開的那份先取網頁，取不到就用應用程式自帶的 —— 以後手冊的改動不必等下一個版本才會生效。這一版也把手冊裡的配圖全部重拍了一遍。
 
 ### 產品功能
 
@@ -132,7 +132,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-This version adds one line to a frame comparing several instruments: it says where the picture has got to. On the daily, weekly and monthly periods the date walks with the animation and names the candle being drawn, not the first day of the range. On the 1-, 5- and 15-minute periods the top row names the trading day and a row under it gives the time of day, moving minute by minute with the picture. Only frames with several instruments get it — a frame with one has always carried its own date.
+This version publishes the manual for all 14 languages on the web as well: the manual ships with the app and also lives on the web, and the copy you open in the app is taken from the web when it can be, falling back to the one inside the app when it cannot — so changes to the manual no longer have to wait for the next version. The pictures in the manual have been retaken for this version too.
 
 ### Product features
 
@@ -179,7 +179,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-今回のバージョンでは、複数の銘柄を比較する画面の上部に「今どこまで描いたか」が表示されます。日足・週足・月足では日付の行がアニメーションとともに動き、期間の初日ではなく今描いている足の日付を示します。1分・5分・15分では上段にその取引日の日付、下段に時刻が表示され、時刻は画面とともに一分ずつ進みます。この表示は複数銘柄を比較する画面だけで、銘柄が一つの画面には以前から日付が表示されています。
+今回のバージョンでは、14 言語のマニュアルをウェブにも公開しました。マニュアルはアプリに同梱されるとともにウェブ上にも置かれ、アプリで開くものはウェブから取得し、取得できない場合はアプリ内のものを使います。これにより、マニュアルの変更が次のバージョンを待たずに反映されるようになりました。また、マニュアル内の図版もすべて撮り直しました。
 
 ### 製品の機能
 
@@ -226,7 +226,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이번 버전에서는 여러 종목을 비교하는 화면 위에 「화면이 어디까지 왔는지」가 표시됩니다. 일·주·월 봉에서 날짜 줄은 애니메이션과 함께 움직이며, 구간의 첫날이 아니라 지금 그리고 있는 봉의 날짜를 보여줍니다. 1·5·15분 봉에서는 위 줄에 그 거래일의 날짜, 아래 줄에 시각이 표시되고, 시각은 화면과 함께 일 분씩 움직입니다. 이 표시는 여러 종목을 비교하는 화면에만 추가되며, 종목이 하나인 화면에는 원래 날짜가 표시되어 있습니다.
+이번 버전에서는 14개 언어의 설명서를 웹에도 함께 공개했습니다. 설명서는 앱에 포함되어 제공되는 동시에 웹에도 있으며, 앱에서 여는 설명서는 웹에서 가져오고 가져올 수 없으면 앱 안의 것을 사용합니다. 이제 설명서의 변경이 다음 버전을 기다리지 않아도 됩니다. 설명서의 그림도 이번 버전에서 모두 다시 캡처했습니다.
 
 ### 제품 기능
 
@@ -273,7 +273,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Diese Version fügt dem Bild, das mehrere Werte vergleicht, eine Zeile hinzu: es sagt jetzt, wo es angekommen ist. Bei Tages-, Wochen- und Monatskerzen läuft die Datumszeile mit der Animation mit und nennt den Tag der Kerze, die gerade gezeichnet wird — nicht den ersten Tag des Zeitraums. Bei 1, 5 und 15 Minuten nennt die obere Zeile den Handelstag und eine Zeile darunter die Uhrzeit, die mit dem Bild Minute für Minute weiterläuft. Nur Bilder mit mehreren Werten erhalten sie; ein Bild mit einem Wert trug sein Datum schon immer.
+Diese Version veröffentlicht das Handbuch in allen 14 Sprachen auch im Web: Es wird mit der App geliefert und liegt zugleich im Web, und was in der App geöffnet wird, holt die App aus dem Web und greift nur, wenn das nicht gelingt, auf die eingebaute Kopie zurück. Änderungen am Handbuch müssen damit nicht mehr auf die nächste Version warten. Die Bilder im Handbuch wurden für diese Version ebenfalls neu aufgenommen.
 
 ### Produktfunktionen
 
@@ -320,7 +320,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Cette version ajoute une ligne à l'image qui compare plusieurs instruments : elle dit maintenant où elle en est. En journalier, hebdomadaire et mensuel, la ligne de date suit l'animation et nomme la bougie en cours de tracé, et non le premier jour de la période. En 1, 5 et 15 minutes, la ligne du haut nomme le jour de bourse et une ligne en dessous donne l'heure, qui avance minute par minute avec l'image. Seules les images à plusieurs instruments en bénéficient ; avec un seul instrument, la date a toujours été là.
+Cette version publie aussi le manuel dans les 14 langues sur le web : il est fourni avec l'application et se trouve en même temps en ligne, et celui que vous ouvrez dans l'application est pris sur le web lorsque c'est possible, à défaut c'est la copie intégrée qui est utilisée. Les modifications du manuel n'ont ainsi plus à attendre la version suivante. Les images du manuel ont également été refaites pour cette version.
 
 ### Fonctionnalités
 
@@ -367,7 +367,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Questa versione aggiunge una riga all'immagine che confronta più strumenti: ora dice a che punto è. Nei periodi giornaliero, settimanale e mensile la riga della data segue l'animazione e indica la candela che si sta disegnando, non il primo giorno dell'intervallo. Nei periodi da 1, 5 e 15 minuti la riga superiore indica il giorno di borsa e una riga sotto di essa l'ora, che avanza minuto per minuto con l'immagine. Solo le immagini con più strumenti la ricevono: con un solo strumento la data c'è sempre stata.
+Questa versione pubblica anche sul web il manuale in tutte le 14 lingue: il manuale è fornito con l'applicazione e si trova allo stesso tempo online, e quello che aprite nell'applicazione è preso dal web quando è possibile, altrimenti viene usata la copia incorporata. Le modifiche al manuale non devono così più attendere la versione successiva. Anche le immagini del manuale sono state rifatte per questa versione.
 
 ### Funzionalità del prodotto
 
@@ -414,7 +414,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Esta versión añade una línea a la imagen que compara varios instrumentos: ahora dice por dónde va. En periodos diario, semanal y mensual, la línea de la fecha avanza con la animación y nombra la vela que se está dibujando, no el primer día del rango. En periodos de 1, 5 y 15 minutos la línea superior da el día de negociación y una línea debajo la hora, que avanza minuto a minuto con la imagen. Solo la reciben las imágenes con varios instrumentos; con uno solo la fecha ya estaba.
+Esta versión publica también en la web el manual en los 14 idiomas: se entrega con la aplicación y a la vez está en línea, y el que se abre en la aplicación se toma de la web cuando es posible; si no, se usa la copia incluida. Así los cambios del manual ya no tienen que esperar a la siguiente versión. Las imágenes del manual también se han rehecho en esta versión.
 
 ### Funciones del producto
 
@@ -460,7 +460,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Esta versão acrescenta uma linha à imagem que compara vários instrumentos: agora ela diz onde está. Nos períodos diário, semanal e mensal, a linha da data acompanha a animação e mostra a vela que está sendo desenhada, não o primeiro dia do intervalo. Nos períodos de 1, 5 e 15 minutos, a linha de cima dá o dia de negociação e uma linha abaixo a hora, que avança minuto a minuto com a imagem. Só as imagens com vários instrumentos a recebem; com um único instrumento a data sempre esteve lá.
+Esta versão também publica na web o manual nos 14 idiomas: ele acompanha o aplicativo e ao mesmo tempo está online, e o que você abre no aplicativo é obtido da web quando possível; caso contrário, usa-se a cópia embutida. Assim, as alterações no manual não precisam mais esperar pela próxima versão. As imagens do manual também foram refeitas nesta versão.
 
 ### Funcionalidades do produto
 
@@ -507,7 +507,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-Ta wersja dodaje jedną linię do obrazu porównującego kilka instrumentów: mówi on teraz, dokąd doszedł. W okresach dziennym, tygodniowym i miesięcznym linia daty porusza się razem z animacją i podaje dzień właśnie rysowanej świecy, a nie pierwszy dzień zakresu. W okresach 1, 5 i 15 minut górna linia podaje dzień sesji, a poniżej jest godzina, która przesuwa się z obrazem minuta po minucie. Dotyczy to tylko obrazów z kilkoma instrumentami — przy jednym instrumencie data była od zawsze.
+Ta wersja publikuje również w sieci podręcznik we wszystkich 14 językach: jest dostarczany z aplikacją i jednocześnie dostępny online, a ten otwierany w aplikacji jest pobierany z sieci, gdy się da, a w przeciwnym razie używana jest wbudowana kopia. Dzięki temu zmiany w podręczniku nie muszą czekać na następną wersję. Ilustracje w podręczniku również zostały w tej wersji wykonane od nowa.
 
 ### Funkcje produktu
 
@@ -554,7 +554,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Tato verze přidává jeden řádek obrazu, který porovnává více nástrojů: říká nyní, kam došel. V denním, týdenním a měsíčním období se řádek s datem pohybuje s animací a uvádí den právě kreslené svíce, nikoli první den rozsahu. V obdobích 1, 5 a 15 minut horní řádek uvádí obchodní den a pod ním čas, který postupuje s obrazem minutu po minutě. Dostane jej jen obraz s více nástroji; u jednoho nástroje tam datum bylo vždy.
+Tato verze zveřejňuje příručku ve všech 14 jazycích také na webu: je dodávána s aplikací a zároveň je dostupná online, a ta, kterou otevřete v aplikaci, se bere z webu, když to jde, jinak se použije vestavěná kopie. Změny v příručce tak nemusí čekat na další verzi. Obrázky v příručce byly pro tuto verzi rovněž pořízeny znovu.
 
 ### Funkce produktu
 
@@ -601,7 +601,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-В этой версии у кадра, сравнивающего несколько инструментов, появилась строка, которая говорит, до какого момента дошёл рисунок. На дневном, недельном и месячном периодах строка с датой движется вместе с анимацией и называет день рисуемой свечи, а не первый день диапазона. На периодах 1, 5 и 15 минут верхняя строка называет торговый день, а под ней идёт время, которое идёт вместе с рисунком минута за минутой. Это касается только кадров с несколькими инструментами; у одного инструмента дата была и раньше.
+В этой версии руководство на всех 14 языках публикуется также в интернете: оно поставляется вместе с приложением и одновременно доступно онлайн; то, что открывается в приложении, берётся из интернета, когда это возможно, а иначе используется встроенная копия. Благодаря этому изменения в руководстве больше не должны ждать следующей версии. Иллюстрации в руководстве для этой версии тоже сделаны заново.
 
 ### Функции продукта
 
@@ -648,7 +648,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürümde birden fazla enstrümanı karşılaştıran kareye bir satır ekleniyor: kare artık nereye geldiğini söylüyor. Günlük, haftalık ve aylık dönemlerde tarih satırı animasyonla birlikte ilerler ve aralığın ilk gününü değil, çizilmekte olan mumun gününü söyler. 1, 5 ve 15 dakikalık dönemlerde üst satır işlem gününü, altındaki satır da kareyle birlikte dakika dakika ilerleyen saati verir. Bu yalnızca birden fazla enstrümanın olduğu karelerde görünür; tek enstrümanın karesinde tarih zaten vardı.
+Bu sürümde 14 dilin tümündeki kılavuz web'de de yayımlanıyor: kılavuz uygulamayla birlikte geliyor ve aynı zamanda çevrimiçi olarak da bulunuyor; uygulamada açılan, mümkün olduğunda web'den alınıyor, alınamadığında yerleşik kopya kullanılıyor. Böylece kılavuzdaki değişikliklerin bir sonraki sürümü beklemesi gerekmiyor. Kılavuzdaki görseller de bu sürüm için yeniden çekildi.
 
 ### Ürün özellikleri
 

@@ -20,6 +20,52 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.14.0 — 2026-10-10（更新版 / update）
+
+**本版只做一件事：手册搬到网页上。** 14 种语言的使用手册（26 章，每章配图）既随应用一起提供，也发布在网页上；应用里打开的那份**先取网页**，取不到就用包内那份。往后手册的改动不必等下一个版本才会生效。
+
+**This version does one thing: the manual moves to the web.** The manual in all 14 languages — 26 chapters, each with its picture — ships with the app *and* is published on the web. The copy opened in the app is **taken from the web first** and falls back to the one inside the package when it cannot be had. Changes to the manual no longer have to wait for the next version.
+
+**为什么是「先取网页」。** 手册和应用是两种不同节奏的东西：应用要过商店审核，手册改一个错别字不该等一
+趟审核。让应用去读网页那份，手册就回到它自己的节奏上 —— 改完推一次站点，下一次有人打开帮助页就是新
+的。而「先取」也只在这一件事上成立：取不到（离线、站点在重建）就用包内那份，包内那份是**同一批文件**，
+不是另一份抄本，所以两条路读到的内容不会分叉。
+
+**Why the web comes first.** A manual and an app run at different speeds. The app goes through Store
+certification; a manual should not have to wait for a certification run to fix a typo. Having the app
+read the copy on the web puts the manual back on its own clock: push the site and the next person to
+open Help gets the new text. And "first" is the whole of it — when it cannot be had, offline or while
+the site is rebuilding, the copy inside the package is used. That copy is **the same set of files**,
+not a second transcription, so the two paths cannot drift apart.
+
+**取回来的东西要先认过才敢用。** 超时之内拿到的回答并不都是手册：站点会把 404 也答成 200 加一页
+HTML，缓存也可能给出半截。所以取回来的文本要先过了「像不像手册」这一关才交给渲染器 —— 认不出来就当
+没取到，走包内那份。这一关的判据是 `tools/verify-help-online.py`：源码锚一层、站点与包内逐字节比对
+一层（14 份文档 + 70 张图）、真机一层（把包内那份藏起来重启应用，断言帮助页的文字段数与图数不减）。
+
+**What comes back is checked before it is used.** An answer inside the timeout is not necessarily the
+manual: the site answers a missing page with 200 and a page of HTML, and a cache can hand back half of
+one. So the text is asked whether it looks like a manual before it reaches the renderer, and anything
+it cannot recognise is treated as not fetched and answered from the package. `tools/verify-help-online.py`
+holds the line: one layer of source anchors, one comparing the site against the package byte for byte
+(14 documents plus 70 pictures), and one on a running machine that hides the packaged copy, restarts
+the app, and asserts the help page still shows every paragraph and every picture.
+
+**配图全部重拍。** 旧的那批是在**半透明窗口**下截的：Mica 会把桌面壁纸映到窗口上，而壁纸是会自动轮换
+的 —— 同一页在不同机器上截出来底色不同，有一张甚至把一条系统通知一起截了进去。现在截图前先换纯色壁纸，
+并把两处会改变画面的外观偏好复位（窗口背景图、帧背景），截完按原样放回（`tools/plain-wallpaper.py`、
+`tools/drive-look.py`）。配图逐字节比对着同步到站点（`tools/publish-help-to-support.py`）。
+
+**Every picture in the manual was retaken.** The old set was captured through a **translucent window**:
+Mica shows the desktop wallpaper through the window, and that wallpaper rotates on its own, so the same
+chapter came out on a different ground on different machines — and one of them carried a system
+notification as well. Screenshots are now taken against a plain wallpaper with the two appearance
+settings that change the picture put back to their defaults first, and restored afterwards
+(`tools/plain-wallpaper.py`, `tools/drive-look.py`). The pictures are copied to the site only after a
+byte-for-byte comparison (`tools/publish-help-to-support.py`).
+
+---
+
 ## 1.0.13.0 — 2026-10-10（更新版 / update）
 
 **本版只做一件事：让多标的的画面说出「画面走到哪儿了」。** 单标的的画面表头本来就写着那根 K 线的日期；多标的的画面此前只写代码与周期，把「哪一段」整个交给脚下那条日期轴 —— 而那条轴是刻度，不是一句话。这一块是 1.0.12.0 提交之后才落的，所以它自己开一个版本：已经交上去的那一版的记录不再动，除了把这一块从它那里搬走。

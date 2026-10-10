@@ -10,8 +10,9 @@ One set per language, taken from that language's own screenshots, so a
 Japanese manual shows a Japanese window. The renderer picks the language
 folder and falls back to the shared one when a language has no picture.
 
-Sources: artifacts/store-screens/<lang>/NN-<page>.png (already 3x-scaled
-window captures). Output: src/MarketMotionStudio/Assets/Help/media/<lang>/
+Sources: artifacts/store-screens/<lang>/NN-<page>.png (window captures at the
+maximised size, 1920x1020 on this screen). Output:
+src/MarketMotionStudio/Assets/Help/media/<lang>/
 """
 
 import os
@@ -36,10 +37,26 @@ PAGES = [
     ("06-position.png", "position"),
 ]
 
-# The window capture, in its own pixels: title bar and navigation rail off the
-# left, the status strip off the bottom, the window border off the right.
-# Measured on the 1702x982 captures the screenshot script produces.
-CROP = (400, 62, 1696, 946)
+# The window capture, in its own pixels: the navigation rail off the left, the
+# title bar off the top, nothing off the right or the bottom.
+#
+# Re-measured on the 1920x1020 captures the screenshot script produces now — the
+# numbers it replaces were measured on the 1702x982 captures of an earlier run,
+# and carrying them over silently cut 224 px off the right-hand end of every
+# picture: the parameter panel lost its right edge and its help text stopped
+# mid-word (2026-10-10).
+#
+# How each edge was found, so the next person can repeat it rather than guess:
+#   left  400 - the strongest full-height vertical edge in the picture, which is
+#               where the rail's background (249,241,236) meets the content
+#               card's (252,248,246); the selected item's highlight ends at 397.
+#   top    62 - row 61 is the content card's 1 px top border, interior from 62.
+#   right 1920 - the panel's own right margin is 30 px wide (its controls and the
+#               longest line of help text stop at 1889) and the card runs to the
+#               window edge, so there is nothing to cut.
+#   bottom 1020 - the card runs to the window edge too: below the status strip
+#               (which ends at 989) the rest of the column is card background.
+CROP = (400, 62, 1920, 1020)
 
 # Rendered at the manual's column width with room to spare; keeping more pixels
 # than that only makes the package bigger, since XAML scales down anyway.

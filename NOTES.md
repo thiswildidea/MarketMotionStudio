@@ -441,6 +441,19 @@ baseline, the stacked layout and the card row. It has since been **submitted** (
 one thing that landed after it — the block that says where a comparison has got to — moved to
 1.0.13.0 rather than being folded into this entry.
 
+**1.0.14.0 (2026-10-10).** The upload bundle built and reported `PackageSuccessfullyCreated`:
+`artifacts/MarketMotionStudio_1.0.14.0_x64_arm64_bundle.msixupload`, 155.1 MB, six inner packages.
+Both the x64 and the arm64 inner package report Identity `1.0.14.0` — the version in a file name is
+not evidence — and both hold fourteen help documents, seventy help images, `resources.pri` and
+Win2D. `Package/Properties/DisplayName` is still the literal reserved name. The seventy pictures are
+all new: the old ones were taken through a translucent window, which showed the desktop wallpaper
+(Mica, and the wallpaper rotates) through every panel; these were taken against a plain wallpaper
+with the two appearance preferences that change the picture put back to their defaults first. What
+separates this bundle from 1.0.13.0 is legible in the shipped `MarketMotionStudio.dll`: this one
+carries `PublishedAsync` and `RemoteWait`, that one carries neither, and `ClockSize`, `TimeBlock`
+and `FrameSpan` are in both — the header block went out with 1.0.13.0, reading the manual off the
+web did not.
+
 **1.0.13.0 (2026-10-10).** The upload bundle built and reported `PackageSuccessfullyCreated`:
 `artifacts/MarketMotionStudio_1.0.13.0_x64_arm64_bundle.msixupload`, 149.9 MB, six inner packages.
 Both the x64 and the arm64 inner package report Identity `1.0.13.0` — the version in a file name is

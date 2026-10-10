@@ -1234,13 +1234,25 @@ src/MarketMotionStudio/
                    Settings, Help, Playback
   Localization/    Strings lookup and the language override
   Strings/<bcp47>/ Fourteen Resources.resw
-  Assets/Help/     Fourteen help-<tag>.md and media/<tag>/, their pictures
+  Assets/Help/     Fourteen help-<tag>.md and media/<tag>/, their pictures — published as they
+                   are to MarketMotionStudio-Support/help/, which the application reads first
   Diagnostics/     Crash log
 tools/
   new-icons.ps1          Generates every image the manifest declares
   store-screenshots.py   Drives the running app; captures the Store screenshots, one set per language
   help-media.py          Crops those captures into the help document's page pictures
   port-help-images.py    Inserts the pictures into all fourteen help documents, by chapter number
+  publish-help-to-support.py
+                         Copies Assets/Help/ to the support site and compares bytes — the only
+                         writer of that folder, so the two copies cannot drift
+  plain-wallpaper.py     Puts a plain colour behind the window for a screenshot run, and puts the
+                         desktop back afterwards (Mica shows the wallpaper through the window)
+  drive-look.py          Resets the window's background picture and the frame's backdrop, recording
+                         what they were and putting them back — both are preferences, not defaults
+  verify-help-media.py   Every help picture: not a blank frame, no notification burned into it, and
+                         the same page lays out the same in all fourteen languages
+  verify-help-online.py  The manual is fetched before it is read from the package: the site's bytes
+                         match the package's, and hiding the packaged copy still draws the manual
   localize-instruments.py, localize-appname.py
                          Add one key to all fourteen resw at once — idempotent, key-order checked
   port-*-resw.py, port-*-help.py
@@ -1332,6 +1344,23 @@ in the same fourteen, and which document it opens is named by a resource key rat
 worked out from the current culture — one answer to the question instead of two that can
 disagree.
 
+**The manual is read from the support site first, and from the package when that cannot be
+had.** The package carries every document and every picture, so the manual opens with no
+network at all; the published copy is the one that can be corrected without a Store
+submission. Re-wording a sentence used to mean a build, a bundle, a certification pass and a
+release — weeks for a typo — and a manual is read by somebody who is already stuck. The two
+copies are the same files: `tools/publish-help-to-support.py` copies `Assets/Help/` to
+`MarketMotionStudio-Support/help/` and compares bytes, and `tools/verify-help-online.py`
+asserts the site serves all fourteen documents and all seventy pictures byte-for-byte
+identical to the packaged ones. Which of the two is on screen also decides where the pictures
+come from (`HelpDocument._published`), because prose from the site over pictures from the
+package would be two documents shown as one.
+
+The fetch gets six seconds, then the packaged copy is shown. It is checked rather than trusted:
+a document is tens of kilobytes and opens with its own title, so an error page, an empty answer
+or a host that helpfully renders the Markdown into HTML fails one of those and the packaged
+copy is used instead.
+
 **The product name is translated, in exactly two markets.** This departs from the parent
 shell's rule that a product name is never translated, and it is deliberate: the product was
 commissioned with a Chinese name and an English one, so `AppTitle.Text` carries
@@ -1360,6 +1389,23 @@ Light, dark, or whatever Windows is set to, from Settings. It changes as you pic
 is re-read by elements already on screen, which the language is not. The window uses Mica; the
 preview draws an opaque frame of its own inside it, because what the video will look like must
 not depend on the colour of the wallpaper behind the app.
+
+That last sentence is about the video, and it leaves the window itself showing the wallpaper —
+which is the point of Mica and also the reason a screenshot run needs two things done first.
+Windows' wallpaper rotates on its own (Spotlight), so `plain-wallpaper.py` puts a plain colour
+behind the window for the length of a run and puts the desktop back afterwards; and the two
+preferences that live under Appearance — the window's background picture and the frame's
+backdrop — are somebody's taste, not the default look, so `drive-look.py` records them and
+resets them first. Both were learned the hard way on 2026-10-10: seventy pictures came back
+with the desktop's Spotlight wallpaper showing through every panel, and the ground under the
+same chapter differed from one machine to the next ("Things learned the hard way").
+
+Whether something else got into the frame is what `verify-help-media.py` answers, and its first
+answer was wrong: it counted the pixels of one particular green and flagged a 14×14 icon of the
+app's own, so the "clean" sample and the "polluted" sample both reported the same number and the
+comparison proved nothing. It now counts how much of the corner is *dark* — the window is light,
+a notification is a dark rounded rectangle — and its `--self-test` synthesizes one to prove the
+detector still sees it. A detector whose control sample is clean is not a detector.
 
 ## The frame's backdrop
 

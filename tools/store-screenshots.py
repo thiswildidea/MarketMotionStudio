@@ -33,6 +33,7 @@ AutomationId 定位（x:Name 即 AutomationId），因此不依赖当前界面�
 跑之前确认主题是浅色——旧图库是浅色主题，深浅混着上传不好看。
 """
 import os
+import re
 import subprocess
 import sys
 import time
@@ -50,6 +51,16 @@ EXE = "MarketMotionStudio.exe"
 OUTROOT = r"D:\software\MarketMotionStudio\artifacts\store-screens"
 LOG = os.path.join(OUTROOT, "runlog.txt")
 SMOKE = "--smoke" in sys.argv
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MARKETS = os.path.join(ROOT, "src", "MarketMotionStudio", "Market", "Markets.cs")
+
+# 各页「一键预置」那一排用的是市场档案里的哪张清单（照 Pages/*.xaml.cs 填 Presets 的那一行）。
+PRESET_PROPERTY = {
+    "03-gain-calendar": "BroadIndices",
+    "05-dca-plan": "DcaInstruments",
+    "06-position": "PositionInstruments",
+    "07-candle": "CandleInstruments",
+}
 
 # 搜索模式下往 InstrumentSearch 里输入的查询串（美股，标普500 ETF）。
 # 注意：腾讯美股数据未做拆股调整（AAPL 2014 年 7拆1 前后 645.57→102.25 断崖），
@@ -303,18 +314,51 @@ def combo_select_index(combo, index, timeout=8):
     return False
 
 
-def click_preset(win, name):
-    """点 Presets（ItemsControl）里的标的按钮。name=FIRST 表示第一个。"""
-    presets = byid(win, "Presets")
-    if presets is None:
+def preset_codes(market_idx, page):
+    """这一页在给定市场下，预置那一排的标的代码（源码里的顺序）。
+
+    从 Markets.cs 读，不在这里抄一份：清单是会改的，抄一份就等于有了第二个事实源，
+    改了那边这边还指着旧代码，点下去的是「没找到」而日志只说一句没点着。
+
+    读不到就返回空表（例如 A股 的 BroadIndices 指向 MonthlySeries.BroadIndices，
+    那张清单不在这个文件里）→ 点不成，退回原来的行为。
+    """
+    text = open(MARKETS, encoding="utf-8").read()
+    lists = {name: re.findall(r'new\(\s*"([^"]+)"', body)
+             for name, body in re.findall(
+                 r"public static readonly RaceEntry\[\] (\w+)\s*=\s*\[(.*?)\];", text, re.S)}
+
+    blocks = re.split(r"\n        new\(\n", text[text.index("MarketProfile[] Profiles"):])
+    blocks = [b for b in blocks if "MarketId." in b]
+
+    if market_idx >= len(blocks):
+        return []
+
+    wanted = re.search(PRESET_PROPERTY[page] + r":\s*(\w+),", blocks[market_idx])
+    return lists.get(wanted.group(1), []) if wanted else []
+
+
+def click_preset(win, name, market_idx=0, page=None):
+    """点这一页「一键预置」那一排的第一个标的。
+
+    **不能按 Presets 这个容器找** —— 它是 ItemsControl，只有 x:Name 没有 AutomationId，
+    byid 找不到它，于是这个函数的头一个版本每一次都返回「没找到」，而日志里只字不提
+    （2026-10-10：zh-Hant 的定投计划页连着两轮取数超时，就是因为这一路一直在空转）。
+
+    按钮自己是有的：DataTemplate 把 AutomationId 绑成了标的代码（Pages/DcaPlanPage.xaml），
+    而**代码与语言无关** —— 按钮上的字是本地化的名字，认名字等于给十四种语言各抄一遍。
+    """
+    codes = preset_codes(market_idx, page) if page in PRESET_PROPERTY else []
+
+    if name != "FIRST" or not codes:
         return False
-    if name == "FIRST":
-        b = find(lambda c: c.ControlTypeName == "ButtonControl", presets)
-    else:
-        b = find(lambda c: c.ControlTypeName == "ButtonControl" and c.Name == name,
-                 presets)
+
+    first = codes[0]
+    b = find(lambda c: c.ControlTypeName == "ButtonControl" and c.AutomationId == first, win)
+
     if b is None:
         return False
+
     return invoke_click(b)
 
 
@@ -614,7 +658,7 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
                 say("    搜索失败，退回默认标的")
 
         if fb is not None and not fb.IsEnabled and mode == "preset" and preset:
-            if click_preset(win, preset):
+            if click_preset(win, preset, market_idx, fname):
                 say("    已点预置标的 %r" % preset)
                 time.sleep(1.5)
                 fb = byid(win, "FetchButton")
@@ -626,8 +670,36 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
             continue
 
         invoke_click(fb)
-        if wait_play_enabled(win):
-            say("    数据就绪")
+        ok = wait_play_enabled(win, 15)
+        retried = False
+
+        # 15 秒还没就绪，且这一页的取数**压根没开跑** —— 判据是 FetchButton 一直可用：
+        # 真去取数时 RunAsync 头一件事就是把它置灰，而取数被拒（例如自选清单里没有当前
+        # 市场的标的，DcaNoMarketPicks / PositionNoMarketPicks）是 ShowStatus 之后直接
+        # return，按钮从头到尾没暗过。这是唯一一个与语言无关的信号：状态条上的字是本地化
+        # 的，读它的文字等于给十四种语言各写一条断言。
+        #
+        # 这时点一下预置标的把它加进来再取一次。Watch.Include 只动这一页的勾选，不写清单
+        # 本身，所以不会把这台机器的自选清单改掉。第一次就成了的语言走不到这里。
+        if not ok and preset and mode == "preset":
+            again = byid(win, "FetchButton")
+
+            if again is not None and again.IsEnabled and click_preset(win, preset, market_idx, fname):
+                retried = True
+                say("    取数没开跑，点预置标的 %r 后重试" % preset)
+                time.sleep(1.5)
+
+                # 预置标的的点击自己就会发起取数（Include 之后直接 Fetch），按钮已经暗了就
+                # 别再点第二下 —— 那会把它当成取消。
+                again = byid(win, "FetchButton")
+                if again is not None and again.IsEnabled:
+                    invoke_click(again)
+
+        if not ok:
+            ok = wait_play_enabled(win)
+
+        if ok:
+            say("    数据就绪" if not retried else "    数据就绪（点预置标的后）")
         else:
             say("    等待数据超时（240s），仍尝试截图")
 

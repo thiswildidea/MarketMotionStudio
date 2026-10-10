@@ -32,6 +32,31 @@ namespace MarketMotionStudio.Pages;
 internal static class HelpDocument
 {
     /// <summary>
+    /// Where the manual is published, besides being shipped inside the package.
+    ///
+    /// The package carries every document and every picture, so the application
+    /// answers with the manual whether or not there is a network. This is the
+    /// copy that can be corrected without a Store submission: re-wording a
+    /// sentence, adding a chapter or replacing a screenshot is a commit to the
+    /// support site, not a new build. Help is read by somebody who is already
+    /// stuck, and a wrong sentence in it should not have to wait weeks.
+    ///
+    /// One place to write a sentence, not two: <c>tools/publish-help-to-support.py</c>
+    /// copies the packaged folder to the site, so the two are the same files by
+    /// construction rather than by care.
+    /// </summary>
+    private const string Remote = "https://thiswildidea.github.io/MarketMotionStudio-Support/help/";
+
+    /// <summary>
+    /// How long the published copy gets before the packaged one is shown.
+    ///
+    /// Short on purpose. This page is opened by somebody who is already stuck,
+    /// and a blank page for half a minute is worse than a page one revision
+    /// behind; the packaged copy is a complete manual, not a stub.
+    /// </summary>
+    private static readonly TimeSpan RemoteWait = TimeSpan.FromSeconds(6);
+
+    /// <summary>
     /// The language whose pictures to show, taken from the document's own file
     /// name — <c>help-ja.md</c> means <c>ja</c>.
     ///
@@ -45,6 +70,17 @@ internal static class HelpDocument
     private static string _language = string.Empty;
 
     /// <summary>
+    /// Whether the document on screen came from the site or from the package,
+    /// which is what the pictures are read from too.
+    ///
+    /// Kept beside <see cref="_language"/> rather than inside
+    /// <see cref="LoadAsync"/> because the two are always asked together and
+    /// always about the same document: prose from the site and pictures from the
+    /// package would be two documents shown as one.
+    /// </summary>
+    private static bool _published;
+
+    /// <summary>
     /// Pictures are drawn at the manual's column width or at their own size,
     /// whichever is smaller — never stretched up. The number matches the width
     /// the help page gives its text (820 less the 24-wide padding on each side);
@@ -52,7 +88,8 @@ internal static class HelpDocument
     /// </summary>
     private const double PictureWidth = 772;
     /// <summary>
-    /// Reads the document for the language the interface is actually in.
+    /// Reads the document for the language the interface is actually in: the
+    /// published copy first, the packaged one when that cannot be had.
     /// </summary>
     public static async Task<string?> LoadAsync(string fileName)
     {
@@ -65,20 +102,75 @@ internal static class HelpDocument
             return null;
         }
 
-        var path = Path.Combine(AppContext.BaseDirectory, "Assets", "Help", safe);
-
-        if (!File.Exists(path))
-        {
-            return null;
-        }
-
-        // Only once the document is known to be there: a language with a picture
-        // folder but no manual would otherwise send the renderer looking for
-        // screenshots to illustrate nothing.
+        // Set before either copy is tried, because both name the same document:
+        // the pictures are chosen by what the reader asked for, not by which
+        // answer arrived. Nothing looks a picture up until a document is in hand,
+        // so a language whose manual turns up nowhere still shows nothing.
         _language = Language(safe);
 
-        return await File.ReadAllTextAsync(path);
+        if (await PublishedAsync(safe) is { } published)
+        {
+            _published = true;
+            return published;
+        }
+
+        _published = false;
+
+        var path = Path.Combine(AppContext.BaseDirectory, "Assets", "Help", safe);
+
+        return File.Exists(path) ? await File.ReadAllTextAsync(path) : null;
     }
+
+    /// <summary>
+    /// The published copy, or <c>null</c> when it could not be had — no network,
+    /// an answer that took too long, a 404, or a page of something that is not
+    /// the document.
+    ///
+    /// All of those are one answer to the caller: show the packaged copy. None of
+    /// them is said to the reader, because from where they are sitting nothing is
+    /// wrong — they have a manual either way. The log is where the site being
+    /// wrong gets noticed.
+    /// </summary>
+    private static async Task<string?> PublishedAsync(string file)
+    {
+        try
+        {
+            using var give = new CancellationTokenSource(RemoteWait);
+            var text = await AppServices.Current.Http.GetStringAsync(new Uri(Remote + file), give.Token);
+
+            if (Readable(text))
+            {
+                return text;
+            }
+
+            CrashLog.Note($"Help document at {Remote}{file} is not a document: {Head(text)}");
+        }
+        catch (Exception problem)
+        {
+            CrashLog.Note($"Help document not fetched: {file} ({problem.GetType().Name})");
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// A document, rather than whatever else a URL can answer with.
+    ///
+    /// Every manual opens with its own title and runs to tens of kilobytes. An
+    /// error page, an empty answer, or — the one that actually happens — a host
+    /// that helpfully renders the Markdown into an HTML page fails one of those
+    /// three, and rendering that as the manual would put markup in front of the
+    /// reader. Checked rather than assumed, because the failure is silent
+    /// otherwise: the page would still draw, just wrongly.
+    /// </summary>
+    private static bool Readable(string text) =>
+        text.Length > 2000 &&
+        text.StartsWith("# ", StringComparison.Ordinal) &&
+        !text.Contains("<html", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>The first few characters, for a log line about something unexpected.</summary>
+    private static string Head(string text) =>
+        text[..Math.Min(60, text.Length)].ReplaceLineEndings(" ");
 
     /// <summary>
     /// <c>help-pt-BR.md</c> reads as <c>pt-BR</c>. A name that does not carry a
@@ -270,6 +362,12 @@ internal static class HelpDocument
     /// That way the fourteen documents point at one name per picture and the
     /// screenshots still come out in the right language — no language tag inside
     /// the prose, and nothing to keep in step by hand.
+    ///
+    /// The same two names are asked of the site when the document came from
+    /// there, in the same order. Nothing is tested for existence on that side:
+    /// the lookup would be a second request per picture to answer a question the
+    /// site has already answered by publishing the folder, and a picture that is
+    /// missing leaves the caption underneath it, which still says what it was.
     /// </summary>
     private static Uri? PictureFile(string source)
     {
@@ -286,6 +384,11 @@ internal static class HelpDocument
         var localized = _language.Length > 0 && cut > 0
             ? string.Concat(relative.AsSpan(0, cut + 1), _language, "/", relative.AsSpan(cut + 1))
             : null;
+
+        if (_published)
+        {
+            return new Uri(Remote + (localized ?? relative));
+        }
 
         foreach (var candidate in new[] { localized, relative })
         {
