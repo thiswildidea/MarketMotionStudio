@@ -20,6 +20,75 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.17.0 — 2026-10-11（更新版 / update）
+
+**本版没有新页面，是把手册补齐：** 加密货币那六个章节各配一张图，开篇那句话终于说清了这个应用是
+做什么的。
+
+**This version adds no pages. It fills the manual in:** the six cryptocurrency chapters each carry a
+picture now, and the opening sentence finally says what the app is.
+
+**六章各有自己的图，而且是那个语言的窗口。** 图是从那个语言自己的窗口里截的 —— 土耳其语的手册里
+是土耳其语的窗口，不是一张英文截图下面垫十四种说明。一共 84 张（14 种语言 × 6 页），加在原有的
+70 张之上，**154 张 32.0 MB**。
+
+**Six chapters with pictures of their own, in their own language.** The pictures are taken from that
+language's own window — the Turkish manual shows a Turkish window, not one English screenshot with
+fourteen captions under it. Eighty-four of them (fourteen languages × six pages), on top of the
+seventy already there: **154 pictures, 32.0 MB**.
+
+**开篇那句话重写了。** 它从 1.0.0.0 起就在说这个应用把「A 股市场」的指标做成手机竖屏视频，后来
+加了三个市场它一个字没动 —— **一句仍然正确的话，读起来像已经写完的**，这正是它能躲过三次加市场的
+原因。现在它说清四件事：股票（A 股、港股、美股）和加密货币四个市场、9:16 竖屏动画、导出的 MP4，
+以及那个文件要发到哪里 —— 抖音、快手、小红书、视频号、TikTok、YouTube、Instagram。
+
+**The opening sentence has been rewritten.** Since 1.0.0.0 it said this app turns **A-share** market
+indicators into vertical videos for phones, and it never moved while three markets were added —
+**a sentence that is still true reads as one that is finished**, which is exactly how it survived.
+It now says four things: four markets, China A-shares, Hong Kong, the US and cryptocurrency; the
+9:16 animation; the MP4 it exports; and where that file is meant to go — Douyin, Kuaishou,
+Xiaohongshu, WeChat Channels, TikTok, YouTube, Instagram.
+
+**清单里的描述也跟着改。** 它是商店列表的第一段，原来写着三个市场，还只列了两个页面（成交额、
+量价），那是只有两页时的话。现在写四个市场、七个平台和二十四页，免责那句留在原处。
+
+**The package description changed with it.** It is the Store listing's first paragraph, and it named
+three markets and two pages — the turnover reel and one stock's volume against its turnover rate —
+which is what you write when two pages are all there is. It now names four markets, the platforms and
+twenty-four pages, with the reference-only line left where it was.
+
+**加密的图要单独跑一趟。** 选「加密货币」会把股票页整组移出导航，反过来也一样 —— 九页股票与六页
+加密永远不会在同一套导航里，一趟跑不出两套。所以 `store-screenshots.py` 有了 `--crypto`。
+
+**The crypto captures need a pass of their own.** Selecting cryptocurrency removes the stock pages
+from the navigation as a group, and the reverse holds too — the nine stock pages and the six crypto
+pages are never in one navigation, so one run cannot produce both sets. Hence `--crypto`.
+
+**三种「截图会骗人」的情况，都是这一趟跑出来的。** 一是别的窗口挡在前面时 `CaptureToImage` 会
+静默退回整屏抓取，存下来的是那个窗口（真图 1920×1020、暗色占比 0.122；假的 1920×1080、0.004）。
+二是窗口已经没了时矩形读出来是 0×0 —— 那不是一个尺寸，拿它做比较会耗尽三次重试再抛异常。三是
+**取数超时仍然画得出一整屏**：画布、标题、参数面板、状态行都在，只是图里没有曲线，前两条检查全都
+通过，因为错不在抓取。**取数没等的图不再保存** —— 错的图进手册比没有图更糟。
+
+**Three ways a capture lies, all found by running this one.** First, with another window in front,
+`CaptureToImage` silently falls back to a whole-screen grab and what lands in the file is that window
+(a real capture is 1920×1020 with a dark-pixel share of 0.122; the impostor is 1920×1080 and 0.004).
+Second, a window that is gone reads its rectangle as 0×0, which is *not a size* — comparing against
+it spends all three retries and then throws. Third, **a fetch that never completed still draws a
+page**: canvas, title, parameters and status strip all present, no chart in the frame, and both checks
+above pass because the fault is not in the capture. A picture taken without data is no longer kept —
+a wrong picture in the manual is worse than none.
+
+**为什么要为改文档发一个版本。** 手册平时是从网上读的，改完推一次站点就生效；**但包里那份副本**
+是取不到网时才用的，它只能跟着包走。商店描述同理 —— 它写在清单里。
+
+**Why changing documents is a version.** The manual is read from the web first, so editing it and
+pushing the site is usually enough; **the copy inside the package** is what is there when the web
+cannot be had, and it can only travel with the package. The Store description is the same: it lives
+in the manifest.
+
+---
+
 ## 1.0.16.0 — 2026-10-11（更新版 / update）
 
 **本版把加密货币做成一个完整的市场：第四个市场，六个页面。** 在设置里选「加密货币」，导航整组

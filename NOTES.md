@@ -441,6 +441,31 @@ baseline, the stacked layout and the card row. It has since been **submitted** (
 one thing that landed after it — the block that says where a comparison has got to — moved to
 1.0.13.0 rather than being folded into this entry.
 
+**1.0.17.0 (2026-10-11).** A version with no new pages: it carries the manual, finished. The upload
+bundle built and reported `PackageSuccessfullyCreated`:
+`artifacts/MarketMotionStudio_1.0.17.0_x64_arm64_bundle.msixupload`, **192.4 MB** (up from 162.9, the
+weight of 84 new pictures), six inner packages. Opened rather than trusted: **all six report Identity
+`1.0.17.0`** — not just the two architecture packages, the four resource packages too — and
+`Package/Properties/DisplayName` is still the literal reserved name `MarketMotionStudio`, with
+`uap:VisualElements` and `uap5:StartupTask` still `ms-resource:AppDisplayName`. What the bundle
+carries that 1.0.16.0 did not is **154 help pictures, 84 of them the crypto six** (it was 70, with
+none), and a first line that names four markets instead of one: the shipped `help-zh-Hans.md` opens
+"这个应用把股票市场（A 股、港股、美股）和虚拟货币的行情指标做成手机竖屏（9:16）动画视频…".
+
+**Why documents get a version number.** The manual is read from the web first, so most edits take
+effect the moment the support site is pushed and need no package at all. The copy *inside* the package
+is the one that is there when the web cannot be had, and it can only travel with a package — as can
+the Store description, which lives in the manifest. 1.0.16.0 had already been submitted, so this is a
+version of its own rather than an edit to that entry.
+
+**The opening sentence is the reason this round happened.** It had said, since 1.0.0.0, that the app
+turns **A-share** indicators into vertical videos. Every word of it was still true, which is precisely
+why it survived three markets' worth of releases: a sentence that is still right reads as one that is
+finished. It now names four markets, the 9:16 animation, the MP4 and where the file goes — Douyin,
+Kuaishou, Xiaohongshu, WeChat Channels, TikTok, YouTube, Instagram — and the package description,
+which is the Store listing's first paragraph and had been naming three markets and two pages, says the
+same.
+
 **1.0.16.0 (2026-10-11).** The upload bundle built and reported `PackageSuccessfullyCreated`:
 `artifacts/MarketMotionStudio_1.0.16.0_x64_arm64_bundle.msixupload`, 162.9 MB, six inner packages.
 Opened rather than trusted: both the x64 and the arm64 inner package report Identity `1.0.16.0` —
