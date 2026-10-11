@@ -957,4 +957,9 @@
   <data name="MarketCrypto"><value>Kryptoměny</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>Hledat mince</value></data>
   <data name="CryptoSearchNone.Text"><value>Žádná mince neodpovídá.</value></data>
+  <data name="CryptoMinuteDay.Header"><value>Den</value></data>
+  <data name="CryptoMinuteReach"><value>K dispozici jsou pouze poslední {0} dny.</value></data>
+  <data name="CryptoMinuteSourceNone"><value>Aktivní zdroj nemá intradenní řadu.</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{0} svíček {1} dne {2}</value></data>
+  <data name="CryptoMinuteNone"><value>Pro tento den se nevrátila žádná svíčka.</value></data>
 </root>

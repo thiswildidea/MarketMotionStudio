@@ -59,9 +59,12 @@
 
                     <views:CryptoPicker x:Name="Coins" />
 
-                    <!-- One of three periods. The minute periods are not offered: they are
-                         served by neither crypto source, and a chart of a coin's minutes
-                         drawn from days would be a shape the coin never made. -->
+                    <!-- One of six periods. The three daily ones are asked for a span; the
+                         three minute ones are asked for a day, because a coin's minutes
+                         reach back days where its history reaches back years — and a
+                         thousand candles of one afternoon is the question an intraday
+                         chart is. The panel below swaps the span controls for a day
+                         picker when one of them is chosen. -->
                     <ComboBox x:Name="PeriodCombo"
                               x:Uid="CandlePeriodLabel"
                               HorizontalAlignment="Stretch"
@@ -81,6 +84,27 @@
                                     x:Uid="StudioRangeTo"
                                     HorizontalAlignment="Stretch"
                                     DateChanged="OnCustomRangeChanged" />
+                    </StackPanel>
+
+                    <!-- The day the minute periods draw, and how far back it can be.
+
+                         A date typed rather than a day chosen off a list: unlike the
+                         stock minute endpoint, which keeps the last few sessions and
+                         names them itself, this source answers a range of hours — so any
+                         day inside its reach can be asked for by name, including one
+                         last week.
+
+                         Swapped in rather than emptied, so that no control is left
+                         standing on the panel asking a question the fetch never reads. -->
+                    <StackPanel x:Name="MinuteRange" Spacing="8" Visibility="Collapsed">
+                        <DatePicker x:Name="DayPicker"
+                                    x:Uid="CryptoMinuteDay"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnDayChanged" />
+                        <TextBlock x:Name="DayNote"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     </StackPanel>
 
                     <!-- How the bars are drawn. Two of the four are only honest when the

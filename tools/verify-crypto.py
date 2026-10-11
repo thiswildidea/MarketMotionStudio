@@ -36,6 +36,14 @@ SOURCE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 CRYPTO_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                            "artifacts", "crypto-market.png")
 
+# 检索框里敲了两个字之后的那一眼：一行十二个只剩一个。
+CRYPTO_FILTER_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                  "artifacts", "crypto-search.png")
+
+# 1 分钟那一档取完数的那一眼：横轴是钟点，右边区间下拉换成了日期框。
+CRYPTO_MINUTE_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                  "artifacts", "crypto-minute.png")
+
 EXE = "MarketMotionStudio.exe"
 
 CRYPTO_IDS = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition"]
@@ -54,6 +62,10 @@ BUYS = re.compile(r"买入\s*(\d[\d,]*)\s*次")
 # 日期那个「至」必须连着年月日才算：状态行里「请至少勾选一个币种」也带一个「至」字，
 # 只认单字会把一句拒绝读成一次成功 —— 这正是「断言失败先怀疑断言本身」那一类。
 DONE = re.compile(r"至\s*\d{4}-\d{2}-\d{2}")
+
+# 分钟档那句写的是一天而不是一段（「1 分钟 K 线 1440 根（2026-10-11）」），里面没有「至」，
+# 所以 `DONE` 匹配不上 —— 不换判据的话，三档各要空等满 180 秒才返回。
+MINUTE_DONE = re.compile(r"[（(]\s*\d{4}-\d{2}-\d{2}\s*[)）]")
 FAILED = re.compile(r"失败|无法|错误|没有|出错|请至少|请勾")
 
 PRIVATE = re.compile(r"[\ue000-\uf8ff]")
@@ -107,7 +119,12 @@ def status_text(win):
     return max(texts, key=len) if texts else None
 
 
-def fetch(win, seconds=180):
+def fetch(win, seconds=180, done=None):
+    """点取数，等状态行说完了。
+
+    `done` 是「说完了」的判据，默认是 `DONE`（日档那句「… 至 2026-10-11」）。分钟档那句
+    写的是一天，没有「至」，所以要换 —— 见 `MINUTE_DONE`。
+    """
     button = winui.find(win, lambda c: c.AutomationId == "FetchButton", limit=12)
 
     if button is None:
@@ -115,6 +132,7 @@ def fetch(win, seconds=180):
 
     winui.invoke_click(button, settle=1.0)
 
+    pattern = done or DONE
     deadline = time.time() + seconds
     last = None
 
@@ -124,7 +142,7 @@ def fetch(win, seconds=180):
         if text and text != last:
             last = text
 
-            if DONE.search(text) or FAILED.search(text):
+            if pattern.search(text) or FAILED.search(text):
                 return text
 
         time.sleep(1.0)
@@ -366,6 +384,9 @@ def main():
             got = typed("比特")
             check("搜「比特」只剩一个币", len(got) == 1, "、".join(got) or "(一个都不剩)")
 
+            # 这张图说的是「看起来是不是这么回事」：一行十二个只剩一个。
+            winui.shot(win, CRYPTO_FILTER_SHOT)
+
             got = typed("btc")
             check("搜代码 btc 也命中同一个", len(got) == 1, "、".join(got) or "(一个都不剩)")
 
@@ -379,6 +400,76 @@ def main():
 
             got = typed("")
             check("清空后十二个都回来", len(got) == 12, "%d 个" % len(got))
+
+        # ---- 4.6 分钟档 ------------------------------------------------------------
+        #
+        # 三档问的是「哪一天」而不是一段区间，这是它们和日/周/月唯一的区别，也正是最容易
+        # 做错的地方 —— 做错了的症状不是报错，是「取到了数，但取的是另一批」。所以验三件
+        # 事：换档之后区间下拉让位给日期框；**同一天里档越细根越多**（1 分钟必然多于 5 分钟，
+        # 这条比任何绝对数字都硬 —— 取错日期、三档共用一份数据、退回日线，它都不成立）；
+        # 状态行说的是一天，不写一个「至」。
+        print("\n[分钟档：问的是一天]")
+
+        period = winui.find(win, lambda c: c.AutomationId == "CryptoPeriodCombo", limit=14)
+        check("有周期下拉", period is not None)
+
+        if period is not None:
+            offered = winui.combo_labels(win, period)
+            print("  周期：", "、".join(offered) if offered else "(没读到)")
+            check("周期有六档（日/周/月 + 1/5/15 分钟）", len(offered) == 6, "%d 档" % len(offered))
+
+            counts = {}
+
+            for want in ("1 分钟", "5 分钟", "15 分钟"):
+                got = winui.combo_pick(win, period, want)
+                check("切到「%s」" % want, got == want, got or "(没选上)")
+
+                if got != want:
+                    continue
+
+                # Collapsed 的控件不出现在 UIA 树里，所以「找不到了」正是「它让位了」的
+                # 证据 —— 不必再去读可见性，而读可见性也读不出这个。
+                check("「%s」下区间下拉不在了" % want,
+                      winui.find(win, lambda c: c.AutomationId == "CryptoRangeCombo",
+                                 limit=14) is None)
+
+                day = winui.find(win, lambda c: c.AutomationId == "CryptoMinuteDay", limit=14)
+                check("「%s」给出日期框" % want, day is not None)
+
+                note = winui.find(win, lambda c: c.AutomationId == "CryptoMinuteNote", limit=14)
+                check("「%s」说出能往回选多少天" % want, note is not None and bool(note.Name),
+                      note.Name if note is not None else "(没有那句话)")
+
+                text = fetch(win, done=MINUTE_DONE)
+                print("  %s -> %s" % (want, text))
+
+                check("「%s」取数成功" % want, bool(text) and not FAILED.search(text or ""))
+
+                bars = CANDLE.search(text or "")
+                counts[want] = int(bars.group(1).replace(",", "")) if bars else 0
+
+                check("「%s」说的是一天而不是一段" % want,
+                      bool(text) and "至" not in text, text or "")
+
+                # 最细那一档的实拍：横轴该是钟点而不是日期，右边该是日期框而不是区间下拉 ——
+                # 这两件事断言都验了，但「看起来是不是这么回事」得看一眼才知道。
+                if want == "1 分钟":
+                    winui.shot(win, CRYPTO_MINUTE_SHOT)
+
+            check("同一天里档越细根越多",
+                  counts.get("1 分钟", 0) > counts.get("5 分钟", 0) > counts.get("15 分钟", 0) > 0,
+                  "1m=%d 5m=%d 15m=%d" % (counts.get("1 分钟", 0),
+                                           counts.get("5 分钟", 0),
+                                           counts.get("15 分钟", 0)))
+
+            # 换回去也要验：只验「换过去」的开关，坏了也看不出来。
+            # 那一档在下拉里写的是「日K」—— 与状态行里说的「日K K 线」同一个词，不是「日」。
+            # 写「日」的话 combo_pick 匹配不上，切不回去，而报错看起来像换档坏了。
+            got = winui.combo_pick(win, period, "日K")
+            check("切回日档", got == "日K", got or "(没选上)")
+            check("日档下区间下拉回来了",
+                  winui.find(win, lambda c: c.AutomationId == "CryptoRangeCombo",
+                             limit=14) is not None)
 
         # ---- 5. 加密定投 -----------------------------------------------------------
         print("\n[加密货币定投]")

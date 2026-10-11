@@ -3,6 +3,7 @@ using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 
@@ -13,9 +14,11 @@ namespace MarketMotionStudio.Pages;
 ///
 /// Two things are this page's and not the stock page's. **The weekly and monthly
 /// candles are made here** rather than asked for, because neither source serves them —
-/// see <see cref="CryptoCandleLoader"/>. And **the minute periods are not offered at
-/// all**: they come from an endpoint that has no crypto in it, and offering a period
-/// the page would then have to refuse is offering a broken control.
+/// see <see cref="CryptoCandleLoader"/>. And **the minute periods are asked for a day
+/// rather than for a span**: a coin's minutes reach back days where its history reaches
+/// back years, so the panel names a day and the source answers that day's hours — where
+/// the stock page's minute endpoint keeps the last few sessions and names them itself,
+/// leaving the reader to pick from what happened to survive.
 ///
 /// The four styles are the stock page's four, with one condition: a candle and a bar
 /// are shapes drawn out of four prices, and the fallback source has one. Offered anyway
@@ -35,11 +38,23 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
     /// <summary>Marks the two typed dates in the span list.</summary>
     private const int CustomMonths = -1;
 
+    /// <summary>
+    /// The periods, daily ones first.
+    ///
+    /// The three minute ones are listed on every machine and switched off where the
+    /// source in force cannot serve them, for the reason the stock page gives for the
+    /// same thing: a list that changes length between markets asks where the others
+    /// went, and three entries that can only ever fail are worse than three that say
+    /// why they are off. See <see cref="RefreshMinutePeriods"/>.
+    /// </summary>
     private static readonly (CandlePeriod Period, string Key)[] Periods =
     [
         (CandlePeriod.Daily, "CandlePeriodDaily"),
         (CandlePeriod.Weekly, "CandlePeriodWeekly"),
         (CandlePeriod.Monthly, "CandlePeriodMonthly"),
+        (CandlePeriod.Minute1, "CandlePeriodMinute1"),
+        (CandlePeriod.Minute5, "CandlePeriodMinute5"),
+        (CandlePeriod.Minute15, "CandlePeriodMinute15"),
     ];
 
     private readonly StudioPreferences _prefs = new("CryptoCandle.");
@@ -79,6 +94,30 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
         }
 
         PeriodCombo.SelectedIndex = 0;
+
+        // The day the minute periods draw, bounded now and re-bounded whenever the
+        // period changes: each of the three reaches a different distance, and a picker
+        // offering a day the source will refuse is a picker that fails.
+        DayPicker.MinYear = DateTimeOffset.Now.AddDays(-(CryptoQuotes.MinuteDays - 1));
+        DayPicker.MaxYear = DateTimeOffset.Now;
+        DayPicker.Date = DateTimeOffset.Now;
+
+        // Named here rather than in the markup, because `x:Uid` does not put an
+        // AutomationId on a control: it names the resource the text comes from, and a
+        // script that looks the control up by id has to have one put on it explicitly.
+        // `x:Name` does not do it either — the picker above proves it, and a script that
+        // cannot find the period list cannot tell six periods from three.
+        AutomationProperties.SetAutomationId(DayPicker, "CryptoMinuteDay");
+        AutomationProperties.SetAutomationId(DayNote, "CryptoMinuteNote");
+        AutomationProperties.SetAutomationId(PeriodCombo, "CryptoPeriodCombo");
+        AutomationProperties.SetAutomationId(RangeCombo, "CryptoRangeCombo");
+
+        // The minute periods' reach is a fact about the source, and the source is not
+        // known until it has been asked — which happens while this page is already on
+        // screen. Asked again here so the list a person is looking at matches the one
+        // the fetch will use; the answer is cached, so on every visit after the first
+        // this returns at once.
+        _ = RefreshMinutePeriodsAsync();
 
         foreach (var (style, key) in Styles)
         {
@@ -228,12 +267,126 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
     }
 
     /// <summary>
+    /// The day the minute periods draw, read off the picker.
+    ///
+    /// Not a field, for the reason <see cref="ChosenPeriod"/> is not one: a control
+    /// showing one day while a fetch uses another is a disagreement that costs an
+    /// afternoon to find, and reading it costs nothing.
+    /// </summary>
+    private DateOnly ChosenDay() => DateOnly.FromDateTime(DayPicker.Date.DateTime);
+
+    private void OnDayChanged(object sender, DatePickerValueChangedEventArgs e)
+    {
+        if (!_ready)
+        {
+            return;
+        }
+
+        // Another day is another chart, not a redraw of the last one: the whole series
+        // is different and the old one answers nothing about it.
+        _fetched = null;
+        _board = null;
+
+        SavePreferences();
+        ApplyPreviewSettings();
+    }
+
+    /// <summary>
+    /// Switches the three minute periods on or off to match the source in force, once the
+    /// source is known.
+    ///
+    /// Only the fallback turns them off: it carries a day and a price, has no intraday
+    /// series at all, and a minute chart folded out of days would be a shape the coin
+    /// never made. Yahoo carries all three grains.
+    ///
+    /// Asked again here rather than only in the constructor because the source is decided
+    /// by a request, and the request finishes while this page is already on the screen.
+    /// The answer is cached, so every visit after the first returns at once.
+    /// </summary>
+    private async Task RefreshMinutePeriodsAsync()
+    {
+        await Services.Crypto.ReachableAsync();
+
+        DispatcherQueue.TryEnqueue(RefreshMinutePeriods);
+    }
+
+    private void RefreshMinutePeriods()
+    {
+        var offered = Services.Crypto.GivesCandles;
+
+        foreach (var item in PeriodCombo.Items)
+        {
+            if (item is not ComboBoxItem { Tag: CandlePeriod period } box || !CandleLoader.IsMinute(period))
+            {
+                continue;
+            }
+
+            box.IsEnabled = offered;
+
+            ToolTipService.SetToolTip(box, offered ? null : Strings.Get("CryptoMinuteSourceNone"));
+        }
+
+        // A period switched off while it is the one selected is moved off rather than
+        // left: the list would say one thing and the fetch another, and what the fetch
+        // would answer is an exception out of a source that has no such series — not a
+        // sentence anyone can act on.
+        if (!offered && CandleLoader.IsMinute(ChosenPeriod()))
+        {
+            PeriodCombo.SelectedIndex = 0;
+        }
+    }
+
+    /// <summary>
+    /// How far back the day picker may go, in days, for the period in force.
+    ///
+    /// The finest grain reaches least: eight days of one-minute candles, sixty of
+    /// five- and fifteen-minute ones — both the source's own numbers rather than ours;
+    /// see <see cref="CryptoQuotes.Minute1Days"/>.
+    /// </summary>
+    private static int Reach(CandlePeriod period) =>
+        period == CandlePeriod.Minute1 ? CryptoQuotes.Minute1Days : CryptoQuotes.MinuteDays;
+
+    /// <summary>
     /// The spans the period in force offers — its own list, because a span is counted in
     /// months and read in candles: a decade of days is three thousand six hundred of
     /// them and a decade of months is a hundred and twenty.
+    ///
+    /// On a minute period there are no spans to offer and the whole control is swapped
+    /// for the day picker, which is the question those periods are actually asked.
     /// </summary>
     private void FillRanges()
     {
+        var minute = CandleLoader.IsMinute(ChosenPeriod());
+
+        RangeCombo.Visibility = minute ? Visibility.Collapsed : Visibility.Visible;
+        MinuteRange.Visibility = minute ? Visibility.Visible : Visibility.Collapsed;
+
+        // The typed span belongs to the daily periods and to nothing else: on a minute
+        // period the fetch reads one day, and two pickers naming a range it never looks
+        // at would sit right underneath the control that replaced them.
+        if (minute)
+        {
+            CustomRange.Visibility = Visibility.Collapsed;
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var oldest = today.AddDays(-(Reach(ChosenPeriod()) - 1));
+
+            DayPicker.MinYear = new DateTimeOffset(oldest, TimeOnly.MinValue, TimeSpan.Zero);
+            DayPicker.MaxYear = new DateTimeOffset(today, TimeOnly.MinValue, TimeSpan.Zero);
+
+            // A day remembered from a wider reach than the period now chosen has is
+            // clipped rather than left out of range: a picker that silently refused the
+            // date it was showing is a picker that lies about where it is.
+            if (ChosenDay() < oldest)
+            {
+                DayPicker.Date = DayPicker.MaxYear;
+            }
+
+            DayNote.Text = Strings.Format("CryptoMinuteReach", Reach(ChosenPeriod()));
+
+            return;
+        }
+
         _filling = true;
 
         // The span the preferences restored, which cannot be read off the control: the
@@ -273,6 +426,10 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
         }
 
         RangeCombo.SelectedIndex = at;
+
+        CustomRange.Visibility = ChosenMonths() == CustomMonths
+            ? Visibility.Visible
+            : Visibility.Collapsed;
 
         _filling = false;
     }
@@ -424,9 +581,16 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
     private async void Fetch()
     {
         var period = ChosenPeriod();
+        var minute = CandleLoader.IsMinute(period);
+
+        // A minute chart is one day wide by its own nature, so the span controls are not
+        // read at all when one of those periods is in force — the day picker is the
+        // question, and a span restored from the daily periods would be a different
+        // question answered with the wrong one's dates.
+        var day = ChosenDay();
         var months = ChosenMonths();
-        var custom = months == CustomMonths;
-        var (from, to) = ChosenRange();
+        var custom = !minute && months == CustomMonths;
+        var (from, to) = minute ? (day, day) : ChosenRange();
 
         if (custom && from >= to)
         {
@@ -458,8 +622,11 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
 
             if (chosen.Count > 1)
             {
-                var board = await CryptoCandleLoader.LoadBoardAsync(
-                    Services.Crypto, chosen, period, from, to, progress, cancellation);
+                var board = minute
+                    ? await CryptoCandleLoader.LoadIntradayBoardAsync(
+                        Services.Crypto, chosen, period, day, progress, cancellation)
+                    : await CryptoCandleLoader.LoadBoardAsync(
+                        Services.Crypto, chosen, period, from, to, progress, cancellation);
 
                 if (board.Tracks.Count < 2)
                 {
@@ -475,26 +642,39 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
                 ApplyPreviewSettings();
                 ShowMoment(1);
 
-                ShowFetched(Strings.Format(
-                    "CryptoCandleBoardFetched",
-                    board.Tracks.Count,
-                    board.Count,
-                    CandleLoader.Iso(board.Start),
-                    CandleLoader.Iso(board.End)),
+                ShowFetched(minute
+                    ? Strings.Format(
+                        "CryptoCandleMinuteFetched",
+                        board.Count,
+                        Strings.Get(CandleLoader.NameKey(period)),
+                        CandleLoader.Iso(day))
+                    : Strings.Format(
+                        "CryptoCandleBoardFetched",
+                        board.Tracks.Count,
+                        board.Count,
+                        CandleLoader.Iso(board.Start),
+                        CandleLoader.Iso(board.End)),
                     InfoBarSeverity.Success, board.Start, from,
                     Strings.Format("CryptoRangeShort", CandleLoader.Iso(board.Start)));
 
                 return;
             }
 
-            var fetched = await CryptoCandleLoader.LoadAsync(
-                Services.Crypto, chosen[0].Code, chosen[0].Name, period, from, to, progress, cancellation);
+            var fetched = minute
+                ? await CryptoCandleLoader.LoadIntradayAsync(
+                    Services.Crypto, chosen[0].Code, chosen[0].Name, period, day, progress, cancellation)
+                : await CryptoCandleLoader.LoadAsync(
+                    Services.Crypto, chosen[0].Code, chosen[0].Name, period, from, to, progress, cancellation);
 
             if (fetched.Count == 0)
             {
-                // Named rather than thrown: a range the source holds nothing for is an
-                // answer, and "no candles in that span" is the honest thing to say.
-                ShowStatus(InfoBarSeverity.Error, Strings.Get("CandleMinuteNone"));
+                // Named rather than thrown: a span the source holds nothing for is an
+                // answer, and "no candles in it" is the honest thing to say. The two are
+                // different sentences because they are different questions — one about a
+                // stretch of years, one about a single day.
+                ShowStatus(InfoBarSeverity.Error,
+                    Strings.Get(minute ? "CryptoMinuteNone" : "CandleMinuteNone"));
+
                 return;
             }
 
@@ -505,12 +685,18 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
             ApplyPreviewSettings();
             ShowMoment(1);
 
-            ShowFetched(Strings.Format(
-                "CryptoCandleFetched",
-                fetched.Count,
-                Strings.Get(CandleLoader.NameKey(period)),
-                CandleLoader.Iso(fetched.Start),
-                CandleLoader.Iso(fetched.End)),
+            ShowFetched(minute
+                ? Strings.Format(
+                    "CryptoCandleMinuteFetched",
+                    fetched.Count,
+                    Strings.Get(CandleLoader.NameKey(period)),
+                    CandleLoader.Iso(day))
+                : Strings.Format(
+                    "CryptoCandleFetched",
+                    fetched.Count,
+                    Strings.Get(CandleLoader.NameKey(period)),
+                    CandleLoader.Iso(fetched.Start),
+                    CandleLoader.Iso(fetched.End)),
                 InfoBarSeverity.Success, fetched.Start, from,
                 Strings.Format("CryptoRangeShort", CandleLoader.Iso(fetched.Start)));
         }, TimeSpan.FromMinutes(6));
@@ -702,6 +888,18 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
             ToDate.Date = new DateTimeOffset(to, TimeOnly.MinValue, TimeSpan.Zero);
         }
 
+        if (DateOnly.TryParse(_prefs.GetString("Day", string.Empty), out var day))
+        {
+            var stamp = new DateTimeOffset(day, TimeOnly.MinValue, TimeSpan.Zero);
+
+            // Clipped rather than left out of range, for the reason `FillRanges` gives:
+            // the reach belongs to the period in force, and a day remembered from a
+            // wider one is outside it.
+            DayPicker.Date = stamp < DayPicker.MinYear ? DayPicker.MinYear
+                : stamp > DayPicker.MaxYear ? DayPicker.MaxYear
+                : stamp;
+        }
+
         Coins.Select(_prefs.GetString("Coins", "BTC").Split(';', StringSplitOptions.RemoveEmptyEntries));
 
         var names = Chosen().Select(e => InstrumentNames.Display(e.Code, e.Name)).ToArray();
@@ -731,6 +929,7 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
         _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
+        _prefs.Save("Day", ChosenDay().ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         _prefs.Save("Coins", string.Join(";", Chosen().Select(c => c.Code)));
 
         VideoSettings.Save(_prefs);

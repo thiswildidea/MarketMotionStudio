@@ -89,6 +89,104 @@ public static class CryptoCandleLoader
     }
 
     /// <summary>
+    /// One coin's candles inside a single day, at one of the minute periods.
+    ///
+    /// Nothing is aggregated here, and that is the difference from the daily loader: the
+    /// source answers the minute grain directly, so a week or a month made out of these
+    /// would be a shape nobody asked for, and the page offers the minute periods as a
+    /// different question rather than as a finer answer to the same one.
+    ///
+    /// An empty series is returned rather than thrown: a day the source no longer holds
+    /// — further back than <see cref="CryptoQuotes.Minute1Days"/> on the finest grain —
+    /// comes back with nothing in it, and the page puts that in words.
+    /// </summary>
+    public static async Task<CandleSeries> LoadIntradayAsync(
+        CryptoQuotes quotes,
+        string code,
+        string name,
+        CandlePeriod period,
+        DateOnly day,
+        IProgress<string> progress,
+        CancellationToken cancellation)
+    {
+        var asset = CryptoAsset.Of(code)
+            ?? throw new ArgumentException($"Not a coin this app offers: {code}", nameof(code));
+
+        var bars = await quotes.IntradayBarsAsync(asset, day, period, progress, cancellation);
+
+        return new CandleSeries(
+            code, InstrumentNames.Display(code, name), period, bars,
+            await PreviousCloseAsync(quotes, asset, day, cancellation));
+    }
+
+    /// <summary>
+    /// What the coin closed at on the day before the one being drawn.
+    ///
+    /// Asked of the daily series rather than taken from the minutes, because a day's move
+    /// is measured against the day before it and not against its own first minute: a
+    /// chart of one session that opened at 60,000 and closed at 61,000 rose 1.7% on the
+    /// day if the day before ended at 60,000, and 0% if it is measured against its own
+    /// opening. <see cref="CandleSeries.PreviousClose"/> is the field that decides, and
+    /// zero there means "use the first bar", which is the wrong answer on every intraday
+    /// period.
+    ///
+    /// Swallowed rather than thrown when the daily ask fails. It is one figure on the
+    /// frame and not the frame: a day whose move is measured from its own opening is
+    /// still a day drawn correctly, and losing the whole chart to a second request would
+    /// be a worse trade than losing one number.
+    /// </summary>
+    private static async Task<double> PreviousCloseAsync(
+        CryptoQuotes quotes, CryptoAsset asset, DateOnly day, CancellationToken cancellation)
+    {
+        try
+        {
+            var before = await quotes.BarsAsync(
+                asset, day.AddDays(-LookBehind), day.AddDays(-1), null, cancellation);
+
+            return before.Count > 0 ? before[^1].Close : 0;
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Several coins' candles inside one day, on one axis.
+    ///
+    /// Composed by the stock board's own code, which already keys an intraday axis by the
+    /// day *and* the clock — so six coins over the same twenty-four hours line up on the
+    /// minutes they share without this class having an opinion about how.
+    /// </summary>
+    public static async Task<CandleBoard> LoadIntradayBoardAsync(
+        CryptoQuotes quotes,
+        IReadOnlyList<RaceEntry> entries,
+        CandlePeriod period,
+        DateOnly day,
+        IProgress<string> progress,
+        CancellationToken cancellation)
+    {
+        var series = new List<CandleSeries>(entries.Count);
+        var skipped = new List<string>();
+
+        foreach (var entry in entries)
+        {
+            try
+            {
+                series.Add(await LoadIntradayAsync(
+                    quotes, entry.Code, entry.Name, period, day, progress, cancellation));
+            }
+            catch (Exception)
+            {
+                skipped.Add(InstrumentNames.Display(entry.Code, entry.Name));
+            }
+        }
+
+        return CandleBoardLoader.Compose(
+            [.. series.Where(s => s.Count > 0)], period, skipped);
+    }
+
+    /// <summary>
     /// Several coins on one axis, as cumulative percentages — the same board the stock
     /// comparison draws, composed by the same code.
     ///

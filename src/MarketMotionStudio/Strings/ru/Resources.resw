@@ -957,4 +957,9 @@
   <data name="MarketCrypto"><value>Криптовалюты</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>Поиск криптовалют</value></data>
   <data name="CryptoSearchNone.Text"><value>Ни одна криптовалюта не подходит.</value></data>
+  <data name="CryptoMinuteDay.Header"><value>День</value></data>
+  <data name="CryptoMinuteReach"><value>Доступны только последние {0} дней.</value></data>
+  <data name="CryptoMinuteSourceNone"><value>У активного источника нет внутридневных данных.</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{0} свечей {1} за {2}</value></data>
+  <data name="CryptoMinuteNone"><value>За этот день свечи не вернулись.</value></data>
 </root>

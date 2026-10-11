@@ -966,4 +966,9 @@
   <data name="MarketCrypto"><value>加密货币</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>检索币种</value></data>
   <data name="CryptoSearchNone.Text"><value>没有匹配的币种。</value></data>
+  <data name="CryptoMinuteDay.Header"><value>日期</value></data>
+  <data name="CryptoMinuteReach"><value>只能选最近 {0} 天。</value></data>
+  <data name="CryptoMinuteSourceNone"><value>目前这个来源没有分钟线。</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{1} K 线 {0} 根（{2}）</value></data>
+  <data name="CryptoMinuteNone"><value>这一天没有取到分钟线。</value></data>
 </root>

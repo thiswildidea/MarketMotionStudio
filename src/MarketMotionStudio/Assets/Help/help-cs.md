@@ -425,6 +425,7 @@ Denní svíčky jedné mince v amerických dolarech z veřejného zdroje. Týden
 
 - Dvanáct nabízených mincí jsou ty, k nimž oba zdroje mají roky denní historie. Pole výše zužuje řádek na zadaný text: odpovídá názvu, který píše tento jazyk rozhraní, nebo kódu — bit i BTC najdou Bitcoin. Zvolená mince na řádku zůstává bez ohledu na zadaný text.
 - **Interval** — den, týden nebo měsíc — mění to, která řada se kreslí, takže jeho změna znovu načítá data. **Styl** a **Průběh** ne; jen překreslují to, co už je tu.
+- **1, 5 a 15 minut** se ptá na den, ne na rozsah: zvolením jedné z nich se seznam rozsahů vymění za výběr data. Zrnitost jedné minuty sahá osm dní zpět, zbylé dvě šedesát, a dál ne — tolik zdroj drží, není to limit, který by si určila tato aplikace. Coin se obchoduje čtyřiadvacet hodin denně, takže jeden den je už přes tisíc svíček.
 - Mince se obchoduje každý den v roce: rozsah nemá svátky, které by musel přeskočit, ani chybějící dny, a mince nevyplácí dividendu ani se neštěpí — závěr *je* výnos a na těchto třech stránkách se žádná úprava neprovádí.
 - Když je dosažitelný jen záložní zdroj, má jeden denní kurz místo čtyř, a svíčky i sloupce se pak kreslí jako čára: tělo se dvěma knoty udělané z jediného závěru je tvar, který mince nikdy neměla. Stránka to říká pod volbou stylu, když je to tento případ.
 - Najednou lze kreslit až šest mincí; sedmý stisk se nepřijímá, protože sedmá křivka by vzala barvu, kterou už má šestá. Při porovnání se kreslí jako kumulativní změna, protože mince nemají ceny ve stejném řádu.

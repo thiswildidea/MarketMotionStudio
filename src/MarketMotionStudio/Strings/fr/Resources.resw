@@ -957,4 +957,9 @@
   <data name="MarketCrypto"><value>Cryptomonnaies</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>Rechercher une crypto</value></data>
   <data name="CryptoSearchNone.Text"><value>Aucune crypto ne correspond.</value></data>
+  <data name="CryptoMinuteDay.Header"><value>Jour</value></data>
+  <data name="CryptoMinuteReach"><value>Seuls les {0} derniers jours sont disponibles.</value></data>
+  <data name="CryptoMinuteSourceNone"><value>La source active n'a pas de série intrajournalière.</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{0} chandeliers {1} le {2}</value></data>
+  <data name="CryptoMinuteNone"><value>Aucun chandelier n'est revenu pour ce jour.</value></data>
 </root>

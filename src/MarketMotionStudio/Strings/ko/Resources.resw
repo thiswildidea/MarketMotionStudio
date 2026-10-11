@@ -957,4 +957,9 @@
   <data name="MarketCrypto"><value>암호화폐</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>코인 검색</value></data>
   <data name="CryptoSearchNone.Text"><value>일치하는 코인이 없습니다.</value></data>
+  <data name="CryptoMinuteDay.Header"><value>날짜</value></data>
+  <data name="CryptoMinuteReach"><value>지난 {0}일만 선택할 수 있습니다.</value></data>
+  <data name="CryptoMinuteSourceNone"><value>현재 데이터 소스에는 일중 데이터가 없습니다.</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{2} {1} 캔들 {0}개</value></data>
+  <data name="CryptoMinuteNone"><value>그날의 캔들이 돌아오지 않았습니다.</value></data>
 </root>

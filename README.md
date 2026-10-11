@@ -1008,6 +1008,15 @@ page is the one of the three that notices which source answered: the fallback ca
 **only the close**, and a body and two wicks made out of a single close is a shape the coin never
 made, so candles and bars fall to a line and the page says why.
 
+**The candle page offers the three minute periods too**, and they are asked a different question:
+not *what span* but *which day*, so choosing one swaps the span list for a date picker. A coin's
+minutes reach back days where its history reaches back years — eight days on the one-minute grain,
+sixty on the five- and fifteen-minute ones, and that is what the source keeps rather than a limit
+this app picked. A coin trades through every hour of every day, so one day is already a thousand-odd
+candles and a span of months at that grain would be a chart of a shape nobody asked to see. Where
+the fallback is the source in force the three are listed but switched off, with the reason on them:
+it carries a close a day and no intraday series at all.
+
 **The title is yours on every page, and it may take two lines.** Type one, or leave the box empty to
 get the default — a fixed label on the whole-market chart, the fetched instrument's name on the
 per-stock one. Text wider than the frame wraps onto a second line rather than being clipped or

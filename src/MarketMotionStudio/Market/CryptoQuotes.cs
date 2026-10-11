@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -104,11 +105,48 @@ public enum CryptoSource
 /// </summary>
 public sealed class CryptoQuotes(HttpClient http)
 {
-    /// <summary>Yahoo's chart endpoint. The ticker goes in the path, the range in the query.</summary>
+    /// <summary>
+    /// Yahoo's two chart hosts, asked in this order.
+    ///
+    /// The same query, two names: they answer from the same data, and are both here
+    /// because one of them refuses a caller the other serves. Measured 2026-10-11,
+    /// `query1` answered a run of chart requests with 403 and an HTML page while
+    /// `query2` answered the same requests with the series — and not once the other way
+    /// round, and not in a pattern that had anything to do with how fast they were
+    /// asked. A refused request is therefore retried on the second name before it is
+    /// believed, which is what <see cref="YahooGetAsync"/> does.
+    /// </summary>
+    private static readonly string[] YahooHosts =
+    [
+        "https://query1.finance.yahoo.com/v8/finance/chart/",
+        "https://query2.finance.yahoo.com/v8/finance/chart/",
+    ];
+
+    /// <summary>Yahoo's chart endpoint: the one the probe and the daily bars name.</summary>
     private const string YahooEndpoint = "https://query1.finance.yahoo.com/v8/finance/chart/";
 
     /// <summary>CoinGecko's public API root.</summary>
     private const string GeckoEndpoint = "https://api.coingecko.com/api/v3/";
+
+    /// <summary>
+    /// How far back the one-minute candles still reach, in days.
+    ///
+    /// Eight, because the source says so rather than because it was measured by asking
+    /// until it refused: `range=30d&interval=1m` is answered "Only 8 days worth of 1m
+    /// granularity data are allowed to be fetched per request". One day fits inside it
+    /// with room to spare, and the page clips its own date picker to this anyway rather
+    /// than let the refusal be the thing that explains the limit.
+    /// </summary>
+    public const int Minute1Days = 8;
+
+    /// <summary>
+    /// How far back the five- and fifteen-minute candles reach, in days: sixty.
+    ///
+    /// Measured the same morning — `range=60d&interval=5m` came back with seventeen
+    /// thousand bars over fifty-nine days, and `range=30d&interval=15m` with two
+    /// thousand eight hundred over twenty-nine.
+    /// </summary>
+    public const int MinuteDays = 60;
 
     /// <summary>
     /// How long the longest span Yahoo is asked for is, in days.
@@ -356,6 +394,44 @@ public sealed class CryptoQuotes(HttpClient http)
     }
 
     /// <summary>
+    /// One coin's candles inside a single day: one every minute, every five minutes, or
+    /// every quarter of an hour.
+    ///
+    /// Only Yahoo is asked, and the refusal is said here rather than left for the page to
+    /// discover: the fallback carries a day and a price and has no intraday series at
+    /// all, and a minute chart folded out of days would be a shape the coin never made.
+    /// The page needs to know before it fetches, because it decides which periods to
+    /// list from the same fact.
+    ///
+    /// The day is the one **this machine's clock** names, not the one UTC names. A coin
+    /// trades through every hour of every day, so there is no session to align with and
+    /// no venue whose calendar decides which hours a day has — the only calendar that
+    /// means anything here is the reader's, and picking 11 October on a machine eight
+    /// hours east of UTC has to mean the twenty-four hours that started at *their*
+    /// midnight. Read the other way, the same choice gives a chart whose first candle is
+    /// labelled 08:00 and whose last is 07:59 of a day it does not name.
+    /// </summary>
+    public async Task<IReadOnlyList<TencentKline.CandleBar>> IntradayBarsAsync(
+        CryptoAsset asset, DateOnly day, CandlePeriod period,
+        IProgress<string>? progress, CancellationToken cancellation)
+    {
+        if (period is not (CandlePeriod.Minute1 or CandlePeriod.Minute5 or CandlePeriod.Minute15))
+        {
+            throw new ArgumentException($"Not an intraday period: {period}", nameof(period));
+        }
+
+        var source = await SourceAsync(cancellation);
+
+        if (source != CryptoSource.Yahoo)
+        {
+            throw new InvalidOperationException(
+                $"{asset.Code}: the source in force carries no intraday series.");
+        }
+
+        return await YahooIntradayAsync(asset, day, period, progress, cancellation);
+    }
+
+    /// <summary>
     /// The closes over a range, keyed by day — the shape the plan and holding pages
     /// walk, and the same shape <see cref="HistoryWalk"/> produces for stocks, so the
     /// two pages that consume it need no branch of their own.
@@ -384,6 +460,77 @@ public sealed class CryptoQuotes(HttpClient http)
 
         return closes;
     }
+
+    /// <summary>
+    /// One Yahoo request, tried on the second host when the first refuses it.
+    ///
+    /// The caller owns the response and disposes of it: a reply is read after this
+    /// returns, and a response closed on the way out would be a stream already gone.
+    ///
+    /// Only a refusal is retried. A host that answered is not asked again, and the last
+    /// reply is handed back when neither answered so that the caller's own
+    /// <c>EnsureSuccessStatusCode</c> says which status it was rather than a message
+    /// written here — the point of trying the other name is that the first one's refusal
+    /// is not the answer, and a caller that saw only this method's opinion could not
+    /// tell a refusal from a series that was never there.
+    /// </summary>
+    private async Task<HttpResponseMessage> YahooGetAsync(string query, CancellationToken cancellation)
+    {
+        HttpResponseMessage? refused = null;
+        Exception? broken = null;
+
+        for (var at = 0; at < YahooHosts.Length; at++)
+        {
+            try
+            {
+                var response = await http.GetAsync(YahooHosts[at] + query, cancellation);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response;
+                }
+
+                refused?.Dispose();
+
+                // Held rather than disposed, so the caller can say what the last refusal was.
+                refused = response;
+            }
+            catch (HttpRequestException e)
+            {
+                // The other shape of the same answer. A refusal is a status code; this is
+                // the connection being reset or dropped on the way out, and it is the more
+                // common of the two on a link that crosses a border — measured 2026-10-11,
+                // a five-minute fetch failed with exactly this while the one-minute fetch
+                // either side of it succeeded. It is as much about the host as a 403 is, so
+                // the second name is tried before it is believed.
+                broken = e;
+            }
+
+            // A breath between the two, because a refusal this shape is the source saying
+            // "not so fast" as often as it is saying "not you".
+            await Task.Delay(YahooRetryPause, cancellation);
+        }
+
+        // Whichever of the two happened last, and only thrown when nothing was ever
+        // answered: a caller that caught this would otherwise never learn that the source
+        // was reached at all and had something to say about the request.
+        if (refused is not null)
+        {
+            return refused;
+        }
+
+        throw broken!;
+    }
+
+    /// <summary>
+    /// How long the second host is given before it is asked.
+    ///
+    /// Short, and only ever paid by a request the first host already turned away: a
+    /// quarter of a second is nothing against a fetch that takes seconds, and the
+    /// alternative — asking twice in the same instant — is what the refusal is a reply
+    /// to.
+    /// </summary>
+    private static readonly TimeSpan YahooRetryPause = TimeSpan.FromMilliseconds(250);
 
     /// <summary>The source in force, probing first when nothing has asked yet.</summary>
     private async Task<CryptoSource> SourceAsync(CancellationToken cancellation)
@@ -420,10 +567,10 @@ public sealed class CryptoQuotes(HttpClient http)
     {
         progress?.Report($"Yahoo · {asset.Code}");
 
-        var uri = $"{YahooEndpoint}{Uri.EscapeDataString(asset.Yahoo)}" +
-                  $"?period1={Stamp(from)}&period2={Stamp(to)}&interval=1d";
+        var query = $"{Uri.EscapeDataString(asset.Yahoo)}" +
+                    $"?period1={Stamp(from)}&period2={Stamp(to)}&interval=1d";
 
-        using var response = await http.GetAsync(uri, cancellation);
+        using var response = await YahooGetAsync(query, cancellation);
         response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
@@ -490,6 +637,115 @@ public sealed class CryptoQuotes(HttpClient http)
 
         return bars;
     }
+
+    /// <summary>
+    /// Yahoo's candles inside one day, at the minute grain asked for.
+    ///
+    /// Assembled the same way the daily ones are — parallel arrays read by index — and
+    /// stamped twice where a daily bar is stamped once: with the day *and* with the clock,
+    /// because an intraday chart whose axis said the date would print the same date a
+    /// thousand times, and that is the field the renderer reads the label from.
+    ///
+    /// Bars outside the day are dropped rather than clipped. The request is already a day
+    /// wide, but the source aligns its minute candles to its own grid and answers a range
+    /// by inclusion rather than by cutting: a bar from the hour before or after is
+    /// available and simply not this day's.
+    /// </summary>
+    private async Task<IReadOnlyList<TencentKline.CandleBar>> YahooIntradayAsync(
+        CryptoAsset asset, DateOnly day, CandlePeriod period,
+        IProgress<string>? progress, CancellationToken cancellation)
+    {
+        progress?.Report($"Yahoo · {asset.Code}");
+
+        var query = $"{Uri.EscapeDataString(asset.Yahoo)}" +
+                    $"?period1={Stamp(day.ToDateTime(TimeOnly.MinValue))}" +
+                    $"&period2={Stamp(day.AddDays(1).ToDateTime(TimeOnly.MinValue))}" +
+                    $"&interval={IntervalOf(period)}";
+
+        using var response = await YahooGetAsync(query, cancellation);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
+        using var json = await JsonDocument.ParseAsync(stream, cancellationToken: cancellation);
+
+        var chart = json.RootElement.GetProperty("chart");
+
+        if (chart.TryGetProperty("error", out var error) && error.ValueKind == JsonValueKind.Object)
+        {
+            var said = error.TryGetProperty("description", out var text) ? text.GetString() : null;
+            throw new InvalidOperationException($"{asset.Code}: {said ?? "the chart source reported an error"}");
+        }
+
+        if (!chart.TryGetProperty("result", out var results) || results.ValueKind != JsonValueKind.Array
+            || results.GetArrayLength() == 0 || results[0].ValueKind != JsonValueKind.Object)
+        {
+            throw new InvalidOperationException($"{asset.Code}: the chart source carried no series.");
+        }
+
+        var result = results[0];
+
+        if (!result.TryGetProperty("timestamp", out var stamps) || stamps.ValueKind != JsonValueKind.Array)
+        {
+            throw new InvalidOperationException($"{asset.Code}: the chart source carried no minutes.");
+        }
+
+        var quote = result.GetProperty("indicators").GetProperty("quote")[0];
+        var opens = Values(quote, "open");
+        var highs = Values(quote, "high");
+        var lows = Values(quote, "low");
+        var closes = Values(quote, "close");
+        var volumes = Values(quote, "volume");
+
+        var bars = new List<TencentKline.CandleBar>(stamps.GetArrayLength());
+
+        for (var i = 0; i < stamps.GetArrayLength(); i++)
+        {
+            var at = DateTimeOffset.FromUnixTimeSeconds(stamps[i].GetInt64()).ToLocalTime();
+            var stamp = DateOnly.FromDateTime(at.DateTime);
+
+            if (stamp != day)
+            {
+                continue;
+            }
+
+            var open = opens[i];
+            var high = highs[i];
+            var low = lows[i];
+            var close = closes[i];
+
+            if (open is null || high is null || low is null || close is null)
+            {
+                continue;
+            }
+
+            bars.Add(new TencentKline.CandleBar(
+                stamp, open.Value, high.Value, low.Value, close.Value, volumes[i] ?? 0,
+                at.ToString("HHmm", CultureInfo.InvariantCulture)));
+        }
+
+        return bars;
+    }
+
+    /// <summary>What Yahoo calls one period in its <c>interval</c> parameter.</summary>
+    private static string IntervalOf(CandlePeriod period) => period switch
+    {
+        CandlePeriod.Minute1 => "1m",
+        CandlePeriod.Minute5 => "5m",
+        CandlePeriod.Minute15 => "15m",
+        _ => "1d",
+    };
+
+    /// <summary>
+    /// A moment on this machine's own clock, as the Unix seconds Yahoo's range parameters
+    /// are written in.
+    ///
+    /// The other <c>Stamp</c> writes UTC midnights, which is right for a day of a coin's
+    /// history — Yahoo stamps those at UTC midnight and the daily bars are filtered against
+    /// dates read straight off them. It is wrong for a day of minutes, which is a day the
+    /// reader named on their own calendar; see <see cref="IntradayBarsAsync"/>.
+    /// </summary>
+    private static long Stamp(DateTime local) =>
+        new DateTimeOffset(local, TimeZoneInfo.Local.GetUtcOffset(local)).ToUnixTimeSeconds();
 
     /// <summary>
     /// CoinGecko's daily closes for one coin, as bars whose four prices are the one price.

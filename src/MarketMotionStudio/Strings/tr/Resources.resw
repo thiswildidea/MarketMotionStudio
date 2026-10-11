@@ -957,4 +957,9 @@
   <data name="MarketCrypto"><value>Kripto</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>Kripto ara</value></data>
   <data name="CryptoSearchNone.Text"><value>Eşleşen kripto yok.</value></data>
+  <data name="CryptoMinuteDay.Header"><value>Gün</value></data>
+  <data name="CryptoMinuteReach"><value>Yalnızca son {0} gün kullanılabilir.</value></data>
+  <data name="CryptoMinuteSourceNone"><value>Etkin kaynakta gün içi seri yok.</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{2} tarihinde {0} adet {1} mum</value></data>
+  <data name="CryptoMinuteNone"><value>O gün için mum verisi gelmedi.</value></data>
 </root>

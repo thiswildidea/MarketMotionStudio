@@ -957,4 +957,9 @@
   <data name="MarketCrypto"><value>暗号資産</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>コインを検索</value></data>
   <data name="CryptoSearchNone.Text"><value>一致するコインがありません。</value></data>
+  <data name="CryptoMinuteDay.Header"><value>日付</value></data>
+  <data name="CryptoMinuteReach"><value>選択できるのは直近 {0} 日間だけです。</value></data>
+  <data name="CryptoMinuteSourceNone"><value>現在のデータ源には日中のデータがありません。</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{2} の {1} ローソク足 {0} 本</value></data>
+  <data name="CryptoMinuteNone"><value>その日のローソク足は返りませんでした。</value></data>
 </root>

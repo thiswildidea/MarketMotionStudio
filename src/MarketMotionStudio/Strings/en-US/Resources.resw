@@ -968,4 +968,9 @@
   <data name="MarketCrypto"><value>Cryptocurrency</value></data>
   <data name="CryptoSearch.PlaceholderText"><value>Search coins</value></data>
   <data name="CryptoSearchNone.Text"><value>No coin matches that.</value></data>
+  <data name="CryptoMinuteDay.Header"><value>Day</value></data>
+  <data name="CryptoMinuteReach"><value>Only the last {0} days are available.</value></data>
+  <data name="CryptoMinuteSourceNone"><value>The source in force carries no intraday series.</value></data>
+  <data name="CryptoCandleMinuteFetched"><value>{0} {1} candles on {2}</value></data>
+  <data name="CryptoMinuteNone"><value>No candles came back for that day.</value></data>
 </root>
