@@ -135,24 +135,25 @@ public sealed class CryptoQuotes(HttpClient http)
     /// <summary>
     /// How long a probe waits before it decides the source is not there.
     ///
-    /// Twelve seconds, and the number is measured rather than picked. The first request
+    /// Twenty seconds, and the number is measured rather than picked. The first request
     /// out of a cold start pays for DNS, the handshake and TLS before any of the coin's
-    /// own data moves, and was timed at seven and a half seconds on a machine that
-    /// reaches Yahoo perfectly well — whose second request to the same host took just
-    /// over one. At six seconds that machine was judged unreachable and quietly handed
-    /// the fallback, which carries a year where the primary carries ten.
+    /// own data moves, and was timed at fourteen seconds on a machine that reaches
+    /// Yahoo perfectly well — whose next requests to the same host took about one.
+    /// Six was the first guess and twelve the second; both were beaten by that first
+    /// request often enough to watch it happen, and every time the pages quietly drew
+    /// from the fallback, which carries a year where the primary carries ten.
     ///
     /// The patience is spent mostly on machines that can be served. One that cannot
     /// reach the source gets silence, but silence that arrives quickly: the connection
     /// is refused or dropped rather than left hanging, so it does not cost the full
-    /// twelve.
+    /// twenty.
     ///
     /// Multiplied by <see cref="ProbeAttempts"/>, and that is not the same kind of
     /// waiting: the probe runs while the window is already up and being used, and the
     /// fourth market is simply not in the list until it answers. A launch never waits
     /// for it.
     /// </summary>
-    private static readonly TimeSpan ProbeTimeout = TimeSpan.FromSeconds(12);
+    private static readonly TimeSpan ProbeTimeout = TimeSpan.FromSeconds(20);
 
     /// <summary>
     /// How many times each source is asked before it is called absent.

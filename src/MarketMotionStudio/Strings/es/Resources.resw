@@ -955,4 +955,6 @@
   <data name="INSTDOT"><value>Polkadot</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
   <data name="MarketCrypto"><value>Criptomonedas</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>Buscar monedas</value></data>
+  <data name="CryptoSearchNone.Text"><value>Ninguna moneda coincide.</value></data>
 </root>

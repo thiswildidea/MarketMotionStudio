@@ -443,7 +443,7 @@ Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mo
 
 As velas diárias de uma moeda, em dólares americanos, de uma fonte pública. As semanais e mensais são agrupadas a partir desses mesmos dias.
 
-- As doze moedas oferecidas são as que ambas as fontes têm com anos de histórico diário. Não há caixa de busca: as duas fontes escrevem a mesma moeda de formas diferentes, e um nome digitado não chega a nenhuma.
+- As doze moedas oferecidas são as que ambas as fontes têm com anos de histórico diário. A caixa acima estreita a linha ao que for digitado: corresponde ao nome que este idioma da interface escreve ou ao código — bit e BTC encontram Bitcoin. Uma moeda já escolhida continua na linha independentemente do que for digitado.
 - **Intervalo** — dia, semana ou mês — muda qual série é desenhada, então mudá-lo busca de novo. **Estilo** e **Animação** não; eles apenas redesenhå o que já está aqui.
 - Uma moeda é negociada todos os dias do ano: um intervalo não tem feriado para pular nem dia faltando, e uma moeda não paga dividendo nem sofre desdobramento: o fechamento *é* o retorno, e nenhum ajuste é aplicado nestas três páginas.
 - Quando só a fonte reserva é alcançável, ela tem um preço por dia em vez de quatro, e então velas e barras são desenhadas como linha: um corpo com dois pavios feito de um único fechamento é uma forma que a moeda nunca teve. A página diz isso sob a lista de estilo quando é esse o caso.

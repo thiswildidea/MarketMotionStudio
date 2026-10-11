@@ -966,4 +966,6 @@
   <data name="INSTDOT"><value>Polkadot</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
   <data name="MarketCrypto"><value>Cryptocurrency</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>Search coins</value></data>
+  <data name="CryptoSearchNone.Text"><value>No coin matches that.</value></data>
 </root>

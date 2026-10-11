@@ -955,4 +955,6 @@
   <data name="INSTDOT"><value>ポルカドット</value></data>
   <data name="INSTAVAX"><value>アバランチ</value></data>
   <data name="MarketCrypto"><value>暗号資産</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>コインを検索</value></data>
+  <data name="CryptoSearchNone.Text"><value>一致するコインがありません。</value></data>
 </root>

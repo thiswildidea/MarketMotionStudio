@@ -428,7 +428,7 @@ Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon �
 
 Bir coin'in günlük mumları, ABD doları cinsinden, herkese açık bir kaynaktan. Haftalık ve aylık mumlar aynı günlerden toplanır.
 
-- Sunulan on iki coin, her iki kaynağın da yıllarca günlük geçmişe sahip olduğu coin'ler. Arama kutusu yok: iki kaynak aynı coini farklı yazıyor ve birine yazılan isim ikisine de ulaşmıyor.
+- Sunulan on iki coin, her iki kaynağın da yıllarca günlük geçmişe sahip olduğu coin'ler. Yukarıdaki kutu satırı yazılana göre daraltır: bu arayüz dilinin yazdığı adla ya da kodla eşleşir — bit de BTC de Bitcoin'i bulur. Seçilmiş bir coin ne yazılırsa yazılsın satırda kalır.
 - **Dönem** — gün, hafta veya ay — hangi serinin çizildiğini değiştirir, bu yüzden değiştirmek yeniden veri getirir. **Stil** ve **Akış** getirmez; sadece burada olanı yeniden çizer.
 - Bir coin yılın her günü işlem görür: bir aralığın atlanacak tatili ve eksik günü yoktur; bir coin temettü ödemez ve bölünmez — kapanış *getirinin kendisidir* ve bu üç sayfada hiçbir düzeltme uygulanmaz.
 - Yalnızca yedek kaynağa ulaşılabiliyorsa, günde dört fiyat yerine bir fiyat vardır ve bu durumda mumlar ile çubuklar çizgi olarak çizilir: tek bir kapanıştan yapılmış bir gövde ve iki fitil, coin'in hiç almadığı bir biçimdir. Sayfa bunu, o durumda stil kutusunun altında söyler.

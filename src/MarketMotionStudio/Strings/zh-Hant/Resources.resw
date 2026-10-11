@@ -954,4 +954,6 @@
   <data name="INSTDOT"><value>波卡</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
   <data name="MarketCrypto"><value>加密貨幣</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>搜尋幣種</value></data>
+  <data name="CryptoSearchNone.Text"><value>沒有符合的幣種。</value></data>
 </root>

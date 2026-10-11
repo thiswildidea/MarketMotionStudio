@@ -440,7 +440,7 @@ Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku �
 
 Dzienne świece jednej monety, w dolarach amerykańskich, z publicznego źródła. Tygodniowe i miesięczne są grupowane z tych samych dni.
 
-- Dwanaście oferowanych monet to te, dla których oba źródła mają lata historii dziennej. Nie ma pola wyszukiwania: oba źródła piszą tę samą monetę inaczej, a wpisana nazwa nie trafia do żadnego z nich.
+- Dwanaście oferowanych monet to te, dla których oba źródła mają lata historii dziennej. Pole powyżej zawęża wiersz do wpisanego tekstu: pasuje do nazwy, którą zapisuje ten język interfejsu, albo do kodu — bit i BTC znajdują Bitcoin. Wybrana moneta zostaje w wierszu niezależnie od wpisanego tekstu.
 - **Interwał** — dzień, tydzień lub miesiąc — zmienia to, która seria jest rysowana, więc zmiana go pobiera dane od nowa. **Styl** i **Przebieg** nie: one tylko przerysowują to, co już jest.
 - Moneta jest notowana każdego dnia roku: zakres nie ma świąt do przeskoczenia ani brakujących dni, a moneta nie płaci dywidendy ani nie dzieli się — kurs zamknięcia *jest* zwrotem i na tych trzech stronach nie stosuje się żadnej korekty.
 - Gdy dostępne jest tylko źródło zapasowe, ma ono jedną cenę dziennie zamiast czterech, i wtedy świece oraz słupki są rysowane jako linia: korpus z dwoma knotami zrobiony z jednego zamknięcia to kształt, którego moneta nigdy nie miała. Strona mówi o tym pod listą stylu, gdy tak właśnie jest.

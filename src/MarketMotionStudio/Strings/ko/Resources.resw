@@ -955,4 +955,6 @@
   <data name="INSTDOT"><value>폴카닷</value></data>
   <data name="INSTAVAX"><value>아발란체</value></data>
   <data name="MarketCrypto"><value>암호화폐</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>코인 검색</value></data>
+  <data name="CryptoSearchNone.Text"><value>일치하는 코인이 없습니다.</value></data>
 </root>

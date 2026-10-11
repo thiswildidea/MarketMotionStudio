@@ -194,8 +194,8 @@ def labels_of(win, seconds=0):
     """市场下拉里现在有哪几格。用它而不是读选中项 —— 选中项读不回来，见 `winui.combo_pick`。
 
     **要等，而不是读一次。** 第四格是探测回来之后才补上的（`SettingsPage.OfferCryptoMarketAsync`），
-    而设置页往往比那次请求先打开：探测对每个源最多问两次、每次一条十二秒的绳子。跨文化
-    的第一个请求要先付 DNS、握手与 TLS 的钱（实测七秒半），绳子短了就把能取到币价的机器
+    而设置页往往比那次请求先打开：探测对每个源最多问两次、每次一条二十秒的绳子。跨境
+    的第一个请求要先付 DNS、握手与 TLS 的钱（实测十四秒），绳子短了就把能取到币价的机器
     判成取不到 —— 只读一次的写法**实测过**，答案是「三格」，而真相有两个：还在问，或者真
     的取不到。两者长得一模一样。
     所以这里按「四格」等，等到为止。
@@ -275,8 +275,11 @@ def main():
 
         check("打开设置页", open_settings(win))
 
-        print("  等探测……（每源最多问两次，每次十二秒）")
-        labels = labels_of(win, seconds=40)
+        print("  等探测……（每源最多问两次，每次二十秒）")
+        # 九十秒，不是四十：最坏是两源各问两次、每次一条二十秒的绳子，四十秒会在
+        # 「Yahoo 两次都超时、CoinGecko 还没轮到」的那一刻读到一个三格的下拉，然后
+        # 报「源不可达」—— 而真相是还没问完。
+        labels = labels_of(win, seconds=90)
         print("  下拉里：", "、".join(labels) if labels else "(没读到)")
 
         check("下拉列出四格（三个股票市场 + 加密货币）", len(labels) == 4, "%d 格" % len(labels))
@@ -341,6 +344,41 @@ def main():
         # 一眼看得见的证据：左边只剩那三项，而画面是一枚币的 K 线。断言说的是「对不对」，
         # 这张图说的是「看起来是不是这么回事」—— 两条都留着，改坏了才知道坏在哪。
         winui.shot(win, CRYPTO_SHOT)
+
+        # ---- 4.5 检索框 ------------------------------------------------------------
+        #
+        # 按**当前界面语言的名字**匹配，也认代码。三页共用同一口框（`CryptoPicker`），
+        # 所以这里验一次就够 —— 验的是控件，不是三份接线。
+        # 和币种开关一个深度（14）。写浅了找不到：这一块在右侧滚动区里，比导航深得多。
+        box = winui.find(win, lambda c: c.AutomationId == "CryptoSearch", limit=14)
+        check("有检索框", box is not None)
+
+        if box is not None:
+            def typed(what):
+                box.GetPattern(auto.PatternId.ValuePattern).SetValue(what)
+                time.sleep(1.0)
+
+                return [c.Name for c in winui.find_all(
+                    win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"),
+                    limit=14)]
+
+            # 数说个数，不认名字：名字是当前语言拼的，判据不该跟着界面语言改。
+            got = typed("比特")
+            check("搜「比特」只剩一个币", len(got) == 1, "、".join(got) or "(一个都不剩)")
+
+            got = typed("btc")
+            check("搜代码 btc 也命中同一个", len(got) == 1, "、".join(got) or "(一个都不剩)")
+
+            # 已选中的币不会因为不匹配而消失 —— 它是答案的一部分，藏起来会让下面那行
+            # 「已选 N 个」没有对应的东西。所以搜一个不存在的词时，留下的正是它。
+            got = typed("zzz")
+            check("搜不存在的词只有已选的那一个", len(got) == 1, "、".join(got) or "(一个都不剩)")
+
+            none = winui.find(win, lambda c: c.AutomationId == "CryptoSearchNone", limit=14)
+            check("搜不到时说出声", none is not None, none.Name if none else "(没有那句话)")
+
+            got = typed("")
+            check("清空后十二个都回来", len(got) == 12, "%d 个" % len(got))
 
         # ---- 5. 加密定投 -----------------------------------------------------------
         print("\n[加密货币定投]")

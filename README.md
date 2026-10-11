@@ -997,9 +997,13 @@ trades every day of the year; there is no dividend and no split, so the close *i
 nothing on these three pages asks for an adjusted series; and the span is calendar days, which is
 why they carry their own status lines instead of borrowing the stock pages' "trading days". Prices
 are US dollars on all three — a coin is quoted in dollars on every venue that carries it, so unlike
-the stock pages there is nothing here for the market setting to change. The coins are a list of twelve
-rather than a search box, because the two sources spell the same coin differently — Yahoo wants
-`BTC-USD`, CoinGecko wants `bitcoin` — and a name typed into either reaches neither. The candle
+the stock pages there is nothing here for the market setting to change. The coins are a list of twelve,
+and the box over it narrows that row rather than adding to it: it matches the name **this** interface
+language spells or the code, so `bit` and `BTC` both find Bitcoin on an English interface and
+`比特` finds it on a Chinese one. A coin already chosen stays on the row whatever is typed, because
+hiding it would leave the count underneath with nothing on screen to account for it. What the box does
+not do is ask a source — the two spell each coin differently (Yahoo wants `BTC-USD`, CoinGecko wants
+`bitcoin`), so it searches the names this app already holds. The candle
 page is the one of the three that notices which source answered: the fallback carries a year and
 **only the close**, and a body and two wicks made out of a single close is a shape the coin never
 made, so candles and bars fall to a line and the page says why.

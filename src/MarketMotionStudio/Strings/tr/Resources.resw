@@ -955,4 +955,6 @@
   <data name="INSTDOT"><value>Polkadot</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
   <data name="MarketCrypto"><value>Kripto</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>Kripto ara</value></data>
+  <data name="CryptoSearchNone.Text"><value>Eşleşen kripto yok.</value></data>
 </root>

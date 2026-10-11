@@ -41,6 +41,13 @@ public sealed partial class CryptoPicker : UserControl
     {
         InitializeComponent();
 
+        // Named the way the switches are named — see the note on `AutomationId` below.
+        // `x:Uid` is what localises these two and is not reliably what names them for
+        // anything that has to reach them: the switches are named here in code and are
+        // found, the box was left to its own markup and was not.
+        AutomationProperties.SetAutomationId(Search, "CryptoSearch");
+        AutomationProperties.SetAutomationId(NoMatch, "CryptoSearchNone");
+
         foreach (var asset in CryptoAsset.All)
         {
             // Named by its code, not by the name it displays: the name is the one this
@@ -157,8 +164,74 @@ public sealed partial class CryptoPicker : UserControl
             }
         }
 
+        // After the switches, not before: a coin that was just chosen has to be shown
+        // even when the box would have hidden it — see `Shows`.
+        Narrow();
+
         Say();
     }
+
+    private void OnSearchChanged(object sender, TextChangedEventArgs e) => Narrow();
+
+    /// <summary>
+    /// Shows the coins whose name or code contains what was typed, and puts the rest
+    /// away.
+    ///
+    /// The name it measures against is the one **this** interface language spells —
+    /// the same one written on the switch beside it — so a typed word means what it
+    /// looks like it means, and the answer to "how do I find it" is "spell it the way
+    /// the app spells it". The code is matched as well, because a code is what a
+    /// person who already knows what they want types.
+    ///
+    /// A coin that is on the frame is shown whatever was typed. It is part of the
+    /// answer being asked for, and a row that hid it would leave the count on the line
+    /// below — "已选 3 个" — with nothing on the row to account for it.
+    /// </summary>
+    private void Narrow()
+    {
+        var typed = Search.Text.Trim();
+        var hits = 0;
+
+        foreach (var child in Coins.Children)
+        {
+            if (child is not ToggleButton chip || chip.Tag is not string code)
+            {
+                continue;
+            }
+
+            // Counted apart from what is shown. A chosen coin stays on the row whatever
+            // was typed (see `Shows`), so "the row is not empty" is not the same question
+            // as "the word found something" — and it is the second one the line below
+            // answers. Counted the other way, typing a word that matches nothing leaves
+            // the chosen coins sitting there with nothing said, which reads as the box
+            // having stopped working.
+            if (TypedMatches(code, typed))
+            {
+                hits++;
+            }
+
+            chip.Visibility = Shows(code, typed) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        NoMatch.Visibility = typed.Length > 0 && hits == 0
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+
+    /// <summary>Whether a coin belongs on the row while this much has been typed.</summary>
+    private bool Shows(string code, string typed) => TypedMatches(code, typed) || Has(code);
+
+    /// <summary>
+    /// Whether what was typed names this coin — by the name this interface language
+    /// spells, or by the code.
+    ///
+    /// These are the two things a person can see: the word on the switch, and the
+    /// code, which is what somebody who already knows what they want types.
+    /// </summary>
+    private bool TypedMatches(string code, string typed) =>
+        typed.Length == 0
+        || Asset(code).Display.Contains(typed, StringComparison.OrdinalIgnoreCase)
+        || code.Contains(typed, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>The line under the row: how many are on, and the ceiling.</summary>
     private void Say() =>

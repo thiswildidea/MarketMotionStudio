@@ -955,4 +955,6 @@
   <data name="INSTDOT"><value>Polkadot</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
   <data name="MarketCrypto"><value>Kryptoměny</value></data>
+  <data name="CryptoSearch.PlaceholderText"><value>Hledat mince</value></data>
+  <data name="CryptoSearchNone.Text"><value>Žádná mince neodpovídá.</value></data>
 </root>

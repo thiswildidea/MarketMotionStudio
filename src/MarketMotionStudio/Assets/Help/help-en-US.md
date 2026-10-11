@@ -447,7 +447,7 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 
 One coin's daily prices as candles, in US dollars, from a public source. Weekly and monthly are gathered from those same days.
 
-- The twelve coins on offer are the ones both sources carry with years of daily history behind them. There is no search box: the two sources spell the same coin differently, and a name typed into one reaches neither.
+- The twelve coins on offer are the ones both sources carry with years of daily history behind them. The box above narrows the row to what is typed, matching the name this interface language spells or the code — type bit or BTC and Bitcoin is what comes up. A coin already chosen stays on the row whatever is typed, so the count below always has its coins on screen.
 - **Period** — day, week or month — changes which series is drawn, so changing it fetches again. **Style** and **Motion** do not; they redraw what is already here.
 - A coin trades every day of the year, so a range has no holiday to step over and no day missing from it, and a coin neither pays a dividend nor splits: the close *is* the return, and no adjustment is applied anywhere on these three pages.
 - When only the fallback source can be reached, it has one price a day rather than four, and candles and bars are then drawn as a line — a body and two wicks made out of a single close is a shape the coin never made. The page says so under the style box when that is the case.

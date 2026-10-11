@@ -457,7 +457,7 @@ Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — ani
 
 Die Tageskerzen einer Münze, in US-Dollar, aus einer öffentlichen Quelle. Wochen- und Monatskerzen werden aus denselben Tagen gebildet.
 
-- Die zwölf angebotenen Münzen sind die, zu denen beide Quellen jahrelange Tageshistorie haben. Es gibt kein Suchfeld: Die beiden Quellen schreiben dieselbe Münze unterschiedlich, und ein eingetippter Name erreicht keine von beiden.
+- Die zwölf angebotenen Münzen sind die, zu denen beide Quellen jahrelange Tageshistorie haben. Das Feld darüber grenzt die Zeile auf das Eingetippte ein: Es passt auf den Namen, den diese Oberflächensprache schreibt, oder auf den Code — bit wie BTC findet Bitcoin. Eine bereits gewählte Münze bleibt stehen, egal was eingetippt wurde.
 - **Intervall** — Tag, Woche oder Monat — entscheidet, welche Reihe gezeichnet wird, und lädt daher neu. **Darstellung** und **Ablauf** tun das nicht; sie zeichnen nur neu, was schon hier ist.
 - Eine Münze wird an jedem Tag des Jahres gehandelt: Ein Zeitraum hat keine Feiertage zu überspringen und keinen fehlenden Tag. Eine Münze zahlt weder Dividende noch splittet sie — der Schlusskurs *ist* die Rendite, und auf diesen drei Seiten wird nirgends bereinigt.
 - Wenn nur die Ersatzquelle erreichbar ist, hat sie einen Kurs pro Tag statt vier, und Kerzen und Balken werden dann als Linie gezeichnet: Ein Körper mit zwei Dochten aus einem einzigen Schlusskurs ist eine Form, die die Münze nie hatte. Die Seite sagt das unter dem Darstellungsfeld, wenn es so ist.

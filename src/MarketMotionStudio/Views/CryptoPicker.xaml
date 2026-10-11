@@ -5,12 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:MarketMotionStudio.Controls">
 
-    <!-- One row of switches, one per coin, and a line under it saying how many are on.
+    <!-- One row of switches, one per coin, a box to narrow the row with, and a line
+         under both saying how many are on.
 
-         A row rather than a search box: the coins this app offers are a list of twelve
-         (see `CryptoAsset`), and a list of twelve is read in one glance where a search
-         box has to be typed into before it says anything. The two sources spell each of
-         them differently, so a name typed in would reach neither.
+         The row is still the list of twelve (see `CryptoAsset`) — the box narrows what
+         is shown of it, it is not how a coin gets added. Twelve is read in one glance,
+         and the box is for the person who already knows which one they are after and
+         would rather type three letters than read four lines.
 
          The switches are switches, not buttons that navigate: whether a coin is on the
          frame is a state, and a control that holds no state cannot be asked what is
@@ -18,7 +19,22 @@
          have to do. -->
 
     <StackPanel Spacing="6">
+        <TextBox x:Name="Search"
+                 x:Uid="CryptoSearch"
+                 TextChanged="OnSearchChanged" />
+
         <controls:WrapPanel x:Name="Coins" />
+
+        <!-- Only up when the box has hidden every switch. Without it the row goes blank
+             and the count underneath still says three are chosen, which reads as this
+             block having broken rather than as the word not being one of the twelve. -->
+        <TextBlock x:Name="NoMatch"
+                   x:Uid="CryptoSearchNone"
+                   TextWrapping="Wrap"
+                   Visibility="Collapsed"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
         <TextBlock x:Name="Note"
                    TextWrapping="Wrap"
                    Style="{StaticResource CaptionTextBlockStyle}"

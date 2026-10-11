@@ -462,7 +462,7 @@ Un achat, conservé — un million du même nom depuis 2015 — animé pour mont
 
 Les chandeliers quotidiens d'une cryptomonnaie, en dollars américains, depuis une source publique. Les hebdomadaires et mensuels sont regroupés à partir de ces mêmes jours.
 
-- Les douze cryptomonnaies proposées sont celles que les deux sources portent avec des années d'historique quotidien. Il n'y a pas de champ de recherche : les deux sources écrivent la même cryptomonnaie différemment, et un nom tapé n'atteint ni l'une ni l'autre.
+- Les douze cryptomonnaies proposées sont celles que les deux sources portent avec des années d'historique quotidien. Le champ ci-dessus resserre la ligne sur ce qui est saisi : il correspond au nom qu'écrit cette langue d'interface ou au code — bit comme BTC trouvent Bitcoin. Une cryptomonnaie déjà choisie reste affichée quoi qu'on saisisse.
 - **Granularité** — jour, semaine ou mois — change la série tracée, et relance donc la récupération. **Type de tracé** et **Animation** non ; ils redessinent ce qui est déjà là.
 - Une cryptomonnaie se négocie tous les jours de l'année : un intervalle n'a aucun jour férié à sauter et aucun jour manquant, et une cryptomonnaie ne verse ni dividende ni ne fractionne : la clôture *est* le rendement, et aucun ajustement n'est appliqué sur ces trois pages.
 - Si seule la source de repli est atteignable, elle n'a qu'un prix par jour au lieu de quatre, et chandeliers et barres sont alors tracés en ligne — un corps et deux mèches faits d'une seule clôture est une forme que la cryptomonnaie n'a jamais eue. La page le dit sous la liste de tracé lorsque c'est le cas.

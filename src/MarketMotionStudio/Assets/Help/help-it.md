@@ -456,7 +456,7 @@ Un acquisto, tenuto — un milione dello stesso nome dal 2015 — animato per mo
 
 Le candele giornaliere di una moneta, in dollari statunitensi, da una fonte pubblica. Settimanali e mensili sono raggruppate a partire dagli stessi giorni.
 
-- Le dodici monete offerte sono quelle che entrambe le fonti hanno con anni di storia giornaliera. Non c'è una casella di ricerca: le due fonti scrivono la stessa moneta in modo diverso, e un nome digitato non raggiunge né l'una né l'altra.
+- Le dodici monete offerte sono quelle che entrambe le fonti hanno con anni di storia giornaliera. Il campo qui sopra restringe la riga a ciò che si digita: corrisponde al nome che scrive questa lingua dell'interfaccia o al codice — bit e BTC trovano Bitcoin. Una moneta già scelta resta nella riga qualunque cosa si digiti.
 - **Intervallo** — giorno, settimana o mese — cambia quale serie viene disegnata, quindi cambiarlo ricarica. **Stile** e **Animazione** no: ridisegnano solo ciò che è già qui.
 - Una moneta viene scambiata ogni giorno dell'anno: un intervallo non ha festività da saltare né giorni mancanti, e una moneta non paga dividendi né fraziona: la chiusura *è* il rendimento, e su queste tre pagine non si applica alcun aggiustamento.
 - Se è raggiungibile solo la fonte di riserva, questa ha un prezzo al giorno invece di quattro, e candele e barre vengono allora disegnate come linea: un corpo con due stoppini fatto da una sola chiusura è una forma che la moneta non ha mai avuto. La pagina lo dice sotto la lista dello stile quando è questo il caso.

@@ -423,7 +423,7 @@ Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 —
 
 Denní svíčky jedné mince v amerických dolarech z veřejného zdroje. Týdenní a měsíční jsou složeny ze stejných dnů.
 
-- Dvanáct nabízených mincí jsou ty, k nimž oba zdroje mají roky denní historie. Vyhledávací pole tu není: oba zdroje píšou tutéž minci jinak a název napsaný do jednoho nedosáhne ani na jeden.
+- Dvanáct nabízených mincí jsou ty, k nimž oba zdroje mají roky denní historie. Pole výše zužuje řádek na zadaný text: odpovídá názvu, který píše tento jazyk rozhraní, nebo kódu — bit i BTC najdou Bitcoin. Zvolená mince na řádku zůstává bez ohledu na zadaný text.
 - **Interval** — den, týden nebo měsíc — mění to, která řada se kreslí, takže jeho změna znovu načítá data. **Styl** a **Průběh** ne; jen překreslují to, co už je tu.
 - Mince se obchoduje každý den v roce: rozsah nemá svátky, které by musel přeskočit, ani chybějící dny, a mince nevyplácí dividendu ani se neštěpí — závěr *je* výnos a na těchto třech stránkách se žádná úprava neprovádí.
 - Když je dosažitelný jen záložní zdroj, má jeden denní kurz místo čtyř, a svíčky i sloupce se pak kreslí jako čára: tělo se dvěma knoty udělané z jediného závěru je tvar, který mince nikdy neměla. Stránka to říká pod volbou stylu, když je to tento případ.
