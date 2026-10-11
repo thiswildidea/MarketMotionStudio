@@ -38,7 +38,9 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 • 加密货币市值历程——某个币种流通市值随时间的变化，下方是同一批日子的价格
 • 加密货币市值榜——当前市值最大的十五个币种，以及这个排名逐日怎么演变
 
-支持A股、港股、美股与加密货币四个市场（加密货币在数据源连得上时才出现），界面内置 14 种语言。
+四个市场，各自带着它的数据能喂饱的那些页面。**A 股**——每一页都能用，包括只有它的源才给出的全市场成交额、申万一级行业上的行业竞速、当天市值最大十五家的市值竞速，以及 AH 溢价。**港股**——港股指数与个股上的收益矩阵和涨跌日历，以及四个恒生分类指数的行业竞速。**美股**——同样的两页放在美股指数与个股上，十只 SPDR 行业 ETF 竞速，成交额以美元计价。**加密货币**——它自己有六页，只在中国大陆以外的市场提供：它的两个源都在境外；而在境外，加密货币是竖屏视频里最受欢迎的一类题材，币一天二十四小时、一年三百六十五天都在交易，区间里没有要跳过的休市日。
+
+界面内置 14 种语言。
 
 本应用展示的数据来自公开行情服务，仅供演示与参考，不构成任何投资建议。
 
@@ -49,7 +51,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 ### 产品功能
 
 - 一键生成 9:16 竖屏行情动画视频
-- 覆盖A股、港股、美股与加密货币四大市场
+- 覆盖A股、港股、美股与加密货币四大市场——加密货币自带六页，只在中国大陆以外的市场提供
 - 二十四种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率、债市固收、市值历程、加密货币 K 线、加密货币定投、加密货币持仓、加密货币涨跌日历、加密货币市值历程、加密货币市值榜
 - 导出 H.264 MP4，可直接发布到短视频平台
 - 界面内置 14 种语言
@@ -91,7 +93,9 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 • 加密貨幣市值歷程——某個幣種流通市值隨時間的變化，下方是同一批日子的價格
 • 加密貨幣市值榜——目前市值最大的十五個幣種，以及這個排名逐日怎麼演變
 
-支援陸股、港股、美股與加密貨幣四個市場（加密貨幣在資料來源連得上時才出現），介面內建 14 種語言。
+四個市場，各自帶著它的資料能餵飽的那些頁面。**陸股**——每一頁都能用，包括只有它的源才給出的全市場成交額、申萬一級行業上的行業競速、當天市值最大十五家的市值競速，以及 AH 溢價。**港股**——港股指數與個股上的收益矩陣和漲跌日曆，以及四個恆生分類指數的行業競速。**美股**——同樣的兩頁放在美股指數與個股上，十檔 SPDR 產業 ETF 競速，成交額以美元計價。**加密貨幣**——它自己有六頁，只在中國大陸以外的市場提供：它的兩個源都在境外；而在境外，加密貨幣是直式影片裡最受歡迎的一類題材，幣一天二十四小時、一年三百六十五天都在交易，期間裡沒有要跳過的休市日。
+
+介面內建 14 種語言。
 
 本應用程式展示的資料來自公開行情服務，僅供示範與參考，不構成任何投資建議。
 
@@ -102,7 +106,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 ### 產品功能
 
 - 一鍵生成 9:16 直式行情動畫影片
-- 涵蓋陸股、港股、美股與加密貨幣四大市場
+- 涵蓋陸股、港股、美股與加密貨幣四大市場——加密貨幣自帶六頁，只在中國大陸以外的市場提供
 - 二十四種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率、債市固收、市值歷程、加密貨幣 K 線、加密貨幣定投、加密貨幣持倉、加密貨幣漲跌日曆、加密貨幣市值歷程、加密貨幣市值榜
 - 匯出 H.264 MP4，可直接發布到短影音平台
 - 介面內建 14 種語言
@@ -144,7 +148,9 @@ Twenty-four chart pages:
 • Crypto Market Cap History — One coin's circulating market cap over time, with the price over the same days beneath it
 • Crypto Market Cap Race — The fifteen coins with the largest market cap today, and how that order moved day by day
 
-Four markets: China A-share, Hong Kong, US, and cryptocurrency — offered when a crypto source answers. The interface ships in 14 languages.
+Four markets, each with the pages its own data can feed. **China A-shares** — every page, including the whole-market turnover reel no other market's source reports, the sector race on the Shenwan sectors, the market cap race over today's largest fifteen, and AH premium. **Hong Kong** — the return matrix and the calendar on Hong Kong indices and listings, and four Hang Seng sub-indices racing. **US** — the same two pages on US indices and listings, ten SPDR sector ETFs racing, amounts in dollars. **Cryptocurrency** — six pages of its own, offered outside mainland China and nowhere inside it, because that is where both of its sources are; everywhere else, crypto is the market most people want on a phone screen, and a coin trades every hour of every day with no holiday to step over.
+
+The interface ships in 14 languages.
 
 Data shown comes from a public quote service, for illustration and reference only; not investment advice.
 
@@ -155,7 +161,7 @@ Cryptocurrency is now a market of its own. Pick it in Settings and the navigatio
 ### Product features
 
 - One-click 9:16 vertical market-animation videos
-- Four markets: China A-share, Hong Kong, US, and cryptocurrency
+- Four markets: China A-shares, Hong Kong, US, and cryptocurrency — the last with six pages of its own, offered outside mainland China
 - Twenty-four charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds, Bond market, Market value, Crypto Candles, Crypto DCA, Crypto Holdings, Crypto Gain Calendar, Crypto Market Cap History, Crypto Market Cap Race
 - Exports H.264 MP4, ready for short-video platforms
 - Interface available in 14 languages
@@ -197,7 +203,9 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 • 暗号資産の時価総額の推移 — ある暗号資産の流通時価総額の推移。下段には同じ期間の価格
 • 暗号資産の時価総額レース — 現在の時価総額が大きい十五銘柄と、その順位が日々どう動いたか
 
-中国A株・香港・米国・暗号資産の 4 市場に対応（暗号資産はデータ源につながるときに表示）。インターフェースは 14 言語を内蔵。
+四つの市場は、それぞれ自分のデータで描けるページを連れています。**中国 A 株**——全ページが使えます。他の市場の源は出さない全市場売買代金、申万一級業種のセクター競争、当日の時価総額上位十五社による時価総額競争、そして AH プレミアムが含まれます。**香港**——香港の指数と銘柄で読むリターンマトリクスと騰落カレンダー、四つのハンセン分類指数によるセクター競争。**米国**——同じ二つのページを米国の指数と銘柄で、十本の SPDR セクター ETF によるセクター競争、売買代金はドル建て。**暗号資産**——六つのページを持ち、中国本土以外の市場だけで提供されます。二つの源がそこにあるからです。本土の外で暗号資産は、スマホの画面に載せたい市場として最も人気があり、コインは一日二十四時間、年中無休で取引され、飛ばすべき休場日がありません。
+
+インターフェースは 14 言語を内蔵。
 
 表示されるデータは公開相場サービスに基づきます。デモおよび参考目的であり、投資助言ではありません。
 
@@ -208,7 +216,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 ### 製品の機能
 
 - ワンクリックで 9:16 縦型の相場アニメーション動画を作成
-- 中国A株・香港・米国・暗号資産の 4 市場に対応
+- 中国A株・香港・米国・暗号資産の 4 市場に対応——暗号資産は六つのページを持ち、中国本土以外の市場で提供
 - 24 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率、債券市場、時価総額の推移、暗号資産のローソク足、暗号資産のつみたて、暗号資産の保有、暗号資産の値動きカレンダー、暗号資産の時価総額の推移、暗号資産の時価総額レース
 - H.264 MP4 で書き出し、ショート動画プラットフォームにそのまま投稿可能
 - インターフェースは 14 言語内蔵
@@ -250,7 +258,9 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 • 크립토 시가총액 추이 — 암호화폐의 유통 시가총액 추이. 아래에는 같은 기간의 가격
 • 크립토 시가총액 레이스 — 현재 시가총액이 가장 큰 열다섯 코인과 그 순위가 날마다 어떻게 움직였는지
 
-중국 A주식, 홍콩, 미국, 암호화폐 4개 시장 지원(암호화폐는 데이터 출처에 연결될 때 표시). 인터페이스는 14개 언어 내장.
+네 시장은 각자 자신의 데이터로 그릴 수 있는 페이지를 가지고 있습니다. **중국 A주**——전체 시장 거래대금(다른 시장의 소스는 이 수치를 주지 않습니다), 선완 1차 업종 기준 업종 경주, 당일 시가총액 상위 15곳의 시가총액 경주, 그리고 AH 프리미엄을 포함해 모든 페이지를 쓸 수 있습니다. **홍콩**——홍콩 지수와 종목으로 읽는 수익 매트릭스와 등락 달력, 그리고 항셍 4개 분류 지수의 업종 경주. **미국**——같은 두 페이지를 미국 지수와 종목으로, SPDR 섹터 ETF 10개의 업종 경주, 거래대금은 달러 기준. **암호화폐**——자체 페이지 여섯 개를 가지고 있으며 중국 본토 밖 시장에서만 제공됩니다. 두 소스가 모두 그곳에 있기 때문입니다. 본토 밖에서 암호화폐는 휴대폰 화면에 올리고 싶은 시장으로 가장 인기가 높고, 코인은 하루 스물네 시간, 연중무휴로 거래되어 건너뛸 휴장일이 없습니다.
+
+인터페이스는 14개 언어 내장.
 
 표시되는 데이터는 공개 시세 서비스에서 제공되며, 시연 및 참고용일 뿐 투자 조언이 아닙니다.
 
@@ -261,7 +271,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 ### 제품 기능
 
 - 원클릭으로 9:16 세로형 시장 애니메이션 영상 제작
-- 중국 A주식, 홍콩, 미국, 암호화폐 4개 시장 지원
+- 중국 A주식, 홍콩, 미국, 암호화폐 4개 시장 지원——암호화폐는 여섯 페이지를 가지며 중국 본토 밖 시장에서 제공
 - 24가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률、채권시장、시가총액 추이、크립토 캔들、크립토 적립、크립토 보유、크립토 등락 캘린더、크립토 시가총액 추이、크립토 시가총액 레이스
 - H.264 MP4로 내보내 숏폼 플랫폼에 바로 게시
 - 14개 언어 인터페이스 내장
@@ -303,7 +313,9 @@ Vierundzwanzig Diagrammseiten:
 • Krypto-Marktkapitalisierung im Verlauf – Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage
 • Rennen der Krypto-Marktkapitalisierung – Die fünfzehn Münzen mit der größten Marktkapitalisierung heute und wie sich diese Ordnung Tag für Tag bewegte
 
-Vier Märkte: China A-Aktien, Hongkong, USA und Kryptowährungen – angeboten, wenn eine Krypto-Quelle antwortet. Die Oberfläche gibt es in 14 Sprachen.
+Vier Märkte, jeder mit den Seiten, die seine eigenen Daten füttern können. **China A-Aktien** – jede Seite, darunter der Umsatzfilm für den Gesamtmarkt, den keine andere Quelle meldet, das Sektor-Rennen über die Shenwan-Sektoren, das Rennen der Marktkapitalisierung über die heute größten fünfzehn und die AH-Prämie. **Hongkong** – Renditematrix und Kalender auf Hongkonger Indizes und Werten, vier Hang-Seng-Subindizes im Rennen. **USA** – dieselben zwei Seiten auf US-Indizes und -Werten, zehn SPDR-Sektor-ETFs im Rennen, Beträge in Dollar. **Kryptowährungen** – sechs eigene Seiten, angeboten außerhalb des chinesischen Festlands und nirgends darin, weil beide Quellen dort liegen; überall sonst sind Kryptowährungen der Markt, den die meisten auf dem Handy sehen wollen, und eine Münze wird rund um die Uhr gehandelt, ohne Feiertag zum Überspringen.
+
+Die Oberfläche gibt es in 14 Sprachen.
 
 Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Veranschaulichung und als Referenz; keine Anlageberatung.
 
@@ -314,7 +326,7 @@ Kryptowährungen sind jetzt ein eigener Markt. Wählst du ihn in den Einstellung
 ### Produktfunktionen
 
 - Mit einem Klick 9:16-Marktanimationsvideos im Hochformat
-- Vier Märkte: China A-Aktien, Hongkong, USA und Kryptowährungen
+- Vier Märkte: China A-Aktien, Hongkong, USA und Kryptowährungen — letztere mit sechs eigenen Seiten, angeboten außerhalb des chinesischen Festlands
 - Vierundzwanzig Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote, Anleihemarkt, Marktwert, Krypto-Kerzen, Krypto-Sparplan, Krypto-Bestände, Krypto-Gewinnkalender, Krypto-Marktkapitalisierung im Verlauf, Rennen der Krypto-Marktkapitalisierung
 - Export als H.264-MP4, fertig für Kurzvideo-Plattformen
 - Oberfläche in 14 Sprachen
@@ -356,7 +368,9 @@ Vingt-quatre pages de graphiques :
 • Historique de capitalisation crypto — La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous
 • Course des capitalisations crypto — Les quinze cryptomonnaies à la plus forte capitalisation aujourd'hui, et l'évolution de cet ordre jour après jour
 
-Quatre marchés : Chine A, Hong Kong, États-Unis et cryptomonnaies — proposées quand une source crypto répond. L'interface existe en 14 langues.
+Quatre marchés, chacun avec les pages que ses propres données peuvent alimenter. **Chine A** — toutes les pages, dont le film du volume d'échanges du marché entier qu'aucune autre source ne publie, la course de secteurs sur les secteurs Shenwan, la course de capitalisation sur les quinze plus grandes du jour, et la prime AH. **Hong Kong** — la matrice des rendements et le calendrier sur les indices et valeurs de Hong Kong, quatre sous-indices Hang Seng en course. **États-Unis** — les deux mêmes pages sur les indices et valeurs américains, dix ETF sectoriels SPDR en course, montants en dollars. **Cryptomonnaies** — six pages à elles, proposées hors de Chine continentale et nulle part à l'intérieur, parce que leurs deux sources s'y trouvent ; partout ailleurs, les cryptomonnaies sont le marché que le plus de gens veulent voir sur un téléphone, et une pièce se négocie vingt-quatre heures sur vingt-quatre, sans jour férié à sauter.
+
+L'interface existe en 14 langues.
 
 Les données affichées proviennent d'un service de cotations public, à titre d'illustration et de référence ; ceci ne constitue pas un conseil en investissement.
 
@@ -367,7 +381,7 @@ Les cryptomonnaies sont maintenant un marché à part entière. Choisissez-les d
 ### Fonctionnalités
 
 - Vidéos d'animation de marché 9:16 verticales en un clic
-- Quatre marchés : Chine A, Hong Kong, États-Unis et cryptomonnaies
+- Quatre marchés : Chine A, Hong Kong, États-Unis et cryptomonnaies — ces dernières avec six pages à elles, proposées hors de Chine continentale
 - Vingt-quatre graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite, Marché obligataire, Valeur de marché, Chandeliers crypto, DCA crypto, Portefeuille crypto, Calendrier des hausses et baisses crypto, Historique de capitalisation crypto, Course des capitalisations crypto
 - Export MP4 H.264, prêt pour les plateformes de vidéos courtes
 - Interface disponible en 14 langues
@@ -409,7 +423,9 @@ Ventiquattro pagine di grafici:
 • Storia della capitalizzazione crypto — La capitalizzazione circolante di una moneta nel tempo, con il prezzo degli stessi giorni sotto
 • Corsa della capitalizzazione crypto — Le quindici monete con la capitalizzazione maggiore oggi e come quest'ordine si è mosso giorno per giorno
 
-Quattro mercati: Cina A, Hong Kong, Stati Uniti e criptovalute — proposte quando una fonte crypto risponde. L'interfaccia è disponibile in 14 lingue.
+Quattro mercati, ciascuno con le pagine che i suoi dati possono alimentare. **Cina A** — tutte le pagine, incluso il film del controvalore dell'intero mercato che nessun'altra fonte pubblica, la gara di settori sui settori Shenwan, la gara di capitalizzazione sulle quindici maggiori di oggi e il premio AH. **Hong Kong** — la matrice dei rendimenti e il calendario su indici e titoli di Hong Kong, quattro sottoindici Hang Seng in gara. **Stati Uniti** — le stesse due pagine su indici e titoli americani, dieci ETF settoriali SPDR in gara, importi in dollari. **Criptovalute** — sei pagine proprie, offerte fuori dalla Cina continentale e in nessun luogo al suo interno, perché lì si trovano entrambe le fonti; ovunque altrove, le criptovalute sono il mercato che più persone vogliono vedere sul telefono, e una moneta si scambia ventiquattro ore su ventiquattro, senza festività da saltare.
+
+L'interfaccia è disponibile in 14 lingue.
 
 I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo illustrativo e di riferimento; non sono consulenza finanziaria.
 
@@ -420,7 +436,7 @@ Le criptovalute sono ora un mercato a sé. Sceglile nelle impostazioni e la navi
 ### Funzionalità del prodotto
 
 - Video di animazione di mercato verticali 9:16 con un clic
-- Quattro mercati: Cina A, Hong Kong, Stati Uniti e criptovalute
+- Quattro mercati: Cina A, Hong Kong, Stati Uniti e criptovalute — quest'ultime con sei pagine proprie, offerte fuori dalla Cina continentale
 - Ventiquattro grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita, Mercato obbligazionario, Valore di mercato, Candele crypto, DCA crypto, Portafoglio crypto, Calendario dei movimenti crypto, Storia della capitalizzazione crypto, Corsa della capitalizzazione crypto
 - Esportazione MP4 H.264, pronta per le piattaforme di video brevi
 - Interfaccia disponibile in 14 lingue
@@ -462,7 +478,9 @@ Veinticuatro páginas de gráficos:
 • Historial de capitalización cripto — La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo
 • Carrera de capitalización cripto — Las quince monedas con mayor capitalización hoy y cómo se movió ese orden día a día
 
-Cuatro mercados: China A, Hong Kong, EE. UU. y criptomonedas — disponibles cuando una fuente cripto responde. La interfaz está disponible en 14 idiomas.
+Cuatro mercados, cada uno con las páginas que sus propios datos pueden alimentar. **China A** — todas las páginas, incluido el filme del volumen de todo el mercado, que ninguna otra fuente publica, la carrera de sectores sobre los sectores Shenwan, la carrera de capitalización sobre las quince mayores de hoy y la prima AH. **Hong Kong** — la matriz de rentabilidad y el calendario sobre índices y valores de Hong Kong, cuatro subíndices Hang Seng en carrera. **EE. UU.** — las mismas dos páginas sobre índices y valores estadounidenses, diez ETF sectoriales SPDR en carrera, importes en dólares. **Criptomonedas** — seis páginas propias, ofrecidas fuera de China continental y en ningún lugar dentro de ella, porque allí están sus dos fuentes; fuera de China, las criptomonedas son el mercado que más gente quiere ver en el móvil, y una moneda cotiza las veinticuatro horas, sin festivo que saltar.
+
+La interfaz está disponible en 14 idiomas.
 
 Los datos mostrados provienen de un servicio público de cotizaciones, solo con fines ilustrativos y de referencia; no es asesoramiento de inversión.
 
@@ -473,7 +491,7 @@ Las criptomonedas son ahora un mercado propio. Elígelas en la configuración y 
 ### Funciones del producto
 
 - Vídeos de animación de mercado 9:16 verticales con un clic
-- Cuatro mercados: China A, Hong Kong, EE. UU. y criptomonedas
+- Cuatro mercados: China A, Hong Kong, EE. UU. y criptomonedas — estas últimas con seis páginas propias, ofrecidas fuera de China continental
 - Veinticuatro gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto, Renta fija, Valor de mercado, Velas cripto, DCA cripto, Cartera cripto, Calendario de ganancias cripto, Historial de capitalización cripto, Carrera de capitalización cripto
 - Exportación a MP4 H.264, lista para plataformas de vídeo corto
 - Interfaz disponible en 14 idiomas
@@ -514,7 +532,9 @@ Vinte e quatro páginas de gráficos:
 • Histórico de capitalização cripto — A capitalização circulante de uma moeda ao longo do tempo, com o preço dos mesmos dias abaixo
 • Corrida de capitalização cripto — As quinze moedas com a maior capitalização hoje e como essa ordem se moveu dia a dia
 
-Quatro mercados: China A, Hong Kong, EUA e criptomoedas — oferecidas quando uma fonte cripto responde. A interface vem em 14 idiomas.
+Quatro mercados, cada um com as páginas que os seus próprios dados conseguem alimentar. **China A** — todas as páginas, incluindo o filme do volume de todo o mercado, que nenhuma outra fonte publica, a corrida de setores sobre os setores Shenwan, a corrida de capitalização sobre as quinze maiores de hoje e o prémio AH. **Hong Kong** — a matriz de retorno e o calendário sobre índices e valores de Hong Kong, quatro subíndices Hang Seng em corrida. **EUA** — as mesmas duas páginas sobre índices e valores americanos, dez ETFs setoriais SPDR em corrida, valores em dólares. **Criptomoedas** — seis páginas próprias, oferecidas fora da China continental e em nenhum lugar dentro dela, porque é lá que estão as duas fontes; fora da China, as criptomoedas são o mercado que mais gente quer ver no telefone, e uma moeda é negociada vinte e quatro horas por dia, sem feriado a saltar.
+
+A interface vem em 14 idiomas.
 
 Os dados exibidos vêm de um serviço público de cotações, apenas para ilustração e referência; não é recomendação de investimento.
 
@@ -525,7 +545,7 @@ As criptomoedas agora são um mercado próprio. Escolha-as nas configurações e
 ### Funcionalidades do produto
 
 - Vídeos de animação de mercado verticais 9:16 com um clique
-- Quatro mercados: China A, Hong Kong, EUA e criptomoedas
+- Quatro mercados: China A, Hong Kong, EUA e criptomoedas — estas últimas com seis páginas próprias, oferecidas fora da China continental
 - Vinte e quatro gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto, Mercado de títulos, Histórico de valor de mercado, Velas cripto, DCA cripto, Carteira cripto, Calendário de altas e baixas cripto, Histórico de capitalização cripto, Corrida de capitalização cripto
 - Exporta MP4 H.264, pronto para plataformas de vídeo curto
 - Interface disponível em 14 idiomas
@@ -567,7 +587,9 @@ Dwadzieścia cztery stron wykresów:
 • Historia kapitalizacji krypto — Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach
 • Wyścig kapitalizacji krypto — Piętnaście monet o największej kapitalizacji dziś i jak ten porządek zmieniał się dzień po dniu
 
-Cztery rynki: Chiny A, Hongkong, USA i kryptowaluty — oferowane, gdy odpowie źródło krypto. Interfejs dostępny w 14 językach.
+Cztery rynki, każdy z tymi stronami, które jego własne dane potrafią zasilić. **Chiny A** — wszystkie strony, w tym film obrotu całego rynku, którego nie publikuje żadne inne źródło, wyścig sektorów na sektorach Shenwan, wyścig kapitalizacji piętnastu największych dnia oraz premia AH. **Hongkong** — macierz stóp zwrotu i kalendarz na indeksach i spółkach Hongkongu, cztery subindeksy Hang Seng w wyścigu. **USA** — te same dwie strony na amerykańskich indeksach i spółkach, dziesięć sektorowych ETF-ów SPDR w wyścigu, kwoty w dolarach. **Kryptowaluty** — sześć własnych stron, oferowanych poza Chinami kontynentalnymi i w żadnym miejscu wewnątrz nich, bo tam są oba źródła; wszędzie indziej kryptowaluty są rynkiem, który najwięcej osób chce widzieć na telefonie, a moneta jest notowana przez całą dobę, bez świąt do pominięcia.
+
+Interfejs dostępny w 14 językach.
 
 Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w celach poglądowych i referencyjnych; nie stanowi porady inwestycyjnej.
 
@@ -578,7 +600,7 @@ Kryptowaluty są teraz osobnym rynkiem. Wybierz je w ustawieniach, a nawigacja z
 ### Funkcje produktu
 
 - Pionowe filmy z animacją rynku 9:16 jednym kliknięciem
-- Cztery rynki: Chiny A, Hongkong, USA i kryptowaluty
+- Cztery rynki: Chiny A, Hongkong, USA i kryptowaluty — te ostatnie z sześcioma własnymi stronami, oferowane poza Chinami kontynentalnymi
 - Dwadzieścia cztery wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność, Rynek obligacji, Wartość rynkowa, Świece krypto, Krypto DCA, Portfel krypto, Kalendarz zmian krypto, Historia kapitalizacji krypto, Wyścig kapitalizacji krypto
 - Eksport MP4 H.264, gotowy dla platform krótkich filmów
 - Interfejs w 14 językach
@@ -620,7 +642,9 @@ Dvacet čtyři stránek s grafy:
 • Historie kapitalizace krypto — Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny
 • Závod kapitalizací krypto — Patnáct mincí s největší kapitalizací dnes a jak se toto pořadí den po dni měnilo
 
-Čtyři trhy: Čína A, Hongkong, USA a kryptoměny — nabízené, když odpoví zdroj krypta. Rozhraní je ve 14 jazycích.
+Čtyři trhy, každý s těmi stránkami, které jeho vlastní data dokážou nakrmit. **Čína A** — všechny stránky, včetně filmu obratu celého trhu, který žádný jiný zdroj neuvádí, závodu sektorů na sektorech Shenwan, závodu tržní kapitalizace patnácti největších dne a prémie AH. **Hongkong** — matice výnosů a kalendář na hongkongských indexech a titulech, čtyři subindexy Hang Seng v závodě. **USA** — tytéž dvě stránky na amerických indexech a titulech, deset sektorových ETF SPDR v závodě, částky v dolarech. **Kryptoměny** — šest vlastních stránek, nabízených mimo pevninskou Čínu a nikde uvnitř ní, protože tam jsou oba zdroje; všude jinde jsou kryptoměny trhem, který chce na telefonu vidět nejvíce lidí, a mince se obchoduje čtyřiadvacet hodin denně, bez svátku, který by bylo třeba přeskočit.
+
+Rozhraní je ve 14 jazycích.
 
 Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a referenci; nejde o investiční poradenství.
 
@@ -631,7 +655,7 @@ Kryptoměny jsou teď samostatným trhem. Vyberete-li je v nastavení, navigace 
 ### Funkce produktu
 
 - Svislá tržní animovaná videa 9:16 na jedno kliknutí
-- Čtyři trhy: Čína A, Hongkong, USA a kryptoměny
+- Čtyři trhy: Čína A, Hongkong, USA a kryptoměny — ty poslední s šesti vlastními stránkami, nabízené mimo pevninskou Čínu
 - Dvacet čtyři grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost, Trh dluhopisů, Tržní hodnota, Krypto svíčky, Krypto DCA, Krypto portfolio, Kalendář pohybů krypto, Historie kapitalizace krypto, Závod kapitalizací krypto
 - Export MP4 H.264, připravený pro platformy krátkých videí
 - Rozhraní ve 14 jazycích
@@ -673,7 +697,9 @@ Market Motion Studio превращает биржевые данные в ве�
 • История капитализации крипто — Капитализация одной монеты в обращении во времени, под ней — цена за те же дни
 • Гонка капитализаций крипто — Пятнадцать монет с крупнейшей капитализацией сегодня и то, как этот порядок менялся день за днём
 
-Четыре рынка: Китай (A-акции), Гонконг, США и криптовалюты — предлагаются, когда отвечает криптоисточник. Интерфейс доступен на 14 языках.
+Четыре рынка, у каждого — те страницы, которые способны прокормить его собственные данные. **Китай (A-акции)** — все страницы, включая ролик оборота всего рынка, который не публикует ни один другой источник, гонку секторов по секторам Shenwan, гонку капитализации пятнадцати крупнейших дня и премию AH. **Гонконг** — матрица доходности и календарь по индексам и бумагам Гонконга, четыре субиндекса Hang Seng в гонке. **США** — те же две страницы по американским индексам и бумагам, десять секторальных ETF SPDR в гонке, суммы в долларах. **Криптовалюты** — шесть собственных страниц, предлагаемых за пределами материкового Китая и нигде внутри него, потому что оба источника находятся там; везде в остальном мире криптовалюты — это рынок, который больше всего людей хотят видеть на экране телефона, а монета торгуется круглосуточно, без праздников, которые нужно пропускать.
+
+Интерфейс доступен на 14 языках.
 
 Отображаемые данные поступают из публичного сервиса котировок — только для демонстрации и справки; это не инвестиционная рекомендация.
 
@@ -684,7 +710,7 @@ Market Motion Studio превращает биржевые данные в ве�
 ### Функции продукта
 
 - Вертикальные анимационные видео рынка 9:16 одним кликом
-- Четыре рынка: Китай (A-акции), Гонконг, США и криптовалюты
+- Четыре рынка: Китай (A-акции), Гонконг, США и криптовалюты — у последних шесть собственных страниц, предлагаемых за пределами материкового Китая
 - Двадцать четыре графика: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных, Рынок облигаций, История капитализации, Криптосвечи, Крипто-DCA, Криптопортфель, Календарь роста и падения крипто, История капитализации крипто, Гонка капитализаций крипто
 - Экспорт MP4 H.264, готовый для платформ коротких видео
 - Интерфейс на 14 языках
@@ -726,7 +752,9 @@ Yirmi dört grafik sayfası:
 • Kripto piyasa değeri geçmişi — Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı
 • Kripto piyasa değeri yarışı — Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl değiştiği
 
-Dört piyasa: Çin A, Hong Kong, ABD ve kripto paralar — bir kripto kaynağı yanıt verdiğinde sunulur. Arayüz 14 dilde mevcut.
+Dört piyasa, her biri kendi verisinin besleyebildiği sayfalarla. **Çin A** — başka hiçbir kaynağın yayınlamadığı tüm piyasa hacmi filmi, Shenwan sektörlerinde sektör yarışı, günün en büyük on beş şirketinin piyasa değeri yarışı ve AH primi dahil tüm sayfalar. **Hong Kong** — Hong Kong endeksleri ve hisseleri üzerinde getiri matrisi ve takvim, yarışan dört Hang Seng alt endeksi. **ABD** — aynı iki sayfa Amerikan endeksleri ve hisseleri üzerinde, yarışan on SPDR sektör ETF'i, tutarlar dolar cinsinden. **Kripto** — kendine ait altı sayfa, Çin anakarası dışında sunulur ve içinde hiçbir yerde sunulmaz, çünkü iki kaynağı da oradadır; anakaranın dışında kripto, insanların telefonda görmek istediği en popüler piyasadır ve bir coin günün yirmi dört saati işlem görür, atlanacak tatil günü yoktur.
+
+Arayüz 14 dilde mevcut.
 
 Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gösterim ve referans amaçlıdır, yatırım tavsiyesi değildir.
 
@@ -737,7 +765,7 @@ Kripto paralar artık kendi başına bir pazar. Ayarlardan seçtiğinizde gezinm
 ### Ürün özellikleri
 
 - Tek tıkla 9:16 dikey piyasa animasyon videoları
-- Dört piyasa: Çin A, Hong Kong, ABD ve kripto paralar
+- Dört piyasa: Çin A, Hong Kong, ABD ve kripto paralar — kripto kendine ait altı sayfayla, Çin anakarası dışında sunulur
 - Yirmi dört grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı, Tahvil piyasası, Piyasa değeri geçmişi, Kripto mumlar, Kripto DCA, Kripto varlıklar, Kripto artış-düşüş takvimi, Kripto piyasa değeri geçmişi, Kripto piyasa değeri yarışı
 - H.264 MP4 dışa aktarma, kısa video platformlarına hazır
 - 14 dilde arayüz

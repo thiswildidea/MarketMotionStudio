@@ -120,10 +120,30 @@ Fetching over `HttpClient` also disposes of CORS and the JSONP workaround entire
 ## Markets
 
 Settings picks which market the app reads: **A-shares** (the default, and the market the app
-is named for), **Hong Kong**, or **the United States**. The choice is stored like the language
-and the theme, and for the same reason it takes effect at the next start: the pages build their
-rosters and preset lists as they are constructed, and the shell keeps the page instances alive
-afterwards, so rebuilding one list on the spot would leave the rest pointing at the old market.
+is named for), **Hong Kong**, **the United States**, or **cryptocurrency**. The last of those is
+offered only outside mainland China — both of its sources sit outside it, so a machine inside it
+never gets the option in the list at all, and outside it crypto is the one market here that
+trades every hour of every day and, by a wide margin, the one most often asked for. The choice
+is stored like the language and the theme, and for the same reason it takes effect at the next
+start: the pages build their rosters and preset lists as they are constructed, and the shell
+keeps the page instances alive afterwards, so rebuilding one list on the spot would leave the
+rest pointing at the old market.
+
+What each market is for, in one line apiece:
+
+- **A-shares** — every page, and the only market whose source reports turnover for the whole
+  market: the sector race on the Shenwan level-one sectors, the market cap race over today's
+  largest fifteen, and AH premium, which prices one company's two listings against each other
+  and so belongs to this market alone.
+- **Hong Kong** — the return matrix and the gain-loss calendar read on Hong Kong indices and
+  listings, four Hang Seng sub-indices racing, and the Hang Seng trackers as presets.
+- **United States** — the same two pages on US indices and listings, ten SPDR sector ETFs
+  racing, amounts in dollars, and the broad presets — SPY, QQQ, DIA.
+- **Cryptocurrency** — six pages of its own: one coin's candles, a DCA plan, a holding's return,
+  the gain calendar, and two pages about market cap. A coin neither pays a dividend nor splits,
+  and it takes no holidays, so a year here is 365 days rather than the 243 a stock market gives
+  you — which is also why the crypto calendar is a full grid rather than a grid with weekends
+  punched out of it.
 
 What each market can actually supply was measured against the endpoint, page by page, rather
 than assumed from the market's existence:
@@ -142,6 +162,12 @@ than assumed from the market's existence:
 | **Market Cap Race** | today's top 200 by market value, plus an archive of companies that used to be up there | thirty-five, and forty-two — a fixed field, because neither venue has a ranking this app can reach |
 | **AH premium** | the Hong Kong leg of each pair — and the mainland leg, always both | not applicable: the page compares the two listings of one company, so it is the one page the market switch does not govern |
 | **Market Value History** | the same arithmetic, except the price underneath is the amount over the volume — this source serves Hong Kong no unadjusted close, so the lower panel is labelled an average rather than a close | the same arithmetic on a rate that is a fraction of *every* share rather than of the ones that trade, so the line reads as a total value and runs above a quote app's circulating figure by exactly the insider stake; it reaches back to 2009, the depth the mainland gets |
+
+The table above compares the three stock markets with each other, which is why cryptocurrency
+has no column in it. Choosing it does not readjust the stock pages — it replaces them: the six
+crypto pages come into the navigation and every stock page goes, because those read an endpoint
+that quotes no coin at all. Whether the option appears in the first place is decided by whether
+either crypto source answers, so the list never offers a market this machine cannot reach.
 
 **A page the market cannot feed is not offered.** Market Turnover is taken *out of the
 navigation* on Hong Kong and the United States rather than left to draw nothing, because what

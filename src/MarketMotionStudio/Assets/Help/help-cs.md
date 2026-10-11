@@ -7,10 +7,10 @@ Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyber
 V nastavení se volí, z kterého trhu aplikace bere kurzy; výchozí jsou A-akcie. Změna se projeví po restartu aplikace.
 
 - **Volba se uloží, ale nepoužije.** Na obrazovce se nic nezmění, dokud se aplikace nerestartuje, takže se příslušný řádek zobrazí **nahoře na stránce nastavení**, nad kartami, a při posouvání tam zůstává, s tlačítkem, které aplikaci restartuje za vás.
-- **A-akcie**: všechny akciové stránky jsou k dispozici.
-- **Hongkong**: matice výnosů a kalendář fungují; závod sektorů běží na čtyřech subindexech Hang Seng; **údaj za celý trh neexistuje, proto je tato stránka skrytá**.
-- **USA**: matice výnosů a kalendář fungují; závod sektorů běží na deseti sektorových ETF SPDR; stránka objemu má jen denní režim, protože minutový endpoint data pro USA nevrací; **částky jsou v dolarech a stránka obratu celého trhu je skrytá**.
-- **Kryptoměny**: nabízeno jen tam, kde lze získat cenu — oba jeho zdroje jsou z pevniny nedosažitelné. Jeho volba ponechá v navigaci tři krypto stránky a odebere všechny akciové, protože ty čtou endpoint, který nekotuje žádnou minci. Ceny jsou v amerických dolarech a mince se obchoduje každý den v roce, takže žádný den nechybí.
+- **A-akcie**: všechny akciové stránky jsou k dispozici.K čemu je: film obratu celého trhu — jediný trh, jehož zdroj ho uvádí — závod sektorů na sektorech Shenwan první úrovně, závod tržní kapitalizace patnácti největších dne a prémie AH, tedy dvě kotace téže společnosti proti sobě.
+- **Hongkong**: matice výnosů a kalendář fungují; závod sektorů běží na čtyřech subindexech Hang Seng; **údaj za celý trh neexistuje, proto je tato stránka skrytá**.K čemu je: matice výnosů a kalendář čtené na hongkongských indexech a titulech, závod sektorů na čtyřech subindexech Hang Seng a trackery Hang Seng jako předvolby.
+- **USA**: matice výnosů a kalendář fungují; závod sektorů běží na deseti sektorových ETF SPDR; stránka objemu má jen denní režim, protože minutový endpoint data pro USA nevrací; **částky jsou v dolarech a stránka obratu celého trhu je skrytá**.K čemu je: matice výnosů a kalendář čtené na amerických indexech a titulech, závod sektorů na deseti sektorových ETF SPDR a široké předvolby — SPY, QQQ, DIA.
+- **Kryptoměny**: nabízeno jen tam, kde lze získat cenu — oba jeho zdroje jsou z pevniny nedosažitelné. Jeho volba ponechá v navigaci šest krypto stránek a odebere všechny akciové, protože ty čtou endpoint, který nekotuje žádnou minci. Ceny jsou v amerických dolarech a mince se obchoduje každý den v roce, takže žádný den nechybí.Mimo pevninskou Čínu jsou kryptoměny zdaleka nejžádanějším tématem pro video v telefonu a mají šest vlastních stránek: svíce jedné mince, plán pravidelného nákupu, výnos pozice, kalendář a dvě stránky o tržní kapitalizaci.
 
 
 
@@ -426,10 +426,10 @@ Denní svíčky jedné mince v amerických dolarech z veřejného zdroje. Týden
 - Dvanáct nabízených mincí jsou ty, k nimž oba zdroje mají roky denní historie. Pole výše zužuje řádek na zadaný text: odpovídá názvu, který píše tento jazyk rozhraní, nebo kódu — bit i BTC najdou Bitcoin. Zvolená mince na řádku zůstává bez ohledu na zadaný text.
 - **Interval** — den, týden nebo měsíc — mění to, která řada se kreslí, takže jeho změna znovu načítá data. **Styl** a **Průběh** ne; jen překreslují to, co už je tu.
 - **1, 5 a 15 minut** se ptá na den, ne na rozsah: zvolením jedné z nich se seznam rozsahů vymění za výběr data. Zrnitost jedné minuty sahá osm dní zpět, zbylé dvě šedesát, a dál ne — tolik zdroj drží, není to limit, který by si určila tato aplikace. Coin se obchoduje čtyřiadvacet hodin denně, takže jeden den je už přes tisíc svíček.
-- Mince se obchoduje každý den v roce: rozsah nemá svátky, které by musel přeskočit, ani chybějící dny, a mince nevyplácí dividendu ani se neštěpí — závěr *je* výnos a na těchto třech stránkách se žádná úprava neprovádí.
+- Mince se obchoduje každý den v roce: rozsah nemá svátky, které by musel přeskočit, ani chybějící dny, a mince nevyplácí dividendu ani se neštěpí — závěr *je* výnos a na těchto šesti stránkách se žádná úprava neprovádí.
 - Když je dosažitelný jen záložní zdroj, má jeden denní kurz místo čtyř, a svíčky i sloupce se pak kreslí jako čára: tělo se dvěma knoty udělané z jediného závěru je tvar, který mince nikdy neměla. Stránka to říká pod volbou stylu, když je to tento případ.
 - Najednou lze kreslit až šest mincí; sedmý stisk se nepřijímá, protože sedmá křivka by vzala barvu, kterou už má šestá. Při porovnání se kreslí jako kumulativní změna, protože mince nemají ceny ve stejném řádu.
-- **Tyto tři stránky se objeví jen tehdy, když nějaký zdroj odpoví.** Oba zdroje jsou mimo dosah pevninské Číny, takže počítač tam je v menu prostě nedostane: tři položky nabízející data, která nemohou načíst, by byly tři položky, které selžou.
+- **Těchto šest stránek se objeví jen tam, kde nějaký zdroj odpoví.** Oba zdroje jsou mimo dosah pevninské Číny, takže počítač tam je v menu prostě nedostane: šest položek nabízejících data, která nemohou načíst, by bylo šest položek, které selžou. Mimo pevninskou Čínu jsou kryptoměny zdaleka nejžádanějším tématem pro video na telefonu a právě pro ně je těchto šest stránek: mince se obchoduje čtyřiadvacet hodin denně, každý den v roce, bez svátku, který by bylo třeba přeskočit.
 
 ## Plán krypto DCA
 
