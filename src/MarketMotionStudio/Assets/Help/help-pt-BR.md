@@ -7,9 +7,10 @@ Este aplicativo transforma indicadores do mercado de ações A em vídeos vertic
 Em Configurações escolhe-se de qual mercado o app obtém suas cotações; ações A por padrão. A mudança vale após reiniciar o app.
 
 - **A escolha é guardada, não aplicada.** Nada muda no ecrã até a aplicação ser reiniciada, por isso a linha que o diz aparece **no topo da página de definições**, acima dos cartões e fixa ali enquanto se desloca, com um botão que reinicia a aplicação por si.
-- **Ações A**: as oito páginas estão disponíveis.
+- **Ações A**: todas as páginas de ações estão disponíveis.
 - **Hong Kong**: a matriz de retorno e o calendário funcionam; a corrida de setores usa os quatro subíndices Hang Seng; **não há número para o mercado inteiro, então essa página fica oculta**.
 - **Estados Unidos**: a matriz de retorno e o calendário funcionam; a corrida de setores usa dez ETFs setoriais SPDR; a página de volume mantém só o modo diário, porque o endpoint de minutos não serve dados americanos; **os valores estão em dólares e a página de volume do mercado fica oculta**.
+- **Criptomoedas**: oferecido apenas onde um preço pode ser obtido — suas duas fontes estão fora do alcance do continente. Escolhê-lo mantém as três páginas cripto na navegação e remove todas as páginas de ações, porque estas leem um endpoint que não cota nenhuma moeda. Os preços estão em dólares americanos e uma moeda é negociada todos os dias do ano, então nenhum dia falta.
 
 
 

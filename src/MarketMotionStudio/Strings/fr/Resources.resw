@@ -954,4 +954,5 @@
   <data name="INSTLINK"><value>Chainlink</value></data>
   <data name="INSTDOT"><value>Polkadot</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
+  <data name="MarketCrypto"><value>Cryptomonnaies</value></data>
 </root>

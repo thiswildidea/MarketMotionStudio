@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
-"""真机验证「加密货币」三个页面：导航显隐、取数、以及那个「天」字。
+"""真机验证「加密货币」这个市场，以及它那三个页面。
 
-要回答的核心问题有四个：
+要回答的核心问题有五个：
 
-1. **导航里到底有没有那三项。** 三项只在某个源应答之后才在菜单里，所以「看得到」本身就是
-   一条判据：它把「探测能通」「探测的结果接到了菜单上」这两件事一起验了。
-2. **取数真的拿到了币价，而且报出来的天数是对的。** 加密页的状态行说的是**自然日**，股票页
-   说的是**交易日** —— 这两批 resw 键分开写就是为了这个，所以判据认「天（」而不是
+1. **默认市场（A 股）下，那三项不在导航里。** 加密页不是并列的第二套页面，是一个市场里才
+   有的页面 —— 所以「看得到」与「看不到」都要验，而默认那一眼正是绝大多数用户看到的样子。
+2. **市场下拉里有「加密货币」这一格**，而且它只在能取到币价的地方出现。本机开着 VPN，
+   所以它应该**在**；这一条验的是「下拉接到了可达性上」，不是「隐藏逻辑生效了」。
+3. **选中它之后，导航里只剩三页。** 股票各页全部移除 —— 它们读的是股票接口，一个币也不报，
+   留着就是一次一次的失败。这一条必须真机切一次市场，因为「菜单裁成什么样」只在启动读
+   市场设置时才发生。
+4. **三页真的取到了币价，而且报出来的天数是自然日。** 加密页的状态行说的是**自然日**，
+   股票页说的是**交易日** —— 这两批 resw 键分开写就是为了这个，所以判据认「天（」而不是
    「个交易日」。认错了字，这轮最重要的一条约束就白写了。
-3. **币种名是本地化的，不是源端那个英文名。** `INSTBTC` 这套键如果没接上，界面上会写
-   "Bitcoin" 而不是「比特币」，而它看起来完全正常。
-4. **源码里那两处守卫真的在**：导航项在 XAML 里是 Collapsed（未决定前不可点），`Navigate`
-   里有一句按 `Crypto.Answered` 挡住带 tag 的直达。第 1 条只能证明「可达时在」，证明不了
-   「不可达时不在」——那条路本机走不通（要关掉 VPN），所以退而验守卫本身。
+5. **源码里的五处守卫真的在**（见最后一节）。
+
+**跑完必须把市场改回 A 股**，所以整段包在 `try/finally` 里，而恢复那一步自己再验一次
+（改回之后三项应该又不在导航里）。中途被打断也不会留下一台「市场是加密货币」的机器。
 
 用法：python tools/verify-crypto.py
 """
@@ -27,6 +31,19 @@ import winui
 
 SOURCE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                       "src", "MarketMotionStudio")
+
+# 切到加密市场、取完数那一眼的实拍。
+CRYPTO_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                           "artifacts", "crypto-market.png")
+
+EXE = "MarketMotionStudio.exe"
+
+CRYPTO_IDS = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition"]
+
+# A few stock pages, one from each part of the menu. If the market were crypto and
+# these were still listed, the menu would be offering pages that cannot fetch a single
+# price — which is the whole reason the branch in `ApplyMarket` exists.
+STOCK_IDS = ["NavMarketTurnover", "NavCandle", "NavSectorRace", "NavDcaPlan", "NavPosition"]
 
 # 状态行里那三种说法。注意都是「天」，不是股票页的「个交易日」。
 CANDLE = re.compile(r"(\d[\d,]*)\s*根")
@@ -168,111 +185,252 @@ def picks_note(win):
     return note.Name if note is not None else None
 
 
+def open_settings(win):
+    """从导航进设置页。市场卡是页面第一张，所以读到 `MarketCombo` 就到地方了。"""
+    return open_page(win, "NavSettingsItem", "MarketCombo")
+
+
+def labels_of(win, seconds=0):
+    """市场下拉里现在有哪几格。用它而不是读选中项 —— 选中项读不回来，见 `winui.combo_pick`。
+
+    **要等，而不是读一次。** 第四格是探测回来之后才补上的（`SettingsPage.OfferCryptoMarketAsync`），
+    而设置页往往比那次请求先打开：探测对每个源最多问两次、每次一条十二秒的绳子。跨文化
+    的第一个请求要先付 DNS、握手与 TLS 的钱（实测七秒半），绳子短了就把能取到币价的机器
+    判成取不到 —— 只读一次的写法**实测过**，答案是「三格」，而真相有两个：还在问，或者真
+    的取不到。两者长得一模一样。
+    所以这里按「四格」等，等到为止。
+
+    `combo_labels` 在手忙脚乱的时候会返回空（上一次收起还在动画时展开是无效的），空答案不覆盖
+    已经看到的最长那份。
+    """
+    combo = winui.find(win, lambda c: c.AutomationId == "MarketCombo", limit=14)
+
+    if combo is None:
+        return []
+
+    deadline = time.time() + seconds
+    best = []
+
+    while True:
+        labels = winui.combo_labels(win, combo)
+
+        if labels and len(labels) > len(best):
+            best = labels
+
+        if len(best) >= 4 or time.time() >= deadline:
+            return best
+
+        time.sleep(1.5)
+
+
+def restart():
+    """关掉再起来。市场是启动时读的，所以改完之后必须真的重启一次。"""
+    return winui.launch(EXE)
+
+
+def reset_market():
+    """开场先把市场摆回第一格，再重启一次。
+
+    **起点不假设**：上一趟可能崩在半路 —— 恢复那一步一旦出错，机器就停在「加密货币」
+    上退出了。下一趟读到的于是是一台被上一趟改过的机器，而「默认市场下三项不在导航
+    里」这条断言会失败，报的却是应用坏了。
+
+    只用等三格：这一趟要的只是「第一格存在」，第四格是探测回来才补的，等它白等二十几秒。
+    """
+    win = winui.launch(EXE)
+
+    if not open_settings(win):
+        return win
+
+    combo = winui.find(win, lambda c: c.AutomationId == "MarketCombo", limit=14)
+
+    if combo is None:
+        return win
+
+    labels = labels_of(win, seconds=6)
+
+    if labels:
+        winui.combo_pick(win, combo, labels[0])
+        win = restart()
+
+    return win
+
+
 def main():
-    win = winui.launch("MarketMotionStudio.exe")
+    # 不是 `winui.launch`：市场是持久的，不先摆回来就等于假设上一趟收得干净。
+    win = reset_market()
     assert win is not None, "窗口未找到"
 
-    # ---- 1. 导航里有没有那三项 -------------------------------------------------
-    print("[导航]")
+    switched = False
 
-    # 探测是启动时异步发的，最多 6 秒的绳子；等它答完再看菜单。
-    deadline = time.time() + 30
-    ids = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition"]
-    found = {}
+    try:
+        # ---- 1. 默认市场 -----------------------------------------------------------
+        print("[默认市场 A 股]")
 
-    while time.time() < deadline:
-        found = {i: nav_item(win, i) for i in ids if nav_item(win, i) is not None}
+        for i in CRYPTO_IDS:
+            check("导航里没有 %s" % i, nav_item(win, i) is None)
 
-        if len(found) == len(ids):
-            break
+        # ---- 2. 市场下拉 -----------------------------------------------------------
+        print("\n[设置页的市场下拉]")
 
-        time.sleep(1.0)
+        check("打开设置页", open_settings(win))
 
-    for i in ids:
-        item = found.get(i)
-        check("导航里有 %s" % i, item is not None,
-              (item.Name if item is not None else "源不可达，整组不进菜单"))
+        print("  等探测……（每源最多问两次，每次十二秒）")
+        labels = labels_of(win, seconds=40)
+        print("  下拉里：", "、".join(labels) if labels else "(没读到)")
 
-    if len(found) != len(ids):
-        print("\n源没应答：三项不在菜单里（本机若开着 VPN 应可达）。")
-        print("FAIL:", ", ".join(FAILURES))
-        sys.exit(2)
+        check("下拉列出四格（三个股票市场 + 加密货币）", len(labels) == 4, "%d 格" % len(labels))
 
-    # ---- 2. 加密 K 线 ----------------------------------------------------------
-    print("\n[加密货币 K 线]")
+        if len(labels) != 4:
+            print("\n源不可达：这一格本就不该出现，后面几节无从验起。")
+            print("本机开着 VPN 时应该能取到币价（见 CryptoQuotes.ProbeAttempts）。")
+            print("FAILED: %d —— %s" % (len(FAILURES), "，".join(FAILURES)))
+            sys.exit(2)
 
-    check("打开加密 K 线页", open_page(win, "NavCryptoCandle", "CoinBTC"))
+        crypto_label = labels[3]
 
-    names = chip_names(win)
-    check("十二个币种都在", len(names) == 12, "%d 个" % len(names))
+        # ---- 3. 切到加密货币，重启，看菜单 ------------------------------------------
+        print("\n[切到「%s」]" % crypto_label)
 
-    # 名字是本地化的，不是源端那个英文名 —— 这是 INST 键接上了没有的唯一证据。
-    check("币种名是当地语言的写法", "比特币" in names,
-          "、".join(names[:4]) if names else "(没找到币种开关)")
+        combo = winui.find(win, lambda c: c.AutomationId == "MarketCombo", limit=14)
+        picked = winui.combo_pick(win, combo, crypto_label) == crypto_label
 
-    check("勾上 BTC", ensure_coin(win, "BTC"))
-    print("  选择器:", picks_note(win))
+        check("选中它", picked)
 
-    text = fetch(win)
-    print("  状态行:", text)
-    check("加密 K 线取数成功", bool(text) and not FAILED.search(text or ""))
+        if not picked:
+            print("\n没选上，不做重启（否则后面每一节都在错的市场上跑）。")
+            print("FAILED: %d —— %s" % (len(FAILURES), "，".join(FAILURES)))
+            sys.exit(2)
 
-    bars = CANDLE.search(text or "")
-    check("状态行报出根数", bars is not None, bars.group(1) if bars else text)
-    check("根数在 1~4000 之间", bars is not None and 0 < int(bars.group(1).replace(",", "")) <= 4000,
-          bars.group(1) if bars else "")
-    check("状态行说的是「天」而不是「交易日」", bool(text) and "交易日" not in text)
+        switched = True
+        win = restart()
 
-    # ---- 3. 加密定投 -----------------------------------------------------------
-    print("\n[加密货币定投]")
+        for i in CRYPTO_IDS:
+            item = nav_item(win, i)
+            check("导航里有 %s" % i, item is not None, item.Name if item is not None else "")
 
-    check("打开加密定投页", open_page(win, "NavCryptoDca", "AmountBox"))
+        for i in STOCK_IDS:
+            check("导航里没有 %s" % i, nav_item(win, i) is None)
 
-    check("勾上 BTC", ensure_coin(win, "BTC"))
-    print("  选择器:", picks_note(win))
+        # ---- 4. 加密 K 线 ----------------------------------------------------------
+        print("\n[加密货币 K 线]")
 
-    text = fetch(win)
-    print("  状态行:", text)
-    check("加密定投取数成功", bool(text) and not FAILED.search(text or ""))
+        check("打开加密 K 线页", open_page(win, "NavCryptoCandle", "CoinBTC"))
 
-    days = DAYS.search(text or "")
-    buys = BUYS.search(text or "")
-    check("状态行报出天数", days is not None, days.group(1) if days else text)
-    check("状态行报出买入次数", buys is not None, buys.group(1) if buys else text)
-    check("天数在 1~4000 之间", days is not None and 0 < int(days.group(1).replace(",", "")) <= 4000,
-          days.group(1) if days else "")
+        names = chip_names(win)
+        check("十二个币种都在", len(names) == 12, "%d 个" % len(names))
 
-    # ---- 4. 加密持仓 -----------------------------------------------------------
-    print("\n[加密货币持仓]")
+        # 名字是本地化的，不是源端那个英文名 —— 这是 INST 键接上了没有的唯一证据。
+        check("币种名是当地语言的写法", "比特币" in names,
+              "、".join(names[:4]) if names else "(没找到币种开关)")
 
-    check("打开加密持仓页", open_page(win, "NavCryptoPosition", "CapitalBox"))
+        check("勾上 BTC", ensure_coin(win, "BTC"))
+        print("  选择器:", picks_note(win))
 
-    check("勾上 BTC", ensure_coin(win, "BTC"))
-    print("  选择器:", picks_note(win))
+        text = fetch(win)
+        print("  状态行:", text)
+        check("加密 K 线取数成功", bool(text) and not FAILED.search(text or ""))
 
-    text = fetch(win)
-    print("  状态行:", text)
-    check("加密持仓取数成功", bool(text) and not FAILED.search(text or ""))
+        bars = CANDLE.search(text or "")
+        check("状态行报出根数", bars is not None, bars.group(1) if bars else text)
+        check("根数在 1~4000 之间",
+              bars is not None and 0 < int(bars.group(1).replace(",", "")) <= 4000,
+              bars.group(1) if bars else "")
+        check("状态行说的是「天」而不是「交易日」", bool(text) and "交易日" not in text)
 
-    days = DAYS.search(text or "")
-    check("状态行报出天数", days is not None, days.group(1) if days else text)
-    check("天数在 1~4000 之间", days is not None and 0 < int(days.group(1).replace(",", "")) <= 4000,
-          days.group(1) if days else "")
+        # 一眼看得见的证据：左边只剩那三项，而画面是一枚币的 K 线。断言说的是「对不对」，
+        # 这张图说的是「看起来是不是这么回事」—— 两条都留着，改坏了才知道坏在哪。
+        winui.shot(win, CRYPTO_SHOT)
 
-    # ---- 5. 源码里的两处守卫 ---------------------------------------------------
-    print("\n[源码守卫]")
+        # ---- 5. 加密定投 -----------------------------------------------------------
+        print("\n[加密货币定投]")
 
-    xaml = open(os.path.join(SOURCE, "MainWindow.xaml"), encoding="utf-8-sig").read()
-    code = open(os.path.join(SOURCE, "MainWindow.xaml.cs"), encoding="utf-8-sig").read()
+        check("打开加密定投页", open_page(win, "NavCryptoDca", "AmountBox"))
 
-    collapsed = re.findall(r'x:Name="(NavCrypto\w+)"[^>]*Visibility="Collapsed"', xaml)
-    check("三项在 XAML 里先 Collapsed", len(collapsed) == 3, "、".join(collapsed))
+        check("勾上 BTC", ensure_coin(win, "BTC"))
+        print("  选择器:", picks_note(win))
 
-    guarded = "CryptoPositionPage)) && !_services.Crypto.Answered" in code
-    check("Navigate 按 Crypto.Answered 挡住直达", guarded)
+        text = fetch(win)
+        print("  状态行:", text)
+        check("加密定投取数成功", bool(text) and not FAILED.search(text or ""))
 
-    removed = "Nav.MenuItems.Remove(page)" in code
-    check("探测不到时整组移除而不是隐藏", removed)
+        days = DAYS.search(text or "")
+        buys = BUYS.search(text or "")
+        check("状态行报出天数", days is not None, days.group(1) if days else text)
+        check("状态行报出买入次数", buys is not None, buys.group(1) if buys else text)
+        check("天数在 1~4000 之间",
+              days is not None and 0 < int(days.group(1).replace(",", "")) <= 4000,
+              days.group(1) if days else "")
+
+        # ---- 6. 加密持仓 -----------------------------------------------------------
+        print("\n[加密货币持仓]")
+
+        check("打开加密持仓页", open_page(win, "NavCryptoPosition", "CapitalBox"))
+
+        check("勾上 BTC", ensure_coin(win, "BTC"))
+        print("  选择器:", picks_note(win))
+
+        text = fetch(win)
+        print("  状态行:", text)
+        check("加密持仓取数成功", bool(text) and not FAILED.search(text or ""))
+
+        days = DAYS.search(text or "")
+        check("状态行报出天数", days is not None, days.group(1) if days else text)
+        check("天数在 1~4000 之间",
+              days is not None and 0 < int(days.group(1).replace(",", "")) <= 4000,
+              days.group(1) if days else "")
+
+        # ---- 7. 源码里的守卫 --------------------------------------------------------
+        print("\n[源码守卫]")
+
+        window = open(os.path.join(SOURCE, "MainWindow.xaml.cs"), encoding="utf-8-sig").read()
+        xaml = open(os.path.join(SOURCE, "MainWindow.xaml"), encoding="utf-8-sig").read()
+        markets = open(os.path.join(SOURCE, "Market", "Markets.cs"), encoding="utf-8-sig").read()
+        settings = open(os.path.join(SOURCE, "Pages", "SettingsPage.xaml.cs"),
+                        encoding="utf-8-sig").read()
+
+        check("三项在 XAML 里先 Collapsed，由市场打开",
+              len(re.findall(r'x:Name="(NavCrypto\w+)"[^>]*Visibility="Collapsed"', xaml)) == 3)
+
+        check("ApplyMarket 按市场分岔（加密货币那一支）",
+              "if (MarketSettings.Current is MarketId.Crypto)" in window)
+
+        check("股票市场下把三项整组移除", "Nav.MenuItems.Remove(page)" in window)
+
+        check("Navigate 按市场挡住带 tag 的直达",
+              "&& MarketSettings.Current is not MarketId.Crypto)" in window)
+
+        check("下拉按可达性列出一格",
+              "Markets.Offered(cryptoReachable || MarketSettings.Current is MarketId.Crypto)"
+              in settings)
+
+        # 「不给加密市场一份假的股票档案」的守卫：`Of` 是按枚举下标取数组的，少了这一份
+        # profile 就是越界异常；而五张股票清单是**空的**，不是抄一份币种清单进来 ——
+        # 抄一份就是「哪些币是这个应用知道的」有了第二个答案，而它会各自过期。
+        check("Markets 里有一份加密档案，且股票清单是空的",
+              "MarketId.Crypto," in markets and "Rosters: []," in markets)
+
+    finally:
+        if switched:
+            print("\n[恢复默认市场]")
+
+            win = restart()
+            open_settings(win)
+
+            labels = labels_of(win)
+            combo = winui.find(win, lambda c: c.AutomationId == "MarketCombo", limit=14)
+
+            if combo is not None and labels:
+                winui.combo_pick(win, combo, labels[0])
+                win = restart()
+
+                back = nav_item(win, "NavCryptoCandle") is None
+                check("改回「%s」后三项又不在导航里" % labels[0], back)
+
+                if not back:
+                    print("  ！！市场可能没改回去，请到设置页把「市场」手动改回「%s」。" % labels[0])
+            else:
+                print("  ！！读不到市场下拉，请到设置页把「市场」手动改回 A 股。")
 
     print()
 

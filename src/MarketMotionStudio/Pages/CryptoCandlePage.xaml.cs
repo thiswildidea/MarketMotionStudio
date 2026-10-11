@@ -475,14 +475,14 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
                 ApplyPreviewSettings();
                 ShowMoment(1);
 
-                ShowStatus(InfoBarSeverity.Success, Strings.Format(
+                ShowFetched(Strings.Format(
                     "CryptoCandleBoardFetched",
                     board.Tracks.Count,
                     board.Count,
                     CandleLoader.Iso(board.Start),
-                    CandleLoader.Iso(board.End)));
-
-                SayIfShort(board.Start, from);
+                    CandleLoader.Iso(board.End)),
+                    InfoBarSeverity.Success, board.Start, from,
+                    Strings.Format("CryptoRangeShort", CandleLoader.Iso(board.Start)));
 
                 return;
             }
@@ -505,31 +505,15 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
             ApplyPreviewSettings();
             ShowMoment(1);
 
-            ShowStatus(InfoBarSeverity.Success, Strings.Format(
+            ShowFetched(Strings.Format(
                 "CryptoCandleFetched",
                 fetched.Count,
                 Strings.Get(CandleLoader.NameKey(period)),
                 CandleLoader.Iso(fetched.Start),
-                CandleLoader.Iso(fetched.End)));
-
-            SayIfShort(fetched.Start, from);
+                CandleLoader.Iso(fetched.End)),
+                InfoBarSeverity.Success, fetched.Start, from,
+                Strings.Format("CryptoRangeShort", CandleLoader.Iso(fetched.Start)));
         }, TimeSpan.FromMinutes(6));
-    }
-
-    /// <summary>
-    /// Says so when the span came back shorter than the one that was asked for.
-    ///
-    /// The fallback source carries a year — see <see cref="CryptoQuotes.GeckoMostDays"/>
-    /// — so asking it for ten is answered with one, and a chart that quietly starts
-    /// later than the date that was typed is the one answer a span must not give.
-    /// </summary>
-    private void SayIfShort(DateOnly start, DateOnly wanted)
-    {
-        if (start > wanted.AddDays(30))
-        {
-            ShowStatus(InfoBarSeverity.Warning, Strings.Format(
-                "CryptoRangeShort", CandleLoader.Iso(start)));
-        }
     }
 
     private void OnFetch(object sender, RoutedEventArgs e) => Fetch();

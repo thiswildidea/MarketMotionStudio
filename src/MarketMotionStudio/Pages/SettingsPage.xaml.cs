@@ -99,13 +99,10 @@ public sealed partial class SettingsPage : Page
 
         // Listed in the order they are offered rather than in the enum's, because the
         // order a reader meets them in is the order they are likely to want: the
-        // market this app was built for first.
-        foreach (var id in Markets.All)
-        {
-            MarketCombo.Items.Add(new ComboBoxItem { Content = Markets.Of(id).Name, Tag = id });
-        }
-
-        MarketCombo.SelectedIndex = Math.Max(0, Array.IndexOf(Markets.All, MarketSettings.Current));
+        // market this app was built for first. The crypto market, when it is offered
+        // at all, is last — it is the one that is not always there, and a list whose
+        // last entry comes and goes reads better than one whose third does.
+        FillMarketCombo(AppServices.Current.Crypto.Answered);
 
         StoragePathText.Text = ApplicationData.Current.LocalFolder.Path;
         TrayToggle.IsOn = AppBehaviourSettings.ShowTrayIcon;
@@ -174,8 +171,75 @@ public sealed partial class SettingsPage : Page
         // what Windows says rather than what was last asked for.
         _ = LoadStartupStateAsync();
 
+        // The market card was filled above with what the process already knew, which
+        // is usually everything: the window asks whether a crypto source answers as it
+        // starts. This covers the other case — Settings opened before that request came
+        // back — and costs nothing when it already has; see FillMarketCombo.
+        _ = OfferCryptoMarketAsync();
+
         RefreshOutputFolder();
     }
+
+    /// <summary>
+    /// Lists the markets on offer, given what is known about the crypto source.
+    ///
+    /// Called twice at most: once as the page is built, with whatever the process
+    /// already knows, and once more if the source had not been heard from yet.
+    /// Filling it twice rather than waiting is deliberate — the alternative is holding
+    /// a page back on a foreign host, and this page has a dozen cards of which the
+    /// market is one.
+    /// </summary>
+    private void FillMarketCombo(bool cryptoReachable)
+    {
+        // The crypto market is listed when a source answers **or** when it is what is
+        // already chosen. The second half is not a nicety: somebody who picked it and
+        // then lost the route to it would otherwise be shown a combo that does not
+        // contain the value it is displaying, sitting next to a window that is drawing
+        // crypto pages — the one state a settings page must never be in, since the
+        // control would be claiming a market the app is not on and offering no way to
+        // say which one it is.
+        var offered = Markets.Offered(cryptoReachable || MarketSettings.Current is MarketId.Crypto);
+
+        // Nothing to rebuild when the list is already the right one, which is the
+        // common case: the source answered before this page was opened.
+        if (MarketCombo.Items.Count == offered.Length)
+        {
+            return;
+        }
+
+        // Rebuilding the items raises SelectionChanged, and a change handled here would
+        // write the stored market back over the very value being restored — the same
+        // reason the colour pickers below have their values assigned before their
+        // handlers exist.
+        var live = _loading;
+        _loading = true;
+
+        MarketCombo.Items.Clear();
+
+        foreach (var id in offered)
+        {
+            MarketCombo.Items.Add(new ComboBoxItem { Content = Markets.Of(id).Name, Tag = id });
+        }
+
+        // Clamped rather than left at -1. The value is always in the list by
+        // construction — the crypto market is listed whenever it is the chosen one —
+        // but a combo showing nothing at all would be a worse way to find out
+        // otherwise than a combo showing A-shares.
+        MarketCombo.SelectedIndex = Math.Max(0, Array.IndexOf(offered, MarketSettings.Current));
+
+        _loading = live;
+    }
+
+    /// <summary>
+    /// Completes the market list once a source has said whether this machine can reach
+    /// it, for a reader who opens Settings before the startup probe has come back.
+    ///
+    /// Awaited rather than blocked on, because the answer can be a six-second wait on a
+    /// foreign host. All this does is add a fourth entry to a combo box somebody may be
+    /// looking at, so the wait is invisible unless the box is open at that moment.
+    /// </summary>
+    private async Task OfferCryptoMarketAsync() =>
+        FillMarketCombo(await AppServices.Current.Crypto.ReachableAsync());
 
     private async Task LoadStartupStateAsync()
     {

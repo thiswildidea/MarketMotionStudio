@@ -52,6 +52,37 @@ public abstract partial class StudioPage : Page
     }
 
     /// <summary>
+    /// Reports what a fetch came back with, adding why the span starts later than the
+    /// date that was asked for when it does.
+    ///
+    /// The reason is appended to the line that reports the fetch, never shown in its
+    /// place. Shown instead, it left the page explaining that the source only carries
+    /// so much history while never saying how much was actually fetched — and the
+    /// reader's next move was to fetch again purely to find out what the first fetch
+    /// had already worked out.
+    ///
+    /// <paramref name="severity"/> is what the line would have been without the note:
+    /// a fetch that lost one coin out of six is already worth a warning, and saying
+    /// why the span moved must not quietly promote it back to success.
+    ///
+    /// The month of slack is because a span is asked for in whole dates off a picker
+    /// and answered by a source whose own calendar is not the one being typed into; a
+    /// day or two of give is not a span anybody asked to be told about.
+    /// </summary>
+    protected void ShowFetched(string message, InfoBarSeverity severity, DateOnly start,
+                              DateOnly wanted, string shortNote)
+    {
+        if (start > wanted.AddDays(30))
+        {
+            ShowStatus(InfoBarSeverity.Warning, message + " " + shortNote);
+        }
+        else
+        {
+            ShowStatus(severity, message);
+        }
+    }
+
+    /// <summary>
     /// Reports a failure as what was being attempted, and then why.
     ///
     /// "The remote name could not be resolved" is a true sentence about nothing in

@@ -135,19 +135,24 @@ public sealed class CryptoQuotes(HttpClient http)
     /// <summary>
     /// How long a probe waits before it decides the source is not there.
     ///
-    /// Six seconds, and the number is the feature rather than a detail. A machine that
-    /// cannot reach the source does not get a refusal, it gets silence — the connection
-    /// is dropped and nothing answers — so the probe's own patience is what decides how
-    /// long the app takes to notice. Thirty seconds of nothing at every launch is a
-    /// broken app to the person waiting for it; six is a pause. A source that needs
-    /// longer than that is a source the pages would be unusable through anyway.
+    /// Twelve seconds, and the number is measured rather than picked. The first request
+    /// out of a cold start pays for DNS, the handshake and TLS before any of the coin's
+    /// own data moves, and was timed at seven and a half seconds on a machine that
+    /// reaches Yahoo perfectly well — whose second request to the same host took just
+    /// over one. At six seconds that machine was judged unreachable and quietly handed
+    /// the fallback, which carries a year where the primary carries ten.
+    ///
+    /// The patience is spent mostly on machines that can be served. One that cannot
+    /// reach the source gets silence, but silence that arrives quickly: the connection
+    /// is refused or dropped rather than left hanging, so it does not cost the full
+    /// twelve.
     ///
     /// Multiplied by <see cref="ProbeAttempts"/>, and that is not the same kind of
     /// waiting: the probe runs while the window is already up and being used, and the
-    /// three items are simply not in the menu until it answers. A launch never waits
+    /// fourth market is simply not in the list until it answers. A launch never waits
     /// for it.
     /// </summary>
-    private static readonly TimeSpan ProbeTimeout = TimeSpan.FromSeconds(6);
+    private static readonly TimeSpan ProbeTimeout = TimeSpan.FromSeconds(12);
 
     /// <summary>
     /// How many times each source is asked before it is called absent.

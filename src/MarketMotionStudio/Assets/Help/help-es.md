@@ -7,9 +7,10 @@ Esta aplicación convierte indicadores del mercado de acciones A en vídeos vert
 En Ajustes se elige de qué mercado toma sus cotizaciones la aplicación; las acciones A por defecto. El cambio surte efecto tras reiniciar la aplicación.
 
 - **La elección se guarda, no se aplica.** En pantalla no cambia nada hasta reiniciar la aplicación, así que el aviso correspondiente aparece **arriba del todo en la página de ajustes**, sobre las tarjetas y fijo ahí mientras se desplaza, con un botón que reinicia la aplicación por usted.
-- **Acciones A**: las ocho páginas están disponibles.
+- **Acciones A**: todas las páginas de acciones están disponibles.
 - **Hong Kong**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa los cuatro subíndices Hang Seng; **no hay cifra para todo el mercado, así que esa página se oculta**.
 - **Estados Unidos**: la matriz de rentabilidad y el calendario funcionan; la carrera de sectores usa diez ETF sectoriales SPDR; la página de volumen conserva solo el modo diario, porque el endpoint de minutos no sirve datos estadounidenses; **los importes están en dólares y la página de volumen del mercado se oculta**.
+- **Criptomonedas**: solo aparece donde se puede obtener un precio — sus dos fuentes están fuera del alcance del continente. Al elegirlo, las tres páginas cripto se quedan en la navegación y todas las páginas de acciones desaparecen, porque estas leen un endpoint que no cotiza ninguna moneda. Los precios están en dólares estadounidenses y una moneda cotiza todos los días del año, así que no falta ningún día.
 
 
 

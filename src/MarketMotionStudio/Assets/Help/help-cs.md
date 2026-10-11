@@ -7,9 +7,10 @@ Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyber
 V nastavení se volí, z kterého trhu aplikace bere kurzy; výchozí jsou A-akcie. Změna se projeví po restartu aplikace.
 
 - **Volba se uloží, ale nepoužije.** Na obrazovce se nic nezmění, dokud se aplikace nerestartuje, takže se příslušný řádek zobrazí **nahoře na stránce nastavení**, nad kartami, a při posouvání tam zůstává, s tlačítkem, které aplikaci restartuje za vás.
-- **A-akcie**: všech osm stránek je k dispozici.
+- **A-akcie**: všechny akciové stránky jsou k dispozici.
 - **Hongkong**: matice výnosů a kalendář fungují; závod sektorů běží na čtyřech subindexech Hang Seng; **údaj za celý trh neexistuje, proto je tato stránka skrytá**.
 - **USA**: matice výnosů a kalendář fungují; závod sektorů běží na deseti sektorových ETF SPDR; stránka objemu má jen denní režim, protože minutový endpoint data pro USA nevrací; **částky jsou v dolarech a stránka obratu celého trhu je skrytá**.
+- **Kryptoměny**: nabízeno jen tam, kde lze získat cenu — oba jeho zdroje jsou z pevniny nedosažitelné. Jeho volba ponechá v navigaci tři krypto stránky a odebere všechny akciové, protože ty čtou endpoint, který nekotuje žádnou minci. Ceny jsou v amerických dolarech a mince se obchoduje každý den v roce, takže žádný den nechybí.
 
 
 

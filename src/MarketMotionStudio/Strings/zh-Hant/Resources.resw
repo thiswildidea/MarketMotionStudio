@@ -953,4 +953,5 @@
   <data name="INSTLINK"><value>Chainlink</value></data>
   <data name="INSTDOT"><value>波卡</value></data>
   <data name="INSTAVAX"><value>Avalanche</value></data>
+  <data name="MarketCrypto"><value>加密貨幣</value></data>
 </root>

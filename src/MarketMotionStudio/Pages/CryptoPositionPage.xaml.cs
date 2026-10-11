@@ -353,24 +353,16 @@ public sealed partial class CryptoPositionPage : StudioPage, IPlaybackHost
                     PositionRenderer.Iso(board.Start),
                     PositionRenderer.Iso(board.End));
 
-            if (board.Skipped.Count == 0)
-            {
-                ShowStatus(InfoBarSeverity.Success, fetched);
-            }
-            else
-            {
-                ShowStatus(InfoBarSeverity.Warning, $"{fetched} {Strings.Format(
-                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped))}");
-            }
-
             // A span the source could not fill is not a shorter span somebody chose. The
             // fallback carries a year, so asking it for ten is answered with one — see
             // `CryptoQuotes.GeckoMostDays`.
-            if (board.Start > start.AddDays(30))
-            {
-                ShowStatus(InfoBarSeverity.Warning, Strings.Format(
-                    "CryptoRangeShort", PositionRenderer.Iso(board.Start)));
-            }
+            ShowFetched(board.Skipped.Count == 0
+                ? fetched
+                : $"{fetched} {Strings.Format(
+                    "PositionSkipped", board.Skipped.Count, string.Join(", ", board.Skipped))}",
+                board.Skipped.Count == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning,
+                board.Start, start,
+                Strings.Format("CryptoRangeShort", PositionRenderer.Iso(board.Start)));
         }, TimeSpan.FromMinutes(6));
     }
 

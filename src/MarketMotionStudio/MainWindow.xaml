@@ -268,18 +268,28 @@
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPosition}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
 
-                <!-- The three crypto pages, collapsed until a crypto source answers.
+                <!-- The three crypto pages, listed only while the market is the crypto
+                     one. See `ApplyMarket`, which is the single place that decides it:
+                     chosen, the stock pages come out and these three are shown; not
+                     chosen, these three come out.
 
-                     Both sources they can be drawn from are outside the mainland's
-                     reach, so on a machine inside it these three would be three items
-                     offering data they cannot fetch — three items that fail. They are
-                     therefore not listed at all until the source has been asked, and
-                     the asking happens once at launch; see `OfferCryptoPagesAsync`.
+                     Not a question of what this machine can reach. Reach decides only
+                     whether the crypto market is on offer in the first place — the
+                     setting is not there to pick on a machine that cannot fetch a
+                     coin — and a market that has been picked is honoured whether or not
+                     the route to it is still up, because a page that says nothing came
+                     back is a better answer than a menu that quietly changed.
 
-                     Kept together at the end rather than beside their stock twins:
-                     the three of them stand or fall on one answer, and a reader who
-                     has no crypto pages should not find a crypto candle page wedged
-                     between two stock pages it has nothing to do with. -->
+                     Kept together at the end rather than beside their stock twins: the
+                     three of them stand or fall on one setting, and a reader who has no
+                     crypto pages should not find a crypto candle page wedged between
+                     two stock pages it has nothing to do with.
+
+                     Collapsed in the markup and opened by `ApplyMarket` when the market
+                     is crypto — not for a moment of "not decided yet", since the setting
+                     is read before the window is shown, but so that the markup itself
+                     says what these three are: pages that are off until a market asks
+                     for them. -->
                 <mux:NavigationViewItem x:Name="NavCryptoCandle" x:Uid="NavCryptoCandle" Tag="CryptoCandle"
                                         Visibility="Collapsed">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconCandle}" /></mux:NavigationViewItem.Icon>

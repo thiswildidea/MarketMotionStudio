@@ -7,9 +7,10 @@ This app turns A-share market indicators into vertical videos for phones. You pi
 Settings picks which market the app takes its quotes from; A-shares by default. A change takes effect after the app is restarted.
 
 - **The choice is stored, not applied.** Nothing on screen changes until the app is restarted, so the line saying so appears at the **top of the Settings page**, above the cards and fixed there as you scroll, with a button that restarts the app for you.
-- **A-shares**: all eight pages are available.
+- **A-shares**: every stock page is available.
 - **Hong Kong**: the return matrix and the gain-loss calendar work; the sector race runs on the four Hang Seng sub-indices; **there is no whole-market turnover figure, so that page is hidden**.
 - **United States**: the return matrix and the gain-loss calendar work; the sector race runs on ten SPDR sector ETFs; the volume page keeps its daily mode only, because the minute endpoint serves no US data; **amounts are quoted in dollars, and the whole-market turnover page is hidden**.
+- **Cryptocurrency**: offered only where a price can be fetched — both of its sources are outside the mainland's reach. Choosing it leaves the three crypto pages in the navigation and takes every stock page out, because those read an endpoint that quotes no coin at all. Prices are in US dollars and a coin trades every day of the year, so no day is missing.
 
 
 

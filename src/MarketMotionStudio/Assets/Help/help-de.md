@@ -7,9 +7,10 @@ Diese App macht aus Kennzahlen des A-Aktien-Markts hochformatige Videos für das
 In den Einstellungen wird gewählt, aus welchem Markt die App ihre Kurse bezieht; voreingestellt sind A-Aktien. Eine Änderung gilt nach dem Neustart der App.
 
 - **Die Wahl wird gespeichert, nicht angewandt.** Auf dem Bildschirm ändert sich nichts, bis die App neu gestartet wird; deshalb steht der entsprechende Hinweis **oben auf der Einstellungsseite**, über den Karten und beim Scrollen dort festgehalten, mit einer Schaltfläche, die die App für Sie neu startet.
-- **A-Aktien**: alle acht Seiten sind verfügbar.
+- **A-Aktien**: jede Aktienseite ist verfügbar.
 - **Hongkong**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über die vier Hang-Seng-Subindizes; **eine Umsatzzahl für den Gesamtmarkt gibt es nicht, diese Seite wird ausgeblendet**.
 - **USA**: Renditematrix und Gewinn-Verlust-Kalender funktionieren; das Sektor-Rennen läuft über zehn SPDR-Sektor-ETFs; die Volumenseite behält nur den Tagesmodus, weil der Minuten-Endpunkt keine US-Daten liefert; **Umsätze werden in Dollar angegeben, und die Seite für den Gesamtmarktumsatz ist ausgeblendet**.
+- **Kryptowährungen**: nur dort angeboten, wo ein Kurs geladen werden kann — beide Quellen liegen außerhalb der Reichweite des Festlands. Wer sie wählt, behält die drei Krypto-Seiten in der Navigation und verliert jede Aktienseite, denn diese lesen einen Endpunkt, der keine einzige Münze notiert. Preise in US-Dollar, und eine Münze wird an jedem Tag des Jahres gehandelt, es fehlt also kein Tag.
 
 
 

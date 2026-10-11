@@ -14,6 +14,29 @@ public enum MarketId
     AShare = 0,
     HongKong = 1,
     UnitedStates = 2,
+
+    /// <summary>
+    /// Coins rather than listings, and the one market that may not be offered at all.
+    ///
+    /// It asks a different question about a different thing: a coin is priced in
+    /// dollars wherever it is bought, trades every day of the year, and has no
+    /// exchange, no board and no split or dividend to put back. It is a market here
+    /// anyway because the setting it appears in is the one that decides which pages
+    /// exist, and somebody who came for the crypto pages should reach them the same
+    /// way they reach every other page.
+    ///
+    /// **Chosen, it is the whole of what the app shows.** The stock pages are not
+    /// merely pointless under it, they are wrong: every one of them reads the Tencent
+    /// endpoint, which quotes no coin at all, so they would each fail one fetch at a
+    /// time. So the menu is pared to the three crypto pages and nothing else — see
+    /// <c>MainWindow.ApplyMarket</c>.
+    ///
+    /// **And not every machine is offered it.** Both of its sources stand outside the
+    /// mainland's reach, so the settings page lists it only where one of them answers;
+    /// see <see cref="Markets.Offered"/>. This is the one value here whose presence in
+    /// the enum does not mean it is on offer.
+    /// </summary>
+    Crypto = 3,
 }
 
 /// <summary>
@@ -124,7 +147,15 @@ public sealed record MarketProfile(
     {
         MarketId.AShare => code.StartsWith("sh") || code.StartsWith("sz") || code.StartsWith("bj"),
         MarketId.HongKong => code.StartsWith("hk"),
-        _ => code.StartsWith("us"),
+        MarketId.UnitedStates => code.StartsWith("us"),
+
+        // No prefix means a coin, and there is none that could: the three crypto
+        // pages name their instruments out of `CryptoAsset.All` instead. False
+        // rather than a guess, so that a code arriving here from the one caller that
+        // walks every market — the watchlist's search — is turned away rather than
+        // read as a ticker this market does not have. (That caller walks `All`, which
+        // does not carry this value, but the branch is what makes that safe to rely on.)
+        _ => false,
     };
 }
 
@@ -370,13 +401,75 @@ public static class Markets
             PositionInstruments: UnitedStatesHoldings,
             CandleInstruments: UnitedStatesCandles,
             CurrencyKey: "DcaCurrencyUsd"),
+
+        new(
+            MarketId.Crypto,
+            "MarketCrypto",
+            // A coin is quoted in dollars on every venue that carries it, so the
+            // amount field is dollars and a hundred million of it is one 亿 — the
+            // arithmetic New York gets, for the same reason.
+            AmountToYi: 100_000_000,
+            Volume: VolumeBasis.Shares,
+            // There is no "crypto market" whose turnover could be summed: the twelve
+            // coins on offer are twelve of several thousand, spread over exchanges
+            // that report nothing to each other. A total of them would be a figure
+            // about this app's own shortlist wearing the label of a market's day.
+            WholeMarketTurnover: false,
+            // Every hour of every day is a trading hour, so the question the minute
+            // endpoint answers — what did the session do — is not one a coin has.
+            Intraday: false,
+
+            // The five stock lists are empty rather than filled with coins, and this
+            // is the point of the whole profile: the three crypto pages take their
+            // instruments from `CryptoAsset.All`, and a second copy of that roster
+            // here would be a second answer to "which coins does this app know" —
+            // the kind that goes stale in one place only. Nothing reads these either:
+            // every page that does is off the menu while this market is chosen, which
+            // `ApplyMarket` is what guarantees.
+            Rosters: [],
+            BroadIndices: [],
+            DcaInstruments: [],
+            PositionInstruments: [],
+            CandleInstruments: [],
+
+            // The same dollar the US plan page names, and the same one the crypto
+            // pages print: the coin pages carry their own wording for everything else
+            // because a natural day is not a trading day, but the currency is not a
+            // thing they need to say differently.
+            CurrencyKey: "DcaCurrencyUsd"),
     ];
 
     /// <summary>
-    /// The markets, in the order the settings page lists them: the one this app was
-    /// built for first, then the two the same pages can be pointed at.
+    /// The stock markets, in the order the settings page lists them: the one this app
+    /// was built for first, then the two the same pages can be pointed at.
+    ///
+    /// <see cref="MarketId.Crypto"/> is deliberately not a member, because this array
+    /// is read as "the markets the stock endpoint quotes" as well as "the ones on
+    /// offer": the watchlist's search walks it to ask several venues at once, and a
+    /// coin is not quoted by the endpoint that search calls. What the settings page
+    /// lists is <see cref="Offered"/>.
     /// </summary>
     public static readonly MarketId[] All = [MarketId.AShare, MarketId.HongKong, MarketId.UnitedStates];
+
+    /// <summary>
+    /// The markets the settings page offers, given whether this machine can reach a
+    /// crypto source.
+    ///
+    /// The crypto market is appended conditionally rather than listed always, because
+    /// it is the one value here that may be unusable: both of its sources are outside
+    /// the mainland's reach, and a market that cannot fetch a single price is a menu
+    /// item that fails rather than a choice. Hidden there rather than shown and
+    /// disabled, for the reason the navigation gives about pages a market cannot feed
+    /// — an entry that does nothing is worse than an entry that is not there.
+    ///
+    /// Asked of the source rather than of the machine's address, because the question
+    /// the app has to answer is whether a price can be fetched. An address is only a
+    /// guess at that, and a guess of the wrong kind in both directions: a machine in
+    /// the mainland on a tunnel can fetch, and a machine outside it behind a firewall
+    /// cannot.
+    /// </summary>
+    public static MarketId[] Offered(bool cryptoReachable) =>
+        cryptoReachable ? [.. All, MarketId.Crypto] : All;
 
     public static MarketProfile Of(MarketId id) => Profiles[(int)id];
 

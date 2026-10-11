@@ -329,7 +329,7 @@ public sealed partial class CryptoDcaPage : StudioPage, IPlaybackHost
                 ? " " + Strings.Format("DcaSkipped", string.Join("、", board.Skipped))
                 : string.Empty;
 
-            ShowStatus(InfoBarSeverity.Success, (board.Comparing
+            ShowFetched((board.Comparing
                 ? Strings.Format(
                     "CryptoDcaBoardFetched",
                     board.Tracks.Count,
@@ -341,13 +341,9 @@ public sealed partial class CryptoDcaPage : StudioPage, IPlaybackHost
                     board.Dates.Count,
                     DcaRenderer.Iso(board.Start),
                     DcaRenderer.Iso(board.End),
-                    board.Buys)) + skipped);
-
-            if (board.Start > start.AddDays(30))
-            {
-                ShowStatus(InfoBarSeverity.Warning, Strings.Format(
-                    "CryptoRangeShort", DcaRenderer.Iso(board.Start)));
-            }
+                    board.Buys)) + skipped,
+                InfoBarSeverity.Success, board.Start, start,
+                Strings.Format("CryptoRangeShort", DcaRenderer.Iso(board.Start)));
         }, TimeSpan.FromMinutes(6));
     }
 

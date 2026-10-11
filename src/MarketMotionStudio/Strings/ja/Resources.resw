@@ -954,4 +954,5 @@
   <data name="INSTLINK"><value>Chainlink</value></data>
   <data name="INSTDOT"><value>ポルカドット</value></data>
   <data name="INSTAVAX"><value>アバランチ</value></data>
+  <data name="MarketCrypto"><value>暗号資産</value></data>
 </root>

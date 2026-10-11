@@ -983,17 +983,21 @@ Where that would happen the label is drawn beyond the zero axis instead. It is n
 it is the bottom row of every frame of any board with a fall on it, which includes the A+H page.
 
 **Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
-over a coin instead of a share, and the three pages the menu decides about at launch rather than
-while you are looking at it. Both sources that carry a coin's history sit outside the mainland, so
-the first question is not *what was the price* but *is either of them reachable*: one request at
-launch answers it, and until it does the three items are not in the menu at all. Three entries
-offering data they cannot fetch would be three entries that fail, and a collapsed item is still an
-item — so they are removed, not hidden. What changes once the subject is a coin is mostly what
+over a coin instead of a share, and the three pages that come with **a fourth market** rather than
+sitting beside the stock ones. Both sources that carry a coin's history sit outside the mainland, so
+the first question is not *what was the price* but *can either of them be reached*: the settings page
+asks that as the app starts, and lists «Cryptocurrency» beside the three stock markets only where a
+price can be fetched. Choose it and the menu is three pages — the stock pages are removed rather than
+hidden, because every one of them reads an endpoint that quotes no coin at all, so each would sit
+there failing one fetch at a time. Choose any other market and these three are the ones removed: a
+coin is not quoted on any of the three venues, so they are not a second view of the market being
+looked at. What changes once the subject is a coin is mostly what
 stops being true: there is no holiday to step over and no day missing from a range, because a coin
 trades every day of the year; there is no dividend and no split, so the close *is* the return and
 nothing on these three pages asks for an adjusted series; and the span is calendar days, which is
 why they carry their own status lines instead of borrowing the stock pages' "trading days". Prices
-are US dollars on all three, whatever the market setting says. The coins are a list of twelve
+are US dollars on all three — a coin is quoted in dollars on every venue that carries it, so unlike
+the stock pages there is nothing here for the market setting to change. The coins are a list of twelve
 rather than a search box, because the two sources spell the same coin differently — Yahoo wants
 `BTC-USD`, CoinGecko wants `bitcoin` — and a name typed into either reaches neither. The candle
 page is the one of the three that notices which source answered: the fallback carries a year and

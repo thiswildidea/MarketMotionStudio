@@ -128,10 +128,18 @@ public sealed partial class MainWindow : Window
         ApplyMarket();
         Nav.SelectedItem = Nav.MenuItems[0];
 
-        // After the first page is chosen and not before: the crypto items are still
-        // collapsed at this point, so nothing here can land on one of them, and the
-        // asking happens while the window is already up and being looked at.
-        _ = OfferCryptoPagesAsync();
+        // Asked here, and only asked. Nothing about the window is decided by the
+        // answer — which pages exist is the market's business, and whether the crypto
+        // market is on offer at all is the settings page's — so this is a request made
+        // now for somebody else to read later, and the only reason it is here rather
+        // than there is timing: by the time the settings page is opened the answer is
+        // already in hand, and a combo box that lists four markets does not visibly
+        // become one that lists three and then gains a fourth.
+        //
+        // Off the constructor rather than in it, because the question is a request
+        // with a six-second leash on it (see `CryptoQuotes.ProbeTimeout`) and a window
+        // that waits for a foreign host before it appears looks like it failed to start.
+        _ = _services.Crypto.ReachableAsync();
 
         // The label is a TextBlock inside the item now, so the item no longer
         // names itself; screen readers get the same word the label shows.
@@ -339,7 +347,43 @@ public sealed partial class MainWindow : Window
     /// </summary>
     private void ApplyMarket()
     {
-        var profile = Markets.Of(MarketSettings.Current);
+        var crypto = new NavigationViewItem[] { NavCryptoCandle, NavCryptoDca, NavCryptoPosition };
+
+        // The crypto market is the one that keeps three pages and drops the rest, and
+        // it is not a judgement about which figures a venue can supply — it is the
+        // only setting here where the pages that would remain are not merely
+        // unpublishable but wrong. Every one of them reads the stock endpoint, which
+        // quotes no coin at all, so each would sit there failing a fetch at a time.
+        if (MarketSettings.Current is MarketId.Crypto)
+        {
+            foreach (var item in Nav.MenuItems.ToArray())
+            {
+                if (item is NavigationViewItem nav && !crypto.Contains(nav))
+                {
+                    Nav.MenuItems.Remove(nav);
+                }
+            }
+
+            // Shown rather than merely left in place: they are declared collapsed in
+            // the markup, so that the one way into them is a market that says so.
+            foreach (var page in crypto)
+            {
+                page.Visibility = Visibility.Visible;
+            }
+
+            return;
+        }
+
+        // Every other market: the three crypto pages are not listed at all, whether or
+        // not this machine could fetch them. They are not a second view of the market
+        // being looked at — a coin is not quoted on any of the three venues — so
+        // offering them here would be offering a page from another app's subject
+        // matter, which is why they are taken out as a group with one rule for all
+        // three rather than per market.
+        foreach (var page in crypto)
+        {
+            Nav.MenuItems.Remove(page);
+        }
 
         // Taken out of the menu rather than hidden in it. A collapsed item is still an
         // item: keyboard navigation and the framework's own selection bookkeeping both
@@ -347,56 +391,10 @@ public sealed partial class MainWindow : Window
         // startup — which would land on a page with nothing to draw. Removal is the
         // only way to be sure the page is unreachable, and nothing puts it back,
         // because the market does not change while the window is open.
-        if (!profile.WholeMarketTurnover)
+        if (!Markets.Of(MarketSettings.Current).WholeMarketTurnover)
         {
             Nav.MenuItems.Remove(NavMarketTurnover);
         }
-    }
-
-    /// <summary>
-    /// Asks once whether any crypto source answers, then either puts the three crypto
-    /// pages in the menu or takes them out of it for the rest of the run.
-    ///
-    /// Asked off the constructor rather than in it. The question is a request with a
-    /// six-second leash on it (see <c>CryptoQuotes.ProbeTimeout</c>), and a window
-    /// that waits for a foreign host before it appears is a window that looks like it
-    /// failed to start. The three items are therefore collapsed in the markup and
-    /// stay that way until the answer arrives: nothing that has not been decided is
-    /// clickable.
-    ///
-    /// Taken out rather than left collapsed when the answer is no, for the reason
-    /// <see cref="ApplyMarket"/> gives. And not asked again: a machine's reach does
-    /// not change while this window is open often enough to be worth a second
-    /// request, and an answer that arrived late can be had by restarting.
-    /// </summary>
-    private async Task OfferCryptoPagesAsync()
-    {
-        var reachable = await _services.Crypto.ReachableAsync();
-
-        // The answer arrives on whatever thread the request finished on, and the menu
-        // belongs to this one.
-        _dispatcher.TryEnqueue(() =>
-        {
-            var pages = new[] { NavCryptoCandle, NavCryptoDca, NavCryptoPosition };
-
-            if (!reachable)
-            {
-                // Removed as a group, because that is how they were offered: one
-                // answer stands behind all three, and a menu that kept one of them
-                // would be claiming a source it has just been told is not there.
-                foreach (var page in pages)
-                {
-                    Nav.MenuItems.Remove(page);
-                }
-
-                return;
-            }
-
-            foreach (var page in pages)
-            {
-                page.Visibility = Visibility.Visible;
-            }
-        });
     }
 
     /// <summary>
@@ -774,13 +772,18 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        // The same guard for the crypto pages, and for the same reason: a hidden item
-        // keeps its tag. A tag restored from a visit, or carried by a future caller,
-        // would otherwise land on a page whose source was never reached — and it would
-        // land on it silently, because nothing about the page says where its data
-        // comes from until a fetch fails.
+        // The same guard for the crypto pages, and for the same reason: a tag outlives
+        // the item that carried it. A tag restored from a visit, or carried by a future
+        // caller, would otherwise land on a page the chosen market does not list — and
+        // it would land on it silently, because the page itself looks no different: a
+        // coin's candles are drawn by the same renderer as a share's.
+        //
+        // Asked of the market rather than of the source's reach, because that is what
+        // decides the menu now. A machine that cannot fetch a coin and a market that
+        // was not asked for one are two different refusals, and only the second one
+        // means the page should not be reachable at all.
         if ((page == typeof(CryptoCandlePage) || page == typeof(CryptoDcaPage)
-             || page == typeof(CryptoPositionPage)) && !_services.Crypto.Answered)
+             || page == typeof(CryptoPositionPage)) && MarketSettings.Current is not MarketId.Crypto)
         {
             return;
         }
