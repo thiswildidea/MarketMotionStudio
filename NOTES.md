@@ -441,6 +441,20 @@ baseline, the stacked layout and the card row. It has since been **submitted** (
 one thing that landed after it — the block that says where a comparison has got to — moved to
 1.0.13.0 rather than being folded into this entry.
 
+**1.0.16.0 (2026-10-11).** The upload bundle built and reported `PackageSuccessfullyCreated`:
+`artifacts/MarketMotionStudio_1.0.16.0_x64_arm64_bundle.msixupload`, 162.9 MB, six inner packages.
+Opened rather than trusted: both the x64 and the arm64 inner package report Identity `1.0.16.0` —
+**the version in a file name is not evidence** — and both hold fourteen help documents, seventy help
+images, `resources.pri` and Win2D. What separates this bundle from the 1.0.15.0 one already submitted
+is legible in the shipped `MarketMotionStudio.dll`: this one carries `CryptoCaps`, `CryptoCalendar`,
+`CryptoCapBoard`, `CryptoCapLoader` and the three page classes, and that one carries none of them;
+`RestartNotice` and `SettingsScroll` are in both, because the pinned restart notice went out with
+1.0.15.0. It is the first bundle in which cryptocurrency is a market rather than three pages hanging
+off the stock navigation: with it selected the six crypto pages are all there is, and the stock pages
+are removed as a group. It is also the first in which a market can be missing from the list in
+Settings — the crypto source is asked before the market is offered, and two sources are tried with a
+twenty-second leash each, which is what a first cross-border request actually costs.
+
 **1.0.15.0 (2026-10-11).** The upload bundle built and reported `PackageSuccessfullyCreated`:
 `artifacts/MarketMotionStudio_1.0.15.0_x64_arm64_bundle.msixupload`, 155.1 MB, six inner packages.
 Opened rather than trusted: the x64 inner package reports Identity `1.0.15.0` — **the version in a

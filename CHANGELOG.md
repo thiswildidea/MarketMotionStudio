@@ -20,6 +20,58 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.16.0 — 2026-10-11（更新版 / update）
+
+**本版把加密货币做成一个完整的市场：第四个市场，六个页面。** 在设置里选「加密货币」，导航整组
+换成六页 —— K 线、定投、持仓、涨跌日历、市值历程、市值榜 —— 股票那几页让到一边；两个加密源都连
+不上时，它根本不出现在市场列表里。
+
+**This version makes cryptocurrency a market of its own: a fourth market with six pages.** Pick it in
+Settings and the navigation becomes six crypto pages — candles, DCA, holdings, gain calendar, market
+cap history and market cap race — while the stock pages step aside; when neither crypto source answers
+it does not appear in the market list at all.
+
+**为什么是一个「市场」而不是六个开关。** 加密页与股票页说的「一天」不是同一件事：币是 7×24，
+**天是自然日，不是交易日**。挂在同一套导航里，两族页面会互相借错口径的字 —— 「交易日」、复权、
+场地日历。做成市场之后，选它就只有加密六页，选别的市场就只有那几页，两组不共存，各用自己的键
+（`Crypto*`）与自己的单位词。
+
+**Why a market rather than six switches.** A crypto page and a stock page do not mean the same thing by
+"a day": coins trade around the clock, and **a day is a calendar day, not a trading day**. Sharing one
+navigation, the two families borrow each other's words — "trading day", adjustment, exchange calendar.
+As a market it is one or the other: the six crypto pages, or the stock pages, never both, each family
+with its own keys (`Crypto*`) and its own unit words.
+
+**市值是量出来的，不是外推的。** 市值历程与市值榜画的市值来自 CoinMetrics 当天实测的
+`CapMrktCurUSD`（比特币可以回到 2010 年），不是「今天的流通量 × 那天的价格」—— 后者会让市值线与
+价格线永远平行，那这两页就没有存在的理由了。实测：市值历程 1826 个自然日，期末市值 16,670 亿
+美元；市值榜 14 个币种 × 730 个自然日，期末第一是比特币。
+
+**The cap is measured, not back-projected.** Both cap pages draw `CapMrktCurUSD` from CoinMetrics, a
+figure measured on that day (back to 2010 for bitcoin) — not today's supply times the price of that
+day, which would pin the cap line parallel to the price line forever and leave the page with nothing
+to say. Measured: cap history runs 1826 calendar days ending at USD 1,667.0 bn; the race carries 14
+coins over 730 calendar days, bitcoin first at the end.
+
+**市值榜的名单是问出来的。** 问 CoinGecko 的 `/coins/markets` 取当前市值前十五，不是照抄一份写
+好的清单；稳定币留在榜上（排名里本来就有它们），源端没有该币历史的直接丢弃，而不是画成缺口。
+
+**The board's list is asked for, not written down.** The race asks CoinGecko's `/coins/markets` which
+coins are largest today; stablecoins stay on it (they are in the ranking), and a coin the source has
+no history for is dropped rather than drawn as a gap.
+
+**一个真的缺陷，是判据跑出来的。** 市值榜第一次真机跑报「耗时过长，已放弃」：CoinMetrics 一页只
+装 4000 行、且**按资产一个一个填**，十五个币要 730 天，一次响应里只有 6 个币 —— 不翻页的话榜上
+少九个，而榜上每个数字看上去都对。现在跟着 `next_page_token` 翻页（上限 12 页），币种数从 13
+变成 14。
+
+**One real defect, found by the checks.** The board's first real run gave up on time: CoinMetrics fills
+a 4000-row page **one asset at a time**, so a request for fifteen coins over 730 days comes back with
+six of them — nine missing from the board while every number on it looks right. It now follows
+`next_page_token`, twelve pages at most, and the count went from 13 coins to 14.
+
+---
+
 ## 1.0.15.0 — 2026-10-11（更新版 / update）
 
 **本版只做一件事：改了市场或语言之后那条「重启应用」的提示，现在钉在设置页最顶端。** 它不
