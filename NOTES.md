@@ -2539,3 +2539,67 @@ at 15,724 亿 and ¥1,258.62 a share.
 not been driven through it; the English interface has not been read line by line; nothing reconciles
 the recovered count against the source after the day it was built; and the part-grown-point defect
 above still sits in the volume & turnover page's cumulative curve.
+
+## The crypto chapters get pictures, and three ways a capture lies (2026-10-11)
+
+The six cryptocurrency chapters opened with prose and nothing to point at — for a market whose
+audience is by definition outside mainland China and can never have seen the app's own window for it.
+They now carry the same kind of picture as the other five chapters: one capture per language, cropped
+to the content area, so a Turkish manual shows a Turkish window. **154 pictures now, 32.0 MB**, and
+**84 of the new captures** (fourteen languages × six pages) because the pictures are per language.
+
+**The crypto captures need a pass of their own** (`store-screenshots.py --crypto`). Selecting that
+market removes the stock pages from the navigation as a group, and the reverse holds too, so a single
+run cannot produce both sets — the nine stock pages and the six crypto pages are never in the same
+navigation.
+
+**The picture-inserter had drifted and nothing said so.** `port-help-images.py` located its five
+chapters by chapter *number*, written when the manual had eighteen of them; by the time the crypto
+chapters existed those numbers pointed elsewhere, and inserting a picture into the wrong chapter is
+not something a diff makes obvious. It now asks `listingtext.chapter_of(key)` and reads the eleven
+`PAGES` from the navigation order, which is where every other tool in this repo gets its chapter
+numbers from. A second script written the same day to do the same job a second way was deleted — one
+job, one tool.
+
+### Three ways a capture lies, all found by running this one
+
+1. **Another application in front.** `CaptureToImage` silently falls back to a whole-screen grab when
+   the window is not focused, and what lands in the file is whatever *is* in front — ArcGIS's settings
+   window, in the case that found this. Two measurements separate them: a real capture is 1920×1020
+   (the window's visible area) where a whole-screen grab is 1920×1080, and a real one has the dark 9:16
+   preview frame in it (dark-pixel share 0.122) where a screenshot of another app has almost none
+   (0.004). Both are now checked after every capture, with a retry.
+   The size assertion cannot use equality: maximized, UIA reports the window rectangle as 1938×1029
+   @(-9,-9) — the border overhang — while the capture comes back 1920×1020, so the comparison is
+   against the rectangle ∩ screen with 24 px of slack.
+
+2. **A window that is gone reads its rectangle as 0×0.** That is *not a size*, and comparing the
+   capture against it spends all three retries on the same thing and then throws. Observed on the
+   Turkish run: `抓到的是 1920x1020，窗口可见那块是 0x0 —— 整屏抓取，重来` three times, then
+   `COMError: 事件无法调用任何订户` out of `BoundingRectangle`. Zero now means "did not read it".
+
+3. **A fetch that never completed still draws a page.** The canvas, the title block, the parameter
+   panel and the status strip are all there; there is simply no chart in the frame. All three checks
+   above pass, because the fault is not in the capture. The Turkish set was six of these, under
+   `Neither cryptocurrency source answered.` — the pictures are no longer kept when the wait for data
+   times out, and the run says so in a line beginning `!!`.
+
+### The source went away for the better part of an hour
+
+Twelve languages' worth of captures (72 pages) had come out fine; then Yahoo stopped answering
+(403 on both `query1` and `query2`) and CoinGecko timed out, and it stayed that way through a
+twenty-minute cooldown. The twelve were valid — and the round was not restarted, only the last two
+languages re-run. **The host being unreachable from a shell means nothing on this machine** (a
+sandboxed `curl` gets 403 from Yahoo on a day when the app fetches fine), so the state was measured
+the only way that counts: by asking the app.
+
+**Verified.** `verify-docs.py` 364 checks (154 of them the new picture assertions: every chapter
+points at its own picture, and no picture is referenced twice), `verify-help-media.py` 913 checks
+(each picture is the expected size, carries no notification burned into it, holds a 9:16 frame at the
+same place in all fourteen languages, and is not a duplicate of another in its own language — frame
+boxes agree across languages to within 21 px, the width of the widest parameter panel), and
+`publish-help-to-support.py` reports **168 files, 0 changes** on a second run.
+
+**Owed:** the package still holds the old manual — 1.0.16.0 was built before the market paragraphs
+and the pictures, so both are waiting on the next version number; and the Store gallery still describes
+nine pages of twenty-four, with the crypto six captured but not yet placed in it.

@@ -1293,7 +1293,16 @@ src/MarketMotionStudio/
                    AssetRace (eight asset classes as funds, and the one page that must use adjusted prices),
                    BondRace (nine bond indices, the opposite ruling on adjustment, and the whole-month snap),
                    Drawdown (the same eight funds measured against their own highs: depth and the climb back),
-                   HoldOdds (every entry in the range, each held the same length of time, and the share that gained)
+                   HoldOdds (every entry in the range, each held the same length of time, and the share that gained),
+                   Markets (which market is in force, and why cryptocurrency is asked before it is
+                   offered at all), CryptoQuotes (two sources, both outside the mainland, and the
+                   fall between them), CryptoCandleLoader (a coin's bars, and why its weekly candle
+                   is made here rather than served — no coin market closes, so every day in a span
+                   exists), CryptoCalendar (a year with no weekend to leave out),
+                   CryptoCaps (one coin's value and the price it was taken at),
+                   CryptoCapLoader (that, on one axis — a value this market serves rather than one
+                   recovered from a turnover rate), CryptoCapBoard (fifteen of them at once, from a
+                   source that answers one coin per page)
   Render/          VideoFormat, ChartMargins, SafeArea, FrameContext, IFrameRenderer,
                    Palette, Ink (text and effects), AnimationPlan and Easing,
                    Metric (turnover vs daily change), TurnoverRenderer (shared chrome)
@@ -1311,8 +1320,19 @@ src/MarketMotionStudio/
                    FxCorridorRenderer (a row that is a range, with the rate as a marker on it),
                    CapHistoryRenderer (two stacked panels for one company; one line each when
                    several are compared, and the lower panel gives the frame up to do it),
-                   FrameExporter (one frame to PNG)
-  Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel, Dialogs
+                   TitleBlock (the headline every page draws, wrapped rather than shrunk, and the
+                   only place the arithmetic for making room for it lives), CandleLine (the
+                   percentage axis and the curve both multi-instrument candle frames share),
+                   CandleSplitRenderer (one instrument to a panel, for when a shared axis buries
+                   the quiet ones), StockDualRenderer (price above, volume below, one instrument),
+                   MatrixRenderer (the monthly grid and the four cards under it),
+                   TrackCards (the row of figures a comparison ends on),
+                   Watermark (the name written into the backdrop, beneath the data),
+                   FrameExporter (one frame to PNG), VideoExporter (frames into an H.264 MP4 —
+                   the encoder owns the clock, and the flip lives here)
+  Views/           PreviewSurface (the letterboxed 9:16 canvas), VideoSettingsPanel,
+                   CryptoPicker (one switch per coin, and a box that narrows the row),
+                   WatchlistPicker, WatermarkPreview, SubscriptionOffer, Dialogs
   Pages/           StudioPage base, the indicator pages, the two buy-at-a-price pages,
                    Settings, Help, Playback
   Localization/    Strings lookup and the language override
@@ -1435,8 +1455,8 @@ submission. Re-wording a sentence used to mean a build, a bundle, a certificatio
 release — weeks for a typo — and a manual is read by somebody who is already stuck. The two
 copies are the same files: `tools/publish-help-to-support.py` copies `Assets/Help/` to
 `MarketMotionStudio-Support/help/` and compares bytes, and `tools/verify-help-online.py`
-asserts the site serves all fourteen documents and all seventy pictures byte-for-byte
-identical to the packaged ones. Which of the two is on screen also decides where the pictures
+asserts the site serves all fourteen documents and all one hundred and fifty-four pictures
+byte-for-byte identical to the packaged ones. Which of the two is on screen also decides where the pictures
 come from (`HelpDocument._published`), because prose from the site over pictures from the
 package would be two documents shown as one.
 
@@ -1463,9 +1483,10 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 732 keys
-with no encoding damage, and all fourteen help documents carry the same twenty-five sections in
-the same order — the equality the cross-language check rests on.
+Every language carries the same keys in the same order. All fourteen currently report 938 keys
+with no encoding damage, and all fourteen help documents carry the same thirty-three sections in
+the same order — twenty-four of them a page, and nine about the app rather than a market — which
+is the equality the cross-language check rests on.
 
 ## Appearance
 
