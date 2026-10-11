@@ -446,6 +446,8 @@ Una compra, mantenida —un millón del mismo valor desde 2015—, animada para 
 
 ## Velas cripto
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-candle.png)
+
 Las velas diarias de una moneda, en dólares estadounidenses, de una fuente pública. Las semanales y mensuales se agrupan a partir de esos mismos días.
 
 - Las doce monedas ofrecidas son las que ambas fuentes tienen con años de historial diario. El cuadro de arriba estrecha la fila a lo que se escribe: coincide con el nombre que escribe este idioma de interfaz o con el código — bit y BTC encuentran Bitcoin. Una moneda ya elegida sigue en la fila se escriba lo que se escriba.
@@ -458,6 +460,8 @@ Las velas diarias de una moneda, en dólares estadounidenses, de una fuente púb
 
 ## Plan DCA cripto
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-dca.png)
+
 Comprar una moneda con ritmo fijo — semanal, por ejemplo, o mensual — y cuánto vale ese plan hoy.
 
 - **Frecuencia** e **Importe** dicen cada cuánto y cuánto, en dólares estadounidenses. El plan compra el primer día de cada periodo que cubre el rango.
@@ -467,6 +471,8 @@ Comprar una moneda con ritmo fijo — semanal, por ejemplo, o mensual — y cuá
 - Los días aquí son días naturales. Una moneda cotiza en todos ellos: un año de compras semanales son unas 52 compras y uno de mensuales, 12, y ninguna de las dos cifras es aproximada.
 
 ## Rentabilidad de la cartera cripto
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-position.png)
 
 Una suma puesta en una moneda un día, y cuánto vale hoy.
 
@@ -478,6 +484,8 @@ Una suma puesta en una moneda un día, y cuánto vale hoy.
 
 ## Calendario de ganancias cripto
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-calendar.png)
+
 Una celda por día, coloreada según la variación de ese día.
 
 - **Una cuadrícula llena no son datos que falten.** Un calendario de acciones está lleno de huecos — fines de semana, festivos, suspensiones — y se lee como se ve un mercado. Una moneda cotiza todos los días del año, así que todas las casillas están rellenas: la imagen es más densa, no más larga, y lo que parece un festivo omitido es un mercado que nunca cierra.
@@ -488,6 +496,8 @@ Una celda por día, coloreada según la variación de ese día.
 
 ## Historial de capitalización cripto
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-caphistory.png)
+
 La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo.
 
 - **Donde las dos líneas se separan, lo que se ve es emisión y quema.** El precio es lo que cuesta una moneda; la capitalización es ese precio por la cantidad de monedas existentes. Una línea de capitalización que sube mientras la del precio baja es oferta que crece, no una cifra equivocada.
@@ -497,6 +507,8 @@ La capitalización circulante de una moneda a lo largo del tiempo, con el precio
 - **Rango** son doce, veinticuatro, sesenta o ciento veinte meses, o un tramo propio. La historia de una moneda puede ser más corta que el rango pedido — eso es el suelo de la fuente, no una consulta que falló.
 
 ## Carrera de capitalización cripto
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-marketcap.png)
 
 Las quince monedas con mayor capitalización hoy y cómo se movió ese orden día a día.
 

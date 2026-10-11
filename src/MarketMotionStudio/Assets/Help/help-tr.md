@@ -426,6 +426,8 @@ Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon �
 
 ## Kripto mumlar
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-candle.png)
+
 Bir coin'in günlük mumları, ABD doları cinsinden, herkese açık bir kaynaktan. Haftalık ve aylık mumlar aynı günlerden toplanır.
 
 - Sunulan on iki coin, her iki kaynağın da yıllarca günlük geçmişe sahip olduğu coin'ler. Yukarıdaki kutu satırı yazılana göre daraltır: bu arayüz dilinin yazdığı adla ya da kodla eşleşir — bit de BTC de Bitcoin'i bulur. Seçilmiş bir coin ne yazılırsa yazılsın satırda kalır.
@@ -438,6 +440,8 @@ Bir coin'in günlük mumları, ABD doları cinsinden, herkese açık bir kaynakt
 
 ## Kripto DCA planı
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-dca.png)
+
 Bir coin'i sabit bir ritimle almak — diyelim haftalık veya aylık — ve bu planın bugünkü değeri.
 
 - **Sıklık** ve **Tutar**, ABD doları cinsinden ne sıklıkla ve ne kadar alınacağını söyler. Plan, aralığın kapsadığı her dönemin ilk gününde alır.
@@ -447,6 +451,8 @@ Bir coin'i sabit bir ritimle almak — diyelim haftalık veya aylık — ve bu p
 - Buradaki günler takvim günleridir. Bir coin hepsinde işlem görür: haftalık alımla bir yıl yaklaşık 52 alım, aylık alımla 12 alımdır ve iki sayı da yaklaşık değildir.
 
 ## Kripto varlık getirisi
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-position.png)
 
 Bir gün bir coin'e konulan bir tutar ve onun bugünkü değeri.
 
@@ -458,6 +464,8 @@ Bir gün bir coin'e konulan bir tutar ve onun bugünkü değeri.
 
 ## Kripto artış-düşüş takvimi
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-calendar.png)
+
 Güne bir kare, o günün değişimine göre renklendirilmiş.
 
 - **Dolu bir ızgara eksik veri değildir.** Hisse takvimi çoğunlukla boşluklardan oluşur — hafta sonları, tatiller, işlem durdurmaları — ve bir piyasanın göründüğü gibi okunur. Bir coin yılın her günü işlem görür, bu yüzden her kare doludur: görüntü daha uzun değil, daha yoğundur ve eksik bir tatil gibi görünen şey, hiç kapanmayan bir piyasadır.
@@ -468,6 +476,8 @@ Güne bir kare, o günün değişimine göre renklendirilmiş.
 
 ## Kripto piyasa değeri geçmişi
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-caphistory.png)
+
 Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı.
 
 - **İki çizginin ayrıldığı yerde görülen şey arz artışı ve yakımdır.** Fiyat, bir coin'in maliyetidir; piyasa değeri ise o fiyatın var olan coin sayısıyla çarpımıdır. Fiyat çizgisi düşerken piyasa değeri çizgisi yükseliyorsa bu büyüyen arzdır, yanlış bir sayı değil.
@@ -477,6 +487,8 @@ Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında ayn�
 - **Aralık** on iki, yirmi dört, altmış veya yüz yirmi ay ya da kendi belirlediğiniz bir aralıktır. Bir coin'in geçmişi istediğiniz aralıktan kısa olabilir — bu kaynağın tabanıdır, başarısız bir çekim değil.
 
 ## Kripto piyasa değeri yarışı
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-marketcap.png)
 
 Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl değiştiği.
 

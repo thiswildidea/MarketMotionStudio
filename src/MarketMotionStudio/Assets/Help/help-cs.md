@@ -421,6 +421,8 @@ Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 —
 
 ## Krypto svíčky
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-candle.png)
+
 Denní svíčky jedné mince v amerických dolarech z veřejného zdroje. Týdenní a měsíční jsou složeny ze stejných dnů.
 
 - Dvanáct nabízených mincí jsou ty, k nimž oba zdroje mají roky denní historie. Pole výše zužuje řádek na zadaný text: odpovídá názvu, který píše tento jazyk rozhraní, nebo kódu — bit i BTC najdou Bitcoin. Zvolená mince na řádku zůstává bez ohledu na zadaný text.
@@ -433,6 +435,8 @@ Denní svíčky jedné mince v amerických dolarech z veřejného zdroje. Týden
 
 ## Plán krypto DCA
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-dca.png)
+
 Nakupovat jednu minci v pevném rytmu — řekněme týdně nebo měsíčně — a za kolik je ten plán dnes.
 
 - **Frekvence** a **Částka** říkají jak často a kolik, v amerických dolarech. Plán nakupuje první den každého období, které rozsah pokrývá.
@@ -442,6 +446,8 @@ Nakupovat jednu minci v pevném rytmu — řekněme týdně nebo měsíčně —
 - Dny jsou tu kalendářní dny. Mince se obchoduje každý z nich: rok týdenních nákupů je asi 52 nákupů, rok měsíčních 12, a ani jedno číslo není přibližné.
 
 ## Výnos krypto portfolia
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-position.png)
 
 Částka vložená do jedné mince v jednom dni a kolik má dnes hodnotu.
 
@@ -453,6 +459,8 @@ Nakupovat jednu minci v pevném rytmu — řekněme týdně nebo měsíčně —
 
 ## Kalendář pohybů krypto
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-calendar.png)
+
 Jeden čtvereček za den, obarvený podle změny toho dne.
 
 - **Plná mřížka nejsou chybějící data.** Kalendář akcií je převážně samá díra — víkendy, svátky, pozastavení — a čte se tak, jak trh vypadá. Mince se obchoduje každý den v roce, takže každý čtvereček je vyplněný: obraz je hustší, ne delší, a co vypadá jako chybějící svátek, je trh, který nikdy nezavírá.
@@ -463,6 +471,8 @@ Jeden čtvereček za den, obarvený podle změny toho dne.
 
 ## Historie kapitalizace krypto
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-caphistory.png)
+
 Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny.
 
 - **Tam, kde se obě čáry rozcházejí, vidíte emisi a pálení.** Cena je, kolik stojí jedna mince; kapitalizace je ta cena krát počet existujících mincí. Čára kapitalizace stoupající, zatímco čára ceny klesá, je rostoucí nabídka, ne špatné číslo.
@@ -472,6 +482,8 @@ Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny.
 - **Rozsah** je dvanáct, dvacet čtyři, šedesát nebo sto dvacet měsíců, nebo vlastní období. Historie mince může být kratší než požadovaný rozsah — to je spodní hranice zdroje, ne selhané načtení.
 
 ## Závod kapitalizací krypto
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-marketcap.png)
 
 Patnáct mincí s největší kapitalizací dnes a jak se toto pořadí den po dni měnilo.
 

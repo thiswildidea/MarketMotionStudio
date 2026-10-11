@@ -460,6 +460,8 @@ Un achat, conservé — un million du même nom depuis 2015 — animé pour mont
 
 ## Chandeliers crypto
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-candle.png)
+
 Les chandeliers quotidiens d'une cryptomonnaie, en dollars américains, depuis une source publique. Les hebdomadaires et mensuels sont regroupés à partir de ces mêmes jours.
 
 - Les douze cryptomonnaies proposées sont celles que les deux sources portent avec des années d'historique quotidien. Le champ ci-dessus resserre la ligne sur ce qui est saisi : il correspond au nom qu'écrit cette langue d'interface ou au code — bit comme BTC trouvent Bitcoin. Une cryptomonnaie déjà choisie reste affichée quoi qu'on saisisse.
@@ -472,6 +474,8 @@ Les chandeliers quotidiens d'une cryptomonnaie, en dollars américains, depuis u
 
 ## Plan DCA crypto
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-dca.png)
+
 Acheter une cryptomonnaie à rythme fixe — hebdomadaire, disons, ou mensuel — et ce que ce plan vaut aujourd'hui.
 
 - **Fréquence** et **Montant** disent à quelle fréquence et combien, en dollars américains. Le plan achète le premier jour de chaque période couverte par l'intervalle.
@@ -481,6 +485,8 @@ Acheter une cryptomonnaie à rythme fixe — hebdomadaire, disons, ou mensuel �
 - Les jours ici sont des jours civils. Une cryptomonnaie se négocie chacun d'eux : une année d'achats hebdomadaires représente environ 52 achats, une année d'achats mensuels 12, et aucun des deux chiffres n'est approximatif.
 
 ## Rendement du portefeuille crypto
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-position.png)
 
 Une somme placée dans une cryptomonnaie un jour donné, et ce qu'elle vaut aujourd'hui.
 
@@ -492,6 +498,8 @@ Une somme placée dans une cryptomonnaie un jour donné, et ce qu'elle vaut aujo
 
 ## Calendrier des hausses et baisses crypto
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-calendar.png)
+
 Une case par jour, colorée selon la variation de ce jour.
 
 - **Une grille pleine n'est pas une donnée manquante.** Un calendrier d'actions est surtout fait de trous — week-ends, jours fériés, suspensions — et se lit comme un marché se voit. Une cryptomonnaie se négocie tous les jours de l'année, donc chaque case est remplie : l'image est plus dense, non plus longue, et ce qui ressemble à un jour férié manquant est un marché qui ne ferme jamais.
@@ -502,6 +510,8 @@ Une case par jour, colorée selon la variation de ce jour.
 
 ## Historique de capitalisation crypto
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-caphistory.png)
+
 La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous.
 
 - **Là où les deux lignes s'écartent, on voit l'émission et la destruction.** Le cours est ce que coûte un jeton ; la capitalisation est ce cours multiplié par le nombre de jetons existants. Une ligne de capitalisation qui monte pendant que celle du cours descend, c'est l'offre qui grandit, pas un chiffre erroné.
@@ -511,6 +521,8 @@ La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours 
 - **Intervalle** : douze, vingt-quatre, soixante ou cent vingt mois, ou une période de votre choix. L'historique d'une cryptomonnaie peut être plus court que l'intervalle demandé — c'est le plancher de la source, pas une récupération qui a échoué.
 
 ## Course des capitalisations crypto
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-marketcap.png)
 
 Les quinze cryptomonnaies à la plus forte capitalisation aujourd'hui, et l'évolution de cet ordre jour après jour.
 

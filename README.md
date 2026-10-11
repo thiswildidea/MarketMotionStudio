@@ -1324,7 +1324,8 @@ tools/
   new-icons.ps1          Generates every image the manifest declares
   store-screenshots.py   Drives the running app; captures the Store screenshots, one set per language
   help-media.py          Crops those captures into the help document's page pictures
-  port-help-images.py    Inserts the pictures into all fourteen help documents, by chapter number
+  port-help-images.py    Inserts the pictures into all fourteen help documents; the chapter each one
+                         belongs to is looked up from the navigation rather than written down here
   publish-help-to-support.py
                          Copies Assets/Help/ to the support site and compares bytes — the only
                          writer of that folder, so the two copies cannot drift
@@ -1494,7 +1495,7 @@ detector still sees it. A detector whose control sample is clean is not a detect
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all twenty-one pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all twenty-four pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -1553,9 +1554,9 @@ a renderer with no watermark is one with nothing to draw rather than one that ha
 ## The subscription, and the two things it buys
 
 Exporting a video and taking the watermark off it take a monthly subscription. Everything else
-stays free on all twenty-one pages — fetching data, playing the animation, saving a cover image —
+stays free on all twenty-four pages — fetching data, playing the animation, saving a cover image —
 and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
-two are the ends that leave home, and the twenty-one pages of live market animation are what
+two are the ends that leave home, and the twenty-four pages of live market animation are what
 somebody came for.
 
 The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
@@ -1567,7 +1568,7 @@ they have already paid.
 
 Three decisions worth stating.
 
-**The answer is asked for in one place.** Twenty-one pages have an Export button and twenty-one have
+**The answer is asked for in one place.** Twenty-four pages have an Export button and twenty-four have
 their own handler, each written out in full — that duplication already exists and is not this
 feature's to fix. What must not be duplicated is the answer to "may this be done": two answers
 written twice is one page that gives the video away. So every handler asks
@@ -1665,10 +1666,12 @@ first export asks and then remembers.
   So what is verified is the gate, its placement, the licence read, and the watermark's dependency
   on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
   is finally there.
-- **The Store screenshots cover nine of the twenty-one pages.** `tools/store-screenshots.py` stops at
-  the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
+- **The Store screenshots cover fifteen of the twenty-four pages.** `tools/store-screenshots.py` stops
+  at the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
   extreme-day board, currency corridor, index race, asset-class board, drawdown board or hold-odds
-  board. The listing copy describes eighteen chart pages in all fourteen languages — it is written at
+  board. The six cryptocurrency pages need a run of their own (`--crypto`): selecting that market
+  removes the stock pages from the navigation outright, so the two sets cannot come out of one pass.
+  The listing copy describes twenty-four chart pages in all fourteen languages — it is written at
   release time, so until those nine captures are taken the copy and the gallery disagree. The copy
   deliberately runs ahead of the package too: it is written for the version being prepared, and it
   must not be uploaded before that package is.

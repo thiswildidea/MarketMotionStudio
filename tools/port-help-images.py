@@ -1,38 +1,64 @@
 # -*- coding: utf-8 -*-
 """Put a picture at the head of each manual chapter that has one.
 
-Placed by chapter number, not by heading text: the headings are translated and
-matching on them would need one table of fourteen titles. The chapters are in
-the same order in every language — that is the rule the manuals are held to —
-so the fifth chapter is the same page in all of them.
+**The chapter is looked up from the navigation, never written down here.** This
+file used to hold `CHAPTERS = {4: ..., 5: ...}` — plain 1-based heading counts —
+and by today those six numbers point at the wrong chapters: the manual has grown
+past them, the page that a picture belongs to has moved, and nothing about the
+script says so. `listingtext.chapter_of(key)` reads the order out of
+`MainWindow.xaml`, so a chapter inserted anywhere moves every number below it.
+(The old numbers would have put the sector-race picture in "Candles".)
 
-Idempotent: a document that already carries the picture is left alone, so this
-can be run again after adding a language.
+The headings are translated, so matching on their text would need one table of
+fourteen titles; the chapter *order* is the rule the manuals are held to, and it
+is the same in all of them.
+
+Idempotent: a chapter that already carries its own picture is left alone, so this
+can be run again after adding a language. A chapter is asked "is *my* picture
+here", not "is any picture here" — the difference matters the moment one is
+inserted into the wrong chapter, which is a mistake this file can make.
 
 One caption per language rather than one per chapter. The heading two lines
 above already names the page; what the caption adds is what the reader is
-looking at, and that is the same sentence five times over.
+looking at, and that is the same sentence every time.
+
+The pictures themselves are cropped from the Store screenshots by
+`help-media.py`; the crypto six are captured by `store-screenshots.py --crypto`,
+since that market replaces the stock pages in the navigation rather than
+joining them.
+
+Run: python tools\\port-help-images.py
 """
 
 import os
+import pathlib
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HELP = os.path.join(ROOT, "src", "MarketMotionStudio", "Assets", "Help")
+TOOLS = pathlib.Path(__file__).resolve().parent
+ROOT = TOOLS.parent
+HELP = ROOT / "src" / "MarketMotionStudio" / "Assets" / "Help"
 
-LANGS = [
-    "zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de",
-    "es", "fr", "it", "pl", "pt-BR", "cs", "ru", "tr",
+sys.path.insert(0, str(TOOLS))
+
+import listingtext  # noqa: E402
+
+LANGS = listingtext.LANGS
+
+# Navigation key -> picture file the chapter opens with.
+PICTURES = [
+    ("NavSectorRace", "sector-race.png"),
+    ("NavMatrix", "monthly-matrix.png"),
+    ("NavGainCalendar", "gain-calendar.png"),
+    ("NavDcaPlan", "dca-plan.png"),
+    ("NavPosition", "position.png"),
+    # 加密六页：它们只在市场切成「加密货币」时在导航里，图片也是单独那趟拍的。
+    ("NavCryptoCandle", "crypto-candle.png"),
+    ("NavCryptoDca", "crypto-dca.png"),
+    ("NavCryptoPosition", "crypto-position.png"),
+    ("NavCryptoCalendar", "crypto-calendar.png"),
+    ("NavCryptoCapHistory", "crypto-caphistory.png"),
+    ("NavCryptoMarketCap", "crypto-marketcap.png"),
 ]
-
-# Chapter number (1-based, counting `##` headings) -> picture file.
-CHAPTERS = {
-    4: "sector-race.png",
-    5: "monthly-matrix.png",
-    6: "gain-calendar.png",
-    7: "dca-plan.png",
-    8: "position.png",
-}
 
 CAPTIONS = {
     "zh-Hans": "这一页的全貌：左侧预览、下方播放进度条、右侧参数面板。",
@@ -52,71 +78,81 @@ CAPTIONS = {
 }
 
 
-def add_pictures(text, lang):
-    lines = text.split("\n")
+def add_pictures(text, lang, joiner):
+    """插好之后返回 (新文本, 图的总数, [(章节键, 那一章现在点的图)])。"""
+    lines = text.split(joiner)
     caption = CAPTIONS[lang]
+    wrong = []
 
-    out = []
-    chapter = 0
-    added = 0
+    # 从后往前插：从前往后插会让后面每一章的行号整体后移。
+    for key, picture in reversed(PICTURES):
+        index = listingtext.chapter_of(key)
 
-    for line in lines:
-        out.append(line)
+        if index < 0:
+            raise SystemExit(f"  ! 导航里没有 {key}")
 
-        if line.startswith("## "):
-            chapter += 1
-            picture = CHAPTERS.get(chapter)
+        heads = [i for i, line in enumerate(lines) if line.startswith("## ")]
 
-            if picture is None:
-                continue
+        if index >= len(heads):
+            raise SystemExit(f"  ! {lang} 只有 {len(heads)} 章，第 {index} 章不在")
 
-            reference = f"![{caption}](media/{picture})"
+        start = heads[index]
+        end = heads[index + 1] if index + 1 < len(heads) else len(lines)
+        wanted = f"![{caption}](media/{picture})"
+        here = [line for line in lines[start:end] if line.startswith("![")]
 
-            # Already there from an earlier run.
-            if reference in text:
-                continue
+        if here:
+            # 已经有一张 —— 是这一张才算对。**不修**：插错图是个该有人看的问题，顺手再补
+            # 一张只会让这一章带两张图，而两张都在那一章的正文里，读的人分不清哪张是准的。
+            if wanted not in here:
+                wrong.append((key, here[0]))
 
-            out.extend(["", reference])
-            added += 1
+            continue
 
-    return "\n".join(out), added
+        # 标题、空行、图、空行、正文 —— 与已有的五张同一个摆法。
+        lines[start + 1:start + 1] = ["", wanted]
+
+    return joiner.join(lines), sum(1 for line in lines if line.startswith("![")), wrong
 
 
 def main():
     failures = []
 
     for lang in LANGS:
-        path = os.path.join(HELP, f"help-{lang}.md")
+        path = HELP / f"help-{lang}.md"
 
-        if not os.path.exists(path):
+        if not path.exists():
             failures.append(f"{lang}: no document")
             continue
 
-        with open(path, "rb") as handle:
-            raw = handle.read()
+        raw = path.read_bytes()
+        had_bom = raw.startswith(b"\xef\xbb\xbf")
+        text = raw.decode("utf-8-sig").lstrip("\ufeff")
+        joiner = "\r\n" if "\r\n" in text else "\n"
 
-        text = raw.decode("utf-8-sig")
-        updated, added = add_pictures(text, lang)
+        updated, pictures, wrong = add_pictures(text, lang, joiner)
 
-        chapters = sum(1 for line in updated.split("\n") if line.startswith("## "))
-        pictures = updated.count("](media/")
+        if pictures != len(PICTURES):
+            failures.append(f"{lang}: {pictures} pictures, expected {len(PICTURES)}")
 
-        if pictures != len(CHAPTERS):
-            failures.append(f"{lang}: {pictures} pictures, expected {len(CHAPTERS)}")
+        for key, said in wrong:
+            failures.append(f"{lang}: {key} 那一章点的是 {said!r}")
 
-        if added:
-            # Written back as bytes: read_text/write_text would normalise the line
-            # endings and turn every one of these files into a whole-file diff.
-            with open(path, "wb") as handle:
-                handle.write(updated.encode("utf-8-sig"))
+        if updated != text:
+            # 写回字节：read_text/write_text 会把行尾归一化，那会让整份文件变成一处巨大的
+            # 改动（本机 core.autocrlf，而手册是 LF）。
+            path.write_bytes((b"\xef\xbb\xbf" if had_bom else b"") + updated.encode("utf-8"))
+            changed = "+"
+        else:
+            changed = "="
 
-        print(f"  {lang}: +{added} pictures, {pictures} total, {chapters} chapters")
+        print(f"  {changed} {lang}: {pictures} pictures, {len(updated.split(joiner))} lines")
 
     if failures:
         print("\n".join("  ! " + item for item in failures))
         return 1
 
-    print("all fourteen documents carry the same five pictures")
+    print("all fourteen documents carry the same %d pictures" % len(PICTURES))
     return 0
 
 

@@ -24,6 +24,7 @@ AutomationId 定位（x:Name 即 AutomationId），因此不依赖当前界面�
   python tools\store-screenshots.py --smoke    # 只跑 zh-Hans + 市场成交额一页
   python tools\store-screenshots.py --langs=en-US --pages=06-position
                                                 # 只跑指定语言/页面（验证用）
+  python tools\store-screenshots.py --crypto    # 只截加密六页（市场选第四格）
 
 窗口**最大化后再抓**（商店要的是「应用全屏」的观感，不是缩在屏幕中间的窗口）；
 画面一律停在动画的**最后一帧**。
@@ -111,6 +112,25 @@ PAGES = [
     # 成交额页 —— 那一轮跑完市场被留在港股）。
     ("NavBondRace", "09-bond-race", None),
 ]
+
+# 加密货币那六页只在市场切成加密货币时才在导航里 —— 选它时股票页整组 Remove，
+# 反过来也一样。所以它们不可能和上面这批同一次跑出来，得单独一趟。
+#
+# 顺序照导航里的顺序（`CryptoPages`），文件名里的序号接着上面排。
+CRYPTO_PAGES = [
+    ("NavCryptoCandle", "10-crypto-candle", None),
+    ("NavCryptoDca", "11-crypto-dca", None),
+    ("NavCryptoPosition", "12-crypto-position", None),
+    ("NavCryptoCalendar", "13-crypto-calendar", None),
+    ("NavCryptoCapHistory", "14-crypto-caphistory", None),
+    ("NavCryptoMarketCap", "15-crypto-marketcap", None),
+]
+
+# --crypto：只截加密六页，市场选第四格（`MarketId.Crypto`）。
+CRYPTO = "--crypto" in sys.argv
+
+if CRYPTO:
+    PAGES = CRYPTO_PAGES
 
 if SMOKE:
     LANGS = LANGS[:1]
@@ -362,6 +382,81 @@ def click_preset(win, name, market_idx=0, page=None):
     return invoke_click(b)
 
 
+def crypto_chips(win):
+    """币种开关那一排（AutomationId = "Coin" + 代码，代码与语言无关）。
+
+    `CoinCombo` 也以 Coin 开头（涨跌日历/市值历程两页挑单个币的下拉），拿它当开关去点
+    会把下拉展开 —— 所以按「不是 Combo 结尾」把它挡掉。
+    """
+    out = []
+
+    def walk(c, depth=0):
+        if depth > 25:
+            return
+        try:
+            aid = c.AutomationId or ""
+        except Exception:
+            aid = ""
+        if aid.startswith("Coin") and not aid.endswith("Combo"):
+            out.append(c)
+        try:
+            for ch in c.GetChildren():
+                walk(ch, depth + 1)
+        except Exception:
+            pass
+
+    walk(win)
+    return out
+
+
+def crypto_only_btc(win, timeout=25):
+    """把币种开关摆成「只有 BTC」。
+
+    **为什么不能只保证 BTC 是开的。** 三页都把「上次选的」存了下来，上一轮（或上一趟判据
+    中途退出）可能留下两只。两只时 K 线与定投走的是**多标的**那一支：状态行说「2 个币种 ·
+    N 天」，画面也不是截图要给人看的那个样子。与 verify-crypto 的 `only_coin` 同一个道理：
+    **起点不假设**。
+
+    **开关先读 `TogglePattern`。** 默认就勾着，盲点一次等于点掉，取数就报「请至少勾选一个
+    币种」—— 看着像源坏了。
+    """
+    deadline = time.time() + timeout
+
+    while time.time() < deadline:
+        chips = crypto_chips(win)
+
+        if not chips:
+            return False  # 这一页没有币种开关（市值榜是问前 15 名，不给人挑）
+
+        settled = True
+
+        for chip in chips:
+            want = chip.AutomationId == "CoinBTC"
+            state = None
+
+            try:
+                pattern = chip.GetPattern(auto.PatternId.TogglePattern)
+
+                if pattern is not None:
+                    state = pattern.ToggleState
+            except Exception:
+                state = None
+
+            if state is None:
+                continue
+
+            if (state == auto.ToggleState.On) != want:
+                invoke_click(chip)
+                settled = False
+
+        if settled:
+            return True
+
+        time.sleep(0.5)
+
+    return False
+
+
 def collect_items(win):
     """窗口里全部 ListItemControl（导航项 + 可能出现的建议列表项）。"""
     items = []
@@ -541,32 +636,155 @@ def ink_ratio(path):
     return dark / (len(raw) / 3)
 
 
-def capture(win, path, min_ink=0.01, attempts=3):
-    """截图，并检查那一帧不是白板；是就等一会儿再抓。"""
-    ratio = 0.0
+def picture_size(path):
+    """图有多大 —— 抓完之后第一件要问的事。"""
+    if Image is None:
+        return None
 
-    for attempt in range(attempts):
+    with Image.open(path) as im:
+        return im.size
+
+
+def frame_share(path):
+    """整幅图里"很暗"的像素占多少。
+
+    9:16 预览帧是一整块深色矩形，占满窗的一成多；而桌面上根本没有这么一块 —— 实测真图
+    0.122~0.128，抓成整屏（别的应用在前台）的那张 **0.004**。这两种量差着三十倍，阈值取
+    在中间任何地方都行。
+    """
+    if Image is None:
+        return 1.0
+
+    with Image.open(path) as im:
+        grey = im.convert("L").resize((im.width // 2, im.height // 2))
+        pixels = list(grey.getdata())
+
+    return sum(1 for v in pixels if v < DARK) / len(pixels)
+
+
+def visible_size(win):
+    """窗口在屏幕上真正看得见的那块有多大。
+
+    最大化时窗口矩形比屏幕还大 9 px 一圈（实测 1938x1038 @(-9,-9)），而抓到的正是可见的
+    1920x1020 —— 所以断言要拿矩形与屏幕的交集去比，不能拿矩形自己比。
+    """
+    try:
+        rect = win.BoundingRectangle
+
         try:
-            win.SetFocus()
-            time.sleep(1)
+            screen_w, screen_h = auto.GetScreenSize()
+        except Exception:
+            screen_w, screen_h = 1920, 1080
+
+        wide = min(rect.right, screen_w) - max(rect.left, 0)
+        high = min(rect.bottom, screen_h) - max(rect.top, 0)
+
+        # 窗口最小化 / 刚被重启还没画出来时，UIA 会老老实实交出一个 0x0 的矩形（2026-10-11
+        # 在 tr 那一趟撞上，日志里「窗口可见那块是 0x0」）。它是**没读到**，不是「窗口就是
+        # 这么大」—— 当成尺寸不合去比，只会把三次机会全耗在重试同一件事上。
+        return (wide, high) if wide > 0 and high > 0 else None
+    except Exception:
+        return None
+
+
+def focus_window(win, maximize=True):
+    """把窗口抬回前台（必要时最大化）。
+
+    **为什么非做不可。** 别的应用抢到前台、把窗口盖住之后，`CaptureToImage` 会落回整屏
+    抓取 —— 拿到的是那个应用和桌面。2026-10-11 实测两次：ArcGIS 的设置窗在前台，zh-Hans
+    的市值历程与市值榜两张图都成了它，而日志里「数据就绪 / 截图(终帧)」两行照常打印，
+    墨色判据也照过（它只问"有没有内容"）。
+    """
+    pattern = pat(win, auto.PatternId.WindowPattern)
+
+    if maximize and pattern is not None:
+        try:
+            if pattern.WindowVisualState != auto.WindowVisualState.Maximized:
+                pattern.SetWindowVisualState(auto.WindowVisualState.Maximized)
+                time.sleep(1.2)
         except Exception:
             pass
 
-        ok = win.CaptureToImage(path)
+    try:
+        win.SetFocus()
+        time.sleep(1)
+    except Exception:
+        pass
+
+
+# 「很暗」的门槛（亮度 0~255）：预览帧那块深色矩形远低于它，浅色界面远高于它。
+DARK = 60
+
+# 整幅图里暗像素低于这个占比 = 画面里没有预览帧（见 capture 的说明）。真图 0.12 上下。
+FRAME_DARK = 0.05
+
+# 尺寸判据的容差（px）。**不能用等号**：UIA 给的窗口矩形是含边框溢出那圈的，最大化时实测
+# 1938x1029 @(-9,-9)，而抓到的正是屏幕上可见的 1920x1020 —— 差 9 px。整屏抓取则要差 60 px
+# （1920x1080 对 1920x1020），容差取 24 才既放得过边框、又挡得住整屏。
+SIZE_SLACK = 24
+
+
+def capture(win, path, min_ink=0.01, attempts=3):
+    """截图，并检查那一帧**就是这个应用**、而且不是白板；不对就等一会儿再抓。
+
+    三条判据，各挡一种病：
+
+      * 尺寸 —— 抓成整屏时是 1920x1080，而窗口只有 1920x1020；
+      * 墨色 —— 抓在重绘中间态时几乎全白（0.006）；
+      * 暗色 —— 画面里没有那块 9:16 的深色预览帧，说明窗口被别的东西盖着。
+
+    只有第二条是原来就有的。前两条对应的是「图里的东西不是这一页」——它比白板更难发现，
+    因为一眼看上去"有内容"。
+    """
+    want = visible_size(win)
+    ratio = 0.0
+    share = 0.0
+    size = None
+
+    for attempt in range(attempts):
+        focus_window(win)
+
+        # 抓图这一步会抛 COMError（`-2147220991 事件无法调用任何订户`）：窗口正在被销毁或
+        # 重建时 UIA 拿不到矩形。它**不是**这一页坏了 —— 不接住，整趟 14 语言 × 6 页就断在
+        # 这里，前面四十分钟白跑（2026-10-11 实测：tr 那一趟跑完第 1 张就崩了）。
+        try:
+            ok = win.CaptureToImage(path)
+        except Exception as exc:
+            say("    抓图抛异常（%s），等 3s 重抓" % str(exc)[:60])
+            ok = False
+
         time.sleep(0.5)
 
         if not (ok and os.path.exists(path)):
             continue
 
+        size = picture_size(path)
         ratio = ink_ratio(path)
+        share = frame_share(path)
 
-        if ratio >= min_ink:
-            return True
+        if want is not None and any(abs(a - b) > SIZE_SLACK
+                                    for a, b in zip(size, want)):
+            say("    抓到的是 %s，窗口可见那块是 %s（差得超过 %d px）—— 整屏抓取，重来"
+                % ("x".join(map(str, size)) if size else "?", "x".join(map(str, want)),
+                   SIZE_SLACK))
+            time.sleep(1.5)
+            continue
 
-        say("    截图几乎是空白（墨色 %.3f），等 2s 重抓" % ratio)
-        time.sleep(2)
+        if ratio < min_ink:
+            say("    截图几乎是空白（墨色 %.3f），等 2s 重抓" % ratio)
+            time.sleep(2)
+            continue
 
-    say("    !! 连抓 %d 次都近乎空白（墨色 %.3f）" % (attempts, ratio))
+        if share < FRAME_DARK:
+            say("    画面里没有那块预览帧（暗色 %.3f，真图 0.12 上下）—— 被别的窗口盖住了，重抓"
+                % share)
+            time.sleep(2)
+            continue
+
+        return True
+
+    say("    !! 连抓 %d 次都不对（尺寸 %s，墨色 %.3f，暗色 %.3f）"
+        % (attempts, "x".join(map(str, size)) if size else "?", ratio, share))
     return os.path.exists(path)
 
 
@@ -583,6 +801,10 @@ except Exception:
         pass
 
 for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
+    # 加密那一趟：市场一律第四格（MarketId.Crypto），不管这一语言平时给股票页选的是哪个市场。
+    if CRYPTO:
+        market_idx = 3
+
     say("===== %s（市场=%d 模式=%s）=====" % (tag, market_idx, mode))
     kill_app()
     launch()
@@ -612,7 +834,10 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
     mcombo = byid(win, "MarketCombo")
     if mcombo is None:
         say("  MarketCombo 未找到（市场维持原值）")
-    elif combo_select_index(mcombo, market_idx):
+    elif combo_select_index(mcombo, market_idx,
+                            # 第四格是探测回来之后才补上的：每源最多问两次、每次一条二十秒的
+                            # 绳子。按八秒等，会把「还在问」读成「取不到币价」。
+                            timeout=(90 if CRYPTO else 8)):
         say("  已选市场索引 %d" % market_idx)
     else:
         say("  未能选中市场索引 %d（市场维持原值）" % market_idx)
@@ -641,6 +866,10 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
             continue
         invoke_click(nav)
         time.sleep(2)
+
+        if CRYPTO:
+            say("    只留 BTC：%s" % ("是" if crypto_only_btc(win) else "这一页没有币种开关"))
+            time.sleep(1.0)
 
         fb = byid(win, "FetchButton")
         if fb is None:
@@ -701,7 +930,18 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
         if ok:
             say("    数据就绪" if not retried else "    数据就绪（点预置标的后）")
         else:
-            say("    等待数据超时（240s），仍尝试截图")
+            # 取数始终没成，就**别把这一屏留下来**。它看上去和真图一模一样 —— 画布、
+            # 标题、状态条、参数面板都在，只是画布里是空的，状态条上多一行「两个源都
+            # 没答」。三条抓图自检全过（尺寸对、有墨色、那块预览帧也在），因为病不在
+            # 这里。2026-10-11 tr 那一趟撞上：Yahoo 与 CoinGecko 同时不通，五张图全都
+            # 是这屏，而日志里只有一行「等待数据超时」，看图才看得出来。
+            say("    !! 取数始终没成，这一张不留（网络恢复后重跑这一门语言）")
+            stale = os.path.join(outdir, fname + ".png")
+
+            if os.path.exists(stale):
+                os.remove(stale)
+
+            continue
 
         scrub(win, 1.0)
         path = os.path.join(outdir, fname + ".png")

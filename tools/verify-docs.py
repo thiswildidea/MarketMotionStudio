@@ -305,6 +305,54 @@ def help_checks():
               "这一章里找不到写着 900 的那条，或者还留着 640" if data else "（没有 bullet）")
 
 
+def picture_checks():
+    """加密六章各有一张自己的配图，而且没有哪一张被引用了两遍。
+
+    图和文字一样，是**每份文件各自**的一份：「十四份都改了」这条约束靠 `port-*-help.py`
+    那一批脚本保证，而脚本只保证它自己那一轮做了什么 —— 漏掉一份的时候没人吭声。所以这里
+    按文件问：这一章里点的是不是**属于这一章**那张图。
+
+    认文件名而不是「有没有 `![`」：插错图片（把定投那张放到持仓章里）时，两种写法都通过，
+    但读手册的人看到的是一张别的页面的图。名字从 `PICTURES` 那张表来，不在这里再抄一遍。
+
+    图片本身（尺寸、有没有混进通知、十四种语言是不是同一版式）由 `verify-help-media.py`
+    量 —— 那个要开 PIL 逐张读，不适合挤进这份只读文本的判据。
+    """
+    path = REPO / "tools" / "port-help-images.py"
+    spec = importlib.util.spec_from_file_location("help_pictures", path)
+    loaded = importlib.util.module_from_spec(spec)
+    saved, sys.argv = sys.argv, [str(path)]
+
+    try:
+        spec.loader.exec_module(loaded)
+    finally:
+        sys.argv = saved
+
+    for lang in LANGS:
+        text = (HELP / f"help-{lang}.md").read_text(encoding="utf-8-sig")
+        lines = text.split("\n")
+        secs = sections(text)
+
+        for key, picture in loaded.PICTURES:
+            index = listingtext.chapter_of(key)
+            title, start, end = secs[index]
+            inside = [line for line in lines[start:end] if line.startswith("![")]
+            wanted = f"![{loaded.CAPTIONS[lang]}](media/{picture})"
+
+            # 整行比，不比文件名：图注也要是这一语言那一句 —— 少了它，图上就只剩一张没有
+            # 说明的截图，而十四份文档里改错一份是没人会发现的。
+            check(f"{lang}「{title}」那一章点的是 {picture}",
+                  wanted in inside,
+                  inside[0][:60] if inside else "这一章没有配图")
+
+        refs = [line[line.find("](") + 2:-1] for line in lines
+                if line.startswith("![") and line.endswith(")")]
+
+        check(f"{lang} 没有哪张图被引用了两遍",
+              len(refs) == len(set(refs)),
+              f"{len(refs)} 处引用，其中 {len(set(refs))} 张不同")
+
+
 def chapter_index_checks():
     """章节序号必须是**推出来的**，不是抄下来的。
 
@@ -412,6 +460,7 @@ def main():
     version_checks()
     listing_checks()
     help_checks()
+    picture_checks()
     chapter_index_checks()
     nav_name_checks()
     readme_checks()

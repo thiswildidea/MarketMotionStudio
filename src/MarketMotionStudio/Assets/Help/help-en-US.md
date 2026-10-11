@@ -445,6 +445,8 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 
 ## Crypto Candles
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-candle.png)
+
 One coin's daily prices as candles, in US dollars, from a public source. Weekly and monthly are gathered from those same days.
 
 - The twelve coins on offer are the ones both sources carry with years of daily history behind them. The box above narrows the row to what is typed, matching the name this interface language spells or the code — type bit or BTC and Bitcoin is what comes up. A coin already chosen stays on the row whatever is typed, so the count below always has its coins on screen.
@@ -457,6 +459,8 @@ One coin's daily prices as candles, in US dollars, from a public source. Weekly 
 
 ## Crypto DCA Plan
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-dca.png)
+
 Buying one coin on a fixed rhythm — weekly, say, or monthly — and what that plan is worth today.
 
 - **Frequency** and **Amount** say how often and how much, in US dollars. The plan buys on the first day of each period the range covers.
@@ -466,6 +470,8 @@ Buying one coin on a fixed rhythm — weekly, say, or monthly — and what that 
 - Days here are calendar days. A coin trades on every one of them, so a year of weekly buying is about 52 buys and a year of monthly buying is 12, and neither figure is approximated.
 
 ## Crypto Holdings Return
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-position.png)
 
 A sum put into one coin on a day, and what it is worth now.
 
@@ -477,6 +483,8 @@ A sum put into one coin on a day, and what it is worth now.
 
 ## Crypto Gain Calendar
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-calendar.png)
+
 One cell per day, coloured by that day's change.
 
 - **A full grid is not missing data.** A stock calendar is mostly holes — weekends, holidays, suspensions — and reads the way a market looks. A coin trades every day of the year, so every square is filled: the picture is denser rather than longer, and what looks like a missing holiday is a market that never closes.
@@ -487,6 +495,8 @@ One cell per day, coloured by that day's change.
 
 ## Crypto Market Cap History
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-caphistory.png)
+
 One coin's circulating market cap over time, with the price over the same days beneath it.
 
 - **Where the two lines pull apart, you are looking at issuance and burns.** The price is what one coin costs; the cap is that price times however many coins exist. A cap line that rises while the price line falls is supply growing, not a figure that went wrong.
@@ -496,6 +506,8 @@ One coin's circulating market cap over time, with the price over the same days b
 - **Range** is twelve, twenty-four, sixty or one hundred and twenty months, or a span of your own. A coin's history may be shorter than the range you asked for — that is the source's floor, not a fetch that failed.
 
 ## Crypto Market Cap Race
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-marketcap.png)
 
 The fifteen coins with the largest market cap today, and how that order moved day by day.
 

@@ -455,6 +455,8 @@ Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — ani
 
 ## Krypto-Kerzen
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-candle.png)
+
 Die Tageskerzen einer Münze, in US-Dollar, aus einer öffentlichen Quelle. Wochen- und Monatskerzen werden aus denselben Tagen gebildet.
 
 - Die zwölf angebotenen Münzen sind die, zu denen beide Quellen jahrelange Tageshistorie haben. Das Feld darüber grenzt die Zeile auf das Eingetippte ein: Es passt auf den Namen, den diese Oberflächensprache schreibt, oder auf den Code — bit wie BTC findet Bitcoin. Eine bereits gewählte Münze bleibt stehen, egal was eingetippt wurde.
@@ -467,6 +469,8 @@ Die Tageskerzen einer Münze, in US-Dollar, aus einer öffentlichen Quelle. Woch
 
 ## Krypto-Sparplan
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-dca.png)
+
 Eine Münze in festem Rhythmus kaufen — etwa wöchentlich oder monatlich — und was dieser Plan heute wert ist.
 
 - **Rhythmus** und **Betrag** sagen, wie oft und wie viel, in US-Dollar. Der Plan kauft am ersten Tag jedes Zeitraums, den die Spanne umfasst.
@@ -476,6 +480,8 @@ Eine Münze in festem Rhythmus kaufen — etwa wöchentlich oder monatlich — u
 - Tage sind hier Kalendertage. Eine Münze wird an jedem gehandelt: Ein Jahr wöchentlichen Kaufens sind etwa 52 Käufe, ein Jahr monatlichen Kaufens 12, und keine der beiden Zahlen ist geschätzt.
 
 ## Ertrag der Krypto-Bestände
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-position.png)
 
 Ein Betrag, an einem Tag in eine Münze gelegt, und was er heute wert ist.
 
@@ -487,6 +493,8 @@ Ein Betrag, an einem Tag in eine Münze gelegt, und was er heute wert ist.
 
 ## Krypto-Gewinnkalender
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-calendar.png)
+
 Ein Feld pro Tag, gefärbt nach der Veränderung dieses Tages.
 
 - **Ein volles Raster ist keine fehlenden Daten.** Ein Aktienkalender besteht meist aus Lücken — Wochenenden, Feiertage, Aussetzungen — und liest sich so, wie ein Markt aussieht. Eine Münze wird an jedem Tag des Jahres gehandelt, also ist jedes Feld gefüllt: Das Bild ist dichter statt länger, und was wie ein fehlender Feiertag aussieht, ist ein Markt, der nie schließt.
@@ -497,6 +505,8 @@ Ein Feld pro Tag, gefärbt nach der Veränderung dieses Tages.
 
 ## Krypto-Marktkapitalisierung im Verlauf
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-caphistory.png)
+
 Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage.
 
 - **Wo die beiden Linien auseinanderlaufen, sieht man Ausgabe und Verbrennung.** Der Kurs ist, was eine Münze kostet; die Kapitalisierung ist dieser Kurs mal der Anzahl existierender Münzen. Eine Kapitalisierungslinie, die steigt, während die Kurslinie fällt, ist wachsendes Angebot, keine falsche Zahl.
@@ -506,6 +516,8 @@ Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kur
 - **Zeitraum** sind zwölf, vierundzwanzig, sechzig oder hundertzwanzig Monate oder eine eigene Spanne. Die Historie einer Münze kann kürzer sein als die verlangte Spanne — das ist die Untergrenze der Quelle, kein fehlgeschlagener Abruf.
 
 ## Rennen der Krypto-Marktkapitalisierung
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-marketcap.png)
 
 Die fünfzehn Münzen mit der größten Marktkapitalisierung heute und wie sich diese Ordnung Tag für Tag bewegte.
 

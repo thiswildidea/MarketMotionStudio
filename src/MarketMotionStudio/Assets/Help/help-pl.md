@@ -438,6 +438,8 @@ Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku �
 
 ## Świece krypto
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-candle.png)
+
 Dzienne świece jednej monety, w dolarach amerykańskich, z publicznego źródła. Tygodniowe i miesięczne są grupowane z tych samych dni.
 
 - Dwanaście oferowanych monet to te, dla których oba źródła mają lata historii dziennej. Pole powyżej zawęża wiersz do wpisanego tekstu: pasuje do nazwy, którą zapisuje ten język interfejsu, albo do kodu — bit i BTC znajdują Bitcoin. Wybrana moneta zostaje w wierszu niezależnie od wpisanego tekstu.
@@ -450,6 +452,8 @@ Dzienne świece jednej monety, w dolarach amerykańskich, z publicznego źródł
 
 ## Plan DCA krypto
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-dca.png)
+
 Kupowanie jednej monety w stałym rytmie — powiedzmy tygodniowym lub miesięcznym — i ile ten plan jest dziś wart.
 
 - **Częstotliwość** i **Kwota** mówią jak często i ile, w dolarach amerykańskich. Plan kupuje pierwszego dnia każdego okresu objętego zakresem.
@@ -459,6 +463,8 @@ Kupowanie jednej monety w stałym rytmie — powiedzmy tygodniowym lub miesięcz
 - Dni to tu dni kalendarzowe. Moneta jest notowana w każdy z nich: rok tygodniowych zakupów to około 52 zakupy, rok miesięcznych to 12 i żadna z tych liczb nie jest przybliżona.
 
 ## Zwrot portfela krypto
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-position.png)
 
 Kwota włożona w jedną monetę pewnego dnia i ile jest dziś warta.
 
@@ -470,6 +476,8 @@ Kwota włożona w jedną monetę pewnego dnia i ile jest dziś warta.
 
 ## Kalendarz zmian krypto
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-calendar.png)
+
 Jedno pole na dzień, pokolorowane według zmiany tego dnia.
 
 - **Pełna siatka to nie brakujące dane.** Kalendarz akcji to w większości luki — weekendy, święta, zawieszenia — i czyta się go tak, jak wygląda rynek. Moneta jest notowana każdego dnia roku, więc każde pole jest wypełnione: obraz jest gęstszy, nie dłuższy, a to, co wygląda na pominięte święto, jest rynkiem, który nigdy się nie zamyka.
@@ -480,6 +488,8 @@ Jedno pole na dzień, pokolorowane według zmiany tego dnia.
 
 ## Historia kapitalizacji krypto
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-caphistory.png)
+
 Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach.
 
 - **Tam, gdzie obie linie się rozchodzą, widać emisję i spalanie.** Kurs to cena jednej monety; kapitalizacja to ten kurs razy liczba istniejących monet. Linia kapitalizacji rosnąca, gdy linia kursu spada, to rosnąca podaż, nie zła liczba.
@@ -489,6 +499,8 @@ Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych d
 - **Zakres** to dwanaście, dwadzieścia cztery, sześćdziesiąt lub sto dwadzieścia miesięcy albo własny przedział. Historia monety może być krótsza niż żądany zakres — to dolna granica źródła, nie nieudane pobranie.
 
 ## Wyścig kapitalizacji krypto
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-marketcap.png)
 
 Piętnaście monet o największej kapitalizacji dziś i jak ten porządek zmieniał się dzień po dniu.
 
