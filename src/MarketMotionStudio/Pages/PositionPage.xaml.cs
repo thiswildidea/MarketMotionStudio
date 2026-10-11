@@ -445,7 +445,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
             var board = await PositionLoader.LoadAsync(
-                Services.Quotes, chosen, capital, start, end, progress, cancellation);
+                Services.Closes, chosen, capital, start, end, progress, cancellation);
 
             _board = board;
 

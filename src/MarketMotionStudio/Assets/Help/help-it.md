@@ -451,6 +451,37 @@ Un acquisto, tenuto — un milione dello stesso nome dal 2015 — animato per mo
 - **Una finestra scorrevole si apre alla fine.** All'inizio del tratto di chiusura la finestra si allarga all'indietro fino al primo giorno dell'intervallo, quindi il fotogramma su cui l'animazione si ferma è l'intervallo intero e non le sue ultime decine di giorni.
 - **La fascia sul lato destro può essere ceduta, se vuoi la larghezza.** È disattivata per impostazione predefinita: la piattaforma disegna il proprio avatar e i pulsanti «mi piace» e commento su quel lato di un video verticale, e una cifra sotto di essi risulta nascosta sul telefono anche se qui è perfettamente leggibile. Attivata, un'inquadratura che riempie tutto l'intervallo disegna fino al bordo stesso dell'inquadratura fin dal primo fotogramma; una finestra scorrevole continua a tenersi a distanza finché è una finestra, e si apre alla larghezza piena insieme alla finestra — così l'inquadratura su cui il video si ferma è tutto l'intervallo, da bordo a bordo.
 
+## Candele crypto
+
+Le candele giornaliere di una moneta, in dollari statunitensi, da una fonte pubblica. Settimanali e mensili sono raggruppate a partire dagli stessi giorni.
+
+- Le dodici monete offerte sono quelle che entrambe le fonti hanno con anni di storia giornaliera. Non c'è una casella di ricerca: le due fonti scrivono la stessa moneta in modo diverso, e un nome digitato non raggiunge né l'una né l'altra.
+- **Intervallo** — giorno, settimana o mese — cambia quale serie viene disegnata, quindi cambiarlo ricarica. **Stile** e **Animazione** no: ridisegnano solo ciò che è già qui.
+- Una moneta viene scambiata ogni giorno dell'anno: un intervallo non ha festività da saltare né giorni mancanti, e una moneta non paga dividendi né fraziona: la chiusura *è* il rendimento, e su queste tre pagine non si applica alcun aggiustamento.
+- Se è raggiungibile solo la fonte di riserva, questa ha un prezzo al giorno invece di quattro, e candele e barre vengono allora disegnate come linea: un corpo con due stoppini fatto da una sola chiusura è una forma che la moneta non ha mai avuto. La pagina lo dice sotto la lista dello stile quando è questo il caso.
+- Fino a sei monete possono essere disegnate insieme; una settima pressione non viene accettata, perché una settima curva prenderebbe un colore che la sesta ha già. Nel confronto sono disegnate come variazione cumulata, perché le monete non hanno prezzi nello stesso ordine di grandezza.
+- **Queste tre pagine appaiono solo quando una fonte risponde.** Entrambe le fonti sono fuori dalla portata della Cina continentale, quindi una macchina lì dentro non le trova affatto nel menu: tre voci che offrono dati che non possono recuperare sarebbero tre voci che falliscono.
+
+## Piano DCA crypto
+
+Comprare una moneta a ritmo fisso — settimanale, per dire, o mensile — e quanto vale oggi quel piano.
+
+- **Frequenza** e **Importo** dicono ogni quanto e quanto, in dollari statunitensi. Il piano compra il primo giorno di ogni periodo coperto dall'intervallo.
+- Ciò che si disegna è il denaro versato contro il valore della posizione, giorno per giorno, con gli acquisti segnati: un calo in cui avete comprato si legge diversamente da uno in cui non l'avete fatto.
+- Fino a sei piani possono essere confrontati. Nel confronto sono disegnati come variazione cumulata anziché come denaro, così una moneta a 60.000 dollari e una a mezzo dollaro possono leggersi l'una contro l'altra.
+- Una moneta quotata dopo l'inizio dell'intervallo parte dal proprio primo giorno, e una moneta senza prezzo in tutto l'intervallo viene nominata sulla riga di stato anziché disegnata come una linea piatta.
+- I giorni qui sono giorni di calendario. Una moneta viene scambiata in ognuno di essi: un anno di acquisti settimanali sono circa 52 acquisti, uno di acquisti mensili 12, e nessuna delle due cifre è approssimata.
+
+## Rendimento del portafoglio crypto
+
+Una somma messa in una moneta in un giorno, e quanto vale oggi.
+
+- **Capitale** è la somma, in dollari statunitensi; l'intervallo dice il giorno in cui è entrata e il giorno in cui fermarsi. La pagina compra alla prima chiusura dell'intervallo e mantiene fino all'ultima.
+- Ciò che si disegna è il valore della posizione giorno per giorno contro il denaro versato: la linea sta sopra il proprio punto di partenza mentre la posizione è in guadagno e sotto quando non lo è.
+- Fino a sei monete possono essere detenute affiancate; una settima pressione non viene accettata. Nel confronto ciascuna è disegnata come variazione cumulata anziché come valore, così due monete comprate a prezzi molto diversi possono leggersi insieme.
+- I giorni qui sono giorni di calendario, e una moneta viene scambiata in ognuno di essi: un anno di detenzione sono circa 365 giorni, non i 243 che darebbe una borsa.
+- Se è raggiungibile solo la fonte di riserva, l'intervallo che riesce a riempire è di circa un anno. La pagina dice allora dove l'intervallo comincia davvero, invece di iniziare silenziosamente più tardi della data digitata.
+
 ## Video
 
 L'inquadratura è sempre 9:16. Tutto il resto lo decidi tu.

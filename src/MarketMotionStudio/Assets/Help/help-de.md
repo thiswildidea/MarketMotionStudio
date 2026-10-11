@@ -452,6 +452,37 @@ Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — ani
 - **Ein rollendes Fenster öffnet sich am Ende.** Mit Beginn des Schlussteils weitet sich das Fenster zurück bis zum ersten Tag des Zeitraums, also steht am Ende der Animation der ganze Zeitraum da und nicht nur seine letzten Dutzend Tage.
 - **Der Streifen an der rechten Seite kann freigegeben werden, wenn du die Breite willst.** Voreingestellt ist er nicht: Die Plattform zeichnet ihr Profilbild sowie die Schaltflächen für „Gefällt mir“ und Kommentare an diese Seite eines Hochformatvideos, und eine Zahl darunter ist auf dem Telefon verdeckt, obwohl sie hier völlig lesbar ist. Eingeschaltet zeichnet ein Bild, das die ganze Spanne füllt, von seiner ersten Aufnahme an bis zur eigenen Kante des Bildes; ein wanderndes Fenster hält Abstand, solange es ein Fenster ist, und weitet sich zusammen mit dem Fenster auf die volle Breite — das Bild, auf dem das Video anhält, ist also die ganze Spanne von Rand zu Rand.
 
+## Krypto-Kerzen
+
+Die Tageskerzen einer Münze, in US-Dollar, aus einer öffentlichen Quelle. Wochen- und Monatskerzen werden aus denselben Tagen gebildet.
+
+- Die zwölf angebotenen Münzen sind die, zu denen beide Quellen jahrelange Tageshistorie haben. Es gibt kein Suchfeld: Die beiden Quellen schreiben dieselbe Münze unterschiedlich, und ein eingetippter Name erreicht keine von beiden.
+- **Intervall** — Tag, Woche oder Monat — entscheidet, welche Reihe gezeichnet wird, und lädt daher neu. **Darstellung** und **Ablauf** tun das nicht; sie zeichnen nur neu, was schon hier ist.
+- Eine Münze wird an jedem Tag des Jahres gehandelt: Ein Zeitraum hat keine Feiertage zu überspringen und keinen fehlenden Tag. Eine Münze zahlt weder Dividende noch splittet sie — der Schlusskurs *ist* die Rendite, und auf diesen drei Seiten wird nirgends bereinigt.
+- Wenn nur die Ersatzquelle erreichbar ist, hat sie einen Kurs pro Tag statt vier, und Kerzen und Balken werden dann als Linie gezeichnet: Ein Körper mit zwei Dochten aus einem einzigen Schlusskurs ist eine Form, die die Münze nie hatte. Die Seite sagt das unter dem Darstellungsfeld, wenn es so ist.
+- Bis zu sechs Münzen lassen sich gleichzeitig zeichnen; ein siebter Druck wird nicht angenommen, denn eine siebte Kurve nähme eine Farbe, die die sechste schon hat. Im Vergleich werden sie als kumulative Veränderung gezeichnet, weil die Münzen nicht in derselben Größenordnung notieren.
+- **Diese drei Seiten erscheinen nur, wenn eine Quelle antwortet.** Beide Quellen liegen außerhalb der Reichweite des Festlands; ein Rechner dort bekommt sie im Menü schlicht nicht — drei Einträge, die Daten anbieten, die sie nicht holen können, wären drei Einträge, die scheitern.
+
+## Krypto-Sparplan
+
+Eine Münze in festem Rhythmus kaufen — etwa wöchentlich oder monatlich — und was dieser Plan heute wert ist.
+
+- **Rhythmus** und **Betrag** sagen, wie oft und wie viel, in US-Dollar. Der Plan kauft am ersten Tag jedes Zeitraums, den die Spanne umfasst.
+- Gezeichnet wird das eingezahlte Geld gegen den Wert des Bestands, Tag für Tag, mit markierten Käufen: Ein Rückgang, in den hineingekauft wurde, liest sich anders als einer, in den nicht hineingekauft wurde.
+- Bis zu sechs Pläne lassen sich vergleichen. Im Vergleich werden sie als kumulative Veränderung gezeichnet statt als Geld, damit sich eine Münze zu 60.000 Dollar und eine zu einem halben Dollar gegeneinander lesen lassen.
+- Eine Münze, die erst nach Beginn der Spanne gelistet wurde, beginnt an ihrem eigenen ersten Tag, und eine Münze ohne Kurs in der ganzen Spanne wird auf der Statuszeile genannt statt als flache Linie gezeichnet.
+- Tage sind hier Kalendertage. Eine Münze wird an jedem gehandelt: Ein Jahr wöchentlichen Kaufens sind etwa 52 Käufe, ein Jahr monatlichen Kaufens 12, und keine der beiden Zahlen ist geschätzt.
+
+## Ertrag der Krypto-Bestände
+
+Ein Betrag, an einem Tag in eine Münze gelegt, und was er heute wert ist.
+
+- **Kapital** ist der Betrag in US-Dollar; die Spanne nennt den Tag des Einstiegs und den Tag, an dem Schluss ist. Die Seite kauft zum ersten Schlusskurs der Spanne und hält bis zum letzten.
+- Gezeichnet wird der Wert des Bestands Tag für Tag gegen das eingezahlte Geld: Die Linie liegt über ihrem Startpunkt, solange der Bestand im Plus ist, und darunter, wenn nicht.
+- Bis zu sechs Münzen lassen sich nebeneinander halten; ein siebter Druck wird nicht angenommen. Im Vergleich wird jede als kumulative Veränderung gezeichnet statt als Wert, damit zwei zu ganz unterschiedlichen Kursen gekaufte Münzen zusammen lesbar sind.
+- Tage sind hier Kalendertage, und eine Münze wird an jedem gehandelt: Ein Jahr Halten sind etwa 365 Tage, nicht die 243, die eine Börse gäbe.
+- Wenn nur die Ersatzquelle erreichbar ist, reicht ihre Spanne etwa ein Jahr. Die Seite sagt dann, wo die Spanne wirklich beginnt, statt still später anzufangen als das eingegebene Datum.
+
 ## Video
 
 Das Bild ist immer 9:16. Alles andere bestimmen Sie.

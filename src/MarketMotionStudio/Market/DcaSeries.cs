@@ -166,9 +166,12 @@ public sealed record DcaBoard(
 /// <summary>
 /// Builds plans from one or more instruments' daily closes.
 ///
-/// The closes come from <see cref="HistoryWalk"/>, the shared backwards walk that
-/// gathers years of bars from an endpoint that serves them six hundred and forty
-/// at a time; see there for why the range is negotiated rather than asked for.
+/// The closes come from an <see cref="ICloseWalk"/>, which is the one thing this
+/// simulation needs to know about where a price lives. For a stock it is
+/// <see cref="HistoryWalk"/>, the backwards walk that gathers years of bars from an
+/// endpoint serving them six hundred and forty at a time — see there for why that
+/// range is negotiated rather than asked for. For a coin it is one request to a source
+/// abroad, which is the same answer by a shorter road.
 ///
 /// The simulation itself is deliberately plain: on each buy date the fixed amount
 /// buys <c>amount / close</c> shares at that day's close, and every day is marked
@@ -204,7 +207,7 @@ public static class DcaPlanner
     public const int MostTracks = 6;
 
     public static async Task<DcaBoard> LoadBoardAsync(
-        TencentKline kline,
+        ICloseWalk source,
         IReadOnlyList<RaceEntry> entries,
         DcaFrequency frequency,
         double amount,
@@ -230,7 +233,7 @@ public static class DcaPlanner
         {
             var display = InstrumentNames.Display(entry.Code, entry.Name);
 
-            var closes = await HistoryWalk.ClosesAsync(kline, entry.Code, display, start, end, progress, cancellation);
+            var closes = await source.ClosesAsync(entry.Code, display, start, end, progress, cancellation);
 
             // A plan needs something to buy and at least one mark after it. Anything less is the
             // range never reaching this instrument, and it is named rather than drawn — see the

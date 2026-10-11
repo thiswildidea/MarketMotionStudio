@@ -39,6 +39,13 @@ public sealed class AppServices
 
         Quotes = new TencentKline(_http);
         Stocks = new StockDirectory(_http);
+        Crypto = new CryptoQuotes(_http);
+
+        // The two walks a page can ask for closes over — see `ICloseWalk`. They are
+        // process-wide for the same reason the clients are: one of each, and a page
+        // names the shape it needs rather than building its own.
+        Closes = new TencentCloseWalk(Quotes);
+        CryptoCloses = new CryptoCloseWalk(Crypto);
     }
 
     private readonly HttpClient _http;
@@ -66,6 +73,19 @@ public sealed class AppServices
 
     /// <summary>Stock search, code normalisation and the real-time snapshot.</summary>
     public StockDirectory Stocks { get; }
+
+    /// <summary>
+    /// The route to a cryptocurrency's history, and the only one that knows whether
+    /// this machine can reach any crypto source at all. See <see cref="CryptoQuotes"/>
+    /// for why that question comes before every other one.
+    /// </summary>
+    public CryptoQuotes Crypto { get; }
+
+    /// <summary>Daily closes for a share, walked off the stock endpoint.</summary>
+    public ICloseWalk Closes { get; }
+
+    /// <summary>Daily closes for a coin, read off whichever crypto source answered.</summary>
+    public ICloseWalk CryptoCloses { get; }
 
     /// <summary>
     /// The raw client, for the one endpoint neither of the two above owns: the minute-data query

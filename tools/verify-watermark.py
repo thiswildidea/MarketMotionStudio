@@ -775,7 +775,17 @@ def device():
           on_strip is not None and on_strip > GRAIN_ON,
           "纹理占 {:.3%}".format(on_strip) if on_strip is not None else "没扫到那一条")
 
+    # **进图表页之前把浓度重设一次**，这是「不假设起点」的最后一环。
+    #
+    # 实测（1.0.15.0 Debug，装完之后第一次跑）：冷启动后**图表页第一次**被建起来时，
+    # 画布上的水印层没有画上 —— 那一刻量到 0.067%，而同一趟里设置页那条预览是 4.7%、
+    # 同一窗口尺寸下正常值是 6.09%。此后任何一次设置变更都会把它补回来，所以后面几步
+    # （都经过 `settle`）都是好的，只有 base 这一张是裸的。判据要量的是「水印画没画」，
+    # 不能让它取决于这一页是第几次被建起来 —— 碰一下浓度，与其余几步拉齐。
+    set_strength(window, DEFAULT_STRENGTH)
+
     vfb.goto_first_page(window)
+
     base = shot(window, "verify-watermark-on.png")
 
     base_grain = grain(base)

@@ -442,6 +442,37 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 - **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
 - **The band down the right-hand side can be given up, if you want the width.** It is off by default: the platform draws its avatar and its like and comment buttons down that side of a vertical video, and a figure underneath them is hidden on the phone even though it is perfectly readable here. Turned on, a frame filling the whole span draws to the frame's own edge from its first frame on; a scrolling window still keeps clear while it is a window, and opens out into the full width along with the window — so the frame the video stops on is the whole span, edge to edge.
 
+## Crypto Candles
+
+One coin's daily prices as candles, in US dollars, from a public source. Weekly and monthly are gathered from those same days.
+
+- The twelve coins on offer are the ones both sources carry with years of daily history behind them. There is no search box: the two sources spell the same coin differently, and a name typed into one reaches neither.
+- **Period** — day, week or month — changes which series is drawn, so changing it fetches again. **Style** and **Motion** do not; they redraw what is already here.
+- A coin trades every day of the year, so a range has no holiday to step over and no day missing from it, and a coin neither pays a dividend nor splits: the close *is* the return, and no adjustment is applied anywhere on these three pages.
+- When only the fallback source can be reached, it has one price a day rather than four, and candles and bars are then drawn as a line — a body and two wicks made out of a single close is a shape the coin never made. The page says so under the style box when that is the case.
+- Up to six coins can be drawn at once; a seventh press is not accepted, because a seventh curve would take a colour the sixth already has. Compared side by side they are drawn as cumulative change, since the coins are not priced in the same range.
+- **These three pages appear only when a source answers.** Both sources are outside the mainland's reach, so a machine inside it simply does not get them in the menu — three items offering data they cannot fetch would be three items that fail.
+
+## Crypto DCA Plan
+
+Buying one coin on a fixed rhythm — weekly, say, or monthly — and what that plan is worth today.
+
+- **Frequency** and **Amount** say how often and how much, in US dollars. The plan buys on the first day of each period the range covers.
+- What is drawn is the money put in against what the holding is worth, day by day, with the buys marked: a fall you bought into reads differently from one you did not.
+- Up to six plans can be compared. Compared, they are drawn as cumulative change rather than as money, so a coin priced at 60,000 dollars and one priced at half a dollar can be read against each other.
+- A coin listed after the range began starts at its own first day, and a coin with no price anywhere in the range is named on the status line rather than drawn as a flat line.
+- Days here are calendar days. A coin trades on every one of them, so a year of weekly buying is about 52 buys and a year of monthly buying is 12, and neither figure is approximated.
+
+## Crypto Holdings Return
+
+A sum put into one coin on a day, and what it is worth now.
+
+- **Capital** is the sum, in US dollars; the range says the day it went in and the day to stop. The page buys at the first close in the range and holds to the last.
+- What is drawn is the holding's value day by day against the money that went in, so the line sits above its starting point while the holding is ahead and below it when it is not.
+- Up to six coins can be held side by side; a seventh press is not accepted. Compared, each is drawn as cumulative change rather than as value, so two coins bought at very different prices can be read together.
+- Days here are calendar days, and a coin trades on every one of them: a year of holding is about 365 days, not the 243 a stock market would give you.
+- If only the fallback source can be reached, the range it can fill is about a year. The page then says where the range really starts, rather than quietly beginning later than the date that was typed.
+
 ## Video
 
 The frame is always 9:16. Everything else is yours to set.

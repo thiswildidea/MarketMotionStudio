@@ -267,6 +267,31 @@
                 <mux:NavigationViewItem x:Name="NavPosition" x:Uid="NavPosition" Tag="Position">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPosition}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+
+                <!-- The three crypto pages, collapsed until a crypto source answers.
+
+                     Both sources they can be drawn from are outside the mainland's
+                     reach, so on a machine inside it these three would be three items
+                     offering data they cannot fetch — three items that fail. They are
+                     therefore not listed at all until the source has been asked, and
+                     the asking happens once at launch; see `OfferCryptoPagesAsync`.
+
+                     Kept together at the end rather than beside their stock twins:
+                     the three of them stand or fall on one answer, and a reader who
+                     has no crypto pages should not find a crypto candle page wedged
+                     between two stock pages it has nothing to do with. -->
+                <mux:NavigationViewItem x:Name="NavCryptoCandle" x:Uid="NavCryptoCandle" Tag="CryptoCandle"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconCandle}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoDca" x:Uid="NavCryptoDca" Tag="CryptoDca"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconDcaPlan}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoPosition" x:Uid="NavCryptoPosition" Tag="CryptoPosition"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPosition}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 
             <mux:NavigationView.FooterMenuItems>

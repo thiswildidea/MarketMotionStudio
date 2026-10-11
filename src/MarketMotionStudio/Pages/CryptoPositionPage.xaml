@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root element is the base class; see the note in MarketTurnoverPage.xaml. -->
+<local:StudioPage
+    x:Class="MarketMotionStudio.Pages.CryptoPositionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:MarketMotionStudio.Controls"
+    xmlns:local="using:MarketMotionStudio.Pages"
+    xmlns:views="using:MarketMotionStudio.Views"
+    NavigationCacheMode="Required">
+
+    <!-- Required, not Disabled: which coins and how much are choices someone made once
+         and expects to find as they left them. -->
+
+    <Grid RowDefinitions="Auto,*">
+
+        <StackPanel Grid.Row="0" Padding="24,20,24,12" Spacing="2">
+            <TextBlock x:Uid="CryptoPositionPageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock x:Uid="CryptoPositionPageSubtitle"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+
+            <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto" Margin="24,0,12,24" RowSpacing="12">
+
+                <views:PreviewSurface x:Name="Preview" Grid.Row="0" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <Button x:Name="PlayButton"
+                            Grid.Column="0"
+                            Width="44"
+                            IsEnabled="False"
+                            Click="OnPlay">
+                        <FontIcon x:Name="PlayIcon" Glyph="&#xE768;" FontSize="16" />
+                    </Button>
+                    <Slider x:Name="Scrub"
+                            Grid.Column="1"
+                            Minimum="0" Maximum="1"
+                            StepFrequency="0.001"
+                            ValueChanged="OnScrub"
+                            VerticalAlignment="Center" />
+                    <TextBlock x:Name="ScrubText"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               MinWidth="72"
+                               TextAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <mux:InfoBar x:Name="Status" Grid.Row="2" IsOpen="False" IsClosable="True" />
+            </Grid>
+
+            <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
+                <StackPanel Spacing="14">
+
+                    <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- The coins, as switches. Not the watchlist the stock boards bind to:
+                         that one holds market codes and every roster page reads it, and a coin
+                         is not a market code. See `CryptoPicker`. -->
+                    <views:CryptoPicker x:Name="Coins" />
+
+                    <!-- The holding's two terms: how much in, held since when. -->
+                    <TextBox x:Name="CapitalBox"
+                             x:Uid="PositionCapitalLabel"
+                             Text="10000"
+                             TextChanged="OnHoldingChanged" />
+
+                    <ComboBox x:Name="RangeCombo"
+                              x:Uid="PositionRangeLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnHoldingChanged" />
+
+                    <!-- The holding's own span, two dates rather than one of the list's
+                         counts: "since 2021" is a span no count covers. -->
+                    <StackPanel x:Name="CustomRange" Spacing="8" Visibility="Collapsed">
+                        <DatePicker x:Name="FromDate"
+                                    x:Uid="StudioRangeFrom"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnCustomRangeChanged" />
+                        <DatePicker x:Name="ToDate"
+                                    x:Uid="StudioRangeTo"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnCustomRangeChanged" />
+                    </StackPanel>
+
+                    <ComboBox x:Name="MotionCombo"
+                              x:Uid="PositionMotionLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <TextBox x:Name="WindowBox"
+                             x:Uid="PositionWindowLabel"
+                             Text="60"
+                             TextChanged="OnLookChanged" />
+
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <Button x:Name="FetchButton"
+                            x:Uid="StudioFetch"
+                            HorizontalAlignment="Stretch"
+                            Click="OnFetch" />
+
+                    <views:VideoSettingsPanel x:Name="VideoSettings" />
+
+                    <Button x:Name="ExportButton"
+                            x:Uid="StudioExport"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="OnExport" />
+
+                    <Button x:Name="CoverButton"
+                            x:Uid="StudioCover"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnSaveCover" />
+
+                    <TextBlock x:Uid="StudioCoverNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <Button x:Name="CancelButton"
+                            x:Uid="StudioCancel"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnCancel" />
+
+                    <TextBlock x:Uid="CryptoDisclaimer"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</local:StudioPage>

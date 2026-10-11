@@ -136,7 +136,7 @@ public static class PositionLoader
     public const int MostTracks = 6;
 
     public static async Task<PositionBoard> LoadAsync(
-        TencentKline kline,
+        ICloseWalk source,
         IReadOnlyList<RaceEntry> entries,
         double capital,
         DateOnly start,
@@ -161,7 +161,7 @@ public static class PositionLoader
         {
             var display = InstrumentNames.Display(entry.Code, entry.Name);
 
-            var closes = await HistoryWalk.ClosesAsync(kline, entry.Code, display, start, end, progress, cancellation);
+            var closes = await source.ClosesAsync(entry.Code, display, start, end, progress, cancellation);
 
             // A holding needs a buy and at least one mark after it. Anything less is the range
             // never reaching this instrument, and it is named rather than drawn — see the note

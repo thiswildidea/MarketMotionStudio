@@ -457,6 +457,37 @@ Un achat, conservé — un million du même nom depuis 2015 — animé pour mont
 - **Une fenêtre défilante s'ouvre à la fin.** Au début du segment de fermeture la fenêtre s'élargit vers l'arrière jusqu'au premier jour de la plage : l'image sur laquelle l'animation s'arrête est donc la plage entière et non ses dernières dizaines de jours.
 - **La bande du côté droit peut être cédée, si vous voulez la largeur.** Elle est désactivée par défaut : la plateforme dessine son avatar et ses boutons « j'aime » et commentaire sur ce côté d'une vidéo verticale, et un chiffre en dessous est masqué sur le téléphone alors qu'il est parfaitement lisible ici. Activée, une image qui remplit toute la période trace jusqu'au bord même de l'image dès sa première image ; une fenêtre glissante continue de garder ses distances tant qu'elle est une fenêtre, et s'ouvre à la pleine largeur en même temps qu'elle — l'image sur laquelle la vidéo s'arrête est donc toute la période, d'un bord à l'autre.
 
+## Chandeliers crypto
+
+Les chandeliers quotidiens d'une cryptomonnaie, en dollars américains, depuis une source publique. Les hebdomadaires et mensuels sont regroupés à partir de ces mêmes jours.
+
+- Les douze cryptomonnaies proposées sont celles que les deux sources portent avec des années d'historique quotidien. Il n'y a pas de champ de recherche : les deux sources écrivent la même cryptomonnaie différemment, et un nom tapé n'atteint ni l'une ni l'autre.
+- **Granularité** — jour, semaine ou mois — change la série tracée, et relance donc la récupération. **Type de tracé** et **Animation** non ; ils redessinent ce qui est déjà là.
+- Une cryptomonnaie se négocie tous les jours de l'année : un intervalle n'a aucun jour férié à sauter et aucun jour manquant, et une cryptomonnaie ne verse ni dividende ni ne fractionne : la clôture *est* le rendement, et aucun ajustement n'est appliqué sur ces trois pages.
+- Si seule la source de repli est atteignable, elle n'a qu'un prix par jour au lieu de quatre, et chandeliers et barres sont alors tracés en ligne — un corps et deux mèches faits d'une seule clôture est une forme que la cryptomonnaie n'a jamais eue. La page le dit sous la liste de tracé lorsque c'est le cas.
+- Jusqu'à six cryptomonnaies peuvent être tracées à la fois ; une septième pression n'est pas acceptée, car une septième courbe prendrait une couleur que la sixième a déjà. Comparées, elles sont tracées en variation cumulée, parce qu'elles ne se négocient pas dans la même échelle de prix.
+- **Ces trois pages n'apparaissent que lorsqu'une source répond.** Les deux sources sont hors de portée de la Chine continentale : une machine qui s'y trouve ne les voit tout simplement pas dans le menu — trois entrées offrant des données qu'elles ne peuvent pas récupéreraient seraient trois entrées qui échouent.
+
+## Plan DCA crypto
+
+Acheter une cryptomonnaie à rythme fixe — hebdomadaire, disons, ou mensuel — et ce que ce plan vaut aujourd'hui.
+
+- **Fréquence** et **Montant** disent à quelle fréquence et combien, en dollars américains. Le plan achète le premier jour de chaque période couverte par l'intervalle.
+- Ce qui est tracé est l'argent versé contre la valeur de la position, jour par jour, avec les achats marqués : une baisse dans laquelle vous avez acheté se lit différemment d'une baisse dans laquelle vous n'avez pas acheté.
+- Jusqu'à six plans peuvent être comparés. Comparés, ils sont tracés en variation cumulée plutôt qu'en argent, pour qu'une cryptomonnaie à 60 000 dollars et une à un demi-dollar puissent se lire l'une contre l'autre.
+- Une cryptomonnaie cotée après le début de l'intervalle commence à son propre premier jour, et une cryptomonnaie sans prix dans tout l'intervalle est nommée sur la ligne d'état plutôt que tracée en ligne plate.
+- Les jours ici sont des jours civils. Une cryptomonnaie se négocie chacun d'eux : une année d'achats hebdomadaires représente environ 52 achats, une année d'achats mensuels 12, et aucun des deux chiffres n'est approximatif.
+
+## Rendement du portefeuille crypto
+
+Une somme placée dans une cryptomonnaie un jour donné, et ce qu'elle vaut aujourd'hui.
+
+- **Capital** est la somme, en dollars américains ; l'intervalle dit le jour de l'entrée et le jour d'arrêt. La page achète à la première clôture de l'intervalle et conserve jusqu'à la dernière.
+- Ce qui est tracé est la valeur de la position jour par jour contre l'argent versé : la ligne se situe au-dessus de son point de départ tant que la position est en gain, et en dessous lorsqu'elle ne l'est pas.
+- Jusqu'à six cryptomonnaies peuvent être détenues côte à côte ; une septième pression n'est pas acceptée. Comparées, chacune est tracée en variation cumulée plutôt qu'en valeur, pour que deux cryptomonnaies achetées à des prix très différents puissent se lire ensemble.
+- Les jours ici sont des jours civils, et une cryptomonnaie se négocie chacun d'eux : une année de détention représente environ 365 jours, et non les 243 que donnerait une bourse.
+- Si seule la source de repli est atteignable, l'intervalle qu'elle peut remplir est d'environ un an. La page dit alors où l'intervalle commence réellement, plutôt que de commencer silencieusement plus tard que la date saisie.
+
 ## Vidéo
 
 L'image est toujours en 9:16. Tout le reste vous appartient.

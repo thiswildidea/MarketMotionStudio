@@ -452,7 +452,7 @@ public sealed partial class DcaPlanPage : StudioPage, IPlaybackHost
             var progress = new Progress<string>(message => ShowStatus(InfoBarSeverity.Informational, message));
 
             var board = await DcaPlanner.LoadBoardAsync(
-                Services.Quotes, chosen, frequency, amount, start, end, progress, cancellation);
+                Services.Closes, chosen, frequency, amount, start, end, progress, cancellation);
 
             _board = board;
 

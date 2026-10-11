@@ -443,6 +443,37 @@ Una compra, mantenida —un millón del mismo valor desde 2015—, animada para 
 - **Una ventana deslizante se abre al final.** Al empezar el tramo de cierre la ventana se ensancha hacia atrás hasta el primer día del rango, así que el fotograma en el que se detiene la animación es el rango completo y no sus últimas decenas de días.
 - **La banda del lado derecho puede cederse, si quieres el ancho.** Viene desactivada: la plataforma dibuja su avatar y sus botones de «me gusta» y comentarios en ese lado de un vídeo vertical, y una cifra debajo queda oculta en el teléfono aunque aquí se lea perfectamente. Activada, un encuadre que llena toda la serie dibuja hasta el propio borde del encuadre desde su primera imagen; una ventana deslizante sigue guardando distancia mientras es una ventana y se abre al ancho completo junto con la ventana — así que la imagen en la que se detiene el vídeo es la serie completa, de borde a borde.
 
+## Velas cripto
+
+Las velas diarias de una moneda, en dólares estadounidenses, de una fuente pública. Las semanales y mensuales se agrupan a partir de esos mismos días.
+
+- Las doce monedas ofrecidas son las que ambas fuentes tienen con años de historial diario. No hay buscador: las dos fuentes escriben la misma moneda de forma distinta, y un nombre tecleado no llega a ninguna.
+- **Intervalo** — día, semana o mes — cambia qué serie se dibuja, así que cambiarlo vuelve a consultar la fuente. **Tipo de dibujo** y **Animación** no; solo redibujan lo que ya está aquí.
+- Una moneda cotiza todos los días del año: un rango no tiene festivos que saltar ni días que falten, y una moneda no paga dividendo ni hace split: el cierre *es* la rentabilidad, y en estas tres páginas no se aplica ningún ajuste.
+- Si solo se alcanza la fuente de respaldo, esta tiene un precio al día en lugar de cuatro, y entonces las velas y las barras se dibujan como línea: un cuerpo con dos mechas hecho de un solo cierre es una forma que la moneda nunca tuvo. La página lo dice bajo el selector de dibujo cuando ese es el caso.
+- Se pueden dibujar hasta seis monedas a la vez; una séptima pulsación no se acepta, porque una séptima curva tomaría un color que la sexta ya tiene. Comparadas se dibujan como variación acumulada, porque las monedas no cotizan en el mismo orden de magnitud.
+- **Estas tres páginas solo aparecen cuando una fuente responde.** Ambas fuentes están fuera del alcance de China continental, así que un equipo allí simplemente no las ve en el menú: tres entradas que ofrecen datos que no pueden obtener serían tres entradas que fallan.
+
+## Plan DCA cripto
+
+Comprar una moneda con ritmo fijo — semanal, por ejemplo, o mensual — y cuánto vale ese plan hoy.
+
+- **Frecuencia** e **Importe** dicen cada cuánto y cuánto, en dólares estadounidenses. El plan compra el primer día de cada periodo que cubre el rango.
+- Lo que se dibuja es el dinero aportado contra lo que vale la posición, día a día, con las compras marcadas: una caída en la que compraste se lee distinto de una en la que no.
+- Se pueden comparar hasta seis planes. Comparados se dibujan como variación acumulada en lugar de dinero, para que una moneda a 60.000 dólares y otra a medio dólar puedan leerse juntas.
+- Una moneda listada después de que empezara el rango empieza en su propio primer día, y una moneda sin precio en todo el rango se nombra en la línea de estado en lugar de dibujarse como una línea plana.
+- Los días aquí son días naturales. Una moneda cotiza en todos ellos: un año de compras semanales son unas 52 compras y uno de mensuales, 12, y ninguna de las dos cifras es aproximada.
+
+## Rentabilidad de la cartera cripto
+
+Una suma puesta en una moneda un día, y cuánto vale hoy.
+
+- **Capital** es la suma, en dólares estadounidenses; el rango dice el día en que entró y el día de parada. La página compra al primer cierre del rango y mantiene hasta el último.
+- Lo que se dibuja es el valor de la posición día a día contra el dinero aportado: la línea queda por encima de su punto de partida mientras la posición gana y por debajo cuando no.
+- Se pueden mantener hasta seis monedas a la vez; una séptima pulsación no se acepta. Comparadas, cada una se dibuja como variación acumulada en lugar de valor, para que dos monedas compradas a precios muy distintos puedan leerse juntas.
+- Los días aquí son días naturales, y una moneda cotiza en todos: un año de mantenimiento son unos 365 días, no los 243 que daría una bolsa.
+- Si solo se alcanza la fuente de respaldo, el rango que puede llenar es de about un año. La página dice entonces dónde empieza realmente el rango, en lugar de empezar silenciosamente más tarde que la fecha escrita.
+
 ## Vídeo
 
 El encuadre es siempre 9:16. Todo lo demás lo decide usted.

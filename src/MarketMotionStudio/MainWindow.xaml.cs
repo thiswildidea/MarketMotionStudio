@@ -128,6 +128,11 @@ public sealed partial class MainWindow : Window
         ApplyMarket();
         Nav.SelectedItem = Nav.MenuItems[0];
 
+        // After the first page is chosen and not before: the crypto items are still
+        // collapsed at this point, so nothing here can land on one of them, and the
+        // asking happens while the window is already up and being looked at.
+        _ = OfferCryptoPagesAsync();
+
         // The label is a TextBlock inside the item now, so the item no longer
         // names itself; screen readers get the same word the label shows.
         Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(NavSettingsItem, NavSettingsLabel.Text);
@@ -346,6 +351,52 @@ public sealed partial class MainWindow : Window
         {
             Nav.MenuItems.Remove(NavMarketTurnover);
         }
+    }
+
+    /// <summary>
+    /// Asks once whether any crypto source answers, then either puts the three crypto
+    /// pages in the menu or takes them out of it for the rest of the run.
+    ///
+    /// Asked off the constructor rather than in it. The question is a request with a
+    /// six-second leash on it (see <c>CryptoQuotes.ProbeTimeout</c>), and a window
+    /// that waits for a foreign host before it appears is a window that looks like it
+    /// failed to start. The three items are therefore collapsed in the markup and
+    /// stay that way until the answer arrives: nothing that has not been decided is
+    /// clickable.
+    ///
+    /// Taken out rather than left collapsed when the answer is no, for the reason
+    /// <see cref="ApplyMarket"/> gives. And not asked again: a machine's reach does
+    /// not change while this window is open often enough to be worth a second
+    /// request, and an answer that arrived late can be had by restarting.
+    /// </summary>
+    private async Task OfferCryptoPagesAsync()
+    {
+        var reachable = await _services.Crypto.ReachableAsync();
+
+        // The answer arrives on whatever thread the request finished on, and the menu
+        // belongs to this one.
+        _dispatcher.TryEnqueue(() =>
+        {
+            var pages = new[] { NavCryptoCandle, NavCryptoDca, NavCryptoPosition };
+
+            if (!reachable)
+            {
+                // Removed as a group, because that is how they were offered: one
+                // answer stands behind all three, and a menu that kept one of them
+                // would be claiming a source it has just been told is not there.
+                foreach (var page in pages)
+                {
+                    Nav.MenuItems.Remove(page);
+                }
+
+                return;
+            }
+
+            foreach (var page in pages)
+            {
+                page.Visibility = Visibility.Visible;
+            }
+        });
     }
 
     /// <summary>
@@ -702,6 +753,9 @@ public sealed partial class MainWindow : Window
             "DcaPlan" => typeof(DcaPlanPage),
             "Candle" => typeof(CandlePage),
             "Position" => typeof(PositionPage),
+            "CryptoCandle" => typeof(CryptoCandlePage),
+            "CryptoDca" => typeof(CryptoDcaPage),
+            "CryptoPosition" => typeof(CryptoPositionPage),
             "Help" => typeof(HelpPage),
             "Settings" => typeof(SettingsPage),
             _ => null,
@@ -716,6 +770,17 @@ public sealed partial class MainWindow : Window
         // on offer: a stale selection, a restored one, or any future caller with a tag
         // in hand would otherwise land on a page the market cannot feed.
         if (page == typeof(MarketTurnoverPage) && !Markets.WholeMarket(MarketSettings.Current))
+        {
+            return;
+        }
+
+        // The same guard for the crypto pages, and for the same reason: a hidden item
+        // keeps its tag. A tag restored from a visit, or carried by a future caller,
+        // would otherwise land on a page whose source was never reached — and it would
+        // land on it silently, because nothing about the page says where its data
+        // comes from until a fetch fails.
+        if ((page == typeof(CryptoCandlePage) || page == typeof(CryptoDcaPage)
+             || page == typeof(CryptoPositionPage)) && !_services.Crypto.Answered)
         {
             return;
         }

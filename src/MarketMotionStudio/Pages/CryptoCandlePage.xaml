@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root element is the base class; see the note in MarketTurnoverPage.xaml. -->
+<local:StudioPage
+    x:Class="MarketMotionStudio.Pages.CryptoCandlePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:MarketMotionStudio.Controls"
+    xmlns:local="using:MarketMotionStudio.Pages"
+    xmlns:views="using:MarketMotionStudio.Views"
+    NavigationCacheMode="Required">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <StackPanel Grid.Row="0" Padding="24,20,24,12" Spacing="2">
+            <TextBlock x:Uid="CryptoCandlePageTitle" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock x:Uid="CryptoCandlePageSubtitle"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+
+            <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto" Margin="24,0,12,24" RowSpacing="12">
+
+                <views:PreviewSurface x:Name="Preview" Grid.Row="0" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <Button x:Name="PlayButton"
+                            Grid.Column="0"
+                            Width="44"
+                            IsEnabled="False"
+                            Click="OnPlay">
+                        <FontIcon x:Name="PlayIcon" Glyph="&#xE768;" FontSize="16" />
+                    </Button>
+                    <Slider x:Name="Scrub"
+                            Grid.Column="1"
+                            Minimum="0" Maximum="1"
+                            StepFrequency="0.001"
+                            ValueChanged="OnScrub"
+                            VerticalAlignment="Center" />
+                    <TextBlock x:Name="ScrubText"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               MinWidth="72"
+                               TextAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <mux:InfoBar x:Name="Status" Grid.Row="2" IsOpen="False" IsClosable="True" />
+            </Grid>
+
+            <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
+                <StackPanel Spacing="14">
+
+                    <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <views:CryptoPicker x:Name="Coins" />
+
+                    <!-- One of three periods. The minute periods are not offered: they are
+                         served by neither crypto source, and a chart of a coin's minutes
+                         drawn from days would be a shape the coin never made. -->
+                    <ComboBox x:Name="PeriodCombo"
+                              x:Uid="CandlePeriodLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnPeriodChanged" />
+
+                    <ComboBox x:Name="RangeCombo"
+                              x:Uid="StudioRange"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnRangeChanged" />
+
+                    <StackPanel x:Name="CustomRange" Spacing="8" Visibility="Collapsed">
+                        <DatePicker x:Name="FromDate"
+                                    x:Uid="StudioRangeFrom"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnCustomRangeChanged" />
+                        <DatePicker x:Name="ToDate"
+                                    x:Uid="StudioRangeTo"
+                                    HorizontalAlignment="Stretch"
+                                    DateChanged="OnCustomRangeChanged" />
+                    </StackPanel>
+
+                    <!-- How the bars are drawn. Two of the four are only honest when the
+                         source gave four prices — see `CryptoQuotes.GivesCandles`. -->
+                    <ComboBox x:Name="StyleCombo"
+                              x:Uid="CandleStyleLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <TextBlock x:Name="StyleNote"
+                               x:Uid="CryptoCandleStyleNote"
+                               TextWrapping="Wrap"
+                               Visibility="Collapsed"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <ComboBox x:Name="MotionCombo"
+                              x:Uid="CandleMotionLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnLookChanged" />
+
+                    <TextBox x:Name="WindowBox"
+                             x:Uid="CandleWindowLabel"
+                             Text="60"
+                             TextChanged="OnLookChanged" />
+
+                    <CheckBox x:Name="AveragesCheck"
+                              x:Uid="CandleShowAverages"
+                              IsChecked="True"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="VolumeCheck"
+                              x:Uid="CandleShowVolume"
+                              IsChecked="True"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <Button x:Name="FetchButton"
+                            x:Uid="StudioFetch"
+                            HorizontalAlignment="Stretch"
+                            Click="OnFetch" />
+
+                    <views:VideoSettingsPanel x:Name="VideoSettings" />
+
+                    <Button x:Name="ExportButton"
+                            x:Uid="StudioExport"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="OnExport" />
+
+                    <Button x:Name="CoverButton"
+                            x:Uid="StudioCover"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnSaveCover" />
+
+                    <TextBlock x:Uid="StudioCoverNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <Button x:Name="CancelButton"
+                            x:Uid="StudioCancel"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Click="OnCancel" />
+
+                    <TextBlock x:Uid="CryptoDisclaimer"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</local:StudioPage>

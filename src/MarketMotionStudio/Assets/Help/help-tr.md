@@ -423,6 +423,37 @@ Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon �
 - **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
 - **Sağ kenardaki şerit, genişliği istersen bırakılabilir.** Varsayılan olarak kapalıdır: platform dikey videonun o kenarına avatarını, beğeni ve yorum düğmelerini çizer ve altındaki sayı, burada rahatça okunsa da telefonda gizli kalır. Açıkken tüm aralığı dolduran bir kare, ilk karesinden itibaren karenin kendi kenarına kadar çizer; kayan pencere pencere olduğu sürece mesafeyi korur ve pencereyle birlikte tam genişliğe açılır — yani videonun durduğu kare, kenardan kenara tüm aralıktır.
 
+## Kripto mumlar
+
+Bir coin'in günlük mumları, ABD doları cinsinden, herkese açık bir kaynaktan. Haftalık ve aylık mumlar aynı günlerden toplanır.
+
+- Sunulan on iki coin, her iki kaynağın da yıllarca günlük geçmişe sahip olduğu coin'ler. Arama kutusu yok: iki kaynak aynı coini farklı yazıyor ve birine yazılan isim ikisine de ulaşmıyor.
+- **Dönem** — gün, hafta veya ay — hangi serinin çizildiğini değiştirir, bu yüzden değiştirmek yeniden veri getirir. **Stil** ve **Akış** getirmez; sadece burada olanı yeniden çizer.
+- Bir coin yılın her günü işlem görür: bir aralığın atlanacak tatili ve eksik günü yoktur; bir coin temettü ödemez ve bölünmez — kapanış *getirinin kendisidir* ve bu üç sayfada hiçbir düzeltme uygulanmaz.
+- Yalnızca yedek kaynağa ulaşılabiliyorsa, günde dört fiyat yerine bir fiyat vardır ve bu durumda mumlar ile çubuklar çizgi olarak çizilir: tek bir kapanıştan yapılmış bir gövde ve iki fitil, coin'in hiç almadığı bir biçimdir. Sayfa bunu, o durumda stil kutusunun altında söyler.
+- Aynı anda en fazla altı coin çizilebilir; yedinci basış kabul edilmez, çünkü yedinci eğri altıncının sahip olduğu rengi alırdı. Karşılaştırıldıklarında kümülatif değişim olarak çizilirler, çünkü coin'ler aynı fiyat aralığında değildir.
+- **Bu üç sayfa yalnızca bir kaynak yanıt verdiğinde görünür.** Her iki kaynak da anakaranın erişiminin dışında, bu yüzden oradaki bir makine menüde onları hiç görmez: getiremeyecekleri veriyi sunan üç girdi, başarısız olan üç girdi olurdu.
+
+## Kripto DCA planı
+
+Bir coin'i sabit bir ritimle almak — diyelim haftalık veya aylık — ve bu planın bugünkü değeri.
+
+- **Sıklık** ve **Tutar**, ABD doları cinsinden ne sıklıkla ve ne kadar alınacağını söyler. Plan, aralığın kapsadığı her dönemin ilk gününde alır.
+- Çizilen, konulan para ile pozisyonun değeridir; gün gün, alımlar işaretlenmiş olarak: içine alım yaptığınız bir düşüş, yapmadığınız bir düşüşten farklı okunur.
+- En fazla altı plan karşılaştırılabilir. Karşılaştırıldıklarında para olarak değil kümülatif değişim olarak çizilirler, böylece 60.000 dolarlık bir coin ile yarım dolarlık bir coin birbirine karşı okunabilir.
+- Aralık başladıktan sonra listelenen bir coin kendi ilk gününde başlar ve aralıkta hiç fiyatı olmayan bir coin düz bir çizgi olarak çizilmek yerine durum satırında adıyla belirtilir.
+- Buradaki günler takvim günleridir. Bir coin hepsinde işlem görür: haftalık alımla bir yıl yaklaşık 52 alım, aylık alımla 12 alımdır ve iki sayı da yaklaşık değildir.
+
+## Kripto varlık getirisi
+
+Bir gün bir coin'e konulan bir tutar ve onun bugünkü değeri.
+
+- **Sermaye**, ABD doları cinsinden tutardır; aralık hangi gün girildiğini ve hangi gün durulacağını söyler. Sayfa aralıktaki ilk kapanışta alır ve son kapanışa kadar tutar.
+- Çizilen, pozisyonun gün gün değeridir, konulan paranın karşısında: pozisyon kârdaysa çizgi başlangıç noktasının üstünde, değilse altında durur.
+- Yan yana en fazla altı coin tutulabilir; yedinci basış kabul edilmez. Karşılaştırıldıklarında her biri değer olarak değil kümülatif değişim olarak çizilir, böylece çok farklı fiyatlardan alınmış iki coin birlikte okunabilir.
+- Buradaki günler takvim günleridir ve bir coin hepsinde işlem görür: bir yıl tutmak yaklaşık 365 gündür, bir borsanın vereceği 243 değil.
+- Yalnızca yedek kaynağa ulaşılabiliyorsa, doldurabildiği aralık yaklaşık bir yıldır. Sayfa o zaman aralığın gerçekte nerede başladığını söyler, yazılan tarihten sessizce daha geç başlamak yerine.
+
 ## Video
 
 Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.

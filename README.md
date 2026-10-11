@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **eighteen pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **twenty-one pages working, and export working on all of them, across three markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -167,7 +167,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The eighteen pages
+## The twenty-one pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -982,6 +982,24 @@ so the label ran back over the name column and the row read as one string, "恒�
 Where that would happen the label is drawn beyond the zero axis instead. It is not a rare frame:
 it is the bottom row of every frame of any board with a fall on it, which includes the A+H page.
 
+**Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
+over a coin instead of a share, and the three pages the menu decides about at launch rather than
+while you are looking at it. Both sources that carry a coin's history sit outside the mainland, so
+the first question is not *what was the price* but *is either of them reachable*: one request at
+launch answers it, and until it does the three items are not in the menu at all. Three entries
+offering data they cannot fetch would be three entries that fail, and a collapsed item is still an
+item — so they are removed, not hidden. What changes once the subject is a coin is mostly what
+stops being true: there is no holiday to step over and no day missing from a range, because a coin
+trades every day of the year; there is no dividend and no split, so the close *is* the return and
+nothing on these three pages asks for an adjusted series; and the span is calendar days, which is
+why they carry their own status lines instead of borrowing the stock pages' "trading days". Prices
+are US dollars on all three, whatever the market setting says. The coins are a list of twelve
+rather than a search box, because the two sources spell the same coin differently — Yahoo wants
+`BTC-USD`, CoinGecko wants `bitcoin` — and a name typed into either reaches neither. The candle
+page is the one of the three that notices which source answered: the fallback carries a year and
+**only the close**, and a body and two wicks made out of a single close is a shape the coin never
+made, so candles and bars fall to a line and the page says why.
+
 **The title is yours on every page, and it may take two lines.** Type one, or leave the box empty to
 get the default — a fixed label on the whole-market chart, the fetched instrument's name on the
 per-stock one. Text wider than the frame wraps onto a second line rather than being clipped or
@@ -1411,7 +1429,7 @@ detector still sees it. A detector whose control sample is clean is not a detect
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all eighteen pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all twenty-one pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -1470,9 +1488,9 @@ a renderer with no watermark is one with nothing to draw rather than one that ha
 ## The subscription, and the two things it buys
 
 Exporting a video and taking the watermark off it take a monthly subscription. Everything else
-stays free on all eighteen pages — fetching data, playing the animation, saving a cover image —
+stays free on all twenty-one pages — fetching data, playing the animation, saving a cover image —
 and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
-two are the ends that leave home, and the eighteen pages of live market animation are what
+two are the ends that leave home, and the twenty-one pages of live market animation are what
 somebody came for.
 
 The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
@@ -1484,7 +1502,7 @@ they have already paid.
 
 Three decisions worth stating.
 
-**The answer is asked for in one place.** Eighteen pages have an Export button and eighteen have
+**The answer is asked for in one place.** Twenty-one pages have an Export button and twenty-one have
 their own handler, each written out in full — that duplication already exists and is not this
 feature's to fix. What must not be duplicated is the answer to "may this be done": two answers
 written twice is one page that gives the video away. So every handler asks
@@ -1582,7 +1600,7 @@ first export asks and then remembers.
   So what is verified is the gate, its placement, the licence read, and the watermark's dependency
   on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
   is finally there.
-- **The Store screenshots cover nine of the eighteen pages.** `tools/store-screenshots.py` stops at
+- **The Store screenshots cover nine of the twenty-one pages.** `tools/store-screenshots.py` stops at
   the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
   extreme-day board, currency corridor, index race, asset-class board, drawdown board or hold-odds
   board. The listing copy describes eighteen chart pages in all fourteen languages — it is written at

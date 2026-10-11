@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MarketMotionStudio.Views.CryptoPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:MarketMotionStudio.Controls">
+
+    <!-- One row of switches, one per coin, and a line under it saying how many are on.
+
+         A row rather than a search box: the coins this app offers are a list of twelve
+         (see `CryptoAsset`), and a list of twelve is read in one glance where a search
+         box has to be typed into before it says anything. The two sources spell each of
+         them differently, so a name typed in would reach neither.
+
+         The switches are switches, not buttons that navigate: whether a coin is on the
+         frame is a state, and a control that holds no state cannot be asked what is
+         currently chosen — which is what a screen reader and a verification script both
+         have to do. -->
+
+    <StackPanel Spacing="6">
+        <controls:WrapPanel x:Name="Coins" />
+        <TextBlock x:Name="Note"
+                   TextWrapping="Wrap"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+    </StackPanel>
+</UserControl>

@@ -352,12 +352,25 @@ def word_of(count):
 
     **为什么把这个数由导航算出来**：写死的「十七」在加第十九页那天照样是绿的，而它读的那个
     文件说的已经不是事实 —— 这份脚本里别的锚差不多都已经是算出来的，这个不能是例外。
+
+    **为什么二十以上也拼得出来**：原来那张表到 twenty 就断了，第二十一页（加密货币那三页）
+    一加进来，这条断言自己先炸 —— 一个「页数别写死」的判据被自己写死的上限挡住，是最不该
+    发生的一种失败。所以二十以上按十位拼 hyphenated 的形式，而不是再往表里续。
     """
-    words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
-             "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-             "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]
-    assert 0 < count < len(words), count
-    return words[count]
+    ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+            "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+            "sixteen", "seventeen", "eighteen", "nineteen"]
+    tens = {2: "twenty", 3: "thirty", 4: "forty", 5: "fifty"}
+
+    assert count > 0, count
+
+    if count < len(ones):
+        return ones[count]
+
+    ten, rest = divmod(count, 10)
+    assert ten in tens, count
+
+    return f"{tens[ten]}-{ones[rest]}" if rest else tens[ten]
 
 
 def readme_checks():

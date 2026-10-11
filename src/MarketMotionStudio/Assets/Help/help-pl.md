@@ -435,6 +435,37 @@ Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku �
 - **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
 - **Pas po prawej stronie można oddać, jeśli zależy ci na szerokości.** Domyślnie jest wyłączony: platforma rysuje tam swój awatar oraz przyciski „lubię to” i komentarzy w pionowym wideo, a liczba pod nimi jest na telefonie zasłonięta, choć tutaj widać ją bez problemu. Włączony: kadr wypełniający cały zakres rysuje do własnej krawędzi kadru od pierwszej klatki; przesuwne okno zachowuje odstęp, dopóki jest oknem, i wraz z oknem rozwiera się na pełną szerokość — więc klatka, na której zatrzymuje się film, to cały zakres od krawędzi do krawędzi.
 
+## Świece krypto
+
+Dzienne świece jednej monety, w dolarach amerykańskich, z publicznego źródła. Tygodniowe i miesięczne są grupowane z tych samych dni.
+
+- Dwanaście oferowanych monet to te, dla których oba źródła mają lata historii dziennej. Nie ma pola wyszukiwania: oba źródła piszą tę samą monetę inaczej, a wpisana nazwa nie trafia do żadnego z nich.
+- **Interwał** — dzień, tydzień lub miesiąc — zmienia to, która seria jest rysowana, więc zmiana go pobiera dane od nowa. **Styl** i **Przebieg** nie: one tylko przerysowują to, co już jest.
+- Moneta jest notowana każdego dnia roku: zakres nie ma świąt do przeskoczenia ani brakujących dni, a moneta nie płaci dywidendy ani nie dzieli się — kurs zamknięcia *jest* zwrotem i na tych trzech stronach nie stosuje się żadnej korekty.
+- Gdy dostępne jest tylko źródło zapasowe, ma ono jedną cenę dziennie zamiast czterech, i wtedy świece oraz słupki są rysowane jako linia: korpus z dwoma knotami zrobiony z jednego zamknięcia to kształt, którego moneta nigdy nie miała. Strona mówi o tym pod listą stylu, gdy tak właśnie jest.
+- Jednocześnie można rysować do sześciu monet; siódme naciśnięcie nie jest przyjmowane, bo siódma krzywa wzięłaby kolor, który ma już szósta. W porównaniu rysowane są jako skumulowana zmiana, bo monety nie mają cen w tej samej skali.
+- **Te trzy strony pojawiają się tylko wtedy, gdy jakieś źródło odpowie.** Oba źródła są poza zasięgiem Chin kontynentalnych, więc komputer tam po prostu nie dostaje ich w menu: trzy pozycje oferujące dane, których nie mogą pobrać, byłyby trzema pozycjami, które zawodzą.
+
+## Plan DCA krypto
+
+Kupowanie jednej monety w stałym rytmie — powiedzmy tygodniowym lub miesięcznym — i ile ten plan jest dziś wart.
+
+- **Częstotliwość** i **Kwota** mówią jak często i ile, w dolarach amerykańskich. Plan kupuje pierwszego dnia każdego okresu objętego zakresem.
+- Rysowane są wpłacone pieniądze przeciwko wartości pozycji, dzień po dniu, z zaznaczonymi zakupami: spadek, w który kupowałeś, czyta się inaczej niż taki, w który nie kupowałeś.
+- Można porównać do sześciu planów. W porównaniu rysowane są jako skumulowana zmiana, a nie jako pieniądze, żeby moneta po 60 000 dolarów i moneta po pół dolara dały się czytać obok siebie.
+- Moneta notowana po rozpoczęciu zakresu zaczyna od własnego pierwszego dnia, a moneta bez ceny w całym zakresie jest wymieniona w linii stanu zamiast narysowana jako płaska linia.
+- Dni to tu dni kalendarzowe. Moneta jest notowana w każdy z nich: rok tygodniowych zakupów to około 52 zakupy, rok miesięcznych to 12 i żadna z tych liczb nie jest przybliżona.
+
+## Zwrot portfela krypto
+
+Kwota włożona w jedną monetę pewnego dnia i ile jest dziś warta.
+
+- **Kapitał** to kwota w dolarach amerykańskich; zakres mówi, którego dnia weszła i którego dnia skończyć. Strona kupuje po pierwszym zamknięciu w zakresie i trzyma do ostatniego.
+- Rysowana jest wartość pozycji dzień po dniu przeciwko wpłaconym pieniądzom: linia jest powyżej punktu startu, dopóki pozycja jest na plusie, a poniżej, gdy nie jest.
+- Obok siebie można trzymać do sześciu monet; siódme naciśnięcie nie jest przyjmowane. W porównaniu każda jest rysowana jako skumulowana zmiana, a nie jako wartość, żeby dwie monety kupione po bardzo różnych cenach dały się czytać razem.
+- Dni to tu dni kalendarzowe i moneta jest notowana w każdy z nich: rok trzymania to około 365 dni, a nie 243, które dałaby giełda.
+- Gdy dostępne jest tylko źródło zapasowe, jego zakres to około rok. Strona mówi wtedy, gdzie zakres naprawdę się zaczyna, zamiast po cichu zacząć później niż wpisana data.
+
 ## Film
 
 Kadr jest zawsze 9:16. Wszystko inne ustalasz sam.

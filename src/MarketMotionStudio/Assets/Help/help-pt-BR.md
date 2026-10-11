@@ -438,6 +438,37 @@ Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mo
 - **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
 - **A faixa do lado direito pode ser cedida, se você quiser a largura.** Ela vem desligada: a plataforma desenha seu avatar e os botões de curtir e comentar desse lado de um vídeo vertical, e um número sob eles fica escondido no celular, embora aqui esteja perfeitamente legível. Ativada, um quadro que preenche todo o intervalo desenha até a própria borda do quadro desde o primeiro quadro; uma janela rolante continua mantendo distância enquanto é uma janela e se abre para a largura total junto com a janela — então o quadro em que o vídeo para é o intervalo inteiro, de borda a borda.
 
+## Velas cripto
+
+As velas diárias de uma moeda, em dólares americanos, de uma fonte pública. As semanais e mensais são agrupadas a partir desses mesmos dias.
+
+- As doze moedas oferecidas são as que ambas as fontes têm com anos de histórico diário. Não há caixa de busca: as duas fontes escrevem a mesma moeda de formas diferentes, e um nome digitado não chega a nenhuma.
+- **Intervalo** — dia, semana ou mês — muda qual série é desenhada, então mudá-lo busca de novo. **Estilo** e **Animação** não; eles apenas redesenhå o que já está aqui.
+- Uma moeda é negociada todos os dias do ano: um intervalo não tem feriado para pular nem dia faltando, e uma moeda não paga dividendo nem sofre desdobramento: o fechamento *é* o retorno, e nenhum ajuste é aplicado nestas três páginas.
+- Quando só a fonte reserva é alcançável, ela tem um preço por dia em vez de quatro, e então velas e barras são desenhadas como linha: um corpo com dois pavios feito de um único fechamento é uma forma que a moeda nunca teve. A página diz isso sob a lista de estilo quando é esse o caso.
+- Até seis moedas podem ser desenhadas ao mesmo tempo; um sétimo toque não é aceito, porque uma sétima curva tomaria uma cor que a sexta já tem. Comparadas, são desenhadas como variação acumulada, já que as moedas não têm preços na mesma escala.
+- **Estas três páginas aparecem apenas quando uma fonte responde.** Ambas as fontes estão fora do alcance da China continental, então uma máquina lá simplesmente não as recebe no menu: três itens oferecendo dados que não conseguem buscar seriam três itens que falham.
+
+## Plano DCA cripto
+
+Comprar uma moeda em ritmo fixo — semanal, digamos, ou mensal — e quanto esse plano vale hoje.
+
+- **Frequência** e **Valor** dizem com que frequência e quanto, em dólares americanos. O plano compra no primeiro dia de cada período coberto pelo intervalo.
+- O que se desenha é o dinheiro colocado contra o valor da posição, dia a dia, com as compras marcadas: uma queda em que você comprou se lê de forma diferente de uma em que não comprou.
+- Até seis planos podem ser comparados. Comparados, são desenhados como variação acumulada em vez de dinheiro, para que uma moeda a 60 mil dólares e outra a meio dólar possam ser lidas uma contra a outra.
+- Uma moeda listada depois do início do intervalo começa no seu próprio primeiro dia, e uma moeda sem preço em todo o intervalo é nomeada na linha de status em vez de desenhada como uma linha reta.
+- Os dias aqui são dias corridos. Uma moeda é negociada em todos eles: um ano de compras semanais dá cerca de 52 compras e um de compras mensais, 12, e nenhum dos dois números é aproximado.
+
+## Retorno da carteira cripto
+
+Uma quantia colocada em uma moeda em um dia, e quanto vale hoje.
+
+- **Capital** é a quantia, em dólares americanos; o intervalo diz o dia em que entrou e o dia de parar. A página compra no primeiro fechamento do intervalo e mantém até o último.
+- O que se desenha é o valor da posição dia a dia contra o dinheiro colocado: a linha fica acima do ponto de partida enquanto a posição está no lucro e abaixo quando não está.
+- Até seis moedas podem ser mantidas lado a lado; um sétimo toque não é aceito. Comparadas, cada uma é desenhada como variação acumulada em vez de valor, para que duas moedas compradas a preços muito diferentes possam ser lidas juntas.
+- Os dias aqui são dias corridos, e uma moeda é negociada em todos eles: um ano de manutenção são cerca de 365 dias, não os 243 que uma bolsa daria.
+- Quando só a fonte reserva é alcançável, o intervalo que ela consegue preencher é de cerca de um ano. A página diz então onde o intervalo realmente começa, em vez de começar silenciosamente mais tarde do que a data digitada.
+
 ## Vídeo
 
 O quadro é sempre 9:16. Todo o resto é você que decide.

@@ -418,6 +418,37 @@ Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 —
 - **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
 - **Pás na pravé straně lze uvolnit, chcete-li šířku.** Ve výchozím nastavení je vypnutý: platforma kreslí svůj avatar a tlačítka „to se mi líbí“ a komentářů na té straně svislého videa a číslo pod nimi je na telefonu skryté, přestože je tu zcela čitelné. Zapnutý: záběr, který vyplňuje celý rozsah, kreslí od první snímku až k vlastnímu okraji záběru; posuvné okno drží odstup, dokud je oknem, a spolu s oknem se rozevře na plnou šířku — snímek, na kterém video skončí, je tedy celý rozsah od okraje k okraji.
 
+## Krypto svíčky
+
+Denní svíčky jedné mince v amerických dolarech z veřejného zdroje. Týdenní a měsíční jsou složeny ze stejných dnů.
+
+- Dvanáct nabízených mincí jsou ty, k nimž oba zdroje mají roky denní historie. Vyhledávací pole tu není: oba zdroje píšou tutéž minci jinak a název napsaný do jednoho nedosáhne ani na jeden.
+- **Interval** — den, týden nebo měsíc — mění to, která řada se kreslí, takže jeho změna znovu načítá data. **Styl** a **Průběh** ne; jen překreslují to, co už je tu.
+- Mince se obchoduje každý den v roce: rozsah nemá svátky, které by musel přeskočit, ani chybějící dny, a mince nevyplácí dividendu ani se neštěpí — závěr *je* výnos a na těchto třech stránkách se žádná úprava neprovádí.
+- Když je dosažitelný jen záložní zdroj, má jeden denní kurz místo čtyř, a svíčky i sloupce se pak kreslí jako čára: tělo se dvěma knoty udělané z jediného závěru je tvar, který mince nikdy neměla. Stránka to říká pod volbou stylu, když je to tento případ.
+- Najednou lze kreslit až šest mincí; sedmý stisk se nepřijímá, protože sedmá křivka by vzala barvu, kterou už má šestá. Při porovnání se kreslí jako kumulativní změna, protože mince nemají ceny ve stejném řádu.
+- **Tyto tři stránky se objeví jen tehdy, když nějaký zdroj odpoví.** Oba zdroje jsou mimo dosah pevninské Číny, takže počítač tam je v menu prostě nedostane: tři položky nabízející data, která nemohou načíst, by byly tři položky, které selžou.
+
+## Plán krypto DCA
+
+Nakupovat jednu minci v pevném rytmu — řekněme týdně nebo měsíčně — a za kolik je ten plán dnes.
+
+- **Frekvence** a **Částka** říkají jak často a kolik, v amerických dolarech. Plán nakupuje první den každého období, které rozsah pokrývá.
+- Kreslí se vložené peníze proti hodnotě pozice, den po dni, s vyznačenými nákupy: pokles, do kterého jste nakupovali, se čte jinak než ten, do kterého jste nenakupovali.
+- Porovnat lze až šest plánů. Při porovnání se kreslí jako kumulativní změna místo peněz, aby mince za 60 000 dolarů a mince za půl dolaru šly číst proti sobě.
+- Mince zařazená až po začátku rozsahu začíná svým vlastním prvním dnem, a mince bez kurzu v celém rozsahu je uvedena na stavovém řádku místo aby byla nakreslena jako rovná čára.
+- Dny jsou tu kalendářní dny. Mince se obchoduje každý z nich: rok týdenních nákupů je asi 52 nákupů, rok měsíčních 12, a ani jedno číslo není přibližné.
+
+## Výnos krypto portfolia
+
+Částka vložená do jedné mince v jednom dni a kolik má dnes hodnotu.
+
+- **Kapitál** je částka v amerických dolarech; rozsah říká den vstupu a den, kdy skončit. Stránka nakupuje za první závěr v rozsahu a drží do posledního.
+- Kreslí se hodnota pozice den po dni proti vloženým penězům: čára je nad svým startem, dokud je pozice v plusu, a pod ním, když není.
+- Vedle sebe lze držet až šest mincí; sedmý stisk se nepřijímá. Při porovnání se každá kreslí jako kumulativní změna místo hodnoty, aby dvě mince koupené za velmi různé ceny šly číst společně.
+- Dny jsou tu kalendářní dny a mince se obchoduje každý z nich: rok držení je asi 365 dnů, ne 243, které by dala burza.
+- Když je dosažitelný jen záložní zdroj, rozsah, který dokáže zaplnit, je asi rok. Stránka pak řekne, kde rozsah opravdu začíná, místo aby potichu začínal později než zadané datum.
+
 ## Video
 
 Záběr je vždy 9:16. Všechno ostatní určujete vy.

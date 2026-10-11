@@ -327,8 +327,15 @@ public static class CandleBoardLoader
             [.. sessions.Select(s => CandleMinutes.ForDay(s, s.Find(day.Id) ?? s.Days[0]))],
             period, skipped, sessions, day);
 
-    /// <summary>The board a set of series makes, on the union of the axis they have.</summary>
-    private static CandleBoard Compose(
+    /// <summary>
+    /// The board a set of series makes, on the union of the axis they have.
+    ///
+    /// Internal rather than private because the crypto board is composed here too: a
+    /// comparison of six coins is the same picture as a comparison of six shares —
+    /// cumulative percentages on the union of their days — and a second copy of this
+    /// arithmetic is a second answer to what one axis means.
+    /// </summary>
+    internal static CandleBoard Compose(
         List<CandleSeries> series, CandlePeriod period, IReadOnlyList<string> skipped,
         IReadOnlyList<MinuteSession>? sessions = null, MinuteDay? drawn = null)
     {
