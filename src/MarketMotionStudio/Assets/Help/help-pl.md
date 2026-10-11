@@ -468,6 +468,36 @@ Kwota włożona w jedną monetę pewnego dnia i ile jest dziś warta.
 - Dni to tu dni kalendarzowe i moneta jest notowana w każdy z nich: rok trzymania to około 365 dni, a nie 243, które dałaby giełda.
 - Gdy dostępne jest tylko źródło zapasowe, jego zakres to około rok. Strona mówi wtedy, gdzie zakres naprawdę się zaczyna, zamiast po cichu zacząć później niż wpisana data.
 
+## Kalendarz zmian krypto
+
+Jedno pole na dzień, pokolorowane według zmiany tego dnia.
+
+- **Pełna siatka to nie brakujące dane.** Kalendarz akcji to w większości luki — weekendy, święta, zawieszenia — i czyta się go tak, jak wygląda rynek. Moneta jest notowana każdego dnia roku, więc każde pole jest wypełnione: obraz jest gęstszy, nie dłuższy, a to, co wygląda na pominięte święto, jest rynkiem, który nigdy się nie zamyka.
+- **Zakres** to trzy, sześć lub dwanaście miesięcy albo własny przedział. Własny przedział jest przycinany do tego, co ma źródło, a strona mówi, gdzie zakres naprawdę się zaczyna, zamiast zacząć później niż wpisana data.
+- Pierwsze pole to zawsze 0 %: w zakresie nie ma wcześniejszego zamknięcia, a sięganie po nie spoza zakresu uzależniałoby pierwsze pola od dnia, którego kalendarz nie pokazuje.
+- Kolor to zmiana, nie obrót. Wolumen monety to liczba monet i nic w tej siatce nie jest według niego skalowane — kalendarz mówi o tym, w którą stronę poszedł dzień i jak daleko.
+- Dni to tu dni kalendarzowe. Rok na tej stronie to około 365 pól, nie 243, które dałaby giełda, i żadna z tych liczb nie jest przybliżona.
+
+## Historia kapitalizacji krypto
+
+Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach.
+
+- **Tam, gdzie obie linie się rozchodzą, widać emisję i spalanie.** Kurs to cena jednej monety; kapitalizacja to ten kurs razy liczba istniejących monet. Linia kapitalizacji rosnąca, gdy linia kursu spada, to rosnąca podaż, nie zła liczba.
+- **To jest mierzone, nie ekstrapolowane.** Pomnożenie dzisiejszej podaży przez stary kurs to tani sposób na narysowanie tej strony i daje dwie linie, które są jedną linią: kapitalizacja nie powiedziałaby niczego, czego kurs już nie mówi. To, co jest tu rysowane, pochodzi z publicznego API CoinMetrics, które prowadzi dzienną kapitalizację krążącą: Bitcoin sięga 2010 roku, pozostałe monety tak daleko, jak źródło je przechowuje.
+- Kapitalizacja oznacza tu kapitalizację *krążącą* — monety już wyemitowane i będące w obiegu, nie rozwodnioną wartość zakładającą wszystkie monety, które kiedykolwiek powstaną.
+- Seria szacunkowa, którą ma każda moneta, zaczyna się w czerwcu 2019. Moneta bez dokładnej serii zaczyna tam, a strona mówi, gdzie zakres naprawdę się zaczyna, zamiast po cichu zacząć później.
+- **Zakres** to dwanaście, dwadzieścia cztery, sześćdziesiąt lub sto dwadzieścia miesięcy albo własny przedział. Historia monety może być krótsza niż żądany zakres — to dolna granica źródła, nie nieudane pobranie.
+
+## Wyścig kapitalizacji krypto
+
+Piętnaście monet o największej kapitalizacji dziś i jak ten porządek zmieniał się dzień po dniu.
+
+- **O tym składzie się pyta, nie zapisuje go z góry.** Przy pobieraniu strona bierze piętnaście największych według wartości rynkowej z aktualnego rankingu CoinGecko; moneta, która urosła do tego rozmiaru w zeszłym roku, jest więc w tabeli, bez tego żeby ktoś edytował listę. Dlatego nie ma tu też wyboru monety: skład jest odpowiedzią, a pytanie dotyczy przedziału.
+- Wartości dzienne pochodzą z CoinMetrics, jedno zapytanie dla całej tabeli. To seria szacunkowa tego źródła, która zaczyna się w czerwcu 2019 tak samo dla wszystkich, więc zakres jest tam przycinany zamiast odrzucany: tabela, w której dwie monety miałyby osiem lat historii, a trzynaście żadnej, czytałaby się jak monety, które pojawiły się znikąd.
+- **Stablecoiny zostają.** Zmierzone 2026-10-11: w pierwszej trzydziestce było ich sześć, a tether był trzecią co do wielkości rzeczą na tym rynku. Tabela, która by je ukryła, porządkowałaby coś innego niż wielkość. To, co robią z obrazem, jest uczciwe: ich linia jest płaska, bo dolar jest wart dolara, więc tabela pokazuje na pierwszy rzut oka, które z największych rzeczy tu naprawdę się poruszają.
+- Moneta, której źródło wartości nie ma, jest pomijana zamiast rysowana płasko przy zerze: płaska linia na dole wyścigu wartości czyta się jak moneta, która spadła do zera. Tabela może więc mieć mniej niż piętnaście pozycji, a linia stanu mówi, ile ich zostało.
+- **Zakres** to dwanaście, dwadzieścia cztery lub sześćdziesiąt miesięcy albo własny przedział, przycinany do serii szacunkowej w ten sam sposób.
+
 ## Film
 
 Kadr jest zawsze 9:16. Wszystko inne ustalasz sam.

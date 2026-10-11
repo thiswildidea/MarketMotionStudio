@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
-"""真机验证「加密货币」这个市场，以及它那三个页面。
+"""真机验证「加密货币」这个市场，以及它那六个页面。
 
-要回答的核心问题有五个：
+要回答的核心问题有六个：
 
-1. **默认市场（A 股）下，那三项不在导航里。** 加密页不是并列的第二套页面，是一个市场里才
+1. **默认市场（A 股）下，那六项不在导航里。** 加密页不是并列的第二套页面，是一个市场里才
    有的页面 —— 所以「看得到」与「看不到」都要验，而默认那一眼正是绝大多数用户看到的样子。
 2. **市场下拉里有「加密货币」这一格**，而且它只在能取到币价的地方出现。本机开着 VPN，
    所以它应该**在**；这一条验的是「下拉接到了可达性上」，不是「隐藏逻辑生效了」。
-3. **选中它之后，导航里只剩三页。** 股票各页全部移除 —— 它们读的是股票接口，一个币也不报，
+3. **选中它之后，导航里只剩六页。** 股票各页全部移除 —— 它们读的是股票接口，一个币也不报，
    留着就是一次一次的失败。这一条必须真机切一次市场，因为「菜单裁成什么样」只在启动读
    市场设置时才发生。
 4. **三页真的取到了币价，而且报出来的天数是自然日。** 加密页的状态行说的是**自然日**，
    股票页说的是**交易日** —— 这两批 resw 键分开写就是为了这个，所以判据认「天（」而不是
    「个交易日」。认错了字，这轮最重要的一条约束就白写了。
-5. **源码里的五处守卫真的在**（见最后一节）。
+5. **后三页（日历 / 市值历程 / 市值榜）取到的是它们各自那一份数，不是拿价格顶替的。**
+   日历要报出上涨与下跌的天数，而且两者相加要等于天数减一（第一格恒为 0%）；市值历程要
+   报出期末市值**这个数**—— 它是 CoinMetrics 的逐日市值，不是「今天的流通量 × 老价格」
+   的外推；市值榜要报出币种数与期末第一，而**币种数可以少于 15**（缺数据的币是丢弃，不是
+   画成贴地的零线）。
+6. **源码里那几处守卫真的在**（见最后一节）。
 
 **跑完必须把市场改回 A 股**，所以整段包在 `try/finally` 里，而恢复那一步自己再验一次
-（改回之后三项应该又不在导航里）。中途被打断也不会留下一台「市场是加密货币」的机器。
+（改回之后那六项应该又不在导航里）。中途被打断也不会留下一台「市场是加密货币」的机器。
 
 用法：python tools/verify-crypto.py
 """
@@ -44,9 +49,18 @@ CRYPTO_FILTER_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspat
 CRYPTO_MINUTE_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                   "artifacts", "crypto-minute.png")
 
+# 后三页取完数那一眼的实拍。
+CRYPTO_CALENDAR_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    "artifacts", "crypto-calendar.png")
+CRYPTO_CAP_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                               "artifacts", "crypto-caphistory.png")
+CRYPTO_BOARD_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                 "artifacts", "crypto-marketcap.png")
+
 EXE = "MarketMotionStudio.exe"
 
-CRYPTO_IDS = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition"]
+CRYPTO_IDS = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition",
+              "NavCryptoCalendar", "NavCryptoCapHistory", "NavCryptoMarketCap"]
 
 # A few stock pages, one from each part of the menu. If the market were crypto and
 # these were still listed, the menu would be offering pages that cannot fetch a single
@@ -66,7 +80,26 @@ DONE = re.compile(r"至\s*\d{4}-\d{2}-\d{2}")
 # 分钟档那句写的是一天而不是一段（「1 分钟 K 线 1440 根（2026-10-11）」），里面没有「至」，
 # 所以 `DONE` 匹配不上 —— 不换判据的话，三档各要空等满 180 秒才返回。
 MINUTE_DONE = re.compile(r"[（(]\s*\d{4}-\d{2}-\d{2}\s*[)）]")
-FAILED = re.compile(r"失败|无法|错误|没有|出错|请至少|请勾")
+# 「耗时过长，已放弃」必须算失败：它是 `RunAsync` 那条绳子断掉时说的话，而它**不带上面任何
+# 一个字** —— 漏了它，一次超时会被「没有 FAILED 字样」读成取数成功，判据绿着而页面根本没数据。
+FAILED = re.compile(r"失败|无法|错误|没有|出错|请至少|请勾|耗时|放弃")
+
+# 日历那句也写的是一个区间但用「~」连（「183 个自然日（2026-04-11 ~ 2026-10-11）」），
+# 同样没有「至」。认「个自然日（」而不是只认日期：这句里有两个日期，而「请至少勾选」
+# 那类拒绝句里一个都没有 —— 认日期会把「已选 0 个」读成取数成功。
+CALENDAR_DONE = re.compile(r"个自然日（\s*\d{4}-\d{2}-\d{2}")
+CALENDAR_DAYS = re.compile(r"(\d[\d,]*)\s*个自然日（")
+CALENDAR_SPLIT = re.compile(r"上涨\s*(\d[\d,]*)\s*天\s*·\s*下跌\s*(\d[\d,]*)\s*天")
+
+# 市值历程那句末尾带的是**期末市值这个数**（「期末市值 16,670 亿美元」）。它是这一页唯一
+# 能证伪「外推」的证据：外推出来的市值线与价格线恒平行，而这一页存在的理由就是它们不平行。
+CAP_VALUE = re.compile(r"期末市值\s*([\d,]+)")
+
+# 市值榜那句：几个币、多少天、期末第一是谁。币种数**允许少于 15**，所以上界写 15 而下界
+# 写 5（`CryptoCapBoard.FewestCoins`），写成「必须正好 15」会在源端缺一个币的那一趟红掉，
+# 而那一趟页面是好的。
+BOARD_COINS = re.compile(r"(\d[\d,]*)\s*个币种")
+BOARD_FIRST = re.compile(r"期末第一是\s*(\S+)")
 
 PRIVATE = re.compile(r"[\ue000-\uf8ff]")
 
@@ -170,30 +203,44 @@ def toggle_state(chip):
     return None
 
 
-def ensure_coin(win, code, seconds=8):
-    """把某个币种勾上。
+def only_coin(win, code, seconds=12):
+    """把币种开关摆成「只有这一个」。
 
-    **为什么先看开关状态**：三页都把「上次选的」存了下来，没存过时默认给第一个币种 ——
-    也就是说**打开页面时 BTC 往往已经是勾上的**。不看状态直接点，就是把它点掉，然后取数
-    报「请至少勾选一个币种」。这个错看起来像取数坏了，实际是判据自己把开关关了。
+    **为什么不能只保证它在。** 三页都把「上次选的」存了下来，而上一趟判据（尤其上一趟中途
+    失败退出的那一趟）可能留下两只。于是 K 线与定投走的是**多标的**那一支：状态行说
+    「2 个币种 · 3937 天」而不是「… 根」、说「2 份计划」而不是「买入 N 次」；检索框那三条
+    也会因为「已选中的币始终显示」而多出一只。三种症状看着都像取数坏了，实际是判据的起点
+    没摆正 —— 与 `reset_market()` 同一个道理：**起点不假设**。
     """
-    chip = winui.find(win, lambda c: c.AutomationId == "Coin" + code, limit=14)
+    chips = winui.find_all(
+        win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"), limit=14)
 
-    if chip is None:
+    if not chips:
         return False
 
+    wanted = "Coin" + code
     deadline = time.time() + seconds
+    settled = False
 
     while time.time() < deadline:
-        state = toggle_state(chip)
+        settled = True
 
-        if state == auto.ToggleState.On:
-            return True
+        for chip in chips:
+            want = chip.AutomationId == wanted
+            state = toggle_state(chip)
 
-        winui.invoke_click(chip, settle=0.6)
-        time.sleep(0.4)
+            if (state == auto.ToggleState.On) != want:
+                winui.invoke_click(chip, settle=0.5)
+                settled = False
 
-    return toggle_state(chip) == auto.ToggleState.On
+        if settled:
+            break
+
+        time.sleep(0.5)
+
+    on = [c.AutomationId for c in chips if toggle_state(c) == auto.ToggleState.On]
+
+    return on == [wanted]
 
 
 def picks_note(win):
@@ -345,7 +392,7 @@ def main():
         check("币种名是当地语言的写法", "比特币" in names,
               "、".join(names[:4]) if names else "(没找到币种开关)")
 
-        check("勾上 BTC", ensure_coin(win, "BTC"))
+        check("只留 BTC 一个币种", only_coin(win, "BTC"))
         print("  选择器:", picks_note(win))
 
         text = fetch(win)
@@ -476,7 +523,7 @@ def main():
 
         check("打开加密定投页", open_page(win, "NavCryptoDca", "AmountBox"))
 
-        check("勾上 BTC", ensure_coin(win, "BTC"))
+        check("只留 BTC 一个币种", only_coin(win, "BTC"))
         print("  选择器:", picks_note(win))
 
         text = fetch(win)
@@ -496,7 +543,7 @@ def main():
 
         check("打开加密持仓页", open_page(win, "NavCryptoPosition", "CapitalBox"))
 
-        check("勾上 BTC", ensure_coin(win, "BTC"))
+        check("只留 BTC 一个币种", only_coin(win, "BTC"))
         print("  选择器:", picks_note(win))
 
         text = fetch(win)
@@ -509,7 +556,93 @@ def main():
               days is not None and 0 < int(days.group(1).replace(",", "")) <= 4000,
               days.group(1) if days else "")
 
-        # ---- 7. 源码里的守卫 --------------------------------------------------------
+        # ---- 6.5 加密涨跌日历 -------------------------------------------------------
+        #
+        # 一格一天。**上涨 + 下跌 = 天数 − 1** 是这一页最硬的一条：第一格恒为 0%（区间内没有
+        # 前一天收盘价），它既不算涨也不算跌。这条一错，要么是首日被算进了涨跌（画面第一格
+        # 会平白带一个颜色），要么是天数被当成了别的口径 —— 两种都看不出来，只有这个加法看得出。
+        print("\n[加密货币涨跌日历]")
+
+        check("打开加密涨跌日历页", open_page(win, "NavCryptoCalendar", "CryptoCalendarRange"))
+
+        text = fetch(win, done=CALENDAR_DONE)
+        print("  状态行:", text)
+        check("日历取数成功", bool(text) and not FAILED.search(text or ""))
+
+        got = CALENDAR_DAYS.search(text or "")
+        split = CALENDAR_SPLIT.search(text or "")
+
+        check("状态行报出自然日数", got is not None, got.group(1) if got else text)
+        check("状态行报出上涨与下跌的天数", split is not None, text or "")
+
+        if got and split:
+            total = int(got.group(1).replace(",", ""))
+            up = int(split.group(1).replace(",", ""))
+            down = int(split.group(2).replace(",", ""))
+
+            check("上涨 + 下跌 = 天数 − 1（首日恒为 0%）", up + down == total - 1,
+                  "%d + %d vs %d - 1" % (up, down, total))
+            check("天数在 80~400 之间（默认六个月）", 80 <= total <= 400, str(total))
+            check("币不是天天涨或天天跌", up > 0 and down > 0, "涨 %d 跌 %d" % (up, down))
+
+        winui.shot(win, CRYPTO_CALENDAR_SHOT)
+
+        # ---- 6.6 加密市值历程 -------------------------------------------------------
+        #
+        # 这一页唯一能证伪「外推」的东西是**期末市值这个数**。用今天的流通量乘以老价格也能
+        # 画出一条市值线，而那条线与价格线恒平行 —— 页面看上去完全正常，只有「市值是多少」
+        # 这个数会露馅。所以判据要的不是一个「有市值线」，是这句状态行里那个数。
+        print("\n[加密货币市值历程]")
+
+        check("打开加密市值历程页", open_page(win, "NavCryptoCapHistory", "CryptoCapCoin"))
+
+        text = fetch(win)
+        print("  状态行:", text)
+        check("市值历程取数成功", bool(text) and not FAILED.search(text or ""))
+
+        value = CAP_VALUE.search(text or "")
+        check("状态行报出期末市值", value is not None, value.group(1) if value else text)
+
+        if value:
+            cap = float(value.group(1).replace(",", ""))
+            # 亿美元。比特币 2026 年是万亿美元量级，也就是五位数亿美元；一个币的市值不可能
+            # 是一亿美元以下还能进这个应用的币种清单。
+            check("期末市值在 1~1,000,000 亿美元之间", 1 <= cap <= 1_000_000, str(cap))
+
+        winui.shot(win, CRYPTO_CAP_SHOT)
+
+        # ---- 6.7 加密市值榜 ---------------------------------------------------------
+        #
+        # 这一页**没有币种选择器**：榜上的币是取数那一刻问出来的实时前 15 名，不是让读者挑。
+        # 所以第一条断言是「页面上没有币种开关」—— 有，那就是这一页把答案交回给了读者。
+        # 币种数允许少于 15：源端不携带的币是丢弃，不是画成贴地的零线。
+        print("\n[加密货币市值榜]")
+
+        check("打开加密市值榜页", open_page(win, "NavCryptoMarketCap", "CryptoMarketCapRange"))
+
+        chips = chip_names(win)
+        check("这一页没有币种开关（榜是问出来的，不是挑出来的）", len(chips) == 0,
+              "、".join(chips) if chips else "0 个")
+
+        text = fetch(win)
+        print("  状态行:", text)
+        check("市值榜取数成功", bool(text) and not FAILED.search(text or ""))
+
+        coins = BOARD_COINS.search(text or "")
+        first = BOARD_FIRST.search(text or "")
+
+        check("状态行报出币种数", coins is not None, coins.group(1) if coins else text)
+        check("状态行报出期末第一", first is not None, first.group(1) if first else text)
+
+        if coins:
+            # 上界 15 是 `CryptoCapBoard.Board`，下界 5 是 `FewestCoins`。写成「正好 15」
+            # 会在源端恰好缺一个币的那一趟红掉，而那一趟页面是好的。
+            count = int(coins.group(1).replace(",", ""))
+            check("币种数在 5~15 之间（缺数据的币丢弃而非画零）", 5 <= count <= 15, str(count))
+
+        winui.shot(win, CRYPTO_BOARD_SHOT)
+
+        # ---- 8. 源码里的守卫 --------------------------------------------------------
         print("\n[源码守卫]")
 
         window = open(os.path.join(SOURCE, "MainWindow.xaml.cs"), encoding="utf-8-sig").read()
@@ -518,8 +651,27 @@ def main():
         settings = open(os.path.join(SOURCE, "Pages", "SettingsPage.xaml.cs"),
                         encoding="utf-8-sig").read()
 
-        check("三项在 XAML 里先 Collapsed，由市场打开",
-              len(re.findall(r'x:Name="(NavCrypto\w+)"[^>]*Visibility="Collapsed"', xaml)) == 3)
+        check("六项在 XAML 里先 Collapsed，由市场打开",
+              len(re.findall(r'x:Name="(NavCrypto\w+)"[^>]*Visibility="Collapsed"', xaml)) == 6)
+
+        # 六页是**两张表**里的同一份名单，不是六处 `if`：导航守卫问 `CryptoPages`，tag 直达
+        # 问映射表。加第七页时只往一处加，另一处就漏了 —— 症状是「这一页取不到数」，不是
+        # 「接线漏了」。期望值从 `CRYPTO_IDS` 算，不写死：导航加一项，这里跟着长。
+        listed = len(re.findall(r"typeof\(Crypto\w+Page\)", window))
+        check("六页写进两张表（导航守卫 + tag 直达），且导航守卫问的是这张表",
+              "CryptoPages.Contains(page)" in window and listed == 2 * len(CRYPTO_IDS),
+              "%d 处 typeof，期望 %d" % (listed, 2 * len(CRYPTO_IDS)))
+
+        check("市值榜拿的是 CoinMetrics 的市值，不是价格源凑出来的",
+              "Services.CryptoCaps" in open(os.path.join(SOURCE, "Pages",
+                                                         "CryptoMarketCapPage.xaml.cs"),
+                                            encoding="utf-8-sig").read())
+
+        # 缺数据的币是**丢弃**而不是画成贴地的零线 —— 那条规定写在 `kept` 这一个词里。
+        check("市值榜丢弃缺数据的币而不是画零",
+              "kept.Count < FewestCoins" in open(os.path.join(SOURCE, "Market",
+                                                              "CryptoCapBoard.cs"),
+                                                 encoding="utf-8-sig").read())
 
         check("ApplyMarket 按市场分岔（加密货币那一支）",
               "if (MarketSettings.Current is MarketId.Crypto)" in window)
@@ -554,7 +706,7 @@ def main():
                 win = restart()
 
                 back = nav_item(win, "NavCryptoCandle") is None
-                check("改回「%s」后三项又不在导航里" % labels[0], back)
+                check("改回「%s」后那六项又不在导航里" % labels[0], back)
 
                 if not back:
                     print("  ！！市场可能没改回去，请到设置页把「市场」手动改回「%s」。" % labels[0])

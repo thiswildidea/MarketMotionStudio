@@ -490,6 +490,36 @@ Une somme placée dans une cryptomonnaie un jour donné, et ce qu'elle vaut aujo
 - Les jours ici sont des jours civils, et une cryptomonnaie se négocie chacun d'eux : une année de détention représente environ 365 jours, et non les 243 que donnerait une bourse.
 - Si seule la source de repli est atteignable, l'intervalle qu'elle peut remplir est d'environ un an. La page dit alors où l'intervalle commence réellement, plutôt que de commencer silencieusement plus tard que la date saisie.
 
+## Calendrier des hausses et baisses crypto
+
+Une case par jour, colorée selon la variation de ce jour.
+
+- **Une grille pleine n'est pas une donnée manquante.** Un calendrier d'actions est surtout fait de trous — week-ends, jours fériés, suspensions — et se lit comme un marché se voit. Une cryptomonnaie se négocie tous les jours de l'année, donc chaque case est remplie : l'image est plus dense, non plus longue, et ce qui ressemble à un jour férié manquant est un marché qui ne ferme jamais.
+- **Intervalle** : trois, six ou douze mois, ou une période de votre choix. Une période libre est ramenée à ce que la source possède, et la page dit où l'intervalle commence réellement plutôt que de commencer plus tard que la date saisie.
+- La première case est toujours à 0 % : il n'y a pas de clôture précédente dans l'intervalle, et aller la chercher au-dehors ferait dépendre la première case d'un jour que le calendrier ne montre pas.
+- La couleur est la variation, pas le montant échangé. Le volume d'une cryptomonnaie est un nombre de jetons, et rien dans cette grille n'est mis à l'échelle avec lui — ce qui intéresse le calendrier, c'est de quel côté la journée est allée et de combien.
+- Les jours ici sont des jours civils. Une année sur cette page représente environ 365 cases, et non les 243 que donnerait une bourse, et aucun des deux chiffres n'est approximatif.
+
+## Historique de capitalisation crypto
+
+La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous.
+
+- **Là où les deux lignes s'écartent, on voit l'émission et la destruction.** Le cours est ce que coûte un jeton ; la capitalisation est ce cours multiplié par le nombre de jetons existants. Une ligne de capitalisation qui monte pendant que celle du cours descend, c'est l'offre qui grandit, pas un chiffre erroné.
+- **C'est mesuré, pas extrapolé.** Multiplier l'offre actuelle par un ancien cours est la manière bon marché de tracer cette page, et cela produit deux lignes qui sont la même ligne : la capitalisation ne dirait rien que le cours ne dise déjà. Ce qui est tracé ici vient de l'API publique CoinMetrics, qui porte une capitalisation circulante quotidienne : Bitcoin remonte à 2010, les autres cryptomonnaies aussi loin que la source les garde.
+- Ici, capitalisation signifie la capitalisation *circulante* — les jetons déjà émis et en circulation, et non une valorisation entièrement diluée qui suppose tous les jetons qui existeront.
+- La série estimée que porte chaque cryptomonnaie commence en juin 2019. Une cryptomonnaie sans série exacte commence là, et la page dit où l'intervalle commence réellement au lieu de commencer discrètement plus tard.
+- **Intervalle** : douze, vingt-quatre, soixante ou cent vingt mois, ou une période de votre choix. L'historique d'une cryptomonnaie peut être plus court que l'intervalle demandé — c'est le plancher de la source, pas une récupération qui a échoué.
+
+## Course des capitalisations crypto
+
+Les quinze cryptomonnaies à la plus forte capitalisation aujourd'hui, et l'évolution de cet ordre jour après jour.
+
+- **Le plateau est demandé, pas écrit.** Au moment de la récupération, la page prend les quinze plus fortes par valeur de marché dans le classement en direct de CoinGecko ; une cryptomonnaie devenue assez grosse l'année dernière figure donc au tableau sans que personne n'édite une liste. C'est aussi pourquoi il n'y a pas de sélecteur de cryptomonnaie ici : le plateau est la réponse, et ce qui est demandé, c'est la période.
+- Les valeurs quotidiennes viennent de CoinMetrics, une seule requête pour tout le tableau. C'est la série estimée de cette source, qui commence en juin 2019 de la même façon pour toutes : l'intervalle y est donc ramené plutôt que refusé — un tableau où deux cryptomonnaies auraient huit ans d'historique et treize aucun se lirait comme des cryptomonnaies apparues de nulle part.
+- **Les stablecoins y restent.** Mesuré le 2026-10-11, les trente premières en comptaient six, et tether était la troisième plus grosse chose de ce marché. Un tableau qui les cacherait classerait autre chose que la taille. Ce qu'elles font à l'image est honnête : leur ligne est plate, parce qu'un dollar vaut un dollar, si bien que le tableau montre d'un coup d'œil lesquelles des plus grosses choses ici bougent réellement.
+- Une cryptomonnaie que la source de valeurs ne porte pas est retirée plutôt que tracée à plat sur zéro : une ligne plate en bas d'une course de valeurs se lit comme une cryptomonnaie réduite à rien. Le tableau peut donc compter moins de quinze, et la ligne d'état dit combien il en a eu.
+- **Intervalle** : douze, vingt-quatre ou soixante mois, ou une période de votre choix, ramenée à la série estimée de la même manière.
+
 ## Vidéo
 
 L'image est toujours en 9:16. Tout le reste vous appartient.

@@ -302,6 +302,18 @@
                                         Visibility="Collapsed">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPosition}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoCalendar" x:Uid="NavCryptoCalendar" Tag="CryptoCalendar"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconGainCalendar}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoCapHistory" x:Uid="NavCryptoCapHistory" Tag="CryptoCapHistory"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconCapHistory}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoMarketCap" x:Uid="NavCryptoMarketCap" Tag="CryptoMarketCap"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMarketCap}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 
             <mux:NavigationView.FooterMenuItems>

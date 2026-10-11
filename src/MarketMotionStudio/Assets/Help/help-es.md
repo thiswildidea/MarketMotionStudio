@@ -476,6 +476,36 @@ Una suma puesta en una moneda un día, y cuánto vale hoy.
 - Los días aquí son días naturales, y una moneda cotiza en todos: un año de mantenimiento son unos 365 días, no los 243 que daría una bolsa.
 - Si solo se alcanza la fuente de respaldo, el rango que puede llenar es de about un año. La página dice entonces dónde empieza realmente el rango, en lugar de empezar silenciosamente más tarde que la fecha escrita.
 
+## Calendario de ganancias cripto
+
+Una celda por día, coloreada según la variación de ese día.
+
+- **Una cuadrícula llena no son datos que falten.** Un calendario de acciones está lleno de huecos — fines de semana, festivos, suspensiones — y se lee como se ve un mercado. Una moneda cotiza todos los días del año, así que todas las casillas están rellenas: la imagen es más densa, no más larga, y lo que parece un festivo omitido es un mercado que nunca cierra.
+- **Rango** son tres, seis o doce meses, o un tramo propio. Un tramo propio se recorta a lo que la fuente tiene, y la página dice dónde empieza realmente el rango en lugar de empezar más tarde que la fecha escrita.
+- La primera celda siempre es 0 %: no hay un cierre previo dentro del rango, y buscarlo fuera haría que la primera casilla dependiera de un día que el calendario no muestra.
+- El color es la variación, no el importe negociado. El volumen de una moneda es una cantidad de monedas, y nada en esta cuadrícula se escala con él — de lo que trata el calendario es de hacia dónde fue el día y cuánto.
+- Los días aquí son días naturales. Un año en esta página son unas 365 celdas, no los 243 que daría una bolsa, y ninguna de las dos cifras es aproximada.
+
+## Historial de capitalización cripto
+
+La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo.
+
+- **Donde las dos líneas se separan, lo que se ve es emisión y quema.** El precio es lo que cuesta una moneda; la capitalización es ese precio por la cantidad de monedas existentes. Una línea de capitalización que sube mientras la del precio baja es oferta que crece, no una cifra equivocada.
+- **Esto se mide, no se extrapola.** Multiplicar el suministro de hoy por un precio antiguo es la forma barata de dibujar esta página, y produce dos líneas que son la misma línea: la capitalización no diría nada que el precio no diga ya. Lo que se dibuja aquí viene de la API pública de CoinMetrics, que lleva una capitalización circulante diaria: Bitcoin llega hasta 2010, las demás monedas hasta donde la fuente las tenga.
+- Aquí capitalización significa la *circulante* — las monedas ya emitidas y en circulación, no un cálculo totalmente diluido que supone todas las monedas que existirán.
+- La serie estimada que tiene cada moneda empieza en junio de 2019. Una moneda sin serie exacta empieza ahí, y la página dice dónde empieza realmente el rango en vez de empezar silenciosamente más tarde.
+- **Rango** son doce, veinticuatro, sesenta o ciento veinte meses, o un tramo propio. La historia de una moneda puede ser más corta que el rango pedido — eso es el suelo de la fuente, no una consulta que falló.
+
+## Carrera de capitalización cripto
+
+Las quince monedas con mayor capitalización hoy y cómo se movió ese orden día a día.
+
+- **El grupo se pregunta, no se escribe.** Al obtener los datos, la página toma las quince mayores por valor de mercado de la clasificación en vivo de CoinGecko; una moneda que creció hasta ese tamaño el año pasado está en el tablero sin que nadie edite una lista. Por eso tampoco hay selector de moneda aquí: el grupo es la respuesta, y lo que se pregunta es el tramo.
+- Los valores diarios vienen de CoinMetrics, una sola consulta para todo el tablero. Son la serie estimada de esa fuente, que empieza en junio de 2019 igual para todas las monedas, así que el rango se recorta ahí en vez de rechazarse: un tablero donde dos monedas tuvieran ocho años de historia y trece ninguna se leería como monedas que aparecieron de la nada.
+- **Las monedas estables se quedan.** Medido el 2026-10-11, las treinta primeras llevaban seis de ellas, y tether era la tercera cosa más grande de este mercado. Un tablero que las ocultara estaría ordenando otra cosa que el tamaño. Lo que hacen con la imagen es honesto: su línea es plana, porque un dólar vale un dólar, así que el tablero muestra de un vistazo cuáles de las cosas más grandes aquí se mueven de verdad.
+- Una moneda que la fuente de valores no tiene se descarta en lugar de dibujarse plana en cero: una línea plana en el fondo de una carrera de valor se lee como una moneda que acabó en nada. El tablero puede tener por tanto menos de quince, y la línea de estado dice cuántas llegaron.
+- **Rango** son doce, veinticuatro o sesenta meses, o un tramo propio, recortado a la serie estimada del mismo modo.
+
 ## Vídeo
 
 El encuadre es siempre 9:16. Todo lo demás lo decide usted.

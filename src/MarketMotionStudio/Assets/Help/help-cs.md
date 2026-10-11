@@ -451,6 +451,36 @@ Nakupovat jednu minci v pevném rytmu — řekněme týdně nebo měsíčně —
 - Dny jsou tu kalendářní dny a mince se obchoduje každý z nich: rok držení je asi 365 dnů, ne 243, které by dala burza.
 - Když je dosažitelný jen záložní zdroj, rozsah, který dokáže zaplnit, je asi rok. Stránka pak řekne, kde rozsah opravdu začíná, místo aby potichu začínal později než zadané datum.
 
+## Kalendář pohybů krypto
+
+Jeden čtvereček za den, obarvený podle změny toho dne.
+
+- **Plná mřížka nejsou chybějící data.** Kalendář akcií je převážně samá díra — víkendy, svátky, pozastavení — a čte se tak, jak trh vypadá. Mince se obchoduje každý den v roce, takže každý čtvereček je vyplněný: obraz je hustší, ne delší, a co vypadá jako chybějící svátek, je trh, který nikdy nezavírá.
+- **Rozsah** jsou tři, šest nebo dvanáct měsíců, nebo vlastní období. Vlastní období se zkrátí na to, co zdroj má, a stránka řekne, kde rozsah opravdu začíná, místo aby začal později než zadané datum.
+- První čtvereček je vždy 0 %: uvnitř rozsahu není žádný předchozí závěr, a sahat pro něj ven by znamenalo, že první políčko závisí na dni, který kalendář neukazuje.
+- Barva je změna, nikoli objem obchodů. Objem mince je počet mincí a nic v této mřížce se podle něj neškáluje — kalendář je o tom, kterým směrem se den vydal a jak daleko.
+- Dny jsou tu kalendářní dny. Rok na této stránce je asi 365 čtverečků, ne 243, které by dala burza, a ani jedno číslo není přibližné.
+
+## Historie kapitalizace krypto
+
+Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny.
+
+- **Tam, kde se obě čáry rozcházejí, vidíte emisi a pálení.** Cena je, kolik stojí jedna mince; kapitalizace je ta cena krát počet existujících mincí. Čára kapitalizace stoupající, zatímco čára ceny klesá, je rostoucí nabídka, ne špatné číslo.
+- **To je měřené, ne dopočítané.** Vynásobit dnešní nabídku starou cenou je levný způsob, jak tuto stránku nakreslit, a dává to dvě čáry, které jsou tou samou čarou: kapitalizace by neřekla nic, co cena neříká už teď. Co se tu kreslí, pochází z veřejného API CoinMetrics, které nese denní obíhající kapitalizaci: Bitcoin sahá do roku 2010, ostatní mince tak daleko, jak je zdroj drží.
+- Kapitalizace zde znamená tu *obíhající* — mince již vydané a v oběhu, nikoli plně zředěný počet, který počítá všechny mince, které kdy budou existovat.
+- Odhadovaná řada, kterou má každá mince, začíná v červnu 2019. Mince bez přesné řady začíná tam, a stránka řekne, kde rozsah opravdu začíná, místo aby potichu začínal později.
+- **Rozsah** je dvanáct, dvacet čtyři, šedesát nebo sto dvacet měsíců, nebo vlastní období. Historie mince může být kratší než požadovaný rozsah — to je spodní hranice zdroje, ne selhané načtení.
+
+## Závod kapitalizací krypto
+
+Patnáct mincí s největší kapitalizací dnes a jak se toto pořadí den po dni měnilo.
+
+- **O startovním poli se ptá, nezapisuje se.** Při načtení stránka vezme patnáct největších podle tržní hodnoty ze živého žebříčku CoinGecko; mince, která do této velikosti vyrostla loni, je tedy v tabulce, aniž by někdo upravoval seznam. Proto tu také není výběr mince: pole je odpověď a ptá se na období.
+- Denní hodnoty pocházejí z CoinMetrics, jeden požadavek pro celou tabulku. Je to odhadovaná řada tohoto zdroje, která začíná v červnu 2019 stejně pro všechny, takže rozsah se tam zkracuje, nikoli odmítá: tabulka, v níž by dvě mince měly osm let historie a třináct žádnou, by se četla jako mince, které se objevily odnikud.
+- **Stablecoiny zůstávají.** Měřeno 2026-10-11: v prvních třiceti jich bylo šest a tether byl třetí největší věcí na tomto trhu. Tabulka, která by je skryla, by řadila něco jiného než velikost. Co dělají s obrazem, je poctivé: jejich čára je rovná, protože dolar má hodnotu dolaru, takže tabulka na první pohled ukáže, které z největších věcí se tu opravdu hýbou.
+- Mince, kterou zdroj hodnot nemá, je vynechána, nikoli nakreslena ploše na nule: plochá čára na spodku závodu hodnot se čte jako mince, která skončila na ničem. Tabulka proto může mít méně než patnáct a stavový řádek řekne, kolik jich přišlo.
+- **Rozsah** je dvanáct, dvacet čtyři nebo šedesát měsíců, nebo vlastní období, zkrácené na odhadovanou řadu stejným způsobem.
+
 ## Video
 
 Záběr je vždy 9:16. Všechno ostatní určujete vy.

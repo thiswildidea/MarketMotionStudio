@@ -475,6 +475,36 @@ A sum put into one coin on a day, and what it is worth now.
 - Days here are calendar days, and a coin trades on every one of them: a year of holding is about 365 days, not the 243 a stock market would give you.
 - If only the fallback source can be reached, the range it can fill is about a year. The page then says where the range really starts, rather than quietly beginning later than the date that was typed.
 
+## Crypto Gain Calendar
+
+One cell per day, coloured by that day's change.
+
+- **A full grid is not missing data.** A stock calendar is mostly holes — weekends, holidays, suspensions — and reads the way a market looks. A coin trades every day of the year, so every square is filled: the picture is denser rather than longer, and what looks like a missing holiday is a market that never closes.
+- **Range** is three, six or twelve months, or a span of your own. A custom span is clipped to what the source carries, and the page says where the range really starts rather than beginning later than the date that was typed.
+- The first cell is always 0%: there is no prior close inside the range, and reaching outside it for one would make the first cell depend on a day the calendar does not show.
+- The colour is the change, not the amount traded. A coin's volume is a count of coins, and nothing on this grid is scaled against it — what the calendar is about is which way the day went and by how much.
+- Days here are calendar days. A year of this page is about 365 cells, not the 243 a stock market would give you, and neither figure is approximated.
+
+## Crypto Market Cap History
+
+One coin's circulating market cap over time, with the price over the same days beneath it.
+
+- **Where the two lines pull apart, you are looking at issuance and burns.** The price is what one coin costs; the cap is that price times however many coins exist. A cap line that rises while the price line falls is supply growing, not a figure that went wrong.
+- **This is measured, not extrapolated.** Multiplying today's supply by an old price is the cheap way to draw this page, and it produces two lines that are the same line — the cap would say nothing the price does not already say. What is drawn here comes from CoinMetrics' public API, which carries a daily circulating cap: Bitcoin reaches back to 2010, other coins as far as the source holds them.
+- Market cap here means *circulating* cap — the coins already issued and in circulation, not a fully diluted count that assumes every coin that will ever exist.
+- The estimate series every coin carries starts in June 2019. A coin with no exact series begins there, and the page says where the range really starts instead of quietly beginning later.
+- **Range** is twelve, twenty-four, sixty or one hundred and twenty months, or a span of your own. A coin's history may be shorter than the range you asked for — that is the source's floor, not a fetch that failed.
+
+## Crypto Market Cap Race
+
+The fifteen coins with the largest market cap today, and how that order moved day by day.
+
+- **The field is asked for, not written down.** At fetch time the page takes the current top fifteen by market value from CoinGecko's live ranking, so a coin that grew into this size last year is on the board without anybody editing a list. That is also why there is no coin picker here: the field itself is the answer, and what the page asks is which span.
+- The day-by-day values come from CoinMetrics, one request for the whole board. They are that source's estimate series, which starts in June 2019 for every coin alike, so the range is clipped there rather than refused — a board on which two coins had eight years of history and thirteen had none would read as coins that appeared out of nowhere.
+- **Stablecoins stay on it.** Measured on 2026-10-11, the top thirty carried six of them, and tether was the third largest thing on this market. A board that hid them would be ranking something other than size. What they do to the picture is honest: their line is flat, because a dollar is worth a dollar, so the board shows at a glance which of the largest things here actually move.
+- A coin the value source does not carry is dropped rather than drawn flat at zero — a flat line at the bottom of a value race reads as a coin that went to nothing. The board can therefore hold fewer than fifteen, and the status line says how many it got.
+- **Range** is twelve, twenty-four or sixty months, or a span of your own, clipped to the estimate series the same way.
+
 ## Video
 
 The frame is always 9:16. Everything else is yours to set.

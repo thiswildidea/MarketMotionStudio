@@ -456,6 +456,36 @@ Bir gün bir coin'e konulan bir tutar ve onun bugünkü değeri.
 - Buradaki günler takvim günleridir ve bir coin hepsinde işlem görür: bir yıl tutmak yaklaşık 365 gündür, bir borsanın vereceği 243 değil.
 - Yalnızca yedek kaynağa ulaşılabiliyorsa, doldurabildiği aralık yaklaşık bir yıldır. Sayfa o zaman aralığın gerçekte nerede başladığını söyler, yazılan tarihten sessizce daha geç başlamak yerine.
 
+## Kripto artış-düşüş takvimi
+
+Güne bir kare, o günün değişimine göre renklendirilmiş.
+
+- **Dolu bir ızgara eksik veri değildir.** Hisse takvimi çoğunlukla boşluklardan oluşur — hafta sonları, tatiller, işlem durdurmaları — ve bir piyasanın göründüğü gibi okunur. Bir coin yılın her günü işlem görür, bu yüzden her kare doludur: görüntü daha uzun değil, daha yoğundur ve eksik bir tatil gibi görünen şey, hiç kapanmayan bir piyasadır.
+- **Aralık** üç, altı veya on iki ay ya da kendi belirlediğiniz bir aralıktır. Kendi aralığınız kaynağın sahip olduğu kadarına kırpılır ve sayfa, yazılan tarihten daha geç başlamak yerine aralığın gerçekte nerede başladığını söyler.
+- İlk kare her zaman %0'dır: aralık içinde önceki bir kapanış yoktur ve onu dışarıdan almak, ilk kareyi takvimin göstermediği bir güne bağımlı kılardı.
+- Renk değişimdir, işlem tutarı değil. Bir coin'in hacmi coin sayısıdır ve bu ızgarada ona göre ölçeklenen hiçbir şey yoktur — takvimin ilgilendiği şey, günün hangi yöne gittiği ve ne kadar gittiğidir.
+- Buradaki günler takvim günleridir. Bu sayfada bir yıl yaklaşık 365 karedir, bir borsanın vereceği 243 değil, ve iki sayı da yaklaşık değildir.
+
+## Kripto piyasa değeri geçmişi
+
+Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı.
+
+- **İki çizginin ayrıldığı yerde görülen şey arz artışı ve yakımdır.** Fiyat, bir coin'in maliyetidir; piyasa değeri ise o fiyatın var olan coin sayısıyla çarpımıdır. Fiyat çizgisi düşerken piyasa değeri çizgisi yükseliyorsa bu büyüyen arzdır, yanlış bir sayı değil.
+- **Bu ölçülür, dışarı doğru hesaplanmaz.** Bugünkü arzı eski bir fiyatla çarpmak bu sayfayı çizmenin ucuz yoludur ve aynı çizgi olan iki çizgi üretir: piyasa değeri, fiyatın zaten söylediğinden fazlasını söylemezdi. Burada çizilen, günlük dolaşımdaki piyasa değerini taşıyan herkese açık CoinMetrics API'sinden gelir: Bitcoin 2010'a kadar uzanır, diğer coin'ler kaynağın tuttuğu kadar geriye gider.
+- Burada piyasa değeri *dolaşımdaki* değer demektir — halihazırda çıkarılmış ve dolaşımda olan coin'ler, gelecekte var olacak her coin'i varsayan tam seyreltilmiş bir sayım değil.
+- Her coin'in taşıdığı tahmin serisi Haziran 2019'da başlar. Kesin serisi olmayan bir coin orada başlar ve sayfa sessizce daha geç başlamak yerine aralığın gerçekte nerede başladığını söyler.
+- **Aralık** on iki, yirmi dört, altmış veya yüz yirmi ay ya da kendi belirlediğiniz bir aralıktır. Bir coin'in geçmişi istediğiniz aralıktan kısa olabilir — bu kaynağın tabanıdır, başarısız bir çekim değil.
+
+## Kripto piyasa değeri yarışı
+
+Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl değiştiği.
+
+- **Alan sorulur, yazılmaz.** Veri çekilirken sayfa, CoinGecko'nun canlı sıralamasından piyasa değerine göre güncel ilk on beşi alır; geçen yıl bu büyüklüğe ulaşan bir coin, kimse liste düzenlemeden tabloda yer alır. Bu yüzden burada coin seçici de yoktur: alanın kendisi yanıttır ve sorulan şey aralıktır.
+- Günlük değerler CoinMetrics'ten, tüm tablo için tek bir istekle gelir. Bu kaynağın tahmin serisidir ve her coin için aynı şekilde Haziran 2019'da başlar, bu yüzden aralık reddedilmek yerine oraya kırpılır: ikisinin sekiz yıl geçmişi, on üçünün hiç geçmişi olmadığı bir tablo, hiçbir yerden çıkıvermiş coin'ler gibi okunurdu.
+- **Stabilcoinler listede kalır.** 2026-10-11 itibarıyla ilk otuzda altı tanesi vardı ve tether bu piyasanın en büyük üçüncü şeyiydi. Onları gizleyen bir tablo, büyüklük dışında bir şeyi sıralardı. Görüntüye yaptıkları dürüstçe: bir dolar bir dolar değerindedir, bu yüzden çizgileri düzdür; tablo böylece buradaki en büyük şeylerden hangilerinin gerçekten hareket ettiğini tek bakışta gösterir.
+- Değer kaynağında bulunmayan bir coin, sıfırda düz çizilmek yerine çıkarılır: bir değer yarışının dibindeki düz çizgi, hiçbir şeye dönüşmüş bir coin gibi okunur. Tablo bu yüzden on beşten az tutabilir ve durum satırı kaç tane alındığını söyler.
+- **Aralık** on iki, yirmi dört veya altmış ay ya da kendi belirlediğiniz bir aralıktır ve aynı şekilde tahmin serisine kırpılır.
+
 ## Video
 
 Kare her zaman 9:16'dır. Geri kalan her şeyi siz belirlersiniz.

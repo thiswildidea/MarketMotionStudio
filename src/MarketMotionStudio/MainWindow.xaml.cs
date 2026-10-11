@@ -345,9 +345,29 @@ public sealed partial class MainWindow : Window
     /// restart, for the reason <see cref="MarketSettings"/> gives — so this runs once
     /// rather than being wired to a change notification.
     /// </summary>
+    /// <summary>
+    /// The pages only the crypto market has, which is what the navigation guard below
+    /// asks about. A list rather than a chain of type tests because the answer is one
+    /// question — is this page one that only exists for coins? — and a chain answers it
+    /// in a new place every time a page is added.
+    /// </summary>
+    private static readonly Type[] CryptoPages =
+    [
+        typeof(CryptoCandlePage),
+        typeof(CryptoDcaPage),
+        typeof(CryptoPositionPage),
+        typeof(CryptoGainCalendarPage),
+        typeof(CryptoCapHistoryPage),
+        typeof(CryptoMarketCapPage),
+    ];
+
     private void ApplyMarket()
     {
-        var crypto = new NavigationViewItem[] { NavCryptoCandle, NavCryptoDca, NavCryptoPosition };
+        var crypto = new NavigationViewItem[]
+        {
+            NavCryptoCandle, NavCryptoDca, NavCryptoPosition, NavCryptoCalendar, NavCryptoCapHistory,
+            NavCryptoMarketCap,
+        };
 
         // The crypto market is the one that keeps three pages and drops the rest, and
         // it is not a judgement about which figures a venue can supply — it is the
@@ -754,6 +774,9 @@ public sealed partial class MainWindow : Window
             "CryptoCandle" => typeof(CryptoCandlePage),
             "CryptoDca" => typeof(CryptoDcaPage),
             "CryptoPosition" => typeof(CryptoPositionPage),
+            "CryptoCalendar" => typeof(CryptoGainCalendarPage),
+            "CryptoCapHistory" => typeof(CryptoCapHistoryPage),
+            "CryptoMarketCap" => typeof(CryptoMarketCapPage),
             "Help" => typeof(HelpPage),
             "Settings" => typeof(SettingsPage),
             _ => null,
@@ -782,8 +805,7 @@ public sealed partial class MainWindow : Window
         // decides the menu now. A machine that cannot fetch a coin and a market that
         // was not asked for one are two different refusals, and only the second one
         // means the page should not be reachable at all.
-        if ((page == typeof(CryptoCandlePage) || page == typeof(CryptoDcaPage)
-             || page == typeof(CryptoPositionPage)) && MarketSettings.Current is not MarketId.Crypto)
+        if (CryptoPages.Contains(page) && MarketSettings.Current is not MarketId.Crypto)
         {
             return;
         }

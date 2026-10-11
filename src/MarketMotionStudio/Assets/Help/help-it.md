@@ -484,6 +484,36 @@ Una somma messa in una moneta in un giorno, e quanto vale oggi.
 - I giorni qui sono giorni di calendario, e una moneta viene scambiata in ognuno di essi: un anno di detenzione sono circa 365 giorni, non i 243 che darebbe una borsa.
 - Se è raggiungibile solo la fonte di riserva, l'intervallo che riesce a riempire è di circa un anno. La pagina dice allora dove l'intervallo comincia davvero, invece di iniziare silenziosamente più tardi della data digitata.
 
+## Calendario dei movimenti crypto
+
+Una cella per giorno, colorata in base alla variazione di quel giorno.
+
+- **Una griglia piena non è un dato mancante.** Un calendario azionario è fatto soprattutto di buchi — fine settimana, festività, sospensioni — e si legge come appare un mercato. Una moneta viene scambiata ogni giorno dell'anno, quindi ogni casella è riempita: l'immagine è più densa, non più lunga, e ciò che sembra una festività mancante è un mercato che non chiude mai.
+- **Intervallo**: tre, sei o dodici mesi, oppure un periodo a scelta. Un periodo libero viene ridotto a ciò che la fonte possiede, e la pagina dice dove l'intervallo comincia davvero invece di iniziare più tardi della data inserita.
+- La prima cella è sempre 0 %: non c'è una chiusura precedente dentro l'intervallo, e andarla a prendere fuori farebbe dipendere la prima casella da un giorno che il calendario non mostra.
+- Il colore è la variazione, non l'importo scambiato. Il volume di una moneta è un conteggio di monete, e nulla in questa griglia vi è scalato — ciò di cui parla il calendario è da che parte è andata la giornata e di quanto.
+- I giorni qui sono giorni di calendario. Un anno su questa pagina è circa 365 caselle, non i 243 che darebbe una borsa, e nessuna delle due cifre è approssimata.
+
+## Storia della capitalizzazione crypto
+
+La capitalizzazione circolante di una moneta nel tempo, con il prezzo degli stessi giorni sotto.
+
+- **Dove le due linee si separano, si vedono emissione e distruzione.** Il prezzo è quanto costa una moneta; la capitalizzazione è quel prezzo per il numero di monete esistenti. Una linea della capitalizzazione che sale mentre quella del prezzo scende è offerta che cresce, non un numero sbagliato.
+- **È misurato, non estrapolato.** Moltiplicare l'offerta di oggi per un prezzo vecchio è il modo economico di disegnare questa pagina, e produce due linee che sono la stessa linea: la capitalizzazione non direbbe nulla che il prezzo non dica già. Ciò che si disegna qui viene dall'API pubblica CoinMetrics, che porta una capitalizzazione circolante giornaliera: Bitcoin arriva al 2010, le altre monete fino a dove la fonte le conserva.
+- Qui capitalizzazione significa quella *circolante* — le monete già emesse e in circolazione, non un conteggio completamente diluito che presuppone tutte le monete che esisteranno.
+- La serie stimata che ogni moneta porta inizia a giugno 2019. Una moneta senza serie esatta inizia lì, e la pagina dice dove l'intervallo comincia davvero invece di iniziare silenziosamente più tardi.
+- **Intervallo**: dodici, ventiquattro, sessanta o centoventi mesi, oppure un periodo a scelta. La storia di una moneta può essere più breve dell'intervallo richiesto — è il limite della fonte, non un recupero fallito.
+
+## Corsa della capitalizzazione crypto
+
+Le quindici monete con la capitalizzazione maggiore oggi e come quest'ordine si è mosso giorno per giorno.
+
+- **Il campo è chiesto, non scritto.** Al momento del recupero la pagina prende le quindici maggiori per valore di mercato dalla classifica in tempo reale di CoinGecko; una moneta diventata abbastanza grande l'anno scorso sta quindi in classifica senza che nessuno modifichi un elenco. Per questo qui non c'è nemmeno un selettore di moneta: il campo è la risposta, e ciò che si chiede è il periodo.
+- I valori giornalieri vengono da CoinMetrics, una sola richiesta per tutta la classifica. Sono la serie stimata di quella fonte, che inizia a giugno 2019 allo stesso modo per tutte: l'intervallo vi è quindi ridotto anziché rifiutato — una classifica in cui due monete avessero otto anni di storia e tredici nessuna si leggerebbe come monete apparse dal nulla.
+- **Le stablecoin restano.** Misurato il 2026-10-11, le prime trenta ne contavano sei, e tether era la terza cosa più grande di questo mercato. Una classifica che le nascondesse starebbe ordinando altro che la dimensione. Ciò che fanno all'immagine è onesto: la loro linea è piatta, perché un dollaro vale un dollaro, così la classifica mostra a colpo d'occhio quali tra le cose più grandi qui si muovono davvero.
+- Una moneta che la fonte dei valori non porta viene esclusa invece di essere disegnata piatta a zero: una linea piatta in fondo a una corsa di valori si legge come una moneta finita a niente. La classifica può quindi contenere meno di quindici, e la riga di stato dice quante ne sono arrivate.
+- **Intervallo**: dodici, ventiquattro o sessanta mesi, oppure un periodo a scelta, ridotto alla serie stimata allo stesso modo.
+
 ## Video
 
 L'inquadratura è sempre 9:16. Tutto il resto lo decidi tu.

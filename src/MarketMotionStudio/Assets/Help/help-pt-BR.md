@@ -471,6 +471,36 @@ Uma quantia colocada em uma moeda em um dia, e quanto vale hoje.
 - Os dias aqui são dias corridos, e uma moeda é negociada em todos eles: um ano de manutenção são cerca de 365 dias, não os 243 que uma bolsa daria.
 - Quando só a fonte reserva é alcançável, o intervalo que ela consegue preencher é de cerca de um ano. A página diz então onde o intervalo realmente começa, em vez de começar silenciosamente mais tarde do que a data digitada.
 
+## Calendário de altas e baixas cripto
+
+Um quadrado por dia, colorido pela variação daquele dia.
+
+- **Uma grade cheia não é dado faltando.** Um calendário de ações é feito principalmente de buracos — fins de semana, feriados, suspensões — e se lê como um mercado se parece. Uma moeda é negociada todos os dias do ano, então todo quadrado está preenchido: a imagem é mais densa, não mais longa, e o que parece um feriado faltando é um mercado que nunca fecha.
+- **Intervalo** é três, seis ou doze meses, ou um período próprio. Um período próprio é cortado para o que a fonte tem, e a página diz onde o intervalo realmente começa, em vez de começar mais tarde do que a data digitada.
+- O primeiro quadrado é sempre 0 %: não há fechamento anterior dentro do intervalo, e buscá-lo fora faria o primeiro quadrado depender de um dia que o calendário não mostra.
+- A cor é a variação, não o valor negociado. O volume de uma moeda é uma contagem de moedas, e nada nesta grade é escalado contra ele — do que o calendário trata é para que lado o dia foi e quanto.
+- Os dias aqui são dias corridos. Um ano nesta página é cerca de 365 quadrados, não os 243 que uma bolsa daria, e nenhum dos dois números é aproximado.
+
+## Histórico de capitalização cripto
+
+A capitalização circulante de uma moeda ao longo do tempo, com o preço dos mesmos dias abaixo.
+
+- **Onde as duas linhas se separam, está a emissão e a queima.** O preço é quanto custa uma moeda; a capitalização é esse preço vezes a quantidade de moedas existentes. Uma linha de capitalização que sobe enquanto a do preço cai é oferta crescendo, não um número errado.
+- **Isso é medido, não extrapolado.** Multiplicar a oferta de hoje por um preço antigo é o caminho barato de desenhar esta página, e produz duas linhas que são a mesma linha: a capitalização não diria nada que o preço já não diga. O que se desenha aqui vem da API pública da CoinMetrics, que traz uma capitalização circulante diária: o Bitcoin chega a 2010, as demais moedas até onde a fonte as mantém.
+- Aqui capitalização significa a *circulante* — as moedas já emitidas e em circulação, não uma contagem totalmente diluída que pressupõe todas as moedas que existirão.
+- A série estimada que cada moeda tem começa em junho de 2019. Uma moeda sem série exata começa ali, e a página diz onde o intervalo realmente começa, em vez de começar silenciosamente mais tarde.
+- **Intervalo** é doze, vinte e quatro, sessenta ou cento e vinte meses, ou um período próprio. A história de uma moeda pode ser mais curta do que o intervalo pedido — esse é o piso da fonte, não uma busca que falhou.
+
+## Corrida de capitalização cripto
+
+As quinze moedas com a maior capitalização hoje e como essa ordem se moveu dia a dia.
+
+- **O campo é perguntado, não escrito.** Na busca, a página pega as quinze maiores por valor de mercado do ranking ao vivo da CoinGecko; uma moeda que cresceu até esse tamanho no ano passado está na tabela sem que ninguém edite uma lista. É por isso também que não há seletor de moeda aqui: o campo é a resposta, e o que se pergunta é o período.
+- Os valores diários vêm da CoinMetrics, um único pedido para toda a tabela. É a série estimada dessa fonte, que começa em junho de 2019 igualmente para todas, então o intervalo é cortado ali em vez de recusado: uma tabela em que duas moedas tivessem oito anos de história e treze nenhuma se leria como moedas que apareceram do nada.
+- **Stablecoins ficam.** Medido em 2026-10-11, as trinta primeiras tinham seis delas, e tether era a terceira maior coisa deste mercado. Uma tabela que as escondesse estaria ordenando outra coisa que não tamanho. O que fazem com a imagem é honesto: sua linha é reta, porque um dólar vale um dólar, então a tabela mostra de relance quais das maiores coisas aqui realmente se movem.
+- Uma moeda que a fonte de valores não tem é descartada em vez de desenhada reta no zero: uma linha reta no fundo de uma corrida de valor se lê como uma moeda que foi a nada. A tabela pode, portanto, ter menos de quinze, e a linha de status diz quantas vieram.
+- **Intervalo** é doze, vinte e quatro ou sessenta meses, ou um período próprio, cortado para a série estimada do mesmo modo.
+
 ## Vídeo
 
 O quadro é sempre 9:16. Todo o resto é você que decide.

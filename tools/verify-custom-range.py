@@ -7,8 +7,8 @@
 光看「取数成功」分不出数据是哪个给的。
 
 所以这里挑了两个**默认跨度不同**的页面来验：定投页默认近 5 年、持仓页默认
-最长（约 13 年）。选到「自定义」后取一次数，回报的起始日必须落在日期框里那个
-起始日附近——落在五年或十三年前就说明日期框是摆设。
+最长。选到「自定义」后取一次数，回报的起始日必须落在日期框里那个
+起始日附近——落在五年或数据源头就说明日期框是摆设。
 
 日期本身不由 UIA 写入：WinUI 的 DatePicker 只把 FlyoutButton 和一整串日期文本
 暴露出来，没有可设值的模式。能读不能写，正好够用——读出来的是默认值，而默认值
@@ -293,7 +293,7 @@ def main():
     # The plan page opens on five years and the holding page on the longest span, so
     # a three-year result on either one can only have come from the two dates.
     at_page(win, "定投计划", "自定义", "近 5 年", "verify-custom-range-dca.png")
-    at_page(win, "持仓收益", "自定义", "最长（约 13 年）", "verify-custom-range-position.png")
+    at_page(win, "持仓收益", "自定义", "最长", "verify-custom-range-position.png")
 
     # ---- 重启后还记得
     #

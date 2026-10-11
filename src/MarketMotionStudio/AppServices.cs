@@ -40,6 +40,7 @@ public sealed class AppServices
         Quotes = new TencentKline(_http);
         Stocks = new StockDirectory(_http);
         Crypto = new CryptoQuotes(_http);
+        CryptoCaps = new CryptoCaps(_http);
 
         // The two walks a page can ask for closes over — see `ICloseWalk`. They are
         // process-wide for the same reason the clients are: one of each, and a page
@@ -80,6 +81,12 @@ public sealed class AppServices
     /// for why that question comes before every other one.
     /// </summary>
     public CryptoQuotes Crypto { get; }
+
+    /// <summary>
+    /// Market values for coins, off a third source. See <see cref="CryptoCaps"/> for why
+    /// neither of the two the crypto pages quote history from can answer this question.
+    /// </summary>
+    public CryptoCaps CryptoCaps { get; }
 
     /// <summary>Daily closes for a share, walked off the stock endpoint.</summary>
     public ICloseWalk Closes { get; }

@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **twenty-one pages working, and export working on all of them, across three markets.** Market Turnover fetches
+Status: **twenty-four pages working, and export working on all of them, across four markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -167,7 +167,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The twenty-one pages
+## The twenty-four pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -987,9 +987,9 @@ over a coin instead of a share, and the three pages that come with **a fourth ma
 sitting beside the stock ones. Both sources that carry a coin's history sit outside the mainland, so
 the first question is not *what was the price* but *can either of them be reached*: the settings page
 asks that as the app starts, and lists «Cryptocurrency» beside the three stock markets only where a
-price can be fetched. Choose it and the menu is three pages — the stock pages are removed rather than
+price can be fetched. Choose it and the menu is six pages — the stock pages are removed rather than
 hidden, because every one of them reads an endpoint that quotes no coin at all, so each would sit
-there failing one fetch at a time. Choose any other market and these three are the ones removed: a
+there failing one fetch at a time. Choose any other market and these six are the ones removed: a
 coin is not quoted on any of the three venues, so they are not a second view of the market being
 looked at. What changes once the subject is a coin is mostly what
 stops being true: there is no holiday to step over and no day missing from a range, because a coin
@@ -1016,6 +1016,28 @@ this app picked. A coin trades through every hour of every day, so one day is al
 candles and a span of months at that grain would be a chart of a shape nobody asked to see. Where
 the fallback is the source in force the three are listed but switched off, with the reason on them:
 it carries a close a day and no intraday series at all.
+
+**Crypto Gain Calendar, Crypto Market Cap History and Crypto Market Cap Race** — three more pages
+that arrive with that market, and the first ones that ask a source the price pages never do. The
+calendar is the same grid the stock page draws, over one coin: a full grid here is not missing
+data but a market that never closes, so every square is filled where the stock calendar is mostly
+holes. The two market-cap pages need a figure neither price source carries — Yahoo quotes a coin as
+a currency pair with no supply in it, and CoinGecko's open tier stops at 365 days, so the value is
+asked of CoinMetrics' public API, which carries a daily circulating cap (Bitcoin back to 2010).
+**That is measured, not extrapolated**: multiplying today's supply by an old price is the cheap way
+to draw the history page, and it yields two lines that are the same line — the cap would then say
+nothing the price does not already say. What the two lines do instead is pull apart, and where they
+do that is issuance and burns. The race page's field is **asked for, not written down**: at fetch
+time it takes the current top fifteen by market value from CoinGecko's live ranking, one request,
+and then the whole board's history from CoinMetrics in one more — on that source's estimate series,
+which starts on the same day for every coin, so a range reaching further back is clipped there
+rather than refused, because a board on which two coins had eight years and thirteen had none reads
+as coins that appeared out of nowhere. **Stablecoins stay on it**: on 2026-10-11 the top thirty
+carried six of them and tether was the third largest thing on this market, so a board that hid them
+would be ranking something other than size — and what they do to the picture is honest, since their
+line is flat and the board thereby shows at a glance which of the largest things here actually move.
+A coin the value source does not carry is dropped rather than drawn flat at zero, which is why the
+board can hold fewer than fifteen and says how many it got.
 
 **The title is yours on every page, and it may take two lines.** Type one, or leave the box empty to
 get the default — a fixed label on the whole-market chart, the fetched instrument's name on the

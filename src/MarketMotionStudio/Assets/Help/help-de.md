@@ -485,6 +485,36 @@ Ein Betrag, an einem Tag in eine Münze gelegt, und was er heute wert ist.
 - Tage sind hier Kalendertage, und eine Münze wird an jedem gehandelt: Ein Jahr Halten sind etwa 365 Tage, nicht die 243, die eine Börse gäbe.
 - Wenn nur die Ersatzquelle erreichbar ist, reicht ihre Spanne etwa ein Jahr. Die Seite sagt dann, wo die Spanne wirklich beginnt, statt still später anzufangen als das eingegebene Datum.
 
+## Krypto-Gewinnkalender
+
+Ein Feld pro Tag, gefärbt nach der Veränderung dieses Tages.
+
+- **Ein volles Raster ist keine fehlenden Daten.** Ein Aktienkalender besteht meist aus Lücken — Wochenenden, Feiertage, Aussetzungen — und liest sich so, wie ein Markt aussieht. Eine Münze wird an jedem Tag des Jahres gehandelt, also ist jedes Feld gefüllt: Das Bild ist dichter statt länger, und was wie ein fehlender Feiertag aussieht, ist ein Markt, der nie schließt.
+- **Zeitraum** sind drei, sechs oder zwölf Monate oder eine eigene Spanne. Eine eigene Spanne wird auf das zugeschnitten, was die Quelle hat, und die Seite sagt, wo der Zeitraum wirklich beginnt, statt später anzufangen als das eingegebene Datum.
+- Das erste Feld ist immer 0 %: Es gibt keinen vorherigen Schlusskurs innerhalb der Spanne, und einen außerhalb zu holen würde das erste Feld von einem Tag abhängig machen, den der Kalender nicht zeigt.
+- Die Farbe ist die Veränderung, nicht der gehandelte Betrag. Das Volumen einer Münze ist eine Stückzahl, und nichts in diesem Raster wird daran skaliert — worum es dem Kalender geht, ist wohin der Tag ging und wie weit.
+- Tage sind hier Kalendertage. Ein Jahr auf dieser Seite sind etwa 365 Felder, nicht die 243, die eine Börse gäbe, und keine der beiden Zahlen ist geschätzt.
+
+## Krypto-Marktkapitalisierung im Verlauf
+
+Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage.
+
+- **Wo die beiden Linien auseinanderlaufen, sieht man Ausgabe und Verbrennung.** Der Kurs ist, was eine Münze kostet; die Kapitalisierung ist dieser Kurs mal der Anzahl existierender Münzen. Eine Kapitalisierungslinie, die steigt, während die Kurslinie fällt, ist wachsendes Angebot, keine falsche Zahl.
+- **Das ist gemessen, nicht hochgerechnet.** Den heutigen Bestand mit einem alten Kurs zu multiplizieren ist der billige Weg, diese Seite zu zeichnen, und er liefert zwei Linien, die dieselbe Linie sind — die Kapitalisierung sagte dann nichts, was der Kurs nicht schon sagt. Gezeichnet wird hier, was aus der öffentlichen CoinMetrics-Schnittstelle kommt, die eine tägliche zirkulierende Kapitalisierung führt: Bitcoin reicht bis 2010 zurück, andere Münzen so weit, wie die Quelle sie hält.
+- Marktkapitalisierung bedeutet hier die *zirkulierende* — die bereits ausgegebenen und im Umlauf befindlichen Münzen, nicht eine voll verwässerte Zahl, die jede jemals existierende Münze annimmt.
+- Die Schätzreihe, die jede Münze hat, beginnt im Juni 2019. Eine Münze ohne exakte Reihe beginnt dort, und die Seite sagt, wo der Zeitraum wirklich anfängt, statt still später zu beginnen.
+- **Zeitraum** sind zwölf, vierundzwanzig, sechzig oder hundertzwanzig Monate oder eine eigene Spanne. Die Historie einer Münze kann kürzer sein als die verlangte Spanne — das ist die Untergrenze der Quelle, kein fehlgeschlagener Abruf.
+
+## Rennen der Krypto-Marktkapitalisierung
+
+Die fünfzehn Münzen mit der größten Marktkapitalisierung heute und wie sich diese Ordnung Tag für Tag bewegte.
+
+- **Das Teilnehmerfeld wird gefragt, nicht aufgeschrieben.** Beim Abruf nimmt die Seite die aktuellen fünfzehn größten nach Marktwert aus der Live-Rangliste von CoinGecko; eine Münze, die letztes Jahr in diese Größe gewachsen ist, steht also auf dem Tableau, ohne dass jemand eine Liste pflegt. Deshalb gibt es hier auch keine Münzauswahl: Das Feld selbst ist die Antwort, und gefragt wird nach der Spanne.
+- Die Tageswerte kommen von CoinMetrics, eine Anfrage für das ganze Tableau. Es ist die Schätzreihe dieser Quelle, die für jede Münze gleich im Juni 2019 beginnt; die Spanne wird deshalb dort beschnitten statt abgelehnt — ein Tableau, auf dem zwei Münzen acht Jahre Historie hätten und dreizehn keine, läse sich wie Münzen, die aus dem Nichts auftauchten.
+- **Stablecoins bleiben darauf.** Gemessen am 2026-10-11 trugen die oberen Dreißig sechs von ihnen, und Tether war das drittgrößte Ding auf diesem Markt. Ein Tableau, das sie versteckte, würde etwas anderes als Größe rangieren. Was sie mit dem Bild machen, ist ehrlich: Ihre Linie ist flach, weil ein Dollar einen Dollar wert ist — das Tableau zeigt also auf einen Blick, welche der größten Dinge hier sich wirklich bewegen.
+- Eine Münze, die die Wertquelle nicht führt, wird weggelassen statt flach bei null gezeichnet: Eine flache Linie am unteren Rand eines Wertrennens liest sich wie eine Münze, die auf nichts hinauslief. Das Tableau kann also weniger als fünfzehn halten, und die Statuszeile sagt, wie viele es wurden.
+- **Zeitraum** sind zwölf, vierundzwanzig oder sechzig Monate oder eine eigene Spanne, auf dieselbe Weise an die Schätzreihe beschnitten.
+
 ## Video
 
 Das Bild ist immer 9:16. Alles andere bestimmen Sie.
