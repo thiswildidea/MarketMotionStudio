@@ -1,6 +1,6 @@
 # Market Motion Studio
 
-Tato aplikace mění ukazatele trhu akcií A na svislá videa pro telefon. Vyberete období, prohlédnete si náhled, dokud se dobře nečte, a exportujete MP4. Nic dalšího instalovat netřeba.
+Tato aplikace mění ukazatele akciového trhu — akcií A, Hongkongu a Spojených států — a kryptoměn ve svislá (9:16) animovaná videa pro telefon. Vyberete období, prohlédnete si náhled, dokud se dobře nečte, a exportujete MP4 připravené k přímému publikování na Douyin, Kuaishou, Xiaohongshu, kanálech WeChat, TikToku, YouTube a Instagramu. Nic dalšího instalovat netřeba.
 
 ## Volba trhu
 

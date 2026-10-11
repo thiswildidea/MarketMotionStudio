@@ -1,6 +1,6 @@
 # Market Motion Studio
 
-Diese App macht aus Kennzahlen des A-Aktien-Markts hochformatige Videos für das Telefon. Sie wählen einen Zeitraum, betrachten die Vorschau, bis sie sich gut liest, und exportieren eine MP4-Datei. Mehr muss nicht installiert werden.
+Diese App macht aus Kennzahlen des Aktienmarkts — A-Aktien, Hongkong und USA — und aus Kryptowährungen hochformatige (9:16) Animationsvideos für das Telefon. Sie wählen einen Zeitraum, betrachten die Vorschau, bis sie sich gut liest, und exportieren eine MP4-Datei, die sich direkt auf Douyin, Kuaishou, Xiaohongshu, WeChat-Kanälen, TikTok, YouTube und Instagram posten lässt. Mehr muss nicht installiert werden.
 
 ## Markt auswählen
 

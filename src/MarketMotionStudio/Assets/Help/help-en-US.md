@@ -1,6 +1,6 @@
 # Market Motion Studio
 
-This app turns A-share market indicators into vertical videos for phones. You pick a period, look at the preview until it reads well, and export an MP4. Nothing else has to be installed.
+This app turns stock-market indicators — China A-shares, Hong Kong and the United States — and cryptocurrency into vertical (9:16) animated videos for phones. You pick a period, look at the preview until it reads well, and export an MP4 ready to post straight to Douyin, Kuaishou, Xiaohongshu, WeChat Channels, TikTok, YouTube and Instagram. Nothing else has to be installed.
 
 ## Choosing a market
 

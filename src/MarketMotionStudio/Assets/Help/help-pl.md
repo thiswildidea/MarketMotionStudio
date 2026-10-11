@@ -1,6 +1,6 @@
 # Market Motion Studio
 
-Ta aplikacja zamienia wskaźniki rynku akcji A w pionowe filmy na telefon. Wybierasz okres, patrzysz na podgląd, aż da się go dobrze odczytać, i eksportujesz plik MP4. Nic więcej nie trzeba instalować.
+Ta aplikacja zamienia wskaźniki rynku akcji — akcji A, Hongkongu i Stanów Zjednoczonych — oraz kryptowalut w pionowe (9:16) filmy animowane na telefon. Wybierasz okres, patrzysz na podgląd, aż da się go dobrze odczytać, i eksportujesz plik MP4 gotowy do publikacji od razu na Douyin, Kuaishou, Xiaohongshu, kanałach WeChat, TikToku, YouTube i Instagramie. Nic więcej nie trzeba instalować.
 
 ## Wybór rynku
 

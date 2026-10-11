@@ -1,6 +1,6 @@
 # Market Motion Studio
 
-Bu uygulama A hisse piyasasının göstergelerini telefon için dikey videolara dönüştürür. Bir dönem seçer, iyi okunana kadar ön izlemeye bakar ve MP4 olarak verirsiniz. Başka hiçbir şey kurmanız gerekmez.
+Bu uygulama borsa göstergelerini — A hisseleri, Hong Kong ve ABD — ve kripto paraları telefon için dikey (9:16) animasyon videolara dönüştürür. Bir dönem seçer, iyi okunana kadar ön izlemeye bakar ve Douyin, Kuaishou, Xiaohongshu, WeChat Kanalları, TikTok, YouTube ve Instagram'da doğrudan paylaşabileceğiniz bir MP4 olarak verirsiniz. Başka hiçbir şey kurmanız gerekmez.
 
 ## Piyasa seçimi
 

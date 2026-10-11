@@ -52,7 +52,7 @@
            A tool that draws market data has to say what it is not. -->
       <uap:VisualElements
         DisplayName="ms-resource:AppDisplayName"
-        Description="Turn stock-market indicators into vertical data-visualisation videos for A-share, Hong Kong and US markets. Animates whole-market daily turnover and a single stock's volume against its turnover rate at 9:16, and exports H.264 MP4 ready to post. For reference only; not investment advice."
+        Description="Turn market indicators into vertical (9:16) animated videos for phones — China A-shares, Hong Kong, the United States and cryptocurrency — and export an H.264 MP4 ready to post to Douyin, Kuaishou, Xiaohongshu, WeChat Channels, TikTok, YouTube and Instagram. Twenty-four chart pages: whole-market turnover, sector races, market-cap races, a return matrix, the gain-loss calendar, DCA plans, position replay and candles. For reference only; not investment advice."
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

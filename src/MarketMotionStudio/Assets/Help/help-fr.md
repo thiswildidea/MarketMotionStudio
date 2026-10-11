@@ -1,6 +1,6 @@
 # Market Motion Studio
 
-Cette application transforme des indicateurs du marché des actions A en vidéos verticales pour téléphone. Vous choisissez une période, vous regardez l'aperçu jusqu'à ce qu'il se lise bien, puis vous exportez un MP4. Rien d'autre n'est à installer.
+Cette application transforme des indicateurs du marché des actions — A, Hong Kong et États-Unis — et des cryptomonnaies en vidéos animées verticales (9:16) pour téléphone. Vous choisissez une période, vous regardez l'aperçu jusqu'à ce qu'il se lise bien, puis vous exportez un MP4 prêt à publier directement sur Douyin, Kuaishou, Xiaohongshu, les canaux WeChat, TikTok, YouTube et Instagram. Rien d'autre n'est à installer.
 
 ## Choisir un marché
 
