@@ -28,6 +28,7 @@
 import os
 import re
 import sys
+import tempfile
 import time
 
 import uiautomation as auto
@@ -54,6 +55,12 @@ CRYPTO_CALENDAR_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.absp
                                     "artifacts", "crypto-calendar.png")
 CRYPTO_CAP_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                "artifacts", "crypto-caphistory.png")
+
+# 同一页选了 BTC + ETH 两标的、取完数那一眼：整个画面留给市值，两条线各在本端标名字。
+CRYPTO_CAP_MULTI_SHOT = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "artifacts", "crypto-caphistory-multi.png")
+
 CRYPTO_BOARD_SHOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                  "artifacts", "crypto-marketcap.png")
 
@@ -94,6 +101,13 @@ CALENDAR_SPLIT = re.compile(r"上涨\s*(\d[\d,]*)\s*天\s*·\s*下跌\s*(\d[\d,]
 # 市值历程那句末尾带的是**期末市值这个数**（「期末市值 16,670 亿美元」）。它是这一页唯一
 # 能证伪「外推」的证据：外推出来的市值线与价格线恒平行，而这一页存在的理由就是它们不平行。
 CAP_VALUE = re.compile(r"期末市值\s*([\d,]+)")
+
+# 同一页选了**多个**币种时的那句（`CryptoCapBoardFetched`）：几个币种 · 几个自然日。
+#
+# 它和上面那句是两个分支（`CapBoard.Comparing`），所以「一个币取到了数」完全证明不了
+# 这一支是好的 —— 认的是句子的**形状**，不是「画面上有两条线」：后者在一张图上根本看不
+# 出来（只量轨道数的判据从没量过一个像素）。
+CAP_BOARD = re.compile(r"(\d[\d,]*)\s*个币种\s*·\s*(\d[\d,]*)\s*个自然日")
 
 # 市值榜那句：几个币、多少天、期末第一是谁。币种数**允许少于 15**，所以上界写 15 而下界
 # 写 5（`CryptoCapBoard.FewestCoins`），写成「必须正好 15」会在源端缺一个币的那一趟红掉，
@@ -185,7 +199,7 @@ def fetch(win, seconds=180, done=None):
 
 def chip_names(win):
     chips = winui.find_all(
-        win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"), limit=14)
+        win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"), limit=30)
 
     return [c.Name for c in chips]
 
@@ -203,22 +217,53 @@ def toggle_state(chip):
     return None
 
 
-def only_coin(win, code, seconds=12):
-    """把币种开关摆成「只有这一个」。
+def flip(chip):
+    """拨一下币种开关。
 
-    **为什么不能只保证它在。** 三页都把「上次选的」存了下来，而上一趟判据（尤其上一趟中途
+    **必须走 TogglePattern，两条路都走不通。** `InvokePattern` 在 WinUI 的开关上不翻面；
+    落到 `Click` 也不行 —— 侧栏比窗口高，币种那排经常滚出视口，而滚出去的开关 UIA 报的
+    矩形是 (0,0,0,0)，`Click` 在空矩形上**静默跳过却照常返回**（见 `winui.invoke_click`
+    上那段）。实测 2026-10-14：市值历程页侧栏停在「已选 1 个」那行，ETH 的开关每被点一次
+    就空转一次，十二秒里点了二十多次而开关一动不动。`Toggle` 是 UIA 的模式调用，不过鼠标、
+    不看矩形，滚出视口照样翻面。
+    """
+    try:
+        pattern = chip.GetPattern(auto.PatternId.TogglePattern)
+
+        if pattern is not None:
+            pattern.Toggle()
+            time.sleep(0.5)
+
+            return True
+    except Exception:  # noqa: BLE001 - 控件在读取时消失
+        return False
+
+    return False
+
+
+def set_coins(win, codes, seconds=12):
+    """把币种开关摆成「正好这几个」。
+
+    **为什么不能只保证它们在。** 三页都把「上次选的」存了下来，而上一趟判据（尤其上一趟中途
     失败退出的那一趟）可能留下两只。于是 K 线与定投走的是**多标的**那一支：状态行说
     「2 个币种 · 3937 天」而不是「… 根」、说「2 份计划」而不是「买入 N 次」；检索框那三条
     也会因为「已选中的币始终显示」而多出一只。三种症状看着都像取数坏了，实际是判据的起点
     没摆正 —— 与 `reset_market()` 同一个道理：**起点不假设**。
+
+    市值历程这一页更要紧：多选一个币，走的就不是「上一条市值线、下一条价格线」，而是
+    「几条线共用一块面板」，连状态行里的「期末市值」那个数都不在了。
+
+    返回的是「摆完之后开着的正好是这几个」，所以它既是设置也是断言。
     """
+    # 30 而不是 14：检索框能在线加币（`CryptoRegistry` 跨会话记着），加过几只之后 14 会把
+    # 后面几只截掉 —— 截掉的那只摆不了，而结果读起来是「这一页的开关坏了」。
     chips = winui.find_all(
-        win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"), limit=14)
+        win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"), limit=30)
 
     if not chips:
         return False
 
-    wanted = "Coin" + code
+    wanted = ["Coin" + code for code in codes]
     deadline = time.time() + seconds
     settled = False
 
@@ -226,11 +271,11 @@ def only_coin(win, code, seconds=12):
         settled = True
 
         for chip in chips:
-            want = chip.AutomationId == wanted
+            want = chip.AutomationId in wanted
             state = toggle_state(chip)
 
             if (state == auto.ToggleState.On) != want:
-                winui.invoke_click(chip, settle=0.5)
+                flip(chip)
                 settled = False
 
         if settled:
@@ -240,7 +285,33 @@ def only_coin(win, code, seconds=12):
 
     on = [c.AutomationId for c in chips if toggle_state(c) == auto.ToggleState.On]
 
-    return on == [wanted]
+    return sorted(on) == sorted(wanted)
+
+
+def only_coin(win, code, seconds=12):
+    """把币种开关摆成「只有这一个」。为什么见 `set_coins` 里那段。"""
+    return set_coins(win, [code], seconds)
+
+
+def differing(first, second, floor=8):
+    """两张实拍之间变了多少像素；尺寸不同返回 None。
+
+    尺寸不同不是「变了」，是拍错了东西（见 `winui.capture` 上那段），所以分开回答。
+
+    阈值化之后再数 255，因为 `histogram` 走的是 C：两千乘一千的逐像素循环在 Python 里要
+    好几秒，而这里要拍四张。`floor` 挡的是编码噪声 —— 真变了的地方不会只差一两个灰阶。
+    """
+    from PIL import Image, ImageChops
+
+    left = Image.open(first).convert("RGB")
+    right = Image.open(second).convert("RGB")
+
+    if left.size != right.size:
+        return None
+
+    diff = ImageChops.difference(left, right).convert("L")
+
+    return diff.point(lambda value: 255 if value > floor else 0).histogram()[255]
 
 
 def picks_note(win):
@@ -386,7 +457,9 @@ def main():
         check("打开加密 K 线页", open_page(win, "NavCryptoCandle", "CoinBTC"))
 
         names = chip_names(win)
-        check("十二个币种都在", len(names) == 12, "%d 个" % len(names))
+        # 「十二个」不是一个固定的数：检索框能在线加币（`CryptoRegistry` 记下来），
+        # 加过的币下次开机就是一行里的开关 —— 所以这里量的是「十二个都在」，不是「刚好十二个」。
+        check("十二个币种都在", len(names) >= 12, "%d 个" % len(names))
 
         # 名字是本地化的，不是源端那个英文名 —— 这是 INST 键接上了没有的唯一证据。
         check("币种名是当地语言的写法", "比特币" in names,
@@ -419,34 +492,55 @@ def main():
         check("有检索框", box is not None)
 
         if box is not None:
-            def typed(what):
+            def chips(what):
+                """Rows still standing after typing `what`.
+
+                Limit is 30, not 12: 检索框里添过的币会跨会话留在登记表里，这一行早就不
+                只有那十二个了（本次是 16 个）。写 12 的话截掉的正是后面那些 —— 而
+                「截掉了」和「被滤掉了」在这个判据里看起来一模一样。
+                """
                 box.GetPattern(auto.PatternId.ValuePattern).SetValue(what)
                 time.sleep(1.0)
 
-                return [c.Name for c in winui.find_all(
+                return winui.find_all(
                     win, lambda c: c.AutomationId and c.AutomationId.startswith("Coin"),
-                    limit=14)]
+                    limit=30)
 
-            # 数说个数，不认名字：名字是当前语言拼的，判据不该跟着界面语言改。
+            def typed(what):
+                # 数说个数，不认名字：名字是当前语言拼的，判据不该跟着界面语言改。
+                return [c.Name for c in chips(what)]
+
+            def codes(what):
+                # 代码在开关的 AutomationId 尾巴上（`Coin` + 代码），名字是给眼睛看的。
+                return [c.AutomationId[4:] for c in chips(what)]
+
             got = typed("比特")
             check("搜「比特」只剩一个币", len(got) == 1, "、".join(got) or "(一个都不剩)")
 
             # 这张图说的是「看起来是不是这么回事」：一行十二个只剩一个。
             winui.shot(win, CRYPTO_FILTER_SHOT)
 
-            got = typed("btc")
-            check("搜代码 btc 也命中同一个", len(got) == 1, "、".join(got) or "(一个都不剩)")
+            # `btc` 是代码，所以这条问的是「代码命中代码」，看 AutomationId 的尾巴而不是
+            # 界面上那句名字。命中**几个不算数**：检索框添过的币进了登记表，`BTC-EUR`
+            # （Bitcoin EUR）的代码里同样有 btc，两个都留下才是对的。要认的两件事是：
+            # 留下的每一个代码都真的含 btc，且 Bitcoin 本身在里面。
+            got = codes("btc")
+            check("搜代码 btc 命中的都是 btc 币",
+                  bool(got) and all("BTC" in code.upper() for code in got),
+                  "、".join(got) or "(一个都不剩)")
+            check("搜代码 btc 命中 Bitcoin 本身", "BTC" in got,
+                  "、".join(got) or "(一个都不剩)")
 
             # 已选中的币不会因为不匹配而消失 —— 它是答案的一部分，藏起来会让下面那行
             # 「已选 N 个」没有对应的东西。所以搜一个不存在的词时，留下的正是它。
             got = typed("zzz")
             check("搜不存在的词只有已选的那一个", len(got) == 1, "、".join(got) or "(一个都不剩)")
 
-            none = winui.find(win, lambda c: c.AutomationId == "CryptoSearchNone", limit=14)
+            none = winui.find(win, lambda c: c.AutomationId == "CryptoSearchNone", limit=30)
             check("搜不到时说出声", none is not None, none.Name if none else "(没有那句话)")
 
             got = typed("")
-            check("清空后十二个都回来", len(got) == 12, "%d 个" % len(got))
+            check("清空后十二个都回来", len(got) >= 12, "%d 个" % len(got))
 
         # ---- 4.6 分钟档 ------------------------------------------------------------
         #
@@ -592,13 +686,21 @@ def main():
         # 这一页唯一能证伪「外推」的东西是**期末市值这个数**。用今天的流通量乘以老价格也能
         # 画出一条市值线，而那条线与价格线恒平行 —— 页面看上去完全正常，只有「市值是多少」
         # 这个数会露馅。所以判据要的不是一个「有市值线」，是这句状态行里那个数。
+        #
+        # 2026-10-14 起这一页还能比多个标的。一个标的仍是「上一条市值线、下一条价格线」，
+        # 几个标的则把整个画面留给市值、每个币一条线（`CapBoard.Comparing`）—— **两条完全
+        # 不同的分支**，所以「一个币取到了数」证明不了新加的那一支是好的。这一节量两趟。
         print("\n[加密货币市值历程]")
 
-        check("打开加密市值历程页", open_page(win, "NavCryptoCapHistory", "CryptoCapCoin"))
+        check("打开加密市值历程页", open_page(win, "NavCryptoCapHistory", "CryptoCapRange"))
+
+        # 起点不假设。三页共享「上次选了哪几个币」，上一趟可能留下两只 —— 那这一趟走的就是
+        # 多标的那一支，而下面几条认的都是单标的那句话。
+        check("只留 BTC 一个币种", only_coin(win, "BTC"))
 
         text = fetch(win)
         print("  状态行:", text)
-        check("市值历程取数成功", bool(text) and not FAILED.search(text or ""))
+        check("市值历程取数成功（单标的）", bool(text) and not FAILED.search(text or ""))
 
         value = CAP_VALUE.search(text or "")
         check("状态行报出期末市值", value is not None, value.group(1) if value else text)
@@ -610,6 +712,75 @@ def main():
             check("期末市值在 1~1,000,000 亿美元之间", 1 <= cap <= 1_000_000, str(cap))
 
         winui.shot(win, CRYPTO_CAP_SHOT)
+
+        # ---- 6.6.1 多标的 -----------------------------------------------------------
+        check("选 BTC + ETH 两个币种", set_coins(win, ["BTC", "ETH"]))
+
+        text = fetch(win)
+        print("  状态行:", text)
+        check("市值历程取数成功（多标的）", bool(text) and not FAILED.search(text or ""))
+
+        pair = CAP_BOARD.search(text or "")
+        check("状态行报出币种数与自然日数", pair is not None, text or "")
+
+        if pair:
+            check("多标的时报的是 2 个币种", int(pair.group(1)) == 2, pair.group(1))
+            check("自然日在 80~4000 之间",
+                  80 <= int(pair.group(2).replace(",", "")) <= 4000, pair.group(2))
+
+        winui.shot(win, CRYPTO_CAP_MULTI_SHOT)
+
+        # ---- 6.6.2 市值刻度 ---------------------------------------------------------
+        #
+        # 那个下拉的两个读法读的都是页面上已有的数，所以它**不取数、只重画** —— 也就是说
+        # 它坏了的话，一行文字都不会变，唯一的证据是画面本身。而「画面变了」这句话单说没有
+        # 意义：静止时连拍两张也会差一点（编码噪声）。所以量的是**双向对照** —— 什么都不动
+        # 差多少、改刻度差多少、再改回来又差多少。三张图各答一问，缺一张就分不出
+        # 「刻度接上了」和「每张实拍都长得不一样」。
+        axis = winui.find(win, lambda c: c.AutomationId == "AxisCombo", limit=12)
+        labels = winui.combo_labels(win, axis) if axis is not None else []
+
+        check("市值刻度有两档", len(labels) == 2, "、".join(labels) or "(没找到下拉)")
+
+        shots = tempfile.mkdtemp(prefix="mm-cap-axis-")
+        before, idle, changed, back = (os.path.join(shots, name)
+                                       for name in ("a.png", "b.png", "c.png", "d.png"))
+
+        if len(labels) == 2:
+            # 先拨一次**当前**那一档，再开拍。UIA 的 `Select` 会把焦点挪走 —— 第一趟实测，
+            # 标题框的光标就是在第一次选择时消失的，那一万九千个像素与刻度毫无关系，却把
+            # 「改回去」那句判据带红了。拨当前档不触发 `SelectionChanged`（选同一项不触发），
+            # 画面不动，焦点却已经稳了 —— 四张图于是站在同一块地基上。
+            winui.combo_pick(win, axis, labels[0])
+
+        winui.shot(win, before)
+        winui.shot(win, idle)
+
+        still = differing(before, idle)
+
+        if len(labels) == 2:
+            check("切到归一化刻度", winui.combo_pick(win, axis, labels[1]) is not None)
+
+        winui.shot(win, changed)
+
+        moved = differing(idle, changed)
+
+        if len(labels) == 2:
+            # 摆回默认。这一项是存下来的，留成归一化的话，下一趟的单标的实拍画的是一根
+            # 首日 = 100 的线 —— 页面没错，但那张图不再是「这一页一直的样子」。
+            winui.combo_pick(win, axis, labels[0])
+
+        winui.shot(win, back)
+
+        restored = differing(before, back)
+
+        check("市值刻度真的改了画面（远多于静止时的噪声）",
+              None not in (moved, still) and moved > 5000 and moved > 10 * max(still, 1),
+              "改了 %s 像素，静止对照 %s" % (moved, still))
+
+        check("改回默认刻度后画面回到原样",
+              None not in (moved, restored) and restored < max(moved // 5, 1),
+              "回来差 %s，改刻度差 %s" % (restored, moved))
 
         # ---- 6.7 加密市值榜 ---------------------------------------------------------
         #

@@ -512,12 +512,15 @@ Une case par jour, colorée selon la variation de ce jour.
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-caphistory.png)
 
-La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous.
+La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous. Ou plusieurs cryptomonnaies à la fois — une courbe chacune, nommée à son extrémité.
 
 - **Là où les deux lignes s'écartent, on voit l'émission et la destruction.** Le cours est ce que coûte un jeton ; la capitalisation est ce cours multiplié par le nombre de jetons existants. Une ligne de capitalisation qui monte pendant que celle du cours descend, c'est l'offre qui grandit, pas un chiffre erroné.
 - **C'est mesuré, pas extrapolé.** Multiplier l'offre actuelle par un ancien cours est la manière bon marché de tracer cette page, et cela produit deux lignes qui sont la même ligne : la capitalisation ne dirait rien que le cours ne dise déjà. Ce qui est tracé ici vient de l'API publique CoinMetrics, qui porte une capitalisation circulante quotidienne : Bitcoin remonte à 2010, les autres cryptomonnaies aussi loin que la source les garde.
 - Ici, capitalisation signifie la capitalisation *circulante* — les jetons déjà émis et en circulation, et non une valorisation entièrement diluée qui suppose tous les jetons qui existeront.
 - La série estimée que porte chaque cryptomonnaie commence en juin 2019. Une cryptomonnaie sans série exacte commence là, et la page dit où l'intervalle commence réellement au lieu de commencer discrètement plus tard.
+- **Plusieurs cryptomonnaies à la fois, et tout le cadre va à la capitalisation.** Leurs cours ne partagent pas d'axe de prix honnête — mettez bitcoin à côté d'une cryptomonnaie qui vaut une fraction de centime et l'une des deux n'est qu'une ligne plate au ras du bas —, donc le panneau des cours s'efface et chaque courbe est nommée à sa propre extrémité. Six est le plafond : une septième pression n'est pas acceptée, car une septième courbe prendrait une couleur que la sixième a déjà.
+- L'axe des valeurs a deux lectures. L'absolu répond à la question de laquelle vaut le plus ; le rebasement à 100 au premier jour de chacune, à celle dont la capitalisation a le plus progressé, et c'est la seule lisible dès que l'une vaut plusieurs fois l'autre. Dans les deux cas l'axe des dates est l'union de leurs jours : une cryptomonnaie qui ne commence qu'en 2019 y commence et manque avant.
+- **Une cryptomonnaie absente de la source de valeurs est omise, pas tracée à plat.** Une bonne part de ce qu'une recherche peut ajouter est hors du catalogue de CoinMetrics, et une ligne plate au bas d'un graphique de valeur se lit comme une cryptomonnaie réduite à rien, non comme une qui n'a aucune donnée. Quand il y en a, la ligne d'état les nomme ; s'il n'y en a qu'une de cochée et qu'elle revient vide, la page dit que l'intervalle ne contient pas d'historique exploitable au lieu de tracer un cadre vide.
 - **Intervalle** : douze, vingt-quatre, soixante ou cent vingt mois, ou une période de votre choix. L'historique d'une cryptomonnaie peut être plus court que l'intervalle demandé — c'est le plancher de la source, pas une récupération qui a échoué.
 
 ## Course des capitalisations crypto
@@ -531,6 +534,15 @@ Les quinze cryptomonnaies à la plus forte capitalisation aujourd'hui, et l'évo
 - **Les stablecoins y restent.** Mesuré le 2026-10-11, les trente premières en comptaient six, et tether était la troisième plus grosse chose de ce marché. Un tableau qui les cacherait classerait autre chose que la taille. Ce qu'elles font à l'image est honnête : leur ligne est plate, parce qu'un dollar vaut un dollar, si bien que le tableau montre d'un coup d'œil lesquelles des plus grosses choses ici bougent réellement.
 - Une cryptomonnaie que la source de valeurs ne porte pas est retirée plutôt que tracée à plat sur zéro : une ligne plate en bas d'une course de valeurs se lit comme une cryptomonnaie réduite à rien. Le tableau peut donc compter moins de quinze, et la ligne d'état dit combien il en a eu.
 - **Intervalle** : douze, vingt-quatre ou soixante mois, ou une période de votre choix, ramenée à la série estimée de la même manière.
+
+## Rendements mensuels crypto
+
+Les mouvements mois par mois d'une cryptomonnaie en une grille année × mois, rouge pour les hausses et vert pour les baisses, l'année entière composée dans la dernière colonne.
+
+- **Les mois sont repliés, pas demandés.** Le marché crypto n'a pas d'accès mensuel : la page récupère tout ce que la source journalière détient — une dizaine d'années — et replie le dernier cours quotidien de chaque mois face à celui du mois précédent dans le mouvement de ce mois. Le nombre d'années n'est donc qu'une relecture : le changer retend la grille sans rien demander.
+- **Un mois ne compte que lorsqu'il est terminé.** Le mois en cours n'est pas sur la grille. Le mouvement d'un demi-mois déguisé en mois entier est l'erreur que cette image invite le plus à prendre pour argent comptant ; c'est pourquoi elle est rendue impossible plutôt que signalée.
+- Les années vont de 1 à 10, sans « tout » : la source journalière s'arrête à une dizaine d'années, et la plus longue réponse honnête est la dernière. La source de secours ne porte qu'une année, et dessus la grille tient en une seule ligne.
+- Les statistiques finales donnent le mois le plus fort et le plus faible, la part des mois en hausse et le meilleur mois isolé.
 
 ## Vidéo
 

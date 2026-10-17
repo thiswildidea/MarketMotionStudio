@@ -37,11 +37,13 @@ namespace MarketMotionStudio.Render;
 /// that is deliberate, because everything else here (the labels, the headline, the closing cards)
 /// reads off the picture and must not have two versions.
 ///
-/// The one thing they do *not* share is the vertical scale. A candle chart re-scales to what its
-/// window holds, because a hundred bars of one stock is a different set of prices. This chart's
-/// axis is one number for the whole range in both motions: the capital line is a constant, and an
-/// axis that re-fitted itself as the window slid would make the flat line wander while nothing
-/// about the holding had changed.
+    /// The one thing they do *not* share is the vertical scale — except on the growing motion with
+    /// the dynamic-axis option on, where the scale follows the running peak of what has been drawn so
+    /// far, so a holding that did nothing for years does not pin its later climb to the floor. Without
+    /// it, the axis is one number for the whole range in both motions: the capital line is a constant,
+    /// and an axis that re-fitted itself as a scrolling window slid would make the flat line wander
+    /// while nothing about the holding had changed. The dynamic option changes only the growing
+    /// motion; the scrolling one keeps its fixed axis on purpose.
 ///
 /// Stateless with respect to time per <c>one-render-path.mdc</c>: every frame comes
 /// from <see cref="FrameContext.Progress"/> alone.
@@ -103,6 +105,18 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </summary>
     private const double LabelEdge = 3;
 
+    // ---- the bull and the bear ------------------------------------------------------------
+    //
+    // A round badge perched on the top-centre of a single holding's label, carrying the animal
+    // the holding has been since its last turn. Sized and placed in frame pixels like everything
+    // else, so a preview and an export of a different format put it in the same spot. See
+    // <see cref="Mascots"/> for the face itself and <see cref="PositionLoader.Rising"/> for how
+    // the animal is chosen.
+
+    /// <summary>The badge's radius: 72 across at 1080 — big enough to read as a face in a feed,
+    /// small enough that it does not cover the label it sits on.</summary>
+    private const double MascotRadius = 36;
+
     private readonly PositionBoard _board;
 
     private readonly AnimationPlan _plan;
@@ -124,7 +138,24 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </summary>
     private readonly bool _crossSafeRight;
 
-    private readonly (double Step, double Top) _scale;
+    /// <summary>
+    /// Whether the head of a single holding's line carries the bull or the bear. A constructor
+    /// argument like <see cref="_crossSafeRight"/> and for the same reason: a decoration read
+    /// back off a mutable property would arrive as the default on the frame that mattered, with
+    /// the checkbox still looking switched on.
+    /// </summary>
+    private readonly bool _mascot;
+
+    /// <summary>
+    /// Whether the vertical axis follows the curve that has been drawn so far, rather than
+    /// being fixed at the whole-range peak from the first frame. A constructor argument like
+    /// <see cref="_crossSafeRight"/> and for the same reason: a setting read back off a mutable
+    /// property would arrive as the default on the frame that mattered. Only ever changes the
+    /// growing motion — the scrolling one keeps its fixed axis by design; see the class note.
+    /// </summary>
+    private readonly bool _dynamicAxis;
+
+    private (double Step, double Top) _scale;
 
     /// <summary>
     /// How much of that band the frame now being drawn keeps clear: 1 all of it, 0 none.
@@ -159,14 +190,20 @@ public sealed class PositionRenderer : IFrameRenderer
     /// Whether the picture may run into the band the host covers with its button rail; see
     /// the same argument on <see cref="DcaRenderer"/>, which this shares its arithmetic with.
     /// </param>
+    /// <param name="mascot">
+    /// Whether to draw the bull or the bear on the leading end of a single holding's line. No
+    /// effect on a comparison frame, which has no one animal to show.
+    /// </param>
     public PositionRenderer(
         PositionBoard board, AnimationPlan plan, PositionMotion motion, int window,
-        bool crossSafeRight = false)
+        bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false)
     {
         _board = board;
         _plan = plan;
         _motion = motion;
         _crossSafeRight = crossSafeRight;
+        _mascot = mascot;
+        _dynamicAxis = dynamicAxis;
 
         // Two is the least that still draws a line. A window longer than the range is not
         // wrong — it simply leaves nothing to scroll, and the frame grows instead of rolling.
@@ -231,24 +268,6 @@ public sealed class PositionRenderer : IFrameRenderer
 
         var introA = Easing.Ramp(t, 0, 1000);
 
-        // Grid and its labels, growing in with everything else.
-        using (var gridFormat = Ink.Format(context.Px(20)))
-        {
-            var line = (float)Math.Max(1, context.Px(1));
-
-            for (var v = 0.0; v <= _scale.Top + 1e-9; v += _scale.Step)
-            {
-                var y = bottom - ((v / _scale.Top) * span);
-
-                session.DrawLine(
-                    new Vector2((float)mx, (float)y),
-                    new Vector2((float)(mx + (plotW * introA)), (float)y),
-                    Palette.Grid, line);
-
-                Ink.RightMiddle(session, DcaRenderer.Money(v), mx - context.Px(12), y, gridFormat, Palette.AxisLabel, introA);
-            }
-        }
-
         // Which axis positions have arrived, and how far each arriving one has come.
         //
         // The arriving point eases in *from the previous point's level*, not from the baseline.
@@ -268,6 +287,83 @@ public sealed class PositionRenderer : IFrameRenderer
             moving = i;
         }
 
+        // The window: how many axis positions it holds, where its right edge has reached, and
+        // where its left one therefore is. Growing is the same arithmetic with a window as long
+        // as the range, which is why the two motions share every line of drawing below — and a
+        // scrolling one opens out into that same whole range as the frame closes. How, and why,
+        // is in `AnimationPlan.Window`, shared with the two other pages offering this choice.
+        //
+        // The right edge leads the arrival by the part of the arriving point that has come
+        // through, so the window is already sliding while that point is still growing into
+        // place — a roll rather than a step per day.
+        var reached = moving < 0
+            ? 0
+            : moving + Easing.OutCubic(Easing.Ramp(t, _plan.IntroMs + (moving * _plan.StaggerMs), _plan.BarMs));
+
+        var (count, head, first) = _plan.Window(
+            _motion is PositionMotion.Scroll, _window, n, reached, t);
+
+        // Where the window's left edge falls, rounded **up**: a point to the left of it lands
+        // off the plot, over the axis labels, and the curve has to start at the chart's edge.
+        var left = Math.Max(0, (int)Math.Ceiling(first));
+
+        double Across(int i) => mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);
+
+        // The vertical scale. Fixed for the scrolling motion and when the dynamic option is off
+        // (see the class note). When the option is on and the motion is growing, the axis fits
+        // what has been drawn so far — the running peak of the capital and the holdings up to the
+        // position now on screen — so a holding that did nothing for years does not pin its later
+        // climb to the floor. At the last position the running peak is the board's own peak, so
+        // the closing frame is the same whole-range axis the fixed scale always drew, and a cover
+        // made from it matches one drawn with the option off.
+        if (_dynamicAxis && _motion is PositionMotion.Grow)
+        {
+            var peakSoFar = _board.Capital;
+
+            for (var i = 0; i < _board.Tracks.Count; i++)
+            {
+                var track = _board.Tracks[i];
+                var begin = Math.Max(track.First, left);
+                var last = Math.Min(moving < 0 ? -1 : moving, track.Last);
+
+                if (last < begin)
+                {
+                    continue;
+                }
+
+                for (var at = begin; at <= last; at++)
+                {
+                    if (track.Value[at] > peakSoFar)
+                    {
+                        peakSoFar = track.Value[at];
+                    }
+                }
+            }
+
+            // At least the capital, so the early frames where the holding is still near what went
+            // in do not squeeze the line to the bottom; and 1.08 of headroom above the running
+            // peak, the same margin the fixed axis keeps over the whole range.
+            _scale = AnimationPlan.NiceScale(Math.Max(peakSoFar, _board.Capital) * 1.08, 5);
+        }
+
+        // Grid and its labels, growing in with everything else.
+        using (var gridFormat = Ink.Format(context.Px(20)))
+        {
+            var line = (float)Math.Max(1, context.Px(1));
+
+            for (var v = 0.0; v <= _scale.Top + 1e-9; v += _scale.Step)
+            {
+                var y = bottom - ((v / _scale.Top) * span);
+
+                session.DrawLine(
+                    new Vector2((float)mx, (float)y),
+                    new Vector2((float)(mx + (plotW * introA)), (float)y),
+                    Palette.Grid, line);
+
+                Ink.RightMiddle(session, DcaRenderer.Money(v), mx - context.Px(12), y, gridFormat, Palette.AxisLabel, introA);
+            }
+        }
+
         if (moving < 0)
         {
             DrawLegend(session, context, top, introA);
@@ -284,24 +380,6 @@ public sealed class PositionRenderer : IFrameRenderer
         {
             eased[i] = Easing.OutCubic(Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), _plan.BarMs));
         }
-
-        // The window: how many axis positions it holds, where its right edge has reached, and
-        // where its left one therefore is. Growing is the same arithmetic with a window as long
-        // as the range, which is why the two motions share every line of drawing below — and a
-        // scrolling one opens out into that same whole range as the frame closes. How, and why,
-        // is in `AnimationPlan.Window`, shared with the two other pages offering this choice.
-        //
-        // The right edge leads the arrival by the part of the arriving point that has come
-        // through, so the window is already sliding while that point is still growing into
-        // place — a roll rather than a step per day.
-        var (count, head, first) = _plan.Window(
-            _motion is PositionMotion.Scroll, _window, n, moving + eased[moving], t);
-
-        // Where the window's left edge falls, rounded **up**: a point to the left of it lands
-        // off the plot, over the axis labels, and the curve has to start at the chart's edge.
-        var left = Math.Max(0, (int)Math.Ceiling(first));
-
-        double Across(int i) => mx + (count > 1 ? plotW * (i - first) / (count - 1) : 0);
 
         // The capital, which is one number for the whole board and therefore one line. A window
         // that opens inside the range starts already at the capital — the line has been at that
@@ -413,7 +491,15 @@ public sealed class PositionRenderer : IFrameRenderer
             Dot(session);
         }
 
-        DrawLabels(session, context, lines, anchors, top, bottom, introA);
+        var labelBoxes = DrawLabels(session, context, lines, anchors, top, bottom, introA);
+
+        // After the labels, so the badge is never covered by one, and only with a single
+        // holding — see <see cref="DrawMascot"/>.
+        if (_mascot && !_board.Comparing && labelBoxes.Length > 0)
+        {
+            DrawMascot(session, context, labelBoxes[0], Math.Min(moving, _board.Tracks[0].Last), top, introA);
+        }
+
         DrawLegend(session, context, top, introA);
         DrawXLabels(session, context, t, bottom, plotW, introA, count, first, head);
 
@@ -580,8 +666,12 @@ public sealed class PositionRenderer : IFrameRenderer
     /// the whole stack is then slid back inside the plot so a label near the top is not clipped.
     ///
     /// Each one sits **ahead of** its own line's leading end, in the column the plot left for it.
+    ///
+    /// Returns where every box ended up **after** the push-apart and the slide-back — the mascot
+    /// pins itself to the first one, and a box measured before those two moves would put the
+    /// badge somewhere the label never was.
     /// </summary>
-    private void DrawLabels(
+    private Rect[] DrawLabels(
         CanvasDrawingSession session, FrameContext context,
         List<((double X, double Y)[] Points, Color Colour, string Name, double Profit)> lines,
         List<(double X, double Y)> anchors,
@@ -589,7 +679,7 @@ public sealed class PositionRenderer : IFrameRenderer
     {
         if (lines.Count == 0)
         {
-            return;
+            return [];
         }
 
         using var nameFormat = Ink.Format(context.Px(LabelSize));
@@ -671,10 +761,13 @@ public sealed class PositionRenderer : IFrameRenderer
             }
         }
 
+        var placed = new Rect[boxes.Count];
+
         for (var i = 0; i < boxes.Count; i++)
         {
             var (_, colour, name, profit) = lines[i];
             var box = new Rect(boxes[i].X, centres[i] - (height / 2), boxes[i].Width, height);
+            placed[i] = box;
             var radius = (float)(height / 2);
 
             session.FillRoundedRectangle(box, radius, radius, Ink.Fade(Palette.CardFill, 0.92 * opacity));
@@ -692,6 +785,46 @@ public sealed class PositionRenderer : IFrameRenderer
                 box.Y + (height / 2) + (size * 0.36),
                 opacity);
         }
+
+        return placed;
+    }
+
+    /// <summary>
+    /// The bull or the bear, perched on the top-centre of the holding's label — the animal the
+    /// holding has been since its last turn (<see cref="PositionLoader.Rising"/>).
+    ///
+    /// The label rides the line's leading end, so as the line grows the badge travels with it:
+    /// down the slope of a fall, up the shoulder of a climb, and across the middle when a bear
+    /// becomes a bull again. The slight float is a function of progress alone, like everything
+    /// else here, so the preview and the export bob in exactly the same places.
+    ///
+    /// Only ever on a single holding. The fill is left out of a comparison for the same reason
+    /// (see the class note): six badges over six curves is a crowd, and which one is the bull
+    /// would be a question about three of them at once.
+    /// </summary>
+    private void DrawMascot(
+        CanvasDrawingSession session, FrameContext context,
+        Rect label, int at, double top, double opacity)
+    {
+        var track = _board.Tracks[0];
+
+        var rising = at >= 0 && at < track.Rising.Count && track.Rising[at];
+
+        var bob = Math.Sin(context.Progress * Math.Tau * 2) * context.Px(5);
+
+        // Grows in with the rest of the frame, from a little under its full size so it lands
+        // rather than appears.
+        var radius = context.Px(MascotRadius) * (0.55 + (0.45 * opacity));
+
+        // Horizontally centred on the label, its foot on the label's top edge; kept inside the
+        // plot so a label near the top does not push the badge into the header, and inside the
+        // safe line on the right.
+        var minX = context.ChartLeft + radius;
+        var maxX = Math.Max(minX, context.SafeRight(_giveWay) - radius);
+        var cx = Math.Clamp(label.X + (label.Width / 2), minX, maxX);
+        var cy = Math.Max(top + radius + context.Px(6), label.Y - radius) + bob;
+
+        Mascots.Draw(session, (float)cx, (float)cy, (float)radius, rising, Gain, Loss, opacity);
     }
 
     /// <summary>What each line is, drawn where a reader looks first: above the plot's left end.</summary>

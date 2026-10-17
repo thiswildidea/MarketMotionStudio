@@ -42,6 +42,11 @@ public sealed class AppServices
         Crypto = new CryptoQuotes(_http);
         CryptoCaps = new CryptoCaps(_http);
 
+        // The coins a search found in an earlier run are read once here, before any page asks what
+        // a code names — the crypto pages put them in their pickers, and the two boards that read
+        // `CryptoAsset.Of` without a picker already know them by the time they are built.
+        CryptoRegistry.EnsureLoaded();
+
         // The two walks a page can ask for closes over — see `ICloseWalk`. They are
         // process-wide for the same reason the clients are: one of each, and a page
         // names the shape it needs rather than building its own.

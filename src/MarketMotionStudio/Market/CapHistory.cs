@@ -573,6 +573,29 @@ public static class CapLoader
             walks.Add(series);
         }
 
+        return Assemble(walks, skipped);
+    }
+
+    /// <summary>
+    /// Lays one or more instruments' value series along one date axis and hands back the
+    /// board the renderer draws.
+    ///
+    /// **Shared with the coin market's own value history**, which recovers its figures a
+    /// completely different way — CoinMetrics publishes a value day by day, where a share
+    /// page has to divide a volume by a turnover rate — and then faces exactly this: a set
+    /// of series, each starting where its own history does, that have to share one axis.
+    /// The axis and the carry-forward below are the whole of what the two have in common,
+    /// and they are the part that has to agree; a second copy of this arithmetic would be
+    /// a second answer to "what is the first day of this chart".
+    /// </summary>
+    /// <param name="walks">One series per instrument, each already in date order.</param>
+    /// <param name="skipped">
+    /// Instruments whose source carried nothing usable, already named for the status line
+    /// — see the note on <see cref="CapBoard.Skipped"/>. Passed straight through rather
+    /// than recomputed here, because only the walk that failed knows what to call it.
+    /// </param>
+    internal static CapBoard? Assemble(IReadOnlyList<CapSeries> walks, IReadOnlyList<string> skipped)
+    {
         if (walks.Count == 0)
         {
             return null;

@@ -5,23 +5,30 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:MarketMotionStudio.Controls">
 
-    <!-- One row of switches, one per coin, a box to narrow the row with, and a line
-         under both saying how many are on.
+    <!-- One row of switches, one per coin, a box to narrow the row with and to find coins the row
+         does not hold, and a line under both saying how many are on.
 
-         The row is still the list of twelve (see `CryptoAsset`) — the box narrows what
-         is shown of it, it is not how a coin gets added. Twelve is read in one glance,
-         and the box is for the person who already knows which one they are after and
-         would rather type three letters than read four lines.
+         The row opens as the list of twelve (see `CryptoAsset`) — the box narrows what is shown of
+         it while it is being typed. What it adds is search: what the endpoint answers appears under
+         the box, and choosing one there puts it on the row as a new switch. So the twelve are read
+         in one glance, and a coin that is not among them is three letters away — the same shape the
+         stock pages' picker has.
 
-         The switches are switches, not buttons that navigate: whether a coin is on the
-         frame is a state, and a control that holds no state cannot be asked what is
-         currently chosen — which is what a screen reader and a verification script both
-         have to do. -->
+         The switches are switches, not buttons that navigate: whether a coin is on the frame is a
+         state, and a control that holds no state cannot be asked what is currently chosen — which
+         is what a screen reader and a verification script both have to do. -->
 
     <StackPanel Spacing="6">
         <TextBox x:Name="Search"
                  x:Uid="CryptoSearch"
                  TextChanged="OnSearchChanged" />
+
+        <!-- What the search answered, while it is being typed: coins that are not already switches
+             on the row below. A row here is a decision to add a coin, so it is a list of choices
+             and not another row of switches — pressing one adds it, it does not toggle it. -->
+        <StackPanel x:Name="Found"
+                    Spacing="2"
+                    Visibility="Collapsed" />
 
         <controls:WrapPanel x:Name="Coins" />
 

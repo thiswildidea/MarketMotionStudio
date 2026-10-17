@@ -478,12 +478,15 @@ Güne bir kare, o günün değişimine göre renklendirilmiş.
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-caphistory.png)
 
-Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı.
+Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı. Ya da birden çok coin bir arada — her biri ucunda adı yazan bir çizgi.
 
 - **İki çizginin ayrıldığı yerde görülen şey arz artışı ve yakımdır.** Fiyat, bir coin'in maliyetidir; piyasa değeri ise o fiyatın var olan coin sayısıyla çarpımıdır. Fiyat çizgisi düşerken piyasa değeri çizgisi yükseliyorsa bu büyüyen arzdır, yanlış bir sayı değil.
 - **Bu ölçülür, dışarı doğru hesaplanmaz.** Bugünkü arzı eski bir fiyatla çarpmak bu sayfayı çizmenin ucuz yoludur ve aynı çizgi olan iki çizgi üretir: piyasa değeri, fiyatın zaten söylediğinden fazlasını söylemezdi. Burada çizilen, günlük dolaşımdaki piyasa değerini taşıyan herkese açık CoinMetrics API'sinden gelir: Bitcoin 2010'a kadar uzanır, diğer coin'ler kaynağın tuttuğu kadar geriye gider.
 - Burada piyasa değeri *dolaşımdaki* değer demektir — halihazırda çıkarılmış ve dolaşımda olan coin'ler, gelecekte var olacak her coin'i varsayan tam seyreltilmiş bir sayım değil.
 - Her coin'in taşıdığı tahmin serisi Haziran 2019'da başlar. Kesin serisi olmayan bir coin orada başlar ve sayfa sessizce daha geç başlamak yerine aralığın gerçekte nerede başladığını söyler.
+- **Birden çok coin bir arada ve çerçevenin tamamı piyasa değerine kalır.** Fiyatları dürüst bir fiyat eksenini paylaşmaz — bitcoin'i bir centin çok altında işlem gören bir coin'in yanına koyun, ikisinden biri dipte düz bir çizgi olur — bu yüzden alttaki fiyat paneli geri çekilir ve her çizgi kendi ucunda adlandırılır. Altı üst sınırdır: yedinci basış kabul edilmez, çünkü yedinci çizgi altıncının zaten kullandığı bir rengi alırdı.
+- Değer ekseninin iki okuması var. Mutlak olan hangi coin'in daha değerli olduğunu; her birinin kendi ilk gününde 100'e indirgenmiş olan hangi piyasa değerinin daha hızlı büyüdüğünü söyler ve biri diğerinin katları olduğunda okunabilen tek görünüm budur. İkisinde de tarih ekseni günlerin birleşimidir: yalnızca 2019'da başlayan bir coin orada başlar ve öncesinde yoktur.
+- **Değer kaynağının taşımadığı bir coin, sıfırda düz çizilmek yerine atlanır.** Aramanın ekleyebileceği coin'lerin çoğu CoinMetrics kataloğunun dışındadır ve bir değer grafiğinin dibindeki düz çizgi, çizilecek verisi olmayan bir coin değil, hiçliğe gitmiş bir coin gibi okunur. Atlananlar olduğunda durum satırı onları sayar; yalnızca bir coin seçilip boş dönerse sayfa boş bir çerçeve çizmek yerine aralıkta kullanılabilir geçmiş olmadığını söyler.
 - **Aralık** on iki, yirmi dört, altmış veya yüz yirmi ay ya da kendi belirlediğiniz bir aralıktır. Bir coin'in geçmişi istediğiniz aralıktan kısa olabilir — bu kaynağın tabanıdır, başarısız bir çekim değil.
 
 ## Kripto piyasa değeri yarışı
@@ -497,6 +500,15 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 - **Stabilcoinler listede kalır.** 2026-10-11 itibarıyla ilk otuzda altı tanesi vardı ve tether bu piyasanın en büyük üçüncü şeyiydi. Onları gizleyen bir tablo, büyüklük dışında bir şeyi sıralardı. Görüntüye yaptıkları dürüstçe: bir dolar bir dolar değerindedir, bu yüzden çizgileri düzdür; tablo böylece buradaki en büyük şeylerden hangilerinin gerçekten hareket ettiğini tek bakışta gösterir.
 - Değer kaynağında bulunmayan bir coin, sıfırda düz çizilmek yerine çıkarılır: bir değer yarışının dibindeki düz çizgi, hiçbir şeye dönüşmüş bir coin gibi okunur. Tablo bu yüzden on beşten az tutabilir ve durum satırı kaç tane alındığını söyler.
 - **Aralık** on iki, yirmi dört veya altmış ay ya da kendi belirlediğiniz bir aralıktır ve aynı şekilde tahmin serisine kırpılır.
+
+## Kripto aylık getiriler
+
+Bir coin'in ay ay hareketleri, yıl × ay ızgarası olarak; yükselişler kırmızı, düşüşler yeşil, son sütunda bileşik edilmiş bütün yıl.
+
+- **Aylar katlanır, sorulmaz.** Kripto piyasasının aylık bir kaynağı yoktur: sayfa, günlük kaynağın tuttuğu her şeyi — yaklaşık on yıl — alır ve her ayın son günlük kapanışını önceki ayın kapanışıyla karşılaştırıp o ayın hareketine katlar. Yıl sayısı bu yüzden yalnızca bir yeniden okumadır: onu değiştirmek ızgarayı yeniden serer ve hiçbir şey istemez.
+- **Bir ay ancak bittiğinde sayılır.** İçinde bulunulan ay ızgarada yok. Yarım ayın hareketinin bütün ay kılığına girmesi, bu resmin en kolay yuttuğu hatadır; bu yüzden imkânsız kılınır, yalnızca uyarı yapılmaz.
+- Yıllar 1–10 arası ve «hepsi» yoktur: günlük kaynak yaklaşık on yılda biter, en uzun dürüst cevap son seçenektir. Yedek kaynak yalnızca bir yıl taşır, ve onunla ızgara tek sıradır.
+- Kapanış istatistikleri en güçlü ve en zayıf ayı, artı kapanan ayların payını ve en güçlü tek ayı verir.
 
 ## Video
 

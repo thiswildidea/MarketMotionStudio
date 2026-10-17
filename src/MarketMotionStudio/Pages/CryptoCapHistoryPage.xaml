@@ -60,14 +60,14 @@
 
                     <TextBlock x:Uid="StudioDataSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
 
-                    <!-- One coin, from the market's own list. A combo rather than the chips
-                         the stock page uses, for the reason the calendar page gives: this
-                         page draws one history, and a chip row with one chip on is a
-                         different control pretending to be this one. -->
-                    <ComboBox x:Name="CoinCombo"
-                              x:Uid="CryptoCapCoin"
-                              HorizontalAlignment="Stretch"
-                              SelectionChanged="OnCoinChanged" />
+                    <!-- Which coins the frame is about: the same row of switches, and the same
+                         search box, as the other crypto pages. One coin draws this page's two
+                         panels — value above, price below; several give the whole frame to the
+                         value and draw one line each, named at its own end, as the share pages'
+                         value history does. A coin a search brought in that the catalogue carries
+                         no value for is named on the status line rather than drawn along the
+                         bottom. -->
+                    <views:CryptoPicker x:Name="Coins" />
 
                     <ComboBox x:Name="RangeCombo"
                               x:Uid="StudioRange"
@@ -78,6 +78,23 @@
                         <DatePicker x:Name="FromDate" x:Uid="StudioRangeFrom" HorizontalAlignment="Stretch" />
                         <DatePicker x:Name="ToDate" x:Uid="StudioRangeTo" HorizontalAlignment="Stretch" />
                     </StackPanel>
+
+                    <!-- Which reading of the value panel's vertical axis is drawn. Both read
+                         figures already on the page, so this redraws and stops there. It is a
+                         constructor argument and never a property for the reason the share
+                         pages' value history gives: the scale, the unit word and how the numbers
+                         are written are all decided once, from it, where the renderer is built —
+                         so a page that set it afterwards got the default reading of every one of
+                         them and could not tell. -->
+                    <ComboBox x:Name="AxisCombo"
+                              x:Uid="CapHistoryAxisLabel"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnAxisChanged" />
+
+                    <TextBlock x:Uid="CryptoCapAxisNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
                     <!-- What the upper panel counts and where it comes from. Said here
                          because "market value" is the one figure on this page a reader
@@ -90,6 +107,11 @@
 
                     <CheckBox x:Name="CrossCheck"
                               x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="DynamicAxisCheck"
+                              x:Uid="CapHistoryDynamicAxis"
                               IsChecked="False"
                               Click="OnLookChanged" />
 

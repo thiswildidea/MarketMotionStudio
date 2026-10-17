@@ -490,12 +490,15 @@ Jedno pole na dzień, pokolorowane według zmiany tego dnia.
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-caphistory.png)
 
-Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach.
+Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach. Albo kilka monet naraz — każda własna linia, podpisana na końcu.
 
 - **Tam, gdzie obie linie się rozchodzą, widać emisję i spalanie.** Kurs to cena jednej monety; kapitalizacja to ten kurs razy liczba istniejących monet. Linia kapitalizacji rosnąca, gdy linia kursu spada, to rosnąca podaż, nie zła liczba.
 - **To jest mierzone, nie ekstrapolowane.** Pomnożenie dzisiejszej podaży przez stary kurs to tani sposób na narysowanie tej strony i daje dwie linie, które są jedną linią: kapitalizacja nie powiedziałaby niczego, czego kurs już nie mówi. To, co jest tu rysowane, pochodzi z publicznego API CoinMetrics, które prowadzi dzienną kapitalizację krążącą: Bitcoin sięga 2010 roku, pozostałe monety tak daleko, jak źródło je przechowuje.
 - Kapitalizacja oznacza tu kapitalizację *krążącą* — monety już wyemitowane i będące w obiegu, nie rozwodnioną wartość zakładającą wszystkie monety, które kiedykolwiek powstaną.
 - Seria szacunkowa, którą ma każda moneta, zaczyna się w czerwcu 2019. Moneta bez dokładnej serii zaczyna tam, a strona mówi, gdzie zakres naprawdę się zaczyna, zamiast po cichu zacząć później.
+- **Kilka monet naraz, a cały kadr należy do kapitalizacji.** Ich kursy nie dzielą uczciwie jednej osi cen — postaw bitcoin obok monety warta ułamek centa, a jedna z nich jest płaską linią przy dolnej krawędzi — więc dolny panel kursów ustępuje, a każda linia jest podpisana na własnym końcu. Sześć to górna granica: siódme naciśnięcie nie jest przyjmowane, bo siódma linia wzięłaby kolor, który ma już szósta.
+- Oś wartości ma dwa odczyty. Bezwzględna mówi, która moneta jest warta więcej; przeliczona na 100 w pierwszym dniu każdej z nich — której kapitalizacja rosła szybciej, i to jest jedyny czytelny odczyt, gdy jedna jest wielokrotnością drugiej. W obu przypadkach oś dat to suma ich dni: moneta, która zaczyna się dopiero w 2019, zaczyna tam i wcześniej jej nie ma.
+- **Moneta, której nie ma w źródle wartości, jest pomijana, a nie rysowana płasko.** Wiele z tego, co może dodać wyszukiwanie, jest poza katalogiem CoinMetrics, a płaska linia na dole wykresu wartości czyta się jak moneta, która spadła do zera, a nie jak taka bez danych. Gdy jakieś pominięto, linia stanu je wymienia; jeśli zaznaczono tylko jedną i wraca pusta, strona mówi, że przedział nie ma użytecznej historii, zamiast rysować pusty kadr.
 - **Zakres** to dwanaście, dwadzieścia cztery, sześćdziesiąt lub sto dwadzieścia miesięcy albo własny przedział. Historia monety może być krótsza niż żądany zakres — to dolna granica źródła, nie nieudane pobranie.
 
 ## Wyścig kapitalizacji krypto
@@ -509,6 +512,15 @@ Piętnaście monet o największej kapitalizacji dziś i jak ten porządek zmieni
 - **Stablecoiny zostają.** Zmierzone 2026-10-11: w pierwszej trzydziestce było ich sześć, a tether był trzecią co do wielkości rzeczą na tym rynku. Tabela, która by je ukryła, porządkowałaby coś innego niż wielkość. To, co robią z obrazem, jest uczciwe: ich linia jest płaska, bo dolar jest wart dolara, więc tabela pokazuje na pierwszy rzut oka, które z największych rzeczy tu naprawdę się poruszają.
 - Moneta, której źródło wartości nie ma, jest pomijana zamiast rysowana płasko przy zerze: płaska linia na dole wyścigu wartości czyta się jak moneta, która spadła do zera. Tabela może więc mieć mniej niż piętnaście pozycji, a linia stanu mówi, ile ich zostało.
 - **Zakres** to dwanaście, dwadzieścia cztery lub sześćdziesiąt miesięcy albo własny przedział, przycinany do serii szacunkowej w ten sam sposób.
+
+## Miesięczne stopy zwrotu krypto
+
+Zmiany monety miesiąc po miesiącu jako siatka rok × miesiąc, czerwony dla wzrostów, zielony dla spadków, a w ostatniej kolumnie cały rok skumulowany.
+
+- **Miesiące są składane, nie wypytane.** Rynek krypto nie ma miesięcznego źródła: strona pobiera wszystko, co niesie źródło dzienne — około dziesięciu lat — i składa ostatni kurs dzienny każdego miesiąca z kursem poprzedniego w zmianę tego miesiąca. Liczba lat to więc tylko ponowne odczytanie: jej zmiana rozkłada siatkę na nowo i niczego nie pobiera.
+- **Miesiąc liczy się dopiero, gdy się skończył.** Bieżącego miesiąca na siatce nie ma. Zmiana pół miesiąca przebrana za cały to błąd, który ten obraz najłatwiej każe wziąć za dobrą monetę; dlatego zostaje uczyniony niemożliwym, a nie tylko opisany.
+- Lata biegną od 1 do 10, a „wszystkich” nie ma: źródło dzienne kończy się na około dziesięciu latach, a najdłuższa uczciwa odpowiedź to ostatnia pozycja. Źródło zapasowe niesie jeden jedyny rok, a na nim siatka to jeden wiersz.
+- Statystyki końcowe podają najsilniejszy i najsłabszy miesiąc, udział miesięcy na plusie oraz najsilniejszy pojedynczy miesiąc.
 
 ## Film
 

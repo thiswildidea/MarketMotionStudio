@@ -507,12 +507,15 @@ Ein Feld pro Tag, gefärbt nach der Veränderung dieses Tages.
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-caphistory.png)
 
-Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage.
+Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage. Oder mehrere Münzen auf einmal — je eine Linie, am eigenen Ende beschriftet.
 
 - **Wo die beiden Linien auseinanderlaufen, sieht man Ausgabe und Verbrennung.** Der Kurs ist, was eine Münze kostet; die Kapitalisierung ist dieser Kurs mal der Anzahl existierender Münzen. Eine Kapitalisierungslinie, die steigt, während die Kurslinie fällt, ist wachsendes Angebot, keine falsche Zahl.
 - **Das ist gemessen, nicht hochgerechnet.** Den heutigen Bestand mit einem alten Kurs zu multiplizieren ist der billige Weg, diese Seite zu zeichnen, und er liefert zwei Linien, die dieselbe Linie sind — die Kapitalisierung sagte dann nichts, was der Kurs nicht schon sagt. Gezeichnet wird hier, was aus der öffentlichen CoinMetrics-Schnittstelle kommt, die eine tägliche zirkulierende Kapitalisierung führt: Bitcoin reicht bis 2010 zurück, andere Münzen so weit, wie die Quelle sie hält.
 - Marktkapitalisierung bedeutet hier die *zirkulierende* — die bereits ausgegebenen und im Umlauf befindlichen Münzen, nicht eine voll verwässerte Zahl, die jede jemals existierende Münze annimmt.
 - Die Schätzreihe, die jede Münze hat, beginnt im Juni 2019. Eine Münze ohne exakte Reihe beginnt dort, und die Seite sagt, wo der Zeitraum wirklich anfängt, statt still später zu beginnen.
+- **Mehrere Münzen auf einmal, und der ganze Rahmen gehört der Marktkapitalisierung.** Ihre Kurse teilen keine ehrliche Kursachse — Bitcoin neben einer Münze, die einen Bruchteil eines Cents kostet, und eine von beiden ist eine flache Linie am Boden —, darum tritt das untere Kursfeld zurück und jede Kurve wird am eigenen Ende beschriftet. Sechs ist die Obergrenze: ein siebter Druck wird nicht angenommen, denn eine siebte Kurve nähme eine Farbe, die die sechste schon hat.
+- Die Wertachse hat zwei Lesarten. Absolut beantwortet, welche Münze mehr wert ist; auf 100 umbasiert ab dem je eigenen ersten Tag, wessen Kapitalisierung schneller wuchs — und das ist die einzige lesbare, sobald eine ein Vielfaches der anderen ist. In beiden Fällen ist die Zeitachse die Vereinigung ihrer Tage: eine Münze, die erst 2019 beginnt, beginnt dort und fehlt davor.
+- **Eine Münze, die die Wertquelle nicht führt, wird weggelassen statt flach gezeichnet.** Vieles, was eine Suche hinzufügen kann, liegt außerhalb des Katalogs von CoinMetrics, und eine flache Linie am unteren Rand eines Wertdiagramms liest sich wie eine Münze, die auf nichts hinauslief, nicht wie eine ohne Zahl. Wurden welche weggelassen, nennt die Statuszeile sie; ist nur eine gewählt und kommt leer zurück, sagt die Seite, dass der Zeitraum keine brauchbare Historie enthält, statt einen leeren Rahmen zu zeichnen.
 - **Zeitraum** sind zwölf, vierundzwanzig, sechzig oder hundertzwanzig Monate oder eine eigene Spanne. Die Historie einer Münze kann kürzer sein als die verlangte Spanne — das ist die Untergrenze der Quelle, kein fehlgeschlagener Abruf.
 
 ## Rennen der Krypto-Marktkapitalisierung
@@ -526,6 +529,15 @@ Die fünfzehn Münzen mit der größten Marktkapitalisierung heute und wie sich 
 - **Stablecoins bleiben darauf.** Gemessen am 2026-10-11 trugen die oberen Dreißig sechs von ihnen, und Tether war das drittgrößte Ding auf diesem Markt. Ein Tableau, das sie versteckte, würde etwas anderes als Größe rangieren. Was sie mit dem Bild machen, ist ehrlich: Ihre Linie ist flach, weil ein Dollar einen Dollar wert ist — das Tableau zeigt also auf einen Blick, welche der größten Dinge hier sich wirklich bewegen.
 - Eine Münze, die die Wertquelle nicht führt, wird weggelassen statt flach bei null gezeichnet: Eine flache Linie am unteren Rand eines Wertrennens liest sich wie eine Münze, die auf nichts hinauslief. Das Tableau kann also weniger als fünfzehn halten, und die Statuszeile sagt, wie viele es wurden.
 - **Zeitraum** sind zwölf, vierundzwanzig oder sechzig Monate oder eine eigene Spanne, auf dieselbe Weise an die Schätzreihe beschnitten.
+
+## Krypto-Monatsrenditen
+
+Die Bewegungen einer Münze Monat für Monat als Jahr-×-Monat-Raster, rot für Steigungen und grün für Stürze, in der letzten Spalte das ganze Jahr aufgezinst.
+
+- **Die Monate sind gefaltet, nicht erfragt.** Krypto hat keinen Monatsendpunkt: Die Seite holt alles, was die Tagesquelle hat — etwa zehn Jahre — und faltet den letzten Tagesschluss jedes Monats gegen den des Vormonats in die Bewegung dieses Monats. Die Jahreszahl ist damit nur ein Nachlesen: Sie legt das Raster neu und holt nichts.
+- **Ein Monat zählt erst, wenn er vorbei ist.** Der laufende Monat steht nicht im Raster. Die Bewegung eines halben Monats im Kleid eines ganzen ist der Fehler, den dieses Bild am ehesten einlädt — deshalb wird er unmöglich gemacht, nicht beschriftet.
+- Die Jahre laufen 1–10, und ein „Alle“ gibt es nicht: Die Tagesquelle endet bei etwa zehn Jahren, die längste ehrliche Antwort ist der letzte Eintrag. Die Ausweichquelle trägt ein einziges Jahr, und auf ihr ist das Raster eine Zeile.
+- Die Abschlussstatistik nennt den stärksten und den schwächsten Monat, den Anteil der Monate im Plus und den stärksten einzelnen Monat.
 
 ## Video
 

@@ -493,12 +493,15 @@ Um quadrado por dia, colorido pela variação daquele dia.
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-caphistory.png)
 
-A capitalização circulante de uma moeda ao longo do tempo, com o preço dos mesmos dias abaixo.
+A capitalização circulante de uma moeda ao longo do tempo, com o preço dos mesmos dias abaixo. Ou várias moedas ao mesmo tempo — uma linha cada, nomeada na ponta.
 
 - **Onde as duas linhas se separam, está a emissão e a queima.** O preço é quanto custa uma moeda; a capitalização é esse preço vezes a quantidade de moedas existentes. Uma linha de capitalização que sobe enquanto a do preço cai é oferta crescendo, não um número errado.
 - **Isso é medido, não extrapolado.** Multiplicar a oferta de hoje por um preço antigo é o caminho barato de desenhar esta página, e produz duas linhas que são a mesma linha: a capitalização não diria nada que o preço já não diga. O que se desenha aqui vem da API pública da CoinMetrics, que traz uma capitalização circulante diária: o Bitcoin chega a 2010, as demais moedas até onde a fonte as mantém.
 - Aqui capitalização significa a *circulante* — as moedas já emitidas e em circulação, não uma contagem totalmente diluída que pressupõe todas as moedas que existirão.
 - A série estimada que cada moeda tem começa em junho de 2019. Uma moeda sem série exata começa ali, e a página diz onde o intervalo realmente começa, em vez de começar silenciosamente mais tarde.
+- **Várias moedas ao mesmo tempo, e o quadro inteiro vai para a capitalização.** Os preços delas não compartilham um eixo de preço honesto — coloque o bitcoin ao lado de uma moeda que vale uma fração de centavo e uma das duas vira uma linha reta no fundo —, então o painel de preços cede lugar e cada curva é nomeada na própria ponta. Seis é o teto: um sétimo toque não é aceito, porque uma sétima curva pegaria uma cor que a sexta já tem.
+- O eixo de valor tem duas leituras. O absoluto responde qual moeda vale mais; o rebaseado em 100 no primeiro dia de cada uma responde qual capitalização cresceu mais rápido, e é o único legível quando uma vale várias vezes a outra. Nos dois casos o eixo de datas é a união dos dias delas: uma moeda que só começa em 2019 começa ali e falta antes disso.
+- **Uma moeda que a fonte de valores não tem é omitida, não desenhada reta.** Boa parte do que uma busca pode acrescentar está fora do catálogo da CoinMetrics, e uma linha reta no fundo de um gráfico de valor se lê como uma moeda que foi a nada, não como uma sem número para desenhar. Quando há omitidas, a linha de status as nomeia; se só uma estiver marcada e voltar vazia, a página diz que o intervalo não tem histórico utilizável em vez de desenhar um quadro vazio.
 - **Intervalo** é doze, vinte e quatro, sessenta ou cento e vinte meses, ou um período próprio. A história de uma moeda pode ser mais curta do que o intervalo pedido — esse é o piso da fonte, não uma busca que falhou.
 
 ## Corrida de capitalização cripto
@@ -512,6 +515,15 @@ As quinze moedas com a maior capitalização hoje e como essa ordem se moveu dia
 - **Stablecoins ficam.** Medido em 2026-10-11, as trinta primeiras tinham seis delas, e tether era a terceira maior coisa deste mercado. Uma tabela que as escondesse estaria ordenando outra coisa que não tamanho. O que fazem com a imagem é honesto: sua linha é reta, porque um dólar vale um dólar, então a tabela mostra de relance quais das maiores coisas aqui realmente se movem.
 - Uma moeda que a fonte de valores não tem é descartada em vez de desenhada reta no zero: uma linha reta no fundo de uma corrida de valor se lê como uma moeda que foi a nada. A tabela pode, portanto, ter menos de quinze, e a linha de status diz quantas vieram.
 - **Intervalo** é doze, vinte e quatro ou sessenta meses, ou um período próprio, cortado para a série estimada do mesmo modo.
+
+## Retornos mensais cripto
+
+Os movimentos mês a mês de uma moeda em uma grade de ano × mês, vermelho para altas e verde para baixas, com o ano inteiro composto na última coluna.
+
+- **Os meses são dobrados, não pedidos.** O mercado cripto não tem um acesso mensal: a página traz tudo o que a fonte diária guarda — cerca de dez anos — e dobra o último fechamento diário de cada mês contra o do mês anterior no movimento daquele mês. O número de anos é, por isso, uma releitura: mudá-lo redesenha a grade sem pedir nada.
+- **Um mês só conta quando terminou.** O mês em andamento não está na grade. O movimento de meio mês vestido de mês inteiro é o erro que esta imagem mais induz a acreditar; por isso ele é tornado impossível, e não apenas avisado.
+- Os anos vão de 1 a 10, e não há «todos»: a fonte diária chega a cerca de dez anos, e a resposta honesta mais longa é a última. A fonte de reserva carrega um único ano, e nela a grade é uma só fileira.
+- As estatísticas finais dão o mês mais forte e o mais fraco, a proporção de meses em alta e o mês isolado mais forte.
 
 ## Vídeo
 

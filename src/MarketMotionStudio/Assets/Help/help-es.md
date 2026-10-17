@@ -498,12 +498,15 @@ Una celda por día, coloreada según la variación de ese día.
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-caphistory.png)
 
-La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo.
+La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo. O varias monedas a la vez — una línea cada una, rotulada en su extremo.
 
 - **Donde las dos líneas se separan, lo que se ve es emisión y quema.** El precio es lo que cuesta una moneda; la capitalización es ese precio por la cantidad de monedas existentes. Una línea de capitalización que sube mientras la del precio baja es oferta que crece, no una cifra equivocada.
 - **Esto se mide, no se extrapola.** Multiplicar el suministro de hoy por un precio antiguo es la forma barata de dibujar esta página, y produce dos líneas que son la misma línea: la capitalización no diría nada que el precio no diga ya. Lo que se dibuja aquí viene de la API pública de CoinMetrics, que lleva una capitalización circulante diaria: Bitcoin llega hasta 2010, las demás monedas hasta donde la fuente las tenga.
 - Aquí capitalización significa la *circulante* — las monedas ya emitidas y en circulación, no un cálculo totalmente diluido que supone todas las monedas que existirán.
 - La serie estimada que tiene cada moneda empieza en junio de 2019. Una moneda sin serie exacta empieza ahí, y la página dice dónde empieza realmente el rango en vez de empezar silenciosamente más tarde.
+- **Varias monedas a la vez, y todo el marco va a la capitalización.** Sus precios no comparten un eje de precios honesto — ponga bitcoin al lado de una moneda que cotiza a una fracción de céntimo y una de las dos es una línea plana en el fondo —, así que el panel de precios inferior cede su sitio y cada curva se rotula en su propio extremo. Seis es el techo: una séptima pulsación no se acepta, porque una séptima curva tomaría un color que la sexta ya tiene.
+- El eje de valor tiene dos lecturas. El absoluto responde qué moneda vale más; el rebasado a 100 en el primer día de cada una, cuál creció más rápido, y es el único legible cuando una es varias veces la otra. En ambos casos el eje de fechas es la unión de sus días: una moneda que solo empieza en 2019 comienza ahí y falta antes.
+- **Una moneda que la fuente de valores no tiene se omite, no se dibuja plana.** Buena parte de lo que una búsqueda puede añadir queda fuera del catálogo de CoinMetrics, y una línea plana en el fondo de un gráfico de valor se lee como una moneda que se fue a nada, no como una sin cifra que dibujar. Cuando se omiten algunas, la línea de estado las nombra; si solo hay una marcada y vuelve vacía, la página dice que el tramo no tiene historia utilizable en lugar de dibujar un marco vacío.
 - **Rango** son doce, veinticuatro, sesenta o ciento veinte meses, o un tramo propio. La historia de una moneda puede ser más corta que el rango pedido — eso es el suelo de la fuente, no una consulta que falló.
 
 ## Carrera de capitalización cripto
@@ -517,6 +520,15 @@ Las quince monedas con mayor capitalización hoy y cómo se movió ese orden dí
 - **Las monedas estables se quedan.** Medido el 2026-10-11, las treinta primeras llevaban seis de ellas, y tether era la tercera cosa más grande de este mercado. Un tablero que las ocultara estaría ordenando otra cosa que el tamaño. Lo que hacen con la imagen es honesto: su línea es plana, porque un dólar vale un dólar, así que el tablero muestra de un vistazo cuáles de las cosas más grandes aquí se mueven de verdad.
 - Una moneda que la fuente de valores no tiene se descarta en lugar de dibujarse plana en cero: una línea plana en el fondo de una carrera de valor se lee como una moneda que acabó en nada. El tablero puede tener por tanto menos de quince, y la línea de estado dice cuántas llegaron.
 - **Rango** son doce, veinticuatro o sesenta meses, o un tramo propio, recortado a la serie estimada del mismo modo.
+
+## Rendimientos mensuales cripto
+
+Los movimientos mes a mes de una moneda en una cuadrícula de año × mes, rojo para las subidas y verde para las bajadas, con el año completo compuesto en la última columna.
+
+- **Los meses se pliegan, no se piden.** El mercado cripto no tiene un acceso mensual: la página trae todo lo que la fuente diaria guarda — unos diez años — y pliega el último cierre diario de cada mes contra el del mes anterior en el movimiento de ese mes. El número de años es, por eso, una releída: cambiarlo vuelve a tender la cuadrícula sin pedir nada.
+- **Un mes cuenta solo cuando terminó.** El mes en curso no está en la cuadrícula. El movimiento de medio mes vestido de mes entero es el error que esta imagen más induce a creer; por eso se vuelve imposible en vez de avisarlo.
+- Los años van de 1 a 10, y no hay «todos»: la fuente diaria llega a unos diez años, y la respuesta honesta más larga es la última. La fuente de respaldo lleva un solo año, y en ella la cuadrícula es una sola fila.
+- La estadística final da el mes más fuerte y el más débil, la proporción de meses al alza y el mes individual más fuerte.
 
 ## Vídeo
 

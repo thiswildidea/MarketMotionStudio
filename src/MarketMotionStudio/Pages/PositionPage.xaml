@@ -143,6 +143,26 @@
                               IsChecked="False"
                               Click="OnLookChanged" />
 
+                    <!-- The bull and the bear on the head of a single holding's line: a red bull
+                         while it climbs, a green bear while it falls. Off by default — a
+                         decoration is switched on, not assumed — and it changes nothing about
+                         the fetch, so it redraws and stops, like the motion above. -->
+                    <CheckBox x:Name="MascotCheck"
+                              x:Uid="PositionMascot"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <!-- Whether the vertical axis grows with the animation instead of being
+                         fixed at the whole-range peak from the first frame. Off by default: a
+                         fixed axis is what the page shipped with, and the option changes only the
+                         growing motion — the scrolling one keeps its fixed axis on purpose. On, a
+                         holding that did nothing for years no longer pins its later climb to the
+                         floor; the frame still closes on the same whole-range axis. -->
+                    <CheckBox x:Name="DynamicAxisCheck"
+                              x:Uid="PositionDynamicAxis"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

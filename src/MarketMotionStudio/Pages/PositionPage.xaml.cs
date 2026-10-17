@@ -222,6 +222,21 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
     /// </summary>
     private bool CrossSafeRight() => CrossCheck.IsChecked is true;
 
+    /// <summary>
+    /// Whether the head of a single holding's line carries the bull or the bear. Read off the
+    /// checkbox rather than out of the preferences, the same way the safe line is — the renderer
+    /// is handed the choice, and a second copy of it would be a second place to keep in step.
+    /// </summary>
+    private bool MascotOn() => MascotCheck.IsChecked is true;
+
+    /// <summary>
+    /// Whether the vertical axis follows the curve drawn so far rather than sitting at the
+    /// whole-range peak from the first frame. Read off the checkbox rather than out of the
+    /// preferences, the same way the safe line and the mascot are — the renderer is handed the
+    /// choice, and a second copy of it would be a second place to keep the two in step.
+    /// </summary>
+    private bool DynamicAxisOn() => DynamicAxisCheck.IsChecked is true;
+
     /// How many trading days the scrolling window holds.
     ///
     /// Clamped rather than refused, unlike the capital: an amount of zero is not a holding, while
@@ -296,7 +311,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
             Preview.Renderer = new PositionRenderer(
-                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(), MascotOn(), DynamicAxisOn())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -720,6 +735,14 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         // Off unless asked for: the band is where the host puts its own controls.
         CrossCheck.IsChecked = _prefs.GetInt("CrossSafeRight", 0) != 0;
 
+        // Off unless asked for, like the safe line above: a badge is a decoration, and the frame
+        // without one is the frame that shipped.
+        MascotCheck.IsChecked = _prefs.GetInt("Mascot", 0) != 0;
+
+        // Off unless asked for: the fixed axis is what the page shipped with, and the option
+        // changes only the growing motion.
+        DynamicAxisCheck.IsChecked = _prefs.GetInt("DynamicAxis", 0) != 0;
+
         // Three years, so the two pickers say something sensible the first time the
         // custom span is chosen instead of opening on today and today.
         var today = DateTimeOffset.Now;
@@ -751,6 +774,8 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         _prefs.Save("Motion", (int)ChosenMotion());
         _prefs.Save("Window", ChosenWindow());
         _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
+        _prefs.Save("Mascot", MascotOn() ? 1 : 0);
+        _prefs.Save("DynamicAxis", DynamicAxisOn() ? 1 : 0);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 

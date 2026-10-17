@@ -359,6 +359,11 @@ public sealed partial class MainWindow : Window
         typeof(CryptoGainCalendarPage),
         typeof(CryptoCapHistoryPage),
         typeof(CryptoMarketCapPage),
+        typeof(CryptoMonthlyMatrixPage),
+        typeof(CryptoComparePage),
+        typeof(CryptoMoversPage),
+        typeof(CryptoDominancePage),
+        typeof(CryptoAnnualMatrixPage),
     ];
 
     private void ApplyMarket()
@@ -366,7 +371,8 @@ public sealed partial class MainWindow : Window
         var crypto = new NavigationViewItem[]
         {
             NavCryptoCandle, NavCryptoDca, NavCryptoPosition, NavCryptoCalendar, NavCryptoCapHistory,
-            NavCryptoMarketCap,
+            NavCryptoMarketCap, NavCryptoMatrix, NavCryptoCompare, NavCryptoMovers, NavCryptoDominance,
+            NavCryptoAnnual,
         };
 
         // The crypto market is the one that keeps three pages and drops the rest, and
@@ -777,6 +783,11 @@ public sealed partial class MainWindow : Window
             "CryptoCalendar" => typeof(CryptoGainCalendarPage),
             "CryptoCapHistory" => typeof(CryptoCapHistoryPage),
             "CryptoMarketCap" => typeof(CryptoMarketCapPage),
+            "CryptoMonthlyMatrix" => typeof(CryptoMonthlyMatrixPage),
+            "CryptoCompare" => typeof(CryptoComparePage),
+            "CryptoMovers" => typeof(CryptoMoversPage),
+            "CryptoDominance" => typeof(CryptoDominancePage),
+            "CryptoAnnual" => typeof(CryptoAnnualMatrixPage),
             "Help" => typeof(HelpPage),
             "Settings" => typeof(SettingsPage),
             _ => null,

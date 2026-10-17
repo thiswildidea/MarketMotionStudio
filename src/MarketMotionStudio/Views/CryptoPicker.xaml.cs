@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using Microsoft.UI.Xaml;
@@ -21,6 +23,13 @@ namespace MarketMotionStudio.Views;
 /// the page that chose them and shared by the three that offer them — the same idea as
 /// the watchlist, about a different set of instruments.
 ///
+/// **The row opens as the twelve, and the box finds the rest.** Typing narrows the twelve while it
+/// is typed, and the same word is asked of the sources; what comes back that is not already a switch
+/// appears under the box, and choosing one there puts it on the row. A coin found this way is
+/// written down (<see cref="CryptoRegistry"/>), so the next run opens with it as a switch like any
+/// other. The stock pages' picker works this way, and the two boxes reading the same way is the
+/// point of reading one before writing the other.
+///
 /// **The limit is the palette's, and it is a refusal rather than a trim.** Six curves
 /// read against each other are a comparison; a seventh takes a colour the sixth already
 /// has. So a seventh press is not accepted and the switch stays off, which is the one
@@ -28,7 +37,8 @@ namespace MarketMotionStudio.Views;
 ///
 /// The control keeps no store of its own: what is chosen is handed to it and handed
 /// back. A preference about which coins is the page's to remember, and a control that
-/// saved its own would be a second place the same choice is kept.
+/// saved its own would be a second place the same choice is kept. The coins a search added are
+/// remembered, but that is a different question — which coins exist, not which are on this frame.
 /// </summary>
 public sealed partial class CryptoPicker : UserControl
 {
@@ -36,6 +46,15 @@ public sealed partial class CryptoPicker : UserControl
     public event EventHandler? Changed;
 
     private readonly List<RaceEntry> _chosen = [];
+
+    /// <summary>How long after the last keystroke the sources are asked, so a word is one request.</summary>
+    private readonly DispatcherTimer _search = new() { Interval = TimeSpan.FromMilliseconds(260) };
+
+    /// <summary>What the box currently reads.</summary>
+    private string _typed = string.Empty;
+
+    /// <summary>What the last request that was sent asked for, so a late answer to an older word is dropped.</summary>
+    private string _asked = string.Empty;
 
     public CryptoPicker()
     {
@@ -48,25 +67,20 @@ public sealed partial class CryptoPicker : UserControl
         AutomationProperties.SetAutomationId(Search, "CryptoSearch");
         AutomationProperties.SetAutomationId(NoMatch, "CryptoSearchNone");
 
-        foreach (var asset in CryptoAsset.All)
+        // The coins a search added in an earlier run are read here too, so they open as switches
+        // beside the twelve — the same row the run that added them left behind.
+        CryptoRegistry.EnsureLoaded();
+
+        foreach (var asset in CryptoAsset.All.Concat(CryptoAsset.Extra))
         {
-            // Named by its code, not by the name it displays: the name is the one this
-            // interface language spells, and anything that has to reach one of these —
-            // a screen reader, a script — would otherwise need fourteen spellings.
-            var chip = new ToggleButton
-            {
-                Content = asset.Display,
-                Tag = asset.Code,
-                Margin = new Thickness(0, 0, 8, 6),
-            };
-
-            AutomationProperties.SetAutomationId(chip, "Coin" + asset.Code);
-            AutomationProperties.SetName(chip, asset.Display);
-
-            chip.Click += OnCoinClick;
-
-            Coins.Children.Add(chip);
+            AddChip(asset);
         }
+
+        _search.Tick += async (_, _) =>
+        {
+            _search.Stop();
+            await FindAsync();
+        };
 
         Say();
     }
@@ -91,20 +105,21 @@ public sealed partial class CryptoPicker : UserControl
     {
         _chosen.Clear();
 
-        var wanted = codes.ToList();
-
-        foreach (var asset in CryptoAsset.All)
+        foreach (var code in codes)
         {
-            if (!wanted.Any(c => string.Equals(c, asset.Code, StringComparison.OrdinalIgnoreCase)))
-            {
-                continue;
-            }
-
             if (_chosen.Count >= Limit)
             {
                 break;
             }
 
+            // One of the twelve, or one a search brought in on an earlier run — `Of` is the one
+            // place that knows both, and the switch for either is already built.
+            if (CryptoAsset.Of(code) is not { } asset)
+            {
+                continue;
+            }
+
+            AddChip(asset);
             _chosen.Add(new RaceEntry(asset.Code, asset.Display));
         }
 
@@ -122,6 +137,34 @@ public sealed partial class CryptoPicker : UserControl
     /// <summary>Whether a coin is on the frame.</summary>
     public bool Has(string code) =>
         _chosen.Any(c => string.Equals(c.Code, code, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>
+    /// One coin's switch, named by its code rather than by the name it displays: the name is the
+    /// one this interface language spells, and anything that has to reach one of these — a screen
+    /// reader, a script — would otherwise need fourteen spellings.
+    /// </summary>
+    private void AddChip(CryptoAsset asset)
+    {
+        if (Coins.Children.OfType<ToggleButton>()
+                .Any(c => string.Equals(c.Tag as string, asset.Code, StringComparison.OrdinalIgnoreCase)))
+        {
+            return;
+        }
+
+        var chip = new ToggleButton
+        {
+            Content = asset.Display,
+            Tag = asset.Code,
+            Margin = new Thickness(0, 0, 8, 6),
+        };
+
+        AutomationProperties.SetAutomationId(chip, "Coin" + asset.Code);
+        AutomationProperties.SetName(chip, asset.Display);
+
+        chip.Click += OnCoinClick;
+
+        Coins.Children.Add(chip);
+    }
 
     private void OnCoinClick(object sender, RoutedEventArgs e)
     {
@@ -171,7 +214,142 @@ public sealed partial class CryptoPicker : UserControl
         Say();
     }
 
-    private void OnSearchChanged(object sender, TextChangedEventArgs e) => Narrow();
+    private void OnSearchChanged(object sender, TextChangedEventArgs e)
+    {
+        _typed = Search.Text;
+
+        Narrow();
+
+        // Restarted rather than left running, so a word is one request when the typing stops —
+        // the same debounce the stock picker uses.
+        _search.Stop();
+        _search.Start();
+    }
+
+    /// <summary>
+    /// Asks the sources what was typed, and shows what came back that is not already a switch.
+    ///
+    /// The answer to an older word is dropped: a search is a round trip, and the reply to `bit`
+    /// landing after the reply to `bitco` would put the wrong list under a box that reads `bitco`.
+    /// A source that cannot be reached answers nothing, which reads the same as a word that matched
+    /// nothing — the honest thing to say, and not an error to report over a box that still narrows.
+    /// </summary>
+    private async Task FindAsync()
+    {
+        var typed = _typed.Trim();
+
+        if (typed.Length == 0)
+        {
+            ShowFound([]);
+
+            return;
+        }
+
+        _asked = typed;
+
+        IReadOnlyList<CryptoAsset> answered;
+
+        try
+        {
+            answered = await AppServices.Current.Crypto.SearchAsync(typed, CancellationToken.None);
+        }
+        catch (Exception)
+        {
+            answered = [];
+        }
+
+        if (!string.Equals(typed, _asked, StringComparison.Ordinal)
+            || !string.Equals(typed, _typed.Trim(), StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        var fresh = new List<CryptoAsset>();
+
+        foreach (var asset in answered)
+        {
+            // Already a switch on the row — one of the twelve, or added earlier — so it is toggled
+            // below rather than added here. Two results for one code is also one switch.
+            if (CryptoAsset.Of(asset.Code) is not null
+                || fresh.Any(f => string.Equals(f.Code, asset.Code, StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            fresh.Add(asset);
+
+            if (fresh.Count >= 8)
+            {
+                break;
+            }
+        }
+
+        ShowFound(fresh);
+    }
+
+    /// <summary>Puts the search results under the box, one pressable row each.</summary>
+    private void ShowFound(IReadOnlyList<CryptoAsset> found)
+    {
+        Found.Children.Clear();
+
+        foreach (var asset in found)
+        {
+            var row = new Button
+            {
+                Content = $"{asset.Display} · {asset.Code}",
+                Tag = asset,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Left,
+            };
+
+            AutomationProperties.SetAutomationId(row, "Sugg" + asset.Code);
+            row.Click += OnFoundClick;
+
+            Found.Children.Add(row);
+        }
+
+        Found.Visibility = found.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void OnFoundClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: CryptoAsset asset })
+        {
+            Choose(asset);
+        }
+    }
+
+    /// <summary>
+    /// Puts a searched coin on the frame, by the same rules a switch is held to.
+    ///
+    /// Refused at the ceiling rather than trimmed, exactly as a seventh switch is; and written down
+    /// only once it is taken, so a search that ended in a refusal does not grow the list for a run
+    /// that would not have shown the coin.
+    /// </summary>
+    private void Choose(CryptoAsset asset)
+    {
+        if (_chosen.Count >= Limit)
+        {
+            Say();
+
+            return;
+        }
+
+        CryptoRegistry.Remember(asset);
+        AddChip(asset);
+
+        _chosen.Add(new RaceEntry(asset.Code, asset.Display));
+
+        // Clears the box and what it found: the coin is a switch on the row now, and a list that
+        // still offered it would read as it not having been taken. Assigning `Text` runs
+        // `OnSearchChanged`, which puts the twelve back and asks the empty word nothing.
+        Search.Text = string.Empty;
+        ShowFound([]);
+
+        Paint();
+
+        Changed?.Invoke(this, EventArgs.Empty);
+    }
 
     /// <summary>
     /// Shows the coins whose name or code contains what was typed, and puts the rest

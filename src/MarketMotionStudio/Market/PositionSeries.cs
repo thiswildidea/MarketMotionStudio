@@ -35,6 +35,13 @@ public enum PositionMotion
 /// The deepest fall from a running peak, as a positive percentage — the figure a
 /// holder is asked to stomach, and the one a return percentage alone hides.
 /// </param>
+/// <param name="Rising">
+/// For each axis position, whether the holding was a bull (climbing) or a bear (falling)
+/// *at that point*. Computed once from the value series alone, so a frame can read the
+/// state off the position its animation has reached without ever remembering the last
+/// frame's — see <see cref="PositionLoader.Rising"/>. Only <see cref="First"/>..
+/// <see cref="Last"/> carry a meaningful value; earlier positions are left false.
+/// </param>
 public sealed record PositionTrack(
     string Code,
     string Name,
@@ -42,7 +49,8 @@ public sealed record PositionTrack(
     int First,
     int Last,
     double Capital,
-    double MaxDrawdownPct)
+    double MaxDrawdownPct,
+    IReadOnlyList<bool> Rising)
 {
     public double FinalValue => Value[Last];
 
@@ -241,9 +249,86 @@ public static class PositionLoader
                 worst = Math.Max(worst, peak > 0 ? (1 - held / peak) * 100 : 0);
             }
 
-            tracks.Add(new PositionTrack(walk.Code, walk.Name, value, first, last, capital, worst));
+            tracks.Add(new PositionTrack(
+                walk.Code, walk.Name, value, first, last, capital, worst, Rising(value, first, last)));
         }
 
         return new PositionBoard(dates, tracks, capital, skipped);
     }
+
+    /// <summary>
+    /// Which of the two animals the holding is at each axis position.
+    ///
+    /// A bull/bear is a **regime**, not a day's wobble — the same thing the words mean when a
+    /// market is called one or the other — so the state turns only when the holding has run
+    /// <see cref="FlipThreshold"/> away from its own running extreme: down that far from a peak
+    /// is a bear, up that far from a trough is a bull again. Over a decade that turns a handful
+    /// of times, which is what makes the badge a statement about the holding rather than about
+    /// the last fortnight.
+    ///
+    /// Read off the value series alone and computed once here, because both of the constraints
+    /// this page is under point the same way: a frame must be a function of its progress
+    /// (<c>one-render-path.mdc</c>), and the renderer should read what it was handed rather
+    /// than decide things. A sliding-window slope would answer a different question — "which
+    /// way is it going this month" — and flicker between the two on a choppy one.
+    /// </summary>
+    public static bool[] Rising(IReadOnlyList<double> value, int first, int last)
+    {
+        var rising = new bool[value.Count];
+
+        if (last < first)
+        {
+            return rising;
+        }
+
+        // It opens as a bull: a holding is bought to rise, and the first thing it has to do to
+        // be called a bear is fall that far from where it started.
+        var bull = true;
+        var peak = value[first];
+        var trough = value[first];
+
+        for (var i = first; i <= last; i++)
+        {
+            var at = value[i];
+
+            if (bull)
+            {
+                if (at > peak)
+                {
+                    peak = at;
+                }
+
+                if (peak > 0 && (1 - (at / peak)) >= FlipThreshold)
+                {
+                    bull = false;
+                    trough = at;
+                }
+            }
+            else
+            {
+                if (at < trough)
+                {
+                    trough = at;
+                }
+
+                if (trough > 0 && ((at / trough) - 1) >= FlipThreshold)
+                {
+                    bull = true;
+                    peak = at;
+                }
+            }
+
+            rising[i] = bull;
+        }
+
+        return rising;
+    }
+
+    /// <summary>
+    /// How far the holding must run from its own extreme before the animal changes — a fifth,
+    /// the everyday line between a pullback and a turn. Deliberately not a setting: it is the
+    /// definition of the word, and two videos of one holding that disagreed about whether it
+    /// was a bull would be worse than either.
+    /// </summary>
+    private const double FlipThreshold = 0.20;
 }

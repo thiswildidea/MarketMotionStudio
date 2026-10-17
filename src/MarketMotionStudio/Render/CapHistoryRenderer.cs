@@ -133,6 +133,37 @@ public sealed class CapHistoryRenderer : IFrameRenderer
 
     private readonly (double Step, double Top) _priceScale;
 
+    /// <summary>
+    /// Whether the value panel's (and, for one coin, the price panel's) vertical axis
+    /// grows with the animation rather than being fixed at the span's peak from the
+    /// first frame. Off by default: the frame that shipped is the frame without it.
+    ///
+    /// When on, each panel's top is <see cref="AnimationPlan.NiceScale"/> of the largest
+    /// figure drawn so far (× 1.08) — a decade where the value was a hundredth of its
+    /// peak no longer pins the early curve to the baseline — and the closing frame, where
+    /// every figure has arrived, resolves to the same scale the off setting draws, so
+    /// covers and exports are unchanged.
+    /// </summary>
+    private readonly bool _dynamicAxis;
+
+    /// <summary>
+    /// Largest figure drawn from each track's first day to each later axis position, one
+    /// array per track, for the dynamic-axis running peak. Positions outside a track's own
+    /// stretch stay zero, which a prefix max ignores.
+    /// </summary>
+    private readonly double[][] _capRunning;
+
+    private readonly double[][] _priceRunning;
+
+    /// <summary>
+    /// Each track's first drawn figure, kept so the axis has a floor before anything has
+    /// arrived — the opening point rather than zero, so the first frames are not a
+    /// microscopic scale that then snaps open.
+    /// </summary>
+    private readonly double _capFloor;
+
+    private readonly double _priceFloor;
+
     private readonly string[] _labels;
 
     /// <summary>
@@ -171,13 +202,14 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     /// </param>
     public CapHistoryRenderer(
         CapBoard board, AnimationPlan plan, CapAxis axis = CapAxis.Absolute,
-        bool crossSafeRight = false)
+        bool crossSafeRight = false, bool dynamicAxis = false)
     {
         _board = board;
         _plan = plan;
         _comparing = board.Comparing;
         _normalized = axis is CapAxis.Normalized;
         _giveWay = crossSafeRight ? 0 : 1;
+        _dynamicAxis = dynamicAxis;
 
         // Each axis of its own: one step for both would leave one reading's gridlines
         // disagreeing with its own data, which reads as that reading being wrong — and
@@ -195,7 +227,119 @@ public sealed class CapHistoryRenderer : IFrameRenderer
             ? (1, 1)
             : AnimationPlan.NiceScale(Math.Max(_prices[0].Max(), 0.0001) * 1.08, 4);
 
+        // The dynamic-axis machinery: a per-track running peak and a floor at each
+        // track's first figure. Built once, here, because both are pure of the frame
+        // being drawn — they depend only on the board and the axis chosen, which are
+        // fixed at construction.
+        _capRunning = BuildRunning(_caps);
+        _priceRunning = _comparing ? [] : BuildRunning(_prices);
+        _capFloor = FloorOf(_caps);
+        _priceFloor = _comparing ? 0 : FloorOf(_prices);
+
         _labels = Labels(board);
+    }
+
+    /// <summary>
+    /// The last axis position the animation has reached at time <paramref name="t"/> —
+    /// the same count the page's own arrival loop reaches, factored out so the dynamic
+    /// axis can be decided before the grid is drawn.
+    /// </summary>
+    private int ArrivedIndex(double t, int n)
+    {
+        var moving = -1;
+
+        for (var i = 0; i < n; i++)
+        {
+            if (t <= _plan.IntroMs + (i * _plan.StaggerMs))
+            {
+                break;
+            }
+
+            moving = i;
+        }
+
+        return moving;
+    }
+
+    /// <summary>
+    /// The value panel's vertical axis at the position reached. Off the dynamic setting,
+    /// the fixed scale the constructor settled on; on it, the largest figure drawn so far,
+    /// nice-scaled and floored at the tracks' opening figures.
+    /// </summary>
+    private (double Step, double Top) CapScale(int moving) =>
+        _dynamicAxis ? DynamicScale(moving, _capRunning, _capFloor, _capScale) : _capScale;
+
+    /// <summary>The price panel's vertical axis at the position reached — see <see cref="CapScale"/>.</summary>
+    private (double Step, double Top) PriceScale(int moving) =>
+        _dynamicAxis ? DynamicScale(moving, _priceRunning, _priceFloor, _priceScale) : _priceScale;
+
+    /// <summary>
+    /// The dynamic scale: the largest figure any track has drawn up to <paramref name="moving"/>,
+    /// nice-scaled (× 1.08), floored at <paramref name="floor"/> so the first frames are not a
+    /// microscopic scale. At the closing frame <paramref name="moving"/> covers every point, so
+    /// the top equals the fixed scale and covers and exports are unchanged.
+    /// </summary>
+    private (double Step, double Top) DynamicScale(
+        int moving, double[][] running, double floor, (double Step, double Top) fallback)
+    {
+        var peak = 0.0;
+
+        if (moving >= 0)
+        {
+            // The running peak is read off the prefix-max arrays, clamped to each track's
+            // own last drawn position and skipped before its first day.
+            for (var i = 0; i < _board.Tracks.Count; i++)
+            {
+                var track = _board.Tracks[i];
+
+                if (track.First > moving)
+                {
+                    continue;
+                }
+
+                peak = Math.Max(peak, running[i][Math.Min(moving, track.Last)]);
+            }
+        }
+
+        var effective = Math.Max(peak, floor);
+
+        return effective <= 0 ? fallback : AnimationPlan.NiceScale(effective * 1.08, 4);
+    }
+
+    /// <summary>Largest figure drawn from each track's first day to each later position.</summary>
+    private static double[][] BuildRunning(double[][] arrays)
+    {
+        var built = new double[arrays.Length][];
+
+        for (var i = 0; i < arrays.Length; i++)
+        {
+            var source = arrays[i];
+            var prefix = new double[source.Length];
+            var max = 0.0;
+
+            for (var k = 0; k < source.Length; k++)
+            {
+                max = Math.Max(max, source[k]);
+                prefix[k] = max;
+            }
+
+            built[i] = prefix;
+        }
+
+        return built;
+    }
+
+    /// <summary>Each track's first drawn figure — the floor the dynamic axis opens at.</summary>
+    private double FloorOf(double[][] arrays)
+    {
+        var floor = 0.0;
+
+        for (var i = 0; i < _board.Tracks.Count; i++)
+        {
+            floor = Math.Max(floor, arrays[i][_board.Tracks[i].First]);
+        }
+
+        return floor;
     }
 
     /// <summary>
@@ -349,23 +493,14 @@ public sealed class CapHistoryRenderer : IFrameRenderer
         var plotW = Math.Max(1, context.ChartWidth - column);
         var slot = plotW / Math.Max(1, n);
 
-        DrawGrid(session, context, _capScale, mx, plotW, top, bottom, introA, false);
+        // How far along the axis the animation has come — decided before the grid so the
+        // dynamic axis can match the points about to be drawn. Every line shares it: a
+        // frame where one coin had reached Tuesday while another was still at January
+        // would be two different dates pretending to be one.
+        var moving = ArrivedIndex(t, n);
+        var capScale = CapScale(moving);
 
-        // How far along the axis the animation has come. Every line shares it: they are
-        // one comparison on one axis, and a frame where one company had reached Tuesday
-        // while another was still at January would be two different dates pretending to
-        // be one.
-        var moving = -1;
-
-        for (var i = 0; i < n; i++)
-        {
-            if (t <= _plan.IntroMs + (i * _plan.StaggerMs))
-            {
-                break;
-            }
-
-            moving = i;
-        }
+        DrawGrid(session, context, capScale, mx, plotW, top, bottom, introA, false);
 
         var lines = new List<(List<(double X, double Y)> Points, Color Colour)>(_board.Tracks.Count);
         var ends = new List<CapEnd>(_board.Tracks.Count);
@@ -401,7 +536,7 @@ public sealed class CapHistoryRenderer : IFrameRenderer
 
                 points.Add((
                     mx + (slot * i) + (slot / 2),
-                    bottom - ((values[i] / _capScale.Top) * span)));
+                    bottom - ((values[i] / capScale.Top) * span)));
             }
 
             if (points.Count > 0)
@@ -419,7 +554,7 @@ public sealed class CapHistoryRenderer : IFrameRenderer
                 Format(reached, false),
                 Palette.Track(index),
                 mx + (slot * last) + (slot / 2),
-                bottom - ((reached / _capScale.Top) * span)));
+                bottom - ((reached / capScale.Top) * span)));
         }
 
         foreach (var (points, colour) in lines)
@@ -620,7 +755,6 @@ public sealed class CapHistoryRenderer : IFrameRenderer
         CanvasDrawingSession session, FrameContext context, double t, double column, bool isPrice)
     {
         var values = Values(isPrice);
-        var scale = isPrice ? _priceScale : _capScale;
         var (top, bottom) = PanelArea(context, isPrice);
         var span = bottom - top;
         var colour = isPrice ? Palette.Track(1) : Palette.Track(0);
@@ -632,13 +766,18 @@ public sealed class CapHistoryRenderer : IFrameRenderer
             return -1;
         }
 
+        // The axis top, decided before the grid: with the dynamic setting on it grows to
+        // the largest figure drawn so far, off it is the span's fixed peak. Each panel
+        // reads its own axis, so the value and the price do not have to share a scale.
+        var moving = ArrivedIndex(t, values.Length);
+        var scale = isPrice ? PriceScale(moving) : CapScale(moving);
+
         var mx = context.ChartLeft;
         var plotW = Math.Max(1, context.ChartWidth - column);
         var slot = plotW / Math.Max(1, values.Length);
 
         DrawGrid(session, context, scale, mx, plotW, top, bottom, introA, isPrice);
 
-        var moving = -1;
         var shown = 0.0;
         var points = new List<(double X, double Y)>();
 

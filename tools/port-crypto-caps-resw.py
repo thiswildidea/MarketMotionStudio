@@ -126,10 +126,32 @@ CAP_HISTORY_NOTE = [
     "市值指「流通市值」——已经产出并在流通的币，不是把未来所有币都算进去的总市值。数据来自 CoinMetrics 公开接口：比特币可回溯到 2010 年，其余币按源端持有多少算多少。",
 ]
 
+# 多标的一上来，市值刻度那块下拉就要有 A股市值历程同款的那句说明（`CapHistoryAxisNote`）。
+# **不能共用那一句**：它说的是「几家公司 / 几条股价曲线」，这一页说的是币种与价格 ——
+# 共用的结果是 14 种语言里都在画面上写出一个不存在的「公司」。所以另起一个键，句式照抄，
+# 名词换成这一页的。
+CAP_AXIS_NOTE = [
+    "Comparing several coins gives the whole frame to market cap — there is no price axis their prices share honestly — and each line is named at its end. Rebasing answers whose market cap grew faster once one is many times the other.",
+    "Beim Vergleich mehrerer Münzen gehört der ganze Rahmen der Marktkapitalisierung — es gibt keine Preisachse, die ihre Kurse ehrlich teilen — und jede Linie ist am Ende beschriftet. Das Umbasieren beantwortet, wessen Marktkapitalisierung schneller wuchs, wenn eine ein Vielfaches der anderen ist.",
+    "Comparar varias monedas da todo el marco a la capitalización — no hay un eje de precios que sus cotizaciones compartan con honestidad — y cada línea se nombra en su extremo. Rebasar responde qué capitalización creció más rápido cuando una es muchas veces la otra.",
+    "Comparer plusieurs cryptomonnaies donne tout le cadre à la capitalisation — il n'existe pas d'axe de prix que leurs cours partagent honnêtement — et chaque courbe est nommée à son extrémité. Le rebasement répond à la question de laquelle a la capitalisation qui a le plus progressé quand l'une vaut plusieurs fois l'autre.",
+    "Il confronto di più monete lascia tutto il riquadro alla capitalizzazione — non c'è un asse dei prezzi che i loro prezzi condividano onestamente — e ogni linea è nominata alla sua estremità. Il ribasamento dice quale capitalizzazione è cresciuta più in fretta quando una è molte volte l'altra.",
+    "Porównanie kilku monet oddaje cały kadr kapitalizacji — nie ma osi cen, którą ich kursy dzielą uczciwie — a każda linia jest podpisana na końcu. Przeliczenie na 100 mówi, czyja kapitalizacja rosła szybciej, gdy jedna jest wielokrotnością drugiej.",
+    "Comparar várias moedas dá todo o quadro à capitalização — não há eixo de preço que seus preços compartilhem honestamente — e cada linha é nomeada na ponta. Rebasear responde qual capitalização cresceu mais rápido quando uma é várias vezes a outra.",
+    "Při porovnání více mincí patří celý rám kapitalizaci — neexistuje cenová osa, kterou by jejich ceny sdílely poctivě — a každá linie je pojmenována na konci. Přepočet říká, čí kapitalizace rostla rychleji, když je jedna násobkem druhé.",
+    "Birden çok coin karşılaştırıldığında çerçevenin tamamı piyasa değerine kalır — fiyatlarının dürüstçe paylaşacağı bir fiyat ekseni yoktur — ve her çizgi ucunda adlandırılır. Yeniden basma, biri diğerinin katları olduğunda hangisinin piyasa değeri daha hızlı büyüdü sorusunu yanıtlar.",
+    "При сравнении нескольких монет весь кадр отдаётся капитализации — нет оси цен, которую их цены делят честно, — и каждая линия подписана на конце. Пересчёт к 100 отвечает, чья капитализация росла быстрее, когда одна во много раз больше другой.",
+    "複数の銘柄を比べると枠のすべてが時価総額に割かれます。価格を正直に共有できる価格軸がないためで、各線は末端に名前が付きます。一方が他方の何倍もあるとき、100 基準はどちらが速く伸びたかを答えます。",
+    "여러 코인을 비교하면 프레임 전체를 시가총액에 씁니다(가격을 정직하게 공유할 가격 축이 없으므로). 각 선은 끝에 이름이 붙습니다. 한쪽이 다른 쪽의 몇 배일 때 100 기준은 누가 더 빨리 컸는지를 답합니다.",
+    "選了幾個幣種時，整個畫面都留給市值：幾條價格曲線沒有一套共用的、誠實的刻度，所以每條線在自己的末端標出名字。若一個幣比另一個大好幾倍，歸一（首日 = 100）看的是誰漲得更快。",
+    "选了几个币种时，整个画面都留给市值：几条价格曲线没有一套共用的、诚实的刻度，所以每条线在自己的末端标出名字。若一个币比另一个大好几倍，归一（首日 = 100）看的是谁涨得更快。",
+]
+
 # ---- 选择器 ---------------------------------------------------------------------
 #
-# 两页各有一个币种下拉，各自一个键而不共用：它们的 AutomationId 不同（`CryptoCalendarCoin`
-# / `CryptoCapCoin`），而键名跟着控件走，改一处时不会顺手改掉另一页。
+# 涨跌日历仍是一个币种下拉。市值历程原来有第二个下拉（`CryptoCapCoin`），加了多标的之后
+# 它换成了三页共用的那一排开关，那个键随之退休 —— 一个不再被引用的 key 留在 14 份文件里，
+# 下次改币种下拉时会被当成「另一页的那个」照着改。
 
 COIN_HEADER = [
     "Coin", "Münze", "Moneda", "Cryptomonnaie", "Moneta", "Moneta", "Moeda",
@@ -209,6 +231,49 @@ CAP_FETCHED = [
     "{0}일을 가져왔습니다({1}~{2}). 기말 시가총액: 1억 달러 × {3}.",
     "已取到 {0} 個自然日，{1} 至 {2}。期末市值 {3} 億美元。",
     "已取到 {0} 个自然日，{1} 至 {2}。期末市值 {3} 亿美元。",
+]
+
+# 多标的取成时那句。一个标的报的是**期末市值那个数**（`CAP_FETCHED`），因为那是这一页
+# 能证伪「外推」的唯一证据；几个标的时报的是「几个币、多少天、哪一段」，因为期末市值只有
+# 一条线有，写进这一行就是拿其中一只冒充全部。
+#
+# 句式和 `CryptoCandleBoardFetched`（`port-crypto-resw.py` 的 `CANDLE_BOARD`）一模一样，
+# 逐语言对齐；只有 zh 用「个自然日」而不是「天」—— 加密页与股票页的那条分界就在这里，
+# 别混。
+CAP_BOARD_FETCHED = [
+    "{0} coins over {1} days ({2} to {3})",
+    "{0} Münzen über {1} Tage ({2} bis {3})",
+    "{0} monedas en {1} días ({2} a {3})",
+    "{0} cryptomonnaies sur {1} jours ({2} au {3})",
+    "{0} monete su {1} giorni ({2} al {3})",
+    "{0} monet przez {1} dni ({2} do {3})",
+    "{0} moedas em {1} dias ({2} a {3})",
+    "{0} mincí za {1} dní ({2} až {3})",
+    "{1} günde {0} coin ({2} - {3})",
+    "Монет: {0} за {1} дней ({2} — {3})",
+    "{0} 銘柄・{1} 日間（{2}〜{3}）",
+    "{0}개 코인 · {1}일({2}~{3})",
+    "{0} 個幣種 · {1} 個自然日（{2} 至 {3}）",
+    "{0} 个币种 · {1} 个自然日（{2} 至 {3}）",
+]
+
+# 有几个币在区间里没取到市值：**丢弃而不是画成贴地的零线**，所以这一句必须在。
+# 句式和 A股市值历程的 `CapHistorySkipped` 对齐，量词从「家」换成币种的「个 / 銘柄」。
+CAP_SKIPPED = [
+    "Had no market cap inside the range, left out ({0}): {1}",
+    "Ohne Marktkapitalisierung im Zeitraum, weggelassen ({0}): {1}",
+    "Sin capitalización en el rango, omitidas ({0}): {1}",
+    "Sans capitalisation sur la période, non tracées ({0}) : {1}",
+    "Senza capitalizzazione nell'intervallo, escluse ({0}): {1}",
+    "Brak kapitalizacji w zakresie, pominięte ({0}): {1}",
+    "Sem capitalização no intervalo, deixadas de fora ({0}): {1}",
+    "Bez kapitalizace v rozsahu, vynechány ({0}): {1}",
+    "Aralıkta piyasa değeri yok, çıkarıldı ({0}): {1}",
+    "Нет капитализации в диапазоне, пропущено ({0}): {1}",
+    "期間内に時価総額がなく除外（{0} 銘柄）: {1}",
+    "구간에 시가총액이 없어 제외({0}개): {1}",
+    "區間內沒有市值、已略過（{0} 個）：{1}",
+    "区间内没有市值、已略过（{0} 个）：{1}",
 ]
 
 # 取数成功了但历史太短（源端没有那么多天）。与「一个币都没取到」分开说：前者是区间选错了，
@@ -333,12 +398,14 @@ ROWS = [
     ("CryptoCapHistoryPageTitle.Text", CAP_HISTORY_TITLE),
     ("CryptoCapHistoryPageSubtitle.Text", CAP_HISTORY_SUBTITLE),
     ("CryptoCapHistoryNote.Text", CAP_HISTORY_NOTE),
-    ("CryptoCapCoin.Header", COIN_HEADER),
+    ("CryptoCapAxisNote.Text", CAP_AXIS_NOTE),
     ("CryptoCapWord", CAP_WORD),
     ("CryptoPriceWord", PRICE_WORD),
     ("CryptoDaysUnit", DAYS_UNIT),
     ("CryptoCapDefaultTitle", CAP_DEFAULT_TITLE),
     ("CryptoCapFetched", CAP_FETCHED),
+    ("CryptoCapBoardFetched", CAP_BOARD_FETCHED),
+    ("CryptoCapSkipped", CAP_SKIPPED),
     ("CryptoCapTooFewDays", TOO_SHORT),
     ("CryptoMarketCapPageTitle.Text", MARKET_CAP_TITLE),
     ("CryptoMarketCapPageSubtitle.Text", MARKET_CAP_SUBTITLE),
@@ -348,6 +415,12 @@ ROWS = [
     ("CryptoMarketCapTooFew", MARKET_CAP_TOO_FEW),
     ("CryptoMarketCapTooShort", TOO_SHORT),
     ("CryptoUnitCoins", UNIT_COINS),
+]
+
+# 退休的键。页面已经不再引用它们，但 14 份文件里还留着，而删除只按 `ROWS` 走 —— 不在这里
+# 说一声，它们就会一直留着，下一次改币种选择器的人会把它当成「另一页还在用的那个」。
+RETIRED = [
+    "CryptoCapCoin.Header",
 ]
 
 
@@ -380,7 +453,7 @@ def main():
 
         # Idempotent: drop a key of the same base name wherever it already sits, then append.
         # The suffix is optional in the pattern because the two entry shapes coexist.
-        for key, _ in ROWS:
+        for key in [k for k, _ in ROWS] + RETIRED:
             base = key.split(".")[0]
 
             text = re.sub(

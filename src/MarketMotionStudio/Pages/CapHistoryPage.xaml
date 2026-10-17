@@ -157,6 +157,20 @@
                               IsChecked="False"
                               Click="OnLookChanged" />
 
+                    <!-- Whether the vertical axis grows with the animation instead of being
+                         fixed at the full-range peak. Off by default: an axis that re-fits
+                         itself as the frame plays would be the wrong reading for a chart meant
+                         to be compared against the final still, and the default keeps the whole
+                         span in frame from the first bar. On, the early flat stretch no longer
+                         hugs the baseline — the axis top eases up to whatever the drawn part
+                         has reached, and the closing frame is the same full-range picture as
+                         before. A pure function of progress, so every frame still derives only
+                         from the one thing a frame is allowed to depend on. -->
+                    <CheckBox x:Name="DynamicAxisCheck"
+                              x:Uid="CapHistoryDynamicAxis"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

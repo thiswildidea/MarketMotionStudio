@@ -20,6 +20,14 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.18.0 — 2026-10-16
+
+**本版聚焦加密货币与持仓页。** 加密 K 线现在像 A 股那样在线检索真实币种，不再限于一张固定列表；加密货币市值历程支持同时画多只币种、各一条线，并可切换「实际数值 / 归一到 100」两种刻度；加密货币新增月度收益页，把一只币逐月涨跌铺成年×月的红绿热力表。持仓收益页的牛熊图标移到名称与收益框的正上方居中。
+
+**This release focuses on crypto and the holdings page.** Crypto K-line now searches real coins online, like the A-share page, instead of a fixed list. Crypto market-cap history draws several coins at once, one line each, with a switch between actual values and rebased-to-100. A new Crypto Monthly Returns page lays a coin's month-by-month gains and losses across a year-by-month red-and-green heat table. On the holdings page, the bull/bear badge moves to sit centred on top of the name-and-figure label.
+
+---
+
 ## 1.0.17.0 — 2026-10-11（更新版 / update）
 
 **本版没有新页面，是把手册补齐：** 加密货币那六个章节各配一张图，开篇那句话终于说清了这个应用是

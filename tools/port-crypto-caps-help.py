@@ -10,12 +10,15 @@ r"""把「涨跌日历 / 市值历程 / 市值榜」三章插进 14 份 help-*.m
 
 文件是 **UTF-8 不带 BOM**（2026-10-11 实测 HEAD 上逐份看过）；BOM 与行尾照抄原文。
 
-**这一块要说清的三件事**（14 份都要说，措辞各自来）：
+**这一块要说清的事**（14 份都要说，措辞各自来）：
 
 1. 日历**没有空格**：不是漏掉了休息日，是这个市场不休息；
 2. 市值**不是外推**：不是「今天的流通量 × 历史价格」（那样两条线恒平行，这一页就没意义了），
    而是 CoinMetrics 的逐日真值；
-3. 市值榜是**实时前 15 名**，不是写死的清单，榜上保留稳定币。
+3. 市值榜是**实时前 15 名**，不是写死的清单，榜上保留稳定币；
+4. **市值历程可以同时画几个币**（10-14 加）：整幅画面让给市值、最多六个、
+   刻度两种读法（绝对值／归一到 100）、日期轴取并集；
+5. 源端不携带的币是**略过**而不是画成贴地的零线，状态行说出略过了哪几个。
 
 用法：python tools\port-crypto-caps-help.py
 """
@@ -45,12 +48,15 @@ One cell per day, coloured by that day's change.
 
 ## Crypto Market Cap History
 
-One coin's circulating market cap over time, with the price over the same days beneath it.
+One coin's circulating market cap over time, with the price over the same days beneath it. Or several coins at once — one line each, named at its end.
 
 - **Where the two lines pull apart, you are looking at issuance and burns.** The price is what one coin costs; the cap is that price times however many coins exist. A cap line that rises while the price line falls is supply growing, not a figure that went wrong.
 - **This is measured, not extrapolated.** Multiplying today's supply by an old price is the cheap way to draw this page, and it produces two lines that are the same line — the cap would say nothing the price does not already say. What is drawn here comes from CoinMetrics' public API, which carries a daily circulating cap: Bitcoin reaches back to 2010, other coins as far as the source holds them.
 - Market cap here means *circulating* cap — the coins already issued and in circulation, not a fully diluted count that assumes every coin that will ever exist.
 - The estimate series every coin carries starts in June 2019. A coin with no exact series begins there, and the page says where the range really starts instead of quietly beginning later.
+- **Compare several coins and the whole frame goes to market cap.** Their prices do not share a price axis honestly — put bitcoin beside a coin trading at a fraction of a cent and one of them is a flat line along the bottom — so the lower price panel steps aside and every curve is named at its own leading end. Six is the ceiling: a seventh press is not accepted, because a seventh curve would take a colour the sixth already has.
+- The value axis has two readings. Absolute answers which coin is worth more; rebased to 100 at each line's own first day answers whose cap grew faster, and is the only readable one once one is several times the other. Either way the date axis is the union of their days: a coin that only starts in 2019 begins there and is absent before that.
+- **A coin the value source does not carry is left out, not drawn flat.** Much of what a search can add is outside CoinMetrics' catalogue, and a flat line along the bottom of a value chart reads as a coin that went to nothing rather than one with no figure to draw. When some are left out the status line names them; with a single coin picked and it coming back empty, the page says the range holds no usable history instead of drawing an empty frame.
 - **Range** is twelve, twenty-four, sixty or one hundred and twenty months, or a span of your own. A coin's history may be shorter than the range you asked for — that is the source's floor, not a fetch that failed.
 
 ## Crypto Market Cap Race
@@ -75,12 +81,15 @@ Ein Feld pro Tag, gefärbt nach der Veränderung dieses Tages.
 
 ## Krypto-Marktkapitalisierung im Verlauf
 
-Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage.
+Die zirkulierende Marktkapitalisierung einer Münze im Verlauf, darunter der Kurs über dieselben Tage. Oder mehrere Münzen auf einmal — je eine Linie, am eigenen Ende beschriftet.
 
 - **Wo die beiden Linien auseinanderlaufen, sieht man Ausgabe und Verbrennung.** Der Kurs ist, was eine Münze kostet; die Kapitalisierung ist dieser Kurs mal der Anzahl existierender Münzen. Eine Kapitalisierungslinie, die steigt, während die Kurslinie fällt, ist wachsendes Angebot, keine falsche Zahl.
 - **Das ist gemessen, nicht hochgerechnet.** Den heutigen Bestand mit einem alten Kurs zu multiplizieren ist der billige Weg, diese Seite zu zeichnen, und er liefert zwei Linien, die dieselbe Linie sind — die Kapitalisierung sagte dann nichts, was der Kurs nicht schon sagt. Gezeichnet wird hier, was aus der öffentlichen CoinMetrics-Schnittstelle kommt, die eine tägliche zirkulierende Kapitalisierung führt: Bitcoin reicht bis 2010 zurück, andere Münzen so weit, wie die Quelle sie hält.
 - Marktkapitalisierung bedeutet hier die *zirkulierende* — die bereits ausgegebenen und im Umlauf befindlichen Münzen, nicht eine voll verwässerte Zahl, die jede jemals existierende Münze annimmt.
 - Die Schätzreihe, die jede Münze hat, beginnt im Juni 2019. Eine Münze ohne exakte Reihe beginnt dort, und die Seite sagt, wo der Zeitraum wirklich anfängt, statt still später zu beginnen.
+- **Mehrere Münzen auf einmal, und der ganze Rahmen gehört der Marktkapitalisierung.** Ihre Kurse teilen keine ehrliche Kursachse — Bitcoin neben einer Münze, die einen Bruchteil eines Cents kostet, und eine von beiden ist eine flache Linie am Boden —, darum tritt das untere Kursfeld zurück und jede Kurve wird am eigenen Ende beschriftet. Sechs ist die Obergrenze: ein siebter Druck wird nicht angenommen, denn eine siebte Kurve nähme eine Farbe, die die sechste schon hat.
+- Die Wertachse hat zwei Lesarten. Absolut beantwortet, welche Münze mehr wert ist; auf 100 umbasiert ab dem je eigenen ersten Tag, wessen Kapitalisierung schneller wuchs — und das ist die einzige lesbare, sobald eine ein Vielfaches der anderen ist. In beiden Fällen ist die Zeitachse die Vereinigung ihrer Tage: eine Münze, die erst 2019 beginnt, beginnt dort und fehlt davor.
+- **Eine Münze, die die Wertquelle nicht führt, wird weggelassen statt flach gezeichnet.** Vieles, was eine Suche hinzufügen kann, liegt außerhalb des Katalogs von CoinMetrics, und eine flache Linie am unteren Rand eines Wertdiagramms liest sich wie eine Münze, die auf nichts hinauslief, nicht wie eine ohne Zahl. Wurden welche weggelassen, nennt die Statuszeile sie; ist nur eine gewählt und kommt leer zurück, sagt die Seite, dass der Zeitraum keine brauchbare Historie enthält, statt einen leeren Rahmen zu zeichnen.
 - **Zeitraum** sind zwölf, vierundzwanzig, sechzig oder hundertzwanzig Monate oder eine eigene Spanne. Die Historie einer Münze kann kürzer sein als die verlangte Spanne — das ist die Untergrenze der Quelle, kein fehlgeschlagener Abruf.
 
 ## Rennen der Krypto-Marktkapitalisierung
@@ -105,12 +114,15 @@ Una celda por día, coloreada según la variación de ese día.
 
 ## Historial de capitalización cripto
 
-La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo.
+La capitalización circulante de una moneda a lo largo del tiempo, con el precio de los mismos días debajo. O varias monedas a la vez — una línea cada una, rotulada en su extremo.
 
 - **Donde las dos líneas se separan, lo que se ve es emisión y quema.** El precio es lo que cuesta una moneda; la capitalización es ese precio por la cantidad de monedas existentes. Una línea de capitalización que sube mientras la del precio baja es oferta que crece, no una cifra equivocada.
 - **Esto se mide, no se extrapola.** Multiplicar el suministro de hoy por un precio antiguo es la forma barata de dibujar esta página, y produce dos líneas que son la misma línea: la capitalización no diría nada que el precio no diga ya. Lo que se dibuja aquí viene de la API pública de CoinMetrics, que lleva una capitalización circulante diaria: Bitcoin llega hasta 2010, las demás monedas hasta donde la fuente las tenga.
 - Aquí capitalización significa la *circulante* — las monedas ya emitidas y en circulación, no un cálculo totalmente diluido que supone todas las monedas que existirán.
 - La serie estimada que tiene cada moneda empieza en junio de 2019. Una moneda sin serie exacta empieza ahí, y la página dice dónde empieza realmente el rango en vez de empezar silenciosamente más tarde.
+- **Varias monedas a la vez, y todo el marco va a la capitalización.** Sus precios no comparten un eje de precios honesto — ponga bitcoin al lado de una moneda que cotiza a una fracción de céntimo y una de las dos es una línea plana en el fondo —, así que el panel de precios inferior cede su sitio y cada curva se rotula en su propio extremo. Seis es el techo: una séptima pulsación no se acepta, porque una séptima curva tomaría un color que la sexta ya tiene.
+- El eje de valor tiene dos lecturas. El absoluto responde qué moneda vale más; el rebasado a 100 en el primer día de cada una, cuál creció más rápido, y es el único legible cuando una es varias veces la otra. En ambos casos el eje de fechas es la unión de sus días: una moneda que solo empieza en 2019 comienza ahí y falta antes.
+- **Una moneda que la fuente de valores no tiene se omite, no se dibuja plana.** Buena parte de lo que una búsqueda puede añadir queda fuera del catálogo de CoinMetrics, y una línea plana en el fondo de un gráfico de valor se lee como una moneda que se fue a nada, no como una sin cifra que dibujar. Cuando se omiten algunas, la línea de estado las nombra; si solo hay una marcada y vuelve vacía, la página dice que el tramo no tiene historia utilizable en lugar de dibujar un marco vacío.
 - **Rango** son doce, veinticuatro, sesenta o ciento veinte meses, o un tramo propio. La historia de una moneda puede ser más corta que el rango pedido — eso es el suelo de la fuente, no una consulta que falló.
 
 ## Carrera de capitalización cripto
@@ -135,12 +147,15 @@ Une case par jour, colorée selon la variation de ce jour.
 
 ## Historique de capitalisation crypto
 
-La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous.
+La capitalisation circulante d'une cryptomonnaie au fil du temps, avec le cours des mêmes jours en dessous. Ou plusieurs cryptomonnaies à la fois — une courbe chacune, nommée à son extrémité.
 
 - **Là où les deux lignes s'écartent, on voit l'émission et la destruction.** Le cours est ce que coûte un jeton ; la capitalisation est ce cours multiplié par le nombre de jetons existants. Une ligne de capitalisation qui monte pendant que celle du cours descend, c'est l'offre qui grandit, pas un chiffre erroné.
 - **C'est mesuré, pas extrapolé.** Multiplier l'offre actuelle par un ancien cours est la manière bon marché de tracer cette page, et cela produit deux lignes qui sont la même ligne : la capitalisation ne dirait rien que le cours ne dise déjà. Ce qui est tracé ici vient de l'API publique CoinMetrics, qui porte une capitalisation circulante quotidienne : Bitcoin remonte à 2010, les autres cryptomonnaies aussi loin que la source les garde.
 - Ici, capitalisation signifie la capitalisation *circulante* — les jetons déjà émis et en circulation, et non une valorisation entièrement diluée qui suppose tous les jetons qui existeront.
 - La série estimée que porte chaque cryptomonnaie commence en juin 2019. Une cryptomonnaie sans série exacte commence là, et la page dit où l'intervalle commence réellement au lieu de commencer discrètement plus tard.
+- **Plusieurs cryptomonnaies à la fois, et tout le cadre va à la capitalisation.** Leurs cours ne partagent pas d'axe de prix honnête — mettez bitcoin à côté d'une cryptomonnaie qui vaut une fraction de centime et l'une des deux n'est qu'une ligne plate au ras du bas —, donc le panneau des cours s'efface et chaque courbe est nommée à sa propre extrémité. Six est le plafond : une septième pression n'est pas acceptée, car une septième courbe prendrait une couleur que la sixième a déjà.
+- L'axe des valeurs a deux lectures. L'absolu répond à la question de laquelle vaut le plus ; le rebasement à 100 au premier jour de chacune, à celle dont la capitalisation a le plus progressé, et c'est la seule lisible dès que l'une vaut plusieurs fois l'autre. Dans les deux cas l'axe des dates est l'union de leurs jours : une cryptomonnaie qui ne commence qu'en 2019 y commence et manque avant.
+- **Une cryptomonnaie absente de la source de valeurs est omise, pas tracée à plat.** Une bonne part de ce qu'une recherche peut ajouter est hors du catalogue de CoinMetrics, et une ligne plate au bas d'un graphique de valeur se lit comme une cryptomonnaie réduite à rien, non comme une qui n'a aucune donnée. Quand il y en a, la ligne d'état les nomme ; s'il n'y en a qu'une de cochée et qu'elle revient vide, la page dit que l'intervalle ne contient pas d'historique exploitable au lieu de tracer un cadre vide.
 - **Intervalle** : douze, vingt-quatre, soixante ou cent vingt mois, ou une période de votre choix. L'historique d'une cryptomonnaie peut être plus court que l'intervalle demandé — c'est le plancher de la source, pas une récupération qui a échoué.
 
 ## Course des capitalisations crypto
@@ -165,12 +180,15 @@ Una cella per giorno, colorata in base alla variazione di quel giorno.
 
 ## Storia della capitalizzazione crypto
 
-La capitalizzazione circolante di una moneta nel tempo, con il prezzo degli stessi giorni sotto.
+La capitalizzazione circolante di una moneta nel tempo, con il prezzo degli stessi giorni sotto. Oppure più monete insieme — una linea ciascuna, nominata alla sua estremità.
 
 - **Dove le due linee si separano, si vedono emissione e distruzione.** Il prezzo è quanto costa una moneta; la capitalizzazione è quel prezzo per il numero di monete esistenti. Una linea della capitalizzazione che sale mentre quella del prezzo scende è offerta che cresce, non un numero sbagliato.
 - **È misurato, non estrapolato.** Moltiplicare l'offerta di oggi per un prezzo vecchio è il modo economico di disegnare questa pagina, e produce due linee che sono la stessa linea: la capitalizzazione non direbbe nulla che il prezzo non dica già. Ciò che si disegna qui viene dall'API pubblica CoinMetrics, che porta una capitalizzazione circolante giornaliera: Bitcoin arriva al 2010, le altre monete fino a dove la fonte le conserva.
 - Qui capitalizzazione significa quella *circolante* — le monete già emesse e in circolazione, non un conteggio completamente diluito che presuppone tutte le monete che esisteranno.
 - La serie stimata che ogni moneta porta inizia a giugno 2019. Una moneta senza serie esatta inizia lì, e la pagina dice dove l'intervallo comincia davvero invece di iniziare silenziosamente più tardi.
+- **Più monete insieme, e tutto il riquadro va alla capitalizzazione.** I loro prezzi non condividono un asse onesto — metta bitcoin accanto a una moneta che vale una frazione di centesimo e una delle due è una linea piatta sul fondo —, quindi il pannello dei prezzi si fa da parte e ogni curva è nominata alla propria estremità. Sei è il tetto: un settimo tocco non viene accettato, perché una settima curva prenderebbe un colore che la sesta ha già.
+- L'asse del valore ha due letture. L'assoluto dice quale moneta vale di più; il ribasamento a 100 sul primo giorno di ciascuna dice quale capitalizzazione è cresciuta più in fretta, ed è l'unico leggibile quando una vale più volte l'altra. In entrambi i casi l'asse delle date è l'unione dei loro giorni: una moneta che inizia solo nel 2019 comincia lì e prima manca.
+- **Una moneta che la fonte dei valori non porta viene esclusa, non disegnata piatta.** Buona parte di ciò che una ricerca può aggiungere è fuori dal catalogo di CoinMetrics, e una linea piatta in fondo a un grafico di valore si legge come una moneta finita a niente, non come una senza cifre da disegnare. Quando ce ne sono, la riga di stato le nomina; se ne è selezionata una sola e torna vuota, la pagina dice che l'intervallo non contiene storia utilizzabile invece di disegnare un riquadro vuoto.
 - **Intervallo**: dodici, ventiquattro, sessanta o centoventi mesi, oppure un periodo a scelta. La storia di una moneta può essere più breve dell'intervallo richiesto — è il limite della fonte, non un recupero fallito.
 
 ## Corsa della capitalizzazione crypto
@@ -195,12 +213,15 @@ Jedno pole na dzień, pokolorowane według zmiany tego dnia.
 
 ## Historia kapitalizacji krypto
 
-Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach.
+Krążąca kapitalizacja jednej monety w czasie, a pod nią kurs w tych samych dniach. Albo kilka monet naraz — każda własna linia, podpisana na końcu.
 
 - **Tam, gdzie obie linie się rozchodzą, widać emisję i spalanie.** Kurs to cena jednej monety; kapitalizacja to ten kurs razy liczba istniejących monet. Linia kapitalizacji rosnąca, gdy linia kursu spada, to rosnąca podaż, nie zła liczba.
 - **To jest mierzone, nie ekstrapolowane.** Pomnożenie dzisiejszej podaży przez stary kurs to tani sposób na narysowanie tej strony i daje dwie linie, które są jedną linią: kapitalizacja nie powiedziałaby niczego, czego kurs już nie mówi. To, co jest tu rysowane, pochodzi z publicznego API CoinMetrics, które prowadzi dzienną kapitalizację krążącą: Bitcoin sięga 2010 roku, pozostałe monety tak daleko, jak źródło je przechowuje.
 - Kapitalizacja oznacza tu kapitalizację *krążącą* — monety już wyemitowane i będące w obiegu, nie rozwodnioną wartość zakładającą wszystkie monety, które kiedykolwiek powstaną.
 - Seria szacunkowa, którą ma każda moneta, zaczyna się w czerwcu 2019. Moneta bez dokładnej serii zaczyna tam, a strona mówi, gdzie zakres naprawdę się zaczyna, zamiast po cichu zacząć później.
+- **Kilka monet naraz, a cały kadr należy do kapitalizacji.** Ich kursy nie dzielą uczciwie jednej osi cen — postaw bitcoin obok monety warta ułamek centa, a jedna z nich jest płaską linią przy dolnej krawędzi — więc dolny panel kursów ustępuje, a każda linia jest podpisana na własnym końcu. Sześć to górna granica: siódme naciśnięcie nie jest przyjmowane, bo siódma linia wzięłaby kolor, który ma już szósta.
+- Oś wartości ma dwa odczyty. Bezwzględna mówi, która moneta jest warta więcej; przeliczona na 100 w pierwszym dniu każdej z nich — której kapitalizacja rosła szybciej, i to jest jedyny czytelny odczyt, gdy jedna jest wielokrotnością drugiej. W obu przypadkach oś dat to suma ich dni: moneta, która zaczyna się dopiero w 2019, zaczyna tam i wcześniej jej nie ma.
+- **Moneta, której nie ma w źródle wartości, jest pomijana, a nie rysowana płasko.** Wiele z tego, co może dodać wyszukiwanie, jest poza katalogiem CoinMetrics, a płaska linia na dole wykresu wartości czyta się jak moneta, która spadła do zera, a nie jak taka bez danych. Gdy jakieś pominięto, linia stanu je wymienia; jeśli zaznaczono tylko jedną i wraca pusta, strona mówi, że przedział nie ma użytecznej historii, zamiast rysować pusty kadr.
 - **Zakres** to dwanaście, dwadzieścia cztery, sześćdziesiąt lub sto dwadzieścia miesięcy albo własny przedział. Historia monety może być krótsza niż żądany zakres — to dolna granica źródła, nie nieudane pobranie.
 
 ## Wyścig kapitalizacji krypto
@@ -225,12 +246,15 @@ Um quadrado por dia, colorido pela variação daquele dia.
 
 ## Histórico de capitalização cripto
 
-A capitalização circulante de uma moeda ao longo do tempo, com o preço dos mesmos dias abaixo.
+A capitalização circulante de uma moeda ao longo do tempo, com o preço dos mesmos dias abaixo. Ou várias moedas ao mesmo tempo — uma linha cada, nomeada na ponta.
 
 - **Onde as duas linhas se separam, está a emissão e a queima.** O preço é quanto custa uma moeda; a capitalização é esse preço vezes a quantidade de moedas existentes. Uma linha de capitalização que sobe enquanto a do preço cai é oferta crescendo, não um número errado.
 - **Isso é medido, não extrapolado.** Multiplicar a oferta de hoje por um preço antigo é o caminho barato de desenhar esta página, e produz duas linhas que são a mesma linha: a capitalização não diria nada que o preço já não diga. O que se desenha aqui vem da API pública da CoinMetrics, que traz uma capitalização circulante diária: o Bitcoin chega a 2010, as demais moedas até onde a fonte as mantém.
 - Aqui capitalização significa a *circulante* — as moedas já emitidas e em circulação, não uma contagem totalmente diluída que pressupõe todas as moedas que existirão.
 - A série estimada que cada moeda tem começa em junho de 2019. Uma moeda sem série exata começa ali, e a página diz onde o intervalo realmente começa, em vez de começar silenciosamente mais tarde.
+- **Várias moedas ao mesmo tempo, e o quadro inteiro vai para a capitalização.** Os preços delas não compartilham um eixo de preço honesto — coloque o bitcoin ao lado de uma moeda que vale uma fração de centavo e uma das duas vira uma linha reta no fundo —, então o painel de preços cede lugar e cada curva é nomeada na própria ponta. Seis é o teto: um sétimo toque não é aceito, porque uma sétima curva pegaria uma cor que a sexta já tem.
+- O eixo de valor tem duas leituras. O absoluto responde qual moeda vale mais; o rebaseado em 100 no primeiro dia de cada uma responde qual capitalização cresceu mais rápido, e é o único legível quando uma vale várias vezes a outra. Nos dois casos o eixo de datas é a união dos dias delas: uma moeda que só começa em 2019 começa ali e falta antes disso.
+- **Uma moeda que a fonte de valores não tem é omitida, não desenhada reta.** Boa parte do que uma busca pode acrescentar está fora do catálogo da CoinMetrics, e uma linha reta no fundo de um gráfico de valor se lê como uma moeda que foi a nada, não como uma sem número para desenhar. Quando há omitidas, a linha de status as nomeia; se só uma estiver marcada e voltar vazia, a página diz que o intervalo não tem histórico utilizável em vez de desenhar um quadro vazio.
 - **Intervalo** é doze, vinte e quatro, sessenta ou cento e vinte meses, ou um período próprio. A história de uma moeda pode ser mais curta do que o intervalo pedido — esse é o piso da fonte, não uma busca que falhou.
 
 ## Corrida de capitalização cripto
@@ -255,12 +279,15 @@ Jeden čtvereček za den, obarvený podle změny toho dne.
 
 ## Historie kapitalizace krypto
 
-Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny.
+Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny. Nebo několik mincí najednou — každá vlastní čára, pojmenovaná na svém konci.
 
 - **Tam, kde se obě čáry rozcházejí, vidíte emisi a pálení.** Cena je, kolik stojí jedna mince; kapitalizace je ta cena krát počet existujících mincí. Čára kapitalizace stoupající, zatímco čára ceny klesá, je rostoucí nabídka, ne špatné číslo.
 - **To je měřené, ne dopočítané.** Vynásobit dnešní nabídku starou cenou je levný způsob, jak tuto stránku nakreslit, a dává to dvě čáry, které jsou tou samou čarou: kapitalizace by neřekla nic, co cena neříká už teď. Co se tu kreslí, pochází z veřejného API CoinMetrics, které nese denní obíhající kapitalizaci: Bitcoin sahá do roku 2010, ostatní mince tak daleko, jak je zdroj drží.
 - Kapitalizace zde znamená tu *obíhající* — mince již vydané a v oběhu, nikoli plně zředěný počet, který počítá všechny mince, které kdy budou existovat.
 - Odhadovaná řada, kterou má každá mince, začíná v červnu 2019. Mince bez přesné řady začíná tam, a stránka řekne, kde rozsah opravdu začíná, místo aby potichu začínal později.
+- **Několik mincí najednou a celý rám patří kapitalizaci.** Jejich ceny nesdílejí poctivou cenovou osu — postavte bitcoin vedle mince za zlomek centu a jedna z nich je plochá čára u spodního okraje —, takže dolní panel s cenou ustoupí a každá čára je pojmenovaná na svém konci. Šest je strop: sedmé stisknutí se nepřijímá, protože sedmá čára by si vzala barvu, kterou šestá už má.
+- Osa hodnoty má dva výklady. Absolutní říká, která mince má větší hodnotu; přepočtená na 100 v první den každé z nich říká, čí kapitalizace rostla rychleji, a je to jediný čitelný výklad, když je jedna násobkem druhé. V obou případech je osou dat sjednocení jejich dnů: mince, která začíná až v roce 2019, tam začíná a předtím chybí.
+- **Mince, kterou zdroj hodnot nemá, je vynechána, ne nakreslena ploše.** Mnohé z toho, co může hledání přidat, je mimo katalog CoinMetrics, a plochá čára na spodku grafu hodnot se čte jako mince, která skončila na ničem, ne jako ta bez čísla. Když se nějaké vynechají, stavový řádek je pojmenuje; je-li vybrána jen jedna a vrátí se prázdná, stránka řekne, že období nemá použitelnou historii, místo aby nakreslila prázdný rám.
 - **Rozsah** je dvanáct, dvacet čtyři, šedesát nebo sto dvacet měsíců, nebo vlastní období. Historie mince může být kratší než požadovaný rozsah — to je spodní hranice zdroje, ne selhané načtení.
 
 ## Závod kapitalizací krypto
@@ -285,12 +312,15 @@ Güne bir kare, o günün değişimine göre renklendirilmiş.
 
 ## Kripto piyasa değeri geçmişi
 
-Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı.
+Bir coin'in dolaşımdaki piyasa değerinin zaman içindeki seyri, altında aynı günlerin fiyatı. Ya da birden çok coin bir arada — her biri ucunda adı yazan bir çizgi.
 
 - **İki çizginin ayrıldığı yerde görülen şey arz artışı ve yakımdır.** Fiyat, bir coin'in maliyetidir; piyasa değeri ise o fiyatın var olan coin sayısıyla çarpımıdır. Fiyat çizgisi düşerken piyasa değeri çizgisi yükseliyorsa bu büyüyen arzdır, yanlış bir sayı değil.
 - **Bu ölçülür, dışarı doğru hesaplanmaz.** Bugünkü arzı eski bir fiyatla çarpmak bu sayfayı çizmenin ucuz yoludur ve aynı çizgi olan iki çizgi üretir: piyasa değeri, fiyatın zaten söylediğinden fazlasını söylemezdi. Burada çizilen, günlük dolaşımdaki piyasa değerini taşıyan herkese açık CoinMetrics API'sinden gelir: Bitcoin 2010'a kadar uzanır, diğer coin'ler kaynağın tuttuğu kadar geriye gider.
 - Burada piyasa değeri *dolaşımdaki* değer demektir — halihazırda çıkarılmış ve dolaşımda olan coin'ler, gelecekte var olacak her coin'i varsayan tam seyreltilmiş bir sayım değil.
 - Her coin'in taşıdığı tahmin serisi Haziran 2019'da başlar. Kesin serisi olmayan bir coin orada başlar ve sayfa sessizce daha geç başlamak yerine aralığın gerçekte nerede başladığını söyler.
+- **Birden çok coin bir arada ve çerçevenin tamamı piyasa değerine kalır.** Fiyatları dürüst bir fiyat eksenini paylaşmaz — bitcoin'i bir centin çok altında işlem gören bir coin'in yanına koyun, ikisinden biri dipte düz bir çizgi olur — bu yüzden alttaki fiyat paneli geri çekilir ve her çizgi kendi ucunda adlandırılır. Altı üst sınırdır: yedinci basış kabul edilmez, çünkü yedinci çizgi altıncının zaten kullandığı bir rengi alırdı.
+- Değer ekseninin iki okuması var. Mutlak olan hangi coin'in daha değerli olduğunu; her birinin kendi ilk gününde 100'e indirgenmiş olan hangi piyasa değerinin daha hızlı büyüdüğünü söyler ve biri diğerinin katları olduğunda okunabilen tek görünüm budur. İkisinde de tarih ekseni günlerin birleşimidir: yalnızca 2019'da başlayan bir coin orada başlar ve öncesinde yoktur.
+- **Değer kaynağının taşımadığı bir coin, sıfırda düz çizilmek yerine atlanır.** Aramanın ekleyebileceği coin'lerin çoğu CoinMetrics kataloğunun dışındadır ve bir değer grafiğinin dibindeki düz çizgi, çizilecek verisi olmayan bir coin değil, hiçliğe gitmiş bir coin gibi okunur. Atlananlar olduğunda durum satırı onları sayar; yalnızca bir coin seçilip boş dönerse sayfa boş bir çerçeve çizmek yerine aralıkta kullanılabilir geçmiş olmadığını söyler.
 - **Aralık** on iki, yirmi dört, altmış veya yüz yirmi ay ya da kendi belirlediğiniz bir aralıktır. Bir coin'in geçmişi istediğiniz aralıktan kısa olabilir — bu kaynağın tabanıdır, başarısız bir çekim değil.
 
 ## Kripto piyasa değeri yarışı
@@ -315,12 +345,15 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 
 ## История капитализации крипто
 
-Капитализация одной монеты в обращении во времени, под ней — цена за те же дни.
+Капитализация одной монеты в обращении во времени, под ней — цена за те же дни. Или несколько монет сразу — у каждой своя линия с подписью на конце.
 
 - **Там, где две линии расходятся, видны эмиссия и сжигание.** Цена — это стоимость одной монеты; капитализация — эта цена, умноженная на число существующих монет. Линия капитализации, растущая, когда линия цены падает, — это растущее предложение, а не неверная цифра.
 - **Это измеряется, а не экстраполируется.** Умножить сегодняшнее предложение на старую цену — дешёвый способ нарисовать эту страницу, и он даёт две линии, которые суть одна линия: капитализация не сказала бы ничего, чего цена уже не говорит. Нарисованное здесь взято из публичного API CoinMetrics, который ведёт ежедневную капитализацию в обращении: биткоин доступен с 2010 года, остальные монеты — насколько далеко источник их хранит.
 - Здесь капитализация означает капитализацию *в обращении* — уже выпущенные монеты, а не полностью размытый подсчёт, учитывающий все монеты, которые когда-либо будут существовать.
 - Оценочная серия, которая есть у каждой монеты, начинается в июне 2019. Монета без точной серии начинается там, и страница говорит, где диапазон действительно начинается, вместо того чтобы молча начаться позже.
+- **Несколько монет сразу, и весь кадр отдаётся капитализации.** Их цены не делят честную ценовую ось — поставьте биткоин рядом с монетой ценой в доли цента, и одна из них окажется плоской линией у дна, — поэтому нижняя панель цен уступает место, и каждая линия подписана на своём конце. Шесть — предел: седьмое нажатие не принимается, потому что седьмая линия взяла бы цвет, который уже занят шестой.
+- У оси значений два прочтения. Абсолютное отвечает, какая монета стоит больше; приведённая к 100 на первый день каждой — чья капитализация росла быстрее, и это единственное читаемое прочтение, когда одна во много раз больше другой. В обоих случаях ось дат — объединение их дней: монета, которая начинается только в 2019 году, начинается там, а раньше её нет.
+- **Монета, которой нет у источника значений, отбрасывается, а не рисуется ровной.** Многое из того, что может добавить поиск, лежит вне каталога CoinMetrics, а ровная линия внизу графика значений читается как монета, обратившаяся в ничто, а не как та, для которой нет числа. Если что-то отброшено, строка состояния их назовёт; если выбрана одна и она вернулась пустой, страница скажет, что в диапазоне нет пригодной истории, вместо того чтобы нарисовать пустой кадр.
 - **Диапазон** — двенадцать, двадцать четыре, шестьдесят или сто двадцать месяцев либо свой отрезок. История монеты может оказаться короче запрошенного диапазона — это нижняя граница источника, а не неудачная загрузка.
 
 ## Гонка капитализаций крипто
@@ -345,12 +378,15 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 
 ## 暗号資産の時価総額の推移
 
-ある暗号資産の流通時価総額の推移。下段には同じ期間の価格。
+ある暗号資産の流通時価総額の推移。下段には同じ期間の価格。複数の銘柄を同時に並べることもできます——それぞれ末端に名前の付いた線になります。
 
 - **2 本の線が離れるところが、新規発行とバーンです。** 価格は 1 枚の値段、時価総額はその価格に存在する枚数を掛けたものです。価格の線が下がっているのに時価総額の線が上がっているなら、それは供給が増えているのであって、数値が壊れているのではありません。
 - **これは実測であって外挿ではありません。** 現在の流通量に過去の価格を掛ければこのページは安く描けますが、それは結局同じ 1 本の線を 2 本描くだけで、時価総額は価格がすでに語っていること以上を何も語りません。ここで描いているのは、日次の流通時価総額を保持している公開 API CoinMetrics から取得したものです。ビットコインは 2010 年まで遡れ、その他の銘柄はソースが保持する範囲までです。
 - ここでの時価総額は*流通*時価総額、つまりすでに発行され流通している分です。将来発行される分まで含めた完全希薄化後の数値ではありません。
 - すべての銘柄が持つ推計系列は 2019 年 6 月に始まります。実測系列がない銘柄はそこから始まり、ページは黙って後から始めるのではなく、期間が実際にどこから始まるかを伝えます。
+- **複数の銘柄を並べると、枠のすべてが時価総額に使われます。** 銘柄ごとの価格は正直な価格軸を共有できません——ビットコインの隣に 1 円にも満たない銘柄を置けば、どちらかは底辺の平らな線になります——だから下の価格パネルは退き、各線は自分の末端に名前を付けます。最大六銘柄です。七つ目は受け付けません。七本目の線は六本目がすでに使っている色を取ることになるからです。
+- 目盛りには二つの読み方があります。絶対値はどちらが大きいかを、各銘柄の初日を 100 とした基準はどちらが速く伸びたかを答え、一方が他方の何倍もあるときに読めるのは後者だけです。どちらの場合も日付軸は和集合です。2019 年からしかない銘柄はそこから始まり、それ以前は欠けます。
+- **時価総額の源が持たない銘柄は、平らに描かずに除外します。** 検索で追加できる銘柄の多くは CoinMetrics の収録外で、時価総額グラフの最下段の平らな線は、描く数字がない銘柄ではなく、無に帰した銘柄に読めます。除外した銘柄があるときは状態行が名前を挙げ、一つだけ選んで空で返ってきたときは、空の枠を描かずに、その期間に使える履歴がないと伝えます。
 - **期間**は 12・24・60・120 か月、または任意の期間です。銘柄の履歴が指定より短いことはあります。それはソースの下限であって、失敗した取得ではありません。
 
 ## 暗号資産の時価総額レース
@@ -375,12 +411,15 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 
 ## 크립토 시가총액 추이
 
-암호화폐의 유통 시가총액 추이. 아래에는 같은 기간의 가격.
+암호화폐의 유통 시가총액 추이. 아래에는 같은 기간의 가격.여러 종목을 한 번에 놓을 수도 있습니다 — 각각 끝에 이름이 붙은 선이 됩니다.
 
 - **두 선이 갈라지는 곳이 발행과 소각입니다.** 가격은 한 개의 값이고, 시가총액은 그 가격에 존재하는 개수를 곱한 것입니다. 가격 선이 내려가는데 시가총액 선이 올라가면 그것은 공급이 늘어난 것이지 숫자가 잘못된 것이 아닙니다.
 - **이것은 실측이며 외삽이 아닙니다.** 현재 유통량에 과거 가격을 곱하면 이 페이지를 값싸게 그릴 수 있지만, 결국 같은 선을 두 번 그리는 셈이어서 시가총액은 가격이 이미 말하는 것 외에 아무것도 말하지 않습니다. 여기서 그리는 것은 일별 유통 시가총액을 보유한 공개 API CoinMetrics에서 가져온 것입니다. 비트코인은 2010년까지 거슬러 올라가고, 나머지 코인은 소스가 보유한 범위까지입니다.
 - 여기서 시가총액은 *유통* 시가총액, 즉 이미 발행되어 유통되는 물량입니다. 앞으로 발행될 물량까지 포함한 완전 희석 기준이 아닙니다.
 - 모든 코인이 가진 추정 시리즈는 2019년 6월에 시작합니다. 실측 시리즈가 없는 코인은 거기서 시작하고, 페이지는 조용히 뒤에서 시작하는 대신 구간이 실제로 어디서 시작하는지를 알려줍니다.
+- **여러 종목을 함께 놓으면 프레임 전체가 시가총액에 쓰입니다.** 종목별 가격은 정직한 가격 축을 공유할 수 없습니다——비트코인 옆에 1센트도 안 되는 종목을 놓으면 둘 중 하나는 바닥의 평평한 선이 됩니다——그래서 아래 가격 패널은 물러나고 각 선은 자기 끝에 이름이 붙습니다. 최대 6개입니다. 일곱 번째는 받지 않습니다. 일곱 번째 선은 여섯 번째가 이미 쓰고 있는 색을 가져가게 되기 때문입니다.
+- 값 축에는 두 가지 읽기가 있습니다. 절댓값은 어느 종목이 더 큰지를, 각자의 첫날을 100으로 한 기준은 누가 더 빨리 컸는지를 답하며, 한쪽이 다른 쪽의 몇 배일 때 읽히는 것은 후자뿐입니다. 두 경우 모두 날짜 축은 합집합입니다. 2019년에야 시작한 종목은 거기서 시작하고 그 이전은 비어 있습니다.
+- **시가총액 소스가 갖고 있지 않은 종목은 평평하게 그리지 않고 제외합니다.** 검색으로 추가할 수 있는 종목의 상당수는 CoinMetrics 목록 밖에 있고, 시가총액 그래프 맨 아래의 평평한 선은 그릴 숫자가 없는 종목이 아니라 아무것도 아닌 것이 되어버린 종목으로 읽힙니다. 제외된 종목이 있으면 상태 줄이 이름을 밝히고, 하나만 골랐는데 빈손으로 돌아오면 빈 프레임을 그리는 대신 그 구간에 쓸 만한 이력이 없다고 알려줍니다.
 - **구간**은 12·24·60·120개월 또는 직접 지정입니다. 코인의 이력이 요청한 구간보다 짧을 수 있습니다. 그것은 소스의 하한이지 실패한 조회가 아닙니다.
 
 ## 크립토 시가총액 레이스
@@ -405,12 +444,15 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 
 ## 加密货币市值历程
 
-某个币种流通市值随时间的变化，下方是同一批日子的价格。
+某个币种流通市值随时间的变化，下方是同一批日子的价格。也可以同时画几个币种，各一条线、在末端标出名字。
 
 - **两条线分头走的地方，看的就是增发与销毁。** 价格是一枚币值多少；市值是这个价格乘以现存多少枚。价格线在跌而市值线在涨，那是供应在增长，不是数字错了。
 - **这是量出来的，不是外推的。** 用今天的流通量乘以一个老价格，是画这一页最省事的办法，而它给出的两条线其实是同一条——那样市值线说不出任何价格线没说过的话。这里画的是 CoinMetrics 公开接口的逐日流通市值：比特币可回溯到 2010 年，其余币按源端持有多少算多少。
 - 这里的市值指*流通*市值——已经产出并在流通的币，不是把未来所有币都算进去的完全稀释口径。
 - 每个币都有的估算序列统一从 2019 年 6 月开始。没有真值序列的币就从那天起画，页面会说出区间实际从哪天开始，而不是悄悄往后挪。
+- **可以同时画几个币种**：勾选两个以上，各画一条线、在末端标出名字。几个币种的价格没有一套共用的刻度——比特币旁边放一个单价不到一分钱的币，后者就是贴着底边的一条直线——所以下方的价格面板让出来，整幅画面都给市值。最多六个：第七个不接受，因为第七条曲线会用到第六条已经用掉的颜色。
+- **市值刻度有两种读法**：绝对值答的是「谁更大」，各币以自己的首日折到 100 答的是「谁涨得更快」——当一个币比另一个大好几倍，绝对值画面里小的那条就是贴底的直线，读得出来的只有第二种。两种读法下日期轴都取**并集**而不是交集：2019 年才有数据的币就从那天起画，之前那段是空的，而不是把它拉到和比特币一样长。
+- **市值源端不携带的币种是略过，不是画成贴地的零线。** 检索框能添进来的币，大半不在 CoinMetrics 的目录里；而市值图最底下那条平线，读起来是一个归零了的币，而不是一个取不到数的币。有几个被略过时状态行会说出是哪几个；只勾了一个而它恰好没数据时，说的是这个区间里没有取到足够长的市值历史，而不是画一张空图。
 - **区间**是十二个月、二十四个月、六十个月、一百二十个月，或者自定义。某个币种的历史可能比你要的区间短——那是源端的尽头，不是取数失败。
 
 ## 加密货币市值榜
@@ -435,12 +477,15 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 
 ## 加密貨幣市值歷程
 
-某個幣種流通市值隨時間的變化，下方是同一批日子的價格。
+某個幣種流通市值隨時間的變化，下方是同一批日子的價格。也可以同時畫幾個幣種，各一條線、在末端標出名字。
 
 - **兩條線分頭走的地方，看的就是增發與銷毀。** 價格是一枚幣值多少；市值是這個價格乘以現存多少枚。價格線在跌而市值線在漲，那是供應在增長，不是數字錯了。
 - **這是量出來的，不是外推的。** 用今天的流通量乘以一個老價格，是畫這一頁最省事的辦法，而它給出的兩條線其實是同一條——那樣市值線說不出任何價格線沒說過的話。這裡畫的是 CoinMetrics 公開介面的逐日流通市值：比特幣可回溯到 2010 年，其餘幣按源端持有多少算多少。
 - 這裡的市值指*流通*市值——已經產出並在流通的幣，不是把未來所有幣都算進去的完全稀釋口徑。
 - 每個幣都有的估算序列統一從 2019 年 6 月開始。沒有真值序列的幣就從那天起畫，頁面會說出區間實際從哪天開始，而不是悄悄往後挪。
+- **可以同時畫幾個幣種**：勾選兩個以上，各畫一條線、在末端標出名字。幾個幣種的價格沒有一套共用的刻度——比特幣旁邊放一個單價不到一分錢的幣，後者就是貼著底邊的一條直線——所以下方的價格面板讓出來，整幅畫面都給市值。最多六個：第七個不接受，因為第七條曲線會用到第六條已經用掉的顏色。
+- **市值刻度有兩種讀法**：絕對值答的是「誰更大」，各幣以自己的首日折到 100 答的是「誰漲得更快」——當一個幣比另一個大好幾倍，絕對值畫面裡小的那條就是貼底的直線，讀得出來的只有第二種。兩種讀法下日期軸都取**聯集**而不是交集：2019 年才有數據的幣就從那天起畫，之前那段是空的，而不是把它拉到和比特幣一樣長。
+- **市值源端不攜帶的幣種是略過，不是畫成貼地的零線。** 檢索框能加進來的幣，大半不在 CoinMetrics 的目錄裡；而市值圖最底下那條平線，讀起來是一個歸零了的幣，而不是一個取不到數的幣。有幾個被略過時狀態行會說出是哪幾個；只勾了一個而它恰好沒數據時，說的是這個區間裡沒有取到足夠長的市值歷史，而不是畫一張空圖。
 - **區間**是十二個月、二十四個月、六十個月、一百二十個月，或者自訂。某個幣種的歷史可能比你要的區間短——那是源端的盡頭，不是取數失敗。
 
 ## 加密貨幣市值榜

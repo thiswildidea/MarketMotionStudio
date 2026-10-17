@@ -497,12 +497,15 @@ One cell per day, coloured by that day's change.
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-caphistory.png)
 
-One coin's circulating market cap over time, with the price over the same days beneath it.
+One coin's circulating market cap over time, with the price over the same days beneath it. Or several coins at once — one line each, named at its end.
 
 - **Where the two lines pull apart, you are looking at issuance and burns.** The price is what one coin costs; the cap is that price times however many coins exist. A cap line that rises while the price line falls is supply growing, not a figure that went wrong.
 - **This is measured, not extrapolated.** Multiplying today's supply by an old price is the cheap way to draw this page, and it produces two lines that are the same line — the cap would say nothing the price does not already say. What is drawn here comes from CoinMetrics' public API, which carries a daily circulating cap: Bitcoin reaches back to 2010, other coins as far as the source holds them.
 - Market cap here means *circulating* cap — the coins already issued and in circulation, not a fully diluted count that assumes every coin that will ever exist.
 - The estimate series every coin carries starts in June 2019. A coin with no exact series begins there, and the page says where the range really starts instead of quietly beginning later.
+- **Compare several coins and the whole frame goes to market cap.** Their prices do not share a price axis honestly — put bitcoin beside a coin trading at a fraction of a cent and one of them is a flat line along the bottom — so the lower price panel steps aside and every curve is named at its own leading end. Six is the ceiling: a seventh press is not accepted, because a seventh curve would take a colour the sixth already has.
+- The value axis has two readings. Absolute answers which coin is worth more; rebased to 100 at each line's own first day answers whose cap grew faster, and is the only readable one once one is several times the other. Either way the date axis is the union of their days: a coin that only starts in 2019 begins there and is absent before that.
+- **A coin the value source does not carry is left out, not drawn flat.** Much of what a search can add is outside CoinMetrics' catalogue, and a flat line along the bottom of a value chart reads as a coin that went to nothing rather than one with no figure to draw. When some are left out the status line names them; with a single coin picked and it coming back empty, the page says the range holds no usable history instead of drawing an empty frame.
 - **Range** is twelve, twenty-four, sixty or one hundred and twenty months, or a span of your own. A coin's history may be shorter than the range you asked for — that is the source's floor, not a fetch that failed.
 
 ## Crypto Market Cap Race
@@ -516,6 +519,15 @@ The fifteen coins with the largest market cap today, and how that order moved da
 - **Stablecoins stay on it.** Measured on 2026-10-11, the top thirty carried six of them, and tether was the third largest thing on this market. A board that hid them would be ranking something other than size. What they do to the picture is honest: their line is flat, because a dollar is worth a dollar, so the board shows at a glance which of the largest things here actually move.
 - A coin the value source does not carry is dropped rather than drawn flat at zero — a flat line at the bottom of a value race reads as a coin that went to nothing. The board can therefore hold fewer than fifteen, and the status line says how many it got.
 - **Range** is twelve, twenty-four or sixty months, or a span of your own, clipped to the estimate series the same way.
+
+## Crypto Monthly Returns
+
+One coin's month-by-month moves as a year × month grid, red for rises and green for falls, with the whole year compounded in the last column.
+
+- **The months are folded, not asked for.** Crypto has no monthly endpoint: the page fetches everything the daily source holds — about ten years — and folds each month's last daily close against the month before's into that month's move. That also makes the year count a re-reading: changing it re-lays the grid and fetches nothing.
+- **A month counts only when it is over.** The month being walked is not on the grid. Half a month's move dressed up as a whole one is the mistake this picture invites most, which is why it is made impossible rather than labelled.
+- The years run 1–10, and there is no "all": the daily source tops out at about ten years, so the longest honest answer is the last entry. The fallback source carries a single year, and on it the grid is one row.
+- The closing statistics give the strongest and the weakest month, the share of months that rose, and the strongest single month.
 
 ## Video
 

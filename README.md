@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **twenty-four pages working, and export working on all of them, across four markets.** Market Turnover fetches
+Status: **twenty-five pages working, and export working on all of them, across four markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -139,8 +139,9 @@ What each market is for, in one line apiece:
   listings, four Hang Seng sub-indices racing, and the Hang Seng trackers as presets.
 - **United States** — the same two pages on US indices and listings, ten SPDR sector ETFs
   racing, amounts in dollars, and the broad presets — SPY, QQQ, DIA.
-- **Cryptocurrency** — six pages of its own: one coin's candles, a DCA plan, a holding's return,
-  the gain calendar, and two pages about market cap. A coin neither pays a dividend nor splits,
+- **Cryptocurrency** — seven pages of its own: one coin's candles, a DCA plan, a holding's return,
+  the gain calendar, two pages about market cap, and a monthly return matrix. A coin neither pays a
+  dividend nor splits,
   and it takes no holidays, so a year here is 365 days rather than the 243 a stock market gives
   you — which is also why the crypto calendar is a full grid rather than a grid with weekends
   punched out of it.
@@ -164,7 +165,7 @@ than assumed from the market's existence:
 | **Market Value History** | the same arithmetic, except the price underneath is the amount over the volume — this source serves Hong Kong no unadjusted close, so the lower panel is labelled an average rather than a close | the same arithmetic on a rate that is a fraction of *every* share rather than of the ones that trade, so the line reads as a total value and runs above a quote app's circulating figure by exactly the insider stake; it reaches back to 2009, the depth the mainland gets |
 
 The table above compares the three stock markets with each other, which is why cryptocurrency
-has no column in it. Choosing it does not readjust the stock pages — it replaces them: the six
+has no column in it. Choosing it does not readjust the stock pages — it replaces them: the seven
 crypto pages come into the navigation and every stock page goes, because those read an endpoint
 that quotes no coin at all. Whether the option appears in the first place is decided by whether
 either crypto source answers, so the list never offers a market this machine cannot reach.
@@ -193,7 +194,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The twenty-four pages
+## The twenty-five pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -1065,6 +1066,15 @@ line is flat and the board thereby shows at a glance which of the largest things
 A coin the value source does not carry is dropped rather than drawn flat at zero, which is why the
 board can hold fewer than fifteen and says how many it got.
 
+**Crypto Monthly Returns** — the share market's return matrix, reading a coin. There is no monthly
+endpoint to ask about a coin, so the months are folded here, out of the daily bars the chart pages
+already draw: each month's last daily close against the month before's, the month still being
+walked left off the grid, because half a month's move dressed up as a whole one is the mistake
+this picture invites most. The whole span the daily source holds — about ten years — is fetched
+once and the year count reads it, so changing years re-lays the grid and fetches nothing, and the
+list stops at ten because that ceiling is the source's, not a number somebody liked. The grid, the
+compounding and the closing statistics are the stock matrix's own, through the same renderer.
+
 **The title is yours on every page, and it may take two lines.** Type one, or leave the box empty to
 get the default — a fixed label on the whole-market chart, the fetched instrument's name on the
 per-stock one. Text wider than the frame wraps onto a second line rather than being clipped or
@@ -1483,9 +1493,9 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 938 keys
-with no encoding damage, and all fourteen help documents carry the same thirty-three sections in
-the same order — twenty-four of them a page, and nine about the app rather than a market — which
+Every language carries the same keys in the same order. All fourteen currently report 946 keys
+with no encoding damage, and all fourteen help documents carry the same thirty-four sections in
+the same order — twenty-five of them a page, and nine about the app rather than a market — which
 is the equality the cross-language check rests on.
 
 ## Appearance
@@ -1516,7 +1526,7 @@ detector still sees it. A detector whose control sample is clean is not a detect
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all twenty-four pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all twenty-five pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -1575,9 +1585,9 @@ a renderer with no watermark is one with nothing to draw rather than one that ha
 ## The subscription, and the two things it buys
 
 Exporting a video and taking the watermark off it take a monthly subscription. Everything else
-stays free on all twenty-four pages — fetching data, playing the animation, saving a cover image —
+stays free on all twenty-five pages — fetching data, playing the animation, saving a cover image —
 and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
-two are the ends that leave home, and the twenty-four pages of live market animation are what
+two are the ends that leave home, and the twenty-five pages of live market animation are what
 somebody came for.
 
 The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
@@ -1589,7 +1599,7 @@ they have already paid.
 
 Three decisions worth stating.
 
-**The answer is asked for in one place.** Twenty-four pages have an Export button and twenty-four have
+**The answer is asked for in one place.** Twenty-five pages have an Export button and twenty-five have
 their own handler, each written out in full — that duplication already exists and is not this
 feature's to fix. What must not be duplicated is the answer to "may this be done": two answers
 written twice is one page that gives the video away. So every handler asks
@@ -1687,12 +1697,12 @@ first export asks and then remembers.
   So what is verified is the gate, its placement, the licence read, and the watermark's dependency
   on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
   is finally there.
-- **The Store screenshots cover fifteen of the twenty-four pages.** `tools/store-screenshots.py` stops
+- **The Store screenshots cover fifteen of the twenty-five pages.** `tools/store-screenshots.py` stops
   at the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
   extreme-day board, currency corridor, index race, asset-class board, drawdown board or hold-odds
   board. The six cryptocurrency pages need a run of their own (`--crypto`): selecting that market
   removes the stock pages from the navigation outright, so the two sets cannot come out of one pass.
-  The listing copy describes twenty-four chart pages in all fourteen languages — it is written at
+  The listing copy describes twenty-five chart pages in all fourteen languages — it is written at
   release time, so until those nine captures are taken the copy and the gallery disagree. The copy
   deliberately runs ahead of the package too: it is written for the version being prepared, and it
   must not be uploaded before that package is.

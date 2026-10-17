@@ -224,6 +224,15 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
     /// </summary>
     private bool CrossSafeRight() => CrossCheck.IsChecked is true;
 
+    /// <summary>
+    /// Whether the vertical axis grows with the animation rather than holding the whole
+    /// range from the first bar. Read straight off the checkbox, the same as
+    /// <see cref="CrossSafeRight"/>, because the renderer is rebuilt on every change and a
+    /// copy of the preference instead of the choice would be a second place to keep them
+    /// in step.
+    /// </summary>
+    private bool DynamicAxisOn() => DynamicAxisCheck.IsChecked is true;
+
     // ---- preview ---------------------------------------------------------------------
 
     private void ApplyPreviewSettings()
@@ -239,7 +248,7 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Count, board.CapPeak);
 
-            Preview.Renderer = new CapHistoryRenderer(board, plan, ChosenAxis(), CrossSafeRight())
+            Preview.Renderer = new CapHistoryRenderer(board, plan, ChosenAxis(), CrossSafeRight(), DynamicAxisOn())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -661,6 +670,12 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         // figure drawn into it is missing on the phone rather than merely close to an edge.
         CrossCheck.IsChecked = _prefs.GetInt("CrossSafeRight", 0) != 0;
 
+        // Off unless asked for: an axis that re-fits as the frame plays is a different
+        // reading of the same chart, and the frame without it — the whole span in frame
+        // from the first bar — is the one that shipped and the one a still compares
+        // against.
+        DynamicAxisCheck.IsChecked = _prefs.GetInt("DynamicAxis", 0) == 1;
+
         CustomRange.Visibility = ChosenMonths() == CustomMonths ? Visibility.Visible : Visibility.Collapsed;
 
         VideoSettings.Restore(_prefs);
@@ -681,6 +696,7 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         _prefs.Save("Months", ChosenMonths());
         _prefs.Save("Axis", (int)ChosenAxis());
         _prefs.Save("CrossSafeRight", CrossSafeRight() ? 1 : 0);
+        _prefs.Save("DynamicAxis", DynamicAxisOn() ? 1 : 0);
         _prefs.Save("From", FromDate.Date.ToString("yyyy-MM-dd"));
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 

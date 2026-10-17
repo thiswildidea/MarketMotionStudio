@@ -46,10 +46,12 @@ CH_VOLUME = listingtext.chapter_of("NavStockVolume")
 CH_CAP = listingtext.chapter_of("NavMarketCap")
 CH_DATA = -3
 
-# 加密货币那六页，按导航顺序 —— 商店清单的末六条就是它们。顺序也从导航来
+# 加密货币那七页，按导航顺序 —— 商店清单的末七条就是它们。顺序也从导航来
 # （`listingtext.nav_order()` 读 MainWindow.xaml），不写死：往导航中间插一页，这里跟着变。
+# 1.0.18.0 加了「月度收益」（NavCryptoMatrix），从六页变成七页。
 CRYPTO_PAGES = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition",
-                "NavCryptoCalendar", "NavCryptoCapHistory", "NavCryptoMarketCap"]
+                "NavCryptoCalendar", "NavCryptoCapHistory", "NavCryptoMarketCap",
+                "NavCryptoMatrix"]
 
 PASSED = []
 FAILED = []
@@ -212,24 +214,24 @@ def listing_checks():
         # 清单是历来一次次上架时追加出来的顺序，所以新的一页追加在末尾 —— 末尾那条也因此
         # 换了页。（1.0.5.0 之前这一条是「十六条 / 最后一条是持有胜率」；第十七页债市固收
         # 从来没进过商店文案，直到那一版；第十八页市值历程同样是在它已经在应用里之后才由
-        # `port-store-listing-caphistory.py` 补进来的；第十九到二十四条是加密货币那六页，
-        # 由 `port-store-listing-crypto-pages.py` 一次补进来。）
-        check(f"{lang} 说明段是二十四条", len(items) == 24, f"{len(items)} 条")
+        # `port-store-listing-caphistory.py` 补进来的；第十九到二十五条是加密货币那七页，
+        # 由 `port-store-listing-crypto-pages.py` 一次补进前六页、1.0.18.0 再补第七页。）
+        check(f"{lang} 说明段是二十五条", len(items) == 25, f"{len(items)} 条")
 
         if items:
-            # 末六条是加密六页，顺序与导航一致 —— 页名从各语言的 resw 取，不写死：导航
+            # 末七条是加密七页，顺序与导航一致 —— 页名从各语言的 resw 取，不写死：导航
             # 中间插一页，这里的顺序也得跟着变。
             tail = [page_name(lang, key) for key in CRYPTO_PAGES]
-            check(f"{lang} 末六条是加密六页，顺序与导航一致",
+            check(f"{lang} 末七条是加密七页，顺序与导航一致",
                   len(items) >= len(CRYPTO_PAGES)
                   and all(lines[items[-len(CRYPTO_PAGES) + i]].startswith(f"• {tail[i]}")
                           for i in range(len(CRYPTO_PAGES))),
                   lines[items[-1]][:40])
 
             # 追加不动前面的顺序，所以第十八页与第十七页只是各被顶开几位，而不是被换掉。
-            # 末七是市值历程、末八是债市固收 —— 这两条一起钉住「前面十八条没被重排」。
+            # 末八是市值历程、末九是债市固收 —— 这两条一起钉住「前面十八条没被重排」。
             before = page_name(lang, "NavCapHistory")
-            check(f"{lang} 加密六页之前仍是市值历程",
+            check(f"{lang} 加密七页之前仍是市值历程",
                   len(items) < len(CRYPTO_PAGES) + 1
                   or lines[items[-len(CRYPTO_PAGES) - 1]].startswith(f"• {before}"),
                   lines[items[-len(CRYPTO_PAGES) - 1]][:40] if len(items) > len(CRYPTO_PAGES)

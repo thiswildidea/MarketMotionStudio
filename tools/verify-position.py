@@ -1231,8 +1231,12 @@ def main():
     # 默认**关**。`giveWay` 是个 0~1 的小数而不是布尔，因为窗口滚动要用到中间那些值：它的
     # 窗口在收尾那一段展开成整段，展开完的画面正是「整段铺满」那一版，所以让位量跟着同一个
     # 斜坡收到 0 —— 不是在开始那一刻直接消失（那样画面会跳一下）。
+    # 不抄签名的结尾括号：签名会随新开关变长（mascot 就是这么把 `false)` 变成
+    # `false, bool mascot = false)` 的），要管的只是「这一项在构造参数表里」。
     check("开关是**构造参数**，不是可读回的属性（写成属性会读成默认值而 UIA 全绿）",
-          "bool crossSafeRight = false)" in renderer)
+          "bool crossSafeRight = false" in renderer)
+    check("牛熊图标的开关同样是构造参数（同一个教训，同一个写法）",
+          "bool mascot = false" in renderer and "private readonly bool _mascot;" in renderer)
     check("关着时全额让位",
           "if (!_crossSafeRight)\n        {\n            return 1;\n        }" in renderer)
     check("整段铺满开着时不让位（从第一帧起就用满整幅宽）",

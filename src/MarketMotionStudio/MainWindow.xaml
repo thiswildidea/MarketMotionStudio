@@ -314,6 +314,31 @@
                                         Visibility="Collapsed">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMarketCap}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoMatrix" x:Uid="NavCryptoMatrix" Tag="CryptoMonthlyMatrix"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMatrix}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <!-- The four crypto boards added after the monthly matrix. All four are
+                     crypto-only, so they sit with the other crypto pages and are opened by
+                     `ApplyMarket` the same way: collapsed in the markup, shown when the
+                     market is crypto. Compare and Movers are price races, Dominance is a
+                     market-cap share, Annual is a yearly-return matrix. -->
+                <mux:NavigationViewItem x:Name="NavCryptoCompare" x:Uid="NavCryptoCompare" Tag="CryptoCompare"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconSectorRace}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoMovers" x:Uid="NavCryptoMovers" Tag="CryptoMovers"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconExtremeDays}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoDominance" x:Uid="NavCryptoDominance" Tag="CryptoDominance"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMarketCap}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+                <mux:NavigationViewItem x:Name="NavCryptoAnnual" x:Uid="NavCryptoAnnual" Tag="CryptoAnnual"
+                                        Visibility="Collapsed">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconMatrix}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
             </mux:NavigationView.MenuItems>
 
             <mux:NavigationView.FooterMenuItems>

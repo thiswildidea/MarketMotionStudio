@@ -473,12 +473,15 @@ Jeden čtvereček za den, obarvený podle změny toho dne.
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-caphistory.png)
 
-Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny.
+Obíhající kapitalizace jedné mince v čase, pod ní cena za stejné dny. Nebo několik mincí najednou — každá vlastní čára, pojmenovaná na svém konci.
 
 - **Tam, kde se obě čáry rozcházejí, vidíte emisi a pálení.** Cena je, kolik stojí jedna mince; kapitalizace je ta cena krát počet existujících mincí. Čára kapitalizace stoupající, zatímco čára ceny klesá, je rostoucí nabídka, ne špatné číslo.
 - **To je měřené, ne dopočítané.** Vynásobit dnešní nabídku starou cenou je levný způsob, jak tuto stránku nakreslit, a dává to dvě čáry, které jsou tou samou čarou: kapitalizace by neřekla nic, co cena neříká už teď. Co se tu kreslí, pochází z veřejného API CoinMetrics, které nese denní obíhající kapitalizaci: Bitcoin sahá do roku 2010, ostatní mince tak daleko, jak je zdroj drží.
 - Kapitalizace zde znamená tu *obíhající* — mince již vydané a v oběhu, nikoli plně zředěný počet, který počítá všechny mince, které kdy budou existovat.
 - Odhadovaná řada, kterou má každá mince, začíná v červnu 2019. Mince bez přesné řady začíná tam, a stránka řekne, kde rozsah opravdu začíná, místo aby potichu začínal později.
+- **Několik mincí najednou a celý rám patří kapitalizaci.** Jejich ceny nesdílejí poctivou cenovou osu — postavte bitcoin vedle mince za zlomek centu a jedna z nich je plochá čára u spodního okraje —, takže dolní panel s cenou ustoupí a každá čára je pojmenovaná na svém konci. Šest je strop: sedmé stisknutí se nepřijímá, protože sedmá čára by si vzala barvu, kterou šestá už má.
+- Osa hodnoty má dva výklady. Absolutní říká, která mince má větší hodnotu; přepočtená na 100 v první den každé z nich říká, čí kapitalizace rostla rychleji, a je to jediný čitelný výklad, když je jedna násobkem druhé. V obou případech je osou dat sjednocení jejich dnů: mince, která začíná až v roce 2019, tam začíná a předtím chybí.
+- **Mince, kterou zdroj hodnot nemá, je vynechána, ne nakreslena ploše.** Mnohé z toho, co může hledání přidat, je mimo katalog CoinMetrics, a plochá čára na spodku grafu hodnot se čte jako mince, která skončila na ničem, ne jako ta bez čísla. Když se nějaké vynechají, stavový řádek je pojmenuje; je-li vybrána jen jedna a vrátí se prázdná, stránka řekne, že období nemá použitelnou historii, místo aby nakreslila prázdný rám.
 - **Rozsah** je dvanáct, dvacet čtyři, šedesát nebo sto dvacet měsíců, nebo vlastní období. Historie mince může být kratší než požadovaný rozsah — to je spodní hranice zdroje, ne selhané načtení.
 
 ## Závod kapitalizací krypto
@@ -492,6 +495,15 @@ Patnáct mincí s největší kapitalizací dnes a jak se toto pořadí den po d
 - **Stablecoiny zůstávají.** Měřeno 2026-10-11: v prvních třiceti jich bylo šest a tether byl třetí největší věcí na tomto trhu. Tabulka, která by je skryla, by řadila něco jiného než velikost. Co dělají s obrazem, je poctivé: jejich čára je rovná, protože dolar má hodnotu dolaru, takže tabulka na první pohled ukáže, které z největších věcí se tu opravdu hýbou.
 - Mince, kterou zdroj hodnot nemá, je vynechána, nikoli nakreslena ploše na nule: plochá čára na spodku závodu hodnot se čte jako mince, která skončila na ničem. Tabulka proto může mít méně než patnáct a stavový řádek řekne, kolik jich přišlo.
 - **Rozsah** je dvanáct, dvacet čtyři nebo šedesát měsíců, nebo vlastní období, zkrácené na odhadovanou řadu stejným způsobem.
+
+## Měsíční výnosy krypto
+
+Měsíční pohyby jedné mince jako mřížka rok × měsíc, červená pro růsty, zelená pro poklesy, v posledním sloupci celý rok složený.
+
+- **Měsíce se skládají, nevyptávají.** Krypto nemá měsíční zdroj: stránka stáhne vše, co denní zdroj drží — zhruba deset let — a složí poslední denní kurz každého měsíce s kurzem předchozího do pohybu toho měsíce. Počet let je proto jen opětovné čtení: jeho změna znovu rozestře mřížku a nic nestáhne.
+- **Měsíc se počítá, až skončil.** Běžící měsíc v mřížce není. Pohyb půl měsíce převlečený za celý je chyba, kterou tento obraz nejsnáze svádí věřit; proto je učiněna nemožnou, nikoli pouze ohlášena.
+- Roky běží 1–10 a „všechny“ nejsou: denní zdroj končí zhruba u deseti let a nejdelší poctivá odpověď je poslední položka. Záložní zdroj nese jediný rok, a na něm je mřížka jediná řada.
+- Závěrečné statistiky dají nejsilnější a nejslabší měsíc, podíl měsíců v plusu a nejsilnější jednotlivý měsíc.
 
 ## Video
 

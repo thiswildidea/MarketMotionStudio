@@ -48,12 +48,70 @@ public sealed record CryptoAsset(string Code, string Name, string Yahoo, string 
         new("AVAX", "Avalanche", "AVAX-USD", "avalanche-2"),
     ];
 
+    /// <summary>
+    /// Coins a search brought in, kept for the rest of the run.
+    ///
+    /// Apart from <see cref="All"/> on purpose. The twelve are hand-picked and carry a span
+    /// that was measured; a searched coin carries what the source that answered said about it
+    /// and nothing more, so it is added rather than merged in. Registering one only makes it
+    /// fetchable — it is <see cref="CryptoRegistry"/> that writes it down for the next run.
+    /// </summary>
+    private static readonly List<CryptoAsset> Searched = [];
+
+    private static readonly Lock Gate = new();
+
+    /// <summary>The searched coins, in the order they were added.</summary>
+    public static IReadOnlyList<CryptoAsset> Extra
+    {
+        get
+        {
+            lock (Gate)
+            {
+                return [.. Searched];
+            }
+        }
+    }
+
+    /// <summary>
+    /// Makes a searched coin fetchable, the same way a listed one is. A code already offered is
+    /// left alone: the twelve carry a CoinGecko id and a checked span, and a search result for the
+    /// same coin carries neither, so the listed entry is the better one.
+    /// </summary>
+    public static void Register(CryptoAsset asset)
+    {
+        lock (Gate)
+        {
+            if (Array.Exists(All, a => string.Equals(a.Code, asset.Code, StringComparison.OrdinalIgnoreCase))
+                || Searched.Exists(a => string.Equals(a.Code, asset.Code, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            Searched.Add(asset);
+        }
+    }
+
     /// <summary>The name to show: the current language's entry, or the source's own English.</summary>
     public string Display => InstrumentNames.Display(Code, Name);
 
-    /// <summary>The asset a code names, or null when the code is not one of ours.</summary>
-    public static CryptoAsset? Of(string code) =>
-        Array.Find(All, asset => string.Equals(asset.Code, code, StringComparison.OrdinalIgnoreCase));
+    /// <summary>
+    /// The asset a code names — one of the twelve, or one a search brought in — or null when the
+    /// code is not one this app can fetch.
+    /// </summary>
+    public static CryptoAsset? Of(string code)
+    {
+        var listed = Array.Find(All, asset => string.Equals(asset.Code, code, StringComparison.OrdinalIgnoreCase));
+
+        if (listed is not null)
+        {
+            return listed;
+        }
+
+        lock (Gate)
+        {
+            return Searched.Find(asset => string.Equals(asset.Code, code, StringComparison.OrdinalIgnoreCase));
+        }
+    }
 
     /// <summary>Whether a code is one of ours, which is what keeps it out of a stock request.</summary>
     public static bool IsCrypto(string code) => Of(code) is not null;
@@ -120,6 +178,19 @@ public sealed class CryptoQuotes(HttpClient http)
     [
         "https://query1.finance.yahoo.com/v8/finance/chart/",
         "https://query2.finance.yahoo.com/v8/finance/chart/",
+    ];
+
+    /// <summary>
+    /// Yahoo's symbol search, on the same two names as the chart endpoint.
+    ///
+    /// A different path from the chart one, so it carries its own pair of hosts rather than
+    /// the ones above — a refusal here is answered by the other name for the same reason it
+    /// is there, and the retry below is the same retry.
+    /// </summary>
+    private static readonly string[] YahooSearchHosts =
+    [
+        "https://query1.finance.yahoo.com/v1/finance/search?",
+        "https://query2.finance.yahoo.com/v1/finance/search?",
     ];
 
     /// <summary>Yahoo's chart endpoint: the one the probe and the daily bars name.</summary>
@@ -388,7 +459,13 @@ public sealed class CryptoQuotes(HttpClient http)
 
         var source = await SourceAsync(cancellation);
 
-        return source == CryptoSource.Yahoo
+        // A coin a search brought in has no CoinGecko id — the fallback was never told about it —
+        // so when CoinGecko is the source in force the chart still comes from Yahoo, which is the
+        // source the search itself answered in. Asking CoinGecko about a coin it does not know is
+        // a request that can only be refused.
+        var yahooOnly = string.IsNullOrEmpty(asset.Gecko);
+
+        return source == CryptoSource.Yahoo || yahooOnly
             ? await YahooBarsAsync(asset, from, to, progress, cancellation)
             : await GeckoBarsAsync(asset, from, to, progress, cancellation);
     }
@@ -462,6 +539,171 @@ public sealed class CryptoQuotes(HttpClient http)
     }
 
     /// <summary>
+    /// What a person typed, resolved to coins this app can fetch.
+    ///
+    /// Yahoo is asked first, and asked at all because a Yahoo search already answers in the
+    /// symbol the chart endpoint takes: the coin that comes back is one the page can draw,
+    /// spelled the way the page will ask for it. CoinGecko is asked second, and its answer is
+    /// turned into the same shape — its ticker becomes the pair USD quote Yahoo lists a coin
+    /// under, and the CoinGecko id it also carries is kept for the pages that quote market
+    /// value.
+    ///
+    /// **Neither answering is not an error.** The row of twelve is still there to narrow, and a
+    /// box that said "search failed" over a list that still works would be reporting a problem
+    /// nobody has. An empty answer reads the same as a word that matched nothing, which is the
+    /// honest thing to say.
+    /// </summary>
+    public async Task<IReadOnlyList<CryptoAsset>> SearchAsync(
+        string query, CancellationToken cancellation)
+    {
+        var typed = query.Trim();
+
+        if (typed.Length == 0)
+        {
+            return [];
+        }
+
+        try
+        {
+            var fromYahoo = await SearchYahooAsync(typed, cancellation);
+
+            if (fromYahoo.Count > 0)
+            {
+                return fromYahoo;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            // Refused, unreachable or answered in a shape this does not read: the second source
+            // is the answer, below.
+        }
+
+        try
+        {
+            return await SearchGeckoAsync(typed, cancellation);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            return [];
+        }
+    }
+
+    /// <summary>
+    /// Yahoo's search answer, kept to the quotations that are coins.
+    ///
+    /// The reply carries shares, funds, indices and the coins together, and the field that
+    /// separates them is <c>quoteType</c>; a search for three letters is as likely to name a
+    /// ticker on an exchange as one on a chain, and a share put on this list would be asked of
+    /// the crypto chart endpoint.
+    /// </summary>
+    private async Task<IReadOnlyList<CryptoAsset>> SearchYahooAsync(
+        string typed, CancellationToken cancellation)
+    {
+        var query = "q=" + Uri.EscapeDataString(typed)
+            + "&quotesCount=20&newsCount=0&listsCount=0&enableFuzzyQuery=false";
+
+        using var response = await YahooGetAsync(YahooSearchHosts, query, cancellation);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
+        using var json = await JsonDocument.ParseAsync(stream, cancellationToken: cancellation);
+
+        if (!json.RootElement.TryGetProperty("quotes", out var quotes)
+            || quotes.ValueKind != JsonValueKind.Array)
+        {
+            return [];
+        }
+
+        var found = new List<CryptoAsset>();
+
+        foreach (var quote in quotes.EnumerateArray())
+        {
+            if (!quote.TryGetProperty("quoteType", out var type) || type.GetString() is not "CRYPTOCURRENCY")
+            {
+                continue;
+            }
+
+            if (!quote.TryGetProperty("symbol", out var symbol) || symbol.GetString() is not { Length: > 0 } yahoo)
+            {
+                continue;
+            }
+
+            var name = quote.TryGetProperty("shortname", out var shortname) && shortname.GetString() is { Length: > 0 } s
+                ? s
+                : quote.TryGetProperty("longname", out var longname) && longname.GetString() is { Length: > 0 } l
+                    ? l
+                    : yahoo;
+
+            // The code is the pair without the quote currency — `SOL-USD` is the coin `SOL`, which
+            // is how the listed twelve are spelled too. A pair in another currency keeps its whole
+            // symbol, because the code is what tells two of them apart.
+            var bare = yahoo.EndsWith("-USD", StringComparison.OrdinalIgnoreCase) ? yahoo[..^4] : yahoo;
+
+            found.Add(new CryptoAsset(bare.ToUpperInvariant(), name, yahoo, string.Empty));
+        }
+
+        return found;
+    }
+
+    /// <summary>
+    /// CoinGecko's search answer, turned into the shape the chart loader takes.
+    ///
+    /// Only reached when Yahoo did not answer, and it carries something Yahoo's does not: the id
+    /// the CoinGecko market-chart endpoint is keyed by, kept so a coin found here can also be
+    /// drawn by the pages that quote market value. The quote currency is not in the answer, so
+    /// the Yahoo symbol is built as the ticker over USD — the pair the source lists a coin under,
+    /// and the one a page will draw.
+    ///
+    /// Not spaced by <see cref="GeckoSpacing"/>, which paces the market-chart endpoint: this is a
+    /// different, cheaper call, and a search that waited eight seconds would be a search that
+    /// looked broken.
+    /// </summary>
+    private async Task<IReadOnlyList<CryptoAsset>> SearchGeckoAsync(
+        string typed, CancellationToken cancellation)
+    {
+        using var response = await http.GetAsync(
+            $"{GeckoEndpoint}search?query={Uri.EscapeDataString(typed)}", cancellation);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellation);
+        using var json = await JsonDocument.ParseAsync(stream, cancellationToken: cancellation);
+
+        if (!json.RootElement.TryGetProperty("coins", out var coins)
+            || coins.ValueKind != JsonValueKind.Array)
+        {
+            return [];
+        }
+
+        var found = new List<CryptoAsset>();
+
+        foreach (var coin in coins.EnumerateArray())
+        {
+            if (!coin.TryGetProperty("symbol", out var symbol) || symbol.GetString() is not { Length: > 0 } ticker)
+            {
+                continue;
+            }
+
+            var code = ticker.ToUpperInvariant();
+            var name = coin.TryGetProperty("name", out var label) && label.GetString() is { Length: > 0 } n
+                ? n
+                : code;
+            var id = coin.TryGetProperty("id", out var ident) ? ident.GetString() ?? string.Empty : string.Empty;
+
+            found.Add(new CryptoAsset(code, name, code + "-USD", id));
+        }
+
+        return found;
+    }
+
+    /// <summary>
     /// One Yahoo request, tried on the second host when the first refuses it.
     ///
     /// The caller owns the response and disposes of it: a reply is read after this
@@ -474,16 +716,23 @@ public sealed class CryptoQuotes(HttpClient http)
     /// is not the answer, and a caller that saw only this method's opinion could not
     /// tell a refusal from a series that was never there.
     /// </summary>
-    private async Task<HttpResponseMessage> YahooGetAsync(string query, CancellationToken cancellation)
+    private async Task<HttpResponseMessage> YahooGetAsync(string query, CancellationToken cancellation) =>
+        await YahooGetAsync(YahooHosts, query, cancellation);
+
+    /// <summary>
+    /// The same retry over a named pair of hosts, so the search path pays the same one.
+    /// </summary>
+    private async Task<HttpResponseMessage> YahooGetAsync(
+        string[] hosts, string query, CancellationToken cancellation)
     {
         HttpResponseMessage? refused = null;
         Exception? broken = null;
 
-        for (var at = 0; at < YahooHosts.Length; at++)
+        for (var at = 0; at < hosts.Length; at++)
         {
             try
             {
-                var response = await http.GetAsync(YahooHosts[at] + query, cancellation);
+                var response = await http.GetAsync(hosts[at] + query, cancellation);
 
                 if (response.IsSuccessStatusCode)
                 {
