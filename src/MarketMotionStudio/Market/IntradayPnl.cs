@@ -13,6 +13,36 @@ namespace MarketMotionStudio.Market;
 public sealed record PnlSample(int Minute, double Pnl, double Value);
 
 /// <summary>
+/// One minute of the book: what every position was holding at that minute, what it cost, and
+/// what it had made by then.
+///
+/// <para>
+/// The page's list reads this while the preview plays. Without it the list is a still life —
+/// 超图软件 reading 5,900 shares from the open to the close while the curve behind it is drawn
+/// on 3,000 — and a reader watching the sale go by at 09:35 sees nothing happen to the position
+/// that made it. The whole point of putting the fills on a clock is that the position moves.
+/// </para>
+///
+/// <para>
+/// **Cost moves with the fills, not with the price.** It is the diluted figure the broker shows:
+/// a purchase averages into it, a sale nets its proceeds off what the remaining shares cost. That
+/// is why it is carried per minute rather than computed from the last trade — 顺丰控股's hundred
+/// shares are gone at 09:40 and its cost goes with them.
+/// </para>
+/// </summary>
+/// <param name="Minute">Minutes since midnight.</param>
+/// <param name="Shares">Shares held of each code at that minute, after that minute's fills.</param>
+/// <param name="Costs">Diluted cost per share of each code, in the venue's currency.</param>
+/// <param name="Marks">The price each code was marked at, in the venue's currency.</param>
+/// <param name="Contributions">What each code had contributed to the day by then, in yuan.</param>
+public sealed record PnlMoment(
+    int Minute,
+    IReadOnlyDictionary<string, double> Shares,
+    IReadOnlyDictionary<string, double> Costs,
+    IReadOnlyDictionary<string, double> Marks,
+    IReadOnlyDictionary<string, double> Contributions);
+
+/// <summary>
 /// One trade, placed on the curve.
 /// </summary>
 /// <param name="Code">The instrument.</param>
@@ -91,6 +121,9 @@ public sealed record PnlHolding(
 /// is not in it**: the axis is 09:30–11:30 then 13:00–15:00, four hours of trading laid end to
 /// end, because a flat ninety-minute stretch in the middle of the frame is a quarter of the
 /// picture spent saying nothing traded.</param>
+/// <param name="Moments">The same minutes again, per position: what each one held, what it cost,
+/// where it was marked and what it had made. The page's list is drawn from this, so the numbers
+/// under the preview are the numbers the preview is drawing.</param>
 /// <param name="Holdings">Every position, priced — plus any code that traded today and is no
 /// longer held, at zero shares, so that a position closed out during the day still contributes the
 /// profit its sale realised.</param>
@@ -110,6 +143,7 @@ public sealed record PortfolioSession(
     int OpenMinute,
     int CloseMinute,
     IReadOnlyList<PnlSample> Samples,
+    IReadOnlyList<PnlMoment> Moments,
     IReadOnlyList<PnlHolding> Holdings,
     double Last,
     double Peak,
@@ -416,16 +450,21 @@ public static class IntradayPnl
 
         var positions = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
         var lastPrice = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        var costs = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        var cashOf = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        var byCode = priced.ToDictionary(x => x.Code, StringComparer.OrdinalIgnoreCase);
 
         foreach (var holding in book)
         {
-            var at = priced.First(x => string.Equals(x.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
+            var at = byCode[holding.Code];
 
             positions[holding.Code] = opening.TryGetValue(holding.Code, out var o) ? o : 0;
             lastPrice[holding.Code] = at.PrevClose;
+            costs[holding.Code] = holding.Cost;
         }
 
         var samples = new List<PnlSample>();
+        var moments = new List<PnlMoment>();
         var placed = new List<PnlTrade>();
         var cash = 0.0;
         var next = 0;
@@ -450,6 +489,14 @@ public static class IntradayPnl
                 var moved = trade.Side == TradeSide.Buy ? trade.Shares : Math.Min(trade.Shares, held);
 
                 cash += (trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price * rate;
+                cashOf[trade.Code] = Cash(cashOf, trade.Code)
+                    + ((trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price);
+
+                // The diluted cost, moved by the same fill — a purchase averages into it, a sale
+                // nets its proceeds off what is left. Kept in step with the fill so the page can
+                // say what the remaining shares cost at the minute it is drawing, rather than
+                // what they cost this morning.
+                costs[trade.Code] = Diluted(Cash(costs, trade.Code), held, moved, trade);
 
                 positions[trade.Code] = trade.Side == TradeSide.Buy
                     ? held + moved
@@ -468,6 +515,7 @@ public static class IntradayPnl
             }
 
             var value = 0.0;
+            var contributions = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var holding in book)
             {
@@ -477,9 +525,23 @@ public static class IntradayPnl
                 lastPrice.TryGetValue(holding.Code, out var price);
 
                 value += shares * price * rate;
+
+                // The same arithmetic the per-holding column ends up showing, only asked at this
+                // minute: what the position is worth, what it was worth at yesterday's close, and
+                // the cash the fills have moved so far.
+                var at = byCode[holding.Code];
+
+                contributions[holding.Code] =
+                    ((shares * price) - (at.OpeningShares * at.PrevClose) + Cash(cashOf, holding.Code)) * rate;
             }
 
             samples.Add(new PnlSample(minute, value + cash - prevValue, value));
+            moments.Add(new PnlMoment(
+                minute,
+                new Dictionary<string, double>(positions, StringComparer.OrdinalIgnoreCase),
+                new Dictionary<string, double>(costs, StringComparer.OrdinalIgnoreCase),
+                new Dictionary<string, double>(lastPrice, StringComparer.OrdinalIgnoreCase),
+                contributions));
         }
 
         var peak = samples.Count > 0 ? samples.Max(s => s.Pnl) : 0;
@@ -508,6 +570,7 @@ public static class IntradayPnl
             OpenMinute,
             close,
             samples,
+            moments,
             priced,
             last,
             Math.Max(0, peak),
@@ -521,6 +584,32 @@ public static class IntradayPnl
             placed,
             closed,
             DateTime.Now);
+    }
+
+    /// <summary>A code's running total in a dictionary that may not have it yet.</summary>
+    private static double Cash(IReadOnlyDictionary<string, double> from, string code) =>
+        from.TryGetValue(code, out var value) ? value : 0;
+
+    /// <summary>
+    /// The diluted cost per share after one fill — the figure the broker shows beside a position.
+    ///
+    /// A purchase averages into it and a sale nets its proceeds off what the remaining shares
+    /// cost, which is why a position that has been sold down can read a cost well below the price
+    /// the shares were bought at. Zero once nothing is left: 顺丰控股's hundred shares are gone at
+    /// 09:40, and a cost for shares that are not there is a number with nothing to describe.
+    /// </summary>
+    private static double Diluted(double cost, double held, double moved, PortfolioTrade trade)
+    {
+        if (trade.Side == TradeSide.Buy)
+        {
+            var after = held + moved;
+
+            return after > 0 ? ((held * cost) + (moved * trade.Price)) / after : trade.Price;
+        }
+
+        var left = held - moved;
+
+        return left > 0 ? ((held * cost) - (moved * trade.Price)) / left : 0;
     }
 
     /// <summary>

@@ -122,6 +122,11 @@ ENTRIES = [
         "休市", "休市", "Closed", "休場", "휴장", "Geschlossen", "Clôturé", "Cerrado", "Chiuso",
         "Zamknięte", "Fechado", "Zavřeno", "Закрыто", "Kapalı")),
 
+    # 卖光之后成本没有意义了（摊薄成本那套算法在 0 股上给出 0），所以这行只说状态。
+    ("PortfolioPnlRowCleared", (
+        "已清仓", "已清倉", "Sold out", "売却済み", "전량 매도", "Verkauft", "Vendu",
+        "Vendido", "Venduto", "Sprzedane", "Vendido", "Prodáno", "Продано", "Satıldı")),
+
     ("PortfolioPnlFetched", (
         "{0} · {1} 个分钟点 · 收益 {2}", "{0} · {1} 個分鐘點 · 收益 {2}",
         "{0} · {1} minute points · P&L {2}", "{0} · {1} 分足 · 損益 {2}", "{0} · {1}개 분봉 · 손익 {2}",

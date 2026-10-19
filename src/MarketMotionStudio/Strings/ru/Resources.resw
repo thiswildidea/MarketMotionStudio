@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>Результат считается от вчерашнего закрытия до текущей цены, включает сегодняшние сделки и не включает комиссии. Позиции Гонконга пересчитываются в юани по текущему курсу.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} шт. · стоимость {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Закрыто</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Продано</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} минутных точек · результат {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Не удалось получить: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Обновлено {0}</value></data>

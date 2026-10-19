@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>Wynik liczony jest od wczorajszego zamknięcia do bieżącej ceny, obejmuje dzisiejsze transakcje i nie obejmuje opłat. Pozycje z Hongkongu przeliczane są na juany po bieżącym kursie.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} szt. · koszt {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Zamknięte</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Sprzedane</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} punktów minutowych · wynik {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Nie udało się pobrać: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Zaktualizowano {0}</value></data>

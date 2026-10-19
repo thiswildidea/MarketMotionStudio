@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>Le résultat est mesuré de la clôture de la veille au cours actuel, inclut les exécutions du jour et exclut les frais. Les positions de Hong Kong sont converties en yuan au taux du jour.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} titres · prix de revient {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Clôturé</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Vendu</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} points minute · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Échec de la récupération : {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Mis à jour {0}</value></data>

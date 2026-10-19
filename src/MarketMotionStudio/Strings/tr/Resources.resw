@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>Kâr, dünkü kapanıştan güncel fiyata göre ölçülür; günün gerçekleşen işlemlerini içerir, komisyonları içermez. Hong Kong pozisyonları güncel kurdan yuan cinsine çevrilir.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} adet · maliyet {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Kapalı</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Satıldı</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} dakika noktası · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Getirme başarısız: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Güncellendi {0}</value></data>

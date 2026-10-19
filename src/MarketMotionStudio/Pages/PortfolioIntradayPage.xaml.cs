@@ -92,6 +92,19 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
     private PortfolioSession? _session;
 
+    /// <summary>The renderer the preview is drawing with, so the list can ask it where "now" is.</summary>
+    private PortfolioPnlRenderer? _ticking;
+
+    /// <summary>
+    /// Which sample the list was last rebuilt for.
+    ///
+    /// Playback calls back sixty times a second and a session is 242 samples, so rebuilding on
+    /// every callback would rebuild the whole item list four times a second for a number that has
+    /// not changed since the last one. The list is rebuilt when the *sample* moves, and at that
+    /// rate it is the list that moves with the picture.
+    /// </summary>
+    private int _listed = int.MinValue;
+
     /// <summary>Guards against a timer tick landing on top of a fetch already in flight.</summary>
     private bool _busy;
 
@@ -170,7 +183,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 session.Samples.Count,
                 Math.Max(Math.Abs(session.Peak), Math.Abs(session.Trough)));
 
-            Preview.Renderer = new PortfolioPnlRenderer(
+            var renderer = new PortfolioPnlRenderer(
                 session, plan,
                 crossSafeRight: CrossCheck.IsChecked is true,
                 mascot: MascotCheck.IsChecked is true,
@@ -182,12 +195,16 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 Title = title,
                 ShowTitle = showTitle,
             };
+
+            Preview.Renderer = renderer;
+            _ticking = renderer;
         }
         else
         {
             _stage.Title = title.Length > 0 ? title : Strings.Get("PortfolioPnlTitle");
             _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
+            _ticking = null;
         }
 
         VideoSettings.TitlePlaceholder = Strings.Get("PortfolioPnlTitle");
@@ -198,33 +215,72 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         ExportButton.IsEnabled = ready;
         PlayButton.IsEnabled = ready;
 
-        RefreshScrubText();
-        Preview.Redraw();
+        // Through `ShowMoment` rather than a bare `Redraw`: a switch rebuilds the renderer, and
+        // the list has to be read off the same minute the new one is drawing.
+        ShowMoment(Preview.Progress);
     }
 
-    /// <summary>Rebuilds the book's list from the stored holdings and today's numbers.</summary>
-    private void RefreshBook()
+    /// <summary>
+    /// Rebuilds the book's list from the stored holdings — as they stand at the minute the
+    /// preview is drawing.
+    /// </summary>
+    /// <param name="index">
+    /// Which of the session's minutes to ask. Negative (or a session with no minutes) reads the
+    /// closing figures: the book's own shares, and the profit the day ended with. Those two never
+    /// went together — a reader watching the 09:35 sale go past saw the position behind it stay
+    /// at 5,900 shares — and the point of putting the fills on a clock is that the position moves.
+    /// </param>
+    private void RefreshBook(int index = -1)
     {
         var rows = new List<HoldingRow>();
+
+        var moment = _session is { Moments.Count: > 0 } live
+            ? live.Moments[index < 0
+                ? live.Moments.Count - 1
+                : Math.Min(index, live.Moments.Count - 1)]
+            : null;
 
         foreach (var holding in Portfolio.Holdings)
         {
             var priced = _session?.Holdings.FirstOrDefault(h =>
                 string.Equals(h.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
-            var cost = holding.IsHongKong
-                ? "HK$" + holding.Cost.ToString("0.###", CultureInfo.InvariantCulture)
-                : "¥" + holding.Cost.ToString("0.###", CultureInfo.InvariantCulture);
+            // The minute being drawn when there is one; the stored book when there is not. The
+            // cost comes from the same minute, because a sale moves it — 中望软件's 700 shares at
+            // 33.448 cost 300 shares at 14.444 by the close, and showing the morning's figure
+            // beside the evening's share count would be a row that never existed.
+            var shares = moment is not null && moment.Shares.TryGetValue(holding.Code, out var held)
+                ? held
+                : holding.Shares;
 
-            var detail = Strings.Format(
-                "PortfolioPnlRowDetail",
-                holding.Shares.ToString("#,##0", CultureInfo.InvariantCulture),
-                cost);
+            var cost = moment is not null && moment.Costs.TryGetValue(holding.Code, out var paid)
+                ? paid
+                : holding.Cost;
+
+            var money = (holding.IsHongKong ? "HK$" : "¥")
+                + cost.ToString("0.###", CultureInfo.InvariantCulture);
+
+            // Sold out is a state the list has to be able to say out loud. The row stays where it
+            // is — dropping it would relayout the list under the reader's eye mid-animation — and
+            // "0 股" on its own reads like a typo rather than like the sale that happened at
+            // 09:40. The cost goes with the shares: the diluted figure on a position of zero is a
+            // zero, and a zero is not what the row used to cost.
+            var detail = shares > 0
+                ? Strings.Format(
+                    "PortfolioPnlRowDetail",
+                    shares.ToString("#,##0", CultureInfo.InvariantCulture),
+                    money)
+                : Strings.Get("PortfolioPnlRowCleared");
+
+            double? made = moment is not null && moment.Contributions.TryGetValue(holding.Code, out var sofar)
+                ? sofar
+                : priced?.DayPnl;
 
             var (text, tone) = priced switch
             {
                 { HasSession: false } => (Strings.Get("PortfolioPnlRowClosed"), Palette.Muted),
-                { } p => (PortfolioPnlRenderer.Money(p.DayPnl), p.DayPnl >= 0 ? Palette.Emphasis : Palette.Fall),
+                _ when made is { } value =>
+                    (PortfolioPnlRenderer.Money(value), value >= 0 ? Palette.Emphasis : Palette.Fall),
                 _ => (string.Empty, Palette.Muted),
             };
 
@@ -324,16 +380,21 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         _session = session;
 
+        // The list is rebuilt from the new session at whatever minute is on screen, so the cache
+        // of "which minute is it showing" has to be thrown away first — otherwise a re-read that
+        // landed on the same minute index leaves the old numbers up.
+        _listed = int.MinValue;
+
         ApplyPreviewSettings();
         RefreshBook();
 
         // Parked on the live edge: this page's last frame is "now", which is the frame a reader
         // wants after a refresh. A re-read that jumped the preview back to 09:30 would undo the
         // one thing they were watching.
-        if (wasAtEnd)
-        {
-            ShowMoment(1);
-        }
+        //
+        // A reader who had scrubbed into the middle stays there — including the list, which is
+        // rebuilt from the minute they are looking at rather than jumping to the close under it.
+        ShowMoment(wasAtEnd ? 1 : Preview.Progress);
 
         // The two lines belong together and are written together: this is the number the frame is
         // drawing, said in words, and the minute it was true. Set from here rather than from the
@@ -647,7 +708,13 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         }, TimeSpan.FromSeconds(90));
     }
 
-    /// <summary>Moves the preview and the scrub bar together.</summary>
+    /// <summary>
+    /// Moves the preview and the scrub bar together — and the book's list with them.
+    ///
+    /// The list is the picture in words, so it cannot be one step behind it: at 09:35 the curve
+    /// is drawn on 3,000 shares of 超图软件 because the other 5,900 were sold, and a list still
+    /// reading 5,900 would have the reader counting shares that are not there.
+    /// </summary>
     private void ShowMoment(double progress)
     {
         Preview.Progress = progress;
@@ -655,6 +722,16 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         Scrub.ValueChanged -= OnScrub;
         Scrub.Value = progress;
         Scrub.ValueChanged += OnScrub;
+
+        // Per sample, not per frame: sixty callbacks a second over 242 samples would rebuild the
+        // item list four times a second to show the same numbers.
+        var index = _ticking?.ShownIndex(progress) ?? -1;
+
+        if (index != _listed)
+        {
+            _listed = index;
+            RefreshBook(index);
+        }
 
         RefreshScrubText();
         Preview.Redraw();

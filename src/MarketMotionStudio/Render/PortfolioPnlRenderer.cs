@@ -99,6 +99,29 @@ public sealed class PortfolioPnlRenderer(
     /// <summary>Every frame names the day it is drawing, because it is not always today.</summary>
     private string ResolvedTitle() => Title.Length > 0 ? Title : Strings.Get("PortfolioPnlTitle");
 
+    /// <summary>
+    /// Which sample the picture has reached at this progress.
+    ///
+    /// Public because the list under the preview reads it too: the shares it shows have to be the
+    /// shares the curve was drawn on, and two pieces of code working out "how far along are we"
+    /// would sooner or later disagree by a minute — at 09:35, which is exactly the minute 超图软件
+    /// goes from 8,900 shares to 3,000.
+    /// </summary>
+    public int ShownIndex(double progress)
+    {
+        var t = progress * plan.TotalMs;
+
+        return ShownAt(Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs)));
+    }
+
+    /// <summary>The sample a ramp position lands on, clamped to the samples there are.</summary>
+    private int ShownAt(double p)
+    {
+        var last = session.Samples.Count - 1;
+
+        return last < 1 ? -1 : Math.Min(last, (int)Math.Floor(p * last));
+    }
+
     public void Draw(CanvasDrawingSession session2, FrameContext context)
     {
         var t = context.Progress * plan.TotalMs;
@@ -123,9 +146,8 @@ public sealed class PortfolioPnlRenderer(
         // How far along the curve the frame has come, worked out once: the axis reads it (dynamic
         // axis), the curve is drawn to it, and the badge rides it. Three answers to one question
         // would be three chances to disagree about where "now" is.
-        var last = session.Samples.Count - 1;
         var p = Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs));
-        var shown = last < 1 ? -1 : Math.Min(last, (int)Math.Floor(p * last));
+        var shown = ShownAt(p);
         var here = shown >= 0 ? session.Samples[shown].Pnl : 0;
 
         var (high, low) = Range(shown);

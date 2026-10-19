@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>O resultado é medido do fechamento de ontem ao preço atual, inclui as execuções do dia e exclui as taxas. As posições de Hong Kong são convertidas para yuan pela taxa atual.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} ações · custo {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Fechado</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Vendido</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} pontos por minuto · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Falha ao obter: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Atualizado {0}</value></data>

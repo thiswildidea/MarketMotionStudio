@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>손익은 '전일 종가 → 현재가'로 계산하며 당일 체결분을 포함하고 수수료는 제외합니다. 홍콩 종목은 실시간 환율로 위안화 환산합니다.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0}주 · 단가 {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>휴장</value></data>
+  <data name="PortfolioPnlRowCleared"><value>전량 매도</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1}개 분봉 · 손익 {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>데이터를 가져오지 못했습니다: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>마지막 갱신 {0}</value></data>

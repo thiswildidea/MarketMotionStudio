@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>Výsledek se měří od včerejšího zavření k aktuální ceně, zahrnuje dnešní obchody a nezahrnuje poplatky. Pozice z Hongkongu se přepočítávají na jüany aktuálním kurzem.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} ks · cena {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Zavřeno</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Prodáno</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} minutových bodů · výsledek {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Načtení selhalo: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Aktualizováno {0}</value></data>

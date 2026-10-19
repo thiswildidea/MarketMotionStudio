@@ -1040,6 +1040,7 @@
   <data name="PortfolioPnlNote.Text"><value>Der Gewinn wird vom Vortagsschluss bis zum aktuellen Kurs gemessen, enthält die heutigen Ausführungen und keine Gebühren. Hongkong-Positionen werden zum aktuellen Kurs in Yuan umgerechnet.</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} Stück · Einstand {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Geschlossen</value></data>
+  <data name="PortfolioPnlRowCleared"><value>Verkauft</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} Minutenpunkte · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Abruf fehlgeschlagen: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Zuletzt aktualisiert {0}</value></data>

@@ -74,8 +74,11 @@ FETCHED = re.compile(r"(\d{4}-\d{2}-\d{2})\s*·\s*(\d+)\s*个分钟点\s*·\s*�
 UPDATED = re.compile(r"^最后更新\s*(\d{2}:\d{2}:\d{2})$")
 IMPORTED = re.compile(r"已导入\s*(\d+)\s*笔成交（重复\s*(\d+)\s*笔，无对应持仓\s*(\d+)\s*笔）")
 
-# 列表里那一行：`3,000 股 · 成本 ¥6.544`
-DETAIL = re.compile(r"^[\d,]+\s*股\s*·\s*成本\s*[¥HK$]")
+# 列表里那一行：`3,000 股 · 成本 ¥6.544`，或者卖光之后的 `已清仓`。
+#
+# 「已清仓」也要算一行 —— 它是一条真实的持仓行，只是当下 0 股。漏掉它，列表在播到 09:40
+# 之后就会少一行，而「少一行」和「那行被删了」在看代码的人眼里长得一模一样。
+DETAIL = re.compile(r"^(?:[\d,]+\s*股\s*·\s*成本\s*[¥HK$]|已清仓)")
 # 港股那一行的货币符是三个字符（`HK$34.062`）：单字符的字符集只吃得下一个，十行里恰好
 # 漏掉的就是那两行港股，而报错只说「7 行 / 9 行」，看不出来漏的是哪一类。
 DETAIL_ROW = re.compile(r"^([\d,]+)\s*股\s*·\s*成本\s*(?:HK\$|HKD|¥|￥|\$)?([\d.]+)$")
@@ -164,6 +167,18 @@ def source_checks():
           "while (next < trades.Count && trades[next].MinuteOfDay <= minute)" in pnl
           and "positions[trade.Code] = trade.Side == TradeSide.Buy" in pnl
           and "positions[holding.Code] = opening.TryGetValue(holding.Code, out var o) ? o : 0;" in pnl)
+
+    # 列表要跟着画面走，所以两件事必须成立：装配层按分钟留了每只的账，页面拿的又是渲染器
+    # 算出的同一个「画到第几个点」。各算各的迟早差一分钟 —— 而那一分钟正好是 09:35。
+    check("每一分钟都留了每只的股数、成本和贡献（列表靠这个，不靠收盘结果）",
+          "moments.Add(new PnlMoment(" in pnl
+          and "public sealed record PnlMoment(" in pnl
+          and "IReadOnlyList<PnlMoment> Moments," in pnl)
+
+    check("列表和画面共用同一个「画到第几个点」",
+          "public int ShownIndex(double progress)" in render
+          and "var shown = ShownAt(p);" in render
+          and "_ticking?.ShownIndex(progress)" in page)
 
     check("重复导入靠六段指纹（日/时/码/方向/价/量）",
           'Day,\n        Time,\n        Code.ToLowerInvariant(),\n        Side,' in book
@@ -1268,6 +1283,76 @@ def counter_phase(day, pristine):
               open(STATE, "rb").read() == pristine)
 
 
+def list_checks(win, book):
+    """持仓列表跟着时间轴走：股数、成本、清仓，三样都随播放进度变。
+
+    这一页最容易做错的就是这块：曲线画的是 09:35 之后的 3,000 股，右边的列表一直写着开盘
+    的 5,900 股。两样东西并排摆在一起互相拆台，而单看任何一样都「没问题」—— 曲线是对的，
+    列表也是账本上真有的数字。要问的只有一句：它们说的是不是同一分钟。
+    """
+    scrub = winui.find(win, lambda c: c.AutomationId == "Scrub")
+
+    check("页面上有进度条（列表要跟着它走）", scrub is not None)
+
+    if scrub is None:
+        return
+
+    def at(fraction):
+        scrub.GetRangeValuePattern().SetValue(fraction)
+        time.sleep(1.6)
+
+        return book_rows(win)
+
+    opening = at(0.0)
+    closing = at(1.0)
+
+    check("停在开盘和停在收盘，列表是两份不同的东西",
+          bool(opening) and bool(closing) and opening != closing,
+          "开盘 %r… / 收盘 %r…" % (opening[:2], closing[:2]))
+
+    # 卖光的那只留在原地换说法，不是把行删掉。删行会让下面的行整体上移一格，读者正在看的
+    # 那一行会在动画中途换成别的股票 —— 而「少了一行」和「那一行被删了」在报告里长得一样。
+    check("两帧都还是整个账本那么多行（卖光那行留在原地）",
+          len(opening) == len(book) and len(closing) == len(book),
+          "开盘 %d 行 / 收盘 %d 行 / 账本 %d 行" % (len(opening), len(closing), len(book)))
+
+    check("收盘那一帧有「已清仓」，开盘那一帧没有",
+          any(row == "已清仓" for row in closing)
+          and not any(row == "已清仓" for row in opening),
+          "开盘 %r / 收盘 %r" % (opening[:2], closing[:2]))
+
+    def held(rows):
+        out = []
+
+        for row in rows:
+            found = DETAIL_ROW.match(row)
+            out.append(int(found.group(1).replace(",", "")) if found else 0)
+
+        return out
+
+    def cost(row):
+        found = DETAIL_ROW.match(row)
+
+        return float(found.group(2)) if found else None
+
+    was = held(opening)
+    now = held(closing)
+
+    check("有仓位在开盘时更多、收盘时更少（当天卖出过）",
+          any(a > b for a, b in zip(was, now)), "开盘 %r → 收盘 %r" % (was, now))
+
+    # 摊薄成本是跟着成交算出来的，不是账本上抄下来的：卖出之后剩下的那点股，成本会往下掉
+    # （中望软件 700 股 33.448 → 300 股 14.379，超图 8,900 股 8.863 → 3,000 股 6.529）。
+    sold = [i for i, (a, b) in enumerate(zip(was, now)) if a > b and b > 0]
+
+    check("卖剩的那一行成本也跟着掉了（不是照抄账本）",
+          bool(sold) and all(cost(opening[i]) != cost(closing[i]) for i in sold),
+          "%r" % ([(opening[i], closing[i]) for i in sold][:2],))
+
+    # 摆回最后一帧：后面几段都按「现在」量。
+    at(1.0)
+
+
 def look_checks(win, profit):
     """四个观感开关在**画面上**的证据。
 
@@ -2036,20 +2121,32 @@ def main():
         # 少了这一条，上面那句「收益一致」即使通过了也可能是巧合 —— 而账本被改过之后
         # （超图 5900 股 @8.387，不是种子那行）它正好会是巧合之外的另一种东西。
         #
-        # **成本按显示的三位小数比。** 账里存的是四位（`Portfolio.Put` 用 `Math.Round(…, 4)`），
-        # 摊薄成本除不尽，列表又只印三位（`0.###`）：6.5295 印成 6.53、14.3787 印成 14.379。
-        # 拿四位去比印出来的三位，差 5e-4 就红，而红的原因和账错了毫无关系。
-        shown = sorted((float(a.replace(",", "")), round(float(b), 3))
-                       for a, b in (DETAIL_ROW.match(n).groups() for n in rows if DETAIL_ROW.match(n)))
-        wanted = sorted((shares, round(cost, 3)) for _, shares, cost in book)
+        # **列表写的是「这一帧」的股数，不再是账本上那张不动的表。** 页面开在这一页的时候
+        # 停在最后一帧，也就是收盘，所以列表该是「账本 + 当天成交净额」，与自算的收盘股数
+        # 逐行相等；卖光的那行写「已清仓」，按 0 股算。
+        #
+        # 这条以前比的是「列表 = 文件里那本账」—— 那时列表确实是一张不动的表。现在它跟着
+        # 时间走，再那样比就等于要求它别动，而「别动」正是用户刚指出的那个毛病。
+        #
+        # **按账本逐行算，不用 `guess["rows"]`**：那份只算今天开市的行（休市那两只两头同价、
+        # 贡献恒为 0，写进来也不影响收益），而列表是十行都在的 —— 拿八行去比十行，红的
+        # 又是「看不出漏的是哪一类」那种红。
+        listed = [int(DETAIL_ROW.match(n).group(1).replace(",", "")) if DETAIL_ROW.match(n) else 0
+                  for n in rows]
 
-        missed = [n for n in rows if not DETAIL_ROW.match(n)]
+        wanted = []
 
-        check("列表上的股数与成本就是文件里那本账",
-              len(shown) == len(wanted)
-              and all(abs(a - b) < 1e-6 and abs(c - d) < 5e-3
-                      for (a, c), (b, d) in zip(shown, wanted)),
-              "列表 %d 行 / 文件 %d 行%r" % (len(shown), len(wanted), missed[:3]))
+        for code, shares, _ in book:
+            net = 0.0
+
+            for trade in day_trades(guess["day"]):
+                if trade["Code"].lower() == code.lower():
+                    net += trade["Shares"] if trade["Side"] == 0 else -trade["Shares"]
+
+            wanted.append(int(round(shares + net)))
+
+        check("列表上的股数就是这一帧的持仓（账本 + 当天成交净额）",
+              listed == wanted, "列表 %r / 脚本 %r" % (listed, wanted))
 
         closed_rows = [name for name in texts(win) if name == "休市"]
 
@@ -2100,6 +2197,12 @@ def main():
             check("标题样式摆得回默认（上一趟留下的偏好不带进这一趟）", skin_reset(win))
 
             header_checks(win)
+
+            # 持仓列表跟着时间轴走。放在这里量：此刻账上已经有那 5 笔成交，而页面停在
+            # 最后一帧 —— 正是读者打开这一页看到的样子。
+            print("\n持仓列表跟着时间轴")
+
+            list_checks(win, book)
 
             # 标题的三款样式与字体颜色。
             skin_checks(win)

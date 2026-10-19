@@ -1039,6 +1039,7 @@
   <data name="PortfolioPnlNote.Text"><value>收益按「昨收 → 現價」計算，含當日已成交部分，不含手續費；港股按即時匯率折算成人民幣。</value></data>
   <data name="PortfolioPnlRowDetail"><value>{0} 股 · 成本 {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>休市</value></data>
+  <data name="PortfolioPnlRowCleared"><value>已清倉</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} 個分鐘點 · 收益 {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>取數失敗：{0}</value></data>
   <data name="PortfolioPnlUpdated"><value>最後更新 {0}</value></data>
