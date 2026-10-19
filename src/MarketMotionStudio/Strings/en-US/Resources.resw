@@ -1083,6 +1083,7 @@
   <data name="PortfolioDialogBadNumbers"><value>Shares must be above zero and cost cannot be negative.</value></data>
   <data name="PortfolioDialogChecking"><value>Checking the code…</value></data>
   <data name="PortfolioDialogUnknown"><value>The quote source does not know {0}.</value></data>
+  <data name="PortfolioDialogPick"><value>Found {0} matches; pick one from the list.</value></data>
   <data name="PortfolioImportTitle"><value>Import filled orders</value></data>
   <data name="PortfolioImportApply"><value>Import</value></data>
   <data name="PortfolioImportHint.Text"><value>Pick a screenshot of the day's filled orders, or paste the list. The result can be corrected before anything is applied.</value></data>

@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>Počet kusů musí být větší než nula, cena nesmí být záporná.</value></data>
   <data name="PortfolioDialogChecking"><value>Kontrola kódu…</value></data>
   <data name="PortfolioDialogUnknown"><value>Zdroj kurzů {0} nezná.</value></data>
+  <data name="PortfolioDialogPick"><value>Nalezeno {0} shod; vyberte jednu ze seznamu.</value></data>
   <data name="PortfolioImportTitle"><value>Importovat obchody</value></data>
   <data name="PortfolioImportApply"><value>Importovat</value></data>
   <data name="PortfolioImportHint.Text"><value>Vyberte snímek dnešních obchodů nebo vložte seznam. Výsledek lze před importem opravit.</value></data>

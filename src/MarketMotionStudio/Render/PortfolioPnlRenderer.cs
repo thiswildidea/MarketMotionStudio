@@ -74,6 +74,7 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
 
         var (index, value) = DrawCurve(session2, context, t, left, width, top, baseline, high, low);
 
+        DrawTrades(session2, context, index, left, width, top, baseline, high, low);
         DrawClocks(session2, context, t, left, width, baseline);
         DrawRateNote(session2, context, t, left, width, baseline);
         DrawStats(session2, context, t);
@@ -143,7 +144,10 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
     {
         var mainland = session.Holdings.Any(h => h.HasSession && !h.IsHongKong);
 
-        return (mainland ? (11 * 60) + 30 : 12 * 60, 13 * 60);
+        // The same three numbers as the axis in IntradayPnl: Shanghai and Shenzhen stop at
+        // 11:30, Hong Kong at 12:00, and both resume at 13:00. Asked here once, from the one
+        // source, so the band and the axis cannot drift apart.
+        return (mainland ? IntradayPnl.MainlandLunch : IntradayPnl.KongLunch, IntradayPnl.AfternoonOpen);
     }
 
     /// <summary>Minutes since midnight to an x position on the session's clock.</summary>
@@ -268,6 +272,61 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
         }
 
         return (shown, value);
+    }
+
+    /// <summary>
+    /// A dot on the line at every trade, in the side's colour, appearing as the animation reaches
+    /// it.
+    ///
+    /// The trades are placed on the curve in <see cref="IntradayPnl"/> — each one lands on a sample
+    /// — so the dot sits on the line rather than beside it, and a trade stamped inside the lunch
+    /// break shows at the afternoon's first point, exactly where the curve carries it. Buy is red
+    /// and sell is green, the same pairing the broker's own buttons use, so "added here" reads the
+    /// way "the line rose here" does.
+    /// </summary>
+    private void DrawTrades(
+        CanvasDrawingSession session2, FrameContext context, int shown,
+        double left, double width, double top, double baseline, double high, double low)
+    {
+        if (shown < 0 || session.Trades.Count == 0)
+        {
+            return;
+        }
+
+        var reached = session.Samples[shown].Minute;
+
+        foreach (var trade in session.Trades)
+        {
+            if (trade.Minute > reached)
+            {
+                continue;
+            }
+
+            var at = -1;
+
+            for (var i = 0; i <= shown && i < session.Samples.Count; i++)
+            {
+                if (session.Samples[i].Minute == trade.Minute)
+                {
+                    at = i;
+                    break;
+                }
+            }
+
+            if (at < 0)
+            {
+                continue;
+            }
+
+            var x = X(trade.Minute, left, width);
+            var y = Y(session.Samples[at].Pnl, top, baseline - top, high, low);
+            var colour = trade.Side == TradeSide.Buy ? Palette.Emphasis : Palette.Fall;
+            var r = (float)context.Px(4);
+
+            Ink.Glow(session2, context.Px(8), 0.9, ds => ds.FillCircle((float)x, (float)y, r, colour));
+            session2.FillCircle((float)x, (float)y, r, colour);
+            session2.FillCircle((float)x, (float)y, r * 0.45f, Palette.Background[0].Colour);
+        }
     }
 
     /// <summary>One extreme, with its clock and its amount, omitted when the day never left zero.</summary>

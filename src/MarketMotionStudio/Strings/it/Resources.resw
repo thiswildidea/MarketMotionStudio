@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>La quantità deve essere maggiore di zero e il costo non può essere negativo.</value></data>
   <data name="PortfolioDialogChecking"><value>Verifica del codice…</value></data>
   <data name="PortfolioDialogUnknown"><value>La fonte delle quotazioni non conosce {0}.</value></data>
+  <data name="PortfolioDialogPick"><value>{0} corrispondenze; scegline una dall'elenco.</value></data>
   <data name="PortfolioImportTitle"><value>Importa esecuzioni</value></data>
   <data name="PortfolioImportApply"><value>Importa</value></data>
   <data name="PortfolioImportHint.Text"><value>Scegli uno screenshot delle esecuzioni del giorno o incolla l'elenco. Il risultato è correggibile prima dell'importazione.</value></data>

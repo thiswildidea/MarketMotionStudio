@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>Количество должно быть больше нуля, стоимость не может быть отрицательной.</value></data>
   <data name="PortfolioDialogChecking"><value>Проверяем код…</value></data>
   <data name="PortfolioDialogUnknown"><value>Источник котировок не знает {0}.</value></data>
+  <data name="PortfolioDialogPick"><value>Найдено совпадений: {0}. Выберите один из списка.</value></data>
   <data name="PortfolioImportTitle"><value>Импорт сделок</value></data>
   <data name="PortfolioImportApply"><value>Импортировать</value></data>
   <data name="PortfolioImportHint.Text"><value>Выберите снимок сегодняшних сделок или вставьте список. Результат можно исправить до импорта.</value></data>

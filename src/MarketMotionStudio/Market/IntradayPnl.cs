@@ -12,6 +12,22 @@ namespace MarketMotionStudio.Market;
 /// <param name="Value">What the holdings were worth at that minute, in yuan.</param>
 public sealed record PnlSample(int Minute, double Pnl, double Value);
 
+/// <summary>
+/// One trade, placed on the curve.
+/// </summary>
+/// <param name="Code">The instrument.</param>
+/// <param name="Name">Its name at import time.</param>
+/// <param name="Side">Buy or sell.</param>
+/// <param name="Price">The price it filled at, in the venue's currency.</param>
+/// <param name="Shares">How many shares changed hands.</param>
+/// <param name="Minute">
+/// The minute of the curve the trade is applied at — not always the clock on the ticket: a trade
+/// stamped inside the lunch break is applied when the afternoon opens, because that is the first
+/// point of the curve that exists. Markers are drawn here, so a marker is always on a sample.
+/// </param>
+public sealed record PnlTrade(
+    string Code, string Name, TradeSide Side, double Price, double Shares, int Minute);
+
 /// <summary>One position, as the day treated it.</summary>
 /// <param name="Code">The instrument.</param>
 /// <param name="Name">Its name at the source.</param>
@@ -64,9 +80,13 @@ public sealed record PnlHolding(
 /// <param name="Day">The session being drawn, `2026-10-19`.</param>
 /// <param name="OpenMinute">When it opened, 570 for 09:30.</param>
 /// <param name="CloseMinute">When it closed: 900 for 15:00, 960 for Hong Kong's 16:00.</param>
-/// <param name="Samples">One per trading minute from the open to the last print — flat across
-/// the lunch break, which is what a price does when nobody is trading it.</param>
-/// <param name="Holdings">Every position, priced.</param>
+/// <param name="Samples">One per trading minute from the open to the last print. **The lunch break
+/// is not in it**: the axis is 09:30–11:30 then 13:00–15:00, four hours of trading laid end to
+/// end, because a flat ninety-minute stretch in the middle of the frame is a quarter of the
+/// picture spent saying nothing traded.</param>
+/// <param name="Holdings">Every position, priced — plus any code that traded today and is no
+/// longer held, at zero shares, so that a position closed out during the day still contributes the
+/// profit its sale realised.</param>
 /// <param name="Last">The day's profit at the last sample, in yuan.</param>
 /// <param name="Peak">The highest the curve reached. Never below zero: the day starts there.</param>
 /// <param name="Trough">The lowest it reached, and the axis's other end.</param>
@@ -75,6 +95,7 @@ public sealed record PnlHolding(
 /// of the day's return.</param>
 /// <param name="HkdCny">The rate used, or zero when no Hong Kong holding needed one.</param>
 /// <param name="TradeCount">How many of today's trades are folded in.</param>
+/// <param name="Trades">Those trades, placed on the curve, in clock order.</param>
 /// <param name="Closed">Holdings whose venue did not trade today, excluded from the curve.</param>
 /// <param name="FetchedAt">When this was read, for the page's "updated at" line.</param>
 public sealed record PortfolioSession(
@@ -92,6 +113,7 @@ public sealed record PortfolioSession(
     double PrevValue,
     double HkdCny,
     int TradeCount,
+    IReadOnlyList<PnlTrade> Trades,
     IReadOnlyList<string> Closed,
     DateTime FetchedAt)
 {
@@ -104,6 +126,9 @@ public sealed record PortfolioSession(
 
     /// <summary>The minute the last sample landed on.</summary>
     public int LastMinute => Samples.Count > 0 ? Samples[^1].Minute : OpenMinute;
+
+    /// <summary>How many positions the book actually holds, closed-out codes excluded.</summary>
+    public int OpenPositions => Holdings.Count(h => h.Shares > 0);
 }
 
 /// <summary>
@@ -137,6 +162,15 @@ public static class IntradayPnl
     /// <summary>The open, on every venue these pages cover.</summary>
     public const int OpenMinute = (9 * 60) + 30;
 
+    /// <summary>When Shanghai and Shenzhen stop for lunch.</summary>
+    public const int MainlandLunch = (11 * 60) + 30;
+
+    /// <summary>When Hong Kong stops for lunch — half an hour later than the mainland.</summary>
+    public const int KongLunch = 12 * 60;
+
+    /// <summary>When every venue resumes.</summary>
+    public const int AfternoonOpen = 13 * 60;
+
     /// <summary>When Shanghai and Shenzhen close.</summary>
     public const int MainlandClose = 15 * 60;
 
@@ -161,7 +195,16 @@ public static class IntradayPnl
 
         progress?.Report(Strings.Get("PortfolioFetchingQuotes"));
 
-        var codes = holdings.Select(h => h.Code).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        var today = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        // **The journal's codes are fetched too**, not just the book's: a position sold out during
+        // the day is removed from the book, and its realised profit belongs to today's curve. The
+        // session for it is needed to price the shares it was sold out of. One day of journal is
+        // enough — the curve draws one day.
+        var codes = holdings.Select(h => h.Code)
+            .Concat(journal.Where(t => t.Day == today).Select(t => t.Code))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
 
         var shots = await stocks.SnapshotsAsync(codes, cancellation);
 
@@ -169,8 +212,6 @@ public static class IntradayPnl
 
         // The day: today if anyone traded, otherwise the latest session any of them has. See the
         // class note — choosing per holding would put two days on one axis.
-        var today = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-
         var day = sessions.Values.Select(s => s.Day).DefaultIfEmpty(string.Empty).Max(StringComparer.Ordinal) ?? string.Empty;
 
         if (sessions.Values.Any(s => s.Day == today))
@@ -204,14 +245,42 @@ public static class IntradayPnl
         IReadOnlyDictionary<string, DaySession> sessions,
         double hkdCny)
     {
-        var trades = journal.Where(t => t.Day == day).OrderBy(t => t.MinuteOfDay).ToList();
+        var trades = journal
+            .Where(t => t.Day == day)
+            .OrderBy(t => t.MinuteOfDay)
+            .ThenBy(t => t.Time, StringComparer.Ordinal)
+            .ToList();
 
-        // The book as the day opened: today's holdings with today's trades undone. A curve that
-        // started from the closing position would hold this afternoon's shares all morning.
-        var opening = holdings.ToDictionary(h => h.Code, h => h.Shares, StringComparer.OrdinalIgnoreCase);
+        // **The book plus the day's closed-out codes.** `Portfolio.Apply` drops a position the
+        // moment it reaches zero shares, which is what a book should do — and would take the day's
+        // realised profit off the curve with it, because a code that is not in the book is not
+        // priced. A position sold out at 14:00 must still have started the morning worth
+        // something; it is carried here at zero shares so the arithmetic has somewhere to stand.
+        var book = holdings.ToList();
 
-        foreach (var trade in trades)
+        foreach (var code in trades.Select(x => x.Code).Distinct(StringComparer.OrdinalIgnoreCase))
         {
+            if (book.Any(h => string.Equals(h.Code, code, StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            var named = trades.First(x => string.Equals(x.Code, code, StringComparison.OrdinalIgnoreCase)).Name;
+
+            book.Add(new Holding(code, named, 0, 0));
+        }
+
+        // The book as the day opened: today's book with today's trades undone **from the last
+        // one backwards**. Forwards is the same thing on a day that only ever bought, or only
+        // ever sold; it is wrong on a same-day round trip, where undoing the buy before the sell
+        // leaves the opening position equal to the shares that were sold rather than to zero, and
+        // the whole day's profit comes out short by the opening value.
+        var opening = book.ToDictionary(h => h.Code, h => h.Shares, StringComparer.OrdinalIgnoreCase);
+
+        for (var i = trades.Count - 1; i >= 0; i--)
+        {
+            var trade = trades[i];
+
             opening.TryGetValue(trade.Code, out var held);
 
             var before = trade.Side == TradeSide.Buy ? held - trade.Shares : held + trade.Shares;
@@ -226,21 +295,43 @@ public static class IntradayPnl
             }
         }
 
-        // The axis ends when the last venue that actually traded today closes. A book holding a
-        // Hong Kong name is not a reason to draw to 16:00: on a day the Hong Kong market is shut,
-        // those holdings contribute nothing (see `live` below), and an axis running on to 16:00
-        // would leave the whole last hour of the frame empty — the curve stopping four fifths of
-        // the way across a chart whose right-hand label says 16:00.
+        // Which venues actually traded today — the axis ends at the last of their closes, and the
+        // lunch break it skips is the one they have. A book holding a Hong Kong name is not a
+        // reason to draw to 16:00 on a day Hong Kong is shut: those holdings contribute nothing,
+        // and the axis would end with an hour of empty frame under a label reading 16:00.
+        var mainlandLive = book.Any(h =>
+            !h.IsHongKong && sessions.TryGetValue(h.Code, out var s) && s.Day == day);
+
+        var kongLive = book.Any(h =>
+            h.IsHongKong && sessions.TryGetValue(h.Code, out var s) && s.Day == day);
+
+        // The axis ends at the latest close among the venues that actually traded today — not at
+        // 16:00 just because the book names a Hong Kong listing. Decided per holding below: a
+        // holding that is open today and listed in Hong Kong pushes the close to 16:00; a book that
+        // only holds Hong Kong names on a day Hong Kong is shut ends at 15:00 like any mainland day.
         var close = MainlandClose;
 
-        // Minutes that carry a print, and the last of them. The curve stops at the latest print
-        // any holding made: a session still in progress ends there, and drawing it out to the
-        // close would be an empty afternoon.
+        var windows = new List<(int From, int To)>();
+
+        if (mainlandLive)
+        {
+            windows.Add((OpenMinute, MainlandLunch));
+            windows.Add((AfternoonOpen, MainlandClose));
+        }
+
+        if (kongLive)
+        {
+            windows.Add((OpenMinute, KongLunch));
+            windows.Add((AfternoonOpen, HongKongClose));
+        }
+
+        // The last minute that carries a print. The curve stops there: a session still in progress
+        // ends at its newest print, and drawing it out to the close would be an empty afternoon.
         var lastMinute = OpenMinute;
         var priced = new List<PnlHolding>();
         var closed = new List<string>();
 
-        foreach (var holding in holdings)
+        foreach (var holding in book)
         {
             shots.TryGetValue(holding.Code, out var shot);
 
@@ -248,6 +339,13 @@ public static class IntradayPnl
 
             var live = session is not null && session.Day == day;
             var rate = holding.IsHongKong ? hkdCny : 1;
+
+            // A Hong Kong listing that is trading today extends the axis to 16:00; a shut one
+            // does not — lastMinute is already capped by the venues that actually printed.
+            if (holding.IsHongKong && live)
+                {
+                    close = HongKongClose;
+                }
 
             // Prices came out of a JSON dictionary, so "the newest" and "the oldest" are both a
             // lookup and neither is a position: a sorted dictionary has no index to ask for.
@@ -274,13 +372,6 @@ public static class IntradayPnl
             }
             else
             {
-                // A live Hong Kong holding is what stretches the axis to 16:00 — decided here,
-                // from the venue that traded, rather than from the book's contents.
-                if (holding.IsHongKong)
-                {
-                    close = HongKongClose;
-                }
-
                 lastMinute = Math.Max(lastMinute, Math.Min(close, session!.LastMinute));
             }
 
@@ -297,53 +388,79 @@ public static class IntradayPnl
                 live));
         }
 
-        var samples = new List<PnlSample>();
-        var byMinute = trades
-            .GroupBy(t => Math.Max(OpenMinute, t.MinuteOfDay))
-            .ToDictionary(g => g.Key, g => g.ToList());
+        // The axis: every minute the venues that traded were open, laid end to end. 09:30–11:30
+        // then 13:00–15:00 is 242 points and four hours of trading — the lunch break is not in the
+        // axis at all, because ninety minutes of flat line is a quarter of the frame spent drawing
+        // a straight line, and the reader's eye reads the gap as missing data rather than as a
+        // closed market.
+        var slots = new List<int>();
+
+        for (var minute = OpenMinute; minute <= Math.Min(close, Math.Max(OpenMinute, lastMinute)); minute++)
+        {
+            if (windows.Any(w => minute >= w.From && minute <= w.To))
+            {
+                slots.Add(minute);
+            }
+        }
+
+        if (slots.Count == 0)
+        {
+            slots.Add(OpenMinute);
+        }
 
         // Yesterday's value, in yuan: every position at yesterday's close. A holding that did not
         // trade today is valued at the price it is still marked at, which is the same number.
         var prevValue = 0.0;
 
-        foreach (var holding in holdings)
+        foreach (var holding in book)
         {
             var rate = holding.IsHongKong ? hkdCny : 1;
             var openingShares = opening.TryGetValue(holding.Code, out var o) ? o : 0;
-            var p = priced.First(x => string.Equals(x.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
+            var at = priced.First(x => string.Equals(x.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
-            prevValue += openingShares * p.PrevClose * rate;
+            prevValue += openingShares * at.PrevClose * rate;
         }
 
         var positions = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
         var lastPrice = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-        var cash = 0.0;
 
-        foreach (var holding in holdings)
+        foreach (var holding in book)
         {
-            var p = priced.First(x => string.Equals(x.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
+            var at = priced.First(x => string.Equals(x.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
             positions[holding.Code] = opening.TryGetValue(holding.Code, out var o) ? o : 0;
-            lastPrice[holding.Code] = p.PrevClose;
+            lastPrice[holding.Code] = at.PrevClose;
         }
 
-        for (var minute = OpenMinute; minute <= lastMinute; minute++)
+        var samples = new List<PnlSample>();
+        var placed = new List<PnlTrade>();
+        var cash = 0.0;
+        var next = 0;
+
+        foreach (var minute in slots)
         {
-            if (byMinute.TryGetValue(minute, out var due))
+            // Every trade stamped at or before this minute, applied here. `<=` and a moving
+            // cursor rather than a lookup by minute, because the axis has holes in it: the lunch
+            // break, and any minute one venue is shut while another trades. A fill the broker
+            // times inside a hole lands on the first point of the curve that exists instead of
+            // nowhere at all.
+            while (next < trades.Count && trades[next].MinuteOfDay <= minute)
             {
-                foreach (var trade in due)
-                {
-                    var rate = trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? hkdCny : 1;
-                    var sign = trade.Side == TradeSide.Buy ? -1 : 1;
+                var trade = trades[next++];
+                var rate = trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? hkdCny : 1;
+                var sign = trade.Side == TradeSide.Buy ? -1 : 1;
 
-                    cash += sign * trade.Shares * trade.Price * rate;
+                cash += sign * trade.Shares * trade.Price * rate;
 
-                    positions.TryGetValue(trade.Code, out var held);
-                    positions[trade.Code] = trade.Side == TradeSide.Buy ? held + trade.Shares : Math.Max(0, held - trade.Shares);
-                }
+                positions.TryGetValue(trade.Code, out var held);
+                positions[trade.Code] = trade.Side == TradeSide.Buy
+                    ? held + trade.Shares
+                    : Math.Max(0, held - trade.Shares);
+
+                placed.Add(new PnlTrade(trade.Code, trade.Name, trade.Side, trade.Price, trade.Shares, minute));
             }
 
-            foreach (var holding in holdings)
+            foreach (var holding in book)
             {
                 if (sessions.TryGetValue(holding.Code, out var session) && session.Day == day &&
                     session.TryPrice(minute, out var price))
@@ -354,7 +471,7 @@ public static class IntradayPnl
 
             var value = 0.0;
 
-            foreach (var holding in holdings)
+            foreach (var holding in book)
             {
                 var rate = holding.IsHongKong ? hkdCny : 1;
 
@@ -378,7 +495,7 @@ public static class IntradayPnl
 
         var valueNow = 0.0;
 
-        foreach (var holding in holdings)
+        foreach (var holding in book)
         {
             var rate = holding.IsHongKong ? hkdCny : 1;
 
@@ -403,6 +520,7 @@ public static class IntradayPnl
             prevValue,
             hkdCny,
             trades.Count,
+            placed,
             closed,
             DateTime.Now);
     }

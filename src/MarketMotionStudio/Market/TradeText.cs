@@ -23,7 +23,20 @@ public sealed record ParsedTrade(TradeSide Side, string Code, string Name, doubl
 /// <summary>What a list parsed into, and what it could not read.</summary>
 /// <param name="Trades">The trades, in the order they were listed.</param>
 /// <param name="Skipped">One line per row that was not a trade, saying what it was.</param>
-public sealed record TradeParse(IReadOnlyList<ParsedTrade> Trades, IReadOnlyList<string> Skipped);
+public sealed record TradeParse(IReadOnlyList<ParsedTrade> Trades, IReadOnlyList<string> Skipped)
+{
+    /// <summary>
+    /// Rows the list itself says did not happen — 已撤, 废单, 未成交.
+    ///
+    /// Kept apart from <see cref="Skipped"/> because the two mean opposite things to a reader: a
+    /// skipped row is one the parser could not read and must be fixed before anything is applied,
+    /// while a cancelled row is one the broker has already told us about and which therefore must
+    /// simply be left out. A cancelled order still carries a code, a price, a size and a clock —
+    /// every part a trade has — so without this distinction it would be imported as a trade that
+    /// never happened.
+    /// </summary>
+    public IReadOnlyList<string> Cancelled { get; init; } = [];
+}
 
 /// <summary>
 /// Reads a broker's completed-order list, from a screenshot or from typed text.
@@ -141,9 +154,23 @@ public static class TradeText
         var blocks = Blocks(lines);
         var trades = new List<ParsedTrade>();
         var skipped = new List<string>();
+        var cancelled = new List<string>();
 
         foreach (var block in blocks)
         {
+            // **Only what the list says actually happened.** A broker's order table carries a
+            // status column — 已成 / 全部成交 / 已撤 / 废单 — and a cancelled row carries every
+            // other field a filled one does: the code, the price, the size and the clock. Read
+            // without the status, a day of cancelled orders becomes a day of trades, and the book
+            // then disagrees with the broker in a way nothing on the page can explain. Rows that
+            // say nothing about a status are taken: the tab these screenshots come from is the
+            // filled-order tab, and a hand-typed list has no room for a column it does not need.
+            if (IsCancelled(block))
+            {
+                cancelled.Add(block);
+                continue;
+            }
+
             if (Read(block) is { } trade)
             {
                 trades.Add(trade);
@@ -154,8 +181,18 @@ public static class TradeText
             }
         }
 
-        return new TradeParse(trades, skipped);
+        return new TradeParse(trades, skipped) { Cancelled = cancelled };
     }
+
+    /// <summary>How a broker's order table spells "this did not happen", in its several ways.</summary>
+    private static bool IsCancelled(string block) =>
+        CancelledWords.Any(word => block.Contains(word, StringComparison.Ordinal));
+
+    private static readonly string[] CancelledWords =
+    [
+        "已撤", "部撤", "撤单", "废单",
+        "未成交", "待成交", "已报", "待报", "申报中",
+    ];
 
     /// <summary>
     /// Splits lines into rows, using the clock as the delimiter.

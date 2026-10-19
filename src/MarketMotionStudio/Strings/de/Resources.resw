@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>Stück muss über null liegen, der Einstand darf nicht negativ sein.</value></data>
   <data name="PortfolioDialogChecking"><value>Kennung wird geprüft…</value></data>
   <data name="PortfolioDialogUnknown"><value>Die Kursquelle kennt {0} nicht.</value></data>
+  <data name="PortfolioDialogPick"><value>{0} Treffer; wählen Sie einen aus der Liste.</value></data>
   <data name="PortfolioImportTitle"><value>Ausführungen importieren</value></data>
   <data name="PortfolioImportApply"><value>Importieren</value></data>
   <data name="PortfolioImportHint.Text"><value>Ein Bildschirmfoto der heutigen Ausführungen wählen oder die Liste einfügen. Das Ergebnis lässt sich vor dem Import korrigieren.</value></data>

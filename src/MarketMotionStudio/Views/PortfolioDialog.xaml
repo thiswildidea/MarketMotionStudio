@@ -13,7 +13,7 @@
                    Style="{StaticResource CaptionTextBlockStyle}"
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
-        <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="Scroller" MaxHeight="280" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="Rows" Spacing="4" />
         </ScrollViewer>
 
@@ -22,9 +22,19 @@
                    Style="{StaticResource BodyStrongTextBlockStyle}" />
 
         <!-- One row of fields rather than a form: the whole entry is four short values, and a
-             stacked form turns adding one holding into six tab stops. -->
+             stacked form turns adding one holding into six tab stops.
+
+             The first field suggests while the reader types — a broker's app is where the name
+             comes from, and "顺丰控股" is what a person knows a stock by. It stays a free-text
+             box too: a code typed and confirmed with Enter is added in one gesture. -->
         <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-            <TextBox x:Name="CodeBox" x:Uid="PortfolioDialogCode" Grid.Column="0" />
+            <AutoSuggestBox x:Name="CodeBox"
+                            x:Uid="PortfolioDialogCode"
+                            Grid.Column="0"
+                            TextMemberPath="Display"
+                            TextChanged="OnQueryChanged"
+                            SuggestionChosen="OnSuggestionChosen"
+                            QuerySubmitted="OnQuerySubmitted" />
             <TextBox x:Name="SharesBox" x:Uid="PortfolioDialogShares" Grid.Column="1" Width="96" />
             <TextBox x:Name="CostBox" x:Uid="PortfolioDialogCost" Grid.Column="2" Width="96" />
         </Grid>

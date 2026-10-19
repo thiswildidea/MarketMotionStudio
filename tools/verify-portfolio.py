@@ -120,7 +120,7 @@ def source_checks():
     # 轴走到几点，由**真正开市的场所**决定。写成「书里有港股走到 16:00」的话，港股休市那天
     # 曲线只画到 15:00，右边五分之一是空的、刻度还写着 16:00。
     check("收盘时刻由真正开市的港股持仓决定，不是由书里有没有港股决定",
-          "if (holding.IsHongKong)\n                {\n                    close = HongKongClose;" in pnl
+          "if (holding.IsHongKong && live)\n                {\n                    close = HongKongClose;" in pnl
           and "holdings.Any(h => h.IsHongKong) ? HongKongClose" not in pnl)
 
     check("曲线在成交的那一刻是连续的（现金进出计入，不是把持仓一删）",
@@ -332,9 +332,16 @@ def expected(book=None):
         profit += shares * (price - prev) * scale
         last = max(last, min(close, max(prices)))
 
+    # The app skips the lunch break: the axis is the four trading hours laid end to end
+    # (09:30–11:30 then 13:00–close), not the raw clock span. Count the minutes that fall
+    # inside a trading window, matching IntradayPnl.Assemble's windows — Hong Kong's lunch is
+    # 12:00–13:00, the mainland's is 11:30–13:00.
+    lunch_start = 720 if live_hk else 690
+    points = sum(1 for m in range(570, last + 1) if not (lunch_start < m < 780))
+
     return {
         "day": day,
-        "points": last - 570 + 1,
+        "points": points,
         "profit": profit,
         "value": value,
         "rows": rows,

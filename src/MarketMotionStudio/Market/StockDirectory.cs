@@ -8,7 +8,18 @@ namespace MarketMotionStudio.Market;
 /// <summary>The stock a smartbox suggestion or a snapshot resolved to.</summary>
 /// <param name="Code">The full code, venue prefix included — `sh600000`, `hk00700`, `usAAPL`.</param>
 /// <param name="Name">The instrument's name.</param>
-public sealed record StockRef(string Code, string Name);
+/// <param name="Kind">
+/// What the source calls the listing: `GP` and `GP-A` are shares, `ETF` a fund that trades like
+/// one, and `QZ` / `ZS` / `KJ` are a warrant, an index and an open-end fund.
+///
+/// <para>
+/// Carried because a search for 快手 answers with the share **and** six warrants on it — they are
+/// all `hk` codes, five digits, and nothing in the code says which is which. The portfolio book is
+/// the one caller that has to tell them apart: a warrant bought by accident would sit in the book
+/// as a position that never reconciles with the broker. Empty when the source said nothing.
+/// </para>
+/// </param>
+public sealed record StockRef(string Code, string Name, string Kind = "");
 
 /// <summary>
 /// Everything about a stock that is not its bars: turning what a person types into a code,
@@ -116,7 +127,21 @@ public sealed class StockDirectory(HttpClient http)
     /// that fails silently.
     /// </remarks>
     public async Task<IReadOnlyList<StockRef>> SearchAsync(
-        string query, MarketProfile market, CancellationToken cancellation)
+        string query, MarketProfile market, CancellationToken cancellation) =>
+        await SearchAsync(query, market.Accepts, cancellation);
+
+    /// <summary>
+    /// The same search, with the venue test supplied by the caller instead of a market.
+    ///
+    /// A portfolio book is the reason: it holds mainland and Hong Kong listings **in one book**,
+    /// so filtering by the market in force would hide half of what the reader is looking for.
+    /// One request answers every venue at once, so a caller that wants two of them asks once and
+    /// lets this predicate decide — three round trips per keystroke is what the other shape would
+    /// cost.
+    /// </summary>
+    /// <param name="accepts">Whether a code belongs to a venue the caller wants.</param>
+    public async Task<IReadOnlyList<StockRef>> SearchAsync(
+        string query, Func<string, bool> accepts, CancellationToken cancellation)
     {
         var uri = $"{SearchEndpoint}?v=2&t=all&q={Uri.EscapeDataString(query)}";
 
@@ -157,12 +182,12 @@ public sealed class StockDirectory(HttpClient http)
             // where it is first known. See Markets.Canonize.
             var code = Markets.Canonize(fields[0] + fields[1]);
 
-            if (!market.Accepts(code))
+            if (!accepts(code))
             {
                 continue;
             }
 
-            found.Add(new StockRef(code, fields[2]));
+            found.Add(new StockRef(code, fields[2], fields[4].Trim()));
         }
 
         return found;

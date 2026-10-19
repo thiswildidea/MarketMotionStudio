@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>Liczba sztuk musi być większa od zera, koszt nie może być ujemny.</value></data>
   <data name="PortfolioDialogChecking"><value>Sprawdzanie kodu…</value></data>
   <data name="PortfolioDialogUnknown"><value>Źródło notowań nie zna {0}.</value></data>
+  <data name="PortfolioDialogPick"><value>Znaleziono {0} dopasowań; wybierz jedno z listy.</value></data>
   <data name="PortfolioImportTitle"><value>Importuj transakcje</value></data>
   <data name="PortfolioImportApply"><value>Importuj</value></data>
   <data name="PortfolioImportHint.Text"><value>Wybierz zrzut ekranu dzisiejszych transakcji lub wklej listę. Wynik można poprawić przed importem.</value></data>

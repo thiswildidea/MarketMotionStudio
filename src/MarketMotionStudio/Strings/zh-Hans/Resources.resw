@@ -1081,6 +1081,7 @@
   <data name="PortfolioDialogBadNumbers"><value>数量要大于 0，成本不能为负。</value></data>
   <data name="PortfolioDialogChecking"><value>正在核对代码…</value></data>
   <data name="PortfolioDialogUnknown"><value>行情源查不到 {0}。</value></data>
+  <data name="PortfolioDialogPick"><value>找到 {0} 个匹配，请从列表里选一个。</value></data>
   <data name="PortfolioImportTitle"><value>导入成交记录</value></data>
   <data name="PortfolioImportApply"><value>导入</value></data>
   <data name="PortfolioImportHint.Text"><value>选一张当日成交的截图，或者直接把成交记录粘进来。识别结果可以先改，确认无误再导入。</value></data>

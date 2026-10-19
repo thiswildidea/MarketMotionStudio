@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>数量は 0 より大きく、単価は負にできません。</value></data>
   <data name="PortfolioDialogChecking"><value>コードを確認中…</value></data>
   <data name="PortfolioDialogUnknown"><value>相場データに {0} が見つかりません。</value></data>
+  <data name="PortfolioDialogPick"><value>該当が {0} 件あります。一覧から選んでください。</value></data>
   <data name="PortfolioImportTitle"><value>約定履歴を取り込む</value></data>
   <data name="PortfolioImportApply"><value>取り込む</value></data>
   <data name="PortfolioImportHint.Text"><value>当日の約定のスクリーンショットを選ぶか、約定履歴を貼り付けてください。内容は取り込む前に修正できます。</value></data>

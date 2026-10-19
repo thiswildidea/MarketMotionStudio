@@ -1072,6 +1072,7 @@
   <data name="PortfolioDialogBadNumbers"><value>Adet sıfırdan büyük olmalı, maliyet negatif olamaz.</value></data>
   <data name="PortfolioDialogChecking"><value>Kod denetleniyor…</value></data>
   <data name="PortfolioDialogUnknown"><value>Fiyat kaynağı {0} kodunu bilmiyor.</value></data>
+  <data name="PortfolioDialogPick"><value>{0} eşleşme bulundu; listeden birini seçin.</value></data>
   <data name="PortfolioImportTitle"><value>İşlemleri içe aktar</value></data>
   <data name="PortfolioImportApply"><value>İçe aktar</value></data>
   <data name="PortfolioImportHint.Text"><value>Günün işlemlerinin ekran görüntüsünü seçin ya da listeyi yapıştırın. Sonuç, aktarmadan önce düzeltilebilir.</value></data>
