@@ -67,6 +67,8 @@ STATE = os.path.join(
 
 # 状态行：`2026-10-19 · 242 个分钟点 · 收益 +¥1,368.00`
 FETCHED = re.compile(r"(\d{4}-\d{2}-\d{2})\s*·\s*(\d+)\s*个分钟点\s*·\s*收益\s*([+\-]¥[\d,]+\.\d\d)")
+# 「最后更新」那一行，改了它就是又取了一次数。
+UPDATED = re.compile(r"^最后更新\s*(\d{2}:\d{2}:\d{2})$")
 IMPORTED = re.compile(r"已导入\s*(\d+)\s*笔成交（重复\s*(\d+)\s*笔，无对应持仓\s*(\d+)\s*笔）")
 
 # 列表里那一行：`3,000 股 · 成本 ¥6.544`
@@ -461,6 +463,28 @@ def wait_for(win, pattern, seconds=120):
     return None
 
 
+def wait_for_new(win, pattern, previous, seconds=120):
+    """等某个数**变成别的**。`previous` 是按下按钮之前读到的那个数（或 None）。
+
+    这个页面把结果常驻在界面上，所以「等它出现」永远是立刻满足的；能证明「又算了一次」的
+    只有「它换了」。
+    """
+    deadline = time.time() + seconds
+
+    while time.time() < deadline:
+        time.sleep(1)
+
+        hit = winui.find(win, lambda c: pattern.search(c.Name) if c.Name else False)
+
+        if hit is not None:
+            found = pattern.search(hit.Name).group(1)
+
+            if found != previous:
+                return found
+
+    return None
+
+
 def find_text(win, pattern):
     for name in texts(win):
         hit = pattern.search(name)
@@ -662,9 +686,19 @@ def main():
         print("\n取数")
         fetch = winui.find(win, lambda c: c.AutomationId == "FetchButton")
 
+        # **等「最后更新」的时间戳换掉，而不是等那句话出现。** 那句话现在是常驻行（`Adopt`
+        # 里写的），打开页面就有 —— 等它「出现」会立刻拿到上一次的数，于是「按得动」这一条
+        # 变成什么都没验。时间戳换掉才说明真的又读了一次。
+        stamp = find_text(win, UPDATED)
+
         check("按得动「获取数据」", press(win, fetch))
 
-        got = wait_for(win, FETCHED, 180)
+        fresh = wait_for_new(win, UPDATED, stamp.group(1) if stamp else None, 180)
+
+        check("按下之后真的重取了一次（最后更新换了时间）", fresh is not None,
+              ("原来的 " + stamp.group(1) if stamp else "按下之前没有时间戳"))
+
+        got = find_text(win, FETCHED)
 
         if got is None:
             check("状态行报出「哪天 · 几个分钟点 · 收益」", False, "等不到那句话")
@@ -736,10 +770,14 @@ def main():
                   sorted(before) == sorted(after),
                   "%d 行 → %d 行" % (len(before), len(after)))
 
-            again = wait_for(win, FETCHED, 180)
+            # 导入之后页面自己也重取一次（`OnImport` 里那句 `SilentRefreshAsync`），所以这里
+            # 同样等时间戳换掉再读 —— 不然读到的是导入**之前**那一行，而它当然还是对的。
+            refetched = wait_for_new(win, UPDATED, fresh, 180)
+            again = find_text(win, FETCHED)
 
-            if again is None:
-                check("导入之后再取一次数", False, "等不到状态行")
+            if again is None or refetched is None:
+                check("导入之后再取一次数", False,
+                      "时间戳没换" if refetched is None else "读不到收益那句话")
             else:
                 money = again.group(3)
                 now = float(money.replace("¥", "").replace(",", "").replace("+", ""))

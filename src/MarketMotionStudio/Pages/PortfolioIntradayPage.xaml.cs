@@ -218,13 +218,10 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
                 Adopt(session);
 
-                ShowStatus(
-                    InfoBarSeverity.Success,
-                    Strings.Format(
-                        "PortfolioPnlFetched",
-                        session.Day,
-                        session.Samples.Count,
-                        PortfolioPnlRenderer.Money(session.Last)));
+                // No success bar: `Adopt` has just written the same sentence into the line under
+                // the switch, and it stays there. The bar is for what the page cannot say itself —
+                // progress while it reads, and why a read failed.
+                HideStatus();
             }, TimeSpan.FromMinutes(2));
         }
         finally

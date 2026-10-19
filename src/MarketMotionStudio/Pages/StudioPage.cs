@@ -52,6 +52,16 @@ public abstract partial class StudioPage : Page
     }
 
     /// <summary>
+    /// Takes the bar away when the page already says it somewhere better.
+    ///
+    /// A page that keeps its result on screen as a line of its own — the live portfolio page
+    /// prints "day · minutes · P&amp;L" under the refresh switch — does not need the same sentence
+    /// in a green bar right above it. Two identical lines stacked is not twice the confirmation;
+    /// it reads as one of them being a leftover.
+    /// </summary>
+    protected void HideStatus() => StatusControl.IsOpen = false;
+
+    /// <summary>
     /// Reports what a fetch came back with, adding why the span starts later than the
     /// date that was asked for when it does.
     ///
