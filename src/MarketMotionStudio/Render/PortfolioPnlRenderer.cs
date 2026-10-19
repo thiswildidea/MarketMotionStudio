@@ -29,10 +29,31 @@ namespace MarketMotionStudio.Render;
 /// videos are published to an audience that reads it one way.
 /// </para>
 /// </summary>
-public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan plan) : IFrameRenderer
+/// <param name="crossSafeRight">
+/// Whether the picture may run into the band the host covers with its button rail. A
+/// constructor argument and not a property, as on every other page: a setting the renderer read
+/// back off a mutable property would arrive as the default on the frame that mattered, with the
+/// checkbox still looking switched on.
+/// </param>
+/// <param name="mascot">
+/// Whether the head of the curve carries a bull or a bear. A decoration is switched on, never
+/// assumed, so the page offers it off.
+/// </param>
+/// <param name="dynamicAxis">
+/// Whether the vertical axis follows the curve drawn so far instead of being fixed at the whole
+/// day's excursion from the first frame. Off is what the page shipped with, and the option exists
+/// because a quiet morning followed by a violent afternoon otherwise draws the afternoon at the
+/// same scale as the morning and flattens it.
+/// </param>
+public sealed class PortfolioPnlRenderer(
+    PortfolioSession session, AnimationPlan plan,
+    bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false) : IFrameRenderer
 {
     /// <summary>Distance from the credit up to the top of the statistic cards.</summary>
     private const double CardsAboveCredit = 192;
+
+    /// <summary>Radius of the bull/bear badge, in baseline pixels.</summary>
+    private const double MascotRadius = 30;
 
     /// <summary>Where the plot's top edge sits when the title is one line.</summary>
     private const double PlotTop = 0.395;
@@ -62,19 +83,36 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
         context.Backdrop.Fill(session2, context, Palette.Background);
 
         var left = context.ChartLeft;
-        var width = context.ChartWidth;
+
+        // The rail the host draws its avatar and comment button in is 194 px of a 1080-wide
+        // frame — wider than the default right margin of 150 — so a plot measured to the margin
+        // alone runs 44 px into it. Off, the picture keeps clear of it, and *only* clear: a margin
+        // already wider than the rail keeps the width it asked for rather than being stretched out
+        // to the frame's edge. On, the margin is the only answer, which is what the setting means.
+        var right = crossSafeRight ? context.ChartRight : Math.Min(context.ChartRight, context.SafeRight());
+        var width = Math.Max(1, right - left);
+
         var baseline = context.BaselineAbove(TurnoverRenderer.CreditGap);
         var top = Row(context, PlotTop);
-        var height = Math.Max(1, baseline - top);
 
-        var (high, low) = Range();
+        // How far along the curve the frame has come, worked out once: the axis reads it (dynamic
+        // axis), the curve is drawn to it, and the badge rides it. Three answers to one question
+        // would be three chances to disagree about where "now" is.
+        var last = session.Samples.Count - 1;
+        var p = Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs));
+        var shown = last < 1 ? -1 : Math.Min(last, (int)Math.Floor(p * last));
+        var here = shown >= 0 ? session.Samples[shown].Pnl : 0;
+
+        var (high, low) = Range(shown);
 
         DrawLunch(session2, context, left, width, top, baseline, high, low);
         DrawGrid(session2, context, t, left, width, top, baseline, high, low);
 
-        var (index, value) = DrawCurve(session2, context, t, left, width, top, baseline, high, low);
+        var (index, value) = DrawCurve(
+            session2, context, shown, p, left, width, top, baseline, high, low);
 
         DrawTrades(session2, context, index, left, width, top, baseline, high, low);
+        DrawMascot(session2, context, shown, p, here, left, width, top, baseline, high, low);
         DrawClocks(session2, context, t, left, width, baseline);
         DrawRateNote(session2, context, t, left, width, baseline);
         DrawStats(session2, context, t);
@@ -88,11 +126,33 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
     /// Zero is always inside the range even on a day that only went one way, because the distance
     /// from zero *is* the number being drawn: a curve that started at the frame's bottom edge
     /// would say "this begins at minus one" to anyone reading the axis.
+    ///
+    /// <paramref name="shown"/> is how far the animation has come. With the dynamic axis on, the
+    /// range is the running extreme of the points drawn so far rather than the whole day's — so a
+    /// violent afternoon is drawn at its own scale instead of being flattened by a morning that
+    /// happened to travel further. At the last point the running extreme *is* the whole day's, so
+    /// the closing frame is the same axis the fixed scale always drew and a cover taken from it
+    /// matches one drawn with the option off.
     /// </summary>
-    private (double High, double Low) Range()
+    private (double High, double Low) Range(int shown)
     {
-        var high = Math.Max(0, session.Peak);
-        var low = Math.Min(0, session.Trough);
+        var peak = session.Peak;
+        var trough = session.Trough;
+
+        if (dynamicAxis && shown >= 0)
+        {
+            peak = 0;
+            trough = 0;
+
+            for (var i = 0; i <= shown && i < session.Samples.Count; i++)
+            {
+                peak = Math.Max(peak, session.Samples[i].Pnl);
+                trough = Math.Min(trough, session.Samples[i].Pnl);
+            }
+        }
+
+        var high = Math.Max(0, peak);
+        var low = Math.Min(0, trough);
 
         if (high - low < 1e-9)
         {
@@ -199,20 +259,14 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
     /// the frame instead of the ground between the curve and the zero line.
     /// </summary>
     private (int Index, double Value) DrawCurve(
-        CanvasDrawingSession session2, FrameContext context, double t,
+        CanvasDrawingSession session2, FrameContext context, int shown, double p,
         double left, double width, double top, double baseline, double high, double low)
     {
-        var last = session.Samples.Count - 1;
-
-        if (last < 1)
+        if (shown < 0)
         {
             return (-1, 0);
         }
 
-        var p = Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs));
-        var at = p * last;
-        var whole = (int)Math.Floor(at);
-        var shown = Math.Min(last, whole);
         var value = session.Samples[shown].Pnl;
         var zeroY = (float)Y(0, top, baseline - top, high, low);
 
@@ -272,6 +326,44 @@ public sealed class PortfolioPnlRenderer(PortfolioSession session, AnimationPlan
         }
 
         return (shown, value);
+    }
+
+    /// <summary>
+    /// The bull or the bear, riding the head of the curve.
+    ///
+    /// One line on this page and one head, so the badge sits where the reader's eye already is:
+    /// just above the dot the animation has reached. Which animal is not a fact about the slope —
+    /// a rolling window would flip it on every wobble — but about the day's own sign: the running
+    /// total is a profit (bull) or a loss (bear), the same rule that colours the line, the fill and
+    /// the headline. A day that spent the morning in profit and the afternoon in loss changes
+    /// animal exactly when the curve crosses zero, which is the one moment this page exists to
+    /// show.
+    /// </summary>
+    private void DrawMascot(
+        CanvasDrawingSession session2, FrameContext context, int shown, double p, double value,
+        double left, double width, double top, double baseline, double high, double low)
+    {
+        if (!mascot || shown < 0 || p <= 0)
+        {
+            return;
+        }
+
+        var x = X(session.Samples[shown].Minute, left, width);
+        var y = Y(value, top, baseline - top, high, low);
+
+        // Grows in with the curve and bobs on progress alone, so the preview and the export move
+        // the badge through exactly the same places.
+        var radius = context.Px(MascotRadius) * (0.55 + (0.45 * Math.Min(1, p)));
+        var bob = Math.Sin(context.Progress * Math.Tau * 2) * context.Px(4);
+
+        // Kept inside the plot: a head near the top would otherwise push the badge into the
+        // header, and one near the right edge would put half of it outside the frame.
+        var cx = Math.Clamp(x, left + radius, Math.Max(left + radius, left + width - radius));
+        var cy = Math.Max(top + radius + context.Px(6), y - radius - context.Px(14)) + bob;
+
+        Mascots.Draw(
+            session2, (float)cx, (float)cy, (float)radius,
+            value >= 0, Palette.Emphasis, Palette.Fall, Math.Min(1, p));
     }
 
     /// <summary>

@@ -131,6 +131,36 @@
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
+                    <!-- Three ways of looking at the day that was fetched, all of them off by
+                         default because all three are choices rather than corrections. None of
+                         them reads the source again: each redraws and stops, like every other
+                         look switch on every other page.
+
+                         The rail the phone covers with its avatar and comment button is wider
+                         than the default right margin, so a plot measured to the margin alone
+                         runs into it; on, the picture is the width the margin asks for. -->
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <!-- The bull or the bear on the head of the curve. The wording is the
+                         per-stock page's own key: the setting is the same setting, and a second
+                         key would be a second translation of one sentence. -->
+                    <CheckBox x:Name="MascotCheck"
+                              x:Uid="PositionMascot"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <!-- Off: the axis is the whole day's excursion from the first frame, so a
+                         morning that travelled further does not rescale the afternoon. On: the
+                         axis follows what has been drawn so far and lands on the whole day on
+                         the closing frame, which is why a cover taken from it still matches. -->
+                    <CheckBox x:Name="DynamicAxisCheck"
+                              x:Uid="PositionDynamicAxis"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

@@ -140,7 +140,15 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 session.Samples.Count,
                 Math.Max(Math.Abs(session.Peak), Math.Abs(session.Trough)));
 
-            Preview.Renderer = new PortfolioPnlRenderer(session, plan) { Title = title, ShowTitle = showTitle };
+            Preview.Renderer = new PortfolioPnlRenderer(
+                session, plan,
+                crossSafeRight: CrossCheck.IsChecked is true,
+                mascot: MascotCheck.IsChecked is true,
+                dynamicAxis: DynamicAxisCheck.IsChecked is true)
+            {
+                Title = title,
+                ShowTitle = showTitle,
+            };
         }
         else
         {
@@ -313,6 +321,19 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     private void OnAutoRefreshToggled(object sender, RoutedEventArgs e)
     {
         UpdateAutoTimer();
+        SavePreferences();
+    }
+
+    /// <summary>
+    /// A look switch moved: rebuild the renderer and stop there.
+    ///
+    /// Nothing is re-read, because none of the three changes a number — they change where the same
+    /// numbers sit. Re-fetching would cost a request per holding to answer the same thing, and
+    /// during a session it would also move the frame under the reader.
+    /// </summary>
+    private void OnLookChanged(object sender, RoutedEventArgs e)
+    {
+        ApplyPreviewSettings();
         SavePreferences();
     }
 
@@ -553,6 +574,10 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         AutoRefresh.IsOn = _prefs.GetBool("Auto", true);
 
+        CrossCheck.IsChecked = _prefs.GetBool("CrossSafeRight", false);
+        MascotCheck.IsChecked = _prefs.GetBool("Mascot", false);
+        DynamicAxisCheck.IsChecked = _prefs.GetBool("DynamicAxis", false);
+
         VideoSettings.Restore(_prefs);
 
         _prefs.Restoring = false;
@@ -566,6 +591,10 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         }
 
         _prefs.Save("Auto", AutoRefresh.IsOn);
+
+        _prefs.Save("CrossSafeRight", CrossCheck.IsChecked is true);
+        _prefs.Save("Mascot", MascotCheck.IsChecked is true);
+        _prefs.Save("DynamicAxis", DynamicAxisCheck.IsChecked is true);
 
         VideoSettings.Save(_prefs);
     }

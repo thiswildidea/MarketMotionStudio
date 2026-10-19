@@ -166,6 +166,58 @@ def source_checks():
     check("列表是只读的，编辑在对话框里", 'ItemsControl x:Name="Holdings"' in xaml
           and 'IsReadOnly="True"' not in xaml)
 
+    # ---- 三个观感开关（从「持仓收益」页移植过来的）----------------------------------
+    #
+    # 这三个开关只改「同一批数字放在哪儿」，不改任何数字。所以它们错起来的样子很特别：
+    # 源码里写着、控件也亮着，画面却一动不动 —— 比如渲染器把它们读成了可写属性，构造时
+    # 还是默认值。源码这一层能管住的正是这一条：三个都必须是**构造参数**。
+    check("三个观感开关都是构造参数，不是事后可写的属性（否则关键那一帧拿到的是默认值）",
+          "bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false)"
+          in render)
+
+    check("越线开关：开 = 让到用户设的边距，关 = 连那条轨一起让开",
+          "var right = crossSafeRight ? context.ChartRight : Math.Min(context.ChartRight, context.SafeRight());"
+          in render)
+
+    check("动态纵轴取的是已经画出来的那一段的极值，且零线始终留在轴内",
+          "if (dynamicAxis && shown >= 0)" in render
+          and "peak = Math.Max(peak, session.Samples[i].Pnl);" in render
+          and "var high = Math.Max(0, peak);" in render)
+
+    check("牛熊骑在曲线头上，涨红跌绿（和曲线、和大数字同一个判据）",
+          "Mascots.Draw(" in render
+          and "value >= 0, Palette.Emphasis, Palette.Fall" in render)
+
+    check("页面把三个开关交给渲染器",
+          "crossSafeRight: CrossCheck.IsChecked is true," in page
+          and "mascot: MascotCheck.IsChecked is true," in page
+          and "dynamicAxis: DynamicAxisCheck.IsChecked is true" in page)
+
+    # 三个开关复用的是已有的词条：同一句话在 14 种语言里写两遍，改一处就会漏一处。
+    check("三个开关在页面上，词条复用持仓页那份（一句话不写两遍）",
+          xaml.count('Click="OnLookChanged"') == 3
+          and 'x:Uid="SafeRightCross"' in xaml
+          and 'x:Uid="PositionMascot"' in xaml
+          and 'x:Uid="PositionDynamicAxis"' in xaml)
+
+    check("三个开关都记在偏好里（下次打开还是上次的看法）",
+          '_prefs.Save("CrossSafeRight"' in page
+          and '_prefs.Save("Mascot"' in page
+          and '_prefs.Save("DynamicAxis"' in page
+          and '_prefs.GetBool("CrossSafeRight", false)' in page
+          and '_prefs.GetBool("Mascot", false)' in page
+          and '_prefs.GetBool("DynamicAxis", false)' in page)
+
+    # 改看点不该再打一次请求：三个开关都不动数字，重取一遍是一天里每只持仓多出两次请求，
+    # 换回来的是同一个数，还会把读者正在看的那一帧挪走。
+    check("改这三个开关只重画、不重取（OnLookChanged 里没有 LoadAsync）",
+          "private void OnLookChanged(object sender, RoutedEventArgs e)\n"
+          "    {\n"
+          "        ApplyPreviewSettings();\n"
+          "        SavePreferences();\n"
+          "    }" in page
+          and "LoadAsync" not in page.split("private void OnLookChanged")[1].split("private ")[0])
+
 
 # ---- 2) 自己算一遍 --------------------------------------------------------------------
 
@@ -438,8 +490,243 @@ def frame_checks(profit, name="verify-portfolio-frame.png"):
 
     span = 0 if not mine else max(x for x, _ in mine) - min(x for x, _ in mine)
 
-    check("曲线铺满绘图区宽度（不是只画到一半）", span > width * 0.7,
+    # 阈值是 0.6 而不是 0.7，因为绘图区本来就只有画布的这么多：左边 150 的边距、右边
+    # 194 的安全线（`SafeArea.Right` 是 18%），两条加起来占掉 32%，能画的只剩 0.68。
+    # 0.7 那条线是照着**越界**的旧外观校准的 —— 那个时候曲线一路画到右边距，压进了手机
+    # 自己盖住的按钮带。越线开关关掉之后曲线退回到安全线以内，0.68 是它**画满**的样子；
+    # 反过来，一条只画了半场的曲线没有这个宽度，0.6 仍然拦得住。
+    check("曲线铺满绘图区宽度（不是只画到一半）", span > width * 0.6,
           "曲线横跨 %d 像素，画布宽 %d" % (span, width))
+
+
+# ---- 3.5) 三个观感开关 ----------------------------------------------------------------
+
+def grab(win, name):
+    """一张窗口图，加上画布在窗口里的坐标框；抓不到返回 None。"""
+    from PIL import Image
+
+    path = os.path.join(ART, name)
+
+    if not winui.capture(win, path):
+        return None
+
+    image = Image.open(path).convert("RGB")
+    box = winui.canvas_box(image)
+
+    if box is None:
+        return None
+
+    return image, (box[0], box[1], box[2], winui.frame_bottom(image, box))
+
+
+def curve_any(image, box):
+    """绘图带里那条曲线的像素，**红绿都算**。
+
+    曲线的颜色跟着「曲线头那个点」的正负走（`DrawCurve` 里 `colour = positive ? Emphasis : Fall`，
+    `positive = value >= 0` 取的是已经画到那一帧的累计盈亏）。所以同一根曲线，停在结尾是红、
+    停在中段某一刻可能是绿 —— 端到端实测里就有「整天盈利、但上午一度浮亏」的日子。只认一种
+    颜色会把那一帧的曲线整个漏掉，于是动态纵轴那段量出来是 `0 → 0`。量和 `frame_checks` 同一条
+    带子（画布高度的 40%–66%）。
+    """
+    left, right, top, bottom = box
+    height = bottom - top + 1
+    band = (left, right, top + (height * 40 // 100), top + (height * 66 // 100))
+
+    return near(image, band, rgb("Emphasis")) + near(image, band, rgb("Fall"))
+
+
+def set_switch(win, automation_id, on, tries=6):
+    """把一个复选框扳到 `on`，并读回确认。返回是否真的到了想要的状态。
+
+    **`InvokePattern` 在 WinUI 的复选框上不翻面** —— 回调走了，框还是空的，看起来像「这个
+    开关没实现」。翻面要走 `TogglePattern.Toggle()`，而且每趟读回 `ToggleState`：uiautomation
+    拿到的状态偶尔是上一次的快照，不读回就等于在猜。
+    """
+    control = winui.find(win, lambda c: c.AutomationId == automation_id)
+    wanted = 1 if on else 0
+
+    for _ in range(tries):
+        if control is None:
+            return False
+
+        try:
+            pattern = control.GetTogglePattern()
+        except Exception:  # noqa: BLE001
+            return False
+
+        if pattern.ToggleState == wanted:
+            return True
+
+        try:
+            pattern.Toggle()
+        except Exception:  # noqa: BLE001
+            press(win, control)
+
+        time.sleep(0.9)
+        control = winui.find(win, lambda c: c.AutomationId == automation_id)
+
+    if control is None:
+        return False
+
+    try:
+        return control.GetTogglePattern().ToggleState == wanted
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def set_progress(win, progress):
+    slider = winui.find(win, lambda c: c.AutomationId == "Scrub")
+
+    if slider is None:
+        return False
+
+    slider.GetRangeValuePattern().SetValue(progress)
+    time.sleep(1.8)
+
+    return True
+
+
+def changed_pixels(first, second, box, floor=26):
+    """两张**同一窗口**的截图之间变了的地方，只在画布框里取。"""
+    left, right, top, bottom = box
+    a = first.load()
+    b = second.load()
+    found = []
+
+    for y in range(top, bottom + 1):
+        for x in range(left, right + 1):
+            pa, pb = a[x, y][:3], b[x, y][:3]
+
+            if sum(abs(pa[i] - pb[i]) for i in range(3)) > floor:
+                found.append((x, y))
+
+    return found
+
+
+def look_checks(win, profit):
+    """三个观感开关在**画面上**的证据。
+
+    三个都只改「同一批数字放在哪儿」，所以证据只能是画面：源码里三个构造参数都写对了、
+    渲染器却一个都没读，长得和「这三项没做」一模一样。三处的判据都是**前后两张图的差**：
+    停在同一进度上的同一帧，开着与关着应当只有那一处不同。
+
+    开头先把三个开关摆回关 —— 它们是**偏好**，上一趟跑完留着「开」，这一趟的「关」就量成
+    了「开」，三条全绿而什么都没验。
+    """
+    print("\n三个观感开关")
+
+    names = (("CrossCheck", "越过右侧安全线"),
+             ("MascotCheck", "显示牛熊图标"),
+             ("DynamicAxisCheck", "动态纵轴"))
+
+    check("三个开关都在页面上，而且扳得动",
+          all(set_switch(win, control, False) for control, _ in names))
+
+    # 每一张图都先 re-seek 到目标进度再抓 —— 这样「开 / 关」两张图永远停在同一帧，量到的差
+    # 就只有那个开关本身。不 reseek 时偶发两张图停在不同进度（动画余势 / 合成线程还在画上一
+    # 帧），整个曲线都错位，差出几万像素，把「多了一块徽章」误判成「整幅重画」。
+    def shot(name, progress):
+        set_progress(win, progress)
+        time.sleep(0.5)
+        return grab(win, name)
+
+    # ---- 越过右侧安全线 ---------------------------------------------------------
+    off = shot("verify-portfolio-cross-off.png", 1.0)
+
+    check("开关扳到开", set_switch(win, "CrossCheck", True))
+    on = shot("verify-portfolio-cross-on.png", 1.0)
+
+    set_switch(win, "CrossCheck", False)
+
+    if off is None or on is None:
+        check("截得到「越线前 / 越线后」两张图", False)
+    else:
+        before = curve_any(off[0], off[1])
+        after = curve_any(on[0], on[1])
+
+        x_off = max((x for x, _ in before), default=0)
+        x_on = max((x for x, _ in after), default=0)
+
+        # 边距 150 比那条轨的 194 窄，所以「越过」这一下在 1080 宽的画面里是 44 像素，
+        # 折到窗口里约 17 像素。判据只要 6 像素：量的是方向，不是那 44 的绝对值。
+        check("打开之后曲线真的往右伸了（越过了那条轨）", x_on - x_off >= 6,
+              "曲线右端 %d → %d 像素（+%d）" % (x_off, x_on, x_on - x_off))
+
+    # ---- 显示牛熊图标 -----------------------------------------------------------
+    off = shot("verify-portfolio-mascot-off.png", 1.0)
+
+    check("开关扳到开", set_switch(win, "MascotCheck", True))
+    on = shot("verify-portfolio-mascot-on.png", 1.0)
+
+    set_switch(win, "MascotCheck", False)
+
+    if off is None or on is None:
+        check("截得到「牛熊关 / 牛熊开」两张图", False)
+    else:
+        spots = changed_pixels(off[0], on[0], off[1])
+
+        left, right, top, bottom = off[1]
+        width = right - left + 1
+        height = bottom - top + 1
+
+        xs = [x for x, _ in spots]
+        ys = [y for _, y in spots]
+
+        wide = (max(xs) - min(xs)) if spots else 0
+        tall = (max(ys) - min(ys)) if spots else 0
+
+        check("打开之后画面上真的多了一块东西", len(spots) > 90,
+              "变了 %d 个像素" % len(spots))
+
+        # 一块徽章，不是整幅重画：变的地方只占画布的一小块。
+        check("多出来的是一小块（不是整幅重画）",
+              spots and wide < width * 0.32 and tall < height * 0.28,
+              "变了 %d×%d 像素，画布 %d×%d" % (wide, tall, width, height))
+
+        # 徽章是**线之外**的东西：它盖在曲线上方，但本来就不该盖住曲线本身。这一条比
+        # 「在曲线头的正上方」稳得多 —— 上涨的那一天曲线头就在绘图区的高处，徽章被顶到
+        # 绘图区的顶边，于是它在曲线头的**下方**，而这不是 bug（`DrawMascot` 的钳位就是
+        # 干这个的）。位置的判据量的是它「另起一块」，不是「在哪个像素上」。曲线颜色红绿都认。
+        line = set(curve_any(off[0], off[1]))
+        on_line = len(set(spots) & line)
+
+        check("徽章是一块独立的图案（没有盖到曲线本身）",
+              spots and on_line < len(spots) * 0.4,
+              "与曲线重叠 %d / %d 个像素" % (on_line, len(spots)))
+
+        # 它站在画面的上半部分：曲线头在右端，徽章贴着它，落在绘图区顶部一带。
+        # `ys` 已经是「这一列所有 y」的列表（上面从 spots 拆出来的），不是元组，直接求和。
+        centroid = (sum(ys) / len(ys)) if spots else bottom
+
+        check("徽章落在上半幅（跟着曲线头，不掉到卡片那边）",
+              spots and centroid < top + (height * 0.55),
+              "徽章重心 y=%d（画布 %d~%d）" % (centroid, top, bottom))
+
+    # ---- 动态纵轴 ---------------------------------------------------------------
+    #
+    # 停在 25%：这一天「已经画出来的那一段」只占全天的一小段，动态纵轴才拉得开差距 —— 停在
+    # 结尾两者相等（那正是设计：封面要和关掉时一模一样），量出来是 0。曲线颜色跟着曲线头那个
+    # 点的正负走，中段某一刻可能是绿也可能是红，所以量两条颜色都算。
+    off = shot("verify-portfolio-axis-fixed.png", 0.25)
+
+    check("开关扳到开", set_switch(win, "DynamicAxisCheck", True))
+    on = shot("verify-portfolio-axis-dynamic.png", 0.25)
+
+    set_switch(win, "DynamicAxisCheck", False)
+    set_progress(win, 1.0)
+
+    if off is None or on is None:
+        check("截得到「固定纵轴 / 动态纵轴」两张图", False)
+    else:
+        fixed = curve_any(off[0], off[1])
+        dynamic = curve_any(on[0], on[1])
+
+        span_fixed = (max(y for _, y in fixed) - min(y for _, y in fixed)) if fixed else 0
+        span_dynamic = (max(y for _, y in dynamic) - min(y for _, y in dynamic)) if dynamic else 0
+
+        check("同一进度下，动态纵轴把这半场画得更高（轴跟着已经画出来的那一段）",
+              span_dynamic > span_fixed * 1.2 and span_fixed > 0,
+              "曲线高度 %d → %d 像素" % (span_fixed, span_dynamic))
 
 
 # ---- 4) 真机 --------------------------------------------------------------------------
@@ -584,7 +871,10 @@ def book_rows(win):
 
 
 def main():
-    for old in ("verify-portfolio-frame.png", "verify-portfolio-import.png"):
+    for old in ("verify-portfolio-frame.png", "verify-portfolio-import.png",
+                "verify-portfolio-cross-off.png", "verify-portfolio-cross-on.png",
+                "verify-portfolio-mascot-off.png", "verify-portfolio-mascot-on.png",
+                "verify-portfolio-axis-fixed.png", "verify-portfolio-axis-dynamic.png"):
         path = os.path.join(ART, old)
 
         if os.path.exists(path):
@@ -721,6 +1011,9 @@ def main():
                   else "页面 %+.2f / 脚本 %+.2f" % (mine, guess["profit"]))
 
             frame_checks(guess["profit"])
+
+            # 三个观感开关：画面上的前后对照，只能真机量。
+            look_checks(win, guess["profit"])
 
         before = book_rows(win)
 
