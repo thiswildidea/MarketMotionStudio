@@ -52,10 +52,20 @@ namespace MarketMotionStudio.Render;
 /// own minutes earned, meeting where the market shut — a day drawn without an hour and a half of
 /// nothing in the middle of it. On is what the page shipped with.
 /// </param>
+/// <param name="skin">
+/// How the headline is inked: plain, ramped, or ramped on a serif. It is a constructor argument
+/// for the same reason the switches are: read back off a property, the frame that matters would
+/// be drawn before the page had set it.
+/// </param>
+/// <param name="titleColour">
+/// The headline's colour, or null for the one <paramref name="skin"/> defaults to. The ramp is
+/// derived from it, so one choice is the whole of the finish.
+/// </param>
 public sealed class PortfolioPnlRenderer(
     PortfolioSession session, AnimationPlan plan,
     bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,
-    bool lunchBreak = true) : IFrameRenderer
+    bool lunchBreak = true, TitleSkin skin = TitleSkin.Plain, Color? titleColour = null)
+    : IFrameRenderer
 {
     /// <summary>Distance from the credit up to the top of the statistic cards.</summary>
     private const double CardsAboveCredit = 192;
@@ -72,7 +82,14 @@ public sealed class PortfolioPnlRenderer(
     /// <summary>Whether the title row is drawn at all.</summary>
     public bool ShowTitle { get; set; } = true;
 
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title = new(62, skin: skin);
+
+    /// <summary>
+    /// The ink the headline is drawn in: the colour the reader chose, or the one this skin comes
+    /// with. Kept as a method rather than a field so the fallback cannot be computed before the
+    /// constructor's arguments are in scope.
+    /// </summary>
+    private Color TitleInk() => titleColour ?? TitleSkins.Default(skin);
 
     private int _titleLines;
 
@@ -692,7 +709,7 @@ public sealed class PortfolioPnlRenderer(
 
         var title = ResolvedTitle();
 
-        _title.Draw(session2, context, title, _title.For(session2, title, context, ShowTitle), Palette.Title, a);
+        _title.Draw(session2, context, title, _title.For(session2, title, context, ShowTitle), TitleInk(), a);
 
         // The day on a line of its own, in the amber every other page draws an advancing date in
         // and at better than one and a half times the size the old subtitle used. It is the first

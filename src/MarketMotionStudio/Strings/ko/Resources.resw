@@ -1053,6 +1053,12 @@
   <data name="PortfolioPnlStatLow"><value>최저</value></data>
   <data name="PortfolioPnlNoon"><value>점심 휴장</value></data>
   <data name="PortfolioPnlLunch.Content"><value>점심 휴장 표시</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>제목 스타일</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>기본</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>금박</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>금·명조</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>제목 색</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>기본색 사용</value></data>
   <data name="PortfolioPnlRateNote"><value>홍콩 종목은 1 HKD = {0} CNY로 환산</value></data>
   <data name="PortfolioEmpty"><value>아직 보유 종목이 없습니다. '보유 종목 관리'에서 추가하세요.</value></data>
   <data name="PortfolioNoSession"><value>거래 세션을 가져오지 못했습니다. 잠시 후 다시 시도하세요.</value></data>

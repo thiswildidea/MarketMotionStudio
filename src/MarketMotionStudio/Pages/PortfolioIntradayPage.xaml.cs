@@ -67,6 +67,29 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     /// <summary>The timer behind "refresh while the market is open".</summary>
     private readonly DispatcherTimer _auto = new() { Interval = TimeSpan.FromSeconds(30) };
 
+    /// <summary>
+    /// The three headline treatments, in the order the page offers them.
+    ///
+    /// The keys keep their <c>.Content</c> suffix because these lines are not set through
+    /// <c>x:Uid</c>: the menu is filled in code, and <see cref="Strings.Get"/> reads the dotted
+    /// name as a path — a key with the suffix left off resolves to nothing and the menu comes out
+    /// reading <c>[PortfolioPnlTitlePlain]</c>.
+    /// </summary>
+    private static readonly (TitleSkin Skin, string Key)[] Skins =
+    [
+        (TitleSkin.Plain, "PortfolioPnlTitlePlain.Content"),
+        (TitleSkin.Gilded, "PortfolioPnlTitleGilded.Content"),
+        (TitleSkin.Engraved, "PortfolioPnlTitleEngraved.Content"),
+    ];
+
+    /// <summary>The headline colour the reader picked, as <c>#RRGGBB</c>; empty means
+    /// "whichever this treatment comes with".</summary>
+    private string _titleColour = string.Empty;
+
+    /// <summary>True while the page is setting the picker's own colour, so the change it raises
+    /// on itself is not read back as a choice.</summary>
+    private bool _painting;
+
     private PortfolioSession? _session;
 
     /// <summary>Guards against a timer tick landing on top of a fetch already in flight.</summary>
@@ -93,6 +116,13 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         _playback = new Playback(this);
 
         SetPlaybackState(playing: false);
+
+        foreach (var (skin, key) in Skins)
+        {
+            // The tag carries the skin rather than its position in the menu, so a treatment
+            // added in the middle cannot silently become another one.
+            TitleSkinCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)skin });
+        }
 
         RestorePreferences();
         ApplyPreviewSettings();
@@ -145,7 +175,9 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 crossSafeRight: CrossCheck.IsChecked is true,
                 mascot: MascotCheck.IsChecked is true,
                 dynamicAxis: DynamicAxisCheck.IsChecked is true,
-                lunchBreak: LunchCheck.IsChecked is true)
+                lunchBreak: LunchCheck.IsChecked is true,
+                skin: SelectedSkin(),
+                titleColour: ChosenTitleColour())
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -336,6 +368,87 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     {
         ApplyPreviewSettings();
         SavePreferences();
+    }
+
+    private void OnTitleSkinChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // The swatch and the picker are both answerable to the treatment: until a colour is chosen
+        // each shows the one this treatment comes with, so switching treatments moves both. A
+        // picker left on the previous treatment's colour is worse than a stale swatch — it is the
+        // control the reader would then *touch*, and touching it writes the colour it was showing:
+        // switch to 镀金, open the picker, nudge it, and the headline turns white.
+        PaintPicker();
+        PaintSwatch();
+
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
+    private void OnTitleColourChanged(ColorPicker sender, ColorChangedEventArgs args)
+    {
+        if (_prefs.Restoring || _painting)
+        {
+            return;
+        }
+
+        var ink = args.NewColor;
+
+        _titleColour = string.Format(
+            CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", ink.R, ink.G, ink.B);
+
+        PaintSwatch();
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
+    /// <summary>
+    /// Hands the colour back to the treatment.
+    ///
+    /// A picker cannot show "nothing chosen": it always has a colour, and once the reader has
+    /// touched it that colour is a choice whether they meant it as one or not. So the way back
+    /// to "whichever this treatment comes with" has to be a control of its own.
+    /// </summary>
+    private void OnTitleColourDefault(object sender, RoutedEventArgs e)
+    {
+        _titleColour = string.Empty;
+
+        PaintPicker();
+        PaintSwatch();
+
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
+    private TitleSkin SelectedSkin() =>
+        TitleSkinCombo.SelectedItem is ComboBoxItem { Tag: int tag } ? (TitleSkin)tag : TitleSkin.Plain;
+
+    /// <summary>The colour the reader picked, or null when they have not picked one.</summary>
+    private Color? ChosenTitleColour()
+    {
+        var hex = _titleColour;
+
+        if (hex.Length != 7 || hex[0] != '#')
+        {
+            return null;
+        }
+
+        return byte.TryParse(hex[1..3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var r)
+            && byte.TryParse(hex[3..5], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var g)
+            && byte.TryParse(hex[5..7], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var b)
+            ? Color.FromArgb(255, r, g, b)
+            : null;
+    }
+
+    private void PaintSwatch() =>
+        TitleSwatch.Fill = new SolidColorBrush(ChosenTitleColour() ?? TitleSkins.Default(SelectedSkin()));
+
+    private void PaintPicker()
+    {
+        _painting = true;
+
+        TitleColour.Color = ChosenTitleColour() ?? TitleSkins.Default(SelectedSkin());
+
+        _painting = false;
     }
 
     /// <summary>
@@ -597,6 +710,12 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         // because they are additions to it rather than subtractions.
         LunchCheck.IsChecked = _prefs.GetBool("Lunch", true);
 
+        _titleColour = _prefs.GetString("TitleColour", string.Empty);
+        TitleSkinCombo.SelectedIndex = _prefs.GetInt("TitleSkin", 0);
+
+        PaintPicker();
+        PaintSwatch();
+
         VideoSettings.Restore(_prefs);
 
         _prefs.Restoring = false;
@@ -615,6 +734,8 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         _prefs.Save("Mascot", MascotCheck.IsChecked is true);
         _prefs.Save("DynamicAxis", DynamicAxisCheck.IsChecked is true);
         _prefs.Save("Lunch", LunchCheck.IsChecked is true);
+        _prefs.Save("TitleSkin", TitleSkinCombo.SelectedIndex);
+        _prefs.Save("TitleColour", _titleColour);
 
         VideoSettings.Save(_prefs);
     }

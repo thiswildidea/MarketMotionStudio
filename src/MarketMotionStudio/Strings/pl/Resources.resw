@@ -1053,6 +1053,12 @@
   <data name="PortfolioPnlStatLow"><value>Dno</value></data>
   <data name="PortfolioPnlNoon"><value>Przerwa południowa</value></data>
   <data name="PortfolioPnlLunch.Content"><value>Pokaż przerwę południową</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>Styl nagłówka</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>Zwykły</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>Złocony</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>Grawerowany</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>Kolor nagłówka</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>Użyj domyślnego</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD przeliczone po 1 HKD = {0} CNY</value></data>
   <data name="PortfolioEmpty"><value>Brak pozycji — dodaj ją w „Zarządzaj pozycjami”.</value></data>
   <data name="PortfolioNoSession"><value>Źródło nie zwróciło sesji. Spróbuj później.</value></data>

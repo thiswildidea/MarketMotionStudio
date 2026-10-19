@@ -1053,6 +1053,12 @@
   <data name="PortfolioPnlStatLow"><value>Минимум</value></data>
   <data name="PortfolioPnlNoon"><value>Обеденный перерыв</value></data>
   <data name="PortfolioPnlLunch.Content"><value>Показывать обеденный перерыв</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>Оформление заголовка</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>Обычный</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>Золочение</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>Гравировка</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>Цвет заголовка</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>По умолчанию</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD пересчитан: 1 HKD = {0} CNY</value></data>
   <data name="PortfolioEmpty"><value>Позиций пока нет — добавьте в «Управлении позициями».</value></data>
   <data name="PortfolioNoSession"><value>Источник не вернул ни одной сессии. Повторите позже.</value></data>

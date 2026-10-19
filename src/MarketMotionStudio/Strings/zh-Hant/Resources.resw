@@ -1052,6 +1052,12 @@
   <data name="PortfolioPnlStatLow"><value>最低</value></data>
   <data name="PortfolioPnlNoon"><value>午間休市</value></data>
   <data name="PortfolioPnlLunch.Content"><value>顯示午間休市</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>標題樣式</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>常規</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>鍍金</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>金宋</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>標題顏色</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>用預設色</value></data>
   <data name="PortfolioPnlRateNote"><value>港股按 1 HKD = {0} CNY 折算</value></data>
   <data name="PortfolioEmpty"><value>還沒有持倉：先在「管理持倉」裡新增一檔。</value></data>
   <data name="PortfolioNoSession"><value>行情源沒有回傳任何交易時段，稍後再試。</value></data>

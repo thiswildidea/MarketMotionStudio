@@ -10,7 +10,7 @@
   2. **状态行 + 自己再算一遍**：页面把「哪天 · 多少个分钟点 · 收益多少」写在状态行上，
      而那句话的每一个数都能**不经过应用**算出来 —— 用与页面同一对端点（`qt.gtimg.cn`
      取昨收，`web.ifzq.gtimg.cn/.../day/query` 取分钟价），按同一套「昨收→现价」的定义。
-     三个数全对上，才说明九只的价格、昨收、汇率和那个「一天」都拼对了。
+     三个数全对上，才说明这十只的价格、昨收、汇率和那个「一天」都拼对了。
      **今天港股休市**，所以它同时验了「休市的那两只不算进曲线」这条分支。
 
   3. **像素**：曲线在画面上铺满绘图区的宽度，颜色跟着收益的符号走（红涨绿跌）。这两条
@@ -56,6 +56,8 @@ RENDER = os.path.join(SRC, "Render/PortfolioPnlRenderer.cs")
 PALETTE = os.path.join(SRC, "Render/Palette.cs")
 PAGE = os.path.join(SRC, "Pages/PortfolioIntradayPage.xaml.cs")
 XAML = os.path.join(SRC, "Pages/PortfolioIntradayPage.xaml")
+SKIN = os.path.join(SRC, "Render/TitleSkin.cs")
+BLOCK = os.path.join(SRC, "Render/TitleBlock.cs")
 
 # 运行态的位置。`ApplicationData.Current.LocalFolder` 落在 `LocalState\`，**不是**
 # `LocalAppData\LocalState\`（后者不存在）。写错的代价不是「判据红」而是下面这条：
@@ -74,7 +76,7 @@ IMPORTED = re.compile(r"已导入\s*(\d+)\s*笔成交（重复\s*(\d+)\s*笔，�
 
 # 列表里那一行：`3,000 股 · 成本 ¥6.544`
 DETAIL = re.compile(r"^[\d,]+\s*股\s*·\s*成本\s*[¥HK$]")
-# 港股那一行的货币符是三个字符（`HK$34.062`）：单字符的字符集只吃得下一个，九行里恰好
+# 港股那一行的货币符是三个字符（`HK$34.062`）：单字符的字符集只吃得下一个，十行里恰好
 # 漏掉的就是那两行港股，而报错只说「7 行 / 9 行」，看不出来漏的是哪一类。
 DETAIL_ROW = re.compile(r"^([\d,]+)\s*股\s*·\s*成本\s*(?:HK\$|HKD|¥|￥|\$)?([\d.]+)$")
 
@@ -112,6 +114,8 @@ def source_checks():
     palette = open(PALETTE, encoding="utf-8").read()
     page = open(PAGE, encoding="utf-8").read()
     xaml = open(XAML, encoding="utf-8").read()
+    skin = open(SKIN, encoding="utf-8").read()
+    block = open(BLOCK, encoding="utf-8").read()
 
     check("开盘 09:30、沪深 15:00、港股 16:00 是三个具名常量",
           "OpenMinute = (9 * 60) + 30;" in pnl
@@ -125,8 +129,15 @@ def source_checks():
           and "holdings.Any(h => h.IsHongKong) ? HongKongClose" not in pnl)
 
     check("曲线在成交的那一刻是连续的（现金进出计入，不是把持仓一删）",
-          "TradeCash(trades, holding.Code)" in pnl
-          and "cash += sign * trade.Shares * trade.Price * rate;" in pnl)
+          "Replay(trades, holding.Code, openingShares)" in pnl
+          and "cash += (trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price * rate;" in pnl)
+
+    # 账本那十行是**早上开盘时的**，所以开盘持股数就是账上的股数，没有「倒推」这一步。
+    # 倒推是给「账本当收盘用」写的：喂它一本早上的账，5,900 股加 3,000 买 5,900 卖会被读成
+    # 开盘 8,800 股。
+    check("账本即开盘持仓（不再把当日成交倒推回开盘）",
+          "var opening = book.ToDictionary(h => h.Code, h => h.Shares" in pnl
+          and "for (var i = trades.Count - 1; i >= 0; i--)" not in pnl)
 
     check("一天只选一次（有今天就用今天，否则用最新的那一天）",
           "if (sessions.Values.Any(s => s.Day == today))" in pnl)
@@ -137,8 +148,22 @@ def source_checks():
     check("汇率只在书里有港股时才去取（A 股的书不该为它打一次请求）",
           "holdings.Any(h => h.IsHongKong)\n            ? await ReadHkdCnyAsync" in pnl)
 
-    check("摊薄成本：卖出把成交额从剩余成本里扣掉",
-          "cost = after > 0 ? ((shares * cost) - (sold * trade.Price)) / after : 0;" in book)
+    check("导入成交只记流水、不动账本（账本那十行是早上开盘时的）",
+          "new ImportResult(applied, duplicates, Oversold(fresh))" in book
+          and "Portfolio.Put(" not in book)
+
+    # 账上漏掉的那一行不能变成收益。截持仓图时滚过去了、或者那只在前一天才建仓 —— 卖出
+    # 的钱要是整笔进现金，这一行就凭空挣出一笔，而那不是利润，是账缺了一行。
+    check("卖得比账上有的多时，只按有的那部分算钱",
+          "var sold = Math.Min(trade.Shares, shares);" in pnl
+          and "var moved = trade.Side == TradeSide.Buy ? trade.Shares : Math.Min(trade.Shares, held);" in pnl)
+
+    # 股数在成交自己那一分钟才变。整天按收盘股数算也画得出一条曲线，只是它一上午都在报
+    # 一个读者还没拥有的仓位：09:35 卖掉 5,900 股之后，上午的涨跌还挂在 5,900 股上。
+    check("股数在成交自己那一分钟才变（不是整天按收盘股数算）",
+          "while (next < trades.Count && trades[next].MinuteOfDay <= minute)" in pnl
+          and "positions[trade.Code] = trade.Side == TradeSide.Buy" in pnl
+          and "positions[holding.Code] = opening.TryGetValue(holding.Code, out var o) ? o : 0;" in pnl)
 
     check("重复导入靠六段指纹（日/时/码/方向/价/量）",
           'Day,\n        Time,\n        Code.ToLowerInvariant(),\n        Side,' in book
@@ -154,9 +179,15 @@ def source_checks():
           "var colour = positive ? Palette.Emphasis : Palette.Fall;" in render
           and "public static readonly Color Fall" in palette)
 
-    check("种子是 9 只，其中两只港股", book.count('new("sz') + book.count('new("sh')
-          + book.count('new("hk') == 9
+    # 十只：读者开盘前的持仓，其中那三只当天有成交的（超图、顺丰、中望）按**早上**的股数记，
+    # 不是收盘剩下的。顺丰当天被卖光，账上仍然要有那一行 —— 09:30 它是在的。
+    check("种子是 10 只，其中两只港股",
+          book.count('new("sz') + book.count('new("sh')
+          + book.count('new("hk') == 10
           and book.count('new("hk') == 2)
+
+    check("当天被卖光的那只也在种子里（顺丰 100 股，不是收盘的 0 股）",
+          'new("sz002352", "顺丰控股", 100, 24.545),' in book)
 
     check("这一页打开就读一次（它画的就是读者的持仓，不该先让人按按钮）",
           "await SilentRefreshAsync(report: false);" in page)
@@ -175,7 +206,8 @@ def source_checks():
     # 午休那个开关也在这条签名上（第四个，默认开），所以按「四个都必须是构造参数」来断。
     check("四个观感开关都是构造参数，不是事后可写的属性（否则关键那一帧拿到的是默认值）",
           "bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,\n"
-          "    bool lunchBreak = true)" in render)
+          "    bool lunchBreak = true, TitleSkin skin = TitleSkin.Plain, Color? titleColour = null)"
+          in render)
 
     check("越线开关：开 = 让到用户设的边距，关 = 连那条轨一起让开",
           "var right = crossSafeRight ? context.ChartRight : Math.Min(context.ChartRight, context.SafeRight());"
@@ -334,7 +366,7 @@ def source_checks():
     # 还按钟点铺，那条阴影带照画，开关等于没接上。源码这一层要钉住的不是「带子没了」，而是
     # 「关掉时横轴真的换了算法」。
     check("午休开关默认开（它拿掉的是画面的一部分，不比前三个，默认该留着）",
-          "bool lunchBreak = true)" in render)
+          "bool lunchBreak = true, TitleSkin skin" in render)
 
     check("关掉时午休那 90 分钟从横轴上消失：上下午各按自己的分钟数分宽度",
           "if (lunchBreak || !CrossesLunch())" in render
@@ -375,6 +407,78 @@ def source_checks():
 
     check("午休开关那句话 14 种语言都有", not bare, "、".join(bare[:4]))
 
+    # ---- 标题样式与颜色 -----------------------------------------------------------------
+    #
+    # 三种「艺术字」不是三套字体，是同一段文字的三种上墨方式：常规＝一个颜色；镀金＝渐变
+    # 加描边；金宋＝同一支渐变，换宋体、拉字距、不加粗。它们在源码上坏掉的样子分两种：
+    # 渐变那条路径不通时标题会画成**遮罩本身**（白字），画面照样有字，只是没有颜色；而
+    # 「渐变从哪个颜色派生」写反了，颜色会发灰发紫。第二条只有真机看得出来，所以源码这
+    # 一层钉的是**顺序与来源**。
+    check("三种样式是一个枚举，「常规」是 0（原来的样子）",
+          "public enum TitleSkin" in skin
+          and "Plain = 0," in skin and "Gilded = 1," in skin and "Engraved = 2," in skin)
+
+    check("每一款有自己的默认色：常规是标题白，镀金与金宋是那支琥珀",
+          "TitleSkin.Gilded => Palette.Moving," in skin
+          and "TitleSkin.Engraved => Palette.Moving," in skin
+          and "_ => Palette.Title," in skin)
+
+    # Win2D 的文字只能填一个颜色；渐变字是「遮罩 + 渐变 + SourceIn」。两个输入的**顺序**
+    # 是第一版画成白字的唯一原因：SourceIn 是「第二张按第一张的透明度裁」，反过来留下的
+    # 就是遮罩本身。
+    check("渐变字走「遮罩裁渐变」，且两张图的顺序是先遮罩、后渐变",
+          "Sources = { mask, ramp }" in block
+          and "CanvasComposite.SourceIn" in block
+          and "Ink.FillVertical(" in block)
+
+    # 描边不是 CanvasTextFormat 的属性（它没有），是同一段文字按一圈方向重复画。
+    check("描边是八个方向、两个半径的偏移绘制",
+          "private static readonly (double X, double Y)[] Ring" in block
+          and "foreach (var radius in new[] { reach, reach * 0.55 })" in block)
+
+    check("金宋用系统自带的宋体（不是随 Office 的 STSong），不加粗，字距加在 layout 上",
+          'private const string Serif = "SimSun";' in block
+          and "Ink.Format(size, _bold && !engraved, engraved ? Serif : null)" in block
+          and "layout.SetCharacterSpacing(0, text.Length, half, half, 0f)" in block)
+
+    check("页面把样式与颜色都交给渲染器，两个都记在偏好里",
+          "skin: SelectedSkin()" in page
+          and "titleColour: ChosenTitleColour()" in page
+          and '_prefs.Save("TitleSkin"' in page
+          and '_prefs.Save("TitleColour"' in page)
+
+    check("菜单项按枚举取值（不是按下标），颜色按 #RRGGBB 存",
+          "Tag = (int)skin" in page and "(TitleSkin)tag" in page
+          and "#{0:X2}{1:X2}{2:X2}" in page)
+
+    # 「没选过」这一档必须存在：取色器永远握着一个颜色，它没有「空」的状态。少了这一档，
+    # 读者点过一次颜色之后就再也回不到这一款自带的那个色。
+    check("颜色能退回「这一款自带的」：空串表示没选过，另有一个按钮清掉它",
+          "if (hex.Length != 7 || hex[0] != '#')" in page
+          and "private void OnTitleColourDefault" in page
+          and 'x:Name="TitleColourDefault"' in xaml)
+
+    # 页面自己设取色器颜色时会把 ColorChanged 再触发一次，不挡回来就成了「默认色」按钮
+    # 一按下去又被记成用户选了这个颜色。
+    check("页面自己改取色器时不会被当成读者的选择",
+          "if (_prefs.Restoring || _painting)" in page
+          and "_painting = true;" in page)
+
+    absent = []
+
+    for path in sorted(glob.glob(os.path.join(SRC, "Strings", "*", "Resources.resw"))):
+        lang = os.path.basename(os.path.dirname(path))
+        body = open(path, encoding="utf-8-sig").read()
+
+        for name in ("PortfolioPnlTitleSkin.Header", "PortfolioPnlTitlePlain.Content",
+                     "PortfolioPnlTitleGilded.Content", "PortfolioPnlTitleEngraved.Content",
+                     "PortfolioPnlTitleColour.Text", "PortfolioPnlTitleColourDefault.Content"):
+            if 'name="%s"' % name not in body:
+                absent.append("%s:%s" % (lang, name.split(".")[0]))
+                break
+
+    check("标题样式那六句话 14 种语言都有", not absent, "、".join(absent[:4]))
+
 
 # ---- 2) 自己算一遍 --------------------------------------------------------------------
 
@@ -382,7 +486,7 @@ SEED = re.compile(r'new\("([a-z]{2}\d{5,6})",\s*"[^"]*",\s*([\d.]+),\s*([\d.]+)\
 
 
 def seeds():
-    """源码里那九只种子的 (代码, 股数, 成本)：页第一次打开时账上有什么。
+    """源码里那十只种子的 (代码, 股数, 成本)：页第一次打开时账上有什么。
 
     **只用来对「种子还在」，不用来算数。** 见 `ledger()`：账会往前长，种子不会。
     """
@@ -498,12 +602,19 @@ def day_trades(day):
 def expected(book=None):
     """按页面的定义把今天算一遍：日期、分钟点数、收益。
 
-    **收益 = Σ (现持股数 × 末价 − 开盘持股数 × 昨收 + 当天成交现金) × 汇率。**
+    **收益 = Σ (收盘持股数 × 末价 − 开盘持股数 × 昨收 + 当天成交现金) × 汇率。**
 
     这不是「Σ 持股 × (末价 − 昨收)」，两者在**当天有成交**时差着一大块：买入把股数推上去
     的同时把钱付出去，卖出把股票换成钱 —— 现金那一项必须进来，否则每买一次就凭空多出一块
-    浮盈。开盘持股数也不是现在的股数，而是把当天的成交**从最后一笔往前倒推**回去（同一分钟
-    一买一卖的那种来回，正推会把开盘算成「卖掉的那些」，整天就差一个开盘市值）。
+    浮盈。
+
+    **账本本身就是开盘持仓。** 读者每天早上照着券商持仓页抄一遍，所以账上那几行是 09:30
+    手上有的股数；收盘持股数由当天成交从它往前推出来。曾经反过来做（账本当收盘、把成交
+    倒推回开盘）：账本其实是早上那本时，5,900 股加 3,000 买、5,900 卖会被读成开盘 8,800
+    股，一整天的涨跌报在两倍多并不存在的仓位上。
+
+    卖出超过当时手上有的那部分**不算钱**。账上漏掉的那一行不能变成收益：卖出 100 股拿到
+    的钱里，只有账上真有的那部分才是把股票换成了现金，多出来的只是账缺了一行。
 
     没开市的那几只两头都按同一个价计，贡献恒为 0，所以不写进来也不影响结果 —— 而这一点
     正是「休市那两只不算进曲线」那条断言要说的事。
@@ -529,33 +640,29 @@ def expected(book=None):
     close = 960 if live_hk else 900
     rate = hkd() if any(code.startswith("hk") for code, _, _ in book) else 1.0
 
-    # 当天成交：倒推开盘持股、累计现金（买是付出去，卖是收进来）。
+    # 当天成交：账本已经是开盘，成交向前走；卖超了的那部分只按手上有的算钱。
     trades = day_trades(day)
 
     opening = {code: shares for code, shares, _ in book}
+    end = dict(opening)
     cash = {}
 
-    for trade in reversed(trades):
-        sign = -1 if trade["Side"] == 0 else 1
-        held = opening.get(trade["Code"], 0.0)
-        before = held + (sign * trade["Shares"])
-
-        if before <= 0:
-            opening.pop(trade["Code"], None)
-        else:
-            opening[trade["Code"]] = before
-
     for trade in trades:
-        sign = -1 if trade["Side"] == 0 else 1
-        cash[trade["Code"]] = cash.get(trade["Code"], 0.0) + (sign * trade["Shares"] * trade["Price"])
+        buy = trade["Side"] == 0
+        held = end.get(trade["Code"], 0.0)
+        moved = trade["Shares"] if buy else min(trade["Shares"], held)
+
+        end[trade["Code"]] = held + moved if buy else held - moved
+        cash[trade["Code"]] = (cash.get(trade["Code"], 0.0)
+                               + (-1 if buy else 1) * moved * trade["Price"])
 
     # 当天清仓的那几只不在账上，但**当天的已实现盈亏在**：装载器会把它们以 0 股挂进来，
     # 只剩下现金那一项。少了这一行，「今天卖掉的那只」挣的钱一笔都算不进来。
-    tickers = [(code, shares) for code, shares, _ in book]
+    tickers = [(code, end.get(code, 0.0)) for code, _, _ in book]
 
     for code in cash:
-        if code not in opening and code not in [c for c, _ in tickers] and cash[code] != 0:
-            tickers.append((code, 0.0))
+        if code not in [c for c, _ in tickers] and cash[code] != 0:
+            tickers.append((code, end.get(code, 0.0)))
 
     last = 570
     profit = 0.0
@@ -1323,10 +1430,15 @@ def look_checks(win, profit):
     # 光是带子没了说明不了什么：把带子涂掉、横轴照样按钟点铺，上面两条也一样绿 —— 画面上
     # 还是一小时半的平线，只是没了框。真正的证据是**那段不再平**：午休被拿走之后，同一块
     # x 区间里画的是上午末尾接下午开头那段真实走势，曲线得斜着穿过去，于是没有哪一行还能
-    # 站满一整块（实测 39 → 17 个像素，区间宽 39）。
+    # 站满一整块（实测 39 → 16 个像素，区间宽 39）。
+    #
+    # 这块的上沿为什么是 400‰ 而不是 350‰：350‰ 那里压着一块静态的红字，**它在开着和关掉
+    # 两张图里一模一样**（两张都是 28、27、28、16……个像素）。「最密的一行」量的是它，不是
+    # 曲线 —— 于是「关掉」那一帧量出 28，和 21 的门槛擦着过，而曲线自己这时候最多的一行只有
+    # 16 个像素。抬到 400‰ 把它让开，量到的才真的是曲线。
     def flattest(shot):
         image, box = shot
-        area = columns(box, 460, 550, 350, 620)
+        area = columns(box, 460, 550, 400, 620)
         counts = {}
 
         for _, y in solid_line(image, area):
@@ -1343,6 +1455,318 @@ def look_checks(win, profit):
     check("关掉之后同一块 x 里不再有整行的平线（午休那段真的从轴上拿掉了）",
           off_row <= wide * 0.55,
           "最密的一行 %d 个像素 / 区间宽 %d" % (off_row, wide))
+
+
+def picker_toggle(win, button):
+    """开 / 关取色器那个弹出层。**用按钮开关，不用 Esc。**
+
+    锁屏的机器上没有键盘焦点，`SendKey` 打在空气上，弹出层就那么开着；它那层遮罩把整帧压
+    暗，后面每一条判据都量成 0 —— 而「量成 0」看起来正好像「功能没做」。
+    """
+    if button is None:
+        return False
+
+    winui.invoke_click(button)
+    time.sleep(1.2)
+
+    return True
+
+
+def picker_close(win, button):
+    """关掉取色器那个弹出层 —— **不是再点那颗按钮，也不是按 Esc。**
+
+    两样都试过，两样都不管用（探出来的）：再点一次 `DropDownButton`，树上那个 `HexTextBox`
+    还在，弹出层自己那块亮度一动不动（235.9 → 235.9）；按 Esc 也不行，这台机器没有键盘焦点，
+    按键打在空气上。真正管用的是 **light-dismiss**：用鼠标点窗口里弹出层以外的地方。
+
+    点哪儿有讲究。页面右边那一列全是开关和按钮，点错一个就把起手状态改了，而「改了起手
+    状态」长出来的红和「功能坏了」一模一样。点窗口顶上那一条：那里没有任何控件，窗口不是
+    最大化时它也不会落进页面里去。
+    """
+    for _ in range(3):
+        if winui.find(win, lambda c: c.AutomationId == "HexTextBox") is None:
+            return True
+
+        rect = win.BoundingRectangle
+
+        try:
+            auto.Click((rect.left + rect.right) // 2, rect.top + 10)
+        except Exception:  # noqa: BLE001
+            pass
+
+        time.sleep(0.9)
+
+    return winui.find(win, lambda c: c.AutomationId == "HexTextBox") is None
+
+
+def picker_read(win, button):
+    """取色器现在说的颜色。打开、读、关掉，不改任何东西。"""
+    if not picker_toggle(win, button):
+        return None
+
+    box = winui.find(win, lambda c: c.AutomationId == "HexTextBox")
+    said = winui.value(box) if box is not None else None
+
+    picker_close(win, button)
+
+    return said
+
+
+def skin_reset(win):
+    """把标题的样式与颜色摆回默认（常规 + 这一款自带的色）。
+
+    两样都是**持久化偏好**：上一趟跑崩了，这一趟开页就是上一趟留下的样子。页眉那一段靠
+    「数页眉里有几处琥珀色」定位，标题一旦留成金宋，它就多数一处 —— 于是上一趟崩过之后，
+    页眉那两条会红得很没有道理。
+    """
+    combo = winui.find(win, lambda c: c.AutomationId == "TitleSkinCombo")
+
+    if combo is None:
+        return False
+
+    labels = winui.combo_labels(win, combo)
+
+    if len(labels) != 3:
+        return False
+
+    winui.combo_pick(win, combo, labels[0])
+    time.sleep(1.2)
+
+    button = winui.find(win, lambda c: c.AutomationId == "TitleColourButton")
+
+    if button is None:
+        return False
+
+    picker_toggle(win, button)
+
+    reset = winui.find(win, lambda c: c.AutomationId == "TitleColourDefault")
+
+    if reset is not None:
+        winui.invoke_click(reset)
+        time.sleep(0.8)
+
+    return picker_close(win, button)
+
+
+def skin_checks(win):
+    """三款标题样式与字体颜色，在**画面上**的证据。
+
+    只看标题那一行（画布高度的 60‰~160‰）。标题第一行的基线在 155‰，日期在 187‰ 那一行
+    并随标题行数再下移 67 个基准像素，两者不重叠 —— 所以这一条带子里出现的颜色就是标题
+    自己的颜色。
+
+    判据看的是**颜色的分布**，不是「两张图差了哪些像素」：换一款样式整块字都要重画，差分
+    只会告诉你「这里全变了」，说不出变对了没有。三款的证据是：常规＝近白的字、没有金色；
+    镀金＝金色的字、几乎没有近白；金宋＝金色的字但落墨明显更少（宋体细，而且不加粗）。
+
+    颜色那一半不走像素：取色器里有一个十六进制输入，它显示的就是**当下生效的那个颜色**
+    （读者没选过时是这一款自带的那个）。读它比在设置栏里找那 18 像素的色块稳得多，而且
+    它同时证明了「偏好真的写下去了」——重启一次颜色还在。
+    """
+    print("\n标题样式与颜色")
+
+    combo = winui.find(win, lambda c: c.AutomationId == "TitleSkinCombo")
+
+    if combo is None:
+        check("设置栏里有「标题样式」这一项", False)
+        return
+
+    labels = winui.combo_labels(win, combo)
+
+    check("「标题样式」有三项，且都拿到了译文（不是 [Key] 那种占位）",
+          len(labels) == 3 and not any(label.startswith("[") for label in labels),
+          "、".join(labels))
+
+    if len(labels) != 3:
+        return
+
+    button = winui.find(win, lambda c: c.AutomationId == "TitleColourButton")
+
+    check("设置栏里有「标题颜色」这一项", button is not None)
+
+    def gold(pixel):
+        r, g, b = pixel
+
+        return r > 140 and (r - b) > 55 and g > 60
+
+    def green(pixel):
+        r, g, b = pixel
+
+        return g > 90 and (g - r) > 40 and (g - b) > 40
+
+    def count(image, area, test):
+        left, right, top, bottom = area
+        pixels = image.load()
+
+        return sum(1 for y in range(top, bottom + 1) for x in range(left, right + 1)
+                   if test(pixels[x, y][:3]))
+
+    def shut_colour():
+        return picker_close(win, button)
+
+    def ink_now():
+        return picker_read(win, button)
+
+    # 颜色是**偏好**，上一趟跑完留着绿，这一趟的「常规应当是白的」就量成绿的。
+    picker_toggle(win, button)
+
+    reset = winui.find(win, lambda c: c.AutomationId == "TitleColourDefault")
+
+    check("取色器里有「用默认色」这颗按钮", reset is not None)
+
+    if reset is not None:
+        winui.invoke_click(reset)
+
+    check("取色器关得掉（关不掉，它那层遮罩会把后面每一帧都压暗）", shut_colour())
+
+    def painted(pixel):
+        return max(pixel) > 150
+
+    def shot_title(name):
+        """抓一张「标题确实画上了」的帧。
+
+        **一次抓两张，第一张丢掉。** 换了样式或换了颜色，画布要重画，合成线程交上来的第一张
+        往往还是上一款的画面 —— 而它上面有像素，光看「画上没画上」挑不出它来，三款样式就这
+        么串成一团：常规那一帧量出满屏金色，金宋那一帧又和镀金一个样。
+
+        抓不到就重抓：空白帧上的判据全量成 0，而「量成 0」和「功能没做」在报告里长得一模
+        一样。
+        """
+        for _ in range(3):
+            shot_at(win, name, 1.0)
+            time.sleep(1.2)
+
+            shot = shot_at(win, name, 1.0)
+
+            if shot is None:
+                continue
+
+            if count(shot[0], band(shot[1], 60, 160), painted) > 200:
+                return shot
+
+            time.sleep(1.5)
+
+        return None
+
+    def measure(name, index):
+        winui.combo_pick(win, combo, labels[index])
+        time.sleep(1.5)
+
+        # 抓图得自己发现「这一帧根本没画上」（见 `shot_title`）。窗口被别的窗口盖着时，抓回来
+        # 的可能是空的画面，而画布框照样量得出来 —— 于是三款样式一起量成 0，看着像「功能没
+        # 做」。这一条在锁屏的机器上真撞到过：同一个函数单独跑全绿，整趟跑全红。
+        shot = None
+
+        for _ in range(3):
+            shot = shot_title(name)
+
+            if shot is not None:
+                break
+
+            time.sleep(1.5)
+
+        if shot is None:
+            return None
+
+        image, box = shot
+        area = band(box, 60, 160)
+
+        return {"gold": count(image, area, gold), "pale": len(pale(image, area)),
+                "green": count(image, area, green)}
+
+    plain = measure("verify-portfolio-skin-plain.png", 0)
+    gilded = measure("verify-portfolio-skin-gilded.png", 1)
+    engraved = measure("verify-portfolio-skin-engraved.png", 2)
+
+    if plain is None or gilded is None or engraved is None:
+        check("三款样式各截到一帧", False)
+
+        # **中途退出也要把样式摆回去。** 页眉那一段数的是页眉里有几处琥珀色，标题一旦留成金
+        # 宋，它就多数一处 —— 看着像页眉坏了，其实是这一趟没收拾。
+        skin_reset(win)
+
+        return
+
+    check("常规：标题是白的，那一行里没有金色",
+          plain["pale"] >= 1200 and plain["gold"] <= 100,
+          "近白 %d / 金色 %d" % (plain["pale"], plain["gold"]))
+
+    check("镀金：标题变成金色，近白只剩零星几个像素",
+          gilded["gold"] >= 600 and gilded["pale"] <= 200,
+          "金色 %d / 近白 %d" % (gilded["gold"], gilded["pale"]))
+
+    # 金宋和镀金是同一支渐变，区别在字形：宋体不加粗，笔画细，落墨自然少一截。少了这一条，
+    # 「金宋」坏成「镀金」就看不出来 —— 两张图都是金色的。
+    check("金宋：也是金色，但宋代笔细，落墨明显少于镀金",
+          200 <= engraved["gold"] < gilded["gold"] * 0.75,
+          "金宋 %d / 镀金 %d" % (engraved["gold"], gilded["gold"]))
+
+    # 「默认色跟着样式走」是上面三条合起来说的：常规那一帧是白的、两条款式是金的 —— 也就是
+    # 说没选过色时，标题拿的是这一款自带的那一支。这条**不去读取色器里的十六进制**：它头一
+    # 次被打开时给回来的值不一定是当下那一款的颜色（实测过，头一次读到 #B80404，再开一次才
+    # 是对的），拿它当判据，红的是判据自己。
+
+    # ---- 选一个颜色 ---------------------------------------------------------------
+    #
+    # 绿，因为它在深底上离「金」和「白」都远：量出来的是绿的，就不可能是别的什么还在。
+    winui.combo_pick(win, combo, labels[1])
+    time.sleep(1.2)
+
+    picker_toggle(win, button)
+
+    hex_box = winui.find(win, lambda c: c.AutomationId == "HexTextBox")
+
+    if hex_box is None:
+        check("取色器里能直接填十六进制", False)
+    else:
+        hex_box.GetValuePattern().SetValue("34C55E")
+        time.sleep(1.5)
+
+    shut_colour()
+
+    chosen = shot_title("verify-portfolio-skin-green.png")
+
+    if chosen is None:
+        check("截得到选完颜色那一帧", False)
+    else:
+        image, box = chosen
+        area = band(box, 60, 160)
+        greens = count(image, area, green)
+        golds = count(image, area, gold)
+
+        check("填了绿色之后标题是绿的，金色一处不剩",
+              greens >= 500 and golds <= 100, "绿色 %d / 金色 %d" % (greens, golds))
+
+    check("选过的颜色被记住了（取色器里是那一串）", (ink_now() or "").upper() == "#34C55E")
+
+    # ---- 再用回默认色 -------------------------------------------------------------
+    picker_toggle(win, button)
+
+    reset = winui.find(win, lambda c: c.AutomationId == "TitleColourDefault")
+
+    if reset is not None:
+        winui.invoke_click(reset)
+
+    shut_colour()
+
+    back = shot_title("verify-portfolio-skin-back.png")
+
+    if back is None:
+        check("截得到「用默认色」之后那一帧", False)
+    else:
+        image, box = back
+        area = band(box, 60, 160)
+        greens = count(image, area, green)
+        golds = count(image, area, gold)
+
+        check("「用默认色」把标题还给这一款的琥珀",
+              golds >= 600 and greens <= 100, "金色 %d / 绿色 %d" % (golds, greens))
+
+    check("「用默认色」之后取色器也回到了琥珀", (ink_now() or "").upper() == "#FBBF24")
+
+    # 收尾：把这一页摆回默认，下一趟从同一套设置开始。**样式和颜色都要摆回去** —— 两样都是
+    # 偏好，留一个绿在这儿，下一趟一开页标题就是绿的，「常规应当是白的」当场就红。
+    skin_reset(win)
 
 
 # ---- 4) 真机 --------------------------------------------------------------------------
@@ -1513,7 +1937,7 @@ def main():
     # 账本先验一遍本身的形状：后面所有敷设都拿它当输入，它自己错了底下全白塔。
     check("账本里的每一行都是合法代码（场所 + 五位或六位数字）",
           all(re.fullmatch(r"(sh|sz|bj)\d{6}|hk\d{5}", code) for code, _, _ in book))
-    check("账本还是种子那九只（一眼看得出来这本账被改过多少）",
+    check("账本还是种子那几只（一眼看得出来这本账被改过多少）",
           {code for code, _, _ in book} == {code for code, _, _ in seeds()},
           "账本 %d 只 / 种子 %d 只" % (len(book), len(seeds())))
 
@@ -1525,6 +1949,25 @@ def main():
 
     print("  今天的账：%s · %d 个分钟点 · 收益 %+.2f 元 · 市值 %.2f 元 · 休市 %d 只"
           % (guess["day"], guess["points"], guess["profit"], guess["value"], len(guess["closed"])))
+
+    # 收盘股数必须等于「开盘那几行 + 当天那几笔的净额」。这是「按成交时间往前走」在结果上
+    # 的样子：顺丰早上 100 股、09:40 卖光，收盘就是 0 股；它要是还挂在账上，说明这一天在拿
+    # 一个已经不存在的仓位算钱。
+    drift = []
+
+    for row in guess["rows"]:
+        net = 0.0
+
+        for trade in day_trades(guess["day"]):
+            if trade["Code"].lower() != row["code"].lower():
+                continue
+
+            net += trade["Shares"] if trade["Side"] == 0 else -trade["Shares"]
+
+        if abs(row["open"] + net - row["shares"]) > 1e-6:
+            drift.append((row["code"], row["open"], net, row["shares"]))
+
+    check("每只的收盘股数 = 开盘股数 + 当天成交净额", not drift, "%r" % (drift[:3],))
 
     # **先杀进程，再读账本，再备份。** 顺序在这个 app 上是要紧的：上一趟跑完脚本把文件还原了，
     # 可上一趟留下的那个**应用实例还活着**，它内存里那两笔成交还在 —— 它要是再写一次，
@@ -1584,7 +2027,10 @@ def main():
 
         rows = book_rows(win)
 
-        check("持仓列表是九行", len(rows) == 9, "读到 %d 行" % len(rows))
+        # 行数跟着账本走，不写死：账本加一只（顺丰就是当天卖光之后补回来的）是账的事，
+        # 列表该跟着长一行。写死成 9 的话，账上加一行就会红一条，而红的那条什么也没坏。
+        check("持仓列表和账本一样长", len(rows) == len(book),
+              "列表 %d 行 / 账本 %d 行" % (len(rows), len(book)))
 
         # 列表写着股数与成本，所以「脚本算的那本账」和「页面画的那本账」能对得上自己。
         # 少了这一条，上面那句「收益一致」即使通过了也可能是巧合 —— 而账本被改过之后
@@ -1648,8 +2094,15 @@ def main():
             look_checks(win, guess["profit"])
 
             # 页眉那几行。放在导入之前量：这会儿页面是刚取完数、账上还没有成交的样子，
-            # 也就是读者平时看到的那一帧。
+            # 也就是读者平时看到的那一帧。也要放在标题样式之前量 —— 那段会把标题染成琥珀，
+            # 而页眉这一段是靠「数几处琥珀」定位的；开头先把样式摆回常规，否则上一趟跑崩
+            # 留下的那款样式会跟着这一趟一起算账。
+            check("标题样式摆得回默认（上一趟留下的偏好不带进这一趟）", skin_reset(win))
+
             header_checks(win)
+
+            # 标题的三款样式与字体颜色。
+            skin_checks(win)
 
         before = book_rows(win)
 

@@ -1053,6 +1053,12 @@
   <data name="PortfolioPnlStatLow"><value>Tief</value></data>
   <data name="PortfolioPnlNoon"><value>Mittagspause</value></data>
   <data name="PortfolioPnlLunch.Content"><value>Mittagspause zeigen</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>Schriftzug</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>Einfach</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>Vergoldet</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>Graviert</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>Farbe des Schriftzugs</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>Standardfarbe</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD umgerechnet mit 1 HKD = {0} CNY</value></data>
   <data name="PortfolioEmpty"><value>Noch keine Positionen — über „Bestand verwalten“ hinzufügen.</value></data>
   <data name="PortfolioNoSession"><value>Die Quelle lieferte keine Handelssitzung. Später erneut versuchen.</value></data>

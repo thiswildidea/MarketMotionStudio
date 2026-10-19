@@ -173,6 +173,47 @@
                               IsChecked="True"
                               Click="OnLookChanged" />
 
+                    <!-- How the headline is inked, and in what colour.
+
+                         Three treatments and one colour, in that order of consequence: the
+                         colour is one choice whichever treatment is on, and the treatment is
+                         three because the plain one has to stay reachable — a finish somebody
+                         turned on and then could not turn off is not a setting.
+
+                         The swatch is not decoration: the frame is on the left of this column
+                         and the colour is chosen on the right, and an eighteen-pixel square is
+                         the only thing on the page that says which colour is in play. It shows
+                         the treatment's own default until a colour is chosen, which is what
+                         makes "use the default" a visible state rather than an absence. -->
+                    <ComboBox x:Name="TitleSkinCombo"
+                              x:Uid="PortfolioPnlTitleSkin"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnTitleSkinChanged" />
+
+                    <DropDownButton x:Name="TitleColourButton" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Rectangle x:Name="TitleSwatch"
+                                       Width="18" Height="18"
+                                       RadiusX="3" RadiusY="3"
+                                       Stroke="{ThemeResource CardStrokeColorDefaultBrush}"
+                                       StrokeThickness="1" />
+                            <TextBlock x:Uid="PortfolioPnlTitleColour" />
+                        </StackPanel>
+                        <DropDownButton.Flyout>
+                            <Flyout>
+                                <StackPanel Spacing="10">
+                                    <mux:ColorPicker x:Name="TitleColour"
+                                                     IsAlphaEnabled="False"
+                                                     ColorChanged="OnTitleColourChanged" />
+                                    <Button x:Name="TitleColourDefault"
+                                            x:Uid="PortfolioPnlTitleColourDefault"
+                                            HorizontalAlignment="Stretch"
+                                            Click="OnTitleColourDefault" />
+                                </StackPanel>
+                            </Flyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

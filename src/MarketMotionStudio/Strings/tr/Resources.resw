@@ -1053,6 +1053,12 @@
   <data name="PortfolioPnlStatLow"><value>En düşük</value></data>
   <data name="PortfolioPnlNoon"><value>Öğle arası</value></data>
   <data name="PortfolioPnlLunch.Content"><value>Öğle arasını göster</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>Başlık stili</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>Düz</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>Altın</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>Oyma</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>Başlık rengi</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>Varsayılanı kullan</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD 1 HKD = {0} CNY ile çevrildi</value></data>
   <data name="PortfolioEmpty"><value>Henüz pozisyon yok — «Pozisyonları yönet» ile ekleyin.</value></data>
   <data name="PortfolioNoSession"><value>Kaynak hiç seans döndürmedi. Sonra tekrar deneyin.</value></data>

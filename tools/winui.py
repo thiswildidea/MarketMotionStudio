@@ -792,10 +792,18 @@ def looks_like_a_frame(picture, box):
     This is the test `capture` has always made, given a name: the canvas is **inset** —
     sidebar to its left, settings to its right, a playback bar under it — so a box the size
     of the whole picture is never a canvas. A few pixels of slack for the frame's own border.
+
+    And it has to be **taller than it is wide**. Every size this app offers is 9:16
+    (`VideoFormat.Sizes`), so a landscape box is never a canvas — and the lock screen is what
+    made that worth saying. A locked session paints itself over every window, `CaptureToImage`
+    reads the screen, and the wallpaper's own dark shore came back as a 441×110 "canvas" that
+    passed the inset test: four retries, four lock screens, and a run that then measured the
+    clock in the corner. Aspect is the one thing a frame cannot fake.
     """
     return (box is not None
             and box[1] - box[0] < picture.size[0] - 8
-            and box[3] - box[2] < picture.size[1] - 8)
+            and box[3] - box[2] < picture.size[1] - 8
+            and (box[3] - box[2]) > (box[1] - box[0]))
 
 
 def capture(win, path, tries=4):
@@ -826,6 +834,23 @@ def capture(win, path, tries=4):
     """
     from PIL import Image
 
+    # **Ask the window before asking the screen.** `PrintWindow` is answered by the window
+    # itself, so it is the same picture whether the window is on top, behind another app, or
+    # behind a lock screen; `CaptureToImage` reads whatever is on top, which is right only in
+    # the first of those three cases. Measured on a locked session: four screen captures in a
+    # row came back as the lock-screen wallpaper, and the wallpaper's own dark shore passed for
+    # a 441-wide canvas — every assertion after that measured the clock in the corner. The
+    # screen path stays as the fallback for the case that made it necessary in the first place:
+    # a composited canvas that refuses to draw itself into someone else's bitmap.
+    for attempt in range(tries):
+        if draw_window(win, path):
+            picture = Image.open(path).convert("RGB")
+
+            if looks_like_a_frame(picture, canvas_box(picture)):
+                return True
+
+        time.sleep(0.4)
+
     for attempt in range(tries):
         for call in (win.SetActive, lambda: win.SetTopmost(True)):
             try:
@@ -846,7 +871,94 @@ def capture(win, path, tries=4):
         if looks_like_a_frame(picture, canvas_box(picture)):
             return True
 
+    # Last word: the window may have drawn itself on this try while the screen path kept
+    # handing back someone else's picture.
+    if draw_window(win, path):
+        picture = Image.open(path).convert("RGB")
+
+        if looks_like_a_frame(picture, canvas_box(picture)):
+            return True
+
     return False
+
+
+def draw_window(win, path):
+    """Have the window paint itself into a bitmap — `PrintWindow` with full content.
+
+    The fallback for `capture`, and the only way to read a frame while the session is locked.
+    Returns whether anything was written; whether it is the *right* picture is the caller's
+    test, because a window that has not drawn yet answers with an empty bitmap rather than
+    with an error.
+    """
+    import ctypes
+    from ctypes import wintypes
+
+    from PIL import Image
+
+    try:
+        handle = win.NativeWindowHandle
+        rect = wintypes.RECT()
+        user32 = ctypes.windll.user32
+        gdi32 = ctypes.windll.gdi32
+
+        # 64 位句柄不声明类型的话，ctypes 会按 int 传，句柄一过 2^31 就 OverflowError ——
+        # 表现出来是「抓图一律失败」，而 `PrintWindow` 其实早就返回 1 了。
+        user32.GetWindowDC.restype = wintypes.HDC
+        user32.GetWindowDC.argtypes = [wintypes.HWND]
+        user32.PrintWindow.argtypes = [wintypes.HWND, wintypes.HDC, wintypes.UINT]
+        user32.ReleaseDC.argtypes = [wintypes.HWND, wintypes.HDC]
+        gdi32.CreateCompatibleDC.restype = wintypes.HDC
+        gdi32.CreateCompatibleDC.argtypes = [wintypes.HDC]
+        gdi32.CreateCompatibleBitmap.restype = wintypes.HBITMAP
+        gdi32.CreateCompatibleBitmap.argtypes = [wintypes.HDC, ctypes.c_int, ctypes.c_int]
+        gdi32.SelectObject.restype = wintypes.HGDIOBJ
+        gdi32.SelectObject.argtypes = [wintypes.HDC, wintypes.HGDIOBJ]
+        gdi32.GetDIBits.argtypes = [
+            wintypes.HDC, wintypes.HBITMAP, wintypes.UINT, wintypes.UINT,
+            ctypes.c_void_p, ctypes.c_void_p, wintypes.UINT]
+        gdi32.DeleteObject.argtypes = [wintypes.HGDIOBJ]
+        gdi32.DeleteDC.argtypes = [wintypes.HDC]
+
+        user32.GetWindowRect(handle, ctypes.byref(rect))
+
+        wide = rect.right - rect.left
+        tall = rect.bottom - rect.top
+
+        if wide <= 0 or tall <= 0:
+            return False
+
+        screen = user32.GetWindowDC(handle)
+        memory = gdi32.CreateCompatibleDC(screen)
+        bitmap = gdi32.CreateCompatibleBitmap(screen, wide, tall)
+        gdi32.SelectObject(memory, bitmap)
+
+        # 2 = PW_RENDERFULLCONTENT, which is what makes a composited (WinUI) window draw
+        # instead of handing back a black rectangle.
+        drawn = user32.PrintWindow(handle, memory, 2)
+
+        if not drawn:
+            return False
+
+        class Header(ctypes.Structure):
+            _fields_ = [
+                ("size", wintypes.DWORD), ("width", wintypes.LONG), ("height", wintypes.LONG),
+                ("planes", wintypes.WORD), ("bits", wintypes.WORD), ("compression", wintypes.DWORD),
+                ("image", wintypes.DWORD), ("x", wintypes.LONG), ("y", wintypes.LONG),
+                ("used", wintypes.DWORD), ("important", wintypes.DWORD)]
+
+        header = Header(ctypes.sizeof(Header), wide, -tall, 1, 32, 0, wide * tall * 4, 0, 0, 0, 0)
+        buffer = ctypes.create_string_buffer(wide * tall * 4)
+        gdi32.GetDIBits(memory, bitmap, 0, tall, buffer, ctypes.byref(header), 0)
+
+        gdi32.DeleteObject(bitmap)
+        gdi32.DeleteDC(memory)
+        user32.ReleaseDC(handle, screen)
+
+        Image.frombuffer("RGBA", (wide, tall), buffer, "raw", "BGRA", 0, 1).convert("RGB").save(path)
+
+        return True
+    except Exception:  # noqa: BLE001 - a capture that throws is the caller's "no picture"
+        return False
 
 
 def shot(win, path, tries=4, slack=24):

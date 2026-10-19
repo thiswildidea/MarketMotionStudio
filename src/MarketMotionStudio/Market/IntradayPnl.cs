@@ -71,6 +71,13 @@ public sealed record PnlHolding(
 /// </para>
 ///
 /// <para>
+/// **The book is the day's opening position, and the fills walk it forward.** The reader copies
+/// the broker's holdings screen at the open, so the shares in the book are the ones held at 09:30;
+/// each fill moves them at its own minute. A sale bigger than what was held at that minute is
+/// clamped to what was there — a row missing from the book must not turn into profit.
+/// </para>
+///
+/// <para>
 /// **One currency.** A Hong Kong holding is worth what it is worth in dollars, and the total on
 /// the frame is in yuan, so the rate has to be applied somewhere. It is applied here, at today's
 /// rate, to the position and to the day's profit — not to the cost, which is stored in the
@@ -197,12 +204,13 @@ public static class IntradayPnl
 
         var today = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-        // **The journal's codes are fetched too**, not just the book's: a position sold out during
-        // the day is removed from the book, and its realised profit belongs to today's curve. The
-        // session for it is needed to price the shares it was sold out of. One day of journal is
-        // enough — the curve draws one day.
+        // **Every code the journal mentions**, not just today's. The day being drawn is very often
+        // not today — before the open it is the last session that traded — and a code that only
+        // appears in that day's fills still needs a session to be priced off: a position bought and
+        // sold the same day has no row in the book at all. (Filtering by today was how that code
+        // went unfetched on every morning run.)
         var codes = holdings.Select(h => h.Code)
-            .Concat(journal.Where(t => t.Day == today).Select(t => t.Code))
+            .Concat(journal.Select(t => t.Code))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
 
@@ -270,30 +278,13 @@ public static class IntradayPnl
             book.Add(new Holding(code, named, 0, 0));
         }
 
-        // The book as the day opened: today's book with today's trades undone **from the last
-        // one backwards**. Forwards is the same thing on a day that only ever bought, or only
-        // ever sold; it is wrong on a same-day round trip, where undoing the buy before the sell
-        // leaves the opening position equal to the shares that were sold rather than to zero, and
-        // the whole day's profit comes out short by the opening value.
+        // The book as the day opened. **It is the opening position already** — the reader copies
+        // the broker's holdings screen at the open — so there is nothing to undo. It used to be
+        // read as the *closing* position with the day's fills reversed out of it, which is only
+        // right if the book is the evening's: fed a morning book, 超图软件's 5,900 shares plus a
+        // 3,000 buy and a 5,900 sale came back as 8,800 shares at 09:30, and two thirds of the
+        // day's move was reported on shares nobody held.
         var opening = book.ToDictionary(h => h.Code, h => h.Shares, StringComparer.OrdinalIgnoreCase);
-
-        for (var i = trades.Count - 1; i >= 0; i--)
-        {
-            var trade = trades[i];
-
-            opening.TryGetValue(trade.Code, out var held);
-
-            var before = trade.Side == TradeSide.Buy ? held - trade.Shares : held + trade.Shares;
-
-            if (before <= 0)
-            {
-                opening.Remove(trade.Code);
-            }
-            else
-            {
-                opening[trade.Code] = before;
-            }
-        }
 
         // Which venues actually traded today — the axis ends at the last of their closes, and the
         // lunch break it skips is the one they have. A book holding a Hong Kong name is not a
@@ -355,14 +346,16 @@ public static class IntradayPnl
 
             var mark = live ? session!.LastPrice : prevClose;
 
-            var shares = holding.Shares;
             var openingShares = opening.TryGetValue(holding.Code, out var o) ? o : 0;
+
+            // Where the day's fills leave this position, and the cash they actually moved.
+            var (shares, cashMoved) = Replay(trades, holding.Code, openingShares);
 
             // In the venue's own currency, then converted once: the price term and the cash term
             // are both dollars for a Hong Kong row, and converting only one of them would add a
             // number in one currency to a number in another.
             var contribution = live
-                ? ((shares * mark) - (openingShares * prevClose) + TradeCash(trades, holding.Code)) * rate
+                ? ((shares * mark) - (openingShares * prevClose) + cashMoved) * rate
                 : 0;
 
             if (!live)
@@ -448,14 +441,19 @@ public static class IntradayPnl
             {
                 var trade = trades[next++];
                 var rate = trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? hkdCny : 1;
-                var sign = trade.Side == TradeSide.Buy ? -1 : 1;
-
-                cash += sign * trade.Shares * trade.Price * rate;
 
                 positions.TryGetValue(trade.Code, out var held);
+
+                // Only the shares that were actually there are booked. See `Replay`: money for
+                // shares nobody held is not profit, it is a hole in the book. The marker is still
+                // drawn for the fill as it happened — it is the money that is clamped.
+                var moved = trade.Side == TradeSide.Buy ? trade.Shares : Math.Min(trade.Shares, held);
+
+                cash += (trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price * rate;
+
                 positions[trade.Code] = trade.Side == TradeSide.Buy
-                    ? held + trade.Shares
-                    : Math.Max(0, held - trade.Shares);
+                    ? held + moved
+                    : Math.Max(0, held - moved);
 
                 placed.Add(new PnlTrade(trade.Code, trade.Name, trade.Side, trade.Price, trade.Shares, minute));
             }
@@ -526,14 +524,22 @@ public static class IntradayPnl
     }
 
     /// <summary>
-    /// The cash a code's day of trading has produced or consumed, in the venue's currency —
-    /// negative when it bought more than it sold.
+    /// One code's day, replayed from the shares the book opened with: where the position ends up,
+    /// and the cash the fills actually moved — negative when it bought more than it sold.
     ///
-    /// Used for the per-holding contribution so that each row adds up to the total: a holding
-    /// that was sold out of still shows the profit the sale realised.
+    /// A sale of more shares than were held **at that moment** is clamped to what was there, and
+    /// the clamped quantity is what gets booked. Without the clamp a row missing from the book
+    /// becomes profit: 顺丰控股's 100 shares sold at 31.80 are ¥3,180 of "gain" if the sale is
+    /// credited in full while no opening position is charged for it. Money for shares nobody held
+    /// is not profit, it is a hole in the book — and the page says so on import instead.
+    ///
+    /// Used for the per-holding contribution so that each row adds up to the total: a holding that
+    /// was sold out of still shows the profit the sale realised.
     /// </summary>
-    private static double TradeCash(IEnumerable<PortfolioTrade> trades, string code)
+    private static (double Shares, double Cash) Replay(
+        IEnumerable<PortfolioTrade> trades, string code, double opening)
     {
+        var shares = opening;
         var cash = 0.0;
 
         foreach (var trade in trades)
@@ -543,10 +549,21 @@ public static class IntradayPnl
                 continue;
             }
 
-            cash += (trade.Side == TradeSide.Buy ? -1 : 1) * trade.Shares * trade.Price;
+            if (trade.Side == TradeSide.Buy)
+            {
+                shares += trade.Shares;
+                cash -= trade.Shares * trade.Price;
+            }
+            else
+            {
+                var sold = Math.Min(trade.Shares, shares);
+
+                shares -= sold;
+                cash += sold * trade.Price;
+            }
         }
 
-        return cash;
+        return (shares, cash);
     }
 
     /// <summary>One instrument's session: the day it is, and the price at each minute.</summary>

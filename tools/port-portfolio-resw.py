@@ -204,6 +204,38 @@ ENTRIES = [
         "Mostra la pausa pranzo", "Pokaż przerwę południową", "Mostrar a pausa do almoço",
         "Zobrazit polední pauzu", "Показывать обеденный перерыв", "Öğle arasını göster")),
 
+    ("PortfolioPnlTitleSkin.Header", (
+        "标题样式", "標題樣式", "Headline treatment", "見出しのスタイル", "제목 스타일",
+        "Schriftzug", "Style du titre", "Estilo del título", "Stile del titolo",
+        "Styl nagłówka", "Estilo do título", "Styl nadpisu", "Оформление заголовка",
+        "Başlık stili")),
+
+    ("PortfolioPnlTitlePlain.Content", (
+        "常规", "常規", "Plain", "標準", "기본",
+        "Einfach", "Simple", "Normal", "Semplice", "Zwykły",
+        "Simples", "Běžný", "Обычный", "Düz")),
+
+    ("PortfolioPnlTitleGilded.Content", (
+        "镀金", "鍍金", "Gilded", "金文字", "금박",
+        "Vergoldet", "Doré", "Dorado", "Dorato", "Złocony",
+        "Dourado", "Zlacený", "Золочение", "Altın")),
+
+    ("PortfolioPnlTitleEngraved.Content", (
+        "金宋", "金宋", "Engraved", "金＋明朝体", "금·명조",
+        "Graviert", "Gravé", "Grabado", "Inciso", "Grawerowany",
+        "Gravado", "Rytý", "Гравировка", "Oyma")),
+
+    ("PortfolioPnlTitleColour.Text", (
+        "标题颜色", "標題顏色", "Headline colour", "見出しの色", "제목 색",
+        "Farbe des Schriftzugs", "Couleur du titre", "Color del título", "Colore del titolo",
+        "Kolor nagłówka", "Cor do título", "Barva nadpisu", "Цвет заголовка", "Başlık rengi")),
+
+    ("PortfolioPnlTitleColourDefault.Content", (
+        "用默认色", "用預設色", "Use the default", "既定の色に戻す", "기본색 사용",
+        "Standardfarbe", "Couleur par défaut", "Usar el predeterminado", "Usa il predefinito",
+        "Użyj domyślnego", "Usar o padrão", "Použít výchozí", "По умолчанию",
+        "Varsayılanı kullan")),
+
     ("PortfolioPnlRateNote", (
         "港股按 1 HKD = {0} CNY 折算", "港股按 1 HKD = {0} CNY 折算",
         "HKD converted at 1 HKD = {0} CNY", "香港株は 1 HKD = {0} CNY で換算",

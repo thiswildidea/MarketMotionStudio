@@ -1053,6 +1053,12 @@
   <data name="PortfolioPnlStatLow"><value>最低</value></data>
   <data name="PortfolioPnlNoon"><value>昼休み</value></data>
   <data name="PortfolioPnlLunch.Content"><value>昼休みを表示</value></data>
+  <data name="PortfolioPnlTitleSkin.Header"><value>見出しのスタイル</value></data>
+  <data name="PortfolioPnlTitlePlain.Content"><value>標準</value></data>
+  <data name="PortfolioPnlTitleGilded.Content"><value>金文字</value></data>
+  <data name="PortfolioPnlTitleEngraved.Content"><value>金＋明朝体</value></data>
+  <data name="PortfolioPnlTitleColour.Text"><value>見出しの色</value></data>
+  <data name="PortfolioPnlTitleColourDefault.Content"><value>既定の色に戻す</value></data>
   <data name="PortfolioPnlRateNote"><value>香港株は 1 HKD = {0} CNY で換算</value></data>
   <data name="PortfolioEmpty"><value>まだ保有銘柄がありません。「保有銘柄の管理」から追加してください。</value></data>
   <data name="PortfolioNoSession"><value>取引セッションが取得できませんでした。しばらくしてからお試しください。</value></data>

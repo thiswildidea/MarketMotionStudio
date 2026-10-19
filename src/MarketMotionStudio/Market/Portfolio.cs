@@ -14,20 +14,26 @@ public enum TradeSide
 }
 
 /// <summary>
-/// One line of a person's holdings: how much of it, and what it cost.
+/// One line of a person's holdings **as they stood when the day opened**: how much of it, and
+/// what it cost.
 ///
 /// <para>
-/// <see cref="Cost"/> is the **diluted** cost (摊薄成本), which is the figure the broker app these
-/// rows are read off shows, and the reason it is that one rather than a weighted average is
-/// arithmetic rather than preference. The two screenshots this page was built from are one day
-/// apart: 超图软件 went into the day holding 5,900 shares, bought 3,000 at 9.80, sold 5,900 at
-/// 10.05, and ended at 3,000 shares with a cost of 6.544. A weighted average would still say
-/// 8.869 — it only ever moves on a purchase — so the 6.544 can only be the diluted figure, in
-/// which a sale's proceeds are netted off what the remaining shares cost. Reversing it gives a
-/// starting cost of 8.394, which is where the stock actually traded the day before. 中望软件
-/// gives the same answer from the same arithmetic (700 shares at 33.476, two sales, 300 left at
-/// 14.444). Importing a broker's trades and then showing a cost the broker does not show would
-/// make every number on this page disagree with the app the reader reconciles it against.
+/// The book is the morning's, not the evening's. It is copied off the broker's holdings screen at
+/// the open — that is the screenshot the reader has — and the day's fills move it forward from
+/// there. Deriving the opening by undoing the day's trades (which this page used to do) needs the
+/// book to be the *closing* position, and then a book entered from the morning screenshot is read
+/// backwards on top of itself: 超图软件's 5,900 shares at the open, plus a 3,000 buy and a 5,900
+/// sale, came out as 8,800 shares held at 09:30 — two thirds of the day's move reported on shares
+/// nobody held.
+/// </para>
+///
+/// <para>
+/// <see cref="Cost"/> is the **diluted** cost (摊薄成本) the broker shows. Over a day like
+/// 超图软件's — 5,900 in, 3,000 bought at 9.80, 5,900 sold at 10.05 — the broker's closing cost
+/// would read 6.544, because a sale's proceeds are netted off what the remaining shares cost. This
+/// book keeps the morning's figure instead: it is the one beside the 5,900 on the screenshot the
+/// reader typed it from, and the one that makes <c>shares × (price − cost)</c> agree with the
+/// broker's 持仓盈亏 for the position they actually carried into the day.
 /// </para>
 ///
 /// <para>
@@ -111,12 +117,13 @@ public sealed record PortfolioTrade(
 /// <summary>
 /// The holdings and the trades behind them, kept in one file in the app's own state.
 ///
-/// **The holdings are the state, not a replay of the journal.** Recomputing the book from every
-/// trade ever imported would mean keeping every trade ever imported, and would still be wrong for
-/// the first position — which was entered by hand from a screenshot rather than bought in front of
-/// this app. So the book is what is stored; the journal is what makes a re-import harmless and
-/// what lets the intraday curve reconstruct this morning's position (today's holdings, minus
-/// today's confirmed trades) without a second copy of history.
+/// **The book is the opening position of the day being drawn; the journal moves it forward.**
+/// Every morning the reader copies the broker's holdings screen into the book, and every evening
+/// pastes that day's fills in. Neither of the two is derived from the other: recomputing the book
+/// from every trade ever imported would mean keeping every trade ever imported, and would still be
+/// wrong for the first position — which was entered by hand rather than bought in front of this
+/// app. So the book is stored as entered and importing never edits it; the journal is what makes a
+/// re-import harmless and what lets the curve walk the position through the day.
 /// </summary>
 public static class Portfolio
 {
@@ -251,18 +258,21 @@ public static class Portfolio
     }
 
     /// <summary>What a day's import did, so the page can say it rather than leaving it to be guessed.</summary>
-    /// <param name="Applied">Trades that were new and have been folded into the book.</param>
+    /// <param name="Applied">Trades that were new and are now on the journal.</param>
     /// <param name="Duplicates">Trades already in the journal, ignored.</param>
-    /// <param name="Unmatched">Sells of an instrument that is not held, ignored.</param>
+    /// <param name="Unmatched">Sells that sold more than the book held when they happened.</param>
     public sealed record ImportResult(int Applied, int Duplicates, int Unmatched);
 
     /// <summary>
-    /// Folds a day's trades into the book, once.
+    /// Puts a day's fills on the journal, once, and **leaves the book alone**.
     ///
-    /// Applied in clock order rather than in the order the list happens to arrive: the cost of a
-    /// position is path-dependent when both a purchase and a sale touch it on the same day, and
-    /// the broker's own figures are the ones that follow the clock. (超图软件 on the sample day:
-    /// buying first and selling after leaves 6.544, selling first would not.)
+    /// The book is the morning's position; folding the day's fills into it would turn it into the
+    /// evening's, and the next load would then walk the position through the day a second time.
+    /// That is not a hypothetical: it is why a sale used to move the book's cost and why the page's
+    /// numbers stopped agreeing with the broker's.
+    ///
+    /// Clock order is kept in the journal — a curve reads them in order, and a same-day round trip
+    /// only adds up if the buy is seen before the sell.
     /// </summary>
     public static ImportResult Apply(IReadOnlyList<PortfolioTrade> trades)
     {
@@ -272,7 +282,7 @@ public static class Portfolio
 
         var applied = 0;
         var duplicates = 0;
-        var unmatched = 0;
+        var fresh = new List<string>();
 
         foreach (var trade in trades.OrderBy(t => t.Day, StringComparer.Ordinal)
                                     .ThenBy(t => t.MinuteOfDay)
@@ -284,48 +294,61 @@ public static class Portfolio
                 continue;
             }
 
-            var holding = Find(trade.Code);
-
-            if (trade.Side == TradeSide.Sell && (holding is null || holding.Shares <= 0))
-            {
-                // Not folded in, and not journalled either: the reader will fix the buy that is
-                // missing and import again, and a journal entry would then make that sale look
-                // like a duplicate and drop it a second time.
-                unmatched++;
-                continue;
-            }
-
-            var shares = holding?.Shares ?? 0;
-            var cost = holding?.Cost ?? 0;
-            var name = holding?.Name ?? trade.Name;
-
-            if (trade.Side == TradeSide.Buy)
-            {
-                var after = shares + trade.Shares;
-                cost = after > 0 ? ((shares * cost) + (trade.Shares * trade.Price)) / after : trade.Price;
-                shares = after;
-            }
-            else
-            {
-                // Selling more than is held is a typo or a missing purchase. Clamped rather than
-                // refused: the trade did happen, and a book that says so is closer to the truth
-                // than one that ignores the sale.
-                var sold = Math.Min(trade.Shares, shares);
-                var after = shares - sold;
-
-                cost = after > 0 ? ((shares * cost) - (sold * trade.Price)) / after : 0;
-                shares = after;
-            }
-
-            Put(new Holding(trade.Code, name, Math.Round(shares, 4), Math.Round(cost, 4)));
             Journal.Add(trade);
+            fresh.Add(trade.Fingerprint);
             applied++;
         }
 
         Prune();
         Save();
 
-        return new ImportResult(applied, duplicates, unmatched);
+        return new ImportResult(applied, duplicates, Oversold(fresh));
+    }
+
+    /// <summary>
+    /// How many of the fills just imported sold more than the book held at that moment.
+    ///
+    /// Reported rather than refused: the fill happened, and the honest reading of "sold 100 shares
+    /// of something the morning's screenshot does not list" is that the book is missing a row — a
+    /// position bought before the app existed, or a screenshot scrolled past it. Refusing the
+    /// import would drop the rest of the day's fills along with it. The page shows the count as a
+    /// warning; the curve books no cash for the shares that were not there.
+    /// </summary>
+    private static int Oversold(IReadOnlyCollection<string> fingerprints)
+    {
+        if (fingerprints.Count == 0)
+        {
+            return 0;
+        }
+
+        var counted = 0;
+
+        foreach (var day in Journal.Where(t => fingerprints.Contains(t.Fingerprint))
+                                   .Select(t => t.Day)
+                                   .Distinct(StringComparer.Ordinal))
+        {
+            var running = Holdings.ToDictionary(h => h.Code, h => h.Shares, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var trade in Journal.Where(t => t.Day == day)
+                                         .OrderBy(t => t.MinuteOfDay)
+                                         .ThenBy(t => t.Time, StringComparer.Ordinal))
+            {
+                running.TryGetValue(trade.Code, out var held);
+
+                if (trade.Side == TradeSide.Sell &&
+                    held < trade.Shares &&
+                    fingerprints.Contains(trade.Fingerprint))
+                {
+                    counted++;
+                }
+
+                running[trade.Code] = trade.Side == TradeSide.Buy
+                    ? held + trade.Shares
+                    : Math.Max(0, held - trade.Shares);
+            }
+        }
+
+        return counted;
     }
 
     /// <summary>
@@ -343,39 +366,6 @@ public static class Portfolio
     /// </summary>
     public static IReadOnlyList<PortfolioTrade> Trades => [.. Journal];
 
-    /// <summary>
-    /// How many shares of each code were held when a day opened: today's book with today's trades
-    /// undone.
-    ///
-    /// This is the one use of the journal that is not about duplicates, and it is why the journal
-    /// outlives a page's session. A curve that started from *now* would hold this afternoon's
-    /// position all morning — after a day like 超图软件's, where 5,900 shares became 3,000, it
-    /// would report the morning's move on two thirds of the shares that were actually exposed to
-    /// it.
-    /// </summary>
-    public static Dictionary<string, double> OpeningShares(string day)
-    {
-        var opening = Holdings.ToDictionary(h => h.Code, h => h.Shares, StringComparer.OrdinalIgnoreCase);
-
-        foreach (var trade in Journal.Where(t => t.Day == day))
-        {
-            opening.TryGetValue(trade.Code, out var held);
-
-            var before = trade.Side == TradeSide.Buy ? held - trade.Shares : held + trade.Shares;
-
-            if (before <= 0)
-            {
-                opening.Remove(trade.Code);
-            }
-            else
-            {
-                opening[trade.Code] = before;
-            }
-        }
-
-        return opening;
-    }
-
     /// <summary>Drops journal entries older than the window, so the file cannot grow forever.</summary>
     private static void Prune()
     {
@@ -385,19 +375,27 @@ public static class Portfolio
     }
 
     /// <summary>
-    /// The reader's positions on the day this page was built — read off the closing holdings
-    /// screenshot, which shows ten rows of which one (顺丰控股) is closed and therefore not a
-    /// position at all.
+    /// The reader's positions **at the open** on 2026-10-19, read off the broker's holdings
+    /// screen before the bell.
     ///
     /// Costs are the diluted ones the broker shows, in each venue's own currency: the two Hong
     /// Kong rows are in dollars. 大秦铁路 is carried at 5.804 against a price of 4.930 because it
     /// is mid ex-dividend on that screenshot — the broker says so itself ("除权除息中 清算后重新
     /// 计算"), and carrying the pre-adjustment figure is what the screenshot actually says.
+    ///
+    /// **The three that traded that day are in at their morning size**, not at the size the
+    /// evening left behind: 超图软件 5,900 (bought 3,000 at 09:24, sold 5,900 at 09:35), 中望软件
+    /// 700 (sold 200 twice), 顺丰控股 100 (sold out at 09:40). A position that was sold flat is
+    /// still a position at 09:30, and leaving it out turns its sale into money the page has no
+    /// shares to charge for — the old book dropped it the moment the row hit zero shares, and the
+    /// day then reported ¥3,180 of profit that was really just the sale of a holding it never knew
+    /// about.
     /// </summary>
     private static readonly Holding[] Seed =
     [
-        new("sz300036", "超图软件", 3000, 6.544),
-        new("sh688083", "中望软件", 300, 14.444),
+        new("sz300036", "超图软件", 5900, 8.387),
+        new("sz002352", "顺丰控股", 100, 24.545),
+        new("sh688083", "中望软件", 700, 33.448),
         new("sz002739", "儒意电影", 100, 2.497),
         new("sh600258", "首旅酒店", 100, 8.979),
         new("sh513180", "恒生科技ETF华夏", 10000, 0.528),
