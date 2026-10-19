@@ -1052,6 +1052,7 @@
   <data name="PortfolioPnlStatHigh"><value>Máxima</value></data>
   <data name="PortfolioPnlStatLow"><value>Mínima</value></data>
   <data name="PortfolioPnlNoon"><value>Pausa do almoço</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>Mostrar a pausa do almoço</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD convertido a 1 HKD = {0} CNY</value></data>
   <data name="PortfolioEmpty"><value>Ainda não há posições — adicione uma em «Gerenciar posições».</value></data>
   <data name="PortfolioNoSession"><value>A fonte não retornou nenhuma sessão. Tente mais tarde.</value></data>

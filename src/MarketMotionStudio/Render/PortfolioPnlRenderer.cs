@@ -45,9 +45,17 @@ namespace MarketMotionStudio.Render;
 /// because a quiet morning followed by a violent afternoon otherwise draws the afternoon at the
 /// same scale as the morning and flattens it.
 /// </param>
+/// <param name="lunchBreak">
+/// Whether the ninety minutes the market spends at lunch are on the axis at all. On, the axis is
+/// the clock: the break is a shaded stretch of it, named, and the curve is flat across it. Off,
+/// the break is dropped and the morning and the afternoon each take the share of the width their
+/// own minutes earned, meeting where the market shut — a day drawn without an hour and a half of
+/// nothing in the middle of it. On is what the page shipped with.
+/// </param>
 public sealed class PortfolioPnlRenderer(
     PortfolioSession session, AnimationPlan plan,
-    bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false) : IFrameRenderer
+    bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,
+    bool lunchBreak = true) : IFrameRenderer
 {
     /// <summary>Distance from the credit up to the top of the statistic cards.</summary>
     private const double CardsAboveCredit = 192;
@@ -105,7 +113,13 @@ public sealed class PortfolioPnlRenderer(
 
         var (high, low) = Range(shown);
 
-        DrawLunch(session2, context, left, width, top, baseline, high, low);
+        // Only drawn when the break is on the axis: with it dropped there is no band to shade,
+        // because the minutes it would cover are not on the axis at all.
+        if (lunchBreak)
+        {
+            DrawLunch(session2, context, left, width, top, baseline, high, low);
+        }
+
         DrawGrid(session2, context, t, left, width, top, baseline, high, low);
 
         var (index, value) = DrawCurve(
@@ -166,7 +180,8 @@ public sealed class PortfolioPnlRenderer(
         top + ((high - value) / (high - low) * height);
 
     /// <summary>
-    /// The lunch break, shaded rather than merely skipped over.
+    /// The lunch break, shaded rather than merely skipped over — and only drawn when the break is
+    /// on the axis at all (see <paramref name="lunchBreak"/>).
     ///
     /// The curve is flat across it — nothing traded, so nothing moved — and a flat stretch of two
     /// hours is the one feature of the shape a reader will otherwise read as a mistake. The band
@@ -210,12 +225,80 @@ public sealed class PortfolioPnlRenderer(
         return (mainland ? IntradayPnl.MainlandLunch : IntradayPnl.KongLunch, IntradayPnl.AfternoonOpen);
     }
 
-    /// <summary>Minutes since midnight to an x position on the session's clock.</summary>
+    /// <summary>
+    /// Whether the session drawn actually spans the break. A day that ended before noon — or a
+    /// book whose last print did — has nothing to take out, and an axis that took it out anyway
+    /// would stretch the morning across the whole frame.
+    /// </summary>
+    private bool CrossesLunch()
+    {
+        var (from, to) = Lunch();
+
+        return session.OpenMinute < from && session.CloseMinute > to;
+    }
+
+    /// <summary>
+    /// Minutes since midnight to an x position, on whichever axis is in force.
+    ///
+    /// <para>
+    /// With the break on the axis, the clock *is* the axis: 09:30 to 15:00 laid out evenly, and
+    /// the break is a stretch of it that <see cref="DrawLunch"/> shades so a flat hour and a half
+    /// reads as a pause rather than as two hours of nothing happening.
+    /// </para>
+    ///
+    /// <para>
+    /// With it off, the break is not on the axis: the morning and the afternoon each take the
+    /// share of the width their own minutes earned, and they meet where the market shut. A minute
+    /// inside the break — there are no samples there, but a trade can be stamped into one —
+    /// lands on the seam, which is the afternoon's first point and where the curve carries it.
+    /// </para>
+    /// </summary>
     private double X(int minute, double left, double width)
     {
-        var span = Math.Max(1, session.CloseMinute - session.OpenMinute);
+        var open = session.OpenMinute;
+        var span = Math.Max(1, session.CloseMinute - open);
 
-        return left + (width * (minute - session.OpenMinute) / (double)span);
+        if (lunchBreak || !CrossesLunch())
+        {
+            return left + (width * (minute - open) / (double)span);
+        }
+
+        var (from, to) = Lunch();
+        var morning = Math.Max(0, from - open);
+        var afternoon = Math.Max(0, session.CloseMinute - to);
+        var total = Math.Max(1, morning + afternoon);
+
+        var offset = minute <= from
+            ? Math.Max(0, minute - open)
+            : morning + Math.Max(0, minute - to);
+
+        return left + (width * Math.Min(offset, total) / (double)total);
+    }
+
+    /// <summary>
+    /// The clock written under the middle of the axis, worked out from the minutes that are on
+    /// the axis rather than from the clock itself.
+    ///
+    /// Halfway between 09:30 and 15:00 by the clock is 12:15 — a minute the break has taken off
+    /// the axis. Labelling it would put a time in the middle of the frame that no point of the
+    /// curve belongs to, and would ask a reader to find an hour in which nothing traded.
+    /// </summary>
+    private int MidMinute()
+    {
+        var open = session.OpenMinute;
+        var close = session.CloseMinute;
+
+        if (lunchBreak || !CrossesLunch())
+        {
+            return (open + close) / 2;
+        }
+
+        var (from, to) = Lunch();
+        var morning = Math.Max(0, from - open);
+        var afternoon = Math.Max(0, close - to);
+        var half = (morning + afternoon) / 2;
+
+        return half <= morning ? open + half : to + (half - morning);
     }
 
     private void DrawGrid(
@@ -487,7 +570,7 @@ public sealed class PortfolioPnlRenderer(
 
         using var format = Ink.Format(context.Px(20));
 
-        var ticks = new[] { session.OpenMinute, (session.OpenMinute + session.CloseMinute) / 2, session.CloseMinute };
+        var ticks = new[] { session.OpenMinute, MidMinute(), session.CloseMinute };
         var y = baseline + context.Px(34);
 
         foreach (var minute in ticks.Distinct())

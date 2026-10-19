@@ -1063,6 +1063,7 @@
   <data name="PortfolioPnlStatHigh"><value>High</value></data>
   <data name="PortfolioPnlStatLow"><value>Low</value></data>
   <data name="PortfolioPnlNoon"><value>Lunch break</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>Show the lunch break</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD converted at 1 HKD = {0} CNY</value></data>
   <data name="PortfolioEmpty"><value>No holdings yet — add one in Manage holdings.</value></data>
   <data name="PortfolioNoSession"><value>The source returned no trading session. Try again later.</value></data>

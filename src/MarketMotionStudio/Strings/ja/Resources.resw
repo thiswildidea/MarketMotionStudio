@@ -1052,6 +1052,7 @@
   <data name="PortfolioPnlStatHigh"><value>最高</value></data>
   <data name="PortfolioPnlStatLow"><value>最低</value></data>
   <data name="PortfolioPnlNoon"><value>昼休み</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>昼休みを表示</value></data>
   <data name="PortfolioPnlRateNote"><value>香港株は 1 HKD = {0} CNY で換算</value></data>
   <data name="PortfolioEmpty"><value>まだ保有銘柄がありません。「保有銘柄の管理」から追加してください。</value></data>
   <data name="PortfolioNoSession"><value>取引セッションが取得できませんでした。しばらくしてからお試しください。</value></data>

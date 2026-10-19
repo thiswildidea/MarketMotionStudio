@@ -144,7 +144,8 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 session, plan,
                 crossSafeRight: CrossCheck.IsChecked is true,
                 mascot: MascotCheck.IsChecked is true,
-                dynamicAxis: DynamicAxisCheck.IsChecked is true)
+                dynamicAxis: DynamicAxisCheck.IsChecked is true,
+                lunchBreak: LunchCheck.IsChecked is true)
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -592,6 +593,10 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         MascotCheck.IsChecked = _prefs.GetBool("Mascot", false);
         DynamicAxisCheck.IsChecked = _prefs.GetBool("DynamicAxis", false);
 
+        // On by default: it is what the day looks like, and the other three switches are off
+        // because they are additions to it rather than subtractions.
+        LunchCheck.IsChecked = _prefs.GetBool("Lunch", true);
+
         VideoSettings.Restore(_prefs);
 
         _prefs.Restoring = false;
@@ -609,6 +614,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         _prefs.Save("CrossSafeRight", CrossCheck.IsChecked is true);
         _prefs.Save("Mascot", MascotCheck.IsChecked is true);
         _prefs.Save("DynamicAxis", DynamicAxisCheck.IsChecked is true);
+        _prefs.Save("Lunch", LunchCheck.IsChecked is true);
 
         VideoSettings.Save(_prefs);
     }

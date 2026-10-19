@@ -1052,6 +1052,7 @@
   <data name="PortfolioPnlStatHigh"><value>Maximum</value></data>
   <data name="PortfolioPnlStatLow"><value>Minimum</value></data>
   <data name="PortfolioPnlNoon"><value>Polední pauza</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>Zobrazit polední pauzu</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD přepočteno 1 HKD = {0} CNY</value></data>
   <data name="PortfolioEmpty"><value>Zatím žádné pozice — přidejte ji ve „Spravovat pozice“.</value></data>
   <data name="PortfolioNoSession"><value>Zdroj nevrátil žádnou seanci. Zkuste to později.</value></data>

@@ -1052,6 +1052,7 @@
   <data name="PortfolioPnlStatHigh"><value>En yüksek</value></data>
   <data name="PortfolioPnlStatLow"><value>En düşük</value></data>
   <data name="PortfolioPnlNoon"><value>Öğle arası</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>Öğle arasını göster</value></data>
   <data name="PortfolioPnlRateNote"><value>HKD 1 HKD = {0} CNY ile çevrildi</value></data>
   <data name="PortfolioEmpty"><value>Henüz pozisyon yok — «Pozisyonları yönet» ile ekleyin.</value></data>
   <data name="PortfolioNoSession"><value>Kaynak hiç seans döndürmedi. Sonra tekrar deneyin.</value></data>

@@ -198,6 +198,12 @@ ENTRIES = [
         "Pause de midi", "Pausa del mediodía", "Pausa pranzo", "Przerwa południowa",
         "Pausa do almoço", "Polední pauza", "Обеденный перерыв", "Öğle arası")),
 
+    ("PortfolioPnlLunch.Content", (
+        "显示午间休市", "顯示午間休市", "Show the lunch break", "昼休みを表示", "점심 휴장 표시",
+        "Mittagspause zeigen", "Afficher la pause de midi", "Mostrar la pausa del mediodía",
+        "Mostra la pausa pranzo", "Pokaż przerwę południową", "Mostrar a pausa do almoço",
+        "Zobrazit polední pauzu", "Показывать обеденный перерыв", "Öğle arasını göster")),
+
     ("PortfolioPnlRateNote", (
         "港股按 1 HKD = {0} CNY 折算", "港股按 1 HKD = {0} CNY 折算",
         "HKD converted at 1 HKD = {0} CNY", "香港株は 1 HKD = {0} CNY で換算",

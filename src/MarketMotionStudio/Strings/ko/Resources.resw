@@ -1052,6 +1052,7 @@
   <data name="PortfolioPnlStatHigh"><value>최고</value></data>
   <data name="PortfolioPnlStatLow"><value>최저</value></data>
   <data name="PortfolioPnlNoon"><value>점심 휴장</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>점심 휴장 표시</value></data>
   <data name="PortfolioPnlRateNote"><value>홍콩 종목은 1 HKD = {0} CNY로 환산</value></data>
   <data name="PortfolioEmpty"><value>아직 보유 종목이 없습니다. '보유 종목 관리'에서 추가하세요.</value></data>
   <data name="PortfolioNoSession"><value>거래 세션을 가져오지 못했습니다. 잠시 후 다시 시도하세요.</value></data>

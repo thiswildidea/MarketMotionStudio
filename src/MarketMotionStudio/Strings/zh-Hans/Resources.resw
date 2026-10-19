@@ -1061,6 +1061,7 @@
   <data name="PortfolioPnlStatHigh"><value>最高</value></data>
   <data name="PortfolioPnlStatLow"><value>最低</value></data>
   <data name="PortfolioPnlNoon"><value>午间休市</value></data>
+  <data name="PortfolioPnlLunch.Content"><value>显示午间休市</value></data>
   <data name="PortfolioPnlRateNote"><value>港股按 1 HKD = {0} CNY 折算</value></data>
   <data name="PortfolioEmpty"><value>还没有持仓：先在「管理持仓」里添加一只。</value></data>
   <data name="PortfolioNoSession"><value>行情源没有返回任何交易会话，稍后再试。</value></data>

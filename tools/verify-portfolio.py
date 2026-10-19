@@ -172,9 +172,10 @@ def source_checks():
     # 这三个开关只改「同一批数字放在哪儿」，不改任何数字。所以它们错起来的样子很特别：
     # 源码里写着、控件也亮着，画面却一动不动 —— 比如渲染器把它们读成了可写属性，构造时
     # 还是默认值。源码这一层能管住的正是这一条：三个都必须是**构造参数**。
-    check("三个观感开关都是构造参数，不是事后可写的属性（否则关键那一帧拿到的是默认值）",
-          "bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false)"
-          in render)
+    # 午休那个开关也在这条签名上（第四个，默认开），所以按「四个都必须是构造参数」来断。
+    check("四个观感开关都是构造参数，不是事后可写的属性（否则关键那一帧拿到的是默认值）",
+          "bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,\n"
+          "    bool lunchBreak = true)" in render)
 
     check("越线开关：开 = 让到用户设的边距，关 = 连那条轨一起让开",
           "var right = crossSafeRight ? context.ChartRight : Math.Min(context.ChartRight, context.SafeRight());"
@@ -195,8 +196,8 @@ def source_checks():
           and "dynamicAxis: DynamicAxisCheck.IsChecked is true" in page)
 
     # 三个开关复用的是已有的词条：同一句话在 14 种语言里写两遍，改一处就会漏一处。
-    check("三个开关在页面上，词条复用持仓页那份（一句话不写两遍）",
-          xaml.count('Click="OnLookChanged"') == 3
+    check("四个开关都在页面上，走同一个回调；前三个的词条复用持仓页那份（一句话不写两遍）",
+          xaml.count('Click="OnLookChanged"') == 4
           and 'x:Uid="SafeRightCross"' in xaml
           and 'x:Uid="PositionMascot"' in xaml
           and 'x:Uid="PositionDynamicAxis"' in xaml)
@@ -325,6 +326,54 @@ def source_checks():
     check("导入的日期默认是页面正在画的那一天，不是今天的日期",
           "new TradeImportDialog(ImportDay())" in page
           and "_session is { Day.Length: > 0 } session && DateOnly.TryParse(session.Day, out var day)" in page)
+
+    # ---- 午休时段开关 -------------------------------------------------------------------
+    #
+    # 2026-10-20 加的第四个开关，方向和前三个相反：前三个往画面上**加**东西，这个**拿走**
+    # 一段轴上没有交易的时间。所以它坏的样子是「画面一动不动」—— 渲染器读到了参数，横轴却
+    # 还按钟点铺，那条阴影带照画，开关等于没接上。源码这一层要钉住的不是「带子没了」，而是
+    # 「关掉时横轴真的换了算法」。
+    check("午休开关默认开（它拿掉的是画面的一部分，不比前三个，默认该留着）",
+          "bool lunchBreak = true)" in render)
+
+    check("关掉时午休那 90 分钟从横轴上消失：上下午各按自己的分钟数分宽度",
+          "if (lunchBreak || !CrossesLunch())" in render
+          and "var morning = Math.Max(0, from - open);" in render
+          and "var afternoon = Math.Max(0, session.CloseMinute - to);" in render
+          and "var offset = minute <= from" in render)
+
+    # 半天休市、或者当天最后一笔还没到中午，就没有午休可拿：拿掉它等于把上午拉成整幅。
+    check("没有跨过午休的那一天不压缩（上午的行情不该被拉成整幅）",
+          "private bool CrossesLunch()" in render
+          and "return session.OpenMinute < from && session.CloseMinute > to;" in render)
+
+    # 轴上的中点按钟算是 12:15 —— 那是一个**已经从轴上拿掉**的时刻。关掉午休还照钟写，
+    # 中间那个标签就指着一个曲线上不存在的点。
+    check("中间那个钟标签按轴上的分钟算，不再落在 12:15 这种不存在的时刻",
+          "var ticks = new[] { session.OpenMinute, MidMinute(), session.CloseMinute };" in render
+          and "return half <= morning ? open + half : to + (half - morning);" in render)
+
+    check("午休那条阴影带和那两个字只在开关开着时画",
+          "if (lunchBreak)\n        {\n            DrawLunch(" in render)
+
+    check("页面把午休开关交给渲染器，并记在偏好里（默认开）",
+          "lunchBreak: LunchCheck.IsChecked is true" in page
+          and '_prefs.Save("Lunch"' in page
+          and '_prefs.GetBool("Lunch", true)' in page
+          and 'x:Uid="PortfolioPnlLunch"' in xaml)
+
+    # 这一句是新的，14 份都得有：缺一份，那一语言的开关就是个没有字的空框 —— 而这一页只有
+    # 中文用户会先看到，别的语言要等发版之后才发现。
+    bare = []
+
+    for path in sorted(glob.glob(os.path.join(SRC, "Strings", "*", "Resources.resw"))):
+        lang = os.path.basename(os.path.dirname(path))
+        body = open(path, encoding="utf-8-sig").read()
+
+        if 'name="PortfolioPnlLunch.Content"' not in body:
+            bare.append(lang)
+
+    check("午休开关那句话 14 种语言都有", not bare, "、".join(bare[:4]))
 
 
 # ---- 2) 自己算一遍 --------------------------------------------------------------------
@@ -813,6 +862,64 @@ def band(box, from_permille, to_permille):
     return (left, right, top + (height * from_permille // 1000), top + (height * to_permille // 1000))
 
 
+def columns(box, from_permille, to_permille, from_row, to_row):
+    """画布上的一块，横向纵向都按千分比给（`band` 只切纵向）。
+
+    横向也得按分数：绘图区的左右边距是帧宽的比例，画布在窗口里多宽又是另一回事。按绝对
+    像素去找那条午休带，换台机器就落在别的地方，而它落错的样子是「这里没有那块阴影」。
+    """
+    left, right, top, bottom = box
+    width = right - left + 1
+    height = bottom - top + 1
+
+    return (left + (width * from_permille // 1000), left + (width * to_permille // 1000),
+            top + (height * from_row // 1000), top + (height * to_row // 1000))
+
+
+def mean_luma(image, rect):
+    """一块矩形里的平均亮度（0~255 的灰度）。
+
+    午休那条带子是 `Ink.Fade(Palette.Grid, 0.55)` 压在背景上：比背景亮，但只亮一点点，而且
+    背景本身是有水痕的山影。所以不数「有几个像素亮过某条线」（水痕会一起被数进来），而是拿
+    **同一行上带子内外两块**比平均亮度 —— 垂直渐变在横向上是一样的，横向一比就抵消掉了。
+    """
+    left, right, top, bottom = rect
+    pixels = image.load()
+    total = 0
+    count = 0
+
+    for y in range(top, bottom + 1):
+        for x in range(left, right + 1):
+            r, g, b = pixels[x, y][:3]
+            total += ((r * 299) + (g * 587) + (b * 114)) // 1000
+            count += 1
+
+    return total / max(1, count)
+
+
+def solid_line(image, area):
+    """一块区域里**实心**的红/绿像素：曲线是实色描边，填充是 0.22 压在深底上。
+
+    `near()` 只挑色相，于是「曲线到零线之间那一片填充」整片都算成了曲线，纵向跨度量出来
+    是 246 —— 那一片的高度，跟开关毫无关系，开和关都是 246。实线最亮的通道在 200 上下，
+    填充只有 60 上下，中间隔着一大段，按亮度切就分开了。
+    """
+    pixels = image.load()
+    left, right, top, bottom = area
+    found = []
+
+    for y in range(top, bottom + 1):
+        for x in range(left, right + 1):
+            r, g, b = pixels[x, y][:3]
+            high = max(r, g, b)
+            low = min(r, g, b)
+
+            if high >= 150 and high - low >= 60:
+                found.append((x, y))
+
+    return found
+
+
 def ink(image, box, floor=90):
     """一段区域里比背景亮的像素：文字是亮的，深蓝背景三个通道都在 64 以下。
 
@@ -1055,16 +1162,17 @@ def counter_phase(day, pristine):
 
 
 def look_checks(win, profit):
-    """三个观感开关在**画面上**的证据。
+    """四个观感开关在**画面上**的证据。
 
-    三个都只改「同一批数字放在哪儿」，所以证据只能是画面：源码里三个构造参数都写对了、
-    渲染器却一个都没读，长得和「这三项没做」一模一样。三处的判据都是**前后两张图的差**：
-    停在同一进度上的同一帧，开着与关着应当只有那一处不同。
+    四个都只改「同一批数字放在哪儿」，所以证据只能是画面：源码里构造参数都写对了、渲染器却
+    一个都没读，长得和「这四项没做」一模一样。判据都是**前后两张图的差**：停在同一进度上的
+    同一帧，开着与关着应当只有那一处不同。第四个（午休）方向相反 —— 它拿走东西，所以量的
+    是「那段平线不见了」而不是「多出了什么」，而它是默认开的，量完要摆回开。
 
-    开头先把三个开关摆回关 —— 它们是**偏好**，上一趟跑完留着「开」，这一趟的「关」就量成
+    开头先把前三个开关摆回关 —— 它们是**偏好**，上一趟跑完留着「开」，这一趟的「关」就量成
     了「开」，三条全绿而什么都没验。
     """
-    print("\n三个观感开关")
+    print("\n四个观感开关")
 
     names = (("CrossCheck", "越过右侧安全线"),
              ("MascotCheck", "显示牛熊图标"),
@@ -1171,6 +1279,70 @@ def look_checks(win, profit):
         check("同一进度下，动态纵轴把这半场画得更高（轴跟着已经画出来的那一段）",
               span_dynamic > span_fixed * 1.2 and span_fixed > 0,
               "曲线高度 %d → %d 像素" % (span_fixed, span_dynamic))
+
+    # ---- 午休时段 -------------------------------------------------------------------
+    #
+    # 第四个开关，方向和前三个相反：前三个是往画面上加东西，这个是从轴上拿走一段**没有交易**
+    # 的时间。所以证据不是「多出了什么」，而是「那条平线不见了」。开：横轴是那口钟，午休是
+    # 上面压着一块阴影的一段；关：那 90 分钟不在轴上，上下午按各自的分钟数分宽度、直接接上。
+    #
+    # 它是**默认开**的，而前三个默认关，所以这一段先扳到开再扳到关，量完再扳回开 —— 它是
+    # 偏好，摆不回去，下一趟的「开」就量成了「关」。
+    check("午休开关扳得动，而且扳得回开", set_switch(win, "LunchCheck", True))
+
+    on = shot_at(win, "verify-portfolio-lunch-on.png", 1.0)
+
+    check("午休开关扳到关", set_switch(win, "LunchCheck", False))
+    off = shot_at(win, "verify-portfolio-lunch-off.png", 1.0)
+
+    set_switch(win, "LunchCheck", True)
+
+    if on is None or off is None:
+        check("截得到「午休开 / 午休关」两张图", False)
+        return
+
+    # 带子在绘图宽度上是 11:30~13:00，90/330 ≈ 27%；绘图区左右各有约 14% 的边距，折到画布
+    # 宽度上大约是 42%~60%。取中间一小块（460‰~550‰）稳稳落在带子里，纵向只取 470‰~500‰
+    # 这一条 —— **背景的渐变是纵向的，横向是均匀的**，所以同一行上「带子里 / 带子外」两块
+    # 一比就把背景抵消掉了。拿一大块纵向去平均不行：曲线、填充、卡片一起搅进来，实测背景
+    # 自己就差出 4 个亮度（比带子那 9 个还近）。
+    strip = columns(on[1], 460, 550, 470, 500)
+    plain = columns(on[1], 200, 290, 470, 500)
+
+    lit = mean_luma(on[0], strip) - mean_luma(on[0], plain)
+    dark = mean_luma(off[0], strip) - mean_luma(off[0], plain)
+
+    check("开着时午休是一块压在背景上的阴影（比同一行上午那一段亮）", lit > 4,
+          "亮度差 %.2f（带内 %.2f / 带外 %.2f）"
+          % (lit, mean_luma(on[0], strip), mean_luma(on[0], plain)))
+
+    check("关掉之后那块阴影没有了（同一行两处亮度一样）", abs(dark) < 2,
+          "亮度差 %.2f（带内 %.2f / 带外 %.2f）"
+          % (dark, mean_luma(off[0], strip), mean_luma(off[0], plain)))
+
+    # 光是带子没了说明不了什么：把带子涂掉、横轴照样按钟点铺，上面两条也一样绿 —— 画面上
+    # 还是一小时半的平线，只是没了框。真正的证据是**那段不再平**：午休被拿走之后，同一块
+    # x 区间里画的是上午末尾接下午开头那段真实走势，曲线得斜着穿过去，于是没有哪一行还能
+    # 站满一整块（实测 39 → 17 个像素，区间宽 39）。
+    def flattest(shot):
+        image, box = shot
+        area = columns(box, 460, 550, 350, 620)
+        counts = {}
+
+        for _, y in solid_line(image, area):
+            counts[y] = counts.get(y, 0) + 1
+
+        return max(counts.values(), default=0), (area[1] - area[0] + 1)
+
+    on_row, wide = flattest(on)
+    off_row, _ = flattest(off)
+
+    check("开着时那一段是一整条平线（同一行上站满了一整块）", on_row >= wide * 0.8,
+          "最密的一行 %d 个像素 / 区间宽 %d" % (on_row, wide))
+
+    check("关掉之后同一块 x 里不再有整行的平线（午休那段真的从轴上拿掉了）",
+          off_row <= wide * 0.55,
+          "最密的一行 %d 个像素 / 区间宽 %d" % (off_row, wide))
 
 
 # ---- 4) 真机 --------------------------------------------------------------------------
@@ -1321,7 +1493,8 @@ def main():
                 "verify-portfolio-mascot-off.png", "verify-portfolio-mascot-on.png",
                 "verify-portfolio-axis-fixed.png", "verify-portfolio-axis-dynamic.png",
                 "verify-portfolio-header.png", "verify-portfolio-count-early.png",
-                "verify-portfolio-count-mid.png", "verify-portfolio-count-end.png"):
+                "verify-portfolio-count-mid.png", "verify-portfolio-count-end.png",
+                "verify-portfolio-lunch-on.png", "verify-portfolio-lunch-off.png"):
         path = os.path.join(ART, old)
 
         if os.path.exists(path):
@@ -1471,7 +1644,7 @@ def main():
 
             frame_checks(guess["profit"])
 
-            # 三个观感开关：画面上的前后对照，只能真机量。
+            # 四个观感开关：画面上的前后对照，只能真机量。
             look_checks(win, guess["profit"])
 
             # 页眉那几行。放在导入之前量：这会儿页面是刚取完数、账上还没有成交的样子，

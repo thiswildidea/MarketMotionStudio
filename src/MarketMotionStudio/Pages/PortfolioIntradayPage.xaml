@@ -161,6 +161,18 @@
                               IsChecked="False"
                               Click="OnLookChanged" />
 
+                    <!-- On: the axis is the clock, and the lunch break is a stretch of it,
+                         shaded and named. Off: the ninety minutes between 11:30 and 13:00
+                         come off the axis altogether, so the morning and the afternoon meet
+                         where the market shut instead of being joined by an hour and a half
+                         of flat line. On is what the page shipped with, and it is on by
+                         default here for the same reason the other three are off: this one
+                         is what the day looks like, and dropping it is the choice. -->
+                    <CheckBox x:Name="LunchCheck"
+                              x:Uid="PortfolioPnlLunch"
+                              IsChecked="True"
+                              Click="OnLookChanged" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"
