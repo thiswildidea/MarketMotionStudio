@@ -419,6 +419,26 @@ Jeden nákup, držený dlouho — milion do stejného nástroje od roku 2015 —
 - **Posuvné okno se na konci otevře.** Se začátkem závěrečného úseku se okno rozšíří zpět až k prvnímu dni rozsahu, takže snímek, na kterém animace skončí, je celý rozsah, nikoli jeho poslední několik desítek dnů.
 - **Pás na pravé straně lze uvolnit, chcete-li šířku.** Ve výchozím nastavení je vypnutý: platforma kreslí svůj avatar a tlačítka „to se mi líbí“ a komentářů na té straně svislého videa a číslo pod nimi je na telefonu skryté, přestože je tu zcela čitelné. Zapnutý: záběr, který vyplňuje celý rozsah, kreslí od první snímku až k vlastnímu okraji záběru; posuvné okno drží odstup, dokud je oknem, a spolu s oknem se rozevře na plnou šířku — snímek, na kterém video skončí, je tedy celý rozsah od okraje k okraji.
 
+## Výsledek živě
+
+Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála od 09:30, aktualizované během obchodování.
+
+- **Portfolio je vaše.** Přidejte pozici podle kódu, s počtem akcií a nákladem, který ukazuje broker — nebo importujte dnešní provedené pokyny. Kód nese trh: `sh`, `sz` a `bj` jsou tři pevninské burzy, `hk` Hongkong. Jedno portfolio unese obojí a náklad z Hongkongu zůstává v hongkongských dolarech.
+
+- **Náklad je zředěný** — stejný, jaký aplikace brokera píše vedle pozice: nákup se rozloží na všechny akcie, prodej odečte získanou částku z nákladu zbývajících akcií (klesne, prodalo-li se nad nákladem, stoupne, prodalo-li se pod ním), a uzavřená pozice z portfolia zmizí.
+
+- **Dnešní výsledek se měří od včerejšího zavření** a obchod se započítá v minutě, kdy se stal: nákup či prodej dopoledne a křivka jde dál bez skoku. Poplatky v tom nejsou, takže číslo se může od brokera lišit právě o provizi.
+
+- **Osa jde od 09:30 do zavření těch trhů, které skutečně obchodovaly**: Šanghaj a Šen-čen do 15:00, Hongkong do 16:00. Polední přestávka je podbarvená a popsaná, ne nakreslená jako dvě hodiny rovné čáry. Když je jedna strana zavřená, její pozice jsou označené jako „zavřeno" a z křivky vypadnou — místo aby se oceňovaly seancí, která není dnešní.
+
+- **Během obchodování se obnovuje samo**: každých 30 sekund v pracovní dny mezi 09:15 a 16:10, pokud je přepínač zapnutý. Po zavření se přestane ptát — uzavřený den odpovídá na každý dotaz stejně.
+
+- **Import pokynů je snímek obrazovky nebo vložení.** Snímek čte na tomto počítači OCR, které je součástí Windows (nic se neodesílá), rozpoznaný text se objeví v poli, které lze opravit, a výsledek se vypíše řádek po řádku; jediný nepřečtený řádek import zablokuje. Dvakrát importovaný stejný seznam nic nezkazí: den, minuta, kód, strana, cena a počet akcií dohromady rozpoznají už zapsaný řádek.
+
+- Portfolio je uložené ve složce aplikace a přežije restart. Tahle stránka je také jediná, jejímž tématem je sám čtenář — ostatní kreslí trh a jejich částky jsou v měně zvoleného trhu.
+
+- První portfolio tvoří devět pozic, se kterými tahle stránka vznikla; nepotřebné po jedné odstraňte a přidejte svoje.
+
 ## Krypto svíčky
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-candle.png)

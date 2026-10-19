@@ -777,6 +777,7 @@ public sealed partial class MainWindow : Window
             "DcaPlan" => typeof(DcaPlanPage),
             "Candle" => typeof(CandlePage),
             "Position" => typeof(PositionPage),
+            "PortfolioPnl" => typeof(PortfolioIntradayPage),
             "CryptoCandle" => typeof(CryptoCandlePage),
             "CryptoDca" => typeof(CryptoDcaPage),
             "CryptoPosition" => typeof(CryptoPositionPage),

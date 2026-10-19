@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="MarketMotionStudio.Views.PortfolioDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    DefaultButton="Close">
+
+    <StackPanel Width="430" Spacing="12">
+
+        <TextBlock x:Uid="PortfolioDialogHint"
+                   TextWrapping="Wrap"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+        <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="Rows" Spacing="4" />
+        </ScrollViewer>
+
+        <TextBlock x:Uid="PortfolioDialogAdd"
+                   Margin="0,6,0,0"
+                   Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+        <!-- One row of fields rather than a form: the whole entry is four short values, and a
+             stacked form turns adding one holding into six tab stops. -->
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+            <TextBox x:Name="CodeBox" x:Uid="PortfolioDialogCode" Grid.Column="0" />
+            <TextBox x:Name="SharesBox" x:Uid="PortfolioDialogShares" Grid.Column="1" Width="96" />
+            <TextBox x:Name="CostBox" x:Uid="PortfolioDialogCost" Grid.Column="2" Width="96" />
+        </Grid>
+
+        <Button x:Name="AddButton"
+                x:Uid="PortfolioDialogAddButton"
+                HorizontalAlignment="Stretch"
+                Click="OnAdd" />
+
+        <TextBlock x:Name="Message"
+                   TextWrapping="Wrap"
+                   Visibility="Collapsed"
+                   Style="{StaticResource CaptionTextBlockStyle}" />
+    </StackPanel>
+</ContentDialog>

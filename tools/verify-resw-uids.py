@@ -29,7 +29,27 @@ STRINGS = os.path.join(SOURCE, "Strings")
 SUFFIXES = (".Text", ".Content", ".Header", ".PlaceholderText", ".Description",
             ".OffContent", ".OnContent", ".Title", ".ToolTipService.ToolTip")
 
+# Controls that do **not** have the property the suffix names. Accepting the key is not
+# enough: `x:Uid` asks the resource map for exactly `<uid>.<property>`, and when the control
+# has no such property the loader **throws** instead of leaving it blank —
+#
+#     XamlParseException: Unable to resolve property 'Content' while processing properties
+#     for Uid 'PortfolioPnlAutoRefresh'.
+#
+# and `Frame.Navigate` fails whole, so the window stays on the page before it while the
+# navigation item's selection moves anyway. That reads as "clicking this page does nothing",
+# and it is invisible to every other check here (the key exists, with a suffix).
+#
+# Only the controls this app actually uses are listed. A table of every framework control
+# would be a table that goes stale; the point is to have the one that bit us.
+ALLOWED_ON = {
+    "ToggleSwitch": (".Header", ".OnContent", ".OffContent", ".ToolTipService.ToolTip"),
+    "Slider": (".Header", ".ToolTipService.ToolTip"),
+    "ProgressBar": (".ToolTipService.ToolTip",),
+}
+
 UID = re.compile(r'x:Uid="([^"]+)"')
+TAG = re.compile(r"<([A-Za-z][A-Za-z0-9.]*)\b([^<>]*)>", re.S)
 GET = re.compile(r'Strings\.(?:Get|Format)\(\s*"([A-Za-z][A-Za-z0-9_.]*)"')
 DATA = re.compile(r'<data name="([^"]+)"')
 
@@ -86,6 +106,31 @@ def main():
         print("\nx:Uid with no matching .Text/.Content/... entry:")
         for uid, where in sorted(stale.items()):
             print(f"    {uid:34s} {', '.join(sorted(set(where)))}")
+
+    # A suffix the control does not have: the key exists, and the page still will not load.
+    wrong = {}
+    for path in files(".xaml"):
+        with open(path, encoding="utf-8-sig") as handle:
+            text = handle.read()
+        for match in TAG.finditer(text):
+            element, attributes = match.group(1), match.group(2)
+            allowed = ALLOWED_ON.get(element.split(":")[-1])
+            if allowed is None:
+                continue
+            found = UID.search(attributes)
+            if found is None:
+                continue
+            uid = found.group(1)
+            for key in keys:
+                if key.startswith(uid + ".") and not key[len(uid):] in allowed:
+                    wrong.setdefault(f"{element} {uid} → {key}", []).append(
+                        os.path.relpath(path, ROOT))
+
+    if wrong:
+        problems += len(wrong)
+        print("\nx:Uid on a control that has no such property (the page will fail to load):")
+        for what, where in sorted(wrong.items()):
+            print(f"    {what:60s} {', '.join(sorted(set(where)))}")
 
     # Strings.Get keys, which need the bare name.
     absent = {}

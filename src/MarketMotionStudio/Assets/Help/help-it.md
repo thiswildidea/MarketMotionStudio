@@ -452,6 +452,26 @@ Un acquisto, tenuto — un milione dello stesso nome dal 2015 — animato per mo
 - **Una finestra scorrevole si apre alla fine.** All'inizio del tratto di chiusura la finestra si allarga all'indietro fino al primo giorno dell'intervallo, quindi il fotogramma su cui l'animazione si ferma è l'intervallo intero e non le sue ultime decine di giorni.
 - **La fascia sul lato destro può essere ceduta, se vuoi la larghezza.** È disattivata per impostazione predefinita: la piattaforma disegna il proprio avatar e i pulsanti «mi piace» e commento su quel lato di un video verticale, e una cifra sotto di essi risulta nascosta sul telefono anche se qui è perfettamente leggibile. Attivata, un'inquadratura che riempie tutto l'intervallo disegna fino al bordo stesso dell'inquadratura fin dal primo fotogramma; una finestra scorrevole continua a tenersi a distanza finché è una finestra, e si apre alla larghezza piena insieme alla finestra — così l'inquadratura su cui il video si ferma è tutto l'intervallo, da bordo a bordo.
 
+## P&L in tempo reale
+
+Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costato dalle 09:30, aggiornate mentre il mercato è aperto.
+
+- **Il portafoglio è tuo.** Aggiungi una posizione per codice, con la quantità e il costo che mostra il broker — oppure importa gli ordini eseguiti del giorno. Il codice porta la piazza: `sh`, `sz` e `bj` per i tre mercati della Cina continentale, `hk` per Hong Kong. Un solo portafoglio tiene entrambi, e un costo di Hong Kong resta in dollari di Hong Kong.
+
+- **Il costo è quello diluito**, lo stesso che l'app del broker scrive accanto alla posizione: un acquisto si distribuisce su tutte le azioni, una vendita detrae il ricavato dal costo delle azioni rimaste (scende se la vendita è sopra il costo, sale se è sotto), e una posizione chiusa esce dal portafoglio.
+
+- **Il guadagno di oggi si misura dalla chiusura di ieri**, e un'operazione conta al minuto in cui è avvenuta: comprare o vendere a metà mattina e la curva resta continua. Le commissioni non sono comprese, quindi il numero può differire da quello del broker.
+
+- **L'asse va dalle 09:30 alla chiusura delle piazze che hanno davvero scambiato**: Shanghai e Shenzhen alle 15:00, Hong Kong alle 16:00. La pausa pranzo è tracciata come fascia e nominata, non disegnata come due ore di linea piatta. Se una piazza è chiusa, le sue posizioni sono marcate «chiuso» e restano fuori dalla curva, invece di essere prezzate su una sessione che non è quella di oggi.
+
+- **L'aggiornamento è automatico mentre il mercato è aperto**: ogni 30 secondi nei giorni feriali fra le 09:15 e le 16:10, con l'interruttore acceso. Dopo la chiusura smette di interrogare: una giornata conclusa risponde sempre gli stessi numeri.
+
+- **L'importazione degli ordini è uno screenshot o un incolla.** Lo screenshot viene letto su questa macchina dall'OCR di Windows (nulla viene inviato), il testo riconosciuto arriva in un riquadro correggibile e il risultato è mostrato riga per riga; una sola riga illeggibile blocca l'importazione. Importare due volte lo stesso elenco non fa danni: giorno, minuto, codice, lato, prezzo e quantità insieme riconoscono una riga già registrata.
+
+- Il portafoglio sta nella cartella dell'app e sopravvive ai riavvii. È anche l'unica pagina il cui soggetto è il lettore — le altre disegnano un mercato e i loro importi sono nella valuta del mercato scelto.
+
+- Il primo portafoglio parte dalle nove posizioni con cui questa pagina è nata; toglile una per una e aggiungi le tue.
+
 ## Candele crypto
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-candle.png)

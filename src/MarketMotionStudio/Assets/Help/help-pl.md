@@ -436,6 +436,26 @@ Jeden zakup, trzymany długo — milion w tym samym instrumencie od 2015 roku �
 - **Przesuwne okno otwiera się na końcu.** Wraz z początkiem końcowego odcinka okno rozszerza się wstecz aż do pierwszego dnia zakresu, więc klatka, na której animacja się zatrzymuje, pokazuje cały zakres, a nie jego ostatnie kilkadziesiąt dni.
 - **Pas po prawej stronie można oddać, jeśli zależy ci na szerokości.** Domyślnie jest wyłączony: platforma rysuje tam swój awatar oraz przyciski „lubię to” i komentarzy w pionowym wideo, a liczba pod nimi jest na telefonie zasłonięta, choć tutaj widać ją bez problemu. Włączony: kadr wypełniający cały zakres rysuje do własnej krawędzi kadru od pierwszej klatki; przesuwne okno zachowuje odstęp, dopóki jest oknem, i wraz z oknem rozwiera się na pełną szerokość — więc klatka, na której zatrzymuje się film, to cały zakres od krawędzi do krawędzi.
 
+## Wynik na żywo
+
+Własne pozycje wyceniane co minutę: ile dzisiejsza sesja dała lub kosztowała od 09:30, odświeżane w czasie handlu.
+
+- **Portfel jest twój.** Dodaj pozycję po kodzie, z liczbą akcji i kosztem, jaki pokazuje broker — albo zaimportuj dzisiejsze zrealizowane zlecenia. Kod niesie rynek: `sh`, `sz` i `bj` to trzy giełdy kontynentalne, `hk` to Hongkong. Jeden portfel mieści oba, a koszt z Hongkongu pozostaje w dolarach hongkońskich.
+
+- **Koszt jest rozwodniony** — ten sam, który aplikacja brokera pisze obok pozycji: zakup rozkłada się na wszystkie akcje, sprzedaż odejmuje uzyskaną kwotę od kosztu pozostałych akcji (spada, gdy sprzedano drożej niż koszt, rośnie, gdy taniej), a pozycja zamknięta znika z portfela.
+
+- **Dzisiejszy wynik liczy się od wczorajszego zamknięcia**, a transakcja wchodzi w minucie, w której się zdarzyła: kupno lub sprzedaż przed południem, a krzywa biegnie bez skoku. Prowizji nie ma, więc liczba może różnić się od tej w aplikacji brokera.
+
+- **Oś biegnie od 09:30 do zamknięcia tych rynków, które naprawdę handlowały**: Szanghaj i Shenzhen do 15:00, Hongkong do 16:00. Przerwa południowa jest zacieniowana i podpisana, a nie narysowana jako dwie godziny płaskiej linii. Gdy jedna strona nie handluje, jej pozycje są oznaczone jako „zamknięte" i wypadają z krzywej, zamiast być wyceniane sesją, która nie jest dzisiejsza.
+
+- **Odświeżanie jest automatyczne w czasie sesji**: co 30 sekund w dni robocze między 09:15 a 16:10, gdy przełącznik jest włączony. Po zamknięciu przestaje pytać — zakończony dzień odpowiada tym samym na każde zapytanie.
+
+- **Import zleceń to zrzut ekranu albo wklejenie.** Zrzut czyta na tym komputerze OCR wbudowany w Windows (nic nie jest wysyłane), rozpoznany tekst trafia do pola, które można poprawić, a wynik jest pokazywany wiersz po wierszu; jeden nieczytelny wiersz wstrzymuje import. Dwukrotny import tej samej listy nic nie psuje: dzień, minuta, kod, strona, cena i liczba akcji razem rozpoznają już zapisany wiersz.
+
+- Portfel jest zapisany w folderze aplikacji i przetrwa restart. To także jedyna strona, której tematem jest sam czytelnik — pozostałe rysują rynek, a ich kwoty są w walucie wybranego rynku.
+
+- Pierwszy portfel to dziewięć pozycji, z którymi ta strona powstała; usuń zbędne po jednej i dodaj własne.
+
 ## Świece krypto
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-candle.png)

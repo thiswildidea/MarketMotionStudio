@@ -267,6 +267,14 @@
                 <mux:NavigationViewItem x:Name="NavPosition" x:Uid="NavPosition" Tag="Position">
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPosition}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
+                <!-- Right after the position page, because both are about holding something for a
+                     long time — that one asks what a single purchase would have become, this one
+                     asks what today is doing to what the reader actually holds. The market
+                     setting does not govern it either: the book spans Shanghai, Shenzhen and Hong
+                     Kong, and the page adds them up in one currency. -->
+                <mux:NavigationViewItem x:Name="NavPortfolioPnl" x:Uid="NavPortfolioPnl" Tag="PortfolioPnl">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPortfolioPnl}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
 
                 <!-- The three crypto pages, listed only while the market is the crypto
                      one. See `ApplyMarket`, which is the single place that decides it:

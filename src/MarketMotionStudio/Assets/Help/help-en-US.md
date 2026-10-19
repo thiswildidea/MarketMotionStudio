@@ -443,6 +443,26 @@ One purchase, held — a million of the same name since 2015 — animated to sho
 - **A scrolling window opens out at the end.** As the closing stretch begins the window widens back towards the first day of the range, so the frame the animation stops on is the whole span rather than the last few dozen days of it.
 - **The band down the right-hand side can be given up, if you want the width.** It is off by default: the platform draws its avatar and its like and comment buttons down that side of a vertical video, and a figure underneath them is hidden on the phone even though it is perfectly readable here. Turned on, a frame filling the whole span draws to the frame's own edge from its first frame on; a scrolling window still keeps clear while it is a window, and opens out into the full width along with the window — so the frame the video stops on is the whole span, edge to edge.
 
+## Live portfolio P&L
+
+Your own holdings, marked to the minute: what today has made or cost since 09:30, refreshed while the market is open.
+
+- **The book is yours.** Add a holding by its code with the shares and the cost your broker shows, or import the day's filled orders. Codes carry their venue — `sh`, `sz` and `bj` for the mainland's three boards, `hk` for Hong Kong — so one book holds both, and a Hong Kong cost is kept in Hong Kong dollars.
+
+- **Cost is the diluted figure**, the one the broker app prints beside the position: a purchase spreads over every share, a sale nets its proceeds off what the rest of them cost (lowering it when the sale was above cost and raising it when it was not), and selling out takes the name off the book. Importing trades and then showing a cost the broker does not show would make every figure here disagree with the app it is checked against.
+
+- **Today's profit is measured from yesterday's close**, and a trade is credited at the minute it happened: buy or sell in the morning and the curve stays continuous through it. Fees are not counted, so the figure can differ from the broker's own by the commission.
+
+- **The axis runs from 09:30 to the close of the venues that actually traded.** Shanghai and Shenzhen end at 15:00, Hong Kong at 16:00, and the lunch break is shaded and named rather than drawn as two hours of flat line. A venue closed for the day leaves its holdings marked closed and out of the curve, rather than priced off a session that is not today's.
+
+- **Refresh is automatic while the market is open**: every 30 seconds on weekdays between 09:15 and 16:10, while the switch is on. After the close it stops asking — a settled day answers every poll with the same numbers.
+
+- **Importing is a screenshot or a paste.** A screenshot is read on this machine by the OCR that ships with Windows (nothing is uploaded), the recognised text lands in a box you can correct, and the parse is shown row by row; one unreadable row and nothing is applied. Importing the same list twice is harmless: day, minute, code, side, price and size together recognise a row that is already in the book.
+
+- The book lives in the app's own folder and survives restarts. This is also the one page whose subject is the reader — every other page draws a market, and its amounts are in the currency of the market in force.
+
+- The first book is the nine positions this page was built from; remove them a row at a time and add your own.
+
 ## Crypto Candles
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-candle.png)

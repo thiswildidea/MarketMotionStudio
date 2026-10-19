@@ -439,6 +439,26 @@ Uma compra, mantida — um milhão do mesmo ativo desde 2015 — animada para mo
 - **Uma janela rolante se abre no final.** No início do trecho de encerramento a janela se alarga para trás até o primeiro dia do intervalo, portanto o quadro em que a animação para é o intervalo inteiro, e não suas últimas dezenas de dias.
 - **A faixa do lado direito pode ser cedida, se você quiser a largura.** Ela vem desligada: a plataforma desenha seu avatar e os botões de curtir e comentar desse lado de um vídeo vertical, e um número sob eles fica escondido no celular, embora aqui esteja perfeitamente legível. Ativada, um quadro que preenche todo o intervalo desenha até a própria borda do quadro desde o primeiro quadro; uma janela rolante continua mantendo distância enquanto é uma janela e se abre para a largura total junto com a janela — então o quadro em que o vídeo para é o intervalo inteiro, de borda a borda.
 
+## P&L ao vivo
+
+Suas próprias posições, marcadas ao minuto: o que o dia rendeu ou custou desde as 09:30, atualizado enquanto o mercado está aberto.
+
+- **A carteira é sua.** Adicione uma posição pelo código, com a quantidade e o custo que a corretora mostra — ou importe as ordens executadas do dia. O código carrega a praça: `sh`, `sz` e `bj` para os três mercados do continente, `hk` para Hong Kong. Uma carteira guarda as duas, e um custo de Hong Kong fica em dólares de Hong Kong.
+
+- **O custo é o diluído**, o mesmo que o aplicativo da corretora escreve ao lado da posição: uma compra se espalha por todas as ações, uma venda abate o valor recebido do custo das que restam (cai se a venda foi acima do custo, sobe se foi abaixo), e uma posição zerada sai da carteira.
+
+- **O resultado de hoje é medido a partir do fechamento de ontem**, e uma operação conta no minuto em que aconteceu: comprar ou vender no meio da manhã e a curva continua sem degrau. As taxas não entram, então o número pode diferir do "resultado de hoje" da corretora.
+
+- **O eixo vai das 09:30 ao fechamento das praças que realmente negociaram**: Xangai e Shenzhen às 15:00, Hong Kong às 16:00. O intervalo do almoço é sombreado e nomeado, não desenhado como duas horas de linha reta. Com uma praça fechada, suas posições ficam marcadas como «fechado» e fora da curva, em vez de precificadas por uma sessão que não é a de hoje.
+
+- **A atualização é automática enquanto o mercado está aberto**: a cada 30 segundos em dias úteis entre 09:15 e 16:10, com o interruptor ligado. Depois do fechamento ela para de perguntar: um dia encerrado responde o mesmo a cada consulta.
+
+- **A importação de ordens é um print ou uma colagem.** O print é lido nesta máquina pelo OCR que vem com o Windows (nada é enviado), o texto reconhecido cai numa caixa corrigível e o resultado aparece linha por linha; uma linha ilegível impede a importação. Importar a mesma lista duas vezes é inofensivo: dia, minuto, código, lado, preço e quantidade juntos reconhecem uma linha já registrada.
+
+- A carteira fica na pasta do aplicativo e sobrevive a reinícios. É também a única página cujo assunto é o próprio leitor — as outras desenham um mercado, e seus valores estão na moeda do mercado escolhido.
+
+- A primeira carteira são as nove posições com que esta página nasceu; remova uma a uma as que não usar e acrescente as suas.
+
 ## Velas cripto
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-candle.png)

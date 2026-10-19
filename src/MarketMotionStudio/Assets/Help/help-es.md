@@ -444,6 +444,26 @@ Una compra, mantenida —un millón del mismo valor desde 2015—, animada para 
 - **Una ventana deslizante se abre al final.** Al empezar el tramo de cierre la ventana se ensancha hacia atrás hasta el primer día del rango, así que el fotograma en el que se detiene la animación es el rango completo y no sus últimas decenas de días.
 - **La banda del lado derecho puede cederse, si quieres el ancho.** Viene desactivada: la plataforma dibuja su avatar y sus botones de «me gusta» y comentarios en ese lado de un vídeo vertical, y una cifra debajo queda oculta en el teléfono aunque aquí se lea perfectamente. Activada, un encuadre que llena toda la serie dibuja hasta el propio borde del encuadre desde su primera imagen; una ventana deslizante sigue guardando distancia mientras es una ventana y se abre al ancho completo junto con la ventana — así que la imagen en la que se detiene el vídeo es la serie completa, de borde a borde.
 
+## P&L en vivo
+
+Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costado desde las 09:30, actualizado mientras el mercado está abierto.
+
+- **La cartera es suya.** Añada una posición por su código, con las acciones y el coste que muestra su bróker — o importe las órdenes ejecutadas del día. El código lleva el mercado: `sh`, `sz` y `bj` para los tres del continente, `hk` para Hong Kong. Una sola cartera contiene ambos, y un coste de Hong Kong se guarda en dólares de Hong Kong.
+
+- **El coste es el diluido**, el mismo que la aplicación del bróker escribe junto a la posición: una compra se reparte entre todas las acciones, una venta descuenta su importe del coste de las que quedan (baja si la venta fue por encima del coste y sube si fue por debajo), y una posición cerrada sale de la cartera.
+
+- **El beneficio de hoy se mide desde el cierre de ayer**, y una operación cuenta en el minuto en que ocurrió: compre o venda a media mañana y la curva sigue sin saltos. No incluye comisiones, así que puede diferir de la cifra del bróker en esa comisión.
+
+- **El eje va de las 09:30 al cierre de los mercados que realmente negociaron**: Shanghái y Shenzhen a las 15:00, Hong Kong a las 16:00. El descanso del mediodía se sombrea y se nombra, no se dibuja como dos horas de línea plana. Si un mercado está cerrado, sus posiciones se marcan «cerrado» y quedan fuera de la curva, en vez de valorarse con una sesión que no es la de hoy.
+
+- **La actualización es automática mientras el mercado está abierto**: cada 30 segundos en días laborables entre las 09:15 y las 16:10, con el interruptor activado. Después del cierre deja de preguntar: una sesión terminada responde lo mismo a cada consulta.
+
+- **La importación de órdenes es una captura de pantalla o un pegado.** La captura se lee en este equipo con el OCR que incluye Windows (no se sube nada), el texto reconocido llega a una caja corregible y el resultado se muestra fila por fila; una sola fila ilegible impide importar. Importar dos veces la misma lista es inofensivo: día, minuto, código, sentido, precio y cantidad juntos reconocen una fila ya registrada.
+
+- La cartera se guarda en la carpeta de la aplicación y sobrevive a los reinicios. Es además la única página cuyo tema es el propio lector — las demás dibujan un mercado y sus importes están en la moneda del mercado elegido.
+
+- La primera cartera son las nueve posiciones con las que nació esta página; quite las que no use una a una y añada las suyas.
+
 ## Velas cripto
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-candle.png)

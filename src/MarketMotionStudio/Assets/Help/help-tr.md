@@ -424,6 +424,26 @@ Tek alım, uzun süre elde tutma — 2015'ten beri aynı varlıktan bir milyon �
 - **Kayan pencere sonda açılır.** Kapanış bölümü başlarken pencere geriye doğru, aralığın ilk gününe kadar genişler; böylece animasyonun durduğu kare son birkaç on günü değil, aralığın tamamını gösterir.
 - **Sağ kenardaki şerit, genişliği istersen bırakılabilir.** Varsayılan olarak kapalıdır: platform dikey videonun o kenarına avatarını, beğeni ve yorum düğmelerini çizer ve altındaki sayı, burada rahatça okunsa da telefonda gizli kalır. Açıkken tüm aralığı dolduran bir kare, ilk karesinden itibaren karenin kendi kenarına kadar çizer; kayan pencere pencere olduğu sürece mesafeyi korur ve pencereyle birlikte tam genişliğe açılır — yani videonun durduğu kare, kenardan kenara tüm aralıktır.
 
+## Canlı portföy
+
+Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana ne kazandırdığı ya da neye mal olduğu, piyasa açıkken kendiliğinden yenilenir.
+
+- **Defter sizin.** Bir pozisyonu koduyla, aracı kurumun gösterdiği adet ve maliyetle ekleyin — ya da günün gerçekleşen emirlerini içe aktarın. Kodu piyasayı taşır: `sh`, `sz` ve `bj` ana karadaki üç borsa, `hk` Hong Kong. Tek defter ikisini birden tutar ve Hong Kong maliyeti Hong Kong doları olarak kalır.
+
+- **Maliyet seyreltilmiş maliyettir**; aracı kurum uygulamasının pozisyonun yanına yazdığı sayı budur: alış tüm adetlere yayılır, satış elde edileni kalan adetlerin maliyetinden düşer (maliyetin üstünde satıldıysa düşer, altında satıldıysa yükselir), tümüyle satılan pozisyon defterden çıkar.
+
+- **Bugünün kârı dünkü kapanıştan ölçülür** ve işlem gerçekleştiği dakikaya yazılır: sabah alıp satarsanız eğri kopmaz. Komisyon dahil değildir, bu yüzden sayı aracı kurumun "günlük kâr"ından komisyon kadar farklı olabilir.
+
+- **Eksen 09:30'dan, gerçekten işlem gören piyasaların kapanışına kadar gider**: Şanghay ve Shenzhen 15:00, Hong Kong 16:00. Öğle arası bir bant olarak boyanır ve adlandırılır, iki saatlik düz bir çizgi olarak çizilmez. Bir taraf kapalıysa o pozisyonlar "kapalı" diye işaretlenir ve eğrinin dışında kalır; bugünün olmayan bir seansın fiyatıyla doldurulmaz.
+
+- **Piyasa açıkken yenileme kendiliğindendir**: hafta içi 09:15 ile 16:10 arasında 30 saniyede bir, anahtar açıkken. Kapanıştan sonra sormayı bırakır: bitmiş bir gün her sorguya aynı sayılarla cevap verir.
+
+- **Emir içe aktarma bir ekran görüntüsü ya da yapıştırmadır.** Görüntü bu makinede Windows'un kendi OCR'ı ile okunur (hiçbir yere gönderilmez), tanınan metin düzeltilebilir bir kutuya düşer ve sonuç satır satır gösterilir; okunamayan tek satır aktarmayı durdurur. Aynı listeyi iki kez aktarmak zararsızdır: gün, dakika, kod, yön, fiyat ve adet birlikte, defterde zaten olan satırı tanır.
+
+- Defter uygulamanın kendi klasöründe durur ve yeniden başlatmada korunur. Bu sayfa aynı zamanda konusu okurun kendisi olan tek sayfadır — ötekiler bir piyasayı çizer ve tutarları seçili piyasanın para birimindedir.
+
+- İlk defter, bu sayfanın doğduğu dokuz pozisyondur; kullanmadıklarınızı tek tek çıkarıp kendi pozisyonlarınızı ekleyin.
+
 ## Kripto mumlar
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-candle.png)

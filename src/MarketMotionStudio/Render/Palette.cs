@@ -62,6 +62,15 @@ public static class Palette
     /// <summary>The date advancing through the animation, and the high-water mark.</summary>
     public static readonly Color Moving = Rgb(0xFB, 0xBF, 0x24);
 
+    /// <summary>
+    /// A fall, in the same green the return matrix and the calendar use for one.
+    ///
+    /// Named here rather than mixed at the call site because it is the counterpart of
+    /// <see cref="Emphasis"/>: the two are read together on every frame that draws a profit and a
+    /// loss, and a green picked per renderer is a green that drifts.
+    /// </summary>
+    public static readonly Color Fall = Rgb(0x22, 0xC5, 0x5E);
+
     /// <summary>The low-water mark, deliberately cool against the warm high.</summary>
     public static readonly Color MarkLow = Rgb(0x60, 0xA5, 0xFA);
 

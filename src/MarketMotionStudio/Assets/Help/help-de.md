@@ -453,6 +453,26 @@ Ein Kauf, lange gehalten — etwa eine Million derselben Aktie seit 2015 — ani
 - **Ein rollendes Fenster öffnet sich am Ende.** Mit Beginn des Schlussteils weitet sich das Fenster zurück bis zum ersten Tag des Zeitraums, also steht am Ende der Animation der ganze Zeitraum da und nicht nur seine letzten Dutzend Tage.
 - **Der Streifen an der rechten Seite kann freigegeben werden, wenn du die Breite willst.** Voreingestellt ist er nicht: Die Plattform zeichnet ihr Profilbild sowie die Schaltflächen für „Gefällt mir“ und Kommentare an diese Seite eines Hochformatvideos, und eine Zahl darunter ist auf dem Telefon verdeckt, obwohl sie hier völlig lesbar ist. Eingeschaltet zeichnet ein Bild, das die ganze Spanne füllt, von seiner ersten Aufnahme an bis zur eigenen Kante des Bildes; ein wanderndes Fenster hält Abstand, solange es ein Fenster ist, und weitet sich zusammen mit dem Fenster auf die volle Breite — das Bild, auf dem das Video anhält, ist also die ganze Spanne von Rand zu Rand.
 
+## Depot live
+
+Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 gebracht oder gekostet hat, während der Handelszeit laufend aktualisiert.
+
+- **Das Depot gehört Ihnen.** Eine Position über ihren Code mit Stückzahl und dem Kostenwert hinzufügen, den Ihr Broker anzeigt — oder die ausgeführten Orders des Tages importieren. Der Code trägt den Handelsplatz: `sh`, `sz` und `bj` für die drei festlandchinesischen Börsen, `hk` für Hongkong. Ein Depot hält also beide, und ein Hongkong-Kostenwert bleibt in Hongkong-Dollar.
+
+- **Der Kostenwert ist der verwässerte**, genau die Zahl, die die Broker-App neben die Position schreibt: ein Kauf verteilt sich auf alle Stücke, ein Verkauf rechnet seinen Erlös gegen die Kosten der verbleibenden Stücke (er senkt sie, wenn der Verkauf über dem Einstand lag, und hebt sie, wenn nicht), und ein restlos verkaufter Titel verlässt das Depot.
+
+- **Der heutige Gewinn wird ab dem Vortagsschluss gemessen**, und ein Geschäft zählt in der Minute, in der es passiert ist: Kauf oder Verkauf am Vormittag, und die Kurve läuft ohne Sprung durch. Gebühren sind nicht enthalten, deshalb kann die Zahl um die Provision von der des Brokers abweichen.
+
+- **Die Achse läuft von 09:30 bis zum Schluss der Handelsplätze, die wirklich gehandelt haben**: Shanghai und Shenzhen bis 15:00, Hongkong bis 16:00. Die Mittagspause wird als Band gezeichnet und benannt, nicht als zwei Stunden gerade Linie. Ist eine Seite geschlossen, stehen ihre Positionen auf „geschlossen" und bleiben aus der Kurve — statt mit dem Kurs einer Sitzung gerechnet zu werden, die nicht die heutige ist.
+
+- **Während der Handelszeit aktualisiert die Seite selbst**: werktags zwischen 09:15 und 16:10 alle 30 Sekunden, solange der Schalter an ist. Nach dem Schluss fragt sie nicht mehr — ein abgeschlossener Tag antwortet auf jede Abfrage mit denselben Zahlen.
+
+- **Orderimport geht per Screenshot oder per Einfügen.** Ein Screenshot wird auf diesem Rechner von der in Windows eingebauten OCR gelesen (nichts wird hochgeladen), der erkannte Text landet in einem korrigierbaren Feld, und das Ergebnis wird Zeile für Zeile gezeigt; eine unlesbare Zeile verhindert den Import. Dieselbe Liste zweimal zu importieren ist harmlos: Tag, Minute, Code, Richtung, Preis und Stückzahl zusammen erkennen eine bereits gebuchte Zeile.
+
+- Das Depot liegt im eigenen Ordner der App und überlebt Neustarts. Diese Seite ist außerdem die einzige, deren Thema der Leser selbst ist — alle anderen zeichnen einen Markt, und ihre Beträge stehen in der Währung des eingestellten Marktes.
+
+- Das erste Depot besteht aus den neun Positionen, mit denen diese Seite entstanden ist; entfernen Sie sie Zeile für Zeile und fügen Sie Ihre eigenen hinzu.
+
 ## Krypto-Kerzen
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-candle.png)

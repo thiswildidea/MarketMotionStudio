@@ -303,7 +303,12 @@ public sealed class StockDirectory(HttpClient http)
             Number(fields[3]),
             Number(fields[38]),
             Number(fields[44]),
-            Number(fields[45]));
+            Number(fields[45]),
+            // Field 4 is yesterday's close. It is here because a day's profit is measured from
+            // it and no other endpoint in this app carries it: the minute endpoint has prices
+            // within a session but not the session before, and the daily endpoint would be a
+            // second request per holding to learn a number this one already returned.
+            Number(fields[4]));
     }
 
     /// <summary>
@@ -352,5 +357,11 @@ public sealed class StockDirectory(HttpClient http)
 /// venues — the divisor is not, and neither is the currency, so the figure is only ever
 /// meaningful next to the market it came from.
 /// </param>
+/// <param name="PreviousClose">
+/// Yesterday's close, in the venue's currency. On a day a venue does not trade — a Hong Kong
+/// holiday, say — it is still yesterday's close by that venue's own calendar, which is why a
+/// holding priced off it while its venue is shut would report the previous session's move.
+/// </param>
 public sealed record StockSnapshot(
-    string Name, double Price, double TurnoverToday, double FloatCapYi, double TotalCapYi);
+    string Name, double Price, double TurnoverToday, double FloatCapYi, double TotalCapYi,
+    double PreviousClose);

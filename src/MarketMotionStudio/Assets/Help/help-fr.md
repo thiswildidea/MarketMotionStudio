@@ -458,6 +458,26 @@ Un achat, conservé — un million du même nom depuis 2015 — animé pour mont
 - **Une fenêtre défilante s'ouvre à la fin.** Au début du segment de fermeture la fenêtre s'élargit vers l'arrière jusqu'au premier jour de la plage : l'image sur laquelle l'animation s'arrête est donc la plage entière et non ses dernières dizaines de jours.
 - **La bande du côté droit peut être cédée, si vous voulez la largeur.** Elle est désactivée par défaut : la plateforme dessine son avatar et ses boutons « j'aime » et commentaire sur ce côté d'une vidéo verticale, et un chiffre en dessous est masqué sur le téléphone alors qu'il est parfaitement lisible ici. Activée, une image qui remplit toute la période trace jusqu'au bord même de l'image dès sa première image ; une fenêtre glissante continue de garder ses distances tant qu'elle est une fenêtre, et s'ouvre à la pleine largeur en même temps qu'elle — l'image sur laquelle la vidéo s'arrête est donc toute la période, d'un bord à l'autre.
 
+## P&L en direct
+
+Vos propres positions, valorisées à la minute : ce que la séance a rapporté ou coûté depuis 09:30, rafraîchi pendant que le marché est ouvert.
+
+- **Le portefeuille est le vôtre.** Ajoutez une ligne par son code, avec la quantité et le coût affichés par votre courtier — ou importez les ordres exécutés du jour. Le code porte la place : `sh`, `sz` et `bj` pour les trois Bourses du continent, `hk` pour Hong Kong. Un seul portefeuille tient donc les deux, et un coût de Hong Kong reste en dollars de Hong Kong.
+
+- **Le coût est le coût dilué**, celui que l'application du courtier écrit à côté de la position : un achat se répartit sur toutes les actions, une vente déduit son produit du coût des actions restantes (il baisse si la vente s'est faite au-dessus du coût, il monte sinon), et une position soldée quitte le portefeuille.
+
+- **Le gain du jour se mesure depuis la clôture de la veille**, et un ordre compte à la minute où il a été exécuté : acheter ou vendre en matinée et la courbe reste continue. Les frais ne sont pas comptés, d'où un écart possible avec le « gain du jour » du courtier.
+
+- **L'axe va de 09:30 à la clôture des places qui ont réellement traité** : Shanghai et Shenzhen à 15:00, Hong Kong à 16:00. La pause de midi est hachurée et nommée, pas dessinée comme deux heures de ligne plate. Si une place est fermée, ses lignes portent « fermé » et sortent de la courbe, au lieu d'être valorisées sur une séance qui n'est pas celle du jour.
+
+- **Le rafraîchissement est automatique pendant la séance** : toutes les 30 secondes en semaine entre 09:15 et 16:10, tant que l'interrupteur est activé. Après la clôture, la page cesse d'interroger : une journée terminée répond la même chose à chaque requête.
+
+- **L'import des ordres se fait par capture d'écran ou par collage.** La capture est lue sur cette machine par l'OCR fourni avec Windows (rien n'est envoyé), le texte reconnu arrive dans une zone corrigeable, et le résultat est présenté ligne par ligne ; une seule ligne illisible annule l'import. Importer deux fois la même liste est sans effet : jour, minute, code, sens, prix et quantité ensemble reconnaissent une ligne déjà enregistrée.
+
+- Le portefeuille est stocké dans le dossier de l'application et survit aux redémarrages. C'est aussi la seule page dont le sujet soit le lecteur — les autres dessinent un marché, et leurs montants sont dans la devise du marché choisi.
+
+- Le premier portefeuille reprend les neuf positions avec lesquelles cette page a été conçue ; retirez-les une à une et ajoutez les vôtres.
+
 ## Chandeliers crypto
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-candle.png)

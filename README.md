@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **twenty-five pages working, and export working on all of them, across four markets.** Market Turnover fetches
+Status: **thirty pages working, and export working on all of them, across four markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -45,7 +45,7 @@ closing line, a closing area) with MA5/10/20 and a volume panel, arriving one ca
 across the whole range or walking forward inside a window of it — a window that opens out into
 the whole range as the frame closes.
 
-**Ten more pages followed**, and the navigation now numbers eighteen: **Market Cap Race** (a
+**Eleven more pages followed**, and the navigation now numbers nineteen: **Market Cap Race** (a
 market's fifteen largest by total value, the field asked for at fetch time so members really come
 and go), **Market Value History** (one company's worth over the years — reconstructed from the
 turnover rate, because no endpoint carries yesterday's share count), **AH premium** (one company's
@@ -56,12 +56,19 @@ index has come since its own first month, never its level), **Asset Classes** (e
 mainland-listed funds — what holding them earned), **Bond Market** (nine bond indices, measured on
 the quote because an index pays no coupon), **Drawdowns** (how far below its own high each
 sits, and how long the way back took), and **Hold Odds** (of every entry that finished, the share
-that gained). The last three share one watchlist that mixes all three markets — Position Return
+that gained). **Live portfolio P&L** is the last to arrive and the one the market switch does
+not move, because its axis is the mainland session and Hong Kong's day does not end at the same
+minute. It is also the only page whose subject is the reader rather than a market: a book of your
+own holdings — code, name, diluted cost, share count, mainland or Hong Kong read off the code —
+marked to the minute from 09:30 to the last venue's close, kept honest by importing each day's
+filled orders from a screenshot read on this machine or straight from the clipboard, and summed
+underneath in four cards: today's profit, the book's value, and the best and worst minute of it.
+The last three share one watchlist that mixes all three markets — Position Return
 reads the same list, where every pick is a line of its own rather than a row, and Market Value
 History reads it too, narrowed to the market in force, because what recovers a share count is that
 market's own turnover rate.
 
-**The eighteen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
+**The nineteen icons are drawn, not borrowed.** Three pairs of pages had been sharing one Segoe
 Fluent glyph — Candles with Sector Race, Volume & Turnover with Hold Odds, Market Turnover with
 Position Replay — and one shape cannot mean two pages; the menu was quietly saying those pairs were
 the same thing. Each is now a stroke skeleton on a shared 20×20 grid (lines, rings, polylines,
@@ -139,8 +146,10 @@ What each market is for, in one line apiece:
   listings, four Hang Seng sub-indices racing, and the Hang Seng trackers as presets.
 - **United States** — the same two pages on US indices and listings, ten SPDR sector ETFs
   racing, amounts in dollars, and the broad presets — SPY, QQQ, DIA.
-- **Cryptocurrency** — seven pages of its own: one coin's candles, a DCA plan, a holding's return,
-  the gain calendar, two pages about market cap, and a monthly return matrix. A coin neither pays a
+- **Cryptocurrency** — eleven pages of its own: one coin's candles, a DCA plan, a holding's return,
+  the gain calendar, two pages about market cap, a monthly *and* an annual return matrix, several
+  coins rebased to 100 and raced against one another, the 24-hour movers board, and each coin's
+  share of the chosen set's value. A coin neither pays a
   dividend nor splits,
   and it takes no holidays, so a year here is 365 days rather than the 243 a stock market gives
   you — which is also why the crypto calendar is a full grid rather than a grid with weekends
@@ -165,7 +174,7 @@ than assumed from the market's existence:
 | **Market Value History** | the same arithmetic, except the price underneath is the amount over the volume — this source serves Hong Kong no unadjusted close, so the lower panel is labelled an average rather than a close | the same arithmetic on a rate that is a fraction of *every* share rather than of the ones that trade, so the line reads as a total value and runs above a quote app's circulating figure by exactly the insider stake; it reaches back to 2009, the depth the mainland gets |
 
 The table above compares the three stock markets with each other, which is why cryptocurrency
-has no column in it. Choosing it does not readjust the stock pages — it replaces them: the seven
+has no column in it. Choosing it does not readjust the stock pages — it replaces them: the eleven
 crypto pages come into the navigation and every stock page goes, because those read an endpoint
 that quotes no coin at all. Whether the option appears in the first place is decided by whether
 either crypto source answers, so the list never offers a market this machine cannot reach.
@@ -194,7 +203,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The twenty-five pages
+## The thirty pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -1009,12 +1018,36 @@ so the label ran back over the name column and the row read as one string, "恒�
 Where that would happen the label is drawn beyond the zero axis instead. It is not a rare frame:
 it is the bottom row of every frame of any board with a fall on it, which includes the A+H page.
 
+**Live portfolio P&L** — the one page that draws the reader rather than a market, and the only one
+whose numbers are nobody else's: a book of your own holdings, marked to the minute from 09:30 to
+the close. Each row is a code, a name, a diluted cost and a share count, and the venue travels in
+the code — `sh`, `sz`, `bj` for the mainland's three boards and `hk` for Hong Kong — so one book
+holds both, and a Hong Kong row is brought into yuan at the HKD→CNY rate **the quote endpoint is
+asked for at fetch time**, which is also why the rate travels with the result and is printed on the
+frame: a constant here would be a rate frozen on the day the code was written, applied silently to
+every Hong Kong holding for as long as the app lives, and a total that quietly mixes two
+currencies misreports both. What keeps the book honest is the import rather than typing: each day's filled orders go in
+from a screenshot — read **on this machine** by the OCR that ships with Windows, so a picture of
+somebody's positions goes nowhere — or straight from the clipboard, and either way the parse is
+shown row by row and one unreadable row applies nothing. A sale is not merely subtracted: it nets
+its proceeds off the cost of the shares that remain, which is the diluted cost the broker app
+prints beside the position, so the figure here can be checked against it; the six fields together
+— day, minute, code, side, price, size — recognise a trade already booked, and importing the same
+list twice changes nothing. The profit itself is measured from yesterday's close and stays
+continuous through a trade: the veer happens at the minute of the order rather than the whole curve
+being redrawn, and fees are left out, so the difference against the broker's own "today" is the
+commission. The axis runs to the close of the venues that actually traded — Hong Kong's day ends an
+hour later, and a Hong Kong holiday takes those rows out of the curve and labels them closed
+instead of pricing them off a session that is not today's — and while the market is open the page
+asks again every thirty seconds, and stops asking after the close, because a settled day answers
+every poll with the same numbers.
+
 **Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
 over a coin instead of a share, and the three pages that come with **a fourth market** rather than
 sitting beside the stock ones. Both sources that carry a coin's history sit outside the mainland, so
 the first question is not *what was the price* but *can either of them be reached*: the settings page
 asks that as the app starts, and lists «Cryptocurrency» beside the three stock markets only where a
-price can be fetched. Choose it and the menu is six pages — the stock pages are removed rather than
+price can be fetched. Choose it and the menu is eleven pages — the stock pages are removed rather than
 hidden, because every one of them reads an endpoint that quotes no coin at all, so each would sit
 there failing one fetch at a time. Choose any other market and these six are the ones removed: a
 coin is not quoted on any of the three venues, so they are not a second view of the market being
@@ -1281,6 +1314,30 @@ same trap waits for `Arrange`, `Content` and `Resources`. It is now `Metric`.
 Writing PNG-compressed entries (the Vista `.ico` form) rather than BMP entries is what keeps
 the alpha correct; the 256-pixel entry records its size as `0`, because the field is one byte.
 
+**A `x:Uid` key is looked up *with the property name appended*, and every static check passes
+while it is wrong.** `PortfolioPnlAutoRefresh` is not a key anything reads: the loader wants
+`PortfolioPnlAutoRefresh.Header`, and a key with no suffix stays in all fourteen resw files for as
+long as nobody opens the page — 1040 keys, identical order, no encoding damage, all green. The two
+mistakes cost different amounts: a key with a suffix the control does not *have* throws while XAML
+loads and takes the whole page with it (`Unable to resolve property 'Content'` for a
+`ToggleSwitch`), whereas a bare key merely renders that one string blank. Two corollaries follow,
+and both are now in `tools/verify-resw-uids.py` because nothing else can see them: the key has to
+be checked against the *element it decorates*, and writing a property in markup on a control that
+carries a Uid makes every one of those properties a resource lookup too — `IsOn="True"` on that
+switch failed the load for exactly the same reason. Renaming a key across fourteen files is
+therefore `port-portfolio-resw-suffix.py` and not an editor: it has to rewrite bytes, keep the BOM,
+keep LF, and refuse to finish with a bare key behind.
+
+**A `TextBox` in WinUI carries a bare `\r` between its lines, and a parser that splits on `\n`
+sees one line where the reader pasted three.** The import box is the page's only input, and the
+symptom was a list of two filled orders read as one: "识别到 1 笔". Nothing in the text looked
+wrong — the *value* read back out of the box had `\r` exactly where the newlines should be, which
+is invisible on screen because the control draws a line break for it. Normalise every kind of line
+break to `\n` once, at the top of the parser, and then cut rows at something the text cannot lose:
+a clock. A visual row is not a trade — OCR can read two orders as one row of pixels, and a paste
+can arrive with its breaks eaten — so the second half of the fix is `Blocks` cutting at each
+timestamp rather than at each line ending.
+
 ## Layout
 
 ```
@@ -1384,6 +1441,14 @@ tools/
                          else needs
   port-caphistory-*.py   The same, for the market-value page — including the two readings of the
                          value axis and the comparison mode
+  port-portfolio-help.py One page's chapter into all fourteen manuals, at the index the navigation
+                         says it belongs at rather than a line number somebody wrote down
+  port-portfolio-resw-suffix.py
+                         Renames a resw key in all fourteen files and refuses to leave a bare key
+                         behind — see below for why that is a script and not an edit
+  verify-portfolio.py    Recomputes the page's profit from the two endpoints on its own, then reads
+                         it back off the running app — the number, the frame, and an import
+                         round-trip that leaves the book exactly as it was
   verify-*.py            Drive the UI and assert the feature behaves as documented
   drive-*.py             Drive the app end to end for a smoke run
 ```
@@ -1493,9 +1558,9 @@ everywhere. A display language the app does not ship falls back to English: `Def
 in the csproj is pinned to `en-US` for exactly that, and the resource index records
 `Language-EN-US` as the default candidate.
 
-Every language carries the same keys in the same order. All fourteen currently report 946 keys
-with no encoding damage, and all fourteen help documents carry the same thirty-four sections in
-the same order — twenty-five of them a page, and nine about the app rather than a market — which
+Every language carries the same keys in the same order. All fourteen currently report 1040 keys
+with no encoding damage, and all fourteen help documents carry the same thirty-five sections in
+the same order — thirty of them a page, and five about the app rather than a market — which
 is the equality the cross-language check rests on.
 
 ## Appearance
@@ -1526,7 +1591,7 @@ detector still sees it. A detector whose control sample is clean is not a detect
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all twenty-five pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all thirty pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -1585,9 +1650,9 @@ a renderer with no watermark is one with nothing to draw rather than one that ha
 ## The subscription, and the two things it buys
 
 Exporting a video and taking the watermark off it take a monthly subscription. Everything else
-stays free on all twenty-five pages — fetching data, playing the animation, saving a cover image —
+stays free on all thirty pages — fetching data, playing the animation, saving a cover image —
 and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
-two are the ends that leave home, and the twenty-five pages of live market animation are what
+two are the ends that leave home, and the thirty pages of live market animation are what
 somebody came for.
 
 The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
@@ -1599,7 +1664,7 @@ they have already paid.
 
 Three decisions worth stating.
 
-**The answer is asked for in one place.** Twenty-five pages have an Export button and twenty-five have
+**The answer is asked for in one place.** Thirty pages have an Export button and thirty have
 their own handler, each written out in full — that duplication already exists and is not this
 feature's to fix. What must not be duplicated is the answer to "may this be done": two answers
 written twice is one page that gives the video away. So every handler asks
@@ -1697,13 +1762,13 @@ first export asks and then remembers.
   So what is verified is the gate, its placement, the licence read, and the watermark's dependency
   on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
   is finally there.
-- **The Store screenshots cover fifteen of the twenty-five pages.** `tools/store-screenshots.py` stops
+- **The Store screenshots cover fifteen of the thirty pages.** `tools/store-screenshots.py` stops
   at the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
   extreme-day board, currency corridor, index race, asset-class board, drawdown board or hold-odds
-  board. The six cryptocurrency pages need a run of their own (`--crypto`): selecting that market
+  board. The eleven cryptocurrency pages need a run of their own (`--crypto`): selecting that market
   removes the stock pages from the navigation outright, so the two sets cannot come out of one pass.
-  The listing copy describes twenty-five chart pages in all fourteen languages — it is written at
-  release time, so until those nine captures are taken the copy and the gallery disagree. The copy
+  The listing copy counts the pages — a figure written in fourteen languages, and written at
+  release time — so until those captures are taken the copy and the gallery disagree. The copy
   deliberately runs ahead of the package too: it is written for the version being prepared, and it
   must not be uploaded before that package is.
 - **The A+H page has been fetched and read at two spans** (three years and the longest, twenty-two
@@ -1724,6 +1789,13 @@ first export asks and then remembers.
   own figure by hand while it was being built — once each, on today's date — and neither the app nor
   the verification script checks it again, so a count drifted by a round trip through a rate carried
   to two decimals would not be caught by anything.
+- **The live portfolio page has been driven end to end, 40 checks** — including an import
+  round-trip (two opposite fills, the book back to its own rows and its own profit, then the same
+  list again read as two duplicates) — with the profit reconciled to the cent against an
+  independent recomputation from the same two endpoints. What it has *not* proved: the intraday
+  peak and trough on the closing cards are pixels, so they are drawn and looked at rather than
+  asserted; the screenshot path is only exercised by hand; and a book the reader edits by hand has
+  only ever been the one in this repository's own machine.
 - **The console shows a log line per request and the walk logs one per page**, which for a
   ten-year fifteen-listing board is about ninety lines. It is not a problem, but it is the
   loudest thing this app does and worth knowing before reading a log.
