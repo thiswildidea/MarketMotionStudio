@@ -406,7 +406,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
             return;
         }
 
-        var dialog = new TradeImportDialog(DateOnly.FromDateTime(DateTime.Today)) { XamlRoot = XamlRoot };
+        var dialog = new TradeImportDialog(ImportDay()) { XamlRoot = XamlRoot };
 
         if (await Dialogs.ShowAsync(dialog) != ContentDialogResult.Primary ||
             dialog.Trades.Count == 0)
@@ -424,6 +424,22 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         await SilentRefreshAsync(report: true);
     }
+
+    /// <summary>
+    /// The day an import is stamped with: **the day the page is drawing**, not the day the clock
+    /// says it is.
+    ///
+    /// The page draws the last session that traded, and before the market opens that is not
+    /// today — it is yesterday. Filling the dialog with `DateTime.Today` then stamps the fills
+    /// with a day nothing has traded on, so an import the dialog reports as "已导入 5 笔" lands
+    /// where the reader cannot see it: the curve does not move, the header's count stays at zero,
+    /// and nothing on the page says why. The picker is filled in with this day and the reader can
+    /// still change it — a screenshot of Monday's fills really can be imported on Tuesday.
+    /// </summary>
+    private DateOnly ImportDay() =>
+        _session is { Day.Length: > 0 } session && DateOnly.TryParse(session.Day, out var day)
+            ? day
+            : DateOnly.FromDateTime(DateTime.Today);
 
     /// <summary>The one day this page draws, for the file names.</summary>
     private (DateOnly From, DateOnly To)? Range() =>

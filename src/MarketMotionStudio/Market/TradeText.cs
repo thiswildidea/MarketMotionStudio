@@ -78,9 +78,26 @@ public static class TradeText
         var text = raw.Replace("\r\n", "\n").Replace('\r', '\n');
 
         text = text
-            .Replace('：', ':').Replace('，', ',').Replace('％', '%')
+            .Replace('：', ':').Replace('，', ',').Replace('、', ',').Replace('％', '%')
             .Replace('．', '.').Replace('－', '-').Replace('　', ' ')
             .Replace('·', '.').Replace('•', '.').Replace('・', '.');
+
+        // **The clock's colon is what OCR loses most often, and it loses it in every direction**:
+        // as a full-width colon, as a semicolon, as a full-width semicolon. That matters more
+        // than it looks, because a block is delimited *by* its clock (see `Blocks`) — one
+        // unreadable clock merges two rows into one, and what comes out is a single trade with
+        // the first row's price and the second row's code and timestamp. Between two digits a
+        // semicolon is never anything else, so it becomes a colon here.
+        text = ClockColon.Replace(text, ":");
+
+        // **A comma inside a number is one of two things, and the digit count says which.** The
+        // broker prints at most two decimals and never groups a size with two digits after the
+        // comma, so `31,80` is a price and `5,900` is a size. Left alone, `31,80` reads as two
+        // numbers — 31 and 80 — and the trade is imported at 31.00, which is the kind of import
+        // nobody notices until the day's profit disagrees with the broker by a thousand yuan.
+        text = CommaSpace.Replace(text, "$1");
+        text = Thousands.Replace(text, "$1");
+        text = Decimals.Replace(text, ".$1");
 
         // The spaces the engine puts around a punctuation mark it recognised separately.
         text = Regex.Replace(text, @"\s*([.:%])\s*", "$1");
@@ -97,6 +114,17 @@ public static class TradeText
 
     private static readonly Regex CjkGap =
         new(@"(?<=[\u3400-\u9FFF])\s+(?=[\u3400-\u9FFF])", RegexOptions.Compiled);
+
+    private static readonly Regex ClockColon =
+        new(@"(?<=\d)\s*[;；∶]\s*(?=\d)", RegexOptions.Compiled);
+
+    private static readonly Regex CommaSpace = new(@"\s*(,)\s*", RegexOptions.Compiled);
+
+    /// <summary>`5,900` — three digits after the comma is a thousands group, so the comma goes.</summary>
+    private static readonly Regex Thousands = new(@"(?<=\d),(\d{3})(?!\d)", RegexOptions.Compiled);
+
+    /// <summary>`31,80` — one or two digits after it is the decimal point the engine misread.</summary>
+    private static readonly Regex Decimals = new(@"(?<=\d),(\d{1,2})(?!\d)", RegexOptions.Compiled);
 
     /// <summary>
     /// Turns OCR words into text lines, one per visual row, left to right.
@@ -184,6 +212,39 @@ public static class TradeText
         return new TradeParse(trades, skipped) { Cancelled = cancelled };
     }
 
+    /// <summary>
+    /// Whether the list has a row that looks like a trade but says nothing about its direction.
+    ///
+    /// The direction is the field the reader will not guess — `买入` and `卖出` are the
+    /// difference between a position added and a position closed — and it is the one the engine
+    /// loses most often, because on these lists it is the leftmost and thinnest text on the row.
+    /// A row carrying a code or a clock but no direction is importable in every other respect and
+    /// unusable as it stands, which is what the second reading in
+    /// <see cref="ScreenshotText.ReadAsync"/> is for.
+    /// </summary>
+    public static bool Incomplete(IReadOnlyList<string> rows) =>
+        rows.Any(row => Side(row) is null && (Code(row) is not null || Clock.IsMatch(row)));
+
+    /// <summary>
+    /// Row by row, the reading that says more about the row.
+    ///
+    /// A row the smaller reading took without its direction is replaced by the same row from the
+    /// bigger one. **The whole row comes from one reading** — never a part of each — so no row
+    /// can end up with one reading's price and the other's size. Rows that do not line up are not
+    /// merged at all: two readings of different row counts are readings of different pictures, or
+    /// of the same picture cut up differently, and the smaller is the one the numbers were
+    /// checked against.
+    /// </summary>
+    public static IReadOnlyList<string> Merge(IReadOnlyList<string> first, IReadOnlyList<string> second)
+    {
+        if (first.Count != second.Count)
+        {
+            return first;
+        }
+
+        return [.. first.Select((row, i) => Side(row) is null && Side(second[i]) is not null ? second[i] : row)];
+    }
+
     /// <summary>How a broker's order table spells "this did not happen", in its several ways.</summary>
     private static bool IsCancelled(string block) =>
         CancelledWords.Any(word => block.Contains(word, StringComparison.Ordinal));
@@ -243,7 +304,38 @@ public static class TradeText
             blocks.Add(tail);
         }
 
-        return blocks;
+        return [.. blocks.SelectMany(Single)];
+    }
+
+    /// <summary>
+    /// One trade per block: a block carrying two codes is two rows.
+    ///
+    /// The boundary is the clock, and an unreadable clock is the one thing that takes it away.
+    /// Two rows then arrive as one block, and <see cref="Read"/> would report a trade made of the
+    /// first row's price and the second row's code and timestamp — a *wrong* trade, which is far
+    /// worse than a missing one: it is applied to somebody's book without anything on screen
+    /// saying it was guessed. Cutting at the second code costs the first row (reported, so the
+    /// reader can fix it) and leaves the second row whole.
+    /// </summary>
+    private static IEnumerable<string> Single(string block)
+    {
+        var first = Code(block);
+        var rest = first is null ? null : Code(block[(first.Index + first.Length)..]);
+
+        if (first is null || rest is null)
+        {
+            yield return block;
+            yield break;
+        }
+
+        var cut = first.Index + first.Length + rest.Index;
+
+        yield return block[..cut].Trim();
+
+        foreach (var part in Single(block[cut..]))
+        {
+            yield return part;
+        }
     }
 
     private static readonly Regex Clock = new(@"\b\d{1,2}:\d{2}:\d{2}\b", RegexOptions.Compiled);
@@ -367,7 +459,7 @@ public static class TradeText
 
         if (suffixed.Success)
         {
-            var venue = suffixed.Groups["venue"].Value.ToUpperInvariant().ToLowerInvariant();
+            var venue = Venue(suffixed.Groups["venue"].Value);
             var digits = suffixed.Groups["digits"].Value;
 
             return venue switch
@@ -382,7 +474,7 @@ public static class TradeText
 
         if (prefixed.Success)
         {
-            var venue = prefixed.Groups["venue"].Value.ToLowerInvariant();
+            var venue = Venue(prefixed.Groups["venue"].Value);
             var digits = prefixed.Groups["digits"].Value;
 
             return venue switch
@@ -421,12 +513,27 @@ public static class TradeText
 
     private sealed record CodeMatch(string Code, int Index, int Length);
 
+    /// <summary>
+    /// The venue as the engine spelled it: `SZ`, and also `5Z` — at a small text height an `S` is
+    /// read as a `5` often enough that a whole row was being dropped for it ("3000365z" on the
+    /// day's own list). The two-letter suffix is what carries the venue, so recovering the first
+    /// letter from its neighbour is not a guess about the number: the digits came through on
+    /// their own.
+    /// </summary>
+    private static string Venue(string raw) => raw.ToLowerInvariant().Replace('5', 's');
+
+    /// <summary>
+    /// A six-digit code followed by its venue. The first letter of the venue may come back as a
+    /// `5`, and one stray character may stand between the digits and the suffix — both are what
+    /// the engine does to `.SZ` at a small size.
+    /// </summary>
     private static readonly Regex Suffixed = new(
-        @"(?<digits>\d{6})\s*[.\-]?\s*(?<venue>SH|SZ|BJ|HK)\b|(?<digits>\d{4,5})\s*[.\-]?\s*(?<venue>HK)\b",
+        @"(?<digits>\d{6})\s*[.\-]?\s*(?<venue>[Ss5][Hh]|[Ss5][Zz]|[Bb][Jj]|[Hh][Kk])\b"
+        + @"|(?<digits>\d{4,5})\s*[.\-]?\s*(?<venue>[Hh][Kk])\b",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     private static readonly Regex Prefixed = new(
-        @"\b(?<venue>SH|SZ|BJ|HK)\s*(?<digits>\d{5,6})\b",
+        @"\b(?<venue>[Ss5][Hh]|[Ss5][Zz]|[Bb][Jj]|[Hh][Kk])\s*(?<digits>\d{5,6})\b",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     private static readonly Regex Bare = new(@"\b(?<digits>\d{5,6})\b", RegexOptions.Compiled);

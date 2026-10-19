@@ -31,6 +31,21 @@ namespace MarketMotionStudio.Market;
 public static class ScreenshotText
 {
     /// <summary>
+    /// The width the recogniser does best at, in pixels.
+    ///
+    /// Not a guess and not a taste: measured on the day's own order list, cropped to 307×235 —
+    /// which is what a snip of a phone screenshot on a desktop actually is — the engine read
+    /// **zero** trades at its own size, three at twice the size, and two at three times. Below
+    /// about 10 px of text height it reads the decimal point as a middle dot, the colon of a
+    /// clock as a semicolon, and Chinese names as other Chinese names; at 2× the same picture
+    /// reads cleanly. Above that the strokes thicken and it starts misreading digits again.
+    /// </summary>
+    private const double TargetWidth = 700;
+
+    /// <summary>How far up it is worth going: past this the strokes merge and it reads worse.</summary>
+    private const int MaxFactor = 3;
+
+    /// <summary>
     /// The rows on the screenshot, top to bottom, or an empty list when the engine reads nothing.
     /// </summary>
     /// <param name="file">The image the reader picked.</param>
@@ -41,7 +56,31 @@ public static class ScreenshotText
 
         var decoder = await BitmapDecoder.CreateAsync(stream);
 
-        using var bitmap = await decoder.GetSoftwareBitmapAsync();
+        var factor = Factor((int)decoder.PixelWidth);
+        var (rows, chinese) = await Recognise(decoder, factor);
+
+        // **A row the engine read without its 买入 / 卖出 is the commonest thing it loses at the
+        // smaller size**, because the direction word is the leftmost and thinnest text on the
+        // row — the day's own list came back with four rows carrying theirs and the fifth not.
+        // Without it the row cannot be imported at all: the direction is the one field the parser
+        // will not guess. So when a row is unusable for want of that word the picture is read
+        // again at twice the size, where the word does come through, and every row is taken from
+        // whichever reading says more about it. Paid for only when it is needed, and the numbers
+        // still come from the size they were measured to read best at.
+        if (TradeText.Incomplete(rows))
+        {
+            var (twice, _) = await Recognise(decoder, Math.Min(factor * 2, MaxFactor * 2));
+            rows = TradeText.Merge(rows, twice);
+        }
+
+        return (rows, chinese);
+    }
+
+    /// <summary>One pass: the picture at <paramref name="factor"/>, read into rows.</summary>
+    private static async Task<(IReadOnlyList<string> Rows, bool Chinese)> Recognise(
+        BitmapDecoder decoder, int factor)
+    {
+        using var bitmap = await Scaled(decoder, factor);
 
         var engine = Engine();
 
@@ -65,6 +104,44 @@ public static class ScreenshotText
         }
 
         return (TradeText.Rows(words), engine.RecognizerLanguage.LanguageTag.StartsWith("zh", StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>How far up the picture is blown before it is handed to the engine.</summary>
+    private static int Factor(int width) =>
+        width <= 0 ? 1 : Math.Clamp((int)Math.Round(TargetWidth / width), 1, MaxFactor);
+
+    /// <summary>
+    /// The picture blown up to a size the recogniser can read, or as it came when it is already
+    /// that size.
+    ///
+    /// **A cropped screenshot is the ordinary input and the worst case.** A phone screenshot is
+    /// 1080 wide and the engine reads it as it stands; a 300-pixel snip of one is below the
+    /// engine's floor, and the failure is silent — it returns text, just wrong text ("48.10" as
+    /// "4 & 10", "13:55:22" as "13 ： 55 ： 22"), which the parser then refuses row by row until
+    /// the dialog says it read nothing at all. Scaling up is the whole fix: nothing else about
+    /// the picture is changed, no threshold, no inversion — measured, inverting a dark
+    /// screenshot makes the names worse.
+    /// </summary>
+    private static async Task<SoftwareBitmap> Scaled(BitmapDecoder decoder, int factor)
+    {
+        var width = (int)decoder.PixelWidth;
+        var height = (int)decoder.PixelHeight;
+
+        if (factor <= 1 || width <= 0 || height <= 0)
+        {
+            return await decoder.GetSoftwareBitmapAsync();
+        }
+
+        var transform = new BitmapTransform
+        {
+            ScaledWidth = (uint)(width * factor),
+            ScaledHeight = (uint)(height * factor),
+            InterpolationMode = BitmapInterpolationMode.Fant,
+        };
+
+        return await decoder.GetSoftwareBitmapAsync(
+            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform,
+            ExifOrientationMode.IgnoreExifOrientation, ColorManagementMode.DoNotColorManage);
     }
 
     /// <summary>

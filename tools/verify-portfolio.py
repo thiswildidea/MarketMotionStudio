@@ -258,8 +258,12 @@ def source_checks():
 
     for path in sorted(glob.glob(os.path.join(SRC, "Strings", "*", "Resources.resw"))):
         lang = os.path.basename(os.path.dirname(path))
-        text = open(path, encoding="utf-8-sig").read()
-        found = re.search(r'PortfolioPnlTradesLine"><value>([^<]*)</value>', text)
+
+        # **别叫 `text`。** `text` 上面已经装的是 TradeText.cs，在这个循环里覆盖掉它，
+        # 循环之后所有拿 `text` 比的判据其实都在比最后一份 resw（tr-TR）—— 它们会
+        # 一律报红，而源码完全正确，红的样子和「功能没做」一模一样。
+        body = open(path, encoding="utf-8-sig").read()
+        found = re.search(r'PortfolioPnlTradesLine"><value>([^<]*)</value>', body)
 
         if found is None:
             stale.append(lang + ":没有这条")
@@ -272,6 +276,55 @@ def source_checks():
 
     check("成交笔数那行在 14 种语言里都只剩一个占位符，没有一份还写着「截至」",
           not stale, "、".join(stale[:4]))
+
+    # ---- 导入截图 -------------------------------------------------------------------
+    #
+    # 2026-10-20：桌面截一张手机行情里的订单列表（307×235）交给这一页，识别引擎在它自己的
+    # 尺寸上把小数点读成居中点、把冒号读成中文冒号、把中文名读成别的中文名，解析器只好一行
+    # 一行拒掉 —— 这一路走完，对话框说的是「识别到 0 笔」。实测那一张：原尺寸 0 笔，放大
+    # 2 倍 4 笔（第 5 行丢了「买入」两个字），放大 4 倍 5 笔。所以先放大，再对缺方向词的
+    # 那一行补读一次。
+    check("小截屏先放大再交给识别引擎（307 宽的截图就是常态，不是边角情况）",
+          "private const double TargetWidth = 700;" in screen
+          and "private const int MaxFactor = 3;" in screen
+          and "var factor = Factor((int)decoder.PixelWidth);" in screen
+          and "ScaledWidth = (uint)(width * factor)," in screen)
+
+    check("放大用 Fant（这几个字要的是笔画不糊，双线性会把小数点糊进数字里）",
+          "InterpolationMode = BitmapInterpolationMode.Fant," in screen)
+
+    check("缺方向词的行补读一次，整行取说得多的那一次（绝不一行拼一半）",
+          "if (TradeText.Incomplete(rows))" in screen
+          and "rows = TradeText.Merge(rows, twice);" in screen
+          and "public static bool Incomplete(IReadOnlyList<string> rows) =>" in text
+          and "public static IReadOnlyList<string> Merge(" in text
+          and "if (first.Count != second.Count)" in text
+          and "Side(second[i]) is not null ? second[i] : row" in text)
+
+    # 钟是行的分隔符：两个钟被读成一个，两行就并成一行，出来的是一笔**错的**成交
+    # （上一行的价 + 下一行的码与时间），而错的比缺的更坏 —— 它会被悄悄记进账里。
+    check("一个格子里出现两个代码就是两笔（宁缺不错）",
+          "private static IEnumerable<string> Single(string block)" in text
+          and "yield return block[..cut].Trim();" in text
+          and "return [.. blocks.SelectMany(Single)];" in text)
+
+    check("引擎读丢的那几种字都收回来（、当逗号 / 分号当冒号 / 逗号当小数点 / S 读成 5）",
+          ".Replace('、', ',')" in text
+          and "[;；∶]" in text
+          and "Regex Thousands" in text
+          and "Regex Decimals" in text
+          and ".Replace('5', 's')" in text)
+
+    check("撤单 / 废单 / 未成交单独归一类（它们带着码、价、量、钟，当成交导进去就是凭空多一笔）",
+          "public IReadOnlyList<string> Cancelled { get; init; } = [];" in text
+          and "{ Cancelled = cancelled }" in text
+          and '"已撤", "部撤", "撤单", "废单",' in text)
+
+    # 导入默认填「今天」，可这一页画的是**最后一个有成交的日子**。凌晨跑（今天还没开盘）
+    # 两者不是同一天：对话框说「已导入 5 笔」，曲线不动、笔数还是 0，页面上没有一句解释。
+    check("导入的日期默认是页面正在画的那一天，不是今天的日期",
+          "new TradeImportDialog(ImportDay())" in page
+          and "_session is { Day.Length: > 0 } session && DateOnly.TryParse(session.Day, out var day)" in page)
 
 
 # ---- 2) 自己算一遍 --------------------------------------------------------------------
@@ -377,11 +430,34 @@ def hkd():
     return float(raw.split("~")[3])
 
 
+def day_trades(day):
+    """账本里落在**画的那一天**的成交，按时间排好。
+
+    装载器（`IntradayPnl.Assemble`）拿到的是整本流水，进门第一件事就是按 `t.Day == day`
+    筛一遍，`opening` 与 `TradeCash` 都只用筛过的那一份。这里照做：不筛的话，账上任何
+    一天的历史成交都会挤进当天的收益里。
+    """
+    if not os.path.exists(STATE):
+        return []
+
+    data = json.loads(open(STATE, encoding="utf-8").read())
+
+    return sorted((t for t in data.get("Trades", []) if t.get("Day") == day),
+                  key=lambda t: (t.get("Time", ""), t.get("Code", "")))
+
+
 def expected(book=None):
     """按页面的定义把今天算一遍：日期、分钟点数、收益。
 
-    收益 = Σ 持仓 × (末价 − 昨收) × 汇率。没开市的那几只两头都按同一个价计，贡献恒为 0，
-    所以不写进来也不影响结果 —— 而这一点正是「休市那两只不算进曲线」那条断言要说的事。
+    **收益 = Σ (现持股数 × 末价 − 开盘持股数 × 昨收 + 当天成交现金) × 汇率。**
+
+    这不是「Σ 持股 × (末价 − 昨收)」，两者在**当天有成交**时差着一大块：买入把股数推上去
+    的同时把钱付出去，卖出把股票换成钱 —— 现金那一项必须进来，否则每买一次就凭空多出一块
+    浮盈。开盘持股数也不是现在的股数，而是把当天的成交**从最后一笔往前倒推**回去（同一分钟
+    一买一卖的那种来回，正推会把开盘算成「卖掉的那些」，整天就差一个开盘市值）。
+
+    没开市的那几只两头都按同一个价计，贡献恒为 0，所以不写进来也不影响结果 —— 而这一点
+    正是「休市那两只不算进曲线」那条断言要说的事。
 
     那一本账由调用方给（`ledger()`），不在这里问文件：主线程在这儿要先备份账本再开 App，
     而 `expected()` 在 App 起来之前就得算好。
@@ -404,13 +480,41 @@ def expected(book=None):
     close = 960 if live_hk else 900
     rate = hkd() if any(code.startswith("hk") for code, _, _ in book) else 1.0
 
+    # 当天成交：倒推开盘持股、累计现金（买是付出去，卖是收进来）。
+    trades = day_trades(day)
+
+    opening = {code: shares for code, shares, _ in book}
+    cash = {}
+
+    for trade in reversed(trades):
+        sign = -1 if trade["Side"] == 0 else 1
+        held = opening.get(trade["Code"], 0.0)
+        before = held + (sign * trade["Shares"])
+
+        if before <= 0:
+            opening.pop(trade["Code"], None)
+        else:
+            opening[trade["Code"]] = before
+
+    for trade in trades:
+        sign = -1 if trade["Side"] == 0 else 1
+        cash[trade["Code"]] = cash.get(trade["Code"], 0.0) + (sign * trade["Shares"] * trade["Price"])
+
+    # 当天清仓的那几只不在账上，但**当天的已实现盈亏在**：装载器会把它们以 0 股挂进来，
+    # 只剩下现金那一项。少了这一行，「今天卖掉的那只」挣的钱一笔都算不进来。
+    tickers = [(code, shares) for code, shares, _ in book]
+
+    for code in cash:
+        if code not in opening and code not in [c for c, _ in tickers] and cash[code] != 0:
+            tickers.append((code, 0.0))
+
     last = 570
     profit = 0.0
     value = 0.0
     rows = []
 
-    for code, shares, _ in book:
-        session = sessions[code]
+    for code, shares in tickers:
+        session = sessions.get(code)
         shot = shots.get(code, {})
         scale = rate if code.startswith("hk") else 1.0
         live = session is not None and session[0] == day
@@ -433,10 +537,14 @@ def expected(book=None):
         prev = shot.get("prev") or prices[at]
         price = prices[max(prices)]
 
-        rows.append({"code": code, "shares": shares, "prev": prev, "last": price,
-                     "delta": shares * (price - prev) * scale})
+        opened = opening.get(code, 0.0)
+        money = cash.get(code, 0.0)
+        delta = ((shares * price) - (opened * prev) + money) * scale
 
-        profit += shares * (price - prev) * scale
+        rows.append({"code": code, "shares": shares, "open": opened, "prev": prev,
+                     "last": price, "cash": money, "delta": delta})
+
+        profit += delta
         last = max(last, min(close, max(prices)))
 
     # The app skips the lunch break: the axis is the four trading hours laid end to end
@@ -588,6 +696,29 @@ def curve_any(image, box):
     band = (left, right, top + (height * 40 // 100), top + (height * 66 // 100))
 
     return near(image, band, rgb("Emphasis")) + near(image, band, rgb("Fall"))
+
+
+def pale(image, window):
+    """一块窗口里**发白**的像素：牛熊徽章那张脸是近白的（红满、绿蓝也高），曲线和背景都不是。
+
+    **为什么不能再用「两张图差了哪些像素」。** 背景那张山影是带水痕的，两张截图只要不是
+    同一毫秒合成，它就差出几千个像素 —— 而卡片的底色是半透明的，底下的水痕变了，从卡片上
+    透出来也跟着变。实测两个方向：同一帧量出 454 个（那次水痕恰好重合），另一次量出 3775
+    个、外框 362×418，看着像「整幅重画」，其实徽章只有三百来个像素。判据只好改成**找颜色**
+    而不是**找差**：徽章是画面上唯一一处近白的大块，它出现了就是出现了，水痕怎么动都不影响。
+    """
+    left, right, top, bottom = window
+    px = image.load()
+    found = []
+
+    for y in range(top, bottom + 1):
+        for x in range(left, right + 1):
+            r, g, b = px[x, y][:3]
+
+            if r > 200 and g > 150 and b > 150:
+                found.append((x, y))
+
+    return found
 
 
 def set_switch(win, automation_id, on, tries=6):
@@ -846,7 +977,7 @@ def counter_checks(win):
     at_mid = changed_pixels(early[0], mid[0], number)
     at_end = changed_pixels(mid[0], end[0], number)
 
-    check("半场之前一直是 0 笔（15% 与 50% 那两帧一模一样）", len(at_mid) <= 6,
+    check("半场之前笔数不动（15% 与 50% 那两帧一模一样）", len(at_mid) <= 6,
           "差 %d 个像素" % len(at_mid))
 
     check("走到底数字变了（那两笔 14:57 的成交数进来了）", len(at_end) >= 20,
@@ -978,44 +1109,42 @@ def look_checks(win, profit):
     if off is None or on is None:
         check("截得到「牛熊关 / 牛熊开」两张图", False)
     else:
-        spots = changed_pixels(off[0], on[0], off[1])
-
         left, right, top, bottom = off[1]
-        width = right - left + 1
-        height = bottom - top + 1
 
-        xs = [x for x, _ in spots]
-        ys = [y for _, y in spots]
+        # 徽章骑在曲线头上，所以先找曲线头：关掉时那一段曲线最靠右的那一列。
+        line = curve_any(off[0], off[1])
+        head_x = max((x for x, _ in line), default=left + (right - left) // 2)
+        at_head = [y for x, y in line if x >= head_x - 2]
+        head_y = int(sum(at_head) / len(at_head)) if at_head else (top + bottom) // 2
 
-        wide = (max(xs) - min(xs)) if spots else 0
-        tall = (max(ys) - min(ys)) if spots else 0
+        # 窗口只要够装下那枚徽章（半径 30 基准像素 ≈ 12 个窗口像素，再加一点余量）：
+        # 开得越大，水痕、卡片这些与开关无关的东西就越容易混进来。
+        window = (max(left, head_x - 80), min(right, head_x + 40),
+                  max(top, head_y - 80), min(bottom, head_y + 40))
 
-        check("打开之后画面上真的多了一块东西", len(spots) > 90,
-              "变了 %d 个像素" % len(spots))
+        before = pale(off[0], window)
+        after = pale(on[0], window)
 
-        # 一块徽章，不是整幅重画：变的地方只占画布的一小块。
-        check("多出来的是一小块（不是整幅重画）",
-              spots and wide < width * 0.32 and tall < height * 0.28,
-              "变了 %d×%d 像素，画布 %d×%d" % (wide, tall, width, height))
+        check("打开之后曲线头上多了一枚浅色的徽章",
+              len(after) - len(before) > 120,
+              "近白像素 %d → %d（窗口 x %d~%d, y %d~%d）"
+              % (len(before), len(after), window[0], window[1], window[2], window[3]))
 
-        # 徽章是**线之外**的东西：它盖在曲线上方，但本来就不该盖住曲线本身。这一条比
-        # 「在曲线头的正上方」稳得多 —— 上涨的那一天曲线头就在绘图区的高处，徽章被顶到
-        # 绘图区的顶边，于是它在曲线头的**下方**，而这不是 bug（`DrawMascot` 的钳位就是
-        # 干这个的）。位置的判据量的是它「另起一块」，不是「在哪个像素上」。曲线颜色红绿都认。
-        line = set(curve_any(off[0], off[1]))
-        on_line = len(set(spots) & line)
+        xs = [x for x, _ in after]
+        ys = [y for _, y in after]
 
-        check("徽章是一块独立的图案（没有盖到曲线本身）",
-              spots and on_line < len(spots) * 0.4,
-              "与曲线重叠 %d / %d 个像素" % (on_line, len(spots)))
+        wide = (max(xs) - min(xs)) if after else 0
+        tall = (max(ys) - min(ys)) if after else 0
 
-        # 它站在画面的上半部分：曲线头在右端，徽章贴着它，落在绘图区顶部一带。
-        # `ys` 已经是「这一列所有 y」的列表（上面从 spots 拆出来的），不是元组，直接求和。
-        centroid = (sum(ys) / len(ys)) if spots else bottom
+        # 一块徽章，不是整幅重画：它自己的外框就那么点大（画布 422×749）。
+        check("徽章是一小块（不是整幅重画）", after and wide < 60 and tall < 60,
+              "徽章 %d×%d 像素，画布 %d×%d" % (wide, tall, right - left + 1, bottom - top + 1))
 
-        check("徽章落在上半幅（跟着曲线头，不掉到卡片那边）",
-              spots and centroid < top + (height * 0.55),
-              "徽章重心 y=%d（画布 %d~%d）" % (centroid, top, bottom))
+        # 它骑在曲线头上：重心在那一点附近，不跑到卡片那一带去。
+        centre = (sum(ys) / len(ys)) if after else bottom
+
+        check("徽章跟着曲线头，不掉到卡片那边", after and abs(centre - head_y) < 70,
+              "徽章重心 y=%d / 曲线头 y=%d" % (centre, head_y))
 
     # ---- 动态纵轴 ---------------------------------------------------------------
     #
@@ -1175,8 +1304,9 @@ def deficit(page, guess):
     lines = ["页面 %+.2f / 脚本 %+.2f，差 %+.2f 元" % (page, guess["profit"], page - guess["profit"])]
 
     for row in guess["rows"]:
-        lines.append("    %-10s %6.0f 股 × (%s − %s) = %+9.2f"
-                     % (row["code"], row["shares"], row["last"], row["prev"], row["delta"]))
+        lines.append("    %-10s %6.0f 股（开盘 %6.0f）× (%s − %s) + 现金 %+.0f = %+9.2f"
+                     % (row["code"], row["shares"], row["open"], row["last"], row["prev"],
+                        row["cash"], row["delta"]))
 
     return "\n" + "\n".join(lines)
 
@@ -1232,11 +1362,19 @@ def main():
     original = open(STATE, "rb").read()
     started = json.loads(original.decode("utf-8")).get("Trades", [])
 
-    print("  起手的账：%d 只持仓 · %d 笔成交（应当是 0）"
+    print("  起手的账：%d 只持仓 · %d 笔成交"
           % (len(json.loads(original.decode("utf-8"))["Holdings"]), len(started)))
 
-    check("账本起手是干净的（不然第一次导入会被认成重复）", len(started) == 0,
-          "起手就有 %d 笔成交" % len(started))
+    # **这本账可能本来就有成交** —— 读者自己导进来的就是。所以这里不能要求它是空的
+    # （那样每跑一趟都会红，而红的原因和「功能坏了」毫无关系），要保证的只有一件：
+    # 这一趟要导的那两笔，账上还没有。不然第一次导入全被认成重复，后面每一条判据都在
+    # 验一件没有发生的事。
+    clash = [t for t in started
+             if t.get("Day") == guess["day"] and t.get("Code") == "sz300036"
+             and str(t.get("Time", "")).startswith("14:57")]
+
+    check("要导的那两笔（14:57 一买一卖）账上还没有，否则会被认成重复", not clash,
+          "账上已有 %r" % (clash[:2] if clash else "无"))
 
     backup = STATE + ".verify-bak"
     shutil.copy2(STATE, backup)
@@ -1278,15 +1416,19 @@ def main():
         # 列表写着股数与成本，所以「脚本算的那本账」和「页面画的那本账」能对得上自己。
         # 少了这一条，上面那句「收益一致」即使通过了也可能是巧合 —— 而账本被改过之后
         # （超图 5900 股 @8.387，不是种子那行）它正好会是巧合之外的另一种东西。
-        shown = sorted((float(a.replace(",", "")), float(b))
+        #
+        # **成本按显示的三位小数比。** 账里存的是四位（`Portfolio.Put` 用 `Math.Round(…, 4)`），
+        # 摊薄成本除不尽，列表又只印三位（`0.###`）：6.5295 印成 6.53、14.3787 印成 14.379。
+        # 拿四位去比印出来的三位，差 5e-4 就红，而红的原因和账错了毫无关系。
+        shown = sorted((float(a.replace(",", "")), round(float(b), 3))
                        for a, b in (DETAIL_ROW.match(n).groups() for n in rows if DETAIL_ROW.match(n)))
-        wanted = sorted((shares, cost) for _, shares, cost in book)
+        wanted = sorted((shares, round(cost, 3)) for _, shares, cost in book)
 
         missed = [n for n in rows if not DETAIL_ROW.match(n)]
 
         check("列表上的股数与成本就是文件里那本账",
               len(shown) == len(wanted)
-              and all(abs(a - b) < 1e-6 and abs(c - d) < 5e-4
+              and all(abs(a - b) < 1e-6 and abs(c - d) < 5e-3
                       for (a, c), (b, d) in zip(shown, wanted)),
               "列表 %d 行 / 文件 %d 行%r" % (len(shown), len(wanted), missed[:3]))
 
@@ -1441,6 +1583,13 @@ def main():
             time.sleep(1)
 
         if backup is not None and original is not None:
+            # **先请它出去，再还原文件。** App 手里攥着它自己那份账，退出或下一次保存时会把
+            # 内存里那本**写回磁盘** —— 还原在前、它写在后，还原就等于没做。实测撞过一次：
+            # 文件里剩下的正是「测验那两笔成交 + 还原后的股数成本」，两半来自两个时刻，
+            # 而每一半单独看都自洽，于是当天收益比脚本算的多了整整 1803 元。
+            winui.kill(winui.EXE)
+            time.sleep(1)
+
             shutil.copy2(backup, STATE)
             os.remove(backup)
 
