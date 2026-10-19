@@ -1027,6 +1027,7 @@
   <data name="NavCryptoAnnual.Content"><value>加密貨幣年度報酬</value></data>
   <data name="PositionDynamicAxis.Content"><value>動態縱軸</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>動態縱軸</value></data>
+  <data name="PortfolioDialogPick"><value>找到 {0} 個匹配，請從列表裡選一個。</value></data>
   <data name="NavPortfolioPnl.Content"><value>即時持倉收益</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>即時持倉收益</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>當天 9:30 到收盤的持倉收益曲線，逐分鐘刷新；持倉可手動維護，成交紀錄每天匯入</value></data>
@@ -1043,8 +1044,7 @@
   <data name="PortfolioPnlUpdated"><value>最後更新 {0}</value></data>
   <data name="PortfolioPnlImported"><value>已匯入 {0} 筆成交（重複 {1} 筆，無對應持倉 {2} 筆）</value></data>
   <data name="PortfolioPnlTitle"><value>即時持倉收益</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} 檔持倉</value></data>
-  <data name="PortfolioPnlTradesLine"><value>截至 {0} · 成交 {1} 筆</value></data>
+  <data name="PortfolioPnlTradesLine"><value>成交 {0} 筆</value></data>
   <data name="PortfolioPnlValueLine"><value>市值 {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>收益率</value></data>
   <data name="PortfolioPnlStatValue"><value>持倉市值</value></data>
@@ -1071,7 +1071,6 @@
   <data name="PortfolioDialogBadNumbers"><value>數量要大於 0，成本不能為負。</value></data>
   <data name="PortfolioDialogChecking"><value>正在核對代碼…</value></data>
   <data name="PortfolioDialogUnknown"><value>行情源查不到 {0}。</value></data>
-  <data name="PortfolioDialogPick"><value>找到 {0} 個匹配，請從列表裡選一個。</value></data>
   <data name="PortfolioImportTitle"><value>匯入成交紀錄</value></data>
   <data name="PortfolioImportApply"><value>匯入</value></data>
   <data name="PortfolioImportHint.Text"><value>選一張當日成交的截圖，或者直接把成交紀錄貼進來。識別結果可以先改，確認無誤再匯入。</value></data>

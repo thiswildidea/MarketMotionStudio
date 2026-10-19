@@ -7,7 +7,8 @@ and, in the renderer, the words that are drawn into the video.
 
 Run it again after editing a translation: it removes the keys it owns and appends them
 in order, so the file never accumulates two copies and the fourteen files never drift
-apart in key order.
+apart in key order. A string the page has stopped drawing goes into RETIRED, which is
+removed rather than re-added.
 """
 import codecs
 import hashlib
@@ -18,6 +19,15 @@ ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                     "src", "MarketMotionStudio", "Strings")
 
 LANGS = ["zh-Hans", "zh-Hant", "en-US", "ja", "ko", "de", "fr", "es", "it", "pl", "pt-BR", "cs", "ru", "tr"]
+
+# Keys this page used to draw and no longer does. Stripped from all fourteen files rather than
+# left behind: a string nobody reads is one that silently disagrees with what the frame says, and
+# the next person to change this header has to work out which of the two is the live one.
+#
+#   PortfolioPnlSubtitle — "{0} · {1} 只持仓". The frame no longer advertises how many positions
+#   the book holds: nobody watching the video can see the book, and the count said nothing about
+#   the day. The day itself is still drawn, now on a line of its own.
+RETIRED = ["PortfolioPnlSubtitle"]
 
 # Key, then one value per language in LANGS order.
 ENTRIES = [
@@ -80,7 +90,7 @@ ENTRIES = [
         "Importa esecuzioni", "Importuj transakcje", "Importar execuções", "Importovat obchody",
         "Импорт сделок", "İşlemleri içe aktar")),
 
-    ("PortfolioPnlAutoRefresh.Content", (
+    ("PortfolioPnlAutoRefresh.Header", (
         "开盘时自动刷新", "開盤時自動刷新", "Refresh while open", "取引時間中は自動更新",
         "장중 자동 새로고침", "In der Sitzung aktualisieren", "Actualiser en séance",
         "Actualizar en sesión", "Aggiorna in seduta", "Odświeżaj w sesji", "Atualizar no pregão",
@@ -154,18 +164,12 @@ ENTRIES = [
         "Depot live", "P&L en direct", "P&L en vivo", "P&L in tempo reale", "Wynik na żywo",
         "P&L ao vivo", "Výsledek živě", "Портфель онлайн", "Canlı portföy")),
 
-    ("PortfolioPnlSubtitle", (
-        "{0} · {1} 只持仓", "{0} · {1} 檔持倉", "{0} · {1} holdings", "{0} · {1} 銘柄",
-        "{0} · {1}종목", "{0} · {1} Positionen", "{0} · {1} positions", "{0} · {1} posiciones",
-        "{0} · {1} posizioni", "{0} · {1} pozycji", "{0} · {1} posições", "{0} · {1} pozic",
-        "{0} · позиций: {1}", "{0} · {1} pozisyon")),
-
     ("PortfolioPnlTradesLine", (
-        "截至 {0} · 成交 {1} 笔", "截至 {0} · 成交 {1} 筆", "to {0} · {1} trades",
-        "{0} 時点 · 約定 {1} 件", "{0} 기준 · 체결 {1}건", "bis {0} · {1} Ausführungen",
-        "jusqu'à {0} · {1} exécutions", "hasta {0} · {1} ejecuciones", "fino alle {0} · {1} esecuzioni",
-        "do {0} · {1} transakcji", "até {0} · {1} execuções", "do {0} · {1} obchodů",
-        "до {0} · сделок: {1}", "{0} itibarıyla · {1} işlem")),
+        "成交 {0} 笔", "成交 {0} 筆", "trades: {0}",
+        "約定 {0} 件", "체결 {0}건", "Ausführungen: {0}",
+        "exécutions : {0}", "ejecuciones: {0}", "esecuzioni: {0}",
+        "transakcji: {0}", "execuções: {0}", "obchodů: {0}",
+        "сделок: {0}", "{0} işlem")),
 
     ("PortfolioPnlValueLine", (
         "市值 {0}", "市值 {0}", "value {0}", "評価額 {0}", "평가액 {0}", "Wert {0}", "valeur {0}",
@@ -283,7 +287,7 @@ ENTRIES = [
         "关闭", "關閉", "Close", "閉じる", "닫기", "Schließen", "Fermer", "Cerrar", "Chiudi",
         "Zamknij", "Fechar", "Zavřít", "Закрыть", "Kapat")),
 
-    ("PortfolioDialogHint", (
+    ("PortfolioDialogHint.Text", (
         "按代码添加；数量与成本照券商 App 填。成本是摊薄成本：买入会摊高，卖出盈利会摊低。",
         "按代碼新增；數量與成本照券商 App 填。成本是攤薄成本：買入會攤高，賣出獲利會攤低。",
         "Add by code; enter the size and cost your broker shows. Cost is diluted: a purchase raises it, a profitable sale lowers it.",
@@ -299,7 +303,7 @@ ENTRIES = [
         "Добавьте по коду; количество и стоимость вводите как в приложении брокера. Стоимость разводнённая: покупка её повышает, прибыльная продажа понижает.",
         "Kodla ekleyin; adet ve maliyeti aracı kurumun gösterdiği gibi girin. Maliyet seyreltilmiştir: alım yükseltir, kârlı satış düşürür.")),
 
-    ("PortfolioDialogAdd", (
+    ("PortfolioDialogAdd.Text", (
         "添加一只", "新增一檔", "Add a holding", "銘柄を追加", "종목 추가", "Position hinzufügen",
         "Ajouter une position", "Añadir una posición", "Aggiungi una posizione", "Dodaj pozycję",
         "Adicionar uma posição", "Přidat pozici", "Добавить позицию", "Pozisyon ekle")),
@@ -384,7 +388,7 @@ ENTRIES = [
         "导入", "匯入", "Import", "取り込む", "가져오기", "Importieren", "Importer", "Importar",
         "Importa", "Importuj", "Importar", "Importovat", "Импортировать", "İçe aktar")),
 
-    ("PortfolioImportHint", (
+    ("PortfolioImportHint.Text", (
         "选一张当日成交的截图，或者直接把成交记录粘进来。识别结果可以先改，确认无误再导入。",
         "選一張當日成交的截圖，或者直接把成交紀錄貼進來。識別結果可以先改，確認無誤再匯入。",
         "Pick a screenshot of the day's filled orders, or paste the list. The result can be corrected before anything is applied.",
@@ -534,6 +538,9 @@ def main():
 
         # Drop anything this script wrote last time, so it can be re-run after an edit.
         for key, _ in ENTRIES:
+            text = re.sub(r'\n *<data name="%s"[^>]*>.*?</data>\n' % re.escape(key), "\n", text, flags=re.S)
+
+        for key in RETIRED:
             text = re.sub(r'\n *<data name="%s"[^>]*>.*?</data>\n' % re.escape(key), "\n", text, flags=re.S)
 
         block = []

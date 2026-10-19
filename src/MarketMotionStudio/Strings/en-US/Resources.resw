@@ -1039,6 +1039,7 @@
   <data name="NavCryptoAnnual.Content"><value>Crypto Annual Returns</value></data>
   <data name="PositionDynamicAxis.Content"><value>Dynamic vertical axis</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Dynamic vertical axis</value></data>
+  <data name="PortfolioDialogPick"><value>Found {0} matches; pick one from the list.</value></data>
   <data name="NavPortfolioPnl.Content"><value>Live portfolio P&amp;L</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>Live portfolio P&amp;L</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>Your holdings' profit and loss from 09:30 to the close, minute by minute — kept by hand, updated by importing each day's filled orders</value></data>
@@ -1055,8 +1056,7 @@
   <data name="PortfolioPnlUpdated"><value>Updated {0}</value></data>
   <data name="PortfolioPnlImported"><value>Imported {0} trades ({1} duplicates, {2} without a position)</value></data>
   <data name="PortfolioPnlTitle"><value>Live portfolio P&amp;L</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} holdings</value></data>
-  <data name="PortfolioPnlTradesLine"><value>to {0} · {1} trades</value></data>
+  <data name="PortfolioPnlTradesLine"><value>trades: {0}</value></data>
   <data name="PortfolioPnlValueLine"><value>value {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Return</value></data>
   <data name="PortfolioPnlStatValue"><value>Position value</value></data>
@@ -1083,7 +1083,6 @@
   <data name="PortfolioDialogBadNumbers"><value>Shares must be above zero and cost cannot be negative.</value></data>
   <data name="PortfolioDialogChecking"><value>Checking the code…</value></data>
   <data name="PortfolioDialogUnknown"><value>The quote source does not know {0}.</value></data>
-  <data name="PortfolioDialogPick"><value>Found {0} matches; pick one from the list.</value></data>
   <data name="PortfolioImportTitle"><value>Import filled orders</value></data>
   <data name="PortfolioImportApply"><value>Import</value></data>
   <data name="PortfolioImportHint.Text"><value>Pick a screenshot of the day's filled orders, or paste the list. The result can be corrected before anything is applied.</value></data>

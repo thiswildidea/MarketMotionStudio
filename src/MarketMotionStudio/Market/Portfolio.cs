@@ -328,9 +328,20 @@ public static class Portfolio
         return new ImportResult(applied, duplicates, unmatched);
     }
 
-    /// <summary>The trades confirmed for a day, oldest first.</summary>
-    public static IReadOnlyList<PortfolioTrade> TradesOn(string day) =>
-        [.. Journal.Where(t => t.Day == day).OrderBy(t => t.MinuteOfDay)];
+    /// <summary>
+    /// Everything still journalled, oldest day first.
+    ///
+    /// Handed to the loader whole, and the loader picks the day it ended up drawing out of it.
+    /// Asking for "today's" first — which is what the page did — drops the fills of the day the
+    /// frame is actually showing whenever that day is not today, and that is every morning before
+    /// the market opens: the page draws the last session that traded, and the trades stamped on
+    /// that session are exactly the ones it needs. The curve would draw the day with no fills on
+    /// it, the count would read zero, and nothing on the page would say why.
+    ///
+    /// A copy rather than the list itself: the loader runs off the UI thread, and `Prune` can
+    /// drop a day out from under it.
+    /// </summary>
+    public static IReadOnlyList<PortfolioTrade> Trades => [.. Journal];
 
     /// <summary>
     /// How many shares of each code were held when a day opened: today's book with today's trades

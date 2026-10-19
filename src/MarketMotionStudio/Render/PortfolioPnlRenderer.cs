@@ -580,7 +580,27 @@ public sealed class PortfolioPnlRenderer(
             creditFormat, Palette.Credit, a * 0.75);
     }
 
-    /// <summary>The title block, the day, the clock, and the running figure.</summary>
+    /// <summary>
+    /// How many of the day's fills the curve has carried by <paramref name="index"/>.
+    ///
+    /// The same rule <see cref="DrawTrades"/> places the dots by: a fill counts once the curve has
+    /// reached its minute. Asked in one place because the number in the header and the dots on the
+    /// curve are two statements about one fact — "has this trade happened yet" — and two copies of
+    /// the rule is two chances to answer it differently on the same frame.
+    /// </summary>
+    private int Filled(int index)
+    {
+        if (index < 0 || index >= session.Samples.Count)
+        {
+            return 0;
+        }
+
+        var reached = session.Samples[index].Minute;
+
+        return session.Trades.Count(t => t.Minute <= reached);
+    }
+
+    /// <summary>The title block, the day, the fills so far, the clock, and the running figure.</summary>
     private void DrawHeader(
         CanvasDrawingSession session2, FrameContext context, double t, int index, double value)
     {
@@ -591,24 +611,33 @@ public sealed class PortfolioPnlRenderer(
 
         _title.Draw(session2, context, title, _title.For(session2, title, context, ShowTitle), Palette.Title, a);
 
-        using var small = Ink.Format(context.Px(25));
+        // The day on a line of its own, in the amber every other page draws an advancing date in
+        // and at better than one and a half times the size the old subtitle used. It is the first
+        // thing a viewer checks — is this today's? — and it was the smallest text in the frame.
+        // The count of holdings that shared this line is gone with it: nobody watching can see the
+        // book, and nine of them said nothing about the day.
+        using (var dayFormat = Ink.Format(context.Px(40), bold: true))
+        {
+            Ink.Centred(session2, session.Day, cx, Row(context, 0.187), dayFormat, Palette.Moving, a);
+        }
 
-        Ink.Centred(
-            session2,
-            Strings.Format("PortfolioPnlSubtitle", session.Day, session.Holdings.Count),
-            cx, Row(context, 0.187), small, Palette.Muted, a);
+        // How many fills the curve has carried *so far*, counted to the minute the frame has
+        // reached. It used to state the day's total against a fixed clock ("to 15:00 · 0 trades"),
+        // which was wrong twice over: on a frame from the morning it asserted the afternoon's
+        // number, and the clock it stated was already drawn two rows below as the frame's own
+        // "now", so the two could only ever agree by luck.
+        var trades = Filled(index).ToString(CultureInfo.InvariantCulture);
 
-        var trades = session.TradeCount.ToString(CultureInfo.InvariantCulture);
-
-        using (var strong = Ink.Format(context.Px(25), bold: true))
+        using (var plain = Ink.Format(context.Px(26)))
+        using (var strong = Ink.Format(context.Px(30), bold: true))
         {
             Ink.Highlighted(
                 session2,
-                Strings.Format("PortfolioPnlTradesLine", PortfolioSession.Clock(session.LastMinute), trades),
+                Strings.Format("PortfolioPnlTradesLine", trades),
                 trades,
                 Palette.Muted, Palette.Emphasis,
-                small, strong,
-                cx, Row(context, 0.214), a);
+                plain, strong,
+                cx, Row(context, 0.219), a);
         }
 
         if (index < 0)
@@ -616,12 +645,14 @@ public sealed class PortfolioPnlRenderer(
             return;
         }
 
-        // The clock the frame has reached, which is what "实时" means on a still frame.
-        using (var clockFormat = Ink.Format(context.Px(32)))
+        // The clock the frame has reached, which is what "实时" means on a still frame. The same
+        // amber as the day above and bigger than it was, because on this page the time *is* the
+        // subject: every other number is only true at this minute.
+        using (var clockFormat = Ink.Format(context.Px(40), bold: true))
         {
             Ink.Centred(
                 session2, PortfolioSession.Clock(session.Samples[index].Minute),
-                cx, Row(context, 0.2533), clockFormat, Palette.Muted, a);
+                cx, Row(context, 0.2533), clockFormat, Palette.Moving, a);
         }
 
         var colour = value >= 0 ? Palette.Emphasis : Palette.Fall;

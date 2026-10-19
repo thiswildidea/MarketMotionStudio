@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>暗号資産の年間収益</value></data>
   <data name="PositionDynamicAxis.Content"><value>縦軸を動的に調整</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>縦軸を動的に調整</value></data>
+  <data name="PortfolioDialogPick"><value>該当が {0} 件あります。一覧から選んでください。</value></data>
   <data name="NavPortfolioPnl.Content"><value>リアルタイム保有損益</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>リアルタイム保有損益</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>当日 9:30 から大引けまでの保有損益を1分ごとに表示。保有銘柄は手入力、約定履歴は毎日取り込みます</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>最終更新 {0}</value></data>
   <data name="PortfolioPnlImported"><value>{0} 件の約定を取り込みました（重複 {1} 件、保有なし {2} 件）</value></data>
   <data name="PortfolioPnlTitle"><value>リアルタイム保有損益</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} 銘柄</value></data>
-  <data name="PortfolioPnlTradesLine"><value>{0} 時点 · 約定 {1} 件</value></data>
+  <data name="PortfolioPnlTradesLine"><value>約定 {0} 件</value></data>
   <data name="PortfolioPnlValueLine"><value>評価額 {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>収益率</value></data>
   <data name="PortfolioPnlStatValue"><value>保有評価額</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>数量は 0 より大きく、単価は負にできません。</value></data>
   <data name="PortfolioDialogChecking"><value>コードを確認中…</value></data>
   <data name="PortfolioDialogUnknown"><value>相場データに {0} が見つかりません。</value></data>
-  <data name="PortfolioDialogPick"><value>該当が {0} 件あります。一覧から選んでください。</value></data>
   <data name="PortfolioImportTitle"><value>約定履歴を取り込む</value></data>
   <data name="PortfolioImportApply"><value>取り込む</value></data>
   <data name="PortfolioImportHint.Text"><value>当日の約定のスクリーンショットを選ぶか、約定履歴を貼り付けてください。内容は取り込む前に修正できます。</value></data>

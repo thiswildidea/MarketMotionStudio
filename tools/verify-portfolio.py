@@ -27,6 +27,7 @@
 """
 
 import colorsys
+import glob
 import json
 import os
 import re
@@ -217,6 +218,60 @@ def source_checks():
           "        SavePreferences();\n"
           "    }" in page
           and "LoadAsync" not in page.split("private void OnLookChanged")[1].split("private ")[0])
+
+    # ---- 页眉两行 -------------------------------------------------------------------
+    #
+    # 2026-10-20 改的：日期单独一行、放大、换 `Moving` 那支琥珀色；「9 只持仓」和
+    # 「截至 15:00」从帧上拿掉；「成交 N 笔」改成数**曲线已经走到的那几笔**。
+    # 头两条在源码里只有一种写法，第三条例外 —— 它错了画面照样是「成交 0 笔」，
+    # 而 0 笔正是这本书大部分时候的样子，所以一定要在源码这层把统计口径钉住。
+    check("日期单独占一行，40 号粗体，用 `Moving` 那支琥珀色（原来是 25 号灰的副标题）",
+          "using (var dayFormat = Ink.Format(context.Px(40), bold: true))" in render
+          and "Ink.Centred(session2, session.Day, cx, Row(context, 0.187), dayFormat, Palette.Moving, a);"
+          in render)
+
+    check("帧上不再说「N 只持仓」，也不再点名「截至 HH:MM」",
+          "session.Holdings.Count" not in render
+          and "PortfolioPnlSubtitle" not in render
+          and "PortfolioPnlTradesLine\", PortfolioSession.Clock" not in render)
+
+    check("成交笔数数的是曲线已经走到的那几笔，不是全天的总数（`Filled`）",
+          "return session.Trades.Count(t => t.Minute <= reached);" in render
+          and "var trades = Filled(index)" in render
+          and "session.TradeCount" not in render)
+
+    check("页眉那个笔数和曲线上的圆点用的是同一条「到点才算」的规矩",
+          "if (trade.Minute > reached)" in render
+          and "var reached = session.Samples[index].Minute;" in render)
+
+    # 装载器拿到的是**整本流水**，自己挑出画的那一天。反过来先把「今天的」筛一道，凌晨
+    # （今天还没开盘、页上画的是上一个交易日）那一整天的成交就全丢了：曲线画着那一天却
+    # 一个成交标记都没有，笔数恒为 0，页面上也没有任何一句解释。
+    check("页面把整本成交流水交给装载器，而不是先只要「今天的」",
+          "[.. Portfolio.Trades]" in page and "Portfolio.TradesOn(" not in page
+          and "public static IReadOnlyList<PortfolioTrade> Trades => [.. Journal];" in book)
+
+    # 「截至」只留在旧字符串里。14 份 resw 里任何一份还写着两个占位符，那一语言的字幕
+    # 就会在运行时 FormatException（参数给了一个，模板要两个）—— 而这一页只有中文用户
+    # 会先看到，别的语言是发版之后才发现的。
+    stale = []
+
+    for path in sorted(glob.glob(os.path.join(SRC, "Strings", "*", "Resources.resw"))):
+        lang = os.path.basename(os.path.dirname(path))
+        text = open(path, encoding="utf-8-sig").read()
+        found = re.search(r'PortfolioPnlTradesLine"><value>([^<]*)</value>', text)
+
+        if found is None:
+            stale.append(lang + ":没有这条")
+            continue
+
+        value = found.group(1)
+
+        if "{1}" in value or "截至" in value or "{0}" not in value:
+            stale.append("%s:%s" % (lang, value))
+
+    check("成交笔数那行在 14 种语言里都只剩一个占位符，没有一份还写着「截至」",
+          not stale, "、".join(stale[:4]))
 
 
 # ---- 2) 自己算一遍 --------------------------------------------------------------------
@@ -603,6 +658,271 @@ def changed_pixels(first, second, box, floor=26):
     return found
 
 
+def shot_at(win, name, progress):
+    """停在某个进度上抓一张 —— 先 re-seek 再截图。
+
+    不 re-seek 直接抓，两张图可能停在不同进度（动画余势、合成线程还在画上一帧），
+    整个曲线错位几千像素，把「多了一块徽章」量成「整幅重画」。
+    """
+    set_progress(win, progress)
+    time.sleep(0.5)
+
+    return grab(win, name)
+
+
+def band(box, from_permille, to_permille):
+    """画布高度上的一段，按千分比给。
+
+    渲染器用「帧高的分数」排行，判据就用同一套分数去找那一行。换成绝对像素去找，换台机器、
+    换个窗口大小就错位一行，而错位的样子是「这里没有那个颜色」—— 看起来像功能没做。
+    """
+    left, right, top, bottom = box
+    height = bottom - top + 1
+
+    return (left, right, top + (height * from_permille // 1000), top + (height * to_permille // 1000))
+
+
+def ink(image, box, floor=90):
+    """一段区域里比背景亮的像素：文字是亮的，深蓝背景三个通道都在 64 以下。
+
+    不挑色相，因为这一行既有灰字又有红数字 —— 要量的是「这一行画了多宽」，不是「红色有多少」。
+    """
+    pixels = image.load()
+    left, right, top, bottom = box
+    found = []
+
+    for y in range(top, bottom + 1):
+        for x in range(left, right + 1):
+            if max(pixels[x, y][:3]) >= floor:
+                found.append((x, y))
+
+    return found
+
+
+def baseline_px(count, box):
+    """截图里的长度折回帧的基准像素（画布 1920 高）。
+
+    9:16 的画布，高就是 1920 个基准像素，横竖同一个比例 —— 于是「这一行的字形多高」能直接
+    拿去和渲染器里的 `context.Px(40)` 比，不受窗口大小影响。
+    """
+    return count * 1920.0 / (box[3] - box[2] + 1)
+
+
+def extent(spots, axis):
+    """一堆像素在某一轴上的跨度，一个都没有时为 0。"""
+    values = [point[axis] for point in spots]
+
+    return (max(values) - min(values)) if values else 0
+
+
+def clusters(spots, gap=8):
+    """按 y 把像素分成几块（相邻两行差超过 `gap` 就断一块），给回每块的 `(top, bottom)`。
+
+    页眉里那几行的位置**不是常数**：标题换行，整块页眉就跟着往下挪一行（`HeaderRow` 的
+    `TitleShift`）。所以判据不能按分数去切固定的一条带子 —— 那在标题占两行时正好落在
+    日期和钟中间，量到的是空气。琥珀色在这块区域里只有日期和钟两处，按 y 断开就行。
+    """
+    rows = sorted({y for _, y in spots})
+    blocks = []
+    first = last = None
+
+    for y in rows:
+        if first is None:
+            first = last = y
+            continue
+
+        if y - last > gap:
+            blocks.append((first, last))
+            first = y
+
+        last = y
+
+    if first is not None:
+        blocks.append((first, last))
+
+    return blocks
+
+
+def header_checks(win, name="verify-portfolio-header.png"):
+    """页眉那几行：日期单独一行、变大变亮；第二行只剩成交笔数；钟还在它下面走着。
+
+    停在结尾抓一张。三条判据都折回**帧的基准像素**去量 —— 抄窗口里的绝对像素，换台机器
+    就当场作废，而它作废的样子和「功能没做」一模一样。
+    """
+    print("\n页眉")
+
+    shot = shot_at(win, name, 1.0)
+
+    check("截得到结尾那一帧", shot is not None)
+
+    if shot is None:
+        return
+
+    image, box = shot
+
+    # 整块页眉（标题之下、大数字之上）里找琥珀色：日期一行、钟一行，中间夹着成交笔数那行。
+    # 标题是白的、大数字是红的，都不在这支色相里。
+    gold = near(image, band(box, 120, 310), rgb("Moving"))
+    blocks = clusters(gold)
+
+    check("页眉上有日期和钟两处琥珀色（标题白、大数字红，都不算）", len(blocks) == 2,
+          "读到 %d 处" % len(blocks))
+
+    if len(blocks) != 2:
+        return
+
+    (date_top, date_bottom), (clock_top, clock_bottom) = blocks
+
+    tall = baseline_px(date_bottom - date_top, box)
+
+    check("日期换了颜色（`Moving` 那支琥珀色，不再是灰的）",
+          len([1 for _, y in gold if date_top <= y <= date_bottom]) > 150)
+
+    # 旧副标题 25 号，字形高约 18 个基准像素；40 号约 28。窗口里画布只有 422 像素宽，
+    # 一像素折回帧里是 2.5 个基准像素 —— 门槛放在 22，既不碰 18 那头，也离 28 那头够远。
+    check("日期字号真的放大了（字形高 %.0f 基准像素，25 号字只有 18）" % tall, tall >= 22)
+
+    # 第二行夹在这两块琥珀色中间 —— 它的位置由上下两块定，不靠分数猜。
+    second = ink(image, (box[0], box[1], date_bottom + 2, clock_top - 2))
+    wide = baseline_px(extent(second, 0), box)
+
+    # 只有「成交 N 笔」。「截至 15:00 · 成交 0 笔」横跨 200 多个基准像素，这一版不到 110，
+    # 门槛 160 分得开，也不至于因为哪种语言翻得长一点就误伤。
+    check("第二行只剩成交笔数（横跨 %.0f 基准像素，带「截至 15:00」那版是 200 多）" % wide,
+          0 < wide < 160)
+
+    reds = near(image, (box[0], box[1], date_bottom + 2, clock_top - 2), rgb("Emphasis"))
+
+    check("笔数那个数字还在，而且是强调色", len(reds) > 25, "%d 像素" % len(reds))
+
+    check("走着的钟和日期同一支颜色（也在页眉里、也放大到同一档）",
+          baseline_px(clock_bottom - clock_top, box) >= 22,
+          "钟的字形高 %.0f 基准像素" % baseline_px(clock_bottom - clock_top, box))
+
+
+def counter_checks(win):
+    """「成交 N 笔」跟着曲线走：半场之前一直是 0，走到底才数到导入的那两笔。
+
+    脚本不认字，所以不判「那个字形是不是 2」，判的是**它在什么时候变**：十五分之一处
+    和半场那两帧必须一模一样（那两刻都还没走到 14:57），结尾必须不一样（走到了）。改动
+    之前这个数是全天总数，三帧一模一样 —— 而它和做对了的样子在结尾那一帧完全一致，
+    光看结尾分不出来。
+
+    三张图必须各自比在自己那张画布框里，所以先验三张图的框一致。实测吃过一次：导入之后
+    状态行那句变长、多折了一行，预览从 422×749 缩到 384×683，「同一个数字」量出八十几个
+    像素的差 —— 差得像是数变了，其实是整个画面缩了。
+    """
+    early = shot_at(win, "verify-portfolio-count-early.png", 0.15)
+    mid = shot_at(win, "verify-portfolio-count-mid.png", 0.5)
+    end = shot_at(win, "verify-portfolio-count-end.png", 1.0)
+
+    if early is None or mid is None or end is None:
+        check("截得到「早段 / 半场 / 结尾」三张图", False)
+        return
+
+    check("三张图的画布框一样（布局没有在两次抓图之间变过）",
+          early[1] == mid[1] == end[1], "%r / %r / %r" % (early[1], mid[1], end[1]))
+
+    if not early[1] == mid[1] == end[1]:
+        return
+
+    box = early[1]
+
+    # 页眉那一块里唯一的红是笔数那个数字：日期与钟是琥珀色的，大数字在更下面（标题占两行
+    # 时它跟着往下挪，0.31 这条线仍然在它上面）。
+    reds = near(early[0], band(box, 120, 310), rgb("Emphasis"))
+
+    check("早段那一帧找得到笔数那个红数字", len(reds) > 25, "%d 像素" % len(reds))
+
+    if len(reds) <= 25:
+        return
+
+    xs = [x for x, _ in reds]
+    ys = [y for _, y in reds]
+
+    # 框比字形本身大 3 像素：换数字时字形边缘也可能差一像素，框要盖得住。
+    number = (min(xs) - 3, max(xs) + 3, min(ys) - 3, max(ys) + 3)
+
+    at_mid = changed_pixels(early[0], mid[0], number)
+    at_end = changed_pixels(mid[0], end[0], number)
+
+    check("半场之前一直是 0 笔（15% 与 50% 那两帧一模一样）", len(at_mid) <= 6,
+          "差 %d 个像素" % len(at_mid))
+
+    check("走到底数字变了（那两笔 14:57 的成交数进来了）", len(at_end) >= 20,
+          "差 %d 个像素" % len(at_end))
+
+    set_progress(win, 1.0)
+
+
+def counter_phase(day, pristine):
+    """往账本里直接写两笔当天的成交，再起一趟应用，看页眉那个数是不是跟着曲线走。
+
+    **为什么不借导入对话框**：对话框的日期默认是**今天**，而这一页画的是「最后一个有成交
+    的日子」。凌晨跑这一趟时两者不是同一天 —— 那两笔落在画外，页眉从头到尾都是 0，量出来
+    像是「这个数不会动」。导入那条路已经单独验过（识别、重复、账本抵平），这里要验的只是
+    渲染器会不会按曲线已经走到的那一分钟去数。
+
+    两笔一买一卖、同一分钟、同价同量：现金相抵、持仓一进一出，于是**整条曲线一个像素都不
+    变**，变的只有页眉那个数 —— 这正是要量的东西。
+
+    账本先备份在 `pristine` 里，跑完原样写回；写回之后比一次字节，别让测验的成交留在
+    读者真金白银的账本里。
+    """
+    print("\n成交笔数跟着曲线走")
+
+    book = json.loads(pristine.decode("utf-8"))
+
+    book["Trades"] = [
+        {"Day": day, "Time": "14:57:00", "Code": "sz300036", "Name": "超图软件",
+         "Side": 0, "Price": 10.0, "Shares": 100.0},
+        {"Day": day, "Time": "14:57:30", "Code": "sz300036", "Name": "超图软件",
+         "Side": 1, "Price": 10.0, "Shares": 100.0},
+    ]
+
+    winui.kill(winui.EXE)
+    time.sleep(2)
+
+    with open(STATE, "w", encoding="utf-8") as handle:
+        json.dump(book, handle, ensure_ascii=False, indent=2)
+
+    try:
+        win = winui.launch(winui.EXE)
+
+        check("第二趟起得来应用", win is not None)
+
+        if win is None:
+            return
+
+        win.SetActive()
+        time.sleep(1)
+
+        try:
+            win.GetWindowPattern().SetWindowVisualState(auto.WindowVisualState.Maximized)
+            time.sleep(1.5)
+        except Exception:  # noqa: BLE001
+            pass
+
+        check("第二趟也进得了这一页", goto(win, "实时持仓收益"))
+
+        got = wait_for(win, UPDATED, 180)
+
+        check("第二趟自己取完了一次数", got is not None,
+              got.group(0) if got else "等到 180 秒没有「最后更新」")
+
+        if got is not None:
+            counter_checks(win)
+    finally:
+        winui.kill(winui.EXE)
+        time.sleep(1)
+
+        with open(STATE, "wb") as handle:
+            handle.write(pristine)
+
+        check("第二趟之后账本还是跑之前那本",
+              open(STATE, "rb").read() == pristine)
+
+
 def look_checks(win, profit):
     """三个观感开关在**画面上**的证据。
 
@@ -622,19 +942,14 @@ def look_checks(win, profit):
     check("三个开关都在页面上，而且扳得动",
           all(set_switch(win, control, False) for control, _ in names))
 
-    # 每一张图都先 re-seek 到目标进度再抓 —— 这样「开 / 关」两张图永远停在同一帧，量到的差
-    # 就只有那个开关本身。不 reseek 时偶发两张图停在不同进度（动画余势 / 合成线程还在画上一
-    # 帧），整个曲线都错位，差出几万像素，把「多了一块徽章」误判成「整幅重画」。
-    def shot(name, progress):
-        set_progress(win, progress)
-        time.sleep(0.5)
-        return grab(win, name)
+    # 每一张图都先 re-seek 到目标进度再抓（`shot_at`）—— 这样「开 / 关」两张图永远停在同一
+    # 帧，量到的差就只有那个开关本身。
 
     # ---- 越过右侧安全线 ---------------------------------------------------------
-    off = shot("verify-portfolio-cross-off.png", 1.0)
+    off = shot_at(win, "verify-portfolio-cross-off.png", 1.0)
 
     check("开关扳到开", set_switch(win, "CrossCheck", True))
-    on = shot("verify-portfolio-cross-on.png", 1.0)
+    on = shot_at(win, "verify-portfolio-cross-on.png", 1.0)
 
     set_switch(win, "CrossCheck", False)
 
@@ -653,10 +968,10 @@ def look_checks(win, profit):
               "曲线右端 %d → %d 像素（+%d）" % (x_off, x_on, x_on - x_off))
 
     # ---- 显示牛熊图标 -----------------------------------------------------------
-    off = shot("verify-portfolio-mascot-off.png", 1.0)
+    off = shot_at(win, "verify-portfolio-mascot-off.png", 1.0)
 
     check("开关扳到开", set_switch(win, "MascotCheck", True))
-    on = shot("verify-portfolio-mascot-on.png", 1.0)
+    on = shot_at(win, "verify-portfolio-mascot-on.png", 1.0)
 
     set_switch(win, "MascotCheck", False)
 
@@ -707,10 +1022,10 @@ def look_checks(win, profit):
     # 停在 25%：这一天「已经画出来的那一段」只占全天的一小段，动态纵轴才拉得开差距 —— 停在
     # 结尾两者相等（那正是设计：封面要和关掉时一模一样），量出来是 0。曲线颜色跟着曲线头那个
     # 点的正负走，中段某一刻可能是绿也可能是红，所以量两条颜色都算。
-    off = shot("verify-portfolio-axis-fixed.png", 0.25)
+    off = shot_at(win, "verify-portfolio-axis-fixed.png", 0.25)
 
     check("开关扳到开", set_switch(win, "DynamicAxisCheck", True))
-    on = shot("verify-portfolio-axis-dynamic.png", 0.25)
+    on = shot_at(win, "verify-portfolio-axis-dynamic.png", 0.25)
 
     set_switch(win, "DynamicAxisCheck", False)
     set_progress(win, 1.0)
@@ -874,7 +1189,9 @@ def main():
     for old in ("verify-portfolio-frame.png", "verify-portfolio-import.png",
                 "verify-portfolio-cross-off.png", "verify-portfolio-cross-on.png",
                 "verify-portfolio-mascot-off.png", "verify-portfolio-mascot-on.png",
-                "verify-portfolio-axis-fixed.png", "verify-portfolio-axis-dynamic.png"):
+                "verify-portfolio-axis-fixed.png", "verify-portfolio-axis-dynamic.png",
+                "verify-portfolio-header.png", "verify-portfolio-count-early.png",
+                "verify-portfolio-count-mid.png", "verify-portfolio-count-end.png"):
         path = os.path.join(ART, old)
 
         if os.path.exists(path):
@@ -1015,6 +1332,10 @@ def main():
             # 三个观感开关：画面上的前后对照，只能真机量。
             look_checks(win, guess["profit"])
 
+            # 页眉那几行。放在导入之前量：这会儿页面是刚取完数、账上还没有成交的样子，
+            # 也就是读者平时看到的那一帧。
+            header_checks(win)
+
         before = book_rows(win)
 
         # ---- 导入成交 ---------------------------------------------------------------
@@ -1132,6 +1453,13 @@ def main():
                   "文件与跑之前的字节不同" if not same else "")
         else:
             check("账本跑之前就在（不然备份不了，也还原不了）", False, STATE)
+
+    # ---- 成交笔数跟着曲线走（另起一趟）--------------------------------------------
+    #
+    # 单独一趟的理由写在 `counter_phase` 里：导入对话框的日期默认是**今天**，而这一页画的是
+    # 「最后一个有成交的日子」，凌晨跑这一趟时两者不是同一天 —— 那两笔落在画外，量出来
+    # 像是「这个数不会动」。
+    counter_phase(guess["day"], original)
 
     report()
 

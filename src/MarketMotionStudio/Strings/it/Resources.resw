@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>Rendimenti annuali crypto</value></data>
   <data name="PositionDynamicAxis.Content"><value>Asse verticale dinamico</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Asse verticale dinamico</value></data>
+  <data name="PortfolioDialogPick"><value>{0} corrispondenze; scegline una dall'elenco.</value></data>
   <data name="NavPortfolioPnl.Content"><value>P&amp;L in tempo reale</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>P&amp;L in tempo reale</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>Il risultato delle tue posizioni dalle 09:30 alla chiusura, minuto per minuto: a mano, con le esecuzioni di ogni giorno</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>Aggiornato {0}</value></data>
   <data name="PortfolioPnlImported"><value>{0} esecuzioni importate ({1} duplicate, {2} senza posizione)</value></data>
   <data name="PortfolioPnlTitle"><value>P&amp;L in tempo reale</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} posizioni</value></data>
-  <data name="PortfolioPnlTradesLine"><value>fino alle {0} · {1} esecuzioni</value></data>
+  <data name="PortfolioPnlTradesLine"><value>esecuzioni: {0}</value></data>
   <data name="PortfolioPnlValueLine"><value>valore {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Rendimento</value></data>
   <data name="PortfolioPnlStatValue"><value>Valore posizioni</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>La quantità deve essere maggiore di zero e il costo non può essere negativo.</value></data>
   <data name="PortfolioDialogChecking"><value>Verifica del codice…</value></data>
   <data name="PortfolioDialogUnknown"><value>La fonte delle quotazioni non conosce {0}.</value></data>
-  <data name="PortfolioDialogPick"><value>{0} corrispondenze; scegline una dall'elenco.</value></data>
   <data name="PortfolioImportTitle"><value>Importa esecuzioni</value></data>
   <data name="PortfolioImportApply"><value>Importa</value></data>
   <data name="PortfolioImportHint.Text"><value>Scegli uno screenshot delle esecuzioni del giorno o incolla l'elenco. Il risultato è correggibile prima dell'importazione.</value></data>

@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>Roční výnosy krypto</value></data>
   <data name="PositionDynamicAxis.Content"><value>Dynamická svislá osa</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Dynamická svislá osa</value></data>
+  <data name="PortfolioDialogPick"><value>Nalezeno {0} shod; vyberte jednu ze seznamu.</value></data>
   <data name="NavPortfolioPnl.Content"><value>Výsledek živě</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>Výsledek živě</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>Výsledek vašich pozic od 09:30 do zavření, minutu po minutě — vedený ručně a doplňovaný denními obchody</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>Aktualizováno {0}</value></data>
   <data name="PortfolioPnlImported"><value>Importováno {0} obchodů ({1} duplicit, {2} bez pozice)</value></data>
   <data name="PortfolioPnlTitle"><value>Výsledek živě</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} pozic</value></data>
-  <data name="PortfolioPnlTradesLine"><value>do {0} · {1} obchodů</value></data>
+  <data name="PortfolioPnlTradesLine"><value>obchodů: {0}</value></data>
   <data name="PortfolioPnlValueLine"><value>hodnota {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Výnos</value></data>
   <data name="PortfolioPnlStatValue"><value>Hodnota pozic</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>Počet kusů musí být větší než nula, cena nesmí být záporná.</value></data>
   <data name="PortfolioDialogChecking"><value>Kontrola kódu…</value></data>
   <data name="PortfolioDialogUnknown"><value>Zdroj kurzů {0} nezná.</value></data>
-  <data name="PortfolioDialogPick"><value>Nalezeno {0} shod; vyberte jednu ze seznamu.</value></data>
   <data name="PortfolioImportTitle"><value>Importovat obchody</value></data>
   <data name="PortfolioImportApply"><value>Importovat</value></data>
   <data name="PortfolioImportHint.Text"><value>Vyberte snímek dnešních obchodů nebo vložte seznam. Výsledek lze před importem opravit.</value></data>

@@ -222,7 +222,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
                 var session = await IntradayPnl.LoadAsync(
                     Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                    [.. Portfolio.TradesOn(Today())], progress, cancellation);
+                    [.. Portfolio.Trades], progress, cancellation);
 
                 Adopt(session);
 
@@ -262,7 +262,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
             var session = await IntradayPnl.LoadAsync(
                 Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                [.. Portfolio.TradesOn(Today())], null, cancellation.Token);
+                [.. Portfolio.Trades], null, cancellation.Token);
 
             Adopt(session);
         }
@@ -424,8 +424,6 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         await SilentRefreshAsync(report: true);
     }
-
-    private static string Today() => DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
     /// <summary>The one day this page draws, for the file names.</summary>
     private (DateOnly From, DateOnly To)? Range() =>

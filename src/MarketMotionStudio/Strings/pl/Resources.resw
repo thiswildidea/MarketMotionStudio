@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>Roczne stopy krypto</value></data>
   <data name="PositionDynamicAxis.Content"><value>Dynamiczna oś pionowa</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Dynamiczna oś pionowa</value></data>
+  <data name="PortfolioDialogPick"><value>Znaleziono {0} dopasowań; wybierz jedno z listy.</value></data>
   <data name="NavPortfolioPnl.Content"><value>Wynik na żywo</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>Wynik na żywo</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>Wynik Twoich pozycji od 09:30 do zamknięcia, minuta po minucie — prowadzony ręcznie, uzupełniany codziennie transakcjami</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>Zaktualizowano {0}</value></data>
   <data name="PortfolioPnlImported"><value>Zaimportowano {0} transakcji ({1} duplikatów, {2} bez pozycji)</value></data>
   <data name="PortfolioPnlTitle"><value>Wynik na żywo</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} pozycji</value></data>
-  <data name="PortfolioPnlTradesLine"><value>do {0} · {1} transakcji</value></data>
+  <data name="PortfolioPnlTradesLine"><value>transakcji: {0}</value></data>
   <data name="PortfolioPnlValueLine"><value>wartość {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Stopa zwrotu</value></data>
   <data name="PortfolioPnlStatValue"><value>Wartość pozycji</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>Liczba sztuk musi być większa od zera, koszt nie może być ujemny.</value></data>
   <data name="PortfolioDialogChecking"><value>Sprawdzanie kodu…</value></data>
   <data name="PortfolioDialogUnknown"><value>Źródło notowań nie zna {0}.</value></data>
-  <data name="PortfolioDialogPick"><value>Znaleziono {0} dopasowań; wybierz jedno z listy.</value></data>
   <data name="PortfolioImportTitle"><value>Importuj transakcje</value></data>
   <data name="PortfolioImportApply"><value>Importuj</value></data>
   <data name="PortfolioImportHint.Text"><value>Wybierz zrzut ekranu dzisiejszych transakcji lub wklej listę. Wynik można poprawić przed importem.</value></data>

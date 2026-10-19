@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>Kripto Yıllık Getiriler</value></data>
   <data name="PositionDynamicAxis.Content"><value>Dinamik dikey eksen</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Dinamik dikey eksen</value></data>
+  <data name="PortfolioDialogPick"><value>{0} eşleşme bulundu; listeden birini seçin.</value></data>
   <data name="NavPortfolioPnl.Content"><value>Canlı portföy</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>Canlı portföy</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>09:30'dan kapanışa kadar pozisyonlarınızın kârı, dakika dakika — elle tutulur, her gün işlemlerle güncellenir</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>Güncellendi {0}</value></data>
   <data name="PortfolioPnlImported"><value>{0} işlem içe aktarıldı ({1} yinelenen, {2} pozisyonsuz)</value></data>
   <data name="PortfolioPnlTitle"><value>Canlı portföy</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} pozisyon</value></data>
-  <data name="PortfolioPnlTradesLine"><value>{0} itibarıyla · {1} işlem</value></data>
+  <data name="PortfolioPnlTradesLine"><value>{0} işlem</value></data>
   <data name="PortfolioPnlValueLine"><value>değer {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Getiri</value></data>
   <data name="PortfolioPnlStatValue"><value>Pozisyon değeri</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>Adet sıfırdan büyük olmalı, maliyet negatif olamaz.</value></data>
   <data name="PortfolioDialogChecking"><value>Kod denetleniyor…</value></data>
   <data name="PortfolioDialogUnknown"><value>Fiyat kaynağı {0} kodunu bilmiyor.</value></data>
-  <data name="PortfolioDialogPick"><value>{0} eşleşme bulundu; listeden birini seçin.</value></data>
   <data name="PortfolioImportTitle"><value>İşlemleri içe aktar</value></data>
   <data name="PortfolioImportApply"><value>İçe aktar</value></data>
   <data name="PortfolioImportHint.Text"><value>Günün işlemlerinin ekran görüntüsünü seçin ya da listeyi yapıştırın. Sonuç, aktarmadan önce düzeltilebilir.</value></data>

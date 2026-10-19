@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>Rendements annuels crypto</value></data>
   <data name="PositionDynamicAxis.Content"><value>Axe vertical dynamique</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Axe vertical dynamique</value></data>
+  <data name="PortfolioDialogPick"><value>{0} correspondances ; choisissez-en une dans la liste.</value></data>
   <data name="NavPortfolioPnl.Content"><value>P&amp;L en direct</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>P&amp;L en direct</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>Le résultat de vos positions de 09:30 à la clôture, minute par minute — tenu à la main, complété chaque jour par les exécutions</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>Mis à jour {0}</value></data>
   <data name="PortfolioPnlImported"><value>{0} exécutions importées ({1} doublons, {2} sans position)</value></data>
   <data name="PortfolioPnlTitle"><value>P&amp;L en direct</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} positions</value></data>
-  <data name="PortfolioPnlTradesLine"><value>jusqu'à {0} · {1} exécutions</value></data>
+  <data name="PortfolioPnlTradesLine"><value>exécutions : {0}</value></data>
   <data name="PortfolioPnlValueLine"><value>valeur {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Rendement</value></data>
   <data name="PortfolioPnlStatValue"><value>Valeur des positions</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>La quantité doit être positive et le prix ne peut pas être négatif.</value></data>
   <data name="PortfolioDialogChecking"><value>Vérification du code…</value></data>
   <data name="PortfolioDialogUnknown"><value>La source de cours ne connaît pas {0}.</value></data>
-  <data name="PortfolioDialogPick"><value>{0} correspondances ; choisissez-en une dans la liste.</value></data>
   <data name="PortfolioImportTitle"><value>Importer les exécutions</value></data>
   <data name="PortfolioImportApply"><value>Importer</value></data>
   <data name="PortfolioImportHint.Text"><value>Choisissez une capture des exécutions du jour, ou collez la liste. Le résultat est modifiable avant l'import.</value></data>

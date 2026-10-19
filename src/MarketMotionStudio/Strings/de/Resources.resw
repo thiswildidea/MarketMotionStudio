@@ -1028,6 +1028,7 @@
   <data name="NavCryptoAnnual.Content"><value>Krypto-Jahresrenditen</value></data>
   <data name="PositionDynamicAxis.Content"><value>Dynamische Y-Achse</value></data>
   <data name="CapHistoryDynamicAxis.Content"><value>Dynamische Y-Achse</value></data>
+  <data name="PortfolioDialogPick"><value>{0} Treffer; wählen Sie einen aus der Liste.</value></data>
   <data name="NavPortfolioPnl.Content"><value>Depot live</value></data>
   <data name="PortfolioPnlPageTitle.Text"><value>Depot live</value></data>
   <data name="PortfolioPnlPageSubtitle.Text"><value>Der Gewinn Ihrer Positionen von 09:30 bis zum Schluss, Minute für Minute – von Hand gepflegt, täglich um die Ausführungen ergänzt</value></data>
@@ -1044,8 +1045,7 @@
   <data name="PortfolioPnlUpdated"><value>Zuletzt aktualisiert {0}</value></data>
   <data name="PortfolioPnlImported"><value>{0} Ausführungen importiert ({1} Duplikate, {2} ohne Position)</value></data>
   <data name="PortfolioPnlTitle"><value>Depot live</value></data>
-  <data name="PortfolioPnlSubtitle"><value>{0} · {1} Positionen</value></data>
-  <data name="PortfolioPnlTradesLine"><value>bis {0} · {1} Ausführungen</value></data>
+  <data name="PortfolioPnlTradesLine"><value>Ausführungen: {0}</value></data>
   <data name="PortfolioPnlValueLine"><value>Wert {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Rendite</value></data>
   <data name="PortfolioPnlStatValue"><value>Depotwert</value></data>
@@ -1072,7 +1072,6 @@
   <data name="PortfolioDialogBadNumbers"><value>Stück muss über null liegen, der Einstand darf nicht negativ sein.</value></data>
   <data name="PortfolioDialogChecking"><value>Kennung wird geprüft…</value></data>
   <data name="PortfolioDialogUnknown"><value>Die Kursquelle kennt {0} nicht.</value></data>
-  <data name="PortfolioDialogPick"><value>{0} Treffer; wählen Sie einen aus der Liste.</value></data>
   <data name="PortfolioImportTitle"><value>Ausführungen importieren</value></data>
   <data name="PortfolioImportApply"><value>Importieren</value></data>
   <data name="PortfolioImportHint.Text"><value>Ein Bildschirmfoto der heutigen Ausführungen wählen oder die Liste einfügen. Das Ergebnis lässt sich vor dem Import korrigieren.</value></data>
