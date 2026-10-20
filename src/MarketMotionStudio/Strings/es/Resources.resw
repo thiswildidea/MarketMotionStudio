@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} títulos · coste {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Cerrado</value></data>
   <data name="PortfolioPnlRowCleared"><value>Vendido</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Comisiones (al cambiarlas se recalcula el día)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Comisión (‱, ambos lados)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Comisión mínima (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Impuesto de timbre (‱, solo ventas)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Gasto de transferencia (‱, ambos lados)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} puntos por minuto · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Error al obtener: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Actualizado {0}</value></data>

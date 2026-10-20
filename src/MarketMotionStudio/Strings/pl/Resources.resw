@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} szt. · koszt {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Zamknięte</value></data>
   <data name="PortfolioPnlRowCleared"><value>Sprzedane</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Opłaty (zmiana przelicza dzień)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Prowizja (‱, obie strony)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Minimalna prowizja (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Podatek skarbowy (‱, tylko sprzedaż)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Opłata transferowa (‱, obie strony)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} punktów minutowych · wynik {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Nie udało się pobrać: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Zaktualizowano {0}</value></data>

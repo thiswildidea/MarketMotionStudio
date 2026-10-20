@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} 株 · 取得単価 {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>休場</value></data>
   <data name="PortfolioPnlRowCleared"><value>売却済み</value></data>
+  <data name="PortfolioPnlFees.Text"><value>手数料（変更するとその日の再計算）</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>手数料（‱、売買とも）</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>約定ごとの最低手数料（元）</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>印紙税（‱、売却のみ）</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>名義書換料（‱、売買とも）</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} 分足 · 損益 {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>取得に失敗しました：{0}</value></data>
   <data name="PortfolioPnlUpdated"><value>最終更新 {0}</value></data>

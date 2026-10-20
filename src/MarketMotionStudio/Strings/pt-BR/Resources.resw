@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} ações · custo {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Fechado</value></data>
   <data name="PortfolioPnlRowCleared"><value>Vendido</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Taxas (alterá-las recalcula o dia)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Comissão (‱, ambos os lados)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Comissão mínima (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Imposto de selo (‱, apenas vendas)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Taxa de transferência (‱, ambos os lados)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} pontos por minuto · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Falha ao obter: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Atualizado {0}</value></data>

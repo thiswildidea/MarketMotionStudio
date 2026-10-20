@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} Stück · Einstand {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Geschlossen</value></data>
   <data name="PortfolioPnlRowCleared"><value>Verkauft</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Gebühren (Änderung berechnet den Tag neu)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Provision (‱, beide Seiten)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Mindestprovision (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Stempelsteuer (‱, nur Verkauf)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Übertragungsgebühr (‱, beide Seiten)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} Minutenpunkte · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Abruf fehlgeschlagen: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Zuletzt aktualisiert {0}</value></data>

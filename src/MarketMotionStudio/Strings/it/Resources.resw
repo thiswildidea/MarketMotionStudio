@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} titoli · costo {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Chiuso</value></data>
   <data name="PortfolioPnlRowCleared"><value>Venduto</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Commissioni (modificandole si ricalcola la giornata)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Commissione (‱, entrambi i lati)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Commissione minima (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Imposta di bollo (‱, solo vendite)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Spesa di trasferimento (‱, entrambi i lati)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} punti minuto · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Recupero non riuscito: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Aggiornato {0}</value></data>

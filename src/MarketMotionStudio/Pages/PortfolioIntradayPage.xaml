@@ -185,6 +185,46 @@
                          the only thing on the page that says which colour is in play. It shows
                          the treatment's own default until a colour is chosen, which is what
                          makes "use the default" a visible state rather than an absence. -->
+                    <!-- What it costs to trade, which is part of what a position costs.
+
+                         The four fields are one setting: the diluted cost a broker shows is the
+                         cost of the shares *plus* what it cost to trade them, so a book that
+                         leaves the fees out cannot reproduce the number the reader copied it
+                         from — 中望软件's 300 remaining shares read 14.444 on the phone and
+                         14.379 without the 19.60 yuan of commission and stamp duty on the two
+                         sales.
+
+                         Open with the mainland's own figures rather than zeroes, because a reader
+                         who does not know them still wants the number their broker shows, and an
+                         empty field that silently means "no fees" is a setting nobody can see is
+                         on. Zeroing all four gets the fee-free arithmetic back.
+
+                         Rates are in ‱ — 万2.5 is 2.5, 千0.5 is 5, 万0.1 is 0.1 — which is how a
+                         statement puts them and the only unit in which all three fit on a line. -->
+                    <TextBlock x:Uid="PortfolioPnlFees"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <NumberBox x:Name="FeeCommission"
+                               x:Uid="PortfolioPnlFeeCommission"
+                               Minimum="0" SmallChange="0.5" LargeChange="1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeMinimum"
+                               x:Uid="PortfolioPnlFeeMinimum"
+                               Minimum="0" SmallChange="1" LargeChange="5"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeStamp"
+                               x:Uid="PortfolioPnlFeeStamp"
+                               Minimum="0" SmallChange="0.5" LargeChange="1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeTransfer"
+                               x:Uid="PortfolioPnlFeeTransfer"
+                               Minimum="0" SmallChange="0.05" LargeChange="0.1"
+                               ValueChanged="OnFeeChanged" />
+
                     <ComboBox x:Name="TitleSkinCombo"
                               x:Uid="PortfolioPnlTitleSkin"
                               HorizontalAlignment="Stretch"

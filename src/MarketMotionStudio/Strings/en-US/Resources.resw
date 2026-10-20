@@ -1052,6 +1052,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} shares · cost {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Closed</value></data>
   <data name="PortfolioPnlRowCleared"><value>Sold out</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Fees (changing these recalculates the day)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Commission (‱, both sides)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Minimum commission (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Stamp duty (‱, sales only)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Transfer fee (‱, both sides)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} minute points · P&amp;L {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Fetch failed: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Updated {0}</value></data>

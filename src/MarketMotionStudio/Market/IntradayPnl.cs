@@ -8,7 +8,7 @@ namespace MarketMotionStudio.Market;
 
 /// <summary>One minute of the day, as the portfolio lived it.</summary>
 /// <param name="Minute">Minutes since midnight — 570 is 09:30.</param>
-/// <param name="Pnl">Today's profit or loss at that minute, in yuan, fees excluded.</param>
+/// <param name="Pnl">Today's profit or loss at that minute, in yuan, after the fills' fees.</param>
 /// <param name="Value">What the holdings were worth at that minute, in yuan.</param>
 public sealed record PnlSample(int Minute, double Pnl, double Value);
 
@@ -96,8 +96,8 @@ public sealed record PnlHolding(
 /// <c>5,900 × 0.17</c>; a curve that dropped the position at the sale without crediting the sale
 /// would show the whole morning's gain disappearing at 09:35. So the running figure is
 /// <c>Σ shares(t) × price(t) + cash(t) − Σ shares(0) × previous close</c>, which is the same
-/// number the broker app puts in 今日盈亏 (its difference is fees, which this page does not
-/// pretend to know).
+/// number the broker app puts in 今日盈亏. The fills' fees come off the cash term, so the two are
+/// the same figure and not two figures that happen to be close.
 /// </para>
 ///
 /// <para>
@@ -227,7 +227,8 @@ public static class IntradayPnl
         IReadOnlyList<Holding> holdings,
         IReadOnlyList<PortfolioTrade> journal,
         IProgress<string>? progress,
-        CancellationToken cancellation)
+        CancellationToken cancellation,
+        FeeSchedule? fees = null)
     {
         if (holdings.Count == 0)
         {
@@ -272,7 +273,7 @@ public static class IntradayPnl
             ? await ReadHkdCnyAsync(http, cancellation)
             : 0;
 
-        return Assemble(day, holdings, journal, shots, sessions, hkd);
+        return Assemble(day, holdings, journal, shots, sessions, hkd, fees ?? FeeSchedule.Mainland);
     }
 
     /// <summary>
@@ -285,7 +286,8 @@ public static class IntradayPnl
         IReadOnlyList<PortfolioTrade> journal,
         IReadOnlyDictionary<string, StockSnapshot> shots,
         IReadOnlyDictionary<string, DaySession> sessions,
-        double hkdCny)
+        double hkdCny,
+        FeeSchedule fees)
     {
         var trades = journal
             .Where(t => t.Day == day)
@@ -383,7 +385,7 @@ public static class IntradayPnl
             var openingShares = opening.TryGetValue(holding.Code, out var o) ? o : 0;
 
             // Where the day's fills leave this position, and the cash they actually moved.
-            var (shares, cashMoved) = Replay(trades, holding.Code, openingShares);
+            var (shares, cashMoved) = Replay(trades, holding.Code, openingShares, fees);
 
             // In the venue's own currency, then converted once: the price term and the cash term
             // are both dollars for a Hong Kong row, and converting only one of them would add a
@@ -488,15 +490,21 @@ public static class IntradayPnl
                 // drawn for the fill as it happened — it is the money that is clamped.
                 var moved = trade.Side == TradeSide.Buy ? trade.Shares : Math.Min(trade.Shares, held);
 
-                cash += (trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price * rate;
+                // Fees are charged on the money that actually changed hands — the clamped shares,
+                // not the ticket's — and in the venue's own currency, so both terms convert with
+                // one rate below.
+                var gross = moved * trade.Price;
+                var fee = trade.Side == TradeSide.Buy ? fees.OnBuy(gross) : fees.OnSell(gross);
+
+                cash += ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee) * rate;
                 cashOf[trade.Code] = Cash(cashOf, trade.Code)
-                    + ((trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price);
+                    + ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee);
 
                 // The diluted cost, moved by the same fill — a purchase averages into it, a sale
                 // nets its proceeds off what is left. Kept in step with the fill so the page can
                 // say what the remaining shares cost at the minute it is drawing, rather than
                 // what they cost this morning.
-                costs[trade.Code] = Diluted(Cash(costs, trade.Code), held, moved, trade);
+                costs[trade.Code] = Diluted(Cash(costs, trade.Code), held, moved, trade, fee);
 
                 positions[trade.Code] = trade.Side == TradeSide.Buy
                     ? held + moved
@@ -593,23 +601,27 @@ public static class IntradayPnl
     /// <summary>
     /// The diluted cost per share after one fill — the figure the broker shows beside a position.
     ///
-    /// A purchase averages into it and a sale nets its proceeds off what the remaining shares
-    /// cost, which is why a position that has been sold down can read a cost well below the price
-    /// the shares were bought at. Zero once nothing is left: 顺丰控股's hundred shares are gone at
-    /// 09:40, and a cost for shares that are not there is a number with nothing to describe.
+    /// A purchase averages into it, fee and all; a sale nets **what the sale actually brought in**
+    /// off what is left, which is why a sale's fees push the remaining shares' cost *up* rather
+    /// than down: 超图软件's 3,000 remaining shares read 6.544 in the broker app and 6.529 without
+    /// the 45 yuan of commission and stamp duty, and the difference is not rounding.
+    ///
+    /// Zero once nothing is left: 顺丰控股's hundred shares are gone at 09:40, and a cost for
+    /// shares that are not there is a number with nothing to describe.
     /// </summary>
-    private static double Diluted(double cost, double held, double moved, PortfolioTrade trade)
+    private static double Diluted(
+        double cost, double held, double moved, PortfolioTrade trade, double fee)
     {
         if (trade.Side == TradeSide.Buy)
         {
             var after = held + moved;
 
-            return after > 0 ? ((held * cost) + (moved * trade.Price)) / after : trade.Price;
+            return after > 0 ? ((held * cost) + (moved * trade.Price) + fee) / after : trade.Price;
         }
 
         var left = held - moved;
 
-        return left > 0 ? ((held * cost) - (moved * trade.Price)) / left : 0;
+        return left > 0 ? ((held * cost) - ((moved * trade.Price) - fee)) / left : 0;
     }
 
     /// <summary>
@@ -625,8 +637,11 @@ public static class IntradayPnl
     /// Used for the per-holding contribution so that each row adds up to the total: a holding that
     /// was sold out of still shows the profit the sale realised.
     /// </summary>
+    /// <param name="fees">What the fills cost. Charged here too, or the per-holding column and
+    /// the curve behind it would be two answers to the same question — one that knows about
+    /// commission and one that does not.</param>
     private static (double Shares, double Cash) Replay(
-        IEnumerable<PortfolioTrade> trades, string code, double opening)
+        IEnumerable<PortfolioTrade> trades, string code, double opening, FeeSchedule fees)
     {
         var shares = opening;
         var cash = 0.0;
@@ -640,15 +655,18 @@ public static class IntradayPnl
 
             if (trade.Side == TradeSide.Buy)
             {
+                var gross = trade.Shares * trade.Price;
+
                 shares += trade.Shares;
-                cash -= trade.Shares * trade.Price;
+                cash -= gross + fees.OnBuy(gross);
             }
             else
             {
                 var sold = Math.Min(trade.Shares, shares);
+                var gross = sold * trade.Price;
 
                 shares -= sold;
-                cash += sold * trade.Price;
+                cash += gross - fees.OnSell(gross);
             }
         }
 

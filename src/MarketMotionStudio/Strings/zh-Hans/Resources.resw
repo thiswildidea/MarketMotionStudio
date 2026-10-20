@@ -1050,6 +1050,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} 股 · 成本 {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>休市</value></data>
   <data name="PortfolioPnlRowCleared"><value>已清仓</value></data>
+  <data name="PortfolioPnlFees.Text"><value>手续费（改动会重算这一天的成本与收益）</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>佣金（‱，买卖都收）</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>每笔最低佣金（元）</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>印花税（‱，只卖出收）</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>过户费（‱，买卖都收）</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} 个分钟点 · 收益 {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>取数失败：{0}</value></data>
   <data name="PortfolioPnlUpdated"><value>最后更新 {0}</value></data>

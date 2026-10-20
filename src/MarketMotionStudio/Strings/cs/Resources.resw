@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} ks · cena {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Zavřeno</value></data>
   <data name="PortfolioPnlRowCleared"><value>Prodáno</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Poplatky (změna přepočítá den)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Provize (‱, obě strany)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Minimální provize (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Kolkovné (‱, pouze prodeje)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Poplatek za převod (‱, obě strany)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} minutových bodů · výsledek {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Načtení selhalo: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Aktualizováno {0}</value></data>

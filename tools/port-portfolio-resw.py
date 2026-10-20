@@ -127,6 +127,53 @@ ENTRIES = [
         "已清仓", "已清倉", "Sold out", "売却済み", "전량 매도", "Verkauft", "Vendu",
         "Vendido", "Venduto", "Sprzedane", "Vendido", "Prodáno", "Продано", "Satıldı")),
 
+    # 手续费。四项是一件事：券商显示的摊薄成本里含着成交的费用，漏掉它就没法对上手机上
+    # 那个数。单位是‱（万分之一）—— 万 2.5 写 2.5、千 0.5 写 5、万 0.1 写 0.1，对账单上
+    # 就是这么写的。
+    ("PortfolioPnlFees.Text", (
+        "手续费（改动会重算这一天的成本与收益）", "手續費（改動會重算這一天的成本與收益）",
+        "Fees (changing these recalculates the day)", "手数料（変更するとその日の再計算）",
+        "수수료(변경하면 그날을 다시 계산)", "Gebühren (Änderung berechnet den Tag neu)",
+        "Frais (toute modification recalcule la journée)",
+        "Comisiones (al cambiarlas se recalcula el día)",
+        "Commissioni (modificandole si ricalcola la giornata)",
+        "Opłaty (zmiana przelicza dzień)", "Taxas (alterá-las recalcula o dia)",
+        "Poplatky (změna přepočítá den)", "Сборы (изменение пересчитывает день)",
+        "Ücretler (değiştirilince gün yeniden hesaplanır)")),
+
+    ("PortfolioPnlFeeCommission.Header", (
+        "佣金（‱，买卖都收）", "佣金（‱，買賣都收）", "Commission (‱, both sides)",
+        "手数料（‱、売買とも）", "수수료(‱, 매수·매도 모두)",
+        "Provision (‱, beide Seiten)", "Commission (‱, les deux côtés)",
+        "Comisión (‱, ambos lados)", "Commissione (‱, entrambi i lati)",
+        "Prowizja (‱, obie strony)", "Comissão (‱, ambos os lados)",
+        "Provize (‱, obě strany)", "Комиссия (‱, обе стороны)",
+        "Komisyon (‱, her iki taraf)")),
+
+    ("PortfolioPnlFeeMinimum.Header", (
+        "每笔最低佣金（元）", "每筆最低佣金（元）", "Minimum commission (¥)",
+        "約定ごとの最低手数料（元）", "건당 최소 수수료(위안)", "Mindestprovision (¥)",
+        "Commission minimale (¥)", "Comisión mínima (¥)", "Commissione minima (¥)",
+        "Minimalna prowizja (¥)", "Comissão mínima (¥)", "Minimální provize (¥)",
+        "Минимальная комиссия (¥)", "Asgari komisyon (¥)")),
+
+    ("PortfolioPnlFeeStamp.Header", (
+        "印花税（‱，只卖出收）", "印花稅（‱，只賣出收）", "Stamp duty (‱, sales only)",
+        "印紙税（‱、売却のみ）", "인지세(‱, 매도만)", "Stempelsteuer (‱, nur Verkauf)",
+        "Droit de timbre (‱, ventes seulement)", "Impuesto de timbre (‱, solo ventas)",
+        "Imposta di bollo (‱, solo vendite)", "Podatek skarbowy (‱, tylko sprzedaż)",
+        "Imposto de selo (‱, apenas vendas)", "Kolkovné (‱, pouze prodeje)",
+        "Гербовый сбор (‱, только продажа)", "Damga vergisi (‱, yalnızca satış)")),
+
+    ("PortfolioPnlFeeTransfer.Header", (
+        "过户费（‱，买卖都收）", "過戶費（‱，買賣都收）", "Transfer fee (‱, both sides)",
+        "名義書換料（‱、売買とも）", "명의개서 수수료(‱, 매수·매도 모두)",
+        "Übertragungsgebühr (‱, beide Seiten)", "Frais de transfert (‱, les deux côtés)",
+        "Gasto de transferencia (‱, ambos lados)",
+        "Spesa di trasferimento (‱, entrambi i lati)", "Opłata transferowa (‱, obie strony)",
+        "Taxa de transferência (‱, ambos os lados)", "Poplatek za převod (‱, obě strany)",
+        "Плата за перевод (‱, обе стороны)", "Transfer ücreti (‱, her iki taraf)")),
+
     ("PortfolioPnlFetched", (
         "{0} · {1} 个分钟点 · 收益 {2}", "{0} · {1} 個分鐘點 · 收益 {2}",
         "{0} · {1} minute points · P&L {2}", "{0} · {1} 分足 · 損益 {2}", "{0} · {1}개 분봉 · 손익 {2}",

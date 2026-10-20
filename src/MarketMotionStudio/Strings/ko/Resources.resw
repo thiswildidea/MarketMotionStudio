@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0}주 · 단가 {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>휴장</value></data>
   <data name="PortfolioPnlRowCleared"><value>전량 매도</value></data>
+  <data name="PortfolioPnlFees.Text"><value>수수료(변경하면 그날을 다시 계산)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>수수료(‱, 매수·매도 모두)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>건당 최소 수수료(위안)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>인지세(‱, 매도만)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>명의개서 수수료(‱, 매수·매도 모두)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1}개 분봉 · 손익 {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>데이터를 가져오지 못했습니다: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>마지막 갱신 {0}</value></data>

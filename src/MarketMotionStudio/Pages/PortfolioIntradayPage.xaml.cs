@@ -108,11 +108,21 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     /// <summary>Guards against a timer tick landing on top of a fetch already in flight.</summary>
     private bool _busy;
 
+    /// <summary>
+    /// Waits for the typing in a fee box to stop.
+    ///
+    /// `ValueChanged` fires on every keystroke, and each load is a request per holding — so the
+    /// rate is applied when the reader stops rather than while they are still writing "0.1".
+    /// </summary>
+    private readonly DispatcherTimer _feeTimer = new() { Interval = TimeSpan.FromSeconds(0.8) };
+
     public PortfolioIntradayPage()
     {
         InitializeComponent();
 
         Portfolio.EnsureLoaded();
+
+        _feeTimer.Tick += OnFeeSettled;
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -311,7 +321,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
                 var session = await IntradayPnl.LoadAsync(
                     Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                    [.. Portfolio.Trades], progress, cancellation);
+                    [.. Portfolio.Trades], progress, cancellation, Fees());
 
                 Adopt(session);
 
@@ -351,7 +361,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
             var session = await IntradayPnl.LoadAsync(
                 Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                [.. Portfolio.Trades], null, cancellation.Token);
+                [.. Portfolio.Trades], null, cancellation.Token, Fees());
 
             Adopt(session);
         }
@@ -790,6 +800,14 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         _titleColour = _prefs.GetString("TitleColour", string.Empty);
         TitleSkinCombo.SelectedIndex = _prefs.GetInt("TitleSkin", 0);
 
+        // The mainland's own figures unless the reader has set their own. The box is filled
+        // rather than left blank: a blank one reads as "nothing is charged", which is the one
+        // answer here that cannot be right for anybody with a broker.
+        FeeCommission.Value = _prefs.GetDouble("FeeCommission", FeeSchedule.Mainland.Commission);
+        FeeMinimum.Value = _prefs.GetDouble("FeeMinimum", FeeSchedule.Mainland.Minimum);
+        FeeStamp.Value = _prefs.GetDouble("FeeStamp", FeeSchedule.Mainland.Stamp);
+        FeeTransfer.Value = _prefs.GetDouble("FeeTransfer", FeeSchedule.Mainland.Transfer);
+
         PaintPicker();
         PaintSwatch();
 
@@ -814,7 +832,55 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         _prefs.Save("TitleSkin", TitleSkinCombo.SelectedIndex);
         _prefs.Save("TitleColour", _titleColour);
 
+        _prefs.Save("FeeCommission", Read(FeeCommission, FeeSchedule.Mainland.Commission));
+        _prefs.Save("FeeMinimum", Read(FeeMinimum, FeeSchedule.Mainland.Minimum));
+        _prefs.Save("FeeStamp", Read(FeeStamp, FeeSchedule.Mainland.Stamp));
+        _prefs.Save("FeeTransfer", Read(FeeTransfer, FeeSchedule.Mainland.Transfer));
+
         VideoSettings.Save(_prefs);
+    }
+
+    /// <summary>What it costs to trade, as the four boxes on the page currently read.</summary>
+    private FeeSchedule Fees() => new(
+        Read(FeeCommission, FeeSchedule.Mainland.Commission),
+        Read(FeeMinimum, FeeSchedule.Mainland.Minimum),
+        Read(FeeStamp, FeeSchedule.Mainland.Stamp),
+        Read(FeeTransfer, FeeSchedule.Mainland.Transfer));
+
+    /// <summary>
+    /// A rate box's value, falling back when it has not got one.
+    ///
+    /// `NaN` is what a `NumberBox` holds while it is empty or half-typed — including the moment
+    /// before the reader finishes clearing it to type something else. Reading that as zero would
+    /// drop every fee for as long as the box was mid-edit, and the day's profit would jump up
+    /// and come back down again for no reason the page explains.
+    /// </summary>
+    private static double Read(NumberBox box, double fallback) =>
+        double.IsFinite(box.Value) ? box.Value : fallback;
+
+    /// <summary>
+    /// A rate changed. Remembered at once, applied when the typing stops.
+    /// </summary>
+    private void OnFeeChanged(object sender, NumberBoxValueChangedEventArgs e)
+    {
+        // Setting the boxes from the stored preferences raises this too, and making that a
+        // change would re-read the day on every visit to the page.
+        if (_prefs.Restoring)
+        {
+            return;
+        }
+
+        SavePreferences();
+
+        _feeTimer.Stop();
+        _feeTimer.Start();
+    }
+
+    private async void OnFeeSettled(object? sender, object e)
+    {
+        _feeTimer.Stop();
+
+        await FetchAsync(report: false);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

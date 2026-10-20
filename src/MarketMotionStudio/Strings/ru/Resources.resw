@@ -1041,6 +1041,11 @@
   <data name="PortfolioPnlRowDetail"><value>{0} шт. · стоимость {1}</value></data>
   <data name="PortfolioPnlRowClosed"><value>Закрыто</value></data>
   <data name="PortfolioPnlRowCleared"><value>Продано</value></data>
+  <data name="PortfolioPnlFees.Text"><value>Сборы (изменение пересчитывает день)</value></data>
+  <data name="PortfolioPnlFeeCommission.Header"><value>Комиссия (‱, обе стороны)</value></data>
+  <data name="PortfolioPnlFeeMinimum.Header"><value>Минимальная комиссия (¥)</value></data>
+  <data name="PortfolioPnlFeeStamp.Header"><value>Гербовый сбор (‱, только продажа)</value></data>
+  <data name="PortfolioPnlFeeTransfer.Header"><value>Плата за перевод (‱, обе стороны)</value></data>
   <data name="PortfolioPnlFetched"><value>{0} · {1} минутных точек · результат {2}</value></data>
   <data name="PortfolioPnlFetchFailed"><value>Не удалось получить: {0}</value></data>
   <data name="PortfolioPnlUpdated"><value>Обновлено {0}</value></data>
