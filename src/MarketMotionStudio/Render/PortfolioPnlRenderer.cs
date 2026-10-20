@@ -165,6 +165,7 @@ public sealed class PortfolioPnlRenderer(
             session2, context, shown, p, left, width, top, baseline, high, low);
 
         DrawTrades(session2, context, index, left, width, top, baseline, high, low);
+        DrawTradeLabels(session2, context, index, left, width, top, baseline, high, low);
         DrawMascot(session2, context, shown, p, here, left, width, top, baseline, high, low);
         DrawClocks(session2, context, t, left, width, baseline);
         DrawRateNote(session2, context, t, left, width, baseline);
@@ -541,6 +542,144 @@ public sealed class PortfolioPnlRenderer(
             session2.FillCircle((float)x, (float)y, r, colour);
             session2.FillCircle((float)x, (float)y, r * 0.45f, Palette.Background[0].Colour);
         }
+    }
+
+    /// <summary>
+    /// A transient word at every trade the curve has just passed: "买入" lifting off a buy,
+    /// "卖出点" off a sell, each in the dot's own colour. It fades in over the first moments after
+    /// the curve reaches the trade, holds, then floats away and fades — so the word marks the moment
+    /// without ever sitting on the line, and the earliest ones are long gone before the close.
+    ///
+    /// The whole thing is a function of the playback clock. A label's life is measured in curve
+    /// minutes since its trade, with no state and no timer: that is why it costs the curve nothing —
+    /// the line is drawn exactly as before, this only adds a rounded rectangle and a line of text per
+    /// *recent* trade — and why the preview and the exported video show the same words at the same
+    /// instants. A label the curve has not reached yet, or one whose minutes have elapsed, is not
+    /// drawn at all, so there is no accumulation frame to frame.
+    /// </summary>
+    private void DrawTradeLabels(
+        CanvasDrawingSession session2, FrameContext context, int shown,
+        double left, double width, double top, double baseline, double high, double low)
+    {
+        if (shown < 0 || session.Trades.Count == 0)
+        {
+            return;
+        }
+
+        var reached = session.Samples[shown].Minute;
+
+        // How long a label lives, in curve minutes: a quick pop-in, a hold, then a float-away fade.
+        // Measured in curve minutes rather than playback seconds so the word lasts the same stretch
+        // of the day whether the animation is fast or slow, and so it is identical in the export.
+        const double popIn = 1.5;
+        const double hold = 8;
+        const double fade = 14;
+        const double life = popIn + hold + fade;
+
+        using var format = Ink.Format(context.Px(22), bold: true);
+
+        // Boxes already placed this frame, so two trades a minute apart do not land their words on
+        // top of each other. Recomputed from the trades' own order every frame — no state carried
+        // between frames — so the layout is the same in the preview and the export, and a cluster
+        // of fills reads as a short stack rather than as one unreadable word.
+        var placed = new List<Rect>();
+
+        foreach (var trade in session.Trades)
+        {
+            var elapsed = reached - trade.Minute;
+
+            if (elapsed < 0 || elapsed > life)
+            {
+                continue;
+            }
+
+            var at = -1;
+
+            for (var i = 0; i <= shown && i < session.Samples.Count; i++)
+            {
+                if (session.Samples[i].Minute == trade.Minute)
+                {
+                    at = i;
+                    break;
+                }
+            }
+
+            if (at < 0)
+            {
+                continue;
+            }
+
+            // 0 → 1 as the word appears, 1 → 0 as it floats off. smoothstep both ends so neither
+            // the arrival nor the departure is a hard cut — the "弹出…淡出" the frame calls for.
+            var appear = elapsed < popIn ? Smooth(elapsed / popIn) : 1;
+            var leave = elapsed < popIn + hold ? 1 : 1 - Smooth((elapsed - popIn - hold) / fade);
+            var opacity = appear * leave;
+
+            if (opacity <= 0.01)
+            {
+                continue;
+            }
+
+            var label = trade.Side == TradeSide.Buy
+                ? Strings.Get("PortfolioPnlBuyLabel")
+                : Strings.Get("PortfolioPnlSellLabel");
+
+            var colour = trade.Side == TradeSide.Buy ? Palette.Emphasis : Palette.Fall;
+            var x = X(trade.Minute, left, width);
+            var y = Y(session.Samples[at].Pnl, top, baseline - top, high, low);
+
+            // The word drifts away from the point as it leaves: a buy lifts off the top of the dot,
+            // a sell off the bottom, so it reads as a bubble leaving the curve it marked.
+            var drift = (1 - leave) * context.Px(26);
+            var anchor = trade.Side == TradeSide.Buy
+                ? y - context.Px(34) - drift
+                : y + context.Px(34) + drift;
+
+            using var layout = new CanvasTextLayout(session2, label, format, 0, 0);
+            var padX = context.Px(13);
+            var padY = context.Px(7);
+            var boxWidth = layout.LayoutBounds.Width + (padX * 2);
+            var boxHeight = layout.LayoutBounds.Height + (padY * 2);
+
+            // Nudge along the side's own direction until the box is clear of the ones already
+            // placed: buys stack upward, sells downward, so each cluster grows away from the line.
+            var direction = trade.Side == TradeSide.Buy ? -1 : 1;
+            var gap = boxHeight + context.Px(6);
+            var cy = anchor;
+
+            for (var guard = 0; guard < 10; guard++)
+            {
+                var candidate = new Rect(x - (boxWidth / 2), cy - (boxHeight / 2), boxWidth, boxHeight);
+
+                if (!placed.Any(box => Overlaps(box, candidate, context.Px(4))))
+                {
+                    placed.Add(candidate);
+                    break;
+                }
+
+                cy += direction * gap;
+                cy = Math.Clamp(cy, top + (boxHeight / 2), baseline - (boxHeight / 2));
+            }
+
+            var chosen = new Rect(x - (boxWidth / 2), cy - (boxHeight / 2), boxWidth, boxHeight);
+
+            session2.FillRoundedRectangle(
+                chosen, (float)context.Px(11), (float)context.Px(11), Ink.Fade(colour, opacity));
+            Ink.Centred(session2, label, x, cy, format, Ink.OnTopOf(colour), opacity);
+        }
+    }
+
+    /// <summary>Whether two label boxes are closer than <paramref name="gap"/> — the overlap test.</summary>
+    private static bool Overlaps(Rect a, Rect b, double gap) =>
+        a.Left - gap < b.Right && b.Left - gap < a.Right &&
+        a.Top - gap < b.Bottom && b.Top - gap < a.Bottom;
+
+    /// <summary>smoothstep — eases 0 → 1 without a hard edge at either end.</summary>
+    private static double Smooth(double t)
+    {
+        t = Math.Clamp(t, 0, 1);
+
+        return t * t * (3 - (2 * t));
     }
 
     /// <summary>One extreme, with its clock and its amount, omitted when the day never left zero.</summary>

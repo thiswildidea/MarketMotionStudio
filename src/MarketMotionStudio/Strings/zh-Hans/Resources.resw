@@ -1111,4 +1111,6 @@
   <data name="PortfolioImportBuy"><value>买入</value></data>
   <data name="PortfolioImportSell"><value>卖出</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioPnlBuyLabel"><value>买入</value></data>
+  <data name="PortfolioPnlSellLabel"><value>卖出点</value></data>
 </root>

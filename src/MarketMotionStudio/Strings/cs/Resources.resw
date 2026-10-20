@@ -1102,4 +1102,6 @@
   <data name="PortfolioImportBuy"><value>Nákup</value></data>
   <data name="PortfolioImportSell"><value>Prodej</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioPnlBuyLabel"><value>Nákup</value></data>
+  <data name="PortfolioPnlSellLabel"><value>Prodej</value></data>
 </root>

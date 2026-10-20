@@ -1102,4 +1102,6 @@
   <data name="PortfolioImportBuy"><value>매수</value></data>
   <data name="PortfolioImportSell"><value>매도</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioPnlBuyLabel"><value>매수</value></data>
+  <data name="PortfolioPnlSellLabel"><value>매도</value></data>
 </root>
