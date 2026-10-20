@@ -453,6 +453,8 @@ Your own holdings, marked to the minute: what today has made or cost since 09:30
 
 - **Today's profit is measured from yesterday's close**, and a trade is credited at the minute it happened: buy or sell in the morning and the curve stays continuous through it. Fees are not counted, so the figure can differ from the broker's own by the commission.
 
+- **Trade points pop up a text label.** As the curve advances past a buy point it shows a red "Buy" tag at that spot, and past a sell point a green "Sell" tag; it eases in, holds a moment, then drifts up and fades out on its own. Buy tags sit above the dot, sell tags below, and a cluster in the same minute spreads apart rather than overlapping. The label is driven by the playback clock, so it never disturbs the live curve, and the preview and the exported video are frame-for-frame identical.
+
 - **The axis runs from 09:30 to the close of the venues that actually traded.** Shanghai and Shenzhen end at 15:00, Hong Kong at 16:00, and the lunch break is shaded and named rather than drawn as two hours of flat line. A venue closed for the day leaves its holdings marked closed and out of the curve, rather than priced off a session that is not today's.
 
 - **Refresh is automatic while the market is open**: every 30 seconds on weekdays between 09:15 and 16:10, while the switch is on. After the close it stops asking — a settled day answers every poll with the same numbers.

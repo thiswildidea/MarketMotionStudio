@@ -462,6 +462,8 @@ Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costat
 
 - **Il guadagno di oggi si misura dalla chiusura di ieri**, e un'operazione conta al minuto in cui è avvenuta: comprare o vendere a metà mattina e la curva resta continua. Le commissioni non sono comprese, quindi il numero può differire da quello del broker.
 
+- **Sui punti di acquisto e vendita appare un'etichetta.** Quando la curva supera un punto di acquisto compare un'etichetta rossa « Acquisto », su un punto di vendita una verde « Vendita »; entra in dissolvenza, resta un istante, poi sale e svanisce da sola. Le etichette di acquisto stanno sopra il punto, quelle di vendita sotto, e un capannello nello stesso minuto si distribuisce invece di sovrapporsi. L'etichetta è guidata dall'avanzamento della riproduzione, non disturba quindi la curva in diretta, e l'anteprima e il video esportato coincidono fotogramma per fotogramma.
+
 - **L'asse va dalle 09:30 alla chiusura delle piazze che hanno davvero scambiato**: Shanghai e Shenzhen alle 15:00, Hong Kong alle 16:00. La pausa pranzo è tracciata come fascia e nominata, non disegnata come due ore di linea piatta. Se una piazza è chiusa, le sue posizioni sono marcate «chiuso» e restano fuori dalla curva, invece di essere prezzate su una sessione che non è quella di oggi.
 
 - **L'aggiornamento è automatico mentre il mercato è aperto**: ogni 30 secondi nei giorni feriali fra le 09:15 e le 16:10, con l'interruttore acceso. Dopo la chiusura smette di interrogare: una giornata conclusa risponde sempre gli stessi numeri.

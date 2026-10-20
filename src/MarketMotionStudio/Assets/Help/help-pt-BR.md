@@ -449,6 +449,8 @@ Suas próprias posições, marcadas ao minuto: o que o dia rendeu ou custou desd
 
 - **O resultado de hoje é medido a partir do fechamento de ontem**, e uma operação conta no minuto em que aconteceu: comprar ou vender no meio da manhã e a curva continua sem degrau. As taxas não entram, então o número pode diferir do "resultado de hoje" da corretora.
 
+- **Nos pontos de compra e venda surge um rótulo.** Quando a curva passa um ponto de compra, aparece ali um rótulo vermelho « Compra », e num de venda um verde « Venda »; entra com uma dissolvição, permanece um instante e depois sobe e some sozinho. Rótulos de compra ficam acima do ponto, os de venda abaixo, e uma aglomeração no mesmo minuto se afasta em vez de sobrepor. O rótulo é movido pelo progresso da reprodução, portanto não atrapalha a curva ao vivo, e a pré-visualização e o vídeo exportado são idênticos quadro a quadro.
+
 - **O eixo vai das 09:30 ao fechamento das praças que realmente negociaram**: Xangai e Shenzhen às 15:00, Hong Kong às 16:00. O intervalo do almoço é sombreado e nomeado, não desenhado como duas horas de linha reta. Com uma praça fechada, suas posições ficam marcadas como «fechado» e fora da curva, em vez de precificadas por uma sessão que não é a de hoje.
 
 - **A atualização é automática enquanto o mercado está aberto**: a cada 30 segundos em dias úteis entre 09:15 e 16:10, com o interruptor ligado. Depois do fechamento ela para de perguntar: um dia encerrado responde o mesmo a cada consulta.

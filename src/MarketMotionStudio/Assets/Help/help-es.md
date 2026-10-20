@@ -454,6 +454,8 @@ Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costa
 
 - **El beneficio de hoy se mide desde el cierre de ayer**, y una operación cuenta en el minuto en que ocurrió: compre o venda a media mañana y la curva sigue sin saltos. No incluye comisiones, así que puede diferir de la cifra del bróker en esa comisión.
 
+- **En los puntos de compra y venta aparece una etiqueta.** Cuando la curva pasa un punto de compra, surge allí una etiqueta roja « Compra », y en uno de venta una verde « Venta »; entra con fundido, se mantiene un instante y luego sube y se desvanece sola. Las etiquetas de compra quedan sobre el punto, las de venta debajo, y un amontonamiento en el mismo minuto se separa en vez de solaparse. La etiqueta la mueve el progreso de reproducción, así que no altera la curva en vivo, y la vista previa y el vídeo exportado coinciden fotograma a fotogramma.
+
 - **El eje va de las 09:30 al cierre de los mercados que realmente negociaron**: Shanghái y Shenzhen a las 15:00, Hong Kong a las 16:00. El descanso del mediodía se sombrea y se nombra, no se dibuja como dos horas de línea plana. Si un mercado está cerrado, sus posiciones se marcan «cerrado» y quedan fuera de la curva, en vez de valorarse con una sesión que no es la de hoy.
 
 - **La actualización es automática mientras el mercado está abierto**: cada 30 segundos en días laborables entre las 09:15 y las 16:10, con el interruptor activado. Después del cierre deja de preguntar: una sesión terminada responde lo mismo a cada consulta.

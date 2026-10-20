@@ -463,6 +463,8 @@ Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 ge
 
 - **Der heutige Gewinn wird ab dem Vortagsschluss gemessen**, und ein Geschäft zählt in der Minute, in der es passiert ist: Kauf oder Verkauf am Vormittag, und die Kurve läuft ohne Sprung durch. Gebühren sind nicht enthalten, deshalb kann die Zahl um die Provision von der des Brokers abweichen.
 
+- **An Kauf- und Verkaufspunkten erscheint ein Textlabel.** Läuft die Kurve über einen Kaufpunkt, erscheint an dieser Stelle ein rotes „Kauf"-Label, über einen Verkaufspunkt ein grünes „Verkauf"-Label; es blendet weich ein, hält kurz und schwebt dann nach oben aus, bis es von selbst verschwindet. Kauf-Labels liegen über dem Punkt, Verkauf-Labels darunter, und ein Stau in derselben Minute verteilt sich, statt sich zu überlagern. Das Label wird vom Wiedergabefortschritt gesteuert, stört also die laufende Kurve nicht; Vorschau und exportiertes Video sind frame-genau gleich.
+
 - **Die Achse läuft von 09:30 bis zum Schluss der Handelsplätze, die wirklich gehandelt haben**: Shanghai und Shenzhen bis 15:00, Hongkong bis 16:00. Die Mittagspause wird als Band gezeichnet und benannt, nicht als zwei Stunden gerade Linie. Ist eine Seite geschlossen, stehen ihre Positionen auf „geschlossen" und bleiben aus der Kurve — statt mit dem Kurs einer Sitzung gerechnet zu werden, die nicht die heutige ist.
 
 - **Während der Handelszeit aktualisiert die Seite selbst**: werktags zwischen 09:15 und 16:10 alle 30 Sekunden, solange der Schalter an ist. Nach dem Schluss fragt sie nicht mehr — ein abgeschlossener Tag antwortet auf jede Abfrage mit denselben Zahlen.

@@ -434,6 +434,8 @@ Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana 
 
 - **Bugünün kârı dünkü kapanıştan ölçülür** ve işlem gerçekleştiği dakikaya yazılır: sabah alıp satarsanız eğri kopmaz. Komisyon dahil değildir, bu yüzden sayı aracı kurumun "günlük kâr"ından komisyon kadar farklı olabilir.
 
+- **Alım ve satım noktalarında bir etiket belirir.** Eğri bir alım noktasından geçince orada kırmızı „Alım" etiketi, bir satım noktasından geçince yeşil „Satım" etiketi çıkar; yumuşakça belirir, bir an durur, sonra yukarı süzülüp kendiliğinden kaybolur. Alım etiketleri noktanın üstünde, satım etiketleri altında durur; aynı dakikada yığılanlar üst üste gelmek yerine kendiliğinden açılır. Etiket oynatma konumuyla sürülür, böylece canlı eğriyi rahatsız etmez; önizleme ile dışa aktarılan video kare kare aynıdır.
+
 - **Eksen 09:30'dan, gerçekten işlem gören piyasaların kapanışına kadar gider**: Şanghay ve Shenzhen 15:00, Hong Kong 16:00. Öğle arası bir bant olarak boyanır ve adlandırılır, iki saatlik düz bir çizgi olarak çizilmez. Bir taraf kapalıysa o pozisyonlar "kapalı" diye işaretlenir ve eğrinin dışında kalır; bugünün olmayan bir seansın fiyatıyla doldurulmaz.
 
 - **Piyasa açıkken yenileme kendiliğindendir**: hafta içi 09:15 ile 16:10 arasında 30 saniyede bir, anahtar açıkken. Kapanıştan sonra sormayı bırakır: bitmiş bir gün her sorguya aynı sayılarla cevap verir.

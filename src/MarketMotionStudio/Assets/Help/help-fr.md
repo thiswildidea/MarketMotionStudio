@@ -468,6 +468,8 @@ Vos propres positions, valorisées à la minute : ce que la séance a rapporté 
 
 - **Le gain du jour se mesure depuis la clôture de la veille**, et un ordre compte à la minute où il a été exécuté : acheter ou vendre en matinée et la courbe reste continue. Les frais ne sont pas comptés, d'où un écart possible avec le « gain du jour » du courtier.
 
+- **Un libellé texte apparaît sur les points d'achat et de vente.** Quand la courbe passe un point d'achat, un label rouge « Achat » apparaît à cet endroit, et un point de vente fait apparaître un label vert « Vente » ; il entre en fondu, reste un instant, puis monte et s'estompe jusqu'à disparaître. Les labels d'achat se placent au-dessus du point, ceux de vente en dessous, et un attroupement à la même minute s'écarte au lieu de se superposer. Le label est piloté par la progression de lecture, il ne perturbe donc pas la courbe en direct, et l'aperçu comme la vidéo exportée sont identiques image par image.
+
 - **L'axe va de 09:30 à la clôture des places qui ont réellement traité** : Shanghai et Shenzhen à 15:00, Hong Kong à 16:00. La pause de midi est hachurée et nommée, pas dessinée comme deux heures de ligne plate. Si une place est fermée, ses lignes portent « fermé » et sortent de la courbe, au lieu d'être valorisées sur une séance qui n'est pas celle du jour.
 
 - **Le rafraîchissement est automatique pendant la séance** : toutes les 30 secondes en semaine entre 09:15 et 16:10, tant que l'interrupteur est activé. Après la clôture, la page cesse d'interroger : une journée terminée répond la même chose à chaque requête.

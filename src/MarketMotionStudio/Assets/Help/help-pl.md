@@ -446,6 +446,8 @@ Własne pozycje wyceniane co minutę: ile dzisiejsza sesja dała lub kosztowała
 
 - **Dzisiejszy wynik liczy się od wczorajszego zamknięcia**, a transakcja wchodzi w minucie, w której się zdarzyła: kupno lub sprzedaż przed południem, a krzywa biegnie bez skoku. Prowizji nie ma, więc liczba może różnić się od tej w aplikacji brokera.
 
+- **Na punktach kupna i sprzedaży pojawia się etykieta.** Gdy krzywa mija punkt kupna, w tym miejscu pojawia się czerwony znacznik „Kupno", a na punkcie sprzedaży zielony „Sprzedaż"; wchodzi łagodnym wygasaniem, chwilę trwa, po czym unosi się i znika sam. Etykiety kupna leżą nad punktem, sprzedaży pod nim, a ścisk w tej samej minucie rozsuwa się zamiast nakładać. Etykieta jest napędzana postępem odtwarzania, więc nie zakłóca żywej krzywej, i podgląd oraz wyeksportowany film są identyczne klatka po klatce.
+
 - **Oś biegnie od 09:30 do zamknięcia tych rynków, które naprawdę handlowały**: Szanghaj i Shenzhen do 15:00, Hongkong do 16:00. Przerwa południowa jest zacieniowana i podpisana, a nie narysowana jako dwie godziny płaskiej linii. Gdy jedna strona nie handluje, jej pozycje są oznaczone jako „zamknięte" i wypadają z krzywej, zamiast być wyceniane sesją, która nie jest dzisiejsza.
 
 - **Odświeżanie jest automatyczne w czasie sesji**: co 30 sekund w dni robocze między 09:15 a 16:10, gdy przełącznik jest włączony. Po zamknięciu przestaje pytać — zakończony dzień odpowiada tym samym na każde zapytanie.

@@ -429,6 +429,8 @@ Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála
 
 - **Dnešní výsledek se měří od včerejšího zavření** a obchod se započítá v minutě, kdy se stal: nákup či prodej dopoledne a křivka jde dál bez skoku. Poplatky v tom nejsou, takže číslo se může od brokera lišit právě o provizi.
 
+- **U bodů nákupu a prodeje se objeví štítek.** Když křivka mine bod nákupu, objeví se na tom místě červený štítek „Nákup", u bodu prodeje zelený „Prodej"; vjede v plynulém zesílení, chvíli vydrží a pak se zvedne a sám zmizí. Štítky nákupu jsou nad bodem, prodeje pod ním, a tlačenice v téže minutě se rozestoupí, místo aby se překrývala. Štítek pohání postup přehrávání, takže neruší živou křivku, a náhled i exportované video jsou snímek po snímku shodné.
+
 - **Osa jde od 09:30 do zavření těch trhů, které skutečně obchodovaly**: Šanghaj a Šen-čen do 15:00, Hongkong do 16:00. Polední přestávka je podbarvená a popsaná, ne nakreslená jako dvě hodiny rovné čáry. Když je jedna strana zavřená, její pozice jsou označené jako „zavřeno" a z křivky vypadnou — místo aby se oceňovaly seancí, která není dnešní.
 
 - **Během obchodování se obnovuje samo**: každých 30 sekund v pracovní dny mezi 09:15 a 16:10, pokud je přepínač zapnutý. Po zavření se přestane ptát — uzavřený den odpovídá na každý dotaz stejně.
