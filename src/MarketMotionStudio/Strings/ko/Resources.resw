@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>시세에서 {0}을(를) 찾을 수 없습니다.</value></data>
   <data name="PortfolioImportTitle"><value>체결 내역 가져오기</value></data>
   <data name="PortfolioImportApply"><value>가져오기</value></data>
-  <data name="PortfolioImportHint.Text"><value>당일 체결 화면 캡처를 선택하거나 체결 내역을 붙여넣으세요. 가져오기 전에 수정할 수 있습니다.</value></data>
-  <data name="PortfolioImportPick.Content"><value>캡처 선택…</value></data>
+  <data name="PortfolioImportHint.Text"><value>당일 체결을 붙여넣거나 당일 주문 기록 표(.xlsx)를 가져옵니다. 해석 결과를 한 줄씩 확인하며 모두 읽혀야 가져올 수 있습니다.</value></data>
   <data name="PortfolioImportDay.Header"><value>거래일</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>체결 내역 붙여넣기(한 줄에 한 건)</value></data>
   <data name="PortfolioImportParse.Content"><value>분석</value></data>
   <data name="PortfolioImportEmpty"><value>아직 분석 결과가 없습니다</value></data>
-  <data name="PortfolioImportReading"><value>캡처를 인식하는 중…</value></data>
+  <data name="PortfolioImportReading"><value>표를 읽고 있습니다…</value></data>
   <data name="PortfolioImportNoOcr"><value>이 PC에는 Windows OCR 언어 팩이 없습니다. 붙여넣기로 입력하세요.</value></data>
-  <data name="PortfolioImportNoChinese"><value>중국어 인식 팩이 없어 이름이 인식되지 않을 수 있습니다. 숫자와 코드는 읽을 수 있습니다.</value></data>
   <data name="PortfolioImportNothing"><value>체결 내역을 읽지 못했습니다</value></data>
   <data name="PortfolioImportParsed"><value>{0}건 인식, {1}행 건너뜀</value></data>
   <data name="PortfolioImportSkipped"><value>{0}행을 읽을 수 없습니다. 수정한 뒤 가져오세요</value></data>
   <data name="PortfolioImportBuy"><value>매수</value></data>
   <data name="PortfolioImportSell"><value>매도</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>표 가져오기</value></data>
   <data name="PortfolioPnlBuyLabel"><value>매수</value></data>
   <data name="PortfolioPnlSellLabel"><value>매도</value></data>
+  <data name="SettingsTitleLabel.Text"><value>제목</value></data>
+  <data name="SettingsTitleNote.Text"><value>모든 페이지에 적용됩니다. 포트폴리오 페이지에서도 스타일과 색상을 개별 설정할 수 있습니다.</value></data>
 </root>

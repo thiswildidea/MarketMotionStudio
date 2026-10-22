@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>Źródło notowań nie zna {0}.</value></data>
   <data name="PortfolioImportTitle"><value>Importuj transakcje</value></data>
   <data name="PortfolioImportApply"><value>Importuj</value></data>
-  <data name="PortfolioImportHint.Text"><value>Wybierz zrzut ekranu dzisiejszych transakcji lub wklej listę. Wynik można poprawić przed importem.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Wybierz zrzut…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Wklej transakcje dnia albo zaimportuj arkusz zleceń dnia (.xlsx). Wynik sprawdza się wiersz po wierszu; import jest możliwy, gdy wszystko jest czytelne.</value></data>
   <data name="PortfolioImportDay.Header"><value>Dzień transakcyjny</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Wklej transakcje, jedna w wierszu</value></data>
   <data name="PortfolioImportParse.Content"><value>Analizuj</value></data>
   <data name="PortfolioImportEmpty"><value>Brak wyników</value></data>
-  <data name="PortfolioImportReading"><value>Odczyt zrzutu ekranu…</value></data>
+  <data name="PortfolioImportReading"><value>Czytanie arkusza…</value></data>
   <data name="PortfolioImportNoOcr"><value>Windows nie ma tu pakietu OCR; wklej listę.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Brak rozpoznawania chińskiego: nazwy mogą być nieczytelne, liczby i kody nie.</value></data>
   <data name="PortfolioImportNothing"><value>Nie odczytano transakcji</value></data>
   <data name="PortfolioImportParsed"><value>Odczytano {0} transakcji, pominięto {1} wierszy</value></data>
   <data name="PortfolioImportSkipped"><value>{0} wierszy nieczytelnych — popraw je przed importem</value></data>
   <data name="PortfolioImportBuy"><value>Kupno</value></data>
   <data name="PortfolioImportSell"><value>Sprzedaż</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Importuj arkusz</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Kupno</value></data>
   <data name="PortfolioPnlSellLabel"><value>Sprzedaż</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Tytuł</value></data>
+  <data name="SettingsTitleNote.Text"><value>Dotyczy wszystkich stron. Strona portfela może nadal ustawiać własny styl i kolor.</value></data>
 </root>

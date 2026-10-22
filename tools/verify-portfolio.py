@@ -83,6 +83,23 @@ DETAIL = re.compile(r"^(?:[\d,]+\s*股\s*·\s*成本\s*[¥HK$]|已清仓)")
 # 漏掉的就是那两行港股，而报错只说「7 行 / 9 行」，看不出来漏的是哪一类。
 DETAIL_ROW = re.compile(r"^([\d,]+)\s*股\s*·\s*成本\s*(?:HK\$|HKD|¥|￥|\$)?([\d.]+)$")
 
+# 费率：与 `Market/Fees.cs` 的 `FeeSchedule.Mainland` 一模一样（页面开箱就是这套）。
+#
+# **这不只是「算得更准」。** 2026-10-20 起费用同时进当日收益与摊薄成本，于是「独立算一遍」
+# 的那条判据只要当天有成交，就必然差出一笔手续费（实测：账上 10 笔买入，页面 -2550.45、
+# 脚本 -2500.96，差 49.49 元，正好是十笔的佣金与过户费）。脚本不计费，红的不是页面。
+COMMISSION, MINIMUM, STAMP, TRANSFER = 2.5, 5.0, 5.0, 0.1
+
+
+def fee_of(trade, moved):
+    """一笔成交的手续费，按它自己的场所货币算（与 `FeeSchedule` 同一套式子）。"""
+    gross = moved * trade["Price"]
+    commission = max(MINIMUM, gross * COMMISSION / 10000)
+    transfer = gross * TRANSFER / 10000
+
+    return commission + transfer if trade["Side"] == 0 else commission + transfer + gross * STAMP / 10000
+
+
 FAILED = []
 
 
@@ -131,9 +148,19 @@ def source_checks():
           "if (holding.IsHongKong && live)\n                {\n                    close = HongKongClose;" in pnl
           and "holdings.Any(h => h.IsHongKong) ? HongKongClose" not in pnl)
 
+    # 2026-10-20 起费用同时进现金项：现金走「方向 × 总额 − 费用」，所以一买一卖不再抵平。
+    #
+    # 只对到参数的前一截：`Replay` 后来又多了「哪些成交已经写进账本了」这一项
+    # （2026-10-22，手改持仓之后当天成交不能再叠一遍），写全的字符串会因为多一个实参而变红，
+    # 而它要守的其实是「每只的现金流也走 Replay，不是把持仓一删就算了」。
     check("曲线在成交的那一刻是连续的（现金进出计入，不是把持仓一删）",
-          "Replay(trades, holding.Code, openingShares)" in pnl
-          and "cash += (trade.Side == TradeSide.Buy ? -1 : 1) * moved * trade.Price * rate;" in pnl)
+          "Replay(trades, holding.Code, openingShares, fees" in pnl
+          and "cash += ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee) * rate;" in pnl)
+
+    # `Portfolio.Fold` / 手改持仓会把当天的成交标成「已折」——它们仍在流水里（要画标记、要数
+    # 笔数），但钱已经在账本里了。漏掉这一步，手改一行就会让当天的买入被加第二遍。
+    check("已经写进账本的那些成交，回放只画标记、不再动持仓",
+          "if (!already.Contains(trade.Fingerprint))" in pnl)
 
     # 账本那十行是**早上开盘时的**，所以开盘持股数就是账上的股数，没有「倒推」这一步。
     # 倒推是给「账本当收盘用」写的：喂它一本早上的账，5,900 股加 3,000 买 5,900 卖会被读成
@@ -180,9 +207,9 @@ def source_checks():
           and "var shown = ShownAt(p);" in render
           and "_ticking?.ShownIndex(progress)" in page)
 
-    check("重复导入靠六段指纹（日/时/码/方向/价/量）",
+    check("重复导入靠六段指纹（日/时/码/方向/价/量），且折过的成交按去日期指纹再拦一道",
           'Day,\n        Time,\n        Code.ToLowerInvariant(),\n        Side,' in book
-          and "if (!known.Add(trade.Fingerprint))" in book)
+          and "known.Contains(trade.Fingerprint) || foldedFills.Contains(fill)" in book)
 
     check("同一份清单按时间顺序应用（成本是路径相关的）",
           ".ThenBy(t => t.MinuteOfDay)" in book)
@@ -341,9 +368,12 @@ def source_checks():
     check("放大用 Fant（这几个字要的是笔画不糊，双线性会把小数点糊进数字里）",
           "InterpolationMode = BitmapInterpolationMode.Fant," in screen)
 
+    # 2026-10-21 起补读走两段：先试彩色遮罩（把 买入/卖出 之外的字抹白再读一次，词按行盒
+    # Attach 回去），遮罩一个词都没捞着才退回 2× 大图整页 Merge。两条路都整行取，绝不一行拼一半。
     check("缺方向词的行补读一次，整行取说得多的那一次（绝不一行拼一半）",
           "if (TradeText.Incomplete(rows))" in screen
-          and "rows = TradeText.Merge(rows, twice);" in screen
+          and "TradeText.Attach(TradeText.RowBoxes(words), sides)" in screen
+          and "TradeText.Merge(rows, (await Recognise(decoder, Math.Min(factor * 2, MaxFactor * 2))).Rows)" in screen
           and "public static bool Incomplete(IReadOnlyList<string> rows) =>" in text
           and "public static IReadOnlyList<string> Merge(" in text
           and "if (first.Count != second.Count)" in text
@@ -365,8 +395,10 @@ def source_checks():
 
     check("撤单 / 废单 / 未成交单独归一类（它们带着码、价、量、钟，当成交导进去就是凭空多一笔）",
           "public IReadOnlyList<string> Cancelled { get; init; } = [];" in text
-          and "{ Cancelled = cancelled }" in text
-          and '"已撤", "部撤", "撤单", "废单",' in text)
+          and "public IReadOnlyList<string> Incomplete { get; init; } = [];" in text
+          and "Cancelled = cancelled," in text
+          and "Incomplete = incomplete," in text
+          and '"已撤", "部撤", "撤单", "撤销", "废单",' in text)
 
     # 导入默认填「今天」，可这一页画的是**最后一个有成交的日子**。凌晨跑（今天还没开盘）
     # 两者不是同一天：对话框说「已导入 5 笔」，曲线不动、笔数还是 0，页面上没有一句解释。
@@ -669,7 +701,8 @@ def expected(book=None):
 
         end[trade["Code"]] = held + moved if buy else held - moved
         cash[trade["Code"]] = (cash.get(trade["Code"], 0.0)
-                               + (-1 if buy else 1) * moved * trade["Price"])
+                               + (-1 if buy else 1) * moved * trade["Price"]
+                               - fee_of(trade, moved))
 
     # 当天清仓的那几只不在账上，但**当天的已实现盈亏在**：装载器会把它们以 0 股挂进来，
     # 只剩下现金那一项。少了这一行，「今天卖掉的那只」挣的钱一笔都算不进来。
@@ -886,7 +919,11 @@ def pale(image, window):
         for x in range(left, right + 1):
             r, g, b = px[x, y][:3]
 
-            if r > 200 and g > 150 and b > 150:
+            # **脸是跟着涨跌染色的。** 涨的那天偏红（235,181,190），跌的那天偏绿
+            # （181,235,201）—— 原先那句 `r > 200` 只认红脸，跌的那天整幅图里找不着一个
+            # 近白像素，量出来「徽章 0×0」，看着像图标没画。改成「三个通道都够亮」，两种
+            # 脸色都算，白字也照样算。
+            if min(r, g, b) > 140 and max(r, g, b) > 190:
                 found.append((x, y))
 
     return found
@@ -1283,12 +1320,18 @@ def counter_phase(day, pristine):
               open(STATE, "rb").read() == pristine)
 
 
-def list_checks(win, book):
+def list_checks(win, book, extra=(), day=None):
     """持仓列表跟着时间轴走：股数、成本、清仓，三样都随播放进度变。
 
     这一页最容易做错的就是这块：曲线画的是 09:35 之后的 3,000 股，右边的列表一直写着开盘
     的 5,900 股。两样东西并排摆在一起互相拆台，而单看任何一样都「没问题」—— 曲线是对的，
     列表也是账本上真有的数字。要问的只有一句：它们说的是不是同一分钟。
+
+    当天新开的仓位（`extra`，账本上没有的代码）从首笔成交那一分钟起追加在底部，所以开盘帧
+    比收盘帧可能短几行 —— 短的正是「还没成交的新仓位」。
+
+    **`day` 由调用方给。** 这里原先读的是 `guess["day"]`，而 `guess` 只是 `main()` 里的局部
+    变量 —— 函数走到「当天有没有成交」那一句就 `NameError`，整趟 AT 从中间截断（实测）。
     """
     scrub = winui.find(win, lambda c: c.AutomationId == "Scrub")
 
@@ -1296,6 +1339,29 @@ def list_checks(win, book):
 
     if scrub is None:
         return
+
+    # 当天账上没有成交时，开盘帧与收盘帧本来就是同一帧，「两帧不同」「已清仓」「有仓位变少」
+    # 这些判据全都无数据可依 —— 硬跑只会红出「数据里没有卖出」，而不是「功能坏了」。回放类
+    # 判据只在当天真有成交时才量；无成交的日子能断言的只有「列表 = 账本」。
+    if not day_trades(day):
+        rows_now = book_rows(win)
+
+        check("当天无成交：列表就是账本那么多行（没有新仓位可追加）",
+              len(rows_now) == len(book),
+              "列表 %d 行 / 账本 %d 行" % (len(rows_now), len(book)))
+
+        return
+
+    def minute_of(trade):
+        clock = str(trade.get("Time", ""))
+
+        return int(clock[:2]) * 60 + int(clock[3:5]) if len(clock) >= 5 else 0
+
+    def first_minute(code):
+        minutes = [minute_of(t) for t in day_trades(day)
+                   if t["Code"].lower() == code.lower()]
+
+        return min(minutes) if minutes else 24 * 60
 
     def at(fraction):
         scrub.GetRangeValuePattern().SetValue(fraction)
@@ -1312,14 +1378,35 @@ def list_checks(win, book):
 
     # 卖光的那只留在原地换说法，不是把行删掉。删行会让下面的行整体上移一格，读者正在看的
     # 那一行会在动画中途换成别的股票 —— 而「少了一行」和「那一行被删了」在报告里长得一样。
-    check("两帧都还是整个账本那么多行（卖光那行留在原地）",
-          len(opening) == len(book) and len(closing) == len(book),
-          "开盘 %d 行 / 收盘 %d 行 / 账本 %d 行" % (len(opening), len(closing), len(book)))
+    # 开盘帧 = 账本全部行 + 已到首笔成交分钟的新仓位行；收盘帧 = 账本全部行 + 全部新仓位行。
+    early = [code for code in extra if first_minute(code) <= 570]
 
-    check("收盘那一帧有「已清仓」，开盘那一帧没有",
-          any(row == "已清仓" for row in closing)
-          and not any(row == "已清仓" for row in opening),
-          "开盘 %r / 收盘 %r" % (opening[:2], closing[:2]))
+    # 「当天卖出过」是**数据的事**：真实账本滚到哪天算哪天，那天可能一笔卖出都没有。
+    def net_of(code):
+        net = 0.0
+
+        for trade in day_trades(day):
+            if trade["Code"].lower() == code.lower():
+                net += trade["Shares"] if trade["Side"] == 0 else -trade["Shares"]
+
+        return net
+
+    check("两帧行数 = 账本 + 已成交的新仓位（卖光那行留在原地）",
+          len(opening) == len(book) + len(early) and len(closing) == len(book) + len(extra),
+          "开盘 %d 行（账 %d + 早到 %d）/ 收盘 %d 行（账 %d + 新开 %d）"
+          % (len(opening), len(book), len(early), len(closing), len(book), len(extra)))
+
+    # 一整天全是买入的那一天，没有哪一行会被卖光 —— 这时「已清仓」无数据可依，硬判必然红，
+    # 而红的是这一天没有卖出，不是页面画错了。与底下「股数下降/成本下滑」同一条规矩。
+    flat = [code for code, shares, _ in book if net_of(code) <= -shares]
+
+    if flat:
+        check("收盘那一帧有「已清仓」，开盘那一帧没有",
+              any(row == "已清仓" for row in closing)
+              and not any(row == "已清仓" for row in opening),
+              "开盘 %r / 收盘 %r" % (opening[:2], closing[:2]))
+    else:
+        print("    （当天账上没有卖光的持仓，「已清仓」那条按数据跳过）")
 
     def held(rows):
         out = []
@@ -1337,6 +1424,14 @@ def list_checks(win, book):
 
     was = held(opening)
     now = held(closing)
+
+    # 有净卖出才断言股数下降与摊薄成本下滑；没有就在报告里说一句，不硬凑一个必然为假的红。
+    sellers = [code for code, _, _ in book if net_of(code) < 0]
+
+    if not sellers:
+        print("    （当天账上没有净卖出的持仓，股数下降/成本下滑两条按数据跳过）")
+        at(1.0)
+        return
 
     check("有仓位在开盘时更多、收盘时更少（当天卖出过）",
           any(a > b for a, b in zip(was, now)), "开盘 %r → 收盘 %r" % (was, now))
@@ -1419,19 +1514,29 @@ def look_checks(win, profit):
 
         # 窗口只要够装下那枚徽章（半径 30 基准像素 ≈ 12 个窗口像素，再加一点余量）：
         # 开得越大，水痕、卡片这些与开关无关的东西就越容易混进来。
+        # **窗口上下给对称的余量。** 徽章是骑在曲线头上的，可它偏在哪一侧取决于曲线最后那一段
+        # 的走势：收在画面底部的那一天（比如整天跌 2.6%），徽章整个落在曲线头下面八十来像素，
+        # 原来 -80..+40 的窗正好把它切掉，量出来是「近白像素 0 → 0」，看着像图标没画。
         window = (max(left, head_x - 80), min(right, head_x + 40),
-                  max(top, head_y - 80), min(bottom, head_y + 40))
+                  max(top, head_y - 110), min(bottom, head_y + 110))
 
-        before = pale(off[0], window)
-        after = pale(on[0], window)
+        # **只数这一帧才有的那些。** 窗口开大之后，日期、封面上的白字也可能落进来 —— 它们在
+        # 两张图上都亮着，一减就没了，剩下的才是徽章。
+        seen = set(pale(off[0], window))
+        badge = [p for p in pale(on[0], window) if p not in seen]
 
+        # 门槛 100 而不是 120：跌的那天脸是浅绿的，过 `pale` 的像素比红脸少（实测 129 个），
+        # 留一成余量，免得因为一两个抗锯齿像素把「画了」判成「没画」。
         check("打开之后曲线头上多了一枚浅色的徽章",
-              len(after) - len(before) > 120,
-              "近白像素 %d → %d（窗口 x %d~%d, y %d~%d）"
-              % (len(before), len(after), window[0], window[1], window[2], window[3]))
+              len(badge) > 100,
+              "近白像素 %d → %d（新增 %d；窗口 x %d~%d, y %d~%d）"
+              % (len(seen), len(seen) + len(badge), len(badge),
+                 window[0], window[1], window[2], window[3]))
 
-        xs = [x for x, _ in after]
-        ys = [y for _, y in after]
+        xs = [x for x, _ in badge]
+        ys = [y for _, y in badge]
+
+        after = badge
 
         wide = (max(xs) - min(xs)) if after else 0
         tall = (max(ys) - min(ys)) if after else 0
@@ -1704,8 +1809,17 @@ def skin_checks(win):
 
     check("取色器关得掉（关不掉，它那层遮罩会把后面每一帧都压暗）", shut_colour())
 
+    # 「这一帧到底画上标题没有」的闸门。**门槛不能按白字定**：常规是白字（最大通道 255），
+    # 可金宋那款是深琥珀、最大通道只有 139 —— 按 150 卡，金宋每一帧都被判成「没画上」，
+    # 抓三遍全是 None，红的却是「三款样式各截到一帧」（实测）。110 既能放过深琥珀的标题，
+    # 也远高于空帧上那一层雾。
+    # 「这一帧到底画上标题没有」的闸门，**按白字定阈值**：常规 255、镀金 240 都过得去。
+    # 金宋那款是深琥珀（139,90,43），过不去 —— 那一项会红，而这是门槛与它的颜色不合，不是
+    # 它没画（凭据另在：三款样式的落墨像素金宋 1567、镀金 3687，层级分明）。门槛放到 110
+    # 试过：空帧、错帧也跟着过关，量出来一串 0，比红一条更糟。
     def painted(pixel):
         return max(pixel) > 150
+
 
     def shot_title(name):
         """抓一张「标题确实画上了」的帧。
@@ -2019,12 +2133,15 @@ def main():
         check("App 已经写过一次账本（这一页读的是那一份）", False, "找不到 " + STATE)
         return report()
 
-    # 账本先验一遍本身的形状：后面所有敷设都拿它当输入，它自己错了底下全白塔。
+    # 账本里的每一行都是合法代码（场所 + 五位或六位数字）。
     check("账本里的每一行都是合法代码（场所 + 五位或六位数字）",
           all(re.fullmatch(r"(sh|sz|bj)\d{6}|hk\d{5}", code) for code, _, _ in book))
-    check("账本还是种子那几只（一眼看得出来这本账被改过多少）",
-          {code for code, _, _ in book} == {code for code, _, _ in seeds()},
-          "账本 %d 只 / 种子 %d 只" % (len(book), len(seeds())))
+
+    # 「账本还是种子那几只」这条退役了：账本现在会在应用启动/退出时把以前会话的成交滚进来
+    # （Portfolio.RollForward），与种子的偏离是**设计内**的演进，不再是「被改过多少」的信号。
+    # 演进本身有多健康，由底下「收盘股数 = 开盘 + 当天净额」等判据看着。
+    print("  账本 %d 只（种子 %d 只；滚动账本与种子的偏离是设计内）"
+          % (len(book), len(seeds())))
 
     guess = expected(book)
 
@@ -2049,7 +2166,15 @@ def main():
 
             net += trade["Shares"] if trade["Side"] == 0 else -trade["Shares"]
 
-        if abs(row["open"] + net - row["shares"]) > 1e-6:
+        # 卖出超过持有会被截到零（那一行按「已清仓」处理，现金也只按真卖掉的算），
+        # 所以收盘股数的期望是 max(0, 开盘 + 净额)，不是裸的加法。
+        #
+        # 这个名字不能叫 `expected`：那个是模块里的函数，本函数（`main`）前面刚调用过它，
+        # 再在同名局部变量上一赋值，Python 就把它整函数都当局部 —— 于是 `guess = expected(book)`
+        # 抛 `UnboundLocalError`，整趟 AT 在第一次取数之前就崩了。实测踩过一次。
+        want = max(0.0, row["open"] + net)
+
+        if abs(want - row["shares"]) > 1e-6:
             drift.append((row["code"], row["open"], net, row["shares"]))
 
     check("每只的收盘股数 = 开盘股数 + 当天成交净额", not drift, "%r" % (drift[:3],))
@@ -2110,12 +2235,36 @@ def main():
         check("打开就自己取了一次数（不用按按钮）", updated is not None,
               updated.group(0) if updated else "等了 150 秒没有「最后更新」")
 
+        # **应用启动时已经把昨天及以前的成交滚进了账本**（Portfolio.RollForward；退出时再滚
+        # 一次是同一件事的兜底）。页面用的就是滚动后的那本 —— 开头 ledger()/expected() 在启动
+        # 前读的文件已经作废，这里重读重算，否则所有「独立算」都站在一本页面从没用过的旧账上
+        # （实测：页面收益与脚本差出整整前一天的开平仓，就是这条没做）。
+        book = ledger()
+        guess = expected(book)
+
+        print("  滚动后的账：%d 只持仓 · 画 %s · 收益 %+.2f 元"
+              % (len(book), guess["day"], guess["profit"]))
+
         rows = book_rows(win)
+
+        # 当天成交里、账本上没有的代码：页面会把它们**追加成新行**（从首笔成交那一分钟起）。
+        # 顺序就是首笔成交的先后 —— 与 RefreshBook 遍历 session.Trades 的顺序一致。
+        seen = []
+
+        for trade in day_trades(guess["day"]):
+            code = trade["Code"].lower()
+
+            if code not in seen and not any(c.lower() == code for c, _, _ in book):
+                seen.append(code)
+
+        extra = seen
 
         # 行数跟着账本走，不写死：账本加一只（顺丰就是当天卖光之后补回来的）是账的事，
         # 列表该跟着长一行。写死成 9 的话，账上加一行就会红一条，而红的那条什么也没坏。
-        check("持仓列表和账本一样长", len(rows) == len(book),
-              "列表 %d 行 / 账本 %d 行" % (len(rows), len(book)))
+        # 页面此刻停在最后一帧（收盘），所以新开的仓位行都已追加在底部。
+        check("持仓列表 = 账本 + 当天新开的仓位（追加在底部）",
+              len(rows) == len(book) + len(extra),
+              "列表 %d 行 / 账本 %d 行 + 新开 %d" % (len(rows), len(book), len(extra)))
 
         # 列表写着股数与成本，所以「脚本算的那本账」和「页面画的那本账」能对得上自己。
         # 少了这一条，上面那句「收益一致」即使通过了也可能是巧合 —— 而账本被改过之后
@@ -2144,6 +2293,16 @@ def main():
                     net += trade["Shares"] if trade["Side"] == 0 else -trade["Shares"]
 
             wanted.append(int(round(shares + net)))
+
+        # 追加的新仓位从零起步：开盘它不在账上，收盘股数就是当天净额。
+        for code in extra:
+            net = 0.0
+
+            for trade in day_trades(guess["day"]):
+                if trade["Code"].lower() == code.lower():
+                    net += trade["Shares"] if trade["Side"] == 0 else -trade["Shares"]
+
+            wanted.append(int(round(net)))
 
         check("列表上的股数就是这一帧的持仓（账本 + 当天成交净额）",
               listed == wanted, "列表 %r / 脚本 %r" % (listed, wanted))
@@ -2202,7 +2361,7 @@ def main():
             # 最后一帧 —— 正是读者打开这一页看到的样子。
             print("\n持仓列表跟着时间轴")
 
-            list_checks(win, book)
+            list_checks(win, book, extra, guess["day"])
 
             # 标题的三款样式与字体颜色。
             skin_checks(win)
@@ -2256,16 +2415,54 @@ def main():
                   and said.group(3) == "0",
                   said.group(0) if said else "没有「已导入 N 笔成交」")
 
-            after = book_rows(win)
-
-            check("账本回到原样（一买一卖抵平，数量与摊薄成本都不变）",
-                  sorted(before) == sorted(after),
-                  "%d 行 → %d 行" % (len(before), len(after)))
-
             # 导入之后页面自己也重取一次（`OnImport` 里那句 `SilentRefreshAsync`），所以这里
             # 同样等时间戳换掉再读 —— 不然读到的是导入**之前**那一行，而它当然还是对的。
+            # 列表也一样：新会话装配完，追加的新仓位行才会长出来。
             refetched = wait_for_new(win, UPDATED, fresh, 180)
             again = find_text(win, FETCHED)
+
+            after = book_rows(win)
+
+            # **抵平的是股数与现金，不是摊薄成本。** 同一分钟、同价同量的一买一卖，股数回到
+            # 原样，可两笔的手续费是实打实付出去的，摊薄成本因此抬一点：1200 股那只从 1.073
+            # 抬到 1.082。原先判「成本也不变」是费率还没进成本时的语义，费率一开就必然红，
+            # 而红的是判据，不是页面。
+            def pairs(rows):
+                out = []
+
+                for name in rows:
+                    hit = DETAIL_ROW.match(name)
+                    out.append((float(hit.group(1).replace(",", "")), float(hit.group(2)))
+                               if hit else None)
+
+                return out
+
+            was = pairs(before)
+            is_now = pairs(after)
+
+            bought, at = 100.0, 10.0
+            buy_fee = fee_of({"Side": 0, "Price": at}, bought)
+            sell_fee = fee_of({"Side": 1, "Price": at}, bought)
+
+            idx = next((i for i, (code, _, _) in enumerate(book) if code.lower() == "sz300036"), None)
+            want_cost = None
+
+            if idx is not None and idx < len(was) and was[idx] is not None:
+                shares, cost = was[idx]
+                mid = ((shares * cost) + (bought * at) + buy_fee) / (shares + bought)
+                want_cost = (((shares + bought) * mid) - ((bought * at) - sell_fee)) / shares
+
+            others = [i for i in range(min(len(was), len(is_now)))
+                      if i != idx and was[i] != is_now[i]]
+
+            check("账本回到原样：股数不变，只有那一行的成本因手续费抬了一点",
+                  idx is not None and len(was) == len(is_now) and not others
+                  and was[idx][0] == is_now[idx][0]
+                  and abs(is_now[idx][1] - want_cost) < 0.01,
+                  "%d 行 → %d 行；超图 %s → %s（手续费算出来 %s）"
+                  % (len(before), len(after), was[idx] if idx is not None else "?",
+                     is_now[idx] if idx is not None else "?",
+                     "%.4f" % want_cost if want_cost else "?"))
 
             if again is None or refetched is None:
                 check("导入之后再取一次数", False,
@@ -2274,9 +2471,16 @@ def main():
                 money = again.group(3)
                 now = float(money.replace("¥", "").replace(",", "").replace("+", ""))
 
-                check("收益回到原值（同一分钟一进一出，曲线不动）",
-                      abs(now - guess["profit"]) < 0.5,
-                      "导入前 %+.2f / 导入后 %+.2f" % (guess["profit"], now))
+                # **抵平的是股数与现金进出，不是手续费。** 同一分钟、同价同量的一买一卖，
+                # 现金进出一进一出相抵，但两笔的佣金与（卖出的）印花税是实打实付出的 ——
+                # 所以收益要正好少这么一笔，而不是一分不差。原先判「回到原值」是费率还没
+                # 进收益时的语义，加上费用之后它必然红，而红的是判据不是页面。
+                two = fee_of({"Side": 0, "Price": 10.0}, 100) + fee_of({"Side": 1, "Price": 10.0}, 100)
+
+                check("收益只少了那两笔的手续费（一买一卖抵平，费用如实扣掉）",
+                      abs((guess["profit"] - now) - two) < 0.5,
+                      "导入前 %+.2f / 导入后 %+.2f / 手续费 %.2f"
+                      % (guess["profit"], now, two))
 
             # 再导一次同一份：指纹认得出来。
             check("再打开一次「导入成交」",
@@ -2299,7 +2503,11 @@ def main():
                       said is not None and said.group(1) == "0" and said.group(2) == "2",
                       said.group(0) if said else "没有「已导入 N 笔成交」")
 
-                check("重复导入之后账本一字不变", sorted(book_rows(win)) == sorted(before))
+                # 等第二次导入自带的再取数完成再读列表 —— 与上一条同样的时序。
+                wait_for_new(win, UPDATED, refetched, 180)
+
+                # 与**第一趟导入之后**的那一版比，不是与导入之前：手续费已经落在成本里了。
+                check("重复导入之后账本一字不变", sorted(book_rows(win)) == sorted(after))
     finally:
         # 关掉可能还开着的对话框：不关，下一次跑的导航会被它挡着。
         for _ in range(3):

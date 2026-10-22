@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>Источник котировок не знает {0}.</value></data>
   <data name="PortfolioImportTitle"><value>Импорт сделок</value></data>
   <data name="PortfolioImportApply"><value>Импортировать</value></data>
-  <data name="PortfolioImportHint.Text"><value>Выберите снимок сегодняшних сделок или вставьте список. Результат можно исправить до импорта.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Выбрать снимок…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Вставьте сделки дня или импортируйте таблицу заявок дня (.xlsx). Результат проверяется построчно; применить можно, только когда всё прочитано.</value></data>
   <data name="PortfolioImportDay.Header"><value>Торговый день</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Вставьте сделки, по одной в строке</value></data>
   <data name="PortfolioImportParse.Content"><value>Разобрать</value></data>
   <data name="PortfolioImportEmpty"><value>Пока ничего не разобрано</value></data>
-  <data name="PortfolioImportReading"><value>Распознаём снимок…</value></data>
+  <data name="PortfolioImportReading"><value>Чтение таблицы…</value></data>
   <data name="PortfolioImportNoOcr"><value>На этом компьютере нет языкового пакета OCR для Windows; вставьте список.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Нет распознавания китайского: имена могут остаться нечитаемыми, числа и коды — нет.</value></data>
   <data name="PortfolioImportNothing"><value>Сделки не распознаны</value></data>
   <data name="PortfolioImportParsed"><value>Распознано сделок: {0}, пропущено строк: {1}</value></data>
   <data name="PortfolioImportSkipped"><value>Строк не удалось прочитать: {0} — исправьте перед импортом</value></data>
   <data name="PortfolioImportBuy"><value>Покупка</value></data>
   <data name="PortfolioImportSell"><value>Продажа</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Импортировать таблицу</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Покупка</value></data>
   <data name="PortfolioPnlSellLabel"><value>Продажа</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Заголовок</value></data>
+  <data name="SettingsTitleNote.Text"><value>Применяется ко всем страницам. На странице портфеля по-прежнему можно задать свой стиль и цвет.</value></data>
 </root>

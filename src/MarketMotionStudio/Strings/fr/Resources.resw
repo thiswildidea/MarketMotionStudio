@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>La source de cours ne connaît pas {0}.</value></data>
   <data name="PortfolioImportTitle"><value>Importer les exécutions</value></data>
   <data name="PortfolioImportApply"><value>Importer</value></data>
-  <data name="PortfolioImportHint.Text"><value>Choisissez une capture des exécutions du jour, ou collez la liste. Le résultat est modifiable avant l'import.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Choisir une capture…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Collez les ordres du jour ou importez la feuille d'ordres du jour (.xlsx). Le résultat se vérifie ligne par ligne ; tout doit être lisible pour pouvoir l'appliquer.</value></data>
   <data name="PortfolioImportDay.Header"><value>Jour de bourse</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Collez les exécutions, une par ligne</value></data>
   <data name="PortfolioImportParse.Content"><value>Analyser</value></data>
   <data name="PortfolioImportEmpty"><value>Rien d'analysé pour l'instant</value></data>
-  <data name="PortfolioImportReading"><value>Lecture de la capture…</value></data>
+  <data name="PortfolioImportReading"><value>Lecture de la feuille…</value></data>
   <data name="PortfolioImportNoOcr"><value>Windows n'a pas de pack OCR sur cette machine ; collez la liste.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Pas de reconnaissance chinoise : les noms peuvent être illisibles, les nombres et codes non.</value></data>
   <data name="PortfolioImportNothing"><value>Aucune exécution lue</value></data>
   <data name="PortfolioImportParsed"><value>{0} exécutions lues, {1} lignes ignorées</value></data>
   <data name="PortfolioImportSkipped"><value>{0} lignes illisibles — corrigez-les avant d'importer</value></data>
   <data name="PortfolioImportBuy"><value>Achat</value></data>
   <data name="PortfolioImportSell"><value>Vente</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Importer le tableau</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Achat</value></data>
   <data name="PortfolioPnlSellLabel"><value>Vente</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Titre</value></data>
+  <data name="SettingsTitleNote.Text"><value>S'applique à toutes les pages. La page du portefeuille peut toujours définir son propre style et sa couleur.</value></data>
 </root>

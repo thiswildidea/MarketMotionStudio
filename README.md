@@ -61,7 +61,7 @@ not move, because its axis is the mainland session and Hong Kong's day does not 
 minute. It is also the only page whose subject is the reader rather than a market: a book of your
 own holdings — code, name, diluted cost, share count, mainland or Hong Kong read off the code —
 marked to the minute from 09:30 to the last venue's close, kept honest by importing each day's
-filled orders from a screenshot read on this machine or straight from the clipboard, and summed
+filled orders from the clipboard or from the day's exported order sheet (.xlsx), and summed
 underneath in four cards: today's profit, the book's value, and the best and worst minute of it.
 The last three share one watchlist that mixes all three markets — Position Return
 reads the same list, where every pick is a line of its own rather than a row, and Market Value
@@ -1027,20 +1027,33 @@ asked for at fetch time**, which is also why the rate travels with the result an
 frame: a constant here would be a rate frozen on the day the code was written, applied silently to
 every Hong Kong holding for as long as the app lives, and a total that quietly mixes two
 currencies misreports both. What keeps the book honest is the import rather than typing: each day's filled orders go in
-from a screenshot — read **on this machine** by the OCR that ships with Windows, so a picture of
-somebody's positions goes nowhere — or straight from the clipboard, and either way the parse is
-shown row by row and one unreadable row applies nothing. A sale is not merely subtracted: it nets
+straight from the clipboard or from the order sheet the broker exports (.xlsx), and either way the
+parse is shown row by row and one unreadable row applies nothing — a cancelled, rejected or
+unfilled order is dropped rather than booked, and a row without its side holds the import until it
+has one (the sheet carries the side in its own column; pasted text must state 买入 or 卖出 at the
+head of the line). A sale is not merely subtracted: it nets
 its proceeds off the cost of the shares that remain, which is the diluted cost the broker app
 prints beside the position, so the figure here can be checked against it; the six fields together
 — day, minute, code, side, price, size — recognise a trade already booked, and importing the same
 list twice changes nothing. The profit itself is measured from yesterday's close and stays
 continuous through a trade: the veer happens at the minute of the order rather than the whole curve
-being redrawn, and fees are left out, so the difference against the broker's own "today" is the
-commission. The axis runs to the close of the venues that actually traded — Hong Kong's day ends an
+being redrawn, and fees are charged at the rates the page carries — 万2.5 commission with a
+five-yuan floor, 千0.5 stamp duty on the sale, 万0.1 transfer fee both ways, the mainland's own
+schedule, editable, and applied to Hong Kong fills through the same table — entering the day's
+curve and the diluted cost alike, which is why the cost beside each row can be checked against
+the broker to the fen; set the four rates to zero and the page counts no fees. The axis runs to
+the close of the venues that actually traded — Hong Kong's day ends an
 hour later, and a Hong Kong holiday takes those rows out of the curve and labels them closed
 instead of pricing them off a session that is not today's — and while the market is open the page
 asks again every thirty seconds, and stops asking after the close, because a settled day answers
-every poll with the same numbers.
+every poll with the same numbers. The holdings list moves with the playhead: play or scrub, and
+each row shows the shares and diluted cost of the minute the frame is on — a position opened
+today grows its row at the minute of its first fill, and one sold out during the day stays on
+the list marked sold out — because the list and the curve always read the same frame. The
+holdings dialog opens on those same latest figures: look without touching and the stored book
+does not move, change a row and it is the book itself that is rewritten — from then on the
+day's replay draws its markers without recounting the shares — and on exit the day's final
+holdings fold into the stored book, ready to carry on the next morning.
 
 **Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
 over a coin instead of a share, and the three pages that come with **a fourth market** rather than

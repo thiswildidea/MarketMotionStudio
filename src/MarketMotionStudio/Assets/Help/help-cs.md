@@ -427,15 +427,19 @@ Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála
 
 - **Náklad je zředěný** — stejný, jaký aplikace brokera píše vedle pozice: nákup se rozloží na všechny akcie, prodej odečte získanou částku z nákladu zbývajících akcií (klesne, prodalo-li se nad nákladem, stoupne, prodalo-li se pod ním), a uzavřená pozice z portfolia zmizí.
 
-- **Dnešní výsledek se měří od včerejšího zavření** a obchod se započítá v minutě, kdy se stal: nákup či prodej dopoledne a křivka jde dál bez skoku. Poplatky v tom nejsou, takže číslo se může od brokera lišit právě o provizi.
+- **Dnešní výsledek se měří od včerejšího zavření** a obchod se započítá v minutě, kdy se stal: nákup či prodej dopoledne a křivka jde dál bez skoku. Poplatky se počítají podle sazeb na této stránce — 0,025 % provize z obchodu (minimálně 5 juanů), 0,05 % kolkového při prodeji, 0,001 % převodního poplatku na obou stranách — to jsou sazby kontinentálního brokera samy, lze je změnit, a obchody z Hongkongu používají tutéž tabulku. Vstupují do křivky dne i do zředěných nákladů, proto cena u každého řádku odpovídá aplikaci brokera; nastavte všechny čtyři na nulu a stránka se vrátí k počítání bez poplatků.
 
 - **U bodů nákupu a prodeje se objeví štítek.** Když křivka mine bod nákupu, objeví se na tom místě červený štítek „Nákup", u bodu prodeje zelený „Prodej"; vjede v plynulém zesílení, chvíli vydrží a pak se zvedne a sám zmizí. Štítky nákupu jsou nad bodem, prodeje pod ním, a tlačenice v téže minutě se rozestoupí, místo aby se překrývala. Štítek pohání postup přehrávání, takže neruší živou křivku, a náhled i exportované video jsou snímek po snímku shodné.
+
+- **Seznam pozic jde s obrazem.** Při přehrávání nebo posouvání ukazuje seznam minutu, na které obraz stojí: počet akcí a zředěné náklady stojí na číslech té minuty, pozice koupená dnes přidá svůj řádek v minutě prvního obchodu a pozice prodaná do nuly zůstane na místě, označená jako prodaná. Seznam a křivka čtou vždy týž snímek, takže si nemohou odporovat.
 
 - **Osa jde od 09:30 do zavření těch trhů, které skutečně obchodovaly**: Šanghaj a Šen-čen do 15:00, Hongkong do 16:00. Polední přestávka je podbarvená a popsaná, ne nakreslená jako dvě hodiny rovné čáry. Když je jedna strana zavřená, její pozice jsou označené jako „zavřeno" a z křivky vypadnou — místo aby se oceňovaly seancí, která není dnešní.
 
 - **Během obchodování se obnovuje samo**: každých 30 sekund v pracovní dny mezi 09:15 a 16:10, pokud je přepínač zapnutý. Po zavření se přestane ptát — uzavřený den odpovídá na každý dotaz stejně.
 
-- **Import pokynů je snímek obrazovky nebo vložení.** Snímek čte na tomto počítači OCR, které je součástí Windows (nic se neodesílá), rozpoznaný text se objeví v poli, které lze opravit, a výsledek se vypíše řádek po řádku; jediný nepřečtený řádek import zablokuje. Dvakrát importovaný stejný seznam nic nezkazí: den, minuta, kód, strana, cena a počet akcií dohromady rozpoznají už zapsaný řádek.
+- **Import pokynů je vložení nebo tabulka.** Obchody dne přijdou přímo ze schránky nebo z tabulky pokynů, kterou broker exportuje (.xlsx), a jež v sloupcích nese stranu, kód, cenu, počet akcí a minutu. Zrušené, odmítnuté a nerealizované řádky cestou odpadnou — nikdy se nestanou obchody. Výsledek se vypíše řádek po řádku, a jeden nepřečtený řádek nebo řádek bez strany import zadrží: tabulka nese stranu v každém řádku, a vložený text ji píše na začátek řádku — 买入 nebo 卖出. Dvakrát importovaný stejný seznam nic nezkazí: den, minuta, kód, strana, cena a počet akcií dohromady rozpoznají už zapsaný řádek.
+
+- **„Pozice” se otevírají s nejnovějšími čísly.** Každý řádek okna je to, co stránka právě ukazuje: obchody dne jsou už v počtu akcí a zředěných nákladech, stejných číslech jako v seznamu. Pouhé pohlednutí knihu nepohně o bajt; skutečná změna řádku je zápis do samotné knihy — od té chvíle přehrávání dne kreslí jen značky, aniž by počty akcí počítalo znovu. Při ukončení se poslední pozice dne složí do knihy, připravené na zítra.
 
 - Portfolio je uložené ve složce aplikace a přežije restart. Tahle stránka je také jediná, jejímž tématem je sám čtenář — ostatní kreslí trh a jejich částky jsou v měně zvoleného trhu.
 

@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>Die Kursquelle kennt {0} nicht.</value></data>
   <data name="PortfolioImportTitle"><value>Ausführungen importieren</value></data>
   <data name="PortfolioImportApply"><value>Importieren</value></data>
-  <data name="PortfolioImportHint.Text"><value>Ein Bildschirmfoto der heutigen Ausführungen wählen oder die Liste einfügen. Das Ergebnis lässt sich vor dem Import korrigieren.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Bildschirmfoto wählen…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Füge die Geschäfte des Tages ein oder importiere das Orderblatt des Tages (.xlsx). Das Ergebnis wird Zeile für Zeile geprüft; erst wenn alles lesbar ist, kann es übernommen werden.</value></data>
   <data name="PortfolioImportDay.Header"><value>Handelstag</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Ausführungen einfügen, eine pro Zeile</value></data>
   <data name="PortfolioImportParse.Content"><value>Auswerten</value></data>
   <data name="PortfolioImportEmpty"><value>Noch nichts ausgewertet</value></data>
-  <data name="PortfolioImportReading"><value>Bildschirmfoto wird gelesen…</value></data>
+  <data name="PortfolioImportReading"><value>Tabelle wird gelesen…</value></data>
   <data name="PortfolioImportNoOcr"><value>Windows hat auf diesem Rechner kein OCR-Sprachpaket; bitte die Liste einfügen.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Es gibt keine chinesische Erkennung; Namen bleiben evtl. unlesbar, Zahlen und Kennungen nicht.</value></data>
   <data name="PortfolioImportNothing"><value>Keine Ausführungen gelesen</value></data>
   <data name="PortfolioImportParsed"><value>{0} Ausführungen erkannt, {1} Zeilen übersprungen</value></data>
   <data name="PortfolioImportSkipped"><value>{0} Zeilen waren nicht lesbar — vor dem Import korrigieren</value></data>
   <data name="PortfolioImportBuy"><value>Kauf</value></data>
   <data name="PortfolioImportSell"><value>Verkauf</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Tabelle importieren</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Kauf</value></data>
   <data name="PortfolioPnlSellLabel"><value>Verkauf</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Titel</value></data>
+  <data name="SettingsTitleNote.Text"><value>Gilt für alle Seiten. Die Portfolio-Seite kann Stil und Farbe weiterhin separat festlegen.</value></data>
 </root>

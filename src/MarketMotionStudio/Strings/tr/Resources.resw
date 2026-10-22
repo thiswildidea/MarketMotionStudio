@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>Fiyat kaynağı {0} kodunu bilmiyor.</value></data>
   <data name="PortfolioImportTitle"><value>İşlemleri içe aktar</value></data>
   <data name="PortfolioImportApply"><value>İçe aktar</value></data>
-  <data name="PortfolioImportHint.Text"><value>Günün işlemlerinin ekran görüntüsünü seçin ya da listeyi yapıştırın. Sonuç, aktarmadan önce düzeltilebilir.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Ekran görüntüsü seç…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Günün işlemlerini yapıştırın veya günün emir tablosunu (.xlsx) içe aktarın. Sonuç satır satır kontrol edilir; her şey okunmadan aktarılamaz.</value></data>
   <data name="PortfolioImportDay.Header"><value>İşlem günü</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>İşlemleri her satıra bir tane olacak şekilde yapıştırın</value></data>
   <data name="PortfolioImportParse.Content"><value>Çözümle</value></data>
   <data name="PortfolioImportEmpty"><value>Henüz sonuç yok</value></data>
-  <data name="PortfolioImportReading"><value>Ekran görüntüsü okunuyor…</value></data>
+  <data name="PortfolioImportReading"><value>Tablo okunuyor…</value></data>
   <data name="PortfolioImportNoOcr"><value>Bu bilgisayarda Windows OCR dil paketi yok; listeyi yapıştırın.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Çince tanıma yok: adlar okunamayabilir; sayılar ve kodlar okunur.</value></data>
   <data name="PortfolioImportNothing"><value>İşlem okunamadı</value></data>
   <data name="PortfolioImportParsed"><value>{0} işlem okundu, {1} satır atlandı</value></data>
   <data name="PortfolioImportSkipped"><value>{0} satır okunamadı — aktarmadan önce düzeltin</value></data>
   <data name="PortfolioImportBuy"><value>Alım</value></data>
   <data name="PortfolioImportSell"><value>Satım</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Tabloyu içe aktar</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Alım</value></data>
   <data name="PortfolioPnlSellLabel"><value>Satım</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Başlık</value></data>
+  <data name="SettingsTitleNote.Text"><value>Tüm sayfalarda geçerlidir. Portföy sayfası kendi stilini ve rengini yine de ayrıca ayarlayabilir.</value></data>
 </root>

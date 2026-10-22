@@ -1086,21 +1086,22 @@
   <data name="PortfolioDialogUnknown"><value>行情源查不到 {0}。</value></data>
   <data name="PortfolioImportTitle"><value>匯入成交紀錄</value></data>
   <data name="PortfolioImportApply"><value>匯入</value></data>
-  <data name="PortfolioImportHint.Text"><value>選一張當日成交的截圖，或者直接把成交紀錄貼進來。識別結果可以先改，確認無誤再匯入。</value></data>
-  <data name="PortfolioImportPick.Content"><value>選擇截圖…</value></data>
+  <data name="PortfolioImportHint.Text"><value>把成交記錄貼進來，或匯入當日委託記錄的表格（.xlsx）。解析結果逐行確認，全部讀對才能匯入。</value></data>
   <data name="PortfolioImportDay.Header"><value>交易日期</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>貼上成交紀錄，一行一筆</value></data>
   <data name="PortfolioImportParse.Content"><value>解析</value></data>
   <data name="PortfolioImportEmpty"><value>還沒有解析結果</value></data>
-  <data name="PortfolioImportReading"><value>正在識別截圖…</value></data>
+  <data name="PortfolioImportReading"><value>正在讀取表格…</value></data>
   <data name="PortfolioImportNoOcr"><value>這台電腦沒有安裝 Windows 的 OCR 語言包，只能手動貼上。</value></data>
-  <data name="PortfolioImportNoChinese"><value>系統裡沒有中文識別包，中文名可能認不出；數字與代碼仍然可用。</value></data>
   <data name="PortfolioImportNothing"><value>沒有讀到成交紀錄</value></data>
   <data name="PortfolioImportParsed"><value>識別到 {0} 筆，跳過 {1} 行</value></data>
   <data name="PortfolioImportSkipped"><value>有 {0} 行讀不出來，先改好再匯入</value></data>
   <data name="PortfolioImportBuy"><value>買入</value></data>
   <data name="PortfolioImportSell"><value>賣出</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>匯入表格</value></data>
   <data name="PortfolioPnlBuyLabel"><value>買入</value></data>
   <data name="PortfolioPnlSellLabel"><value>賣出</value></data>
+  <data name="SettingsTitleLabel.Text"><value>標題</value></data>
+  <data name="SettingsTitleNote.Text"><value>對所有頁面生效。持倉收益頁仍可在本頁單獨設定樣式與顏色。</value></data>
 </root>

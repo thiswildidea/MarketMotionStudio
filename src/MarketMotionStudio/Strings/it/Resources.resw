@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>La fonte delle quotazioni non conosce {0}.</value></data>
   <data name="PortfolioImportTitle"><value>Importa esecuzioni</value></data>
   <data name="PortfolioImportApply"><value>Importa</value></data>
-  <data name="PortfolioImportHint.Text"><value>Scegli uno screenshot delle esecuzioni del giorno o incolla l'elenco. Il risultato è correggibile prima dell'importazione.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Scegli screenshot…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Incolla le operazioni del giorno o importa il foglio ordini della giornata (.xlsx). Il risultato si controlla riga per riga; tutto deve essere leggibile per poterlo applicare.</value></data>
   <data name="PortfolioImportDay.Header"><value>Giorno di contrattazione</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Incolla le esecuzioni, una per riga</value></data>
   <data name="PortfolioImportParse.Content"><value>Analizza</value></data>
   <data name="PortfolioImportEmpty"><value>Nessun risultato</value></data>
-  <data name="PortfolioImportReading"><value>Lettura dello screenshot…</value></data>
+  <data name="PortfolioImportReading"><value>Lettura del foglio…</value></data>
   <data name="PortfolioImportNoOcr"><value>Windows non ha un pacchetto OCR su questo PC; incolla l'elenco.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Manca il riconoscitore cinese: i nomi possono essere illeggibili, i numeri e i codici no.</value></data>
   <data name="PortfolioImportNothing"><value>Nessuna esecuzione letta</value></data>
   <data name="PortfolioImportParsed"><value>{0} esecuzioni lette, {1} righe saltate</value></data>
   <data name="PortfolioImportSkipped"><value>{0} righe illeggibili: correggile prima di importare</value></data>
   <data name="PortfolioImportBuy"><value>Acquisto</value></data>
   <data name="PortfolioImportSell"><value>Vendita</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Importa foglio</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Acquisto</value></data>
   <data name="PortfolioPnlSellLabel"><value>Vendita</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Titolo</value></data>
+  <data name="SettingsTitleNote.Text"><value>Valido per tutte le pagine. La pagina del portafoglio può comunque impostare il proprio stile e colore.</value></data>
 </root>

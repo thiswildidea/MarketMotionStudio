@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>Zdroj kurzů {0} nezná.</value></data>
   <data name="PortfolioImportTitle"><value>Importovat obchody</value></data>
   <data name="PortfolioImportApply"><value>Importovat</value></data>
-  <data name="PortfolioImportHint.Text"><value>Vyberte snímek dnešních obchodů nebo vložte seznam. Výsledek lze před importem opravit.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Vybrat snímek…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Vložte obchody dne nebo importujte tabulku s pokyny dne (.xlsx). Výsledek se kontroluje řádek po řádku; importovat lze, jen když je vše čitelné.</value></data>
   <data name="PortfolioImportDay.Header"><value>Obchodní den</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Vložte obchody, jeden na řádek</value></data>
   <data name="PortfolioImportParse.Content"><value>Analyzovat</value></data>
   <data name="PortfolioImportEmpty"><value>Zatím žádný výsledek</value></data>
-  <data name="PortfolioImportReading"><value>Čte se snímek…</value></data>
+  <data name="PortfolioImportReading"><value>Načítá se tabulka…</value></data>
   <data name="PortfolioImportNoOcr"><value>Windows na tomto počítači nemá OCR balíček; vložte seznam.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Chybí čínské rozpoznávání: jména nemusí být čitelná, čísla a kódy ano.</value></data>
   <data name="PortfolioImportNothing"><value>Nebyly načteny žádné obchody</value></data>
   <data name="PortfolioImportParsed"><value>Rozpoznáno {0} obchodů, přeskočeno {1} řádků</value></data>
   <data name="PortfolioImportSkipped"><value>{0} řádků nelze přečíst — před importem je opravte</value></data>
   <data name="PortfolioImportBuy"><value>Nákup</value></data>
   <data name="PortfolioImportSell"><value>Prodej</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Importovat tabulku</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Nákup</value></data>
   <data name="PortfolioPnlSellLabel"><value>Prodej</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Titulek</value></data>
+  <data name="SettingsTitleNote.Text"><value>Platí pro všechny stránky. Stránka portfolia může mít stále vlastní styl a barvu.</value></data>
 </root>

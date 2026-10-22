@@ -1098,21 +1098,22 @@
   <data name="PortfolioDialogUnknown"><value>The quote source does not know {0}.</value></data>
   <data name="PortfolioImportTitle"><value>Import filled orders</value></data>
   <data name="PortfolioImportApply"><value>Import</value></data>
-  <data name="PortfolioImportHint.Text"><value>Pick a screenshot of the day's filled orders, or paste the list. The result can be corrected before anything is applied.</value></data>
-  <data name="PortfolioImportPick.Content"><value>Choose screenshot…</value></data>
+  <data name="PortfolioImportHint.Text"><value>Paste the day's fills in, or import the day's order sheet (.xlsx). The parse is confirmed row by row; everything must read cleanly before it can be applied.</value></data>
   <data name="PortfolioImportDay.Header"><value>Trading day</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>Paste the filled orders, one per line</value></data>
   <data name="PortfolioImportParse.Content"><value>Parse</value></data>
   <data name="PortfolioImportEmpty"><value>Nothing parsed yet</value></data>
-  <data name="PortfolioImportReading"><value>Reading the screenshot…</value></data>
+  <data name="PortfolioImportReading"><value>Reading the sheet…</value></data>
   <data name="PortfolioImportNoOcr"><value>Windows has no OCR language pack on this machine; paste the list instead.</value></data>
-  <data name="PortfolioImportNoChinese"><value>Windows has no Chinese recogniser, so names may be unreadable; the numbers and codes still are.</value></data>
   <data name="PortfolioImportNothing"><value>No trades were read</value></data>
   <data name="PortfolioImportParsed"><value>{0} trades read, {1} lines skipped</value></data>
   <data name="PortfolioImportSkipped"><value>{0} lines could not be read — fix them before importing</value></data>
   <data name="PortfolioImportBuy"><value>Buy</value></data>
   <data name="PortfolioImportSell"><value>Sell</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>Import sheet</value></data>
   <data name="PortfolioPnlBuyLabel"><value>Buy</value></data>
   <data name="PortfolioPnlSellLabel"><value>Sell</value></data>
+  <data name="SettingsTitleLabel.Text"><value>Title</value></data>
+  <data name="SettingsTitleNote.Text"><value>Applies to every page. The portfolio page can still set its own style and colour.</value></data>
 </root>

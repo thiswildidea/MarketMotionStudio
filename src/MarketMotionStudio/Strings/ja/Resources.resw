@@ -1087,21 +1087,22 @@
   <data name="PortfolioDialogUnknown"><value>相場データに {0} が見つかりません。</value></data>
   <data name="PortfolioImportTitle"><value>約定履歴を取り込む</value></data>
   <data name="PortfolioImportApply"><value>取り込む</value></data>
-  <data name="PortfolioImportHint.Text"><value>当日の約定のスクリーンショットを選ぶか、約定履歴を貼り付けてください。内容は取り込む前に修正できます。</value></data>
-  <data name="PortfolioImportPick.Content"><value>スクリーンショットを選ぶ…</value></data>
+  <data name="PortfolioImportHint.Text"><value>当日の約定を貼り付けるか、当日の注文記録の表（.xlsx）を取り込みます。解析結果を一行ずつ確認し、すべて読めたときだけ取り込めます。</value></data>
   <data name="PortfolioImportDay.Header"><value>取引日</value></data>
   <data name="PortfolioImportRaw.PlaceholderText"><value>約定履歴を貼り付け（1行1件）</value></data>
   <data name="PortfolioImportParse.Content"><value>解析</value></data>
   <data name="PortfolioImportEmpty"><value>まだ解析結果がありません</value></data>
-  <data name="PortfolioImportReading"><value>スクリーンショットを認識中…</value></data>
+  <data name="PortfolioImportReading"><value>表を読み込んでいます…</value></data>
   <data name="PortfolioImportNoOcr"><value>この PC には Windows の OCR 言語パックがありません。貼り付けで入力してください。</value></data>
-  <data name="PortfolioImportNoChinese"><value>中国語の認識パックがないため、中国語名は読めない場合があります。数字とコードは読み取れます。</value></data>
   <data name="PortfolioImportNothing"><value>約定を読み取れませんでした</value></data>
   <data name="PortfolioImportParsed"><value>{0} 件を認識、{1} 行をスキップ</value></data>
   <data name="PortfolioImportSkipped"><value>{0} 行を読み取れません。修正してから取り込んでください</value></data>
   <data name="PortfolioImportBuy"><value>買い</value></data>
   <data name="PortfolioImportSell"><value>売り</value></data>
   <data name="PortfolioImportRow"><value>{0} {1} {2} · {3} × {4} · {5}</value></data>
+  <data name="PortfolioImportSheet.Content"><value>表を取り込む</value></data>
   <data name="PortfolioPnlBuyLabel"><value>買い</value></data>
   <data name="PortfolioPnlSellLabel"><value>売り</value></data>
+  <data name="SettingsTitleLabel.Text"><value>タイトル</value></data>
+  <data name="SettingsTitleNote.Text"><value>すべてのページに適用されます。ポートフォリオページでは引き続き個別にスタイルと色を設定できます。</value></data>
 </root>
