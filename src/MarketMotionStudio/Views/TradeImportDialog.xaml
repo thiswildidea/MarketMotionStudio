@@ -14,10 +14,10 @@
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
         <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10">
-            <Button x:Name="PickButton"
-                    x:Uid="PortfolioImportPick"
+            <Button x:Name="SheetButton"
+                    x:Uid="PortfolioImportSheet"
                     Grid.Column="0"
-                    Click="OnPick" />
+                    Click="OnPickSheet" />
             <DatePicker x:Name="Day"
                         x:Uid="PortfolioImportDay"
                         Grid.Column="1" />
@@ -47,12 +47,14 @@
                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </Grid>
 
-        <ScrollViewer MaxHeight="180" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
             <ItemsControl x:Name="Preview">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="views:ParsedRow">
                         <TextBlock Text="{x:Bind Line}"
                                    Margin="0,3"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
                                    Style="{StaticResource CaptionTextBlockStyle}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

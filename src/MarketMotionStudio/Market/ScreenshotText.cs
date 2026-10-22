@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Globalization;
 using Windows.Graphics.Imaging;
 using Windows.Media.Ocr;
@@ -57,27 +60,30 @@ public static class ScreenshotText
         var decoder = await BitmapDecoder.CreateAsync(stream);
 
         var factor = Factor((int)decoder.PixelWidth);
-        var (rows, chinese) = await Recognise(decoder, factor);
+        var (words, chinese) = await WordsAndLanguage(decoder, factor);
+        var rows = TradeText.Rows(words);
 
-        // **A row the engine read without its 买入 / 卖出 is the commonest thing it loses at the
-        // smaller size**, because the direction word is the leftmost and thinnest text on the
-        // row — the day's own list came back with four rows carrying theirs and the fifth not.
-        // Without it the row cannot be imported at all: the direction is the one field the parser
-        // will not guess. So when a row is unusable for want of that word the picture is read
-        // again at twice the size, where the word does come through, and every row is taken from
-        // whichever reading says more about it. Paid for only when it is needed, and the numbers
-        // still come from the size they were measured to read best at.
+        // **A row the engine read without its 买入 / 卖出 is the commonest thing it loses**, and
+        // it is lost for a reason: on these lists the direction word is the only *coloured* text
+        // on a dark background, and the recogniser drops coloured text on dark far more readily
+        // than white. When a row is unusable for want of that word, the picture is read again with
+        // everything but the colour wiped to white — on white the word comes through — and the
+        // words are put back on their rows by band. The bigger (2×) reading is kept only as a
+        // fallback for the rare list where the colour mask finds nothing.
         if (TradeText.Incomplete(rows))
         {
-            var (twice, _) = await Recognise(decoder, Math.Min(factor * 2, MaxFactor * 2));
-            rows = TradeText.Merge(rows, twice);
+            var sides = await RecoverSides(decoder, factor);
+
+            rows = sides.Count > 0
+                ? TradeText.Attach(TradeText.RowBoxes(words), sides)
+                : TradeText.Merge(rows, (await Recognise(decoder, Math.Min(factor * 2, MaxFactor * 2))).Rows);
         }
 
         return (rows, chinese);
     }
 
-    /// <summary>One pass: the picture at <paramref name="factor"/>, read into rows.</summary>
-    private static async Task<(IReadOnlyList<string> Rows, bool Chinese)> Recognise(
+    /// <summary>The words on the picture at <paramref name="factor"/>, with the boxes they sat in.</summary>
+    private static async Task<(IReadOnlyList<OcrWord> Words, bool Chinese)> WordsAndLanguage(
         BitmapDecoder decoder, int factor)
     {
         using var bitmap = await Scaled(decoder, factor);
@@ -103,7 +109,136 @@ public static class ScreenshotText
             }
         }
 
-        return (TradeText.Rows(words), engine.RecognizerLanguage.LanguageTag.StartsWith("zh", StringComparison.OrdinalIgnoreCase));
+        return (words, engine.RecognizerLanguage.LanguageTag.StartsWith("zh", StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>One pass: the picture at <paramref name="factor"/>, read into rows.</summary>
+    private static async Task<(IReadOnlyList<string> Rows, bool Chinese)> Recognise(
+        BitmapDecoder decoder, int factor)
+    {
+        var (words, chinese) = await WordsAndLanguage(decoder, factor);
+
+        return (TradeText.Rows(words), chinese);
+    }
+
+    /// <summary>
+    /// The direction words the colour mask can recover, banded by the row they sat in.
+    ///
+    /// The masked picture is the same one the first reading used, only with every pixel that is
+    /// not clearly coloured painted white; coloured text on white is what the recogniser reads
+    /// cleanly, and the direction words are the only coloured text a broker's order list carries.
+    /// <see cref="TradeText.Attach"/> needs the bands, so this returns rows rather than plain text.
+    /// </summary>
+    private static async Task<IReadOnlyList<TradeText.TextRow>> RecoverSides(BitmapDecoder decoder, int factor)
+    {
+        try
+        {
+            using var bitmap = await Scaled(decoder, factor);
+
+            using var masked = ColorMask(bitmap);
+
+            var engine = Engine();
+
+            if (engine is null)
+            {
+                return [];
+            }
+
+            var result = await engine.RecognizeAsync(masked);
+
+            var words = new List<OcrWord>();
+
+            foreach (var line in result.Lines)
+            {
+                foreach (var word in line.Words)
+                {
+                    var box = word.BoundingRect;
+
+                    words.Add(new OcrWord(word.Text, box.X, box.Y, box.Height));
+                }
+            }
+
+            return TradeText.RowBoxes(words);
+        }
+        catch (Exception)
+        {
+            // The mask is a bonus recovery, never worth blocking the import over: an image the
+            // colour pass cannot read simply falls back to the bigger (2×) reading.
+            return [];
+        }
+    }
+
+    /// <summary>
+    /// A copy of the bitmap with every pixel that is not clearly coloured painted white.
+    ///
+    /// **Kept as a second reading, not a replacement.** The first reading reads the names, the
+    /// codes, the prices and the clocks — everything white on the broker's dark list — and this
+    /// one only ever adds the direction words, which are the part the first one drops. A pixel
+    /// survives when it is saturated (a real colour, not white text and not the dark background)
+    /// and bright enough to be text rather than a faint ghost. Measured on the day's own list:
+    /// this reading recovered all seven direction words where the first reading found one.
+    /// </summary>
+    private static SoftwareBitmap ColorMask(SoftwareBitmap source)
+    {
+        var width = (int)source.PixelWidth;
+        var height = (int)source.PixelHeight;
+        var output = new SoftwareBitmap(BitmapPixelFormat.Bgra8, width, height, BitmapAlphaMode.Premultiplied);
+
+        // **Read and write through `SoftwareBitmap` itself.** The `IMemoryBufferReference`
+        // buffer/stream extensions this projection ships without are not needed: `CopyToBuffer`
+        // pulls the pixels into a byte array (via the `byte[]` `AsBuffer` overload that *is*
+        // present) and `CopyFromBuffer` pushes them back, both in the bitmap's own BGRA order.
+        int pitch;
+
+        using (var probe = source.LockBuffer(BitmapBufferAccessMode.Read))
+        {
+            pitch = probe.GetPlaneDescription(0).Stride;
+        }
+
+        var bytes = new byte[pitch * height];
+        source.CopyToBuffer(bytes.AsBuffer());
+
+        var result = new byte[bytes.Length];
+
+        for (var y = 0; y < height; y++)
+        {
+            var row = y * pitch;
+
+            for (var x = 0; x < width; x++)
+            {
+                var i = row + (x * 4);
+                var b = bytes[i];
+                var g = bytes[i + 1];
+                var r = bytes[i + 2];
+
+                var max = Math.Max(r, Math.Max(g, b));
+                var min = Math.Min(r, Math.Min(g, b));
+                var sat = max == 0 ? 0.0 : (max - min) / (double)max;
+
+                var o = row + (x * 4);
+
+                // Keep only a real colour that is bright enough to be text; everything else —
+                // white names, dark background, grey anti-aliasing — becomes white.
+                if (sat > 0.35 && max > 90)
+                {
+                    result[o] = b;
+                    result[o + 1] = g;
+                    result[o + 2] = r;
+                }
+                else
+                {
+                    result[o] = 255;
+                    result[o + 1] = 255;
+                    result[o + 2] = 255;
+                }
+
+                result[o + 3] = 255;
+            }
+        }
+
+        output.CopyFromBuffer(result.AsBuffer());
+
+        return output;
     }
 
     /// <summary>How far up the picture is blown before it is handed to the engine.</summary>

@@ -23,20 +23,34 @@ public sealed record ParsedTrade(TradeSide Side, string Code, string Name, doubl
 /// <summary>What a list parsed into, and what it could not read.</summary>
 /// <param name="Trades">The trades, in the order they were listed.</param>
 /// <param name="Skipped">One line per row that was not a trade, saying what it was.</param>
-public sealed record TradeParse(IReadOnlyList<ParsedTrade> Trades, IReadOnlyList<string> Skipped)
-{
-    /// <summary>
-    /// Rows the list itself says did not happen — 已撤, 废单, 未成交.
-    ///
-    /// Kept apart from <see cref="Skipped"/> because the two mean opposite things to a reader: a
-    /// skipped row is one the parser could not read and must be fixed before anything is applied,
-    /// while a cancelled row is one the broker has already told us about and which therefore must
-    /// simply be left out. A cancelled order still carries a code, a price, a size and a clock —
-    /// every part a trade has — so without this distinction it would be imported as a trade that
-    /// never happened.
-    /// </summary>
-    public IReadOnlyList<string> Cancelled { get; init; } = [];
-}
+    public sealed record TradeParse(IReadOnlyList<ParsedTrade> Trades, IReadOnlyList<string> Skipped)
+    {
+        /// <summary>
+        /// Rows the list itself says did not happen — 已撤, 废单, 未成交.
+        ///
+        /// Kept apart from <see cref="Skipped"/> because the two mean opposite things to a reader: a
+        /// skipped row is one the parser could not read and must be fixed before anything is applied,
+        /// while a cancelled row is one the broker has already told us about and which therefore must
+        /// simply be left out. A cancelled order still carries a code, a price, a size and a clock —
+        /// every part a trade has — so without this distinction it would be imported as a trade that
+        /// never happened.
+        /// </summary>
+        public IReadOnlyList<string> Cancelled { get; init; } = [];
+
+        /// <summary>
+        /// Rows the engine read every part of except the direction — a code, a price, a size and a
+        /// clock were all there, only 买入 / 卖出 was dropped.
+        ///
+        /// **This is the common OCR failure, and it is not the parser's to guess.** On a broker's
+        /// dark order list the direction word is the only white text at the left edge of the row,
+        /// and Windows' recogniser drops it far more often than it keeps it — measured on the day's
+        /// own list, one of seven came back with it. The row is a trade in every other respect, so
+        /// rather than dropping it as unreadable (which would block the whole import) it is handed
+        /// back here for the reader to choose 买入 or 卖出 in the dialog. A trade with no direction
+        /// is worse than a missing one: it would be applied as whichever way the guess fell.
+        /// </summary>
+        public IReadOnlyList<string> Incomplete { get; init; } = [];
+    }
 
 /// <summary>
 /// Reads a broker's completed-order list, from a screenshot or from typed text.
@@ -90,6 +104,13 @@ public static class TradeText
         // semicolon is never anything else, so it becomes a colon here.
         text = ClockColon.Replace(text, ":");
 
+        // **A clock that lost its second colon entirely** — 14:5002 for 14:50:02. Four digits
+        // behind a colon is not a time any other way, and an unreadable clock is worse than a
+        // missing one: `Blocks` delimits rows by the clock, so one bad stamp merges two orders
+        // into a single row and the parser reads the first one's price with the second one's
+        // size. Repaired here, where every other clock artefact is repaired.
+        text = ClockRun.Replace(text, "$1:$2:$3");
+
         // **A comma inside a number is one of two things, and the digit count says which.** The
         // broker prints at most two decimals and never groups a size with two digits after the
         // comma, so `31,80` is a price and `5,900` is a size. Left alone, `31,80` reads as two
@@ -118,6 +139,14 @@ public static class TradeText
     private static readonly Regex ClockColon =
         new(@"(?<=\d)\s*[;；∶]\s*(?=\d)", RegexOptions.Compiled);
 
+    /// <summary>`14:5002` — a clock that lost its second colon. Four digits behind one colon is
+    /// never a time any other way, and an unreadable clock is worse than a missing one:
+    /// <see cref="Blocks"/> delimits rows by the clock, so one bad stamp merges two orders into a
+    /// single row and the parser reads the first one's price with the second one's size. Repaired
+    /// here, beside the other clock artefacts.</summary>
+    private static readonly Regex ClockRun =
+        new(@"\b(\d{1,2}):(\d{2})(\d{2})\b", RegexOptions.Compiled);
+
     private static readonly Regex CommaSpace = new(@"\s*(,)\s*", RegexOptions.Compiled);
 
     /// <summary>`5,900` — three digits after the comma is a thousands group, so the comma goes.</summary>
@@ -125,6 +154,12 @@ public static class TradeText
 
     /// <summary>`31,80` — one or two digits after it is the decimal point the engine misread.</summary>
     private static readonly Regex Decimals = new(@"(?<=\d),(\d{1,2})(?!\d)", RegexOptions.Compiled);
+
+    /// <summary>A text line, with the band it occupied in the picture.</summary>
+    /// <param name="Text">The words, left to right.</param>
+    /// <param name="Top">Top edge, in the same pixels as the words.</param>
+    /// <param name="Height">Tallest word on the line.</param>
+    public readonly record struct TextRow(string Text, double Top, double Height);
 
     /// <summary>
     /// Turns OCR words into text lines, one per visual row, left to right.
@@ -134,7 +169,7 @@ public static class TradeText
     /// tuned on one would merge every row of the other. A word joins the current row when its top
     /// is within most of a character of where that row started.
     /// </summary>
-    public static IReadOnlyList<string> Rows(IEnumerable<OcrWord> words)
+    public static IReadOnlyList<TextRow> RowBoxes(IEnumerable<OcrWord> words)
     {
         var ordered = words
             .Where(w => w.Text.Trim().Length > 0)
@@ -164,7 +199,75 @@ public static class TradeText
 
         // Rebuilt from the words rather than taken from the engine's own lines: those split a
         // table cell away from its neighbours, and a row is what the parser needs.
-        return [.. rows.Select(r => string.Join(" ", r.OrderBy(w => w.X).Select(w => w.Text)))];
+        return
+        [
+            .. rows.Select(r => new TextRow(
+                string.Join(" ", r.OrderBy(w => w.X).Select(w => w.Text)),
+                r.Min(w => w.Y),
+                r.Max(w => w.Height))),
+        ];
+    }
+
+    /// <summary>The same rows, as text.</summary>
+    public static IReadOnlyList<string> Rows(IEnumerable<OcrWord> words) =>
+        [.. RowBoxes(words).Select(r => r.Text)];
+
+    /// <summary>
+    /// Puts the direction word back on rows that were read without one.
+    ///
+    /// **The direction is the one field the parser will not guess, and it is the one the engine
+    /// loses most often** — on the day's own list it read 买入 on one row out of seven and 卖出 on
+    /// the last. The reason is not size: those two words are the only *coloured* text on a broker's
+    /// dark order list, and the recogniser drops coloured text on a dark background far more
+    /// readily than white. Reading the same picture again with everything but the colour thrown
+    /// away (see <c>ScreenshotText</c>) gets all seven; this puts them back where they belong, by
+    /// the band each one sat in. A row that already says its direction is left alone, so the
+    /// second reading can only add, never overwrite.
+    /// </summary>
+    public static IReadOnlyList<string> Attach(IReadOnlyList<TextRow> rows, IReadOnlyList<TextRow> sides)
+    {
+        var text = rows.Select(r => r.Text).ToList();
+
+        foreach (var side in sides)
+        {
+            var word = side.Text.Contains("卖出", StringComparison.Ordinal) ? "卖出"
+                : side.Text.Contains("买入", StringComparison.Ordinal) ? "买入"
+                : null;
+
+            if (word is null)
+            {
+                continue;
+            }
+
+            var centre = side.Top + (side.Height / 2);
+            var index = -1;
+            var best = double.MaxValue;
+
+            for (var i = 0; i < rows.Count; i++)
+            {
+                if (Side(text[i]) is not null)
+                {
+                    continue;
+                }
+
+                var middle = rows[i].Top + (rows[i].Height / 2);
+                var distance = Math.Abs(middle - centre);
+                var reach = Math.Max(rows[i].Height, side.Height);
+
+                if (distance <= reach && distance < best)
+                {
+                    best = distance;
+                    index = i;
+                }
+            }
+
+            if (index >= 0)
+            {
+                text[index] = $"{word} {text[index]}";
+            }
+        }
+
+        return text;
     }
 
     /// <summary>
@@ -183,6 +286,7 @@ public static class TradeText
         var trades = new List<ParsedTrade>();
         var skipped = new List<string>();
         var cancelled = new List<string>();
+        var incomplete = new List<string>();
 
         foreach (var block in blocks)
         {
@@ -193,7 +297,7 @@ public static class TradeText
             // then disagrees with the broker in a way nothing on the page can explain. Rows that
             // say nothing about a status are taken: the tab these screenshots come from is the
             // filled-order tab, and a hand-typed list has no room for a column it does not need.
-            if (IsCancelled(block))
+            if (IsCancelled(block) || Unfilled(block))
             {
                 cancelled.Add(block);
                 continue;
@@ -203,13 +307,23 @@ public static class TradeText
             {
                 trades.Add(trade);
             }
+            else if (LooksLikeTrade(block))
+            {
+                // Everything but the direction: the reader chooses 买入 / 卖出 in the dialog
+                // rather than this row blocking the import of the trades that did read cleanly.
+                incomplete.Add(block);
+            }
             else if (block.Length > 0)
             {
                 skipped.Add(block);
             }
         }
 
-        return new TradeParse(trades, skipped) { Cancelled = cancelled };
+        return new TradeParse(trades, skipped)
+        {
+            Cancelled = cancelled,
+            Incomplete = incomplete,
+        };
     }
 
     /// <summary>
@@ -249,9 +363,52 @@ public static class TradeText
     private static bool IsCancelled(string block) =>
         CancelledWords.Any(word => block.Contains(word, StringComparison.Ordinal));
 
+    /// <summary>
+    /// A row whose 成交量 column reads zero: the order was cancelled, or never traded at all.
+    ///
+    /// **The status word is not the only way a cancellation shows up.** One broker's list prints
+    /// the sizes as two lines — 委托量 on top, 成交量 under it — so a cancelled row reads
+    /// "37.66 200" on the first line and a bare "0" on the second, with 全部撤单 to the right of
+    /// neither. When the engine loses that status cell (it is the thinnest text on the row) what
+    /// is left looks exactly like a fill of 200 shares. Reading the last size instead of the
+    /// first is what tells them apart: nothing filled means nothing to import.
+    /// </summary>
+    private static bool Unfilled(string block)
+    {
+        var clock = Clock.Match(block);
+        var rest = clock.Success ? block.Replace(clock.Value, " ") : block;
+
+        var whole = Figures.Matches(WithoutCodes(rest))
+            .Select(m => m.Value)
+            .Where(v => !v.Contains('.'))
+            .Select(Number)
+            .ToList();
+
+        return whole.Count >= 2 && whole[^1] <= 0;
+    }
+
+    /// <summary>A copy of the row with every code on it taken out, so a code's digits are never
+    /// read as a price or a size.</summary>
+    private static string WithoutCodes(string block)
+    {
+        var text = block;
+
+        for (var i = 0; i < 6; i++)
+        {
+            if (Code(text) is not { } code)
+            {
+                break;
+            }
+
+            text = text.Remove(code.Index, code.Length);
+        }
+
+        return text;
+    }
+
     private static readonly string[] CancelledWords =
     [
-        "已撤", "部撤", "撤单", "废单",
+        "已撤", "部撤", "撤单", "撤销", "废单",
         "未成交", "待成交", "已报", "待报", "申报中",
     ];
 
@@ -279,32 +436,91 @@ public static class TradeText
         // can arrive with its line breaks gone (see `Normalize`). The clock is the one thing
         // neither of those can take away from a row, so a block is "whatever sat between the last
         // clock and this one" instead of "whatever sat between the last newline and this one".
-        var blocks = new List<string>();
+        var parts = new List<(int Start, int End)>();
         var start = 0;
 
         foreach (Match clock in clocks)
         {
             var end = clock.Index + clock.Length;
-            var block = joined[start..end].Trim();
 
-            if (block.Length > 0)
+            if (joined[start..end].Trim().Length > 0)
             {
-                blocks.Add(block);
+                parts.Add((start, end));
             }
 
             start = end;
         }
 
         // Anything after the last clock is a footer (the broker's own advertising line, the tab
-        // bar). Kept as a block so it is reported as skipped rather than silently dropped.
-        var tail = joined[start..].Trim();
-
-        if (tail.Length > 0)
+        // bar) — and, on the two-line layout, the last row's own code. Kept as a part so the row
+        // above can take its code from it, and reported as skipped if anything is left over.
+        if (joined[start..].Trim().Length > 0)
         {
-            blocks.Add(tail);
+            parts.Add((start, joined.Length));
+        }
+
+        var starts = parts.Select(p => p.Start).ToArray();
+        var blocks = new List<string>();
+
+        for (var i = 0; i < parts.Count; i++)
+        {
+            var end = parts[i].End;
+
+            if (starts[i] >= end)
+            {
+                continue;
+            }
+
+            var text = joined[starts[i]..end].Trim();
+
+            if (Code(text) is null)
+            {
+                // **The code can sit on the row's second line, after the clock.** A broker that
+                // prints the name above the code — 公牛集团 over 603195.SH — puts the code past
+                // the only delimiter the row has, so the block above it carries a direction, a
+                // price and a size but no code, and the code then opens the *next* block and
+                // lends its numbers to the wrong row. Reading forward from this clock to the next
+                // row's direction word is what reunites them: everything in between is this row's
+                // second line, and it belongs to this row.
+                var remainder = joined[end..];
+                var nextClock = Clock.Match(remainder);
+                var bound = nextClock.Success ? nextClock.Index : remainder.Length;
+                var after = remainder[..bound];
+                var side = FirstSide(after);
+                var segment = side >= 0 ? after[..side] : after;
+
+                if (segment.Trim().Length > 0 && Code(segment) is not null)
+                {
+                    text = $"{text} {segment.Trim()}".Trim();
+
+                    if (i + 1 < parts.Count)
+                    {
+                        starts[i + 1] = end + segment.Length;
+                    }
+                }
+            }
+
+            if (text.Length > 0)
+            {
+                blocks.Add(text);
+            }
         }
 
         return [.. blocks.SelectMany(Single)];
+    }
+
+    /// <summary>The first direction word in a stretch of text, or -1 when it has none.</summary>
+    private static int FirstSide(string text)
+    {
+        var buy = text.IndexOf("买入", StringComparison.Ordinal);
+        var sell = text.IndexOf("卖出", StringComparison.Ordinal);
+
+        if (buy < 0)
+        {
+            return sell;
+        }
+
+        return sell < 0 ? buy : Math.Min(buy, sell);
     }
 
     /// <summary>
@@ -339,6 +555,17 @@ public static class TradeText
     }
 
     private static readonly Regex Clock = new(@"\b\d{1,2}:\d{2}:\d{2}\b", RegexOptions.Compiled);
+
+    /// <summary>
+    /// Whether a block is a trade that only lost its direction: a code, a clock and at least a
+    /// price and a size, but no 买入 / 卖出. Anything that is not even that is a row the parser
+    /// could not read at all, and belongs in <see cref="TradeParse.Skipped"/> instead.
+    /// </summary>
+    private static bool LooksLikeTrade(string block) =>
+        Side(block) is null
+        && Code(block) is not null
+        && Clock.IsMatch(block)
+        && Figures.Matches(block).Count >= 2;
 
     /// <summary>Reads one row, or null when it is not a trade.</summary>
     private static ParsedTrade? Read(string block)

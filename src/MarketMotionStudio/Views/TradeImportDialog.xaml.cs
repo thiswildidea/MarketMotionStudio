@@ -6,22 +6,28 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace MarketMotionStudio.Views;
 
-/// <summary>One parsed trade, already written out: the preview renders strings.</summary>
+/// <summary>One row of the preview, already formatted: the list renders strings, not records.</summary>
 public sealed class ParsedRow(string line)
 {
     public string Line { get; } = line;
 }
 
 /// <summary>
-/// Imports a day's filled orders: a screenshot the system reads, or a list typed in, then a
+/// Imports a day's filled orders from a broker workbook, or a list typed in, then a
 /// preview of exactly what will be applied.
 ///
 /// <para>
-/// **Nothing is applied until it has been shown.** OCR on a table is good and not perfect — it
-/// reads 48.10 correctly all morning and then finds a smudge — and a wrong share count that goes
-/// straight into the book is a wrong video that nobody traces back to this dialog. So the
-/// recognised text lands in an editable box, the parse is shown row by row, and the primary
-/// button only becomes available once something has been read.
+/// **Nothing is applied until it has been shown.** A wrong share count that goes straight into
+/// the book is a wrong video that nobody traces back to this dialog. So the read text lands in
+/// an editable box, the parse is shown row by row, and the primary button only becomes available
+/// once something has been read.
+/// </para>
+///
+/// <para>
+/// **A row without a 买入 / 卖出 word is not importable here.** The workbook always carries the
+/// direction in its own column, so a direction-less row means text typed or pasted by hand —
+/// and a direction the page guessed would be a position that never existed. Such rows are shown
+/// in the preview and hold the import until the reader adds the word to the text itself.
 /// </para>
 ///
 /// <para>
@@ -31,8 +37,6 @@ public sealed class ParsedRow(string line)
 /// </summary>
 public sealed partial class TradeImportDialog : ContentDialog
 {
-    private readonly List<ParsedTrade> _parsed = [];
-
     public TradeImportDialog(DateOnly day)
     {
         InitializeComponent();
@@ -55,7 +59,13 @@ public sealed partial class TradeImportDialog : ContentDialog
     /// <summary>The day the trades belong to, as the picker has it.</summary>
     private string Chosen => Day.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-    private async void OnPick(object sender, RoutedEventArgs e)
+    private void OnParse(object sender, RoutedEventArgs e) => Parse();
+
+    /// <summary>
+    /// Reads a broker's order workbook. The rows land in the same editable box a reader types in,
+    /// so from here on there is exactly one path: parse, preview, apply — whatever the source was.
+    /// </summary>
+    private async void OnPickSheet(object sender, RoutedEventArgs e)
     {
         if (App.Window is not { } window)
         {
@@ -64,14 +74,11 @@ public sealed partial class TradeImportDialog : ContentDialog
 
         var picker = new Windows.Storage.Pickers.FileOpenPicker
         {
-            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary,
-            ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail,
+            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary,
+            ViewMode = Windows.Storage.Pickers.PickerViewMode.List,
         };
 
-        foreach (var type in (string[])[" .png", ".jpg", ".jpeg", ".bmp"])
-        {
-            picker.FileTypeFilter.Add(type.Trim());
-        }
+        picker.FileTypeFilter.Add(".xlsx");
 
         WinRT.Interop.InitializeWithWindow.Initialize(
             picker, WinRT.Interop.WindowNative.GetWindowHandle(window));
@@ -81,21 +88,22 @@ public sealed partial class TradeImportDialog : ContentDialog
             return;
         }
 
-        PickButton.IsEnabled = false;
+        SheetButton.IsEnabled = false;
         Note.Text = Strings.Get("PortfolioImportReading");
 
         try
         {
-            var (rows, chinese) = await ScreenshotText.ReadAsync(file);
+            var lines = await TradeSheet.ReadAsync(file);
 
-            Raw.Text = string.Join("\n", rows);
+            if (lines.Count == 0)
+            {
+                Note.Text = Strings.Get("PortfolioImportNothing");
+                return;
+            }
+
+            Raw.Text = string.Join("\n", lines);
 
             Parse();
-
-            if (!chinese)
-            {
-                Note.Text = Strings.Get("PortfolioImportNoChinese");
-            }
         }
         catch (Exception ex)
         {
@@ -103,11 +111,9 @@ public sealed partial class TradeImportDialog : ContentDialog
         }
         finally
         {
-            PickButton.IsEnabled = true;
+            SheetButton.IsEnabled = true;
         }
     }
-
-    private void OnParse(object sender, RoutedEventArgs e) => Parse();
 
     /// <summary>
     /// Re-parses on every edit, so the count next to the button is never describing text that is
@@ -125,23 +131,53 @@ public sealed partial class TradeImportDialog : ContentDialog
     {
         var result = TradeText.Parse(Raw.Text);
 
-        _parsed.Clear();
-        _parsed.AddRange(result.Trades);
+        var rows = new List<ParsedRow>();
 
-        Preview.ItemsSource = result.Trades
-            .Select(t => new ParsedRow(Describe(t)))
-            .ToList();
+        foreach (var t in result.Trades)
+        {
+            rows.Add(new ParsedRow(Describe(t)));
+        }
 
-        Note.Text = result.Trades.Count == 0
-            ? Strings.Get("PortfolioImportNothing")
-            : Strings.Format("PortfolioImportParsed", result.Trades.Count, result.Skipped.Count);
+        foreach (var block in result.Incomplete)
+        {
+            // Shown so the reader can see which lines are holding the import back. Without a
+            // direction there is nothing to apply, and the note below says what is missing.
+            rows.Add(new ParsedRow(block));
+        }
 
-        IsPrimaryButtonEnabled = result.Trades.Count > 0 && result.Skipped.Count == 0;
+        Preview.ItemsSource = rows;
+
+        Note.Text = BuildNote(result);
+        IsPrimaryButtonEnabled = CanApply(result);
+    }
+
+    /// <summary>Whether the primary button may apply: something parsed, nothing unreadable, and
+    /// no row missing its direction.</summary>
+    private bool CanApply(TradeParse result) =>
+        result.Trades.Count > 0
+        && result.Skipped.Count == 0
+        && result.Incomplete.Count == 0;
+
+    private string BuildNote(TradeParse result)
+    {
+        if (result.Trades.Count == 0 && result.Incomplete.Count == 0)
+        {
+            return Strings.Get("PortfolioImportNothing");
+        }
+
+        var note = Strings.Format("PortfolioImportParsed", result.Trades.Count, result.Skipped.Count);
+
+        if (result.Incomplete.Count > 0)
+        {
+            note += $"（有 {result.Incomplete.Count} 行缺买卖方向，补上才能导入）";
+        }
+
+        return note;
     }
 
     /// <summary>
     /// One row, written the way the table reads: direction, name and code, price times size,
-    /// clock. It is the only chance the reader gets to see that the OCR read 5900 instead of
+    /// clock. It is the only chance the reader gets to see that the import read 5900 instead of
     /// 590.
     /// </summary>
     private string Describe(ParsedTrade trade)
@@ -185,9 +221,17 @@ public sealed partial class TradeImportDialog : ContentDialog
             return;
         }
 
-        var day = Chosen;
+        // A direction-less row has nobody to ask any more — the preview shows it, the note says
+        // what is missing, and applying a trade whose side the page guessed would be inventing a
+        // position. The reader adds the word to the text and the gate opens.
+        if (result.Incomplete.Count > 0)
+        {
+            args.Cancel = true;
+            Note.Text = $"有 {result.Incomplete.Count} 行缺买卖方向，补上才能导入";
+            return;
+        }
 
         Trades = [.. result.Trades.Select(t =>
-            new PortfolioTrade(day, t.Time, t.Code, t.Name, t.Side, t.Price, t.Shares))];
+            new PortfolioTrade(Chosen, t.Time, t.Code, t.Name, t.Side, t.Price, t.Shares))];
     }
 }
