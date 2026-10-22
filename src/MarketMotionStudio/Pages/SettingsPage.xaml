@@ -463,6 +463,52 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderThickness="1"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="10">
+                    <TextBlock x:Uid="SettingsTitleLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsTitleNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- The treatment every page falls back to. The portfolio page keeps its own
+                         per-page controls, so this is the default the other pages take. Filled in
+                         code from the same three strings the portfolio page uses. -->
+                    <ComboBox x:Name="TitleSkinCombo"
+                              x:Uid="PortfolioPnlTitleSkin"
+                              MinWidth="240"
+                              SelectionChanged="OnTitleSkinChanged" />
+
+                    <TextBlock x:Uid="PortfolioPnlTitleColour"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <DropDownButton x:Name="TitleColourButton" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Rectangle x:Name="TitleSwatch"
+                                       Width="18" Height="18"
+                                       RadiusX="3" RadiusY="3"
+                                       Stroke="{ThemeResource CardStrokeColorDefaultBrush}"
+                                       StrokeThickness="1" />
+                            <TextBlock x:Uid="PortfolioPnlTitleColour" />
+                        </StackPanel>
+                        <DropDownButton.Flyout>
+                            <Flyout>
+                                <mux:ColorPicker x:Name="TitleColour"
+                                                 IsAlphaEnabled="False"
+                                                 ColorChanged="OnTitleColourChanged" />
+                            </Flyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+                    <Button x:Name="TitleColourDefault"
+                            x:Uid="PortfolioPnlTitleColourDefault"
+                            HorizontalAlignment="Left"
+                            Click="OnTitleColourDefault" />
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16" CornerRadius="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
                 <StackPanel Spacing="8">
                     <TextBlock x:Uid="SettingsOutput" Style="{StaticResource BodyStrongTextBlockStyle}" />
 

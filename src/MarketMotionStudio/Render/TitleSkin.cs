@@ -16,8 +16,9 @@ public enum TitleSkin
     Plain = 0,
 
     /// <summary>
-    /// The same type inked in a ramp: light at the top of the block, dark at the bottom, with a
-    /// thin darker edge so the letter stands off the backdrop instead of blending into it.
+    /// The same type inked in a metal ramp: a specular highlight near the top, the chosen colour
+    /// through the body, and a dark fall-off at the bottom, with a thin darker edge so the letter
+    /// stands off the backdrop instead of blending into it.
     /// </summary>
     Gilded = 1,
 
@@ -53,12 +54,6 @@ public static class TitleSkins
         _ => Palette.Title,
     };
 
-    /// <summary>The top of the ramp: the chosen colour lifted towards white.</summary>
-    public static Color Lighter(Color ink) => Toward(ink, White, 0.5);
-
-    /// <summary>The bottom of the ramp: the chosen colour pushed towards black.</summary>
-    public static Color Darker(Color ink) => Toward(ink, Black, 0.42);
-
     /// <summary>
     /// The edge drawn under the ramp.
     ///
@@ -66,6 +61,21 @@ public static class TitleSkins
     /// against the ramp's own dark end, and a lighter one disappears into it.
     /// </summary>
     public static Color Edge(Color ink) => Toward(ink, Black, 0.72);
+
+    /// <summary>
+    /// The ramp a skinned headline is filled with: a metal read rather than a plain two-tone.
+    /// A narrow specular highlight near the top — light catching the polished edge — leads into
+    /// the chosen colour through the body and a dark fall-off at the bottom. Built from the one
+    /// colour the reader picked, so any hue keeps its identity at both ends.
+    /// </summary>
+    public static (float Position, Color Colour)[] Ramp(Color ink) => [
+        (0f, Toward(ink, Black, 0.45)),
+        (0.10f, Toward(ink, White, 0.78)),
+        (0.26f, Toward(ink, White, 0.16)),
+        (0.58f, ink),
+        (0.86f, Toward(ink, Black, 0.30)),
+        (1f, Toward(ink, Black, 0.45)),
+    ];
 
     /// <summary>The two ends the ramp is stretched between. Windows.UI has no <c>Colors</c>,
     /// so the two the whole app would otherwise name twice are named here once.</summary>

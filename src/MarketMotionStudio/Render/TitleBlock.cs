@@ -1,6 +1,8 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.Text;
+using System.Numerics;
 using Windows.Foundation;
 using Windows.UI;
 
@@ -139,14 +141,19 @@ public sealed class TitleBlock
             return new Shape(context.Px(_wanted), 1);
         }
 
-        if (_memo is { } hit && hit.Text == text && hit.Available == available)
+        // The skin decides the typeface — the serif tracks wider — so the line count it settles
+        // can change with it. Keyed on the skin, not only the text and width, so a global change
+        // while the page is open does not hand back a stale count.
+        var skin = EffectiveSkin();
+
+        if (_memo is { } hit && hit.Text == text && hit.Available == available && hit.Skin == skin)
         {
             return hit.Shape;
         }
 
-        var shape = Resolve(target, text, context, available);
+        var shape = Resolve(target, text, context, available, skin);
 
-        _memo = new Cache(text, available, shape);
+        _memo = new Cache(text, available, skin, shape);
 
         return shape;
     }
@@ -164,9 +171,16 @@ public sealed class TitleBlock
             return;
         }
 
+        // Which treatment and ink this draw uses. The skin is the page's own when the page passed
+        // one — the portfolio page keeps its per-page choice — otherwise it is the global setting,
+        // read here at draw time so a change in Settings reaches every page's next redraw without a
+        // restart. The ink follows the same ownership rule.
+        var skin = EffectiveSkin();
+        var ink = ResolveInk(colour);
+
         var available = Available(context);
 
-        using var layout = Layout(session, text, context, shape.Size);
+        using var layout = Layout(session, text, context, shape.Size, skin);
 
         // The box is as wide as the room the title has and centred in the frame; the format's own
         // centre alignment then puts the text in the middle of it, per line, which is what a
@@ -174,14 +188,14 @@ public sealed class TitleBlock
         var left = (context.Width - available) / 2;
         var baseline = context.TitleBaseline(0);
 
-        if (_skin is TitleSkin.Plain)
+        if (skin is TitleSkin.Plain)
         {
-            Ink.Draw(session, layout, left, baseline, colour, opacity);
+            Ink.Draw(session, layout, left, baseline, ink, opacity);
 
             return;
         }
 
-        Painted(session, context, layout, shape.Size, left, baseline, colour, opacity);
+        Painted(session, context, layout, shape.Size, left, baseline, ink, opacity);
     }
 
     /// <summary>
@@ -203,41 +217,31 @@ public sealed class TitleBlock
             ? layout.LineMetrics[0].Baseline
             : layout.LayoutBounds.Height;
 
+        // The layout's top edge: where the first line's box begins, not its baseline.
         var top = baseline - ascent;
 
-        // Room outside the glyphs: the edge and the halo both live there, and a command list
-        // clipped to the text's own bounds would cut both off.
-        var pad = size * 0.4;
-        var bounds = layout.LayoutBounds;
-
-        using var ramp = Ramp(session, colour, left + bounds.X - pad, top + bounds.Y - pad,
-            bounds.Width + (pad * 2), bounds.Height + (pad * 2));
-
-        using var mask = new CanvasCommandList(session);
-
-        using (var drawing = mask.CreateDrawingSession())
-        {
-            // Any opaque colour: the mask is only ever read for its alpha, which is where the
-            // ink is. Drawing it in the headline's own colour would be the same mask and would
-            // read as if the colour mattered here.
-            drawing.DrawTextLayout(layout, (float)left, (float)top, Color.FromArgb(255, 255, 255, 255));
-        }
-
         using var edge = Edge(session, layout, size, left, top, colour);
-
-        // The effect's two inputs are ordered **destination first, source second**: `SourceIn` is
-        // the second one cut to the first one's alpha. Swapped, it reads the mask as the source
-        // and the ramp's opaque rectangle as the destination, and the headline comes out as the
-        // mask itself — white, with the edge round it and none of the colour, which is exactly
-        // what it did on the first attempt.
-        using var filled = new CompositeEffect { Mode = CanvasComposite.SourceIn, Sources = { mask, ramp } };
 
         using var art = new CanvasCommandList(session);
 
         using (var drawing = art.CreateDrawingSession())
         {
+            // Edge first, so the glyph stands off the backdrop rather than blending into it.
             drawing.DrawImage(edge);
-            drawing.DrawImage(filled);
+
+            // The glyphs filled with a metal ramp, drawn straight from a gradient brush. No
+            // off-screen mask and no `SourceIn` composite — that composite aligned its two inputs
+            // by their own bounds, which left the top of every glyph showing only the edge and
+            // read as "covered". Drawing the text with a brush pins the ramp to the layout's own
+            // box, so the whole glyph takes the gradient and nothing is left to the edge alone.
+            using var brush = new CanvasLinearGradientBrush(session,
+                [.. TitleSkins.Ramp(colour).Select(s => new CanvasGradientStop { Position = s.Position, Color = s.Colour })])
+            {
+                StartPoint = new Vector2(0, (float)top),
+                EndPoint = new Vector2(0, (float)(top + layout.LayoutBounds.Height)),
+            };
+
+            drawing.DrawTextLayout(layout, (float)left, (float)top, brush);
         }
 
         // The halo is the ramp's own colour bleeding outwards, which is most of what makes a
@@ -275,32 +279,41 @@ public sealed class TitleBlock
         return list;
     }
 
-    /// <summary>
-    /// The ramp itself: the chosen colour lifted towards white at the top of the block and
-    /// pushed towards black at the bottom, so a headline of two lines is already two tones
-    /// without anybody having to colour the lines separately — which a single text layout
-    /// cannot do in the first place.
-    /// </summary>
-    private static CanvasCommandList Ramp(
-        CanvasDrawingSession session, Color colour, double x, double y, double width, double height)
-    {
-        var list = new CanvasCommandList(session);
-
-        using (var drawing = list.CreateDrawingSession())
-        {
-            Ink.FillVertical(drawing, new Rect(x, y, width, height),
-            [
-                (0f, TitleSkins.Lighter(colour)),
-                (0.55f, colour),
-                (1f, TitleSkins.Darker(colour)),
-            ]);
-        }
-
-        return list;
-    }
-
     /// <summary>The width the title is measured and drawn against, in device pixels.</summary>
     private static double Available(FrameContext context) => Math.Max(1, context.Width - context.Px(SidePad));
+
+    /// <summary>
+    /// The treatment this draw uses: the page's own when the page passed one — the
+    /// portfolio page keeps its per-page choice — otherwise the global setting.
+    /// </summary>
+    private TitleSkin EffectiveSkin() =>
+        _skin != TitleSkin.Plain ? _skin : TitleSettings.Skin;
+
+    /// <summary>
+    /// The ink this draw uses, following the same ownership rule as the skin.
+    ///
+    /// A page that passed its own skin keeps the colour its page already resolved from
+    /// its own preference. A page relying on the global setting uses the chosen colour
+    /// when one is set, and otherwise the treatment's own default — which is white for
+    /// Plain (so a page that never opted in is unchanged) and the skin's amber for the
+    /// metal treatments.
+    /// </summary>
+    private Color ResolveInk(Color passed)
+    {
+        if (_skin != TitleSkin.Plain)
+        {
+            return passed;
+        }
+
+        if (TitleSettings.Colour is { } chosen)
+        {
+            return chosen;
+        }
+
+        var skin = TitleSettings.Skin;
+
+        return skin == TitleSkin.Plain ? passed : TitleSkins.Default(skin);
+    }
 
     /// <summary>
     /// The title laid out for measuring and for drawing, through the same code — a measurement
@@ -308,14 +321,14 @@ public sealed class TitleBlock
     /// the picture.
     /// </summary>
     private CanvasTextLayout Layout(
-        ICanvasResourceCreator target, string text, FrameContext context, double size)
+        ICanvasResourceCreator target, string text, FrameContext context, double size, TitleSkin skin)
     {
-        var layout = new CanvasTextLayout(target, text, Format(context, size), (float)Available(context), 0);
+        var layout = new CanvasTextLayout(target, text, Format(context, size, skin), (float)Available(context), 0);
 
         // Tracking is a property of the layout, not of the format: DirectWrite carries it per
         // character range. Half either side, so a tracked headline stays centred — spacing added
         // only after each glyph would shove the whole line to the left by the width of the gaps.
-        if (_skin is TitleSkin.Engraved)
+        if (skin is TitleSkin.Engraved)
         {
             var half = (float)(context.Px(Tracking) / 2);
 
@@ -329,18 +342,18 @@ public sealed class TitleBlock
     /// The largest size at or above the floor at which the text wraps into no more than the cap,
     /// and the lines it comes to there.
     /// </summary>
-    private Shape Resolve(ICanvasResourceCreator target, string text, FrameContext context, double available)
+    private Shape Resolve(ICanvasResourceCreator target, string text, FrameContext context, double available, TitleSkin skin)
     {
         var size = context.Px(_wanted);
         var floor = size * Floor;
 
-        var lines = Count(target, text, context, size, available);
+        var lines = Count(target, text, context, size, available, skin);
 
         while (lines > _maxLines && size > floor)
         {
             size = Math.Max(floor, size * ShrinkStep);
 
-            lines = Count(target, text, context, size, available);
+            lines = Count(target, text, context, size, available, skin);
         }
 
         return new Shape(size, lines);
@@ -352,9 +365,9 @@ public sealed class TitleBlock
     /// drawn in wraps in one place and is broken in another.
     /// </summary>
     private int Count(
-        ICanvasResourceCreator target, string text, FrameContext context, double size, double available)
+        ICanvasResourceCreator target, string text, FrameContext context, double size, double available, TitleSkin skin)
     {
-        using var layout = Layout(target, text, context, size);
+        using var layout = Layout(target, text, context, size, skin);
 
         // Never zero: a layout always reports at least one line, and a title that somehow reports
         // none must still be reserved for rather than drawn over the subtitle. The floor is one
@@ -366,9 +379,9 @@ public sealed class TitleBlock
     /// The format the title is measured and drawn in: wrapping, centred, and with the line pitch
     /// pinned to <see cref="FrameContext.TitleLineHeight"/> instead of the font's own leading.
     /// </summary>
-    private CanvasTextFormat Format(FrameContext context, double size)
+    private CanvasTextFormat Format(FrameContext context, double size, TitleSkin skin)
     {
-        var engraved = _skin is TitleSkin.Engraved;
+        var engraved = skin is TitleSkin.Engraved;
 
         // The serif is set at its own weight: synthetic bold on Song fills in the thin
         // horizontals, which are the one thing the face was chosen for.
@@ -382,5 +395,5 @@ public sealed class TitleBlock
         return format;
     }
 
-    private sealed record Cache(string Text, double Available, Shape Shape);
+    private sealed record Cache(string Text, double Available, TitleSkin Skin, Shape Shape);
 }

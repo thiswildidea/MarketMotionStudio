@@ -63,6 +63,10 @@ public sealed partial class SettingsPage : Page
 
     private bool _loading = true;
 
+    /// <summary>True while the title colour picker is being set from the store, so its
+    /// own change event is not read back as a choice.</summary>
+    private bool _paintingTitle;
+
     /// <summary>
     /// Where to write when something is wrong. The same address the help document
     /// ends with; the two are reached in different moods, and someone whose export
@@ -158,6 +162,23 @@ public sealed partial class SettingsPage : Page
         // and every action here refreshes the card on its own afterwards.
         _ = RefreshSubscriptionAsync();
         SettleWatermarkControls();
+
+        // The global title treatment, filled and restored before the handlers are live:
+        // assigning the colour picker's colour raises its change event, and a change
+        // handled here would write the stored colour back over the one being restored.
+        foreach (var (skin, key) in new[]
+                 {
+                     (TitleSkin.Plain, "PortfolioPnlTitlePlain.Content"),
+                     (TitleSkin.Gilded, "PortfolioPnlTitleGilded.Content"),
+                     (TitleSkin.Engraved, "PortfolioPnlTitleEngraved.Content"),
+                 })
+        {
+            TitleSkinCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)skin });
+        }
+
+        TitleColour.Color = TitleSettings.Colour ?? TitleSkins.Default(TitleSettings.Skin);
+        PaintTitleSwatch();
+        SettleTitleControls();
 
         _loading = false;
 
@@ -870,6 +891,69 @@ public sealed partial class SettingsPage : Page
     /// What the mark says. Stored as it is typed rather than on a commit, so the
     /// strip below is showing the name before the box is left.
     /// </summary>
+    // ---- the global title treatment --------------------------------------------
+
+    /// <summary>Selects the stored treatment and enables the "use default colour" button
+    /// only once a colour has been chosen.</summary>
+    private void SettleTitleControls()
+    {
+        TitleSkinCombo.SelectedIndex =
+            Math.Max(0, Array.FindIndex(
+                TitleSkinCombo.Items.OfType<ComboBoxItem>().ToArray(),
+                item => item.Tag is int tag && tag == (int)TitleSettings.Skin));
+
+        // With no colour set the headline already uses the treatment's own default, so
+        // "use the default" would be a no-op; the button is then meaningless.
+        TitleColourDefault.IsEnabled = TitleSettings.Colour is not null;
+    }
+
+    private void OnTitleSkinChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_loading || TitleSkinCombo.SelectedItem is not ComboBoxItem { Tag: int tag })
+        {
+            return;
+        }
+
+        TitleSettings.Skin = (TitleSkin)tag;
+
+        PaintTitlePicker();
+        PaintTitleSwatch();
+    }
+
+    private void OnTitleColourChanged(ColorPicker sender, ColorChangedEventArgs args)
+    {
+        // The picker raises this while we are setting its own colour back from the store.
+        if (_paintingTitle)
+        {
+            return;
+        }
+
+        TitleSettings.Colour = args.NewColor;
+
+        PaintTitleSwatch();
+    }
+
+    private void OnTitleColourDefault(object sender, RoutedEventArgs e)
+    {
+        TitleSettings.Colour = null;
+
+        PaintTitlePicker();
+        PaintTitleSwatch();
+    }
+
+    /// <summary>The swatch shows the chosen colour, or the treatment's own default.</summary>
+    private void PaintTitleSwatch() =>
+        TitleSwatch.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+            TitleSettings.Colour ?? TitleSkins.Default(TitleSettings.Skin));
+
+    /// <summary>Pushes the effective colour into the picker without raising its change event.</summary>
+    private void PaintTitlePicker()
+    {
+        _paintingTitle = true;
+        TitleColour.Color = TitleSettings.Colour ?? TitleSkins.Default(TitleSettings.Skin);
+        _paintingTitle = false;
+    }
+
     private void OnWatermarkTextChanged(object sender, TextChangedEventArgs e)
     {
         if (_loading)

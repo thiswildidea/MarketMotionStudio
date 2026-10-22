@@ -74,6 +74,11 @@ public sealed class PreviewSurface : Grid
         // to redraw.
         WatermarkSettings.Changed += (_, _) => Redraw();
 
+        // The header treatment (skin and colour) lives on the Settings page too.
+        // It is drawn by TitleBlock at frame time, so a redraw here is all the
+        // preview needs to pick up a new skin or colour chosen there.
+        TitleSettings.Changed += (_, _) => Redraw();
+
         // Win2D holds device resources that the XAML tree does not release for it.
         // A page that is navigated away from and collected takes its controls with
         // it, but the swap chain is not part of that, and the leak shows up as
