@@ -118,12 +118,19 @@ public sealed record PortfolioTrade(
 /// The holdings and the trades behind them, kept in one file in the app's own state.
 ///
 /// **The book is the opening position of the day being drawn; the journal moves it forward.**
-/// Every morning the reader copies the broker's holdings screen into the book, and every evening
-/// pastes that day's fills in. Neither of the two is derived from the other: recomputing the book
-/// from every trade ever imported would mean keeping every trade ever imported, and would still be
-/// wrong for the first position — which was entered by hand rather than bought in front of this
-/// app. So the book is stored as entered and importing never edits it; the journal is what makes a
-/// re-import harmless and what lets the curve walk the position through the day.
+/// During a session the book is the morning's and every fill walks it forward minute by minute;
+/// the journal is what makes a re-import harmless and what lets the curve walk the position
+/// through the day.
+///
+/// <para>
+/// **At the day's end the book rolls forward** (<see cref="RollForward"/>): once the app is
+/// quit — and, as a net for a hard kill, again at the next start — every fill from a session
+/// before today is folded into the book at its diluted cost and taken out of the journal. The
+/// stored book is then the latest closing, so the next morning's import replays on top of it
+/// without anyone copying a holdings screen by hand. Folded fills are remembered by
+/// fingerprint, which is also what keeps a re-import of an already-folded day from applying
+/// a second time.
+/// </para>
 /// </summary>
 public static class Portfolio
 {
@@ -138,6 +145,14 @@ public static class Portfolio
     public static ObservableCollection<Holding> Holdings { get; } = [];
 
     private static readonly List<PortfolioTrade> Journal = [];
+
+    /// <summary>
+    /// Fingerprints of trades already folded into the book, so folding the same day twice — or
+    /// folding a list that was already folded — does not move the book a second time. A folded
+    /// trade leaves the journal, so without this the only way to tell "already folded" from
+    /// "never imported" would be to guess, and guessing wrong would double the position.
+    /// </summary>
+    private static readonly HashSet<string> Folded = [];
 
     /// <summary>Reads the stored book once; seeds the reader's own positions the first time.</summary>
     public static void EnsureLoaded()
@@ -159,13 +174,26 @@ public static class Portfolio
 
                 if (stored is not null)
                 {
-                    foreach (var holding in stored.Holdings)
-                    {
-                        Holdings.Add(holding);
-                    }
-
-                    Journal.AddRange(stored.Trades);
+                foreach (var holding in stored.Holdings)
+                {
+                    Holdings.Add(holding);
                 }
+
+                Journal.AddRange(stored.Trades);
+
+                if (stored.Folded is { } folded)
+                {
+                    foreach (var fingerprint in folded)
+                    {
+                        Folded.Add(fingerprint);
+                    }
+                }
+                }
+
+                // The net for a hard kill: whatever a quit failed to roll forward — or a session
+                // that ended under task manager — rolls here, before any page can build a session
+                // on a book that is no longer the latest morning.
+                RollForward();
 
                 return;
             }
@@ -195,7 +223,7 @@ public static class Portfolio
             var path = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
 
             var json = JsonSerializer.Serialize(
-                new Book([.. Holdings], [.. Journal]), BookJson);
+                new Book([.. Holdings], [.. Journal], [.. Folded]), BookJson);
 
             File.WriteAllText(path, json);
         }
@@ -244,6 +272,32 @@ public static class Portfolio
         Save();
     }
 
+    /// <summary>
+    /// Replaces the whole book in one go, dropping any row that ends up at zero shares.
+    ///
+    /// **The dialog needs this because it edits the day's *closing*, while the book holds its
+    /// opening.** A reader who changes one row has said "the position is these numbers" about the
+    /// day they are looking at; the other nine rows then have to move with it, or the book becomes
+    /// a mix of two moments — nine morning figures beside one evening figure, a book nobody ever
+    /// held. So the first edit writes the whole snapshot, and the single row follows it in.
+    /// </summary>
+    public static void ReplaceAll(IEnumerable<Holding> rows)
+    {
+        EnsureLoaded();
+
+        Holdings.Clear();
+
+        foreach (var row in rows)
+        {
+            if (row.Shares > 0)
+            {
+                Holdings.Add(row);
+            }
+        }
+
+        Save();
+    }
+
     /// <summary>Drops a holding by code. Does not touch the journal — history stays history.</summary>
     public static void Remove(string code)
     {
@@ -278,7 +332,25 @@ public static class Portfolio
     {
         EnsureLoaded();
 
-        var known = Journal.Select(t => t.Fingerprint).ToHashSet(StringComparer.Ordinal);
+        // Both journals of truth: a fill still waiting folds is a duplicate by its journal entry,
+        // and a fill already rolled into the book has left the journal — without the folded set,
+        // re-importing yesterday's list after a quit would apply it a second time on top of a
+        // book that already carries it.
+        var known = Journal.Select(t => t.Fingerprint)
+            .Concat(Folded)
+            .ToHashSet(StringComparer.Ordinal);
+
+        // **The same fill wears a different fingerprint when it is imported under a different
+        // date.** The dialog stamps with its day picker, and a list pasted "for yesterday" on the
+        // wrong morning becomes a fresh-looking row whose Day part no longer matches anything —
+        // yet the fill itself was folded long ago, and applying it again moves the book twice.
+        // Folded fingerprints therefore keep a **dayless** shadow (time, code, side, price, size),
+        // and an import matching it counts as a duplicate. A genuinely identical fill on another
+        // day — same stock, size, price and clock to the second — is rare past believing in a
+        // per-day order list, and losing one costs far less than doubling a position.
+        var foldedFills = Folded
+            .Select(fp => string.Join("|", fp.Split('|').Skip(1)))
+            .ToHashSet(StringComparer.Ordinal);
 
         var applied = 0;
         var duplicates = 0;
@@ -288,11 +360,21 @@ public static class Portfolio
                                     .ThenBy(t => t.MinuteOfDay)
                                     .ThenBy(t => t.Time, StringComparer.Ordinal))
         {
-            if (!known.Add(trade.Fingerprint))
+            var fill = string.Join(
+                "|",
+                trade.Time,
+                trade.Code.ToLowerInvariant(),
+                trade.Side.ToString(),
+                trade.Price.ToString("0.####", CultureInfo.InvariantCulture),
+                trade.Shares.ToString("0.####", CultureInfo.InvariantCulture));
+
+            if (known.Contains(trade.Fingerprint) || foldedFills.Contains(fill))
             {
                 duplicates++;
                 continue;
             }
+
+            known.Add(trade.Fingerprint);
 
             Journal.Add(trade);
             fresh.Add(trade.Fingerprint);
@@ -303,6 +385,174 @@ public static class Portfolio
         Save();
 
         return new ImportResult(applied, duplicates, Oversold(fresh));
+    }
+
+    /// <summary>
+    /// Folds a day's fills into the book — the morning's position becomes the evening's — and
+    /// **takes them out of the journal** so the curve does not walk the same fills a second time.
+    ///
+    /// **Why this exists.** Importing only ever adds to the journal (see <see cref="Apply"/>): the
+    /// book is the opening and is meant to be copied in by hand each morning. But a reader who
+    /// imports the day's orders after the close expects the holdings they look at to be the day's
+    /// closing, not its open — "I sold 2,900, why does it still say 3,000?" This is the button for
+    /// that: it rolls the book forward so 管理持仓 shows what was actually held at the end of the
+    /// day, and removes the day's fills from the journal so the curve for that day draws flat at the
+    /// new book instead of doubling the move.
+    ///
+    /// **Idempotent.** Trades still in the journal are applied once and removed; trades already
+    /// folded are skipped; trades never imported are applied straight to the book. Folding the same
+    /// day twice, or folding a list that was folded before, moves nothing twice.
+    /// </summary>
+    public static int FoldIntoBook(IReadOnlyList<PortfolioTrade> trades) => Fold(trades);
+
+    /// <summary>
+    /// Folds every fill of a day that is still in the journal into the book. Used when the orders
+    /// were imported earlier and the reader now wants to roll the book forward without re-pasting
+    /// the list.
+    /// </summary>
+    public static int FoldDay(string day) =>
+        Fold([.. Journal.Where(t => string.Equals(t.Day, day, StringComparison.Ordinal))]);
+
+    /// <summary>Whether a day still has fills in the journal that have not been folded into the book.</summary>
+    public static bool HasUnfoldedTrades(string day)
+    {
+        EnsureLoaded();
+
+        return Journal.Any(t =>
+            string.Equals(t.Day, day, StringComparison.Ordinal) && !Folded.Contains(t.Fingerprint));
+    }
+
+    /// <summary>
+    /// Folds every fill from a session **before today** into the book, so the stored book becomes
+    /// the latest closing and the next import replays on top of it.
+    ///
+    /// Today's fills stay where they are: the page is still drawing today, and its replay needs
+    /// them in the journal. They roll the next time the app starts. Called when the app quits and
+    /// again when it loads — the same fold twice moves nothing twice, and a quit that never got
+    /// the chance (task manager, crash, power) is caught by the load.
+    /// </summary>
+    public static void RollForward()
+    {
+        var cutoff = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        Fold([.. Journal.Where(t => string.CompareOrdinal(t.Day, cutoff) < 0)]);
+    }
+
+    /// <summary>
+    /// Records that the book was just corrected **by hand**, which outranks every fill still
+    /// waiting to roll: the numbers the reader typed are the position as it really is, and letting
+    /// tomorrow's roll apply the same fills on top of them would move the book twice.
+    ///
+    /// The fills stay in the journal — the day's replay still needs them — and are marked folded,
+    /// which is exactly what keeps the roll from applying them again.
+    /// </summary>
+    public static void MarkManualEdit()
+    {
+        EnsureLoaded();
+
+        var unfolded = Journal
+            .Select(t => t.Fingerprint)
+            .Where(fp => !Folded.Contains(fp))
+            .ToList();
+
+        if (unfolded.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var fingerprint in unfolded)
+        {
+            Folded.Add(fingerprint);
+        }
+
+        Save();
+    }
+
+    /// <summary>
+    /// The most recent day that still has fills to fold, or null when there is nothing left.
+    ///
+    /// **The dialog needs this because its date is the day the page is drawing, not the day the
+    /// fills are on.** Filled in after the close, the page is already on the new session, so a
+    /// date-picker-only gate would leave the fold button greyed out on the one day the reader has
+    /// anything to fold — they see a dead button and report that the import "did not save".
+    /// </summary>
+    public static string? LatestUnfoldedDay()
+    {
+        EnsureLoaded();
+
+        var days = Journal
+            .Where(t => !Folded.Contains(t.Fingerprint))
+            .Select(t => t.Day)
+            .ToList();
+
+        return days.Count == 0 ? null : days.Max(StringComparer.Ordinal);
+    }
+
+    /// <summary>
+    /// Applies the given trades to the book at their diluted cost, marks them folded, and removes
+    /// them from the journal so the curve cannot replay them. Shared by <see cref="FoldIntoBook"/>
+    /// and <see cref="FoldDay"/>.
+    /// </summary>
+    private static int Fold(IReadOnlyList<PortfolioTrade> requested)
+    {
+        EnsureLoaded();
+
+        var fresh = requested.Where(t => !Folded.Contains(t.Fingerprint)).ToList();
+
+        if (fresh.Count == 0)
+        {
+            return 0;
+        }
+
+        var fees = FeeSchedule.Mainland;
+
+        foreach (var group in fresh.GroupBy(t => t.Code, StringComparer.OrdinalIgnoreCase))
+        {
+            var code = group.Key;
+            var held = Find(code);
+            var shares = held?.Shares ?? 0;
+            var cost = held?.Cost ?? 0;
+            var name = held?.Name ?? group.First().Name;
+
+            foreach (var trade in group
+                         .OrderBy(t => t.Day, StringComparer.Ordinal)
+                         .ThenBy(t => t.MinuteOfDay)
+                         .ThenBy(t => t.Time, StringComparer.Ordinal))
+            {
+                var gross = trade.Shares * trade.Price;
+                var fee = trade.Side == TradeSide.Buy
+                    ? fees.OnBuy(gross)
+                    : fees.OnSell(gross);
+
+                cost = IntradayPnl.Diluted(cost, shares, trade.Shares, trade, fee);
+                shares = trade.Side == TradeSide.Buy
+                    ? shares + trade.Shares
+                    : Math.Max(0, shares - trade.Shares);
+            }
+
+            if (shares <= 0)
+            {
+                Remove(code);
+            }
+            else
+            {
+                Put(new Holding(code, name, shares, cost));
+            }
+        }
+
+        foreach (var trade in fresh)
+        {
+            Folded.Add(trade.Fingerprint);
+        }
+
+        var fingerprints = fresh.Select(t => t.Fingerprint).ToHashSet(StringComparer.Ordinal);
+
+        Journal.RemoveAll(t => fingerprints.Contains(t.Fingerprint));
+
+        Prune();
+        Save();
+
+        return fresh.Count;
     }
 
     /// <summary>
@@ -366,12 +616,39 @@ public static class Portfolio
     /// </summary>
     public static IReadOnlyList<PortfolioTrade> Trades => [.. Journal];
 
+    /// <summary>
+    /// Fingerprints of the fills the book **already carries** — folded by the roll, or superseded
+    /// by a hand edit — as a copy the loader can hold while it works off the UI thread.
+    ///
+    /// <para>
+    /// The loader needs them because folding and hand-editing leave two different things in the
+    /// same journal. A fill that has been folded has left the journal and can only be re-imported
+    /// (see <see cref="Apply"/>); but a fill superseded by a hand edit **stays** in the journal, so
+    /// the day's replay can still draw its marker and count it. Its money is already inside the
+    /// book's shares and cost, though, so applying it again would move the position twice — once
+    /// by hand, once by replay. Told which fills are settled, the loader draws them and leaves the
+    /// arithmetic alone.
+    /// </para>
+    /// </summary>
+    public static IReadOnlySet<string> Settled
+    {
+        get
+        {
+            EnsureLoaded();
+
+            return new HashSet<string>(Folded, StringComparer.Ordinal);
+        }
+    }
+
     /// <summary>Drops journal entries older than the window, so the file cannot grow forever.</summary>
     private static void Prune()
     {
         var cutoff = DateTime.Today.AddDays(-JournalDays).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
         Journal.RemoveAll(t => string.CompareOrdinal(t.Day, cutoff) < 0);
+
+        // A folded fingerprint carries its day first, so the same cutoff prunes it.
+        Folded.RemoveWhere(fp => fp.Length >= 10 && string.CompareOrdinal(fp.Substring(0, 10), cutoff) < 0);
     }
 
     /// <summary>
@@ -406,5 +683,5 @@ public static class Portfolio
     ];
 
     /// <summary>The shape the file is written in. Two lists, named, so the file can be read.</summary>
-    private sealed record Book(List<Holding> Holdings, List<PortfolioTrade> Trades);
+    private sealed record Book(List<Holding> Holdings, List<PortfolioTrade> Trades, List<string> Folded);
 }

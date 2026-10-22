@@ -88,6 +88,11 @@ public partial class App : Application
 
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        // Before any page can build a session: fills from sessions before today roll into the
+        // book, so the day's import replays on top of the latest closing. Also the net for a
+        // quit that never reached MainWindow's exit path — a kill, a crash, a shutdown.
+        Market.Portfolio.RollForward();
+
         var shell = new MainWindow();
         Window = shell;
 

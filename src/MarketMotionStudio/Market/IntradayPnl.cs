@@ -221,6 +221,9 @@ public static class IntradayPnl
     /// <summary>How many venues one load reads at once. Small: a book, not a board.</summary>
     private const int Parallel = 4;
 
+    /// <summary>When nothing has been folded into the book — the ordinary case, most days.</summary>
+    private static readonly HashSet<string> NoSettled = new(StringComparer.Ordinal);
+
     public static async Task<PortfolioSession> LoadAsync(
         HttpClient http,
         StockDirectory stocks,
@@ -228,7 +231,8 @@ public static class IntradayPnl
         IReadOnlyList<PortfolioTrade> journal,
         IProgress<string>? progress,
         CancellationToken cancellation,
-        FeeSchedule? fees = null)
+        FeeSchedule? fees = null,
+        IReadOnlySet<string>? settled = null)
     {
         if (holdings.Count == 0)
         {
@@ -273,7 +277,7 @@ public static class IntradayPnl
             ? await ReadHkdCnyAsync(http, cancellation)
             : 0;
 
-        return Assemble(day, holdings, journal, shots, sessions, hkd, fees ?? FeeSchedule.Mainland);
+        return Assemble(day, holdings, journal, shots, sessions, hkd, fees ?? FeeSchedule.Mainland, settled);
     }
 
     /// <summary>
@@ -287,13 +291,19 @@ public static class IntradayPnl
         IReadOnlyDictionary<string, StockSnapshot> shots,
         IReadOnlyDictionary<string, DaySession> sessions,
         double hkdCny,
-        FeeSchedule fees)
+        FeeSchedule fees,
+        IReadOnlySet<string>? settled = null)
     {
         var trades = journal
             .Where(t => t.Day == day)
             .OrderBy(t => t.MinuteOfDay)
             .ThenBy(t => t.Time, StringComparer.Ordinal)
             .ToList();
+
+        // Fills the book already carries. They are still drawn — the marker and the count are the
+        // record of what happened — but their money is inside the book's shares and cost already,
+        // so the replay must not move the position a second time.
+        var already = settled ?? NoSettled;
 
         // **The book plus the day's closed-out codes.** `Portfolio.Apply` drops a position the
         // moment it reaches zero shares, which is what a book should do — and would take the day's
@@ -385,7 +395,7 @@ public static class IntradayPnl
             var openingShares = opening.TryGetValue(holding.Code, out var o) ? o : 0;
 
             // Where the day's fills leave this position, and the cash they actually moved.
-            var (shares, cashMoved) = Replay(trades, holding.Code, openingShares, fees);
+            var (shares, cashMoved) = Replay(trades, holding.Code, openingShares, fees, already);
 
             // In the venue's own currency, then converted once: the price term and the cash term
             // are both dollars for a Hong Kong row, and converting only one of them would add a
@@ -483,32 +493,39 @@ public static class IntradayPnl
                 var trade = trades[next++];
                 var rate = trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? hkdCny : 1;
 
-                positions.TryGetValue(trade.Code, out var held);
+                // A settled fill is drawn and skipped: the book was written by hand (or rolled)
+                // *after* it happened, so its shares are already in `positions` and its money in
+                // the cost. Charging it again here is the double count the dialog would otherwise
+                // cause — 公牛集团 900 shares becoming 1,700 the moment the reader corrected one row.
+                if (!already.Contains(trade.Fingerprint))
+                {
+                    positions.TryGetValue(trade.Code, out var held);
 
-                // Only the shares that were actually there are booked. See `Replay`: money for
-                // shares nobody held is not profit, it is a hole in the book. The marker is still
-                // drawn for the fill as it happened — it is the money that is clamped.
-                var moved = trade.Side == TradeSide.Buy ? trade.Shares : Math.Min(trade.Shares, held);
+                    // Only the shares that were actually there are booked. See `Replay`: money for
+                    // shares nobody held is not profit, it is a hole in the book. The marker is still
+                    // drawn for the fill as it happened — it is the money that is clamped.
+                    var moved = trade.Side == TradeSide.Buy ? trade.Shares : Math.Min(trade.Shares, held);
 
-                // Fees are charged on the money that actually changed hands — the clamped shares,
-                // not the ticket's — and in the venue's own currency, so both terms convert with
-                // one rate below.
-                var gross = moved * trade.Price;
-                var fee = trade.Side == TradeSide.Buy ? fees.OnBuy(gross) : fees.OnSell(gross);
+                    // Fees are charged on the money that actually changed hands — the clamped shares,
+                    // not the ticket's — and in the venue's own currency, so both terms convert with
+                    // one rate below.
+                    var gross = moved * trade.Price;
+                    var fee = trade.Side == TradeSide.Buy ? fees.OnBuy(gross) : fees.OnSell(gross);
 
-                cash += ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee) * rate;
-                cashOf[trade.Code] = Cash(cashOf, trade.Code)
-                    + ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee);
+                    cash += ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee) * rate;
+                    cashOf[trade.Code] = Cash(cashOf, trade.Code)
+                        + ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee);
 
-                // The diluted cost, moved by the same fill — a purchase averages into it, a sale
-                // nets its proceeds off what is left. Kept in step with the fill so the page can
-                // say what the remaining shares cost at the minute it is drawing, rather than
-                // what they cost this morning.
-                costs[trade.Code] = Diluted(Cash(costs, trade.Code), held, moved, trade, fee);
+                    // The diluted cost, moved by the same fill — a purchase averages into it, a sale
+                    // nets its proceeds off what is left. Kept in step with the fill so the page can
+                    // say what the remaining shares cost at the minute it is drawing, rather than
+                    // what they cost this morning.
+                    costs[trade.Code] = Diluted(Cash(costs, trade.Code), held, moved, trade, fee);
 
-                positions[trade.Code] = trade.Side == TradeSide.Buy
-                    ? held + moved
-                    : Math.Max(0, held - moved);
+                    positions[trade.Code] = trade.Side == TradeSide.Buy
+                        ? held + moved
+                        : Math.Max(0, held - moved);
+                }
 
                 placed.Add(new PnlTrade(trade.Code, trade.Name, trade.Side, trade.Price, trade.Shares, minute));
             }
@@ -609,7 +626,7 @@ public static class IntradayPnl
     /// Zero once nothing is left: 顺丰控股's hundred shares are gone at 09:40, and a cost for
     /// shares that are not there is a number with nothing to describe.
     /// </summary>
-    private static double Diluted(
+    internal static double Diluted(
         double cost, double held, double moved, PortfolioTrade trade, double fee)
     {
         if (trade.Side == TradeSide.Buy)
@@ -641,14 +658,16 @@ public static class IntradayPnl
     /// the curve behind it would be two answers to the same question — one that knows about
     /// commission and one that does not.</param>
     private static (double Shares, double Cash) Replay(
-        IEnumerable<PortfolioTrade> trades, string code, double opening, FeeSchedule fees)
+        IEnumerable<PortfolioTrade> trades, string code, double opening, FeeSchedule fees,
+        IReadOnlySet<string> settled)
     {
         var shares = opening;
         var cash = 0.0;
 
         foreach (var trade in trades)
         {
-            if (!string.Equals(trade.Code, code, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(trade.Code, code, StringComparison.OrdinalIgnoreCase) ||
+                settled.Contains(trade.Fingerprint))
             {
                 continue;
             }

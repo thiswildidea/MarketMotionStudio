@@ -34,6 +34,15 @@ public sealed record StockChoice(StockRef Stock)
 /// </para>
 ///
 /// <para>
+/// **What it shows is the day's closing, and what it writes is only what the reader changed.**
+/// The page's list walks the book forward through the day's fills, so the numbers under the
+/// preview are the closing ones; a dialog opening on the stored book would answer with the
+/// morning's and read as an import that never landed. So it is handed the closing rows — and
+/// because those are not what the book holds, closing the dialog writes nothing: the first real
+/// change is what commits the closing figures into the book (see <see cref="Adopt"/>).
+/// </para>
+///
+/// <para>
 /// **The code is checked against the quote endpoint before it is stored.** A holding entered with
 /// a typo would fail one fetch at a time for as long as it sat in the book, and the page would
 /// look broken rather than mis-typed. The request also supplies the source's own name, so the
@@ -63,7 +72,59 @@ public sealed partial class PortfolioDialog : ContentDialog
     /// <summary>The text the pending debounce is about.</summary>
     private string _query = string.Empty;
 
+    /// <summary>
+    /// Whether this visit actually changed the book — a row edited, added or removed. The page
+    /// uses it to decide the book now says what the reader typed, which outranks every fill still
+    /// waiting to roll into it.
+    /// </summary>
+    public bool Edited { get; private set; }
+
+    /// <summary>
+    /// The write-backs of every row still on the list, run when the dialog closes.
+    ///
+    /// A row commits on losing focus, but **closing the dialog does not move focus** — the reader
+    /// edits a number and presses 关闭, and the edit is still sitting in the box with no commit
+    /// behind it (实测：改成 777 后直接关闭，portfolio.json 里还是 100). So every row's commit is
+    /// also held here and the whole lot is run on Closing. Each commit re-reads its own boxes and
+    /// writes through `Put`, which is idempotent — running the ones that already committed costs
+    /// nothing.
+    /// </summary>
+    private readonly List<Action> _commits = [];
+
+    /// <summary>
+    /// What the dialog is showing, row by row — **the position as the day left it**, not as it
+    /// opened.
+    /// </summary>
+    /// <remarks>
+    /// The page's list is the book walked forward by the day's fills, so the closing figures are
+    /// what the reader has just been reading there. A dialog that opened on the stored book showed
+    /// them the *morning* — 公牛集团 100 instead of 900, 恒生科技ETF 10,000 instead of 20,000 —
+    /// which reads as an import that never landed (实测：列表 900 股 / 成本 37.054，对话框 100 股 /
+    /// 成本 37.73). The book is still the morning's; what the dialog shows is the morning's plus
+    /// the day, which is the only thing a reader recognises as "my holdings".
+    /// </remarks>
+    private readonly List<Holding> _rows;
+
+    /// <summary>
+    /// Whether those rows have been written into the book yet.
+    ///
+    /// They are the **closing** figures and the book holds the **opening**, so simply closing the
+    /// dialog must not commit them: doing so would turn the morning's book into the evening's and
+    /// leave the day's replay with nothing to walk. The book is replaced the first time the reader
+    /// actually changes something, and not before.
+    /// </summary>
+    private bool _adopted;
+
     public PortfolioDialog()
+        : this(null)
+    {
+    }
+
+    /// <param name="rows">
+    /// The book as the page is currently drawing it — the page hands in its closing figures.
+    /// Null reads the stored book, which is also the right answer when there is nothing to fetch.
+    /// </param>
+    public PortfolioDialog(IReadOnlyList<Holding>? rows)
     {
         InitializeComponent();
 
@@ -71,6 +132,10 @@ public sealed partial class PortfolioDialog : ContentDialog
         CloseButtonText = Strings.Get("PortfolioDialogClose");
 
         Portfolio.EnsureLoaded();
+
+        _rows = rows is { Count: > 0 } ? [.. rows] : [.. Portfolio.Holdings];
+
+        Closing += (_, _) => CommitAll();
 
         _debounce.Tick += async (_, _) =>
         {
@@ -81,12 +146,44 @@ public sealed partial class PortfolioDialog : ContentDialog
         Rebuild();
     }
 
+    /// <summary>Runs every row's write-back, whether or not it already ran on a lost focus.</summary>
+    private void CommitAll()
+    {
+        foreach (var commit in _commits)
+        {
+            commit();
+        }
+    }
+
+    /// <summary>
+    /// Writes the closing rows into the book, once, on the reader's first change.
+    ///
+    /// Every other row has to move with the edited one: the book is about to hold one moment, and
+    /// a book mixing nine morning figures with one evening figure is a position nobody ever held
+    /// (公牛集团 900 shares beside 恒生科技ETF 10,000 — the day half applied).
+    /// </summary>
+    private void Adopt()
+    {
+        if (_adopted)
+        {
+            return;
+        }
+
+        _adopted = true;
+
+        Portfolio.ReplaceAll(_rows);
+    }
+
     /// <summary>Draws the book, one row per holding.</summary>
     private void Rebuild()
     {
+        // The old rows' closures hold boxes that are about to be detached — keeping them would
+        // commit values the visible list no longer shows.
+        _commits.Clear();
+
         Rows.Children.Clear();
 
-        if (Portfolio.Holdings.Count == 0)
+        if (_rows.Count == 0)
         {
             Rows.Children.Add(new TextBlock
             {
@@ -98,7 +195,7 @@ public sealed partial class PortfolioDialog : ContentDialog
             return;
         }
 
-        foreach (var holding in Portfolio.Holdings.ToList())
+        foreach (var holding in _rows.ToList())
         {
             Rows.Children.Add(Row(holding));
         }
@@ -166,21 +263,66 @@ public sealed partial class PortfolioDialog : ContentDialog
 
         // Written back on losing focus rather than on every keystroke: a text box being typed
         // into holds "1" of "1000" for a moment, and storing that would remove a holding.
-        void Commit(object _, RoutedEventArgs __)
+        //
+        // **A negative cost is legitimate and must not be refused.** The diluted cost goes
+        // negative once a sale's proceeds exceed what the remaining shares cost — this very book
+        // carries 超图软件 at ¥-96.847. The old `price < 0` guard therefore silently dropped
+        // every edit to exactly those rows — the reader changed the share count, the box kept
+        // it, and the file never moved (实测：改成 777，关掉对话框，portfolio.json 还是 100)，
+        // which is what "改了不生效" was. Garbage text parses to zero and is refused by the
+        // size check; the cost needs no guard of its own.
+        void WriteBack()
         {
-            var size = Number(shares.Text);
-            var price = Number(cost.Text);
+            var size = Math.Round(Number(shares.Text), 4);
+            var price = Math.Round(Number(cost.Text), 4);
 
-            if (size <= 0 || price < 0)
+            if (size <= 0)
             {
                 return;
             }
 
-            Portfolio.Put(new Holding(holding.Code, holding.Name, Math.Round(size, 4), Math.Round(price, 4)));
+            // **Closing the dialog is not editing it.** Each row shows the day's closing figure,
+            // which is not what the book holds, so a row that still reads what it was seeded with
+            // has nothing to say — writing it back would turn the morning's book into the evening's
+            // just because the reader looked (实测：只打开再关闭，账本就变成了收盘，回放从那一刻
+            // 起不再有仓位可走).
+            //
+            // Compared **at the box's own precision**: the seeded cost carries more digits than the
+            // four the box shows (30.67523456 against "30.6752"), and an exact comparison would make
+            // every untouched row look edited.
+            var sameSize = size == Math.Round(holding.Shares, 4);
+            var sameCost = price == Math.Round(holding.Cost, 4);
+
+            if (sameSize && sameCost)
+            {
+                return;
+            }
+
+            Adopt();
+
+            // An untouched cost keeps its full precision; only the one the reader retyped is
+            // written at the four decimals the box can show.
+            var updated = new Holding(
+                holding.Code, holding.Name, size, sameCost ? holding.Cost : price);
+
+            Portfolio.Put(updated);
+
+            var at = _rows.FindIndex(r => string.Equals(r.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
+
+            if (at >= 0)
+            {
+                _rows[at] = updated;
+            }
+
+            Edited = true;
         }
+
+        void Commit(object _, RoutedEventArgs __) => WriteBack();
 
         shares.LostFocus += Commit;
         cost.LostFocus += Commit;
+
+        _commits.Add(WriteBack);
 
         var remove = new Button
         {
@@ -193,7 +335,12 @@ public sealed partial class PortfolioDialog : ContentDialog
 
         remove.Click += (_, _) =>
         {
+            Adopt();
+
             Portfolio.Remove(holding.Code);
+            _rows.RemoveAll(r => string.Equals(r.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
+
+            Edited = true;
             Rebuild();
         };
 
@@ -352,7 +499,10 @@ public sealed partial class PortfolioDialog : ContentDialog
                 return;
             }
 
-            if (shares <= 0 || cost < 0)
+            // Shares must be positive; the cost needs no sign guard — a diluted cost is
+            // legitimately negative once a sale's proceeds have overtaken what the remaining
+            // shares cost, and refusing it here would make such a position unenterable.
+            if (shares <= 0)
             {
                 Say(Strings.Get("PortfolioDialogBadNumbers"));
                 return;
@@ -434,9 +584,26 @@ public sealed partial class PortfolioDialog : ContentDialog
                 return;
             }
 
-            var existed = Portfolio.Find(code) is not null;
+            var existed = _rows.Any(r => string.Equals(r.Code, code, StringComparison.OrdinalIgnoreCase));
 
-            Portfolio.Put(new Holding(code, name, Math.Round(shares, 4), Math.Round(cost, 4)));
+            Adopt();
+
+            var added = new Holding(code, name, Math.Round(shares, 4), Math.Round(cost, 4));
+
+            Portfolio.Put(added);
+
+            var at = _rows.FindIndex(r => string.Equals(r.Code, code, StringComparison.OrdinalIgnoreCase));
+
+            if (at >= 0)
+            {
+                _rows[at] = added;
+            }
+            else
+            {
+                _rows.Add(added);
+            }
+
+            Edited = true;
 
             CodeBox.Text = string.Empty;
             SharesBox.Text = string.Empty;

@@ -504,6 +504,12 @@ public sealed partial class MainWindow : Window
         try
         {
             _exiting = true;
+
+            // The last act of a session: every fill from a session before today rolls into the
+            // book, so the file on disk carries the latest positions and the next start imports
+            // on top of them. The next load does the same fold again as a net for a hard kill.
+            Portfolio.RollForward();
+
             Tray.Dispose();
 
             // Exit rather than Close: the window may be hidden, and ending the
@@ -557,6 +563,11 @@ public sealed partial class MainWindow : Window
         if (!AppBehaviourSettings.CloseHidesToTray)
         {
             _exiting = true;
+
+            // Same roll the tray's Exit does: this branch is the whole quit for
+            // anyone without a tray icon.
+            Portfolio.RollForward();
+
             Tray.Dispose();
             return;
         }

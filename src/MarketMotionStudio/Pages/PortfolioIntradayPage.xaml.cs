@@ -109,6 +109,18 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     private bool _busy;
 
     /// <summary>
+    /// Set when the book itself has just been edited by hand, cleared by the next
+    /// <see cref="Adopt"/>.
+    ///
+    /// The list prefers the session's per-minute moments over the stored book, and the moments
+    /// were built from the book as it was **before** the edit — showing them after an edit would
+    /// put the old numbers straight back up (实测：改成 777，关掉对话框，列表还是 100). With the
+    /// flag on, the list reads the stored book — the figures the reader just typed — and the
+    /// replay semantics come back when the re-fetch has rebuilt the session around the new book.
+    /// </summary>
+    private bool _bookDirty;
+
+    /// <summary>
     /// Waits for the typing in a fee box to stop.
     ///
     /// `ValueChanged` fires on every keystroke, and each load is a request per holding — so the
@@ -244,14 +256,18 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     {
         var rows = new List<HoldingRow>();
 
-        var moment = _session is { Moments.Count: > 0 } live
+        var moment = !_bookDirty && _session is { Moments.Count: > 0 } live
             ? live.Moments[index < 0
                 ? live.Moments.Count - 1
                 : Math.Min(index, live.Moments.Count - 1)]
             : null;
 
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         foreach (var holding in Portfolio.Holdings)
         {
+            seen.Add(holding.Code);
+
             var priced = _session?.Holdings.FirstOrDefault(h =>
                 string.Equals(h.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
@@ -297,6 +313,52 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
             rows.Add(new HoldingRow(InstrumentNames.Display(holding.Code, holding.Name), detail, text, tone));
         }
 
+        // **当天买出来的仓位也要有行。** The book only carries positions held at the open; a
+        // fill that opens one mid-session (顺丰 at 13:55, 公牛 at 14:56) exists in the moments
+        // alone — and a list that iterates the book never grows a row for it, so the curve
+        // announces the 买入 and the list sits there unmoved (实测：播放过 13:55，列表 8 行原样).
+        // From its first fill's minute onward the position gets a row of its own, appended at
+        // the bottom so no row the reader is watching changes place; if the day later sells it
+        // flat the row stays and reads 已清仓, the same rule the book's own rows follow.
+        if (moment is not null && _session is { } session)
+        {
+            foreach (var trade in session.Trades)
+            {
+                if (!seen.Add(trade.Code))
+                {
+                    continue;
+                }
+
+                if (moment.Minute < trade.Minute)
+                {
+                    continue;
+                }
+
+                moment.Shares.TryGetValue(trade.Code, out var shares);
+                moment.Costs.TryGetValue(trade.Code, out var cost);
+
+                var money = (trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? "HK$" : "¥")
+                    + cost.ToString("0.###", CultureInfo.InvariantCulture);
+
+                var detail = shares > 0
+                    ? Strings.Format(
+                        "PortfolioPnlRowDetail",
+                        shares.ToString("#,##0", CultureInfo.InvariantCulture),
+                        money)
+                    : Strings.Get("PortfolioPnlRowCleared");
+
+                double? made = moment.Contributions.TryGetValue(trade.Code, out var sofar)
+                    ? sofar
+                    : null;
+
+                var (text, tone) = made is { } value
+                    ? (PortfolioPnlRenderer.Money(value), value >= 0 ? Palette.Emphasis : Palette.Fall)
+                    : (string.Empty, Palette.Muted);
+
+                rows.Add(new HoldingRow(InstrumentNames.Display(trade.Code, trade.Name), detail, text, tone));
+            }
+        }
+
         Holdings.ItemsSource = rows;
         EmptyNote.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
     }
@@ -321,7 +383,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
                 var session = await IntradayPnl.LoadAsync(
                     Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                    [.. Portfolio.Trades], progress, cancellation, Fees());
+                    [.. Portfolio.Trades], progress, cancellation, Fees(), Portfolio.Settled);
 
                 Adopt(session);
 
@@ -361,7 +423,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
             var session = await IntradayPnl.LoadAsync(
                 Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                [.. Portfolio.Trades], null, cancellation.Token, Fees());
+                [.. Portfolio.Trades], null, cancellation.Token, Fees(), Portfolio.Settled);
 
             Adopt(session);
         }
@@ -389,6 +451,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         var wasAtEnd = Preview.Progress >= 0.999 || _session is null;
 
         _session = session;
+        _bookDirty = false;
 
         // The list is rebuilt from the new session at whatever minute is on screen, so the cache
         // of "which minute is it showing" has to be thrown away first — otherwise a re-read that
@@ -551,6 +614,83 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
     private async void OnAutoTick(object? sender, object e) => await SilentRefreshAsync(report: false);
 
+    /// <summary>
+    /// Refreshes the session after the book or the journal changed underneath it.
+    ///
+    /// **The wait matters.** <see cref="SilentRefreshAsync"/> quietly returns when a fetch is
+    /// already in flight — the right answer for a timer tick, and exactly the wrong one here: the
+    /// in-flight fetch is holding a snapshot taken **before** the change, so skipping means the
+    /// session never learns about the new trades or the new book, and a playback run afterwards
+    /// walks a day whose fills never reach the list (实测：导入后立刻播放，列表不动). So this
+    /// waits the in-flight one out and then fetches for real.
+    /// </summary>
+    private async Task RefreshAfterChangeAsync(bool report)
+    {
+        while (_busy)
+        {
+            await Task.Delay(120);
+        }
+
+        await SilentRefreshAsync(report);
+    }
+
+    /// <summary>
+    /// The book as **the day's last minute** leaves it — what 管理持仓 is handed to show.
+    ///
+    /// <para>
+    /// The list under the preview already reads this: the book is the morning's, and the fills walk
+    /// it forward minute by minute. The dialog used to be handed the stored book instead, so the
+    /// reader checked an import of 800 shares against a dialog still saying 100 and reported that
+    /// nothing had been imported (实测：列表 公牛集团 900 股 / 37.054，对话框 100 股 / 37.73).
+    /// </para>
+    ///
+    /// <para>
+    /// **The close, not the frame on screen.** A preview scrubbed to 10:47 is a re-enactment, and
+    /// the position it is drawing is what the book held at 10:47 — not what the reader holds. The
+    /// dialog is the real book, so it takes the day's last minute whatever the scrub bar says. Rows
+    /// the book does not carry (a position opened by today's fills) are appended, exactly as the
+    /// list appends them.
+    /// </para>
+    /// </summary>
+    private List<Holding> ClosingBook()
+    {
+        // A book just edited by hand has a stale session behind it — the moments on hand were built
+        // before the edit, and handing them back would undo the numbers the reader just typed.
+        if (_bookDirty || _session is not { Moments.Count: > 0 } session)
+        {
+            return [.. Portfolio.Holdings];
+        }
+
+        var moment = session.Moments[^1];
+        var rows = new List<Holding>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var holding in Portfolio.Holdings)
+        {
+            seen.Add(holding.Code);
+
+            var shares = moment.Shares.TryGetValue(holding.Code, out var held) ? held : holding.Shares;
+            var cost = shares > 0 && moment.Costs.TryGetValue(holding.Code, out var paid) ? paid : holding.Cost;
+
+            rows.Add(new Holding(holding.Code, holding.Name, shares, shares > 0 ? cost : 0));
+        }
+
+        foreach (var trade in session.Trades)
+        {
+            if (!seen.Add(trade.Code))
+            {
+                continue;
+            }
+
+            moment.Shares.TryGetValue(trade.Code, out var shares);
+            moment.Costs.TryGetValue(trade.Code, out var cost);
+
+            rows.Add(new Holding(trade.Code, trade.Name, shares, shares > 0 ? cost : 0));
+        }
+
+        return rows;
+    }
+
     private async void OnManage(object sender, RoutedEventArgs e)
     {
         if (App.Window is not { } window)
@@ -558,14 +698,28 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
             return;
         }
 
-        var dialog = new PortfolioDialog { XamlRoot = XamlRoot };
+        var dialog = new PortfolioDialog(ClosingBook()) { XamlRoot = XamlRoot };
 
         await Dialogs.ShowAsync(dialog);
+
+        // A hand-entered book is the position as the reader says it is, which outranks every fill
+        // still waiting to roll into it — letting tomorrow's roll apply those same fills on top of
+        // typed numbers would move the book twice. Marking them folded keeps the roll off them
+        // while the journal keeps them for today's replay.
+        if (dialog.Edited)
+        {
+            Portfolio.MarkManualEdit();
+        }
 
         // Whatever was on the stage was drawn from the book that just changed. Dropped rather
         // than left standing, for the reason every other page drops its series when its
         // parameters move: a frame of nine holdings under a list of eight is a plausible
         // picture of the wrong thing.
+        //
+        // The list is rebuilt **from the stored book** here — the moment override is switched off
+        // by `_bookDirty` — because the moments on hand were built from the book as it was before
+        // the edit, and showing them would put the old numbers straight back up.
+        _bookDirty = true;
         RefreshBook();
 
         if (Portfolio.Holdings.Count == 0)
@@ -581,7 +735,7 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
             return;
         }
 
-        await SilentRefreshAsync(report: true);
+        await RefreshAfterChangeAsync(report: true);
     }
 
     private async void OnImport(object sender, RoutedEventArgs e)
@@ -593,21 +747,23 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         var dialog = new TradeImportDialog(ImportDay()) { XamlRoot = XamlRoot };
 
-        if (await Dialogs.ShowAsync(dialog) != ContentDialogResult.Primary ||
-            dialog.Trades.Count == 0)
+        var choice = await Dialogs.ShowAsync(dialog);
+
+        if (choice == ContentDialogResult.Primary && dialog.Trades.Count > 0)
         {
-            return;
+            var result = Portfolio.Apply(dialog.Trades);
+
+            RefreshBook();
+
+            ShowStatus(
+                result.Unmatched > 0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success,
+                Strings.Format("PortfolioPnlImported", result.Applied, result.Duplicates, result.Unmatched));
+
+            // Waits out any fetch already running — see the note on `RefreshAfterChangeAsync`:
+            // the session on hand was built before this import, and a playback started on it
+            // would walk a day whose fills never reach the list.
+            await RefreshAfterChangeAsync(report: true);
         }
-
-        var result = Portfolio.Apply(dialog.Trades);
-
-        RefreshBook();
-
-        ShowStatus(
-            result.Unmatched > 0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success,
-            Strings.Format("PortfolioPnlImported", result.Applied, result.Duplicates, result.Unmatched));
-
-        await SilentRefreshAsync(report: true);
     }
 
     /// <summary>
