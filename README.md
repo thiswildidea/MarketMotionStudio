@@ -1510,6 +1510,20 @@ $msb = "C:\Program Files\Microsoft Visual Studio\18\Professional\MSBuild\Current
 The second command produces `artifacts\MarketMotionStudio_<version>_x64_arm64_bundle.msixupload`,
 which is the file Partner Center takes.
 
+Two traps, both hit on 2026-10-24:
+
+- **`dotnet build` fails at the symbols step.** `MSBuild.exe` finds `mspdbcmf.exe` in the VS
+  install; `dotnet build` looks for it under the dotnet SDK and does not, so
+  `WinAppSdkCheckFastlinkPdb` fails with MSB6011. Partner Center does not want the symbols
+  package anyway — add `/p:AppxSymbolPackageEnabled=false` (or build with MSBuild).
+- **Stale staging folders get packed.** `Upload\` and `ForBundle\` under the Release output
+  are only cleaned when their inputs change; after a version bump the packager may reuse the
+  *old* layout, and the upload gets a bundle stamped 1.0.20.0 whose payloads still say
+  1.0.18.0. Delete `Upload`, `ForBundle` and `*.appxrecipe` under both Release outputs before
+  rebuilding, then verify by unpacking: read the `Identity` of every `.msix` inside the
+  `.msixupload`, not just the bundle manifest.
+
+
 Use `Build`, not `Rebuild`, when the app may be running: `Rebuild` cleans first, the clean
 succeeds, the copy back fails on the locked exe, and the output folder is left without
 `runtimeconfig.json` and `deps.json` — at which point the apphost claims .NET is not
