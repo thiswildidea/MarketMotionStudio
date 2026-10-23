@@ -526,6 +526,57 @@ def source_checks():
 
     check("标题样式那六句话 14 种语言都有", not absent, "、".join(absent[:4]))
 
+    # ---- 页眉那一行「持仓市值」 --------------------------------------------------
+    #
+    # 它说的是**画面这一分钟**手里这些股值多少钱（`Σ 股数(t) × 价(t)`，列表每行的数字
+    # 加起来就是它），不是收盘那个数。2026-10-23 之前它印的是 `session.Value`：
+    # 同一行里百分比是这一刻的、金额是收盘的，而且买入卖出都不会让它动 —— 曲线在涨，
+    # 左边那个数字站着不动。
+    check("页眉那行的持仓市值取画面这一分钟的样本，不是收盘值",
+          "session.Samples[Math.Clamp(index, 0, session.Samples.Count - 1)].Value" in render
+          and 'Strings.Format("PortfolioPnlValueLine", Money(session.Value' not in render)
+
+    # 收尾那四张卡片是**收盘**的四张，它们仍取 `session.Value`：卡片在曲线走完之后才出现，
+    # 那时两者本来就相等，但「相等」要是算出来的，不是抄出来的。
+    check("收尾四张卡片里那张仍是收盘的持仓市值",
+          '(Strings.Get("PortfolioPnlStatValue"), Money(session.Value, signed: false))' in render)
+
+    # 标签一个词：页眉这行说「持仓市值」，收尾卡片说「持仓市值」，两处不该是两个说法。
+    # 只写「市值」会被读成「今日市值」或者「账户总值」，而这一页说的是持仓。
+    wording = {}
+
+    for path in sorted(glob.glob(os.path.join(SRC, "Strings", "*", "Resources.resw"))):
+        lang = os.path.basename(os.path.dirname(path))
+        body = open(path, encoding="utf-8-sig").read()
+        hit = re.search(r'name="PortfolioPnlValueLine"><value>(.*?)</value>', body)
+
+        assert hit, lang + ": 没有 PortfolioPnlValueLine"
+
+        wording[lang] = hit.group(1)
+
+    check("「持仓市值」这句话 14 种语言都带金额占位符",
+          all("{0}" in text for text in wording.values()),
+          "、".join(sorted(k for k, v in wording.items() if "{0}" not in v)))
+
+    check("中文写的是「持仓市值」，不是光秃秃的「市值」",
+          wording.get("zh-Hans") == "持仓市值 {0}" and wording.get("zh-Hant") == "持倉市值 {0}",
+          "简 %s / 繁 %s" % (wording.get("zh-Hans"), wording.get("zh-Hant")))
+
+    # 其余语言各自用「持仓」的那个词（Position / posizioni / позиций…），不是泛指的价值。
+    # 与收尾卡片那个标签为同一个词更好，但有几门语言卡片用的是「组合」的意思，这里只查
+    # 这一行自己说的是持仓。
+    STEM = {
+        "zh-Hans": "持仓", "zh-Hant": "持倉", "en-US": "position", "ja": "保有",
+        "ko": "보유", "de": "position", "fr": "positions", "it": "posizioni",
+        "es": "posición", "pt-BR": "posição", "pl": "pozycji", "cs": "pozic",
+        "ru": "позиций", "tr": "pozisyon",
+    }
+
+    vague = [lang for lang, text in wording.items()
+             if STEM.get(lang, "") and STEM[lang] not in text.lower()]
+
+    check("每一门语言都说的是「持仓」，不是泛指的价值", not vague, "、".join(sorted(vague)))
+
 
 # ---- 2) 自己算一遍 --------------------------------------------------------------------
 
@@ -1195,6 +1246,136 @@ def header_checks(win, name="verify-portfolio-header.png"):
     check("走着的钟和日期同一支颜色（也在页眉里、也放大到同一档）",
           baseline_px(clock_bottom - clock_top, box) >= 22,
           "钟的字形高 %.0f 基准像素" % baseline_px(clock_bottom - clock_top, box))
+
+
+def value_blocks(image, box, shift=0, gap=3):
+    """把页眉下面那一行切成词块：`+5.71%` · `持仓市值` `¥205,681.22`。
+
+    那一行画在 `Row(context, 0.354)` 上，标题一行时约在 648–712 基线像素之间。**按分数
+    切带子会切到空气**：标题换行时整块页眉往下挪一行（`HeaderRow` 的 `TitleShift`），
+    所以 `shift` 允许再试下移一行的那种。
+
+    切法是**看列**：先数每一列有几个亮像素（文字比深蓝背景亮得多，`ink` 用同一个门槛），
+    再把「连着几列为空」的地方当成词与词之间 —— 词内字与字之间只差一两列，词与词之间的
+    那个空格（26 号字）量到三列。于是 `·` 两边各留一个空格，自己单独成块。**逗号也会把
+    金额切开一截**，所以金额那段从第四块起整段量（那还是同一笔钱）。
+
+    给回每块的 `(左, 右, 亮像素数)`，横向按**基准像素**折回。
+    """
+    left, right, top, bottom = box
+    scale = (right - left) / 1080.0
+    y0 = int(top + ((648 + shift) * scale))
+    y1 = int(top + ((712 + shift) * scale))
+    pixels = image.load()
+
+    def lit(x, y):
+        return max(pixels[x, y][:3]) >= 90
+
+    columns = [sum(1 for y in range(y0, y1 + 1) if lit(x, y)) for x in range(left, right + 1)]
+
+    runs = []
+    start = None
+
+    for x, count in enumerate(columns):
+        if count and start is None:
+            start = x
+        elif not count and start is not None:
+            runs.append((start, x - 1))
+            start = None
+
+    if start is not None:
+        runs.append((start, len(columns) - 1))
+
+    if not runs:
+        return [], (y0, y1)
+
+    blocks = [[runs[0]]]
+
+    for run in runs[1:]:
+        if run[0] - blocks[-1][-1][1] - 1 >= gap:
+            blocks.append([run])
+        else:
+            blocks[-1].append(run)
+
+    out = []
+
+    for block in blocks:
+        x0, x1 = block[0][0], block[-1][1]
+        count = sum(1 for x in range(x0, x1 + 1) for y in range(y0, y1 + 1) if lit(x, y))
+
+        out.append((x0, x1, (x1 - x0 + 1) / scale, count))
+
+    return out, (y0, y1)
+
+
+def value_line_checks(win, value, profit, name="verify-portfolio-value.png"):
+    """页眉下面那一行：`+5.71% · 持仓市值 ¥205,681.22`。
+
+    三件事只能在这一行上量：
+
+      1. **结构**：百分比 / 间隔点 / 标签 / 金额 四块，中间那块是个位数的点。
+      2. **标签是四个字**。「持仓市值」比原来的「市值」宽出整整两个汉字（约 52 基准像素），
+         所以这条判据能把「改回两个字」和「改成别的说法」一起挡住。
+      3. **金额那块的宽度对得上独立算出的收盘持仓市值**（`expected()` 的 `value`，格式与
+         渲染器同一个 `Money`）。宽度量的是字符数 —— 它挡得住「印成了别的数」（收益、涨跌额
+         都短一截），挡不住「同长的另一个数」；印的是哪个样本，由上面那条源码判据钉着。
+
+    **这条线随时间动，量的是结尾那一帧。** 中途那一帧在这里不量：它的数字随分钟变，正是
+    这条判据要放的（`PnlSample.Value` × 渲染器那行 = 画面上的数，两条都在源码里钉着）。
+    实测 2026-10-23：标签量到 105 基准像素（期望 104），金额 149（「¥205,681.22」11 个
+    字符）。
+    """
+    print("\n页眉那一行「持仓市值」")
+
+    shot = shot_at(win, name, 1.0)
+
+    check("截得到结尾那一帧", shot is not None)
+
+    if shot is None:
+        return
+
+    image, box = shot
+    blocks, rows = value_blocks(image, box)
+
+    if len(blocks) < 4:
+        blocks, rows = value_blocks(image, box, shift=67)
+
+    check("那一行分成四块：百分比 / 间隔点 / 标签 / 金额", len(blocks) >= 4, "读到 %d 块" % len(blocks))
+
+    if len(blocks) < 4:
+        return
+
+    label = blocks[2][2]
+
+    # 金额那块从第四块起：逗号偶尔把数字切开一截，那还是同一笔钱。
+    scale = (box[1] - box[0]) / 1080.0
+    money = (blocks[-1][1] - blocks[3][0] + 1) / scale
+
+    check("中间那块是那个间隔点（八个基准像素以内）", blocks[1][2] <= 8,
+          "%.1f 基准像素" % blocks[1][2])
+
+    # 字号是渲染器里的 `context.Px(26)`；一个汉字在 26 号字上的墨迹约一个字号宽。
+    want = 4 * 26.0
+
+    check("标签是「持仓市值」四个字（%.0f 基准像素宽；两个字的旧版只有一半）" % label,
+          abs(label - want) <= want * 0.16, "量到 %.1f / 期望 %.1f" % (label, want))
+
+    # 每个（拉丁/数字）字符在 26 号字上量到约 13 基准像素，¥ 略宽，多给 5。容差放宽到
+    # 12%：数字有宽有窄，而这条判据挡的是「印成了别的数」，不是字体度量。
+    def width_of(text):
+        return (13.0 * len(text)) + 5
+
+    money_text = "¥" + ("{:,.2f}".format(abs(value)))
+    want = width_of(money_text)
+
+    # 今天收益 +¥10,478.64 与市值 ¥205,681.22 都是十一个字符 —— 宽度分不开这两个，所以
+    # 这条只量「是不是这一档的数」，收益写在这里是给人看的对照，不是判据。
+    check("金额那块对得上收盘的持仓市值 %s（%d 个字符）" % (money_text, len(money_text)),
+          abs(money - want) <= want * 0.12,
+          "量到 %.0f 基准像素 / 期望 %.0f；收益 %s 也是 %d 个字符"
+          % (money, want,
+             ("+" if profit >= 0 else "-") + "¥" + "{:,.2f}".format(abs(profit)),
+             len("¥") + len("{:,.2f}".format(abs(profit))) + 1))
 
 
 def counter_checks(win):
@@ -2139,7 +2320,8 @@ def main():
                 "verify-portfolio-axis-fixed.png", "verify-portfolio-axis-dynamic.png",
                 "verify-portfolio-header.png", "verify-portfolio-count-early.png",
                 "verify-portfolio-count-mid.png", "verify-portfolio-count-end.png",
-                "verify-portfolio-lunch-on.png", "verify-portfolio-lunch-off.png"):
+                "verify-portfolio-lunch-on.png", "verify-portfolio-lunch-off.png",
+                "verify-portfolio-value.png"):
         path = os.path.join(ART, old)
 
         if os.path.exists(path):
@@ -2378,6 +2560,9 @@ def main():
             check("标题样式摆得回默认（上一趟留下的偏好不带进这一趟）", skin_reset(win))
 
             header_checks(win)
+
+            # 页眉下面那一行「持仓市值」：标签四个字、金额是市值而不是收益。
+            value_line_checks(win, guess["value"], guess["profit"])
 
             # 持仓列表跟着时间轴走。放在这里量：此刻账上已经有那 5 笔成交，而页面停在
             # 最后一帧 —— 正是读者打开这一页看到的样子。
