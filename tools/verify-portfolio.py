@@ -1225,14 +1225,36 @@ def counter_checks(win):
 
     box = early[1]
 
-    # 页眉那一块里唯一的红是笔数那个数字：日期与钟是琥珀色的，大数字在更下面（标题占两行
-    # 时它跟着往下挪，0.31 这条线仍然在它上面）。
+    # **页眉里红的不止笔数。** 今天赚着的时候，那个大号收益数字也是红的（实测：早段一帧
+    # 2877 个红像素，笔数只占 47）；标题与日期在别的日子里也会偏红。拿全部红像素框出来的
+    # 「笔数区」于是成了收益数字，15% 与 50% 自然不同 —— 红的是判据，不是页面。
     reds = near(early[0], band(box, 120, 310), rgb("Emphasis"))
 
     check("早段那一帧找得到笔数那个红数字", len(reds) > 25, "%d 像素" % len(reds))
 
     if len(reds) <= 25:
         return
+
+    # 按行切成带（字与字之间空不到 6 行），笔数是**最小的一块文字**：标题、日期、钟、
+    # 收益数字都比它宽。只取高过 5 行的那几档，免得把一条细线当成字。
+    rows = sorted({y for _, y in reds})
+    spans, start = [], rows[0]
+
+    for previous, y in zip(rows, rows[1:]):
+        if y - previous > 6:
+            spans.append((start, previous))
+            start = y
+
+    spans.append((start, rows[-1]))
+
+    tall = [(a, b, sum(1 for _, y in reds if a <= y <= b)) for a, b in spans if b - a >= 5]
+
+    if not tall:
+        check("页眉里量得到一块文字（笔数那一行）", False, "红像素分不出文字")
+        return
+
+    low, high, _ = min(tall, key=lambda span: span[2])
+    reds = [(x, y) for x, y in reds if low <= y <= high]
 
     xs = [x for x, _ in reds]
     ys = [y for _, y in reds]

@@ -15,6 +15,7 @@
 """
 
 import json
+import math
 import os
 import re
 import shutil
@@ -201,8 +202,15 @@ def main():
         pairs = dialog_rows(win)
         print("  对话框 %d 行：%s" % (len(pairs), pairs))
 
-        got = [(round(float(s), 2), round(float(c), 3)) for s, c in pairs]
-        want = [(s, round(c, 3)) for s, c in rows]
+        # **舍入要照 C# 的 `0.###`（四舍五入），不能照 Python 的 `round`（银行家舍入）。**
+        # 有的成本正好卡在第 4 位是 5：真值 7.724501225，对话框写 7.7245（四位）、列表写
+        # 7.725（三位）。Python 的 round(7.7245, 3) 给出 7.724 —— 差的那一位是判据自己
+        # 造出来的，不是页面（实测红过一条，红的是这里）。
+        def three(value):
+            return math.floor(value * 1000 + 0.5) / 1000
+
+        got = [(round(float(s), 2), three(float(c))) for s, c in pairs]
+        want = [(s, three(c)) for s, c in rows]
 
         check("对话框逐行等于列表（股数 + 成本，成本按列表那 3 位比）", got == want,
               "对话框 %s / 列表 %s" % (got, want))
