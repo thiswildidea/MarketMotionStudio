@@ -20,6 +20,14 @@ public sealed record StockChoice(StockRef Stock)
     /// <summary>`顺丰控股 · SZ002352`.</summary>
     public string Display =>
         $"{InstrumentNames.Display(Stock.Code, Stock.Name)} · {Stock.Code.ToUpperInvariant()}";
+
+    /// <summary>
+    /// What the suggestion list draws. **A record's own <c>ToString</c> is its field dump**, and
+    /// that is what the list was showing: four rows of `StockChoice { Stock = StockRef { … } }`
+    /// instead of four names (实测截图). `TextMemberPath` feeds the *box* the chosen text; the
+    /// list itself falls back to `ToString`, so the display has to be spelled out here.
+    /// </summary>
+    public override string ToString() => Display;
 }
 
 /// <summary>
@@ -634,6 +642,185 @@ public sealed partial class PortfolioDialog : ContentDialog
             Scroller.UpdateLayout();
             Scroller.ChangeView(null, Scroller.ScrollableHeight, null);
         });
+
+    // ---- the list as a file --------------------------------------------------------
+
+    /// <summary>
+    /// Writes the list as it stands to a CSV the reader can open in anything.
+    ///
+    /// Exports **what the dialog shows** — the day's closing figures — because that is the list
+    /// the reader is reconciling against; the stored book is still the morning's until something
+    /// is actually changed here.
+    /// </summary>
+    private async void OnExport(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var picker = new Windows.Storage.Pickers.FileSavePicker
+        {
+            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = "holdings",
+        };
+
+        picker.FileTypeChoices.Add("CSV", [".csv"]);
+
+        WinRT.Interop.InitializeWithWindow.Initialize(
+            picker, WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        if (await picker.PickSaveFileAsync() is not { } file)
+        {
+            return;
+        }
+
+        SheetExportButton.IsEnabled = false;
+
+        try
+        {
+            // **BOM first.** Excel reads a UTF-8 CSV without one as the system code page and
+            // shows every Chinese name as mojibake; with it, the file opens correctly by
+            // double-click on a Chinese, Japanese or German machine alike.
+            var bytes = System.Text.Encoding.UTF8.GetPreamble()
+                .Concat(System.Text.Encoding.UTF8.GetBytes(HoldingsSheet.Write(_rows)))
+                .ToArray();
+
+            await Windows.Storage.FileIO.WriteBytesAsync(file, bytes);
+
+            Say(Strings.Format("PortfolioDialogExportDone", _rows.Count));
+        }
+        catch (Exception ex)
+        {
+            Say(Strings.Reason(ex));
+        }
+        finally
+        {
+            SheetExportButton.IsEnabled = true;
+        }
+    }
+
+    /// <summary>
+    /// Reads a holdings file over the list, in place of it.
+    ///
+    /// **Replaces rather than merges.** The file is the list; a merge would leave positions in
+    /// the book that the reader believed they had just deleted by removing their lines, and the
+    /// only way to find that out would be the total. Nothing is applied unless every line reads
+    /// cleanly, and the lines that do not are reported with their numbers.
+    /// </summary>
+    private async void OnImport(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var picker = new Windows.Storage.Pickers.FileOpenPicker
+        {
+            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary,
+            ViewMode = Windows.Storage.Pickers.PickerViewMode.List,
+        };
+
+        picker.FileTypeFilter.Add(".csv");
+        picker.FileTypeFilter.Add(".txt");
+
+        WinRT.Interop.InitializeWithWindow.Initialize(
+            picker, WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        if (await picker.PickSingleFileAsync() is not { } file)
+        {
+            return;
+        }
+
+        SheetImportButton.IsEnabled = false;
+
+        try
+        {
+            using var stream = await file.OpenStreamForReadAsync();
+            using var memory = new MemoryStream();
+
+            await stream.CopyToAsync(memory);
+
+            if (!HoldingsSheet.TryDecode(memory.ToArray(), out var text))
+            {
+                Say(Strings.Get("PortfolioDialogSheetEncoding"));
+                return;
+            }
+
+            var (parsed, problems) = HoldingsSheet.Parse(text, Normalize);
+
+            if (problems.Count > 0)
+            {
+                Say(Complaints(problems));
+                return;
+            }
+
+            if (parsed.Count == 0)
+            {
+                Say(Strings.Get("PortfolioDialogImportEmpty"));
+                return;
+            }
+
+            // A three-column file has no name of its own; the book still knows what it calls
+            // that holding, and a row reading `SZ002352` alone would be a row the reader has to
+            // look up every time.
+            var named = parsed
+                .Select(row => row.Name.Length > 0
+                    ? row
+                    : row with { Name = Portfolio.Find(row.Code)?.Name ?? string.Empty })
+                .ToList();
+
+            _rows.Clear();
+            _rows.AddRange(named);
+
+            // The file is a whole list, so the book becomes it now — past the "only what the
+            // reader changed" rule, because this *is* a change, and a large one.
+            _adopted = true;
+            Portfolio.ReplaceAll(_rows);
+
+            Edited = true;
+
+            Rebuild();
+            ScrollToEnd();
+
+            Say(Strings.Format("PortfolioDialogImportDone", named.Count));
+        }
+        catch (Exception ex)
+        {
+            Say(Strings.Reason(ex));
+        }
+        finally
+        {
+            SheetImportButton.IsEnabled = true;
+        }
+    }
+
+    /// <summary>The first few bad lines, and how many more there are.</summary>
+    private static string Complaints(IReadOnlyList<SheetRow> problems)
+    {
+        const int Shown = 3;
+
+        var lines = problems
+            .Take(Shown)
+            .Select(p => Strings.Format("PortfolioDialogImportRow", p.Line, RowReason(p.Problem)))
+            .ToList();
+
+        if (problems.Count > Shown)
+        {
+            lines.Add(Strings.Format("PortfolioDialogImportMore", problems.Count - Shown));
+        }
+
+        return string.Join("\n", lines);
+    }
+
+    private static string RowReason(SheetProblem problem) => Strings.Get(problem switch
+    {
+        SheetProblem.Columns => "PortfolioDialogRowColumns",
+        SheetProblem.Code => "PortfolioDialogRowCode",
+        SheetProblem.Shares => "PortfolioDialogRowShares",
+        SheetProblem.Cost => "PortfolioDialogRowCost",
+        _ => "PortfolioDialogRowDuplicate",
+    });
 
     private void Say(string message)
     {

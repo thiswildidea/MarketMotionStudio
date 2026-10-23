@@ -44,6 +44,23 @@
                 HorizontalAlignment="Stretch"
                 Click="OnAdd" />
 
+        <!-- The list as a file. A book kept in a spreadsheet is the ordinary way a reader
+             reconciles with a broker, and retyping nine rows into this dialog is how the
+             numbers end up differing in the fourth decimal. Export writes the columns the
+             import reads, so the file is round-trippable by design. -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+            <Button x:Name="SheetImportButton"
+                    x:Uid="PortfolioDialogImport"
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Click="OnImport" />
+            <Button x:Name="SheetExportButton"
+                    x:Uid="PortfolioDialogExport"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    Click="OnExport" />
+        </Grid>
+
         <TextBlock x:Name="Message"
                    TextWrapping="Wrap"
                    Visibility="Collapsed"

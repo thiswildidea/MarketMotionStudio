@@ -337,6 +337,16 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 moment.Shares.TryGetValue(trade.Code, out var shares);
                 moment.Costs.TryGetValue(trade.Code, out var cost);
 
+                // **A fill that leaves no position is not a row.** A code that appears in the
+                // day's journal only as a sale was never held in this book — nothing opened it —
+                // and appending it would add a «已清仓» line for a position that never existed
+                // (实测：整表导入三行之后，列表多出六行已清仓，正是账本里已经没有的那六只
+                // 当天卖出). Rows are positions; a position needs shares behind it.
+                if (shares <= 0)
+                {
+                    continue;
+                }
+
                 var money = (trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? "HK$" : "¥")
                     + cost.ToString("0.###", CultureInfo.InvariantCulture);
 
