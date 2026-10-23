@@ -1522,6 +1522,18 @@ cd src\MarketMotionStudio\bin\x64\Debug\net10.0-windows10.0.26100.0
 Add-AppxPackage -Register .\AppxManifest.xml
 ```
 
+`cd` alone is not enough when this runs inside a PowerShell session that started elsewhere:
+the cmdlet works out the package root from the **process** working directory, not from the
+manifest's own path, so a `Set-Location` on its own leaves it looking at the old folder and it
+fails with `0x80073CF9` — "the manifest is not in the package root" — even though the path
+printed in the error message is right. Set the process directory too, and the same command
+goes through:
+
+```powershell
+[Environment]::CurrentDirectory = (Get-Location).Path
+Add-AppxPackage -Register "$((Get-Location).Path)\AppxManifest.xml"
+```
+
 Re-run `tools\new-icons.ps1` only after changing the palette; the generated files are
 committed, so a fresh clone packages without it.
 

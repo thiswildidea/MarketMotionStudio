@@ -46,12 +46,14 @@ CH_VOLUME = listingtext.chapter_of("NavStockVolume")
 CH_CAP = listingtext.chapter_of("NavMarketCap")
 CH_DATA = -3
 
-# 加密货币那七页，按导航顺序 —— 商店清单的末七条就是它们。顺序也从导航来
+# 加密货币那十一页，按导航顺序 —— 商店清单的末十一条就是它们。顺序也从导航来
 # （`listingtext.nav_order()` 读 MainWindow.xaml），不写死：往导航中间插一页，这里跟着变。
-# 1.0.18.0 加了「月度收益」（NavCryptoMatrix），从六页变成七页。
+# 1.0.18.0 加了「月度收益」（NavCryptoMatrix），从六页变成七页；1.0.20.0 补齐剩下四页
+# （比较 / 涨跌 / 占比 / 年度回报），从七页变成十一页。
 CRYPTO_PAGES = ["NavCryptoCandle", "NavCryptoDca", "NavCryptoPosition",
                 "NavCryptoCalendar", "NavCryptoCapHistory", "NavCryptoMarketCap",
-                "NavCryptoMatrix"]
+                "NavCryptoMatrix", "NavCryptoCompare", "NavCryptoMovers",
+                "NavCryptoDominance", "NavCryptoAnnual"]
 
 PASSED = []
 FAILED = []
@@ -215,23 +217,25 @@ def listing_checks():
         # 换了页。（1.0.5.0 之前这一条是「十六条 / 最后一条是持有胜率」；第十七页债市固收
         # 从来没进过商店文案，直到那一版；第十八页市值历程同样是在它已经在应用里之后才由
         # `port-store-listing-caphistory.py` 补进来的；第十九到二十五条是加密货币那七页，
-        # 由 `port-store-listing-crypto-pages.py` 一次补进前六页、1.0.18.0 再补第七页。）
-        check(f"{lang} 说明段是二十五条", len(items) == 25, f"{len(items)} 条")
+        # 由 `port-store-listing-crypto-pages.py` 一次补进前六页、1.0.18.0 再补第七页；
+        # 第二十六条实时持仓收益与第二十七到三十条加密后四页由 `port-listing-page-count.py`
+        # 在 1.0.20.0 一次补齐。）
+        check(f"{lang} 说明段是三十条", len(items) == 30, f"{len(items)} 条")
 
         if items:
-            # 末七条是加密七页，顺序与导航一致 —— 页名从各语言的 resw 取，不写死：导航
+            # 末十一条是加密十一页，顺序与导航一致 —— 页名从各语言的 resw 取，不写死：导航
             # 中间插一页，这里的顺序也得跟着变。
             tail = [page_name(lang, key) for key in CRYPTO_PAGES]
-            check(f"{lang} 末七条是加密七页，顺序与导航一致",
+            check(f"{lang} 末十一条是加密十一页，顺序与导航一致",
                   len(items) >= len(CRYPTO_PAGES)
                   and all(lines[items[-len(CRYPTO_PAGES) + i]].startswith(f"• {tail[i]}")
                           for i in range(len(CRYPTO_PAGES))),
                   lines[items[-1]][:40])
 
             # 追加不动前面的顺序，所以第十八页与第十七页只是各被顶开几位，而不是被换掉。
-            # 末八是市值历程、末九是债市固收 —— 这两条一起钉住「前面十八条没被重排」。
+            # 末十二是市值历程、末十三是债市固收 —— 这两条一起钉住「前面十九条没被重排」。
             before = page_name(lang, "NavCapHistory")
-            check(f"{lang} 加密七页之前仍是市值历程",
+            check(f"{lang} 加密十一页之前仍是市值历程",
                   len(items) < len(CRYPTO_PAGES) + 1
                   or lines[items[-len(CRYPTO_PAGES) - 1]].startswith(f"• {before}"),
                   lines[items[-len(CRYPTO_PAGES) - 1]][:40] if len(items) > len(CRYPTO_PAGES)
@@ -308,7 +312,7 @@ def help_checks():
 
 
 def picture_checks():
-    """加密六章各有一张自己的配图，而且没有哪一张被引用了两遍。
+    """`port-help-images.py` 的 PICTURES 表里每一章各有一张自己的配图，而且没有哪一张被引用了两遍。
 
     图和文字一样，是**每份文件各自**的一份：「十四份都改了」这条约束靠 `port-*-help.py`
     那一批脚本保证，而脚本只保证它自己那一轮做了什么 —— 漏掉一份的时候没人吭声。所以这里
