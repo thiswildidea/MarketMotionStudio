@@ -1063,7 +1063,7 @@
   <data name="PortfolioPnlImported"><value>Imported {0} trades ({1} duplicates, {2} without a position)</value></data>
   <data name="PortfolioPnlTitle"><value>Live portfolio P&amp;L</value></data>
   <data name="PortfolioPnlTradesLine"><value>trades: {0}</value></data>
-  <data name="PortfolioPnlValueLine"><value>value {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>position value {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Return</value></data>
   <data name="PortfolioPnlStatValue"><value>Position value</value></data>
   <data name="PortfolioPnlStatHigh"><value>High</value></data>

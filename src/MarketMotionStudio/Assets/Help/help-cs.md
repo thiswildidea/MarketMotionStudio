@@ -433,6 +433,8 @@ Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála
 
 - **Seznam pozic jde s obrazem.** Při přehrávání nebo posouvání ukazuje seznam minutu, na které obraz stojí: počet akcí a zředěné náklady stojí na číslech té minuty, pozice koupená dnes přidá svůj řádek v minutě prvního obchodu a pozice prodaná do nuly zůstane na místě, označená jako prodaná. Seznam a křivka čtou vždy týž snímek, takže si nemohou odporovat.
 
+- **Řádek „hodnota pozic” je hodnota této minuty.** Přepočítává se minutu po minutě spolu s obrazem — ceny se hýbou a s nimi i počet akcií: ranní nákup ho zvedne v minutě provedení, prodej sníží. Čtyři závěrečné karty dál ukazují závěr a na tom čísle tento řádek v posledním snímku skončí.
+
 - **Osa jde od 09:30 do zavření těch trhů, které skutečně obchodovaly**: Šanghaj a Šen-čen do 15:00, Hongkong do 16:00. Polední přestávka je podbarvená a popsaná, ne nakreslená jako dvě hodiny rovné čáry. Když je jedna strana zavřená, její pozice jsou označené jako „zavřeno" a z křivky vypadnou — místo aby se oceňovaly seancí, která není dnešní.
 
 - **Během obchodování se obnovuje samo**: každých 30 sekund v pracovní dny mezi 09:15 a 16:10, pokud je přepínač zapnutý. Po zavření se přestane ptát — uzavřený den odpovídá na každý dotaz stejně.

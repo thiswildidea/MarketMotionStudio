@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>{0} 件の約定を取り込みました（重複 {1} 件、保有なし {2} 件）</value></data>
   <data name="PortfolioPnlTitle"><value>リアルタイム保有損益</value></data>
   <data name="PortfolioPnlTradesLine"><value>約定 {0} 件</value></data>
-  <data name="PortfolioPnlValueLine"><value>評価額 {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>保有評価額 {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>収益率</value></data>
   <data name="PortfolioPnlStatValue"><value>保有評価額</value></data>
   <data name="PortfolioPnlStatHigh"><value>最高</value></data>

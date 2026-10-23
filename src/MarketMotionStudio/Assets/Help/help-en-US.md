@@ -457,6 +457,8 @@ Your own holdings, marked to the minute: what today has made or cost since 09:30
 
 - **The holdings list moves with the picture.** Play or scrub, and the list shows the minute the frame has stopped on: shares and diluted cost sit at that minute's figures, a position opened today grows its row at the minute of its first fill, and one sold out during the day stays where it is, marked sold out. List and curve always read the same frame, so the two can never disagree.
 
+- **The position-value line on the frame is this minute's.** It is recomputed minute by minute as the picture advances — the prices move and so does the share count: a morning purchase lifts it on the minute it filled, a sale drops it. The four closing cards still report the close, which is the number this line has landed on by the last frame.
+
 - **The axis runs from 09:30 to the close of the venues that actually traded.** Shanghai and Shenzhen end at 15:00, Hong Kong at 16:00, and the lunch break is shaded and named rather than drawn as two hours of flat line. A venue closed for the day leaves its holdings marked closed and out of the curve, rather than priced off a session that is not today's.
 
 - **Refresh is automatic while the market is open**: every 30 seconds on weekdays between 09:15 and 16:10, while the switch is on. After the close it stops asking — a settled day answers every poll with the same numbers.

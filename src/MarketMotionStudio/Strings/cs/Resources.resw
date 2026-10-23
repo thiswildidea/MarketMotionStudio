@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>Importováno {0} obchodů ({1} duplicit, {2} bez pozice)</value></data>
   <data name="PortfolioPnlTitle"><value>Výsledek živě</value></data>
   <data name="PortfolioPnlTradesLine"><value>obchodů: {0}</value></data>
-  <data name="PortfolioPnlValueLine"><value>hodnota {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>hodnota pozic {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Výnos</value></data>
   <data name="PortfolioPnlStatValue"><value>Hodnota pozic</value></data>
   <data name="PortfolioPnlStatHigh"><value>Maximum</value></data>

@@ -472,6 +472,8 @@ Vos propres positions, valorisées à la minute : ce que la séance a rapporté 
 
 - **La liste des lignes suit l'image.** En lecture ou en glissement, la liste montre la minute sur laquelle l'image s'est arrêtée : les titres et le coût dilué restent aux valeurs de cette minute, une position ouverte aujourd'hui fait pousser sa ligne à la minute de son premier ordre, et une position vendue en entier reste où elle est, marquée vendue. La liste et la courbe lisent toujours la même image, elles ne peuvent donc pas se contredire.
 
+- **La ligne « valeur des positions » est celle de cette minute.** Elle est recalculée minute par minute avec l'image — les cours bougent et les titres aussi : un achat du matin la fait monter à la minute de son exécution, une vente la fait baisser. Les quatre cartes de clôture donnent toujours la clôture, et c'est le chiffre sur lequel cette ligne arrive à la dernière image.
+
 - **L'axe va de 09:30 à la clôture des places qui ont réellement traité** : Shanghai et Shenzhen à 15:00, Hong Kong à 16:00. La pause de midi est hachurée et nommée, pas dessinée comme deux heures de ligne plate. Si une place est fermée, ses lignes portent « fermé » et sortent de la courbe, au lieu d'être valorisées sur une séance qui n'est pas celle du jour.
 
 - **Le rafraîchissement est automatique pendant la séance** : toutes les 30 secondes en semaine entre 09:15 et 16:10, tant que l'interrupteur est activé. Après la clôture, la page cesse d'interroger : une journée terminée répond la même chose à chaque requête.

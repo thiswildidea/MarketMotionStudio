@@ -458,6 +458,8 @@ Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costa
 
 - **La lista de posiciones sigue a la imagen.** Al reproducir o arrastrar la barra, la lista muestra el minuto en que la imagen se detuvo: las acciones y el coste diluido quedan en las cifras de ese minuto, una posición abierta hoy hace crecer su fila en el minuto de su primera operación, y una posición vendida por completo permanece donde está, marcada como vendida. La lista y la curva leen siempre la misma imagen, así que no pueden contradecirse.
 
+- **La línea «valor de la posición» es la de este minuto.** Se recalcula minuto a minuto con la imagen: los precios se mueven y las acciones también, así que una compra de la mañana la sube en el minuto de su ejecución y una venta la baja. Las cuatro tarjetas de cierre siguen dando el cierre, que es la cifra a la que llega esta línea en el último fotograma.
+
 - **El eje va de las 09:30 al cierre de los mercados que realmente negociaron**: Shanghái y Shenzhen a las 15:00, Hong Kong a las 16:00. El descanso del mediodía se sombrea y se nombra, no se dibuja como dos horas de línea plana. Si un mercado está cerrado, sus posiciones se marcan «cerrado» y quedan fuera de la curva, en vez de valorarse con una sesión que no es la de hoy.
 
 - **La actualización es automática mientras el mercado está abierto**: cada 30 segundos en días laborables entre las 09:15 y las 16:10, con el interruptor activado. Después del cierre deja de preguntar: una sesión terminada responde lo mismo a cada consulta.

@@ -438,6 +438,8 @@ Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana 
 
 - **Pozisyon listesi görüntüyle birlikte hareket eder.** Oynatma ya da çubuğu sürükleme sırasında liste, karenin durduğu dakikayı gösterir: hisse adedi ve seyreltilmiş maliyet o dakikanın sayılarında kalır, bugün açılan bir pozisyon ilk işleminin dakikasında satırını büyütür, gün içinde tamamen satılan pozisyon ise 'satıldı' yazılı olduğu yerde kalır. Liste ile eğri her zaman aynı kareyi okur, bu yüzden asla çelişmezler.
 
+- **Karedeki «pozisyon değeri» satırı o dakikanın değeridir.** Görüntüyle birlikte dakika dakika yeniden hesaplanır — fiyatlar değişir, adet de onlarla birlikte: sabah alınan pay, işlemin gerçekleştiği dakikada satırı yukarı çeker, satış aşağı indirir. Kapanıştaki dört kart yine kapanışı verir ve satır son karede o sayıya varır.
+
 - **Eksen 09:30'dan, gerçekten işlem gören piyasaların kapanışına kadar gider**: Şanghay ve Shenzhen 15:00, Hong Kong 16:00. Öğle arası bir bant olarak boyanır ve adlandırılır, iki saatlik düz bir çizgi olarak çizilmez. Bir taraf kapalıysa o pozisyonlar "kapalı" diye işaretlenir ve eğrinin dışında kalır; bugünün olmayan bir seansın fiyatıyla doldurulmaz.
 
 - **Piyasa açıkken yenileme kendiliğindendir**: hafta içi 09:15 ile 16:10 arasında 30 saniyede bir, anahtar açıkken. Kapanıştan sonra sormayı bırakır: bitmiş bir gün her sorguya aynı sayılarla cevap verir.

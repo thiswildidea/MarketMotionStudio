@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>Zaimportowano {0} transakcji ({1} duplikatów, {2} bez pozycji)</value></data>
   <data name="PortfolioPnlTitle"><value>Wynik na żywo</value></data>
   <data name="PortfolioPnlTradesLine"><value>transakcji: {0}</value></data>
-  <data name="PortfolioPnlValueLine"><value>wartość {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>wartość pozycji {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Stopa zwrotu</value></data>
   <data name="PortfolioPnlStatValue"><value>Wartość pozycji</value></data>
   <data name="PortfolioPnlStatHigh"><value>Szczyt</value></data>

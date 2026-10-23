@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>{0} işlem içe aktarıldı ({1} yinelenen, {2} pozisyonsuz)</value></data>
   <data name="PortfolioPnlTitle"><value>Canlı portföy</value></data>
   <data name="PortfolioPnlTradesLine"><value>{0} işlem</value></data>
-  <data name="PortfolioPnlValueLine"><value>değer {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>pozisyon değeri {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Getiri</value></data>
   <data name="PortfolioPnlStatValue"><value>Pozisyon değeri</value></data>
   <data name="PortfolioPnlStatHigh"><value>En yüksek</value></data>

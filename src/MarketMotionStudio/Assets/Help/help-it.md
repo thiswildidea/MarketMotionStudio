@@ -466,6 +466,8 @@ Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costat
 
 - **L'elenco delle posizioni segue l'immagine.** Durante la riproduzione o lo scorrimento, l'elenco mostra il minuto su cui l'immagine si è fermata: azioni e costo diluito restano ai valori di quel minuto, una posizione aperta oggi fa crescere la sua riga al minuto del primo ordine, e una posizione venduta tutta resta dov'è, segnalata come venduta. Elenco e curva leggono sempre la stessa immagine, quindi non possono contraddirsi.
 
+- **La riga «valore posizioni» è quella di questo minuto.** Viene ricalcolata minuto per minuto insieme all'immagine — i prezzi si muovono e con loro le azioni: un acquisto del mattino la alza al minuto dell'esecuzione, una vendita la abbassa. Le quattro schede di chiusura riportano sempre la chiusura, ed è il numero su cui questa riga arriva all'ultimo fotogramma.
+
 - **L'asse va dalle 09:30 alla chiusura delle piazze che hanno davvero scambiato**: Shanghai e Shenzhen alle 15:00, Hong Kong alle 16:00. La pausa pranzo è tracciata come fascia e nominata, non disegnata come due ore di linea piatta. Se una piazza è chiusa, le sue posizioni sono marcate «chiuso» e restano fuori dalla curva, invece di essere prezzate su una sessione che non è quella di oggi.
 
 - **L'aggiornamento è automatico mentre il mercato è aperto**: ogni 30 secondi nei giorni feriali fra le 09:15 e le 16:10, con l'interruttore acceso. Dopo la chiusura smette di interrogare: una giornata conclusa risponde sempre gli stessi numeri.

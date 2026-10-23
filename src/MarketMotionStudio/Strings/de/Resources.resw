@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>{0} Ausführungen importiert ({1} Duplikate, {2} ohne Position)</value></data>
   <data name="PortfolioPnlTitle"><value>Depot live</value></data>
   <data name="PortfolioPnlTradesLine"><value>Ausführungen: {0}</value></data>
-  <data name="PortfolioPnlValueLine"><value>Wert {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>Positionswert {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Rendite</value></data>
   <data name="PortfolioPnlStatValue"><value>Depotwert</value></data>
   <data name="PortfolioPnlStatHigh"><value>Hoch</value></data>

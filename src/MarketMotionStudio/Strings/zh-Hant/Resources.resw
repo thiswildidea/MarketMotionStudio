@@ -1051,7 +1051,7 @@
   <data name="PortfolioPnlImported"><value>已匯入 {0} 筆成交（重複 {1} 筆，無對應持倉 {2} 筆）</value></data>
   <data name="PortfolioPnlTitle"><value>即時持倉收益</value></data>
   <data name="PortfolioPnlTradesLine"><value>成交 {0} 筆</value></data>
-  <data name="PortfolioPnlValueLine"><value>市值 {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>持倉市值 {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>收益率</value></data>
   <data name="PortfolioPnlStatValue"><value>持倉市值</value></data>
   <data name="PortfolioPnlStatHigh"><value>最高</value></data>

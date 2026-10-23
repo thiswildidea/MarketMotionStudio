@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>체결 {0}건을 가져왔습니다(중복 {1}건, 보유 없음 {2}건)</value></data>
   <data name="PortfolioPnlTitle"><value>실시간 보유 손익</value></data>
   <data name="PortfolioPnlTradesLine"><value>체결 {0}건</value></data>
-  <data name="PortfolioPnlValueLine"><value>평가액 {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>보유 평가액 {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>수익률</value></data>
   <data name="PortfolioPnlStatValue"><value>보유 평가액</value></data>
   <data name="PortfolioPnlStatHigh"><value>최고</value></data>

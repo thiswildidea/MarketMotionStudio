@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>Импортировано сделок: {0} (дубликатов {1}, без позиции {2})</value></data>
   <data name="PortfolioPnlTitle"><value>Портфель онлайн</value></data>
   <data name="PortfolioPnlTradesLine"><value>сделок: {0}</value></data>
-  <data name="PortfolioPnlValueLine"><value>стоимость {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>стоимость позиций {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Доходность</value></data>
   <data name="PortfolioPnlStatValue"><value>Стоимость портфеля</value></data>
   <data name="PortfolioPnlStatHigh"><value>Максимум</value></data>

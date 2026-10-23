@@ -453,6 +453,8 @@ Suas próprias posições, marcadas ao minuto: o que o dia rendeu ou custou desd
 
 - **A lista de posições acompanha a imagem.** Ao reproduzir ou arrastar a barra, a lista mostra o minuto em que a imagem parou: as ações e o custo diluído ficam nos números desse minuto, uma posição aberta hoje ganha sua linha no minuto da primeira operação, e uma posição vendida por inteiro permanece onde está, marcada como vendida. Lista e curva leem sempre o mesmo quadro, então nunca se contradizem.
 
+- **A linha «valor da posição» é a deste minuto.** Ela é recalculada minuto a minuto junto com a imagem — os preços mudam e as ações também: uma compra pela manhã a sobe no minuto da execução, uma venda a derruba. Os quatro cartões de fechamento continuam mostrando o fechamento, que é o número em que esta linha chega no último quadro.
+
 - **O eixo vai das 09:30 ao fechamento das praças que realmente negociaram**: Xangai e Shenzhen às 15:00, Hong Kong às 16:00. O intervalo do almoço é sombreado e nomeado, não desenhado como duas horas de linha reta. Com uma praça fechada, suas posições ficam marcadas como «fechado» e fora da curva, em vez de precificadas por uma sessão que não é a de hoje.
 
 - **A atualização é automática enquanto o mercado está aberto**: a cada 30 segundos em dias úteis entre 09:15 e 16:10, com o interruptor ligado. Depois do fechamento ela para de perguntar: um dia encerrado responde o mesmo a cada consulta.

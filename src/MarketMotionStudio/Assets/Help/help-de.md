@@ -467,6 +467,8 @@ Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 ge
 
 - **Die Liste der Bestände bewegt sich mit dem Bild.** Beim Abspielen oder Ziehen der Leiste zeigt die Liste die Minute, auf der das Bild steht: Stückzahl und verdünnte Kosten stehen auf den Zahlen dieser Minute, ein heute neu gekaufter Posten bekommt in der Minute seines ersten Geschäfts eine Zeile, und ein heute ganz verkaufter Posten bleibt als verkauft gekennzeichnet, wo er ist. Liste und Kurve lesen immer denselben Rahmen und können sich daher nicht widersprechen.
 
+- **Die Zeile „Positionswert“ auf dem Bild gilt für diese Minute.** Sie wird mit dem Bild Minute für Minute neu gerechnet — die Kurse bewegen sich und die Stückzahl mit ihnen: Ein Kauf am Morgen hebt sie in der Minute seiner Ausführung, ein Verkauf senkt sie. Die vier Schlusskarten nennen weiterhin den Stand zum Schluss, und darauf läuft diese Zeile im letzten Bild zu.
+
 - **Die Achse läuft von 09:30 bis zum Schluss der Handelsplätze, die wirklich gehandelt haben**: Shanghai und Shenzhen bis 15:00, Hongkong bis 16:00. Die Mittagspause wird als Band gezeichnet und benannt, nicht als zwei Stunden gerade Linie. Ist eine Seite geschlossen, stehen ihre Positionen auf „geschlossen" und bleiben aus der Kurve — statt mit dem Kurs einer Sitzung gerechnet zu werden, die nicht die heutige ist.
 
 - **Während der Handelszeit aktualisiert die Seite selbst**: werktags zwischen 09:15 und 16:10 alle 30 Sekunden, solange der Schalter an ist. Nach dem Schluss fragt sie nicht mehr — ein abgeschlossener Tag antwortet auf jede Abfrage mit denselben Zahlen.

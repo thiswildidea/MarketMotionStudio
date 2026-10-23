@@ -1052,7 +1052,7 @@
   <data name="PortfolioPnlImported"><value>{0} ejecuciones importadas ({1} duplicadas, {2} sin posición)</value></data>
   <data name="PortfolioPnlTitle"><value>P&amp;L en vivo</value></data>
   <data name="PortfolioPnlTradesLine"><value>ejecuciones: {0}</value></data>
-  <data name="PortfolioPnlValueLine"><value>valor {0}</value></data>
+  <data name="PortfolioPnlValueLine"><value>valor de la posición {0}</value></data>
   <data name="PortfolioPnlStatReturn"><value>Rentabilidad</value></data>
   <data name="PortfolioPnlStatValue"><value>Valor de la cartera</value></data>
   <data name="PortfolioPnlStatHigh"><value>Máximo</value></data>
