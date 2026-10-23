@@ -461,6 +461,8 @@ Suas próprias posições, marcadas ao minuto: o que o dia rendeu ou custou desd
 
 - **"Posições" abre com os números mais recentes.** Cada linha da janela é o que a página mostra neste momento: as operações do dia já estão nas ações e no custo diluído, os mesmos números da lista. Olhar sem tocar não move o livro um byte; mudar de verdade uma linha é escrever o próprio livro — daí em diante a reprodução do dia desenha apenas as marcas, sem contar de novo as ações. Ao sair, as últimas posições do dia se dobram no livro, prontas para continuar na manhã seguinte.
 
+- **A lista inteira é exportada como planilha e importada por cima.** A exportação é um CSV com código, nome, ações e custo — UTF-8 com BOM, então o Excel abre com dois cliques sem caracteres estranhos. Edite, salve no mesmo formato e importe: a lista passa a ser o arquivo. Uma linha ilegível (colunas, código, quantidade, custo, repetido) e nada é alterado, com os números das linhas indicados.
+
 - A carteira fica na pasta do aplicativo e sobrevive a reinícios. É também a única página cujo assunto é o próprio leitor — as outras desenham um mercado, e seus valores estão na moeda do mercado escolhido.
 
 - A primeira carteira são as nove posições com que esta página nasceu; remova uma a uma as que não usar e acrescente as suas.

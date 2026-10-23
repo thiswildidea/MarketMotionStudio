@@ -1053,7 +1053,11 @@ the list marked sold out — because the list and the curve always read the same
 holdings dialog opens on those same latest figures: look without touching and the stored book
 does not move, change a row and it is the book itself that is rewritten — from then on the
 day's replay draws its markers without recounting the shares — and on exit the day's final
-holdings fold into the stored book, ready to carry on the next morning.
+holdings fold into the stored book, ready to carry on the next morning. The list travels too:
+export writes code, name, shares and cost as a UTF-8 CSV that Excel opens without mojibake, and
+import puts a file back over the list — one unreadable line (columns, code, shares, cost, a
+repeated code) holds the whole import and reports each line number, so a book is never left
+half replaced.
 
 **Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
 over a coin instead of a share, and the three pages that come with **a fourth market** rather than

@@ -465,6 +465,8 @@ Your own holdings, marked to the minute: what today has made or cost since 09:30
 
 - **"Holdings" opens on the latest figures.** Every row in the dialog is what the page shows right now: today's fills are already in the shares and the diluted cost, the same numbers the list carries. Look without touching and the book does not move; change a row for real and it is the book itself you are writing — from then on the day's replay draws its markers without recounting the shares. On exit the day's final holdings fold into the book, ready to carry on the next morning.
 
+- **The whole list exports as a sheet, and imports back over itself.** Export writes a CSV of code, name, shares and cost — UTF-8 with a BOM, so Excel opens it by double-click without mojibake. Edit it, save it in the same shape and import it, and the list becomes the file; one unreadable line (wrong column count, an unreadable code, a share count that is not positive, a cost that is not a number, a repeated code) and nothing is changed at all, with the line numbers reported so they can be fixed first.
+
 - The book lives in the app's own folder and survives restarts. This is also the one page whose subject is the reader — every other page draws a market, and its amounts are in the currency of the market in force.
 
 - The first book is the nine positions this page was built from; remove them a row at a time and add your own.

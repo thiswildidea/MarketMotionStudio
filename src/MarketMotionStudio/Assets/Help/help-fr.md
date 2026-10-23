@@ -480,6 +480,8 @@ Vos propres positions, valorisées à la minute : ce que la séance a rapporté 
 
 - **« Positions » s'ouvre sur les dernières valeurs.** Chaque ligne de la boîte est ce que la page montre à l'instant : les ordres du jour sont déjà dans les titres et le coût dilué, les mêmes chiffres que la liste. Regarder sans toucher ne déplace pas le registre d'un octet ; modifier vraiment une ligne, c'est le registre même qu'on écrit — la relecture du jour ne dessine ensuite que ses marques, sans recompter les titres. À la fermeture, les dernières positions du jour se plient dans le registre, prêt à continuer le lendemain matin.
 
+- **Toute la liste s'exporte en tableur et s'importe par-dessus.** L'export est un CSV code, nom, titres, coût — UTF-8 avec BOM, donc Excel l'ouvre d'un double-clic sans charabia. Modifiez, enregistrez dans la même forme, importez : la liste devient le fichier. Une seule ligne illisible (nombre de colonnes, code, quantité, coût, doublon) et rien n'est modifié, avec les numéros de ligne pour la corriger.
+
 - Le portefeuille est stocké dans le dossier de l'application et survit aux redémarrages. C'est aussi la seule page dont le sujet soit le lecteur — les autres dessinent un marché, et leurs montants sont dans la devise du marché choisi.
 
 - Le premier portefeuille reprend les neuf positions avec lesquelles cette page a été conçue ; retirez-les une à une et ajoutez les vôtres.

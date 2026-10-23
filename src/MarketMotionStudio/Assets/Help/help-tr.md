@@ -446,6 +446,8 @@ Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana 
 
 - **"Pozisyonlar" en güncel rakamlarla açılır.** Penceredeki her satır, sayfanın şu anda gösterdiği şeydir: günün işlemleri hisse adedinde ve seyreltilmiş maliyette hazırdır, listedeki rakamların aynısıdır. Bakmak dokunmamaktır, defter tek bayt oynamaz; bir satırı gerçekten değiştirmek defterin kendisine yazmaktır — o andan sonra günün oynatımı yalnızca işaretleri çizer, hisse adedini yeniden saymaz. Çıkışta günün son pozisyonları deftere katlanır, ertesi sabah kaldığı yerden sürer.
 
+- **Listenin tamamı tablo olarak dışa aktarılır ve tablodan geri yüklenir.** Dışa aktarım kod, ad, adet ve maliyet sütunlu bir CSV'dir — UTF-8 ve BOM'lu, böylece Excel çift tıklamayla bozulmadan açar. Düzenleyip aynı biçimde kaydedin ve aktarın: liste dosyanın kendisi olur. Okunamayan tek satır (sütun sayısı, kod, adet, maliyet, tekrar) varsa hiçbir şey değişmez; satır numaraları bildirilir.
+
 - Defter uygulamanın kendi klasöründe durur ve yeniden başlatmada korunur. Bu sayfa aynı zamanda konusu okurun kendisi olan tek sayfadır — ötekiler bir piyasayı çizer ve tutarları seçili piyasanın para birimindedir.
 
 - İlk defter, bu sayfanın doğduğu dokuz pozisyondur; kullanmadıklarınızı tek tek çıkarıp kendi pozisyonlarınızı ekleyin.

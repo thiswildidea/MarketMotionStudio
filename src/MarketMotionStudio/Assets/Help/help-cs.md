@@ -441,6 +441,8 @@ Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála
 
 - **„Pozice” se otevírají s nejnovějšími čísly.** Každý řádek okna je to, co stránka právě ukazuje: obchody dne jsou už v počtu akcí a zředěných nákladech, stejných číslech jako v seznamu. Pouhé pohlednutí knihu nepohně o bajt; skutečná změna řádku je zápis do samotné knihy — od té chvíle přehrávání dne kreslí jen značky, aniž by počty akcí počítalo znovu. Při ukončení se poslední pozice dne složí do knihy, připravené na zítra.
 
+- **Celý seznam lze vyexportovat jako tabulku a z ní zase načíst.** Export je CSV s kódem, názvem, počtem akcií a nákladem — UTF-8 s BOM, takže ho Excel otevře dvojklikem bez změť znaků. Upravte, uložte ve stejném tvaru a importujte: seznam se stane souborem. Jediný nečitelný řádek (počet sloupců, kód, počet akcií, náklad, opakování) a nezmění se nic — s čísly řádků.
+
 - Portfolio je uložené ve složce aplikace a přežije restart. Tahle stránka je také jediná, jejímž tématem je sám čtenář — ostatní kreslí trh a jejich částky jsou v měně zvoleného trhu.
 
 - První portfolio tvoří devět pozic, se kterými tahle stránka vznikla; nepotřebné po jedné odstraňte a přidejte svoje.

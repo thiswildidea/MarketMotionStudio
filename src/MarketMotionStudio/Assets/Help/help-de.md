@@ -475,6 +475,8 @@ Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 ge
 
 - **„Bestand“ öffnet mit den neuesten Zahlen.** Jede Zeile im Dialog ist das, was die Seite gerade zeigt: Die Geschäfte des Tages stecken bereits in Stückzahl und verdünnten Kosten, dieselben Zahlen wie in der Liste. Nur ansehen und das Buch rückt kein Byte; eine Zeile wirklich ändern, und du schreibst das Buch selbst — die Wiedergabe des Tages zeichnet danach nur noch die Markierungen, ohne die Stückzahlen doppelt zu zählen. Beim Beenden falten sich die letzten Bestände des Tages ins Buch, und am nächsten Morgen geht es damit weiter.
 
+- **Die ganze Liste lässt sich als Tabelle ausgeben und von dort wieder übernehmen.** Der Export ist eine CSV mit Code, Name, Stückzahl und Kosten — UTF-8 mit BOM, also öffnet Excel sie per Doppelklick ohne Zeichensalat. Bearbeiten, im selben Format speichern und importieren: Die Liste wird zur Datei. Eine unlesbare Zeile (falsche Spaltenzahl, unlesbarer Code, keine positive Stückzahl, keine Zahl als Kosten, doppelter Code) und es ändert sich gar nichts — die Zeilennummern stehen dabei.
+
 - Das Depot liegt im eigenen Ordner der App und überlebt Neustarts. Diese Seite ist außerdem die einzige, deren Thema der Leser selbst ist — alle anderen zeichnen einen Markt, und ihre Beträge stehen in der Währung des eingestellten Marktes.
 
 - Das erste Depot besteht aus den neun Positionen, mit denen diese Seite entstanden ist; entfernen Sie sie Zeile für Zeile und fügen Sie Ihre eigenen hinzu.

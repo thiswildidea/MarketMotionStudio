@@ -474,6 +474,8 @@ Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costat
 
 - **«Posizioni» si apre sui valori più recenti.** Ogni riga della finestra è ciò che la pagina mostra in questo momento: le operazioni del giorno sono già nelle azioni e nel costo diluito, gli stessi numeri dell'elenco. Guardare senza toccare non muove il registro di un byte; modificare davvero una riga significa scrivere il registro stesso — da lì in poi la riproduzione del giorno disegna solo i segni, senza contare di nuovo le azioni. All'uscita le ultime posizioni del giorno si piegano nel registro, pronte a riprendere la mattina dopo.
 
+- **L'intero elenco si esporta come foglio e si reimporta sopra.** L'esportazione è un CSV con codice, nome, azioni e costo — UTF-8 con BOM, così Excel lo apre con un doppio clic senza caratteri strani. Modifica, salva nello stesso formato e importa: l'elenco diventa il file. Una sola riga illeggibile (numero di colonne, codice, quantità, costo, doppione) e non cambia nulla, con i numeri di riga indicati.
+
 - Il portafoglio sta nella cartella dell'app e sopravvive ai riavvii. È anche l'unica pagina il cui soggetto è il lettore — le altre disegnano un mercato e i loro importi sono nella valuta del mercato scelto.
 
 - Il primo portafoglio parte dalle nove posizioni con cui questa pagina è nata; toglile una per una e aggiungi le tue.

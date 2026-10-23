@@ -466,6 +466,8 @@ Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costa
 
 - **«Posiciones» se abre con las cifras más recientes.** Cada fila del cuadro es lo que la página muestra en este momento: las operaciones del día ya están en las acciones y el coste diluido, las mismas cifras de la lista. Mirar sin tocar no mueve el libro un byte; cambiar de verdad una fila es escribir el libro mismo — desde entonces la reproducción del día solo dibuja sus marcas, sin contar de nuevo las acciones. Al salir, las últimas posiciones del día se pliegan en el libro, listas para continuar a la mañana siguiente.
 
+- **La lista entera se exporta como hoja y se importa encima.** La exportación es un CSV con código, nombre, acciones y coste — UTF-8 con BOM, así Excel lo abre con doble clic sin caracteres raros. Edite, guarde con la misma forma e importe: la lista pasa a ser el archivo. Una sola fila ilegible (columnas, código, cantidad, coste, duplicado) y no cambia nada, con los números de fila a la vista.
+
 - La cartera se guarda en la carpeta de la aplicación y sobrevive a los reinicios. Es además la única página cuyo tema es el propio lector — las demás dibujan un mercado y sus importes están en la moneda del mercado elegido.
 
 - La primera cartera son las nueve posiciones con las que nació esta página; quite las que no use una a una y añada las suyas.

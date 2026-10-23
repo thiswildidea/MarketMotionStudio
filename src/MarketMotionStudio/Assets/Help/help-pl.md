@@ -458,6 +458,8 @@ Własne pozycje wyceniane co minutę: ile dzisiejsza sesja dała lub kosztowała
 
 - **„Pozycje” otwierają się na najnowszych liczbach.** Każdy wiersz okna to to, co strona pokazuje właśnie teraz: transakcje dnia są już w liczbie akcji i rozcieńczonym koszcie, tych samych liczbach co na liście. Samo obejrzenie nie porusza księgi ani o bajt; prawdziwa zmiana wiersza to zapis w samej księdze — odtąd odtwarzanie dnia rysuje już tylko znaczniki, nie licząc akcji po raz drugi. Przy wyjściu ostatnie pozycje dnia składają się do księgi, gotowe na jutro.
 
+- **Całą listę można wyeksportować jako arkusz i wczytać z powrotem.** Eksport to CSV z kolumnami kod, nazwa, liczba akcji i koszt — UTF-8 z BOM, więc Excel otwiera go dwuklikiem bez krzaków. Popraw, zapisz w tym samym kształcie i zaimportuj: lista staje się plikiem. Jeden nieczytelny wiersz (liczba kolumn, kod, liczba akcji, koszt, powtórzenie) i nic się nie zmienia — z podanymi numerami wierszy.
+
 - Portfel jest zapisany w folderze aplikacji i przetrwa restart. To także jedyna strona, której tematem jest sam czytelnik — pozostałe rysują rynek, a ich kwoty są w walucie wybranego rynku.
 
 - Pierwszy portfel to dziewięć pozycji, z którymi ta strona powstała; usuń zbędne po jednej i dodaj własne.

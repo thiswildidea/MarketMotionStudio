@@ -1080,6 +1080,19 @@
   <data name="PortfolioDialogShares.PlaceholderText"><value>Quantité</value></data>
   <data name="PortfolioDialogCost.PlaceholderText"><value>Prix de revient</value></data>
   <data name="PortfolioDialogAddButton.Content"><value>Ajouter</value></data>
+  <data name="PortfolioDialogImport.Content"><value>Importer la liste</value></data>
+  <data name="PortfolioDialogExport.Content"><value>Exporter la liste</value></data>
+  <data name="PortfolioDialogExportDone"><value>{0} lignes exportées.</value></data>
+  <data name="PortfolioDialogImportDone"><value>{0} lignes importées — la liste correspond désormais au fichier.</value></data>
+  <data name="PortfolioDialogImportEmpty"><value>Ce fichier ne contient aucune ligne de position.</value></data>
+  <data name="PortfolioDialogImportRow"><value>Ligne {0} : {1}</value></data>
+  <data name="PortfolioDialogImportMore"><value>{0} autres lignes posent problème — corrigez-les puis importez à nouveau.</value></data>
+  <data name="PortfolioDialogRowColumns"><value>Nombre de colonnes incorrect — attendu code,name,shares,cost</value></data>
+  <data name="PortfolioDialogRowCode"><value>Ce code est illisible</value></data>
+  <data name="PortfolioDialogRowShares"><value>La quantité doit être un nombre positif</value></data>
+  <data name="PortfolioDialogRowCost"><value>Le coût n'est pas un nombre</value></data>
+  <data name="PortfolioDialogRowDuplicate"><value>Ce code répète une ligne au-dessus</value></data>
+  <data name="PortfolioDialogSheetEncoding"><value>Ce fichier n'est pas en UTF-8 — enregistrez-le en « CSV UTF-8 » dans Excel puis réimportez.</value></data>
   <data name="PortfolioDialogRemove"><value>Retirer {0}</value></data>
   <data name="PortfolioDialogBadCode"><value>Code illisible : six chiffres = continent, cinq = Hong Kong.</value></data>
   <data name="PortfolioDialogBadNumbers"><value>La quantité doit être positive et le prix ne peut pas être négatif.</value></data>
