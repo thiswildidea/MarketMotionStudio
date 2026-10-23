@@ -797,6 +797,10 @@ public sealed class PortfolioPnlRenderer(
             return;
         }
 
+        // The closing figures: these four cards arrive after the curve has finished, so their
+        // 持仓市值 is the last sample's — the number the header's value line has also landed on by
+        // then, and the two agree because both are read at the close rather than because one
+        // copies the other.
         var cards = new (string Label, string Value)[]
         {
             (Strings.Get("PortfolioPnlStatReturn"), Percent(session.ReturnPct)),
@@ -932,11 +936,21 @@ public sealed class PortfolioPnlRenderer(
             ? Percent(session.Samples[index].Pnl / session.PrevValue * 100) + "  ·  "
             : string.Empty;
 
+        // **The holdings' market value at this minute, not at the close.** The sample's own
+        // arithmetic — `Σ shares(t) × mark(t)`, the same sum the rows of the page's list come to —
+        // so a fill moves it on its own minute: a morning purchase lifts it, a sale drops it.
+        //
+        // It printed `session.Value` until 2026-10-23, which is the closing figure: the number sat
+        // still on every frame while the curve, the list beside it and the positions behind them
+        // all moved, and the percentage it is joined to by a dot was already measured at the
+        // frame's minute — one line making two statements about two different moments.
+        var held = session.Samples[Math.Clamp(index, 0, session.Samples.Count - 1)].Value;
+
         using var unitFormat = Ink.Format(context.Px(26));
 
         Ink.Centred(
             session2,
-            pct + Strings.Format("PortfolioPnlValueLine", Money(session.Value, signed: false)),
+            pct + Strings.Format("PortfolioPnlValueLine", Money(held, signed: false)),
             cx, Row(context, 0.354), unitFormat, Palette.Muted, a);
     }
 
