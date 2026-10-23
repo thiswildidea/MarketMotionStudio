@@ -567,12 +567,60 @@ Les quinze cryptomonnaies à la plus forte capitalisation aujourd'hui, et l'évo
 
 ## Rendements mensuels crypto
 
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-monthly.png)
+
 Les mouvements mois par mois d'une cryptomonnaie en une grille année × mois, rouge pour les hausses et vert pour les baisses, l'année entière composée dans la dernière colonne.
 
 - **Les mois sont repliés, pas demandés.** Le marché crypto n'a pas d'accès mensuel : la page récupère tout ce que la source journalière détient — une dizaine d'années — et replie le dernier cours quotidien de chaque mois face à celui du mois précédent dans le mouvement de ce mois. Le nombre d'années n'est donc qu'une relecture : le changer retend la grille sans rien demander.
 - **Un mois ne compte que lorsqu'il est terminé.** Le mois en cours n'est pas sur la grille. Le mouvement d'un demi-mois déguisé en mois entier est l'erreur que cette image invite le plus à prendre pour argent comptant ; c'est pourquoi elle est rendue impossible plutôt que signalée.
 - Les années vont de 1 à 10, sans « tout » : la source journalière s'arrête à une dizaine d'années, et la plus longue réponse honnête est la dernière. La source de secours ne porte qu'une année, et dessus la grille tient en une seule ligne.
 - Les statistiques finales donnent le mois le plus fort et le plus faible, la part des mois en hausse et le meilleur mois isolé.
+
+## Comparaison crypto
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-compare.png)
+
+Plusieurs monnaies dans une même course : le prix de chacune est réindexé à 100 le premier jour où toutes ont un prix, et ce qui court ensuite, c'est qui monte le plus vite — non pas qui est le plus cher.
+
+- **Le départ est le premier jour où chaque monnaie choisie a un prix.** Toute la course part de ce jour-là — une monnaie cotée tardivement ramène le départ vers elle, car elle ne peut pas s'élancer depuis l'histoire d'une autre. Pour une piste plus longue, laissez de côté les monnaies nouveau-nées.
+- **Ce qui est dessiné est le rendement cumulé, non le prix.** À côté des soixante mille dollars du bitcoin, le prix d'une monnaie à moins d'un cent n'a pas de place — l'un devient une ligne, l'autre une droite collée au plancher. Ramenés à une même échelle, une monnaie à six chiffres et une à un chiffre peuvent se partager une même image.
+- Six monnaies au plus : une septième est refusée, car la septième courbe utiliserait la couleur que la sixième a déjà prise.
+- **La période** est de douze, vingt-quatre ou soixante mois, ou personnalisée — et la personnalisée remonte jusqu'au premier jour de la source : la ligne journalière du bitcoin commence en septembre 2014.
+- La ligne d'état finale dit combien de monnaies et de jours ont été pris, et qui menait à la fin.
+
+## Mouvements crypto
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-movers.png)
+
+Les plus grands mouvements de 24 heures, jour après jour — rouge pour les hausses, vert pour les baisses, ordonnés par ampleur ; un tableau de mouvements veut la plus grande secousse dans les deux sens, pas une échelle signée.
+
+- **Le mouvement d'un jour est la clôture contre celle de la veille.** Le classement 24 h en direct est la source naturelle de cette page, mais il demeure derrière le même mur que le reste de ce point d'accès ; le remplaçant est la clôture du jour contre celle de la veille — sur un marché qui ne dort jamais, un honnête substitut à la variation de 24 heures. La note sur la page le dit clairement : un substitut, pas le tick en direct.
+- Qui figure au tableau, c'est vous qui le choisissez : six monnaies au plus, ordonnées dans l'ensemble choisi.
+- Le jour zéro n'a pas de clôture de veille et lit zéro — ce jour reste vide plutôt que dessiné en une rangée de rien.
+- **La période** est de douze, vingt-quatre ou soixante mois, ou personnalisée.
+
+## Dominance crypto
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-dominance.png)
+
+La part de chaque monnaie choisie dans la capitalisation totale de l'ensemble choisi, jour après jour — les parts se somment à cent sur les monnaies de l'image.
+
+- **La part vaut pour l'ensemble que vous avez choisi, pas pour tout le marché.** La source donne la capitalisation circulante de chaque monnaie, mais aucun total du marché ; les barres se somment donc à cent sur les monnaies choisies. La question à laquelle elles répondent : qui est le plus grand dans cet ensemble et qui bouge — non pas combien du marché entier le bitcoin détient.
+- Le dénominateur est vivant : retirez une monnaie, et les autres sont repartagées selon le nouveau total.
+- Les capitalisations circulantes viennent de la série estimée de CoinMetrics, chaque monnaie debout sur le même plancher — c'est de là que les parts sont honnêtes d'une monnaie à l'autre et d'un jour à l'autre.
+- Moins de trente jours communs, et la page dit sans détour qu'il n'y a pas d'histoire à raconter — au lieu de dresser une table trop mince pour tenir debout.
+- **La période** est de douze, vingt-quatre ou soixante mois, ou personnalisée.
+
+## Rendements annuels crypto
+
+![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-annual.png)
+
+Les monnaies en lignes, les années civiles en colonnes, chaque cellule le rendement d'une monnaie sur cette année, rouge pour les hausses et vert pour les baisses ; la dernière colonne compose chaque année montrée en un seul chiffre.
+
+- **L'année encore en marche reste hors de la grille.** Une demi-année lue comme entière est un mensonge sur l'ampleur du mouvement — l'année courante n'apparaît donc qu'après la clôture de son dernier jour de bourse.
+- **Le rendement d'une année ne demande que deux nombres** : la clôture finale de cette année contre celle de la précédente. Comment le prix a tressailli dans l'année n'est pas dans la cellule — c'est l'affaire de la grille mensuelle.
+- Quand la période ne peut fournir des années entières, la page le dit — il manque des années complètes — au lieu de rapiécer le cadre avec des colonnes à moitié. La source de secours ne porte qu'environ une année de cours journaliers ; sur elle, c'est exactement ce cas.
+- **La période** est de douze, vingt-quatre ou soixante mois, ou personnalisée — cinq ans par défaut, ce qui pose quatre colonnes entières.
 
 ## Vidéo
 

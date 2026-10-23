@@ -24,7 +24,7 @@ AutomationId 定位（x:Name 即 AutomationId），因此不依赖当前界面�
   python tools\store-screenshots.py --smoke    # 只跑 zh-Hans + 市场成交额一页
   python tools\store-screenshots.py --langs=en-US --pages=06-position
                                                 # 只跑指定语言/页面（验证用）
-  python tools\store-screenshots.py --crypto    # 只截加密六页（市场选第四格）
+  python tools\store-screenshots.py --crypto    # 只截加密十一页（市场选第四格）
 
 窗口**最大化后再抓**（商店要的是「应用全屏」的观感，不是缩在屏幕中间的窗口）；
 画面一律停在动画的**最后一帧**。
@@ -113,20 +113,33 @@ PAGES = [
     ("NavBondRace", "09-bond-race", None),
 ]
 
-# 加密货币那六页只在市场切成加密货币时才在导航里 —— 选它时股票页整组 Remove，
+# 加密货币那十一页只在市场切成加密货币时才在导航里 —— 选它时股票页整组 Remove，
 # 反过来也一样。所以它们不可能和上面这批同一次跑出来，得单独一趟。
 #
 # 顺序照导航里的顺序（`CryptoPages`），文件名里的序号接着上面排。
+#
+# 第四项是币种策略：`crypto_set_coins` 把开关摆成「恰好这一组」。
+#   * 矩阵、K 线一类单币页 —— 只留 BTC（跟 1.0.17 那批六页同一个口径）；
+#   * 比较、涨跌、占比 —— 六个主流币一起上：占比页单币恒为 100%，比较页单币
+#     只有一条线，都不是给人看的画面。六个正好是 CryptoPicker 的上限。
+#   * 市值榜不给人挑（问 CoinGecko 的前十五名）—— None，页面上根本没有开关。
 CRYPTO_PAGES = [
-    ("NavCryptoCandle", "10-crypto-candle", None),
-    ("NavCryptoDca", "11-crypto-dca", None),
-    ("NavCryptoPosition", "12-crypto-position", None),
-    ("NavCryptoCalendar", "13-crypto-calendar", None),
-    ("NavCryptoCapHistory", "14-crypto-caphistory", None),
-    ("NavCryptoMarketCap", "15-crypto-marketcap", None),
+    ("NavCryptoCandle", "10-crypto-candle", None, ("BTC",)),
+    ("NavCryptoDca", "11-crypto-dca", None, ("BTC",)),
+    ("NavCryptoPosition", "12-crypto-position", None, ("BTC",)),
+    ("NavCryptoCalendar", "13-crypto-calendar", None, ("BTC",)),
+    ("NavCryptoCapHistory", "14-crypto-caphistory", None, ("BTC",)),
+    ("NavCryptoMarketCap", "15-crypto-marketcap", None, None),
+    ("NavCryptoMatrix", "16-crypto-monthly", None, ("BTC",)),
+    ("NavCryptoCompare", "17-crypto-compare", None,
+     ("BTC", "ETH", "SOL", "XRP", "DOGE", "ADA")),
+    ("NavCryptoMovers", "18-crypto-movers", None,
+     ("BTC", "ETH", "SOL", "XRP", "DOGE", "ADA")),
+    ("NavCryptoDominance", "19-crypto-dominance", None,
+     ("BTC", "ETH", "SOL", "XRP", "DOGE", "ADA")),
+    ("NavCryptoAnnual", "20-crypto-annual", None, ("BTC",)),
 ]
-
-# --crypto：只截加密六页，市场选第四格（`MarketId.Crypto`）。
+# --crypto：只截加密十一页，市场选第四格（`MarketId.Crypto`）。
 CRYPTO = "--crypto" in sys.argv
 
 if CRYPTO:
@@ -432,6 +445,52 @@ def crypto_only_btc(win, timeout=25):
 
         for chip in chips:
             want = chip.AutomationId == "CoinBTC"
+            state = None
+
+            try:
+                pattern = chip.GetPattern(auto.PatternId.TogglePattern)
+
+                if pattern is not None:
+                    state = pattern.ToggleState
+            except Exception:
+                state = None
+
+            if state is None:
+                continue
+
+            if (state == auto.ToggleState.On) != want:
+                invoke_click(chip)
+                settled = False
+
+        if settled:
+            return True
+
+        time.sleep(0.5)
+
+    return False
+
+
+def crypto_set_coins(win, codes, timeout=25):
+    """把币种开关摆成「恰好 codes 这一组」。
+
+    `crypto_only_btc` 的一般化：矩阵页给单币，比较/涨跌/占比给六个主流币 —— 占比页单币
+    恒为 100%，比较页单币只有一条线，都不是截图要给人看的画面。开关名 `Coin` + 代码
+    （与语言无关），先读 `TogglePattern` 再动手，与 only_btc 同一个道理：**起点不假设**。
+    """
+    want_set = set(codes)
+    deadline = time.time() + timeout
+
+    while time.time() < deadline:
+        chips = crypto_chips(win)
+
+        if not chips:
+            return False  # 这一页没有币种开关（市值榜不给人挑）
+
+        settled = True
+
+        for chip in chips:
+            code = chip.AutomationId[len("Coin"):]
+            want = code in want_set
             state = None
 
             try:
@@ -858,7 +917,10 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
     os.makedirs(outdir, exist_ok=True)
 
     # --- 逐页：导航 → 选标的 → 获取 → 拖到终帧 → 截图 ---
-    for nav_id, fname, preset in PAGES:
+    for entry in PAGES:
+        nav_id, fname = entry[0], entry[1]
+        preset = entry[2] if len(entry) > 2 else None
+        coins = entry[3] if len(entry) > 3 else None
         say("  --- %s ---" % fname)
         nav = byid(win, nav_id)
         if nav is None:
@@ -868,7 +930,12 @@ for tag, title, combo_label, settings_name, market_idx, mode in LANGS:
         time.sleep(2)
 
         if CRYPTO:
-            say("    只留 BTC：%s" % ("是" if crypto_only_btc(win) else "这一页没有币种开关"))
+            if coins:
+                say("    币种摆成 %s：%s"
+                    % ("+".join(coins),
+                       "是" if crypto_set_coins(win, coins) else "这一页没有币种开关"))
+            else:
+                say("    这一页不挑币（榜单/下拉页），维持现状")
             time.sleep(1.0)
 
         fb = byid(win, "FetchButton")

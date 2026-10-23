@@ -533,12 +533,60 @@ Bugün piyasa değeri en yüksek on beş coin ve bu sıranın gün gün nasıl d
 
 ## Kripto aylık getiriler
 
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-monthly.png)
+
 Bir coin'in ay ay hareketleri, yıl × ay ızgarası olarak; yükselişler kırmızı, düşüşler yeşil, son sütunda bileşik edilmiş bütün yıl.
 
 - **Aylar katlanır, sorulmaz.** Kripto piyasasının aylık bir kaynağı yoktur: sayfa, günlük kaynağın tuttuğu her şeyi — yaklaşık on yıl — alır ve her ayın son günlük kapanışını önceki ayın kapanışıyla karşılaştırıp o ayın hareketine katlar. Yıl sayısı bu yüzden yalnızca bir yeniden okumadır: onu değiştirmek ızgarayı yeniden serer ve hiçbir şey istemez.
 - **Bir ay ancak bittiğinde sayılır.** İçinde bulunulan ay ızgarada yok. Yarım ayın hareketinin bütün ay kılığına girmesi, bu resmin en kolay yuttuğu hatadır; bu yüzden imkânsız kılınır, yalnızca uyarı yapılmaz.
 - Yıllar 1–10 arası ve «hepsi» yoktur: günlük kaynak yaklaşık on yılda biter, en uzun dürüst cevap son seçenektir. Yedek kaynak yalnızca bir yıl taşır, ve onunla ızgara tek sıradır.
 - Kapanış istatistikleri en güçlü ve en zayıf ayı, artı kapanan ayların payını ve en güçlü tek ayı verir.
+
+## Kripto Karşılaştırma
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-compare.png)
+
+Birkaç coin tek bir yarışta: her coinin fiyatı, hepsinin fiyatının olduğu ilk günde 100'a çekilir ve ondan sonra yarışan, kim daha hızlı yükseliyor — kim daha pahalı değil.
+
+- **Başlangıç, seçilen her coinin fiyatının olduğu ilk gündür.** Yarışın tamamı o günden çıkar — geç kote olan bir coin başlangıcı kendine çeker; çünkü başka bir coinin tarihinden çıkamaz. Daha uzun pist istiyorsanız, yeni doğmuş coinleri dışarıda bırakın.
+- **Çizilen şey birikimli getiridir, fiyat değil.** Bitcoinin altmış bin dolarının yanında bir sentin altındaki bir coinin fiyatına yer yoktur — biri çizgiye döner, öteki yere yapışık bir doğruya. Ortak bir ölçeğe çekildiklerinde altı haneli bir coin ile tek haneli bir coin aynı resmi paylaşabilir.
+- En çok altı coin: yedincisi kabul edilmez, çünkü yedinci eğri, altıncının çoktan aldığı rengi kullanacaktır.
+- **Aralık** on iki, yirmi dört ya da altmış ay, ya da özel — özel, kaynağın ilk gününe kadar gider: bitcoinin günlük çizgisi Eylül 2014'te başlar.
+- Kapanıştaki durum satırı kaç coin ve gün alındığını ve sonunda kimin önde olduğunu söyler.
+
+## Kripto Hareketler
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-movers.png)
+
+En büyük 24 saatlik hareketler, gün gün — yükselişler için kırmızı, düşüşler için yeşil, büyüklüğe göre sıralı; hareketler panosunda iki yönde de en büyük kıpırtı olsun, işaretli bir merdiven değil.
+
+- **Bir günün hareketi, kapanışın bir önceki günün kapanışına oranıdır.** Canlı 24 saatlik sıralama bu sayfanın doğal kaynağıdır ama o, bu ucun gerisinin durduğu duvarın ardında yaşar; yerine geçen, günün kapanışının önceki günün kapanışına oranıdır — hiç uyumayan bir piyasada 24 saatlik değişimin dürüst bir vekilidir. Sayfadaki not bunu açıkça söyler: vekil, canlı fiyat değil.
+- Panoda kimin duracağını siz seçersiniz: en çok altı coin, seçtiğiniz küme içinde sıralanır.
+- Sıfırıncı günün önceki kapanışı yoktur ve sıfır okur — o gün boş bırakılır, hiçlikten bir sıra olarak çizilmez.
+- **Aralık** on iki, yirmi dört ya da altmış ay, ya da özel.
+
+## Kripto Hakimiyeti
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-dominance.png)
+
+Seçilen her coinin seçilen kümenin toplam değerine payı, gün gün — paylar, görüntüdeki coinler arasında yüze toplanır.
+
+- **Pay, seçtiğiniz küme içindir, bütün piyasa için değil.** Kaynak her coinin dolaşımdaki değerini verir ama piyasanın toplamını vermez; çubuklar bu yüzden seçilen coinler arasında yüze toplanır. Yanıtladıkları soru şudur: bu kümede kim en büyük ve kim kıpırdıyor — bitcoinin bütün piyasanın ne kadarını tuttuğu değil.
+- Payda yaşıyor: bir coini çıkarın, kalanlar yeni toplama göre yeniden bölünür.
+- Dolaşımdaki değerler CoinMetrics'in tahmin serisinden gelir, her coin aynı zeminde durur — payların coinden coine ve günden güne dürüst olması buradan gelir.
+- Ortak gün otuzdan az olursa sayfa lafı dolandırmadan der ki: anlatılacak bir hikâye yok — ayakta duramayacak kadar ince bir sofra sermek yerine.
+- **Aralık** on iki, yirmi dört ya da altmış ay, ya da özel.
+
+## Kripto Yıllık Getiriler
+
+![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-annual.png)
+
+Satırlar coinler, sütunlar takvim yılları, her hücre bir coinin o yıldaki getirisi — yükselişler için kırmızı, düşüşler için yeşil; son sütun gösterilen her yılı tek bir sayıda birleştirir.
+
+- **Hâlâ yürüyen yıl ızgaraya girmez.** Yarım yılı bütün okumak hareketin büyüklüğü hakkında yalan söylemektir — içinde bulunulan yıl, son işlem günü kapandıktan sonra görünür.
+- **Bir yılın getirisi iki sayı sorar**: o yılın son kapanışı ile bir önceki yılın son kapanışı. Fiyatın yıl içinde nasıl savrulduğu hücrede görünmez — o, aylık ızgaranın işidir.
+- Aralık bütün yılları sağlayamadığında sayfa bunu söyler — tam yıllar eksik — çerçeveyi yarım sütunlarla yamamak yerine. Yedek kaynak ancak yaklaşık bir yıl günlük fiyat taşır; onda durum tam olarak budur.
+- **Aralık** on iki, yirmi dört ya da altmış ay, ya da özel — öntanımlı beş yıl, dört tam sütunun üstüne oturur.
 
 ## Video
 

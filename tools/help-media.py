@@ -37,13 +37,19 @@ PAGES = [
     ("06-position.png", "position"),
     # 加密六页。它们只在市场切成「加密货币」时才在导航里（股票页整组 Remove），
     # 所以那六张素材是 `store-screenshots.py --crypto` 单独一趟拍的 —— 序号接着
-    # 上面排，10 起。
+    # 上面排，10 起。1.0.20 补拍的五张接在 15 后面：月度收益（1.0.18 有章无图）
+    # 与比较/涨跌/占比/年度矩阵（1.0.20 补章）。
     ("10-crypto-candle.png", "crypto-candle"),
     ("11-crypto-dca.png", "crypto-dca"),
     ("12-crypto-position.png", "crypto-position"),
     ("13-crypto-calendar.png", "crypto-calendar"),
     ("14-crypto-caphistory.png", "crypto-caphistory"),
     ("15-crypto-marketcap.png", "crypto-marketcap"),
+    ("16-crypto-monthly.png", "crypto-monthly"),
+    ("17-crypto-compare.png", "crypto-compare"),
+    ("18-crypto-movers.png", "crypto-movers"),
+    ("19-crypto-dominance.png", "crypto-dominance"),
+    ("20-crypto-annual.png", "crypto-annual"),
 ]
 
 # The window capture, in its own pixels: the navigation rail off the left, the

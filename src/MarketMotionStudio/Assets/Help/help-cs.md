@@ -528,12 +528,60 @@ Patnáct mincí s největší kapitalizací dnes a jak se toto pořadí den po d
 
 ## Měsíční výnosy krypto
 
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-monthly.png)
+
 Měsíční pohyby jedné mince jako mřížka rok × měsíc, červená pro růsty, zelená pro poklesy, v posledním sloupci celý rok složený.
 
 - **Měsíce se skládají, nevyptávají.** Krypto nemá měsíční zdroj: stránka stáhne vše, co denní zdroj drží — zhruba deset let — a složí poslední denní kurz každého měsíce s kurzem předchozího do pohybu toho měsíce. Počet let je proto jen opětovné čtení: jeho změna znovu rozestře mřížku a nic nestáhne.
 - **Měsíc se počítá, až skončil.** Běžící měsíc v mřížce není. Pohyb půl měsíce převlečený za celý je chyba, kterou tento obraz nejsnáze svádí věřit; proto je učiněna nemožnou, nikoli pouze ohlášena.
 - Roky běží 1–10 a „všechny“ nejsou: denní zdroj končí zhruba u deseti let a nejdelší poctivá odpověď je poslední položka. Záložní zdroj nese jediný rok, a na něm je mřížka jediná řada.
 - Závěrečné statistiky dají nejsilnější a nejslabší měsíc, podíl měsíců v plusu a nejsilnější jednotlivý měsíc.
+
+## Srovnání krypto
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-compare.png)
+
+Několik mincí v jednom závodu: cena každé z nich je první společný den přepočtena na 100 a závodí potom to, kdo roste nejrychleji — ne to, kdo je dražší.
+
+- **Startem je první den, v němž každá vybraná mince má cenu.** Celý závod vybíhá z toho dne — později uvedená mince přitáhne start k sobě, neboť nemůže vyběhnout z cizí historie. Kdo chce delší dráhu, nechá novorozené mince stranou.
+- **Kreslí se kumulovaný výnos, nikoli cena.** Vedle šedesáti tisíc dolarů bitcoinu nemá cena mince pod jedním centem místo — jedna se stane linií, druhá přímkou přilepenou k podlaze. Na společné škále čtou šestimístná a jednomístná mince týž obraz.
+- Nejvýše šest mincí: sedmá je odmítnuta, neboť sedmá křivka by použila barvu, kterou šestá už vzala.
+- **Rozsah** je dvanáct, dvacet čtyři či šedesát měsíců, nebo vlastní — vlastní sahá až k prvnímu dni zdroje: denní linie bitcoinu začíná v září 2014.
+- Závěrečný stavový řádek řekne, kolik mincí a dní bylo přineseno a kdo vedl na konci.
+
+## Krypto pohyby
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-movers.png)
+
+Největší 24hodinové pohyby, den za dnem — červené pro růsty, zelené pro pády, seřazené podle velikosti; tabule pohybů chce největší pohyb na obě strany, ne žebřík se znaménkem.
+
+- **Pohyb dne je uzavření proti uzavření předešlého dne.** Živá 24hodinová tabule je přirozený zdroj této stránky, ale bydlí za touže zdí jako zbytek tohoto rozhraní; náhradou je denní uzavření proti včerejšímu — na trhu, který nikdy nespí, čestný zástupný obraz 24hodinové změny. Poznámka na stránce to říká nahlas: zástupný obraz, ne živý tik.
+- Kdo sedí na tabuli, volíte vy: nejvýše šest mincí, seřazených uvnitř vybrané skupiny.
+- Den nula nemá včerejší uzavření a čte nulu — ten den zůstává prázdný, místo aby byl kreslen jako řada z ničeho.
+- **Rozsah** je dvanáct, dvacet čtyři či šedesát měsíců, nebo vlastní.
+
+## Krypto dominance
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-dominance.png)
+
+Podíl každé vybrané mince na celkové kapitalizaci vybrané skupiny, den za dnem — podíly se sčítají do sta napříč mincemi v obraze.
+
+- **Podíl se týká skupiny, kterou jste vybrali, nikoli celého trhu.** Zdroj dává oběžnou kapitalizaci každé mince, ale žádný součet trhu; sloupce se tedy sčítají do sta napříč vybranými mincemi. Otázka, na niž odpovídají: kdo je v této skupině největší a kdo se hýbe — ne to, kolik celého trhu bitcoin drží.
+- Jmenovatel žije: vezměte minci a zbylé se rozdělí znovu podle nového součtu.
+- Oběžné kapitalizace pocházejí z odhadované řady CoinMetrics, každá mince stojí na téže podlaze — odtud jsou podíly čestné od mince k minci a od dne k dni.
+- Méně než třicet společných dní a stránka říká nahlas, že není co vyprávět — místo aby rozprostřela stůl příliš tenký, aby stál.
+- **Rozsah** je dvanáct, dvacet čtyři či šedesát měsíců, nebo vlastní.
+
+## Roční výnosy krypto
+
+![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-annual.png)
+
+Mince v řádcích, kalendářní roky ve sloupcích, každá buňka ročním výnosem mince v tom roce, červené pro růsty a zelené pro pády; poslední sloupec skládá každý zobrazený rok do jediného čísla.
+
+- **Běžící rok zůstává mimo mřížku.** Půl roku čtené jako celé je lež o velikosti pohybu — běžný rok se proto ukáže až po uzavření svého posledního obchodního dne.
+- **Roční výnos si žádá dvě čísla**: konečné uzavření toho roku proti uzavření předešlého. Jak se cena třepotala uvnitř roku, v buňce není — to je věc měsíční mřížky.
+- Když rozsah nedodá celé roky, stránka to řekne — chybějí celé roky — místo aby záplatu dělala půlsloupci. Záložní zdroj nese sotva jeden rok denních cen; na něm je právě tento případ.
+- **Rozsah** je dvanáct, dvacet čtyři či šedesát měsíců, nebo vlastní — ve výchozím stavu pět let, což nese čtyři plné sloupce.
 
 ## Video
 

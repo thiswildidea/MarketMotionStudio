@@ -545,12 +545,60 @@ Piętnaście monet o największej kapitalizacji dziś i jak ten porządek zmieni
 
 ## Miesięczne stopy zwrotu krypto
 
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-monthly.png)
+
 Zmiany monety miesiąc po miesiącu jako siatka rok × miesiąc, czerwony dla wzrostów, zielony dla spadków, a w ostatniej kolumnie cały rok skumulowany.
 
 - **Miesiące są składane, nie wypytane.** Rynek krypto nie ma miesięcznego źródła: strona pobiera wszystko, co niesie źródło dzienne — około dziesięciu lat — i składa ostatni kurs dzienny każdego miesiąca z kursem poprzedniego w zmianę tego miesiąca. Liczba lat to więc tylko ponowne odczytanie: jej zmiana rozkłada siatkę na nowo i niczego nie pobiera.
 - **Miesiąc liczy się dopiero, gdy się skończył.** Bieżącego miesiąca na siatce nie ma. Zmiana pół miesiąca przebrana za cały to błąd, który ten obraz najłatwiej każe wziąć za dobrą monetę; dlatego zostaje uczyniony niemożliwym, a nie tylko opisany.
 - Lata biegną od 1 do 10, a „wszystkich” nie ma: źródło dzienne kończy się na około dziesięciu latach, a najdłuższa uczciwa odpowiedź to ostatnia pozycja. Źródło zapasowe niesie jeden jedyny rok, a na nim siatka to jeden wiersz.
 - Statystyki końcowe podają najsilniejszy i najsłabszy miesiąc, udział miesięcy na plusie oraz najsilniejszy pojedynczy miesiąc.
+
+## Porównanie krypto
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-compare.png)
+
+Kilka monet w jednym wyścigu: cena każdej z nich jest przeliczana na 100 w pierwszym wspólnym dniu, a ściga się potem to, kto rośnie najszybciej — nie to, kto jest droższy.
+
+- **Startem jest pierwszy dzień, w którym każda wybrana moneta ma cenę.** Cały wyścig rusza z tego dnia — moneta notowana późno przesuwa start ku sobie, bo nie może wyruszyć z cudzej historii. Chcesz dłuższej bieżni — zostaw świeżo narodzone monety w spokoju.
+- **Rysowaną jest skumulowana stopa zwrotu, nie cena.** Obok sześćdziesięciu tysięcy dolarów bitcoina cena monety poniżej centa nie znajdzie miejsca — jedna stanie się linią, druga prostą przyklejoną do podłogi. Dopiero na wspólnej skali moneta sześciocyfrowa i jedno cyfrowa czytają jeden obraz.
+- Najwyżej sześć monet: siódma jest odmawiana, bo siódma krzywa użyłaby koloru, który szósta już wzięła.
+- **Zakres** to dwanaście, dwadzieścia cztery lub sześćdziesiąt miesięcy albo własny — własny sięga pierwszego dnia źródła: dzienna linia bitcoina zaczyna się we wrześniu 2014.
+- Linia stanu na końcu mówi, ile monet i dni przyniesiono i kto prowadził na mecie.
+
+## Ruchy krypto
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-movers.png)
+
+Największe ruchy 24-godzinne, dzień po dniu — czerwone dla wzrostów, zielone dla spadków, ułożone według rozmiaru; tablica ruchów chce największego poruszenia w obie strony, nie drabiny ze znakiem.
+
+- **Ruch dnia to zamknięcie w stosunku do zamknięcia dnia poprzedniego.** Żywa tablica 24 godzin jest naturalnym źródłem tej strony, lecz mieszka za tą samą murem co reszta tego złącza; zastępcą jest dzienne zamknięcie wobec wczorajszego — na rynku, który nigdy nie śpi, uczciwa namiastka zmiany 24-godzinnej. Nota na stronie mówi to wprost: namiastka, nie tick na żywo.
+- Kto siedzi na tablicy, wybierasz ty: najwyżej sześć monet, ułożonych w obrębie wybranego zestawu.
+- Dzień zerowy nie ma wczorajszego zamknięcia i czyta zero — ten dzień zostaje pusty, zamiast zostać narysowanym jako rząd niczego.
+- **Zakres** to dwanaście, dwadzieścia cztery lub sześćdziesiąt miesięcy albo własny.
+
+## Dominacja krypto
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-dominance.png)
+
+Udział każdej wybranej monety w łącznej kapitalizacji wybranego zestawu, dzień po dniu — udziały sumują się do stu w obrębie monet z obrazu.
+
+- **Udział dotyczy zestawu, który wybrałeś, nie całego rynku.** Źródło podaje kapitalizację w obiegu każdej monety, lecz żadnej sumy rynku; słupki sumują się więc do stu w obrębie wybranych monet. Pytanie, na które odpowiadają: kto jest największy w tym zestawie i kto się rusza — nie to, ile całego rynku trzyma bitcoin.
+- Mianownik żyje: weź monetę, a reszta rozdzieli się na nowo według nowej sumy.
+- Kapitalizacje w obiegu pochodzą z serii szacunkowej CoinMetrics, każda moneta stoi na tej samej podłodze — stąd udziały są uczciwe od monety do monety i od dnia do dnia.
+- Mniej niż trzydzieści wspólnych dni i strona mówi prosto: nie ma historii do opowiedzenia — zamiast rozkładać stół zbyt cienki, żeby stał.
+- **Zakres** to dwanaście, dwadzieścia cztery lub sześćdziesiąt miesięcy albo własny.
+
+## Roczne stopy krypto
+
+![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-annual.png)
+
+Monety w wierszach, lata kalendarzowe w kolumnach, każda komórka to roczna stopa zwrotu monety w danym roku, czerwone dla wzrostów i zielone dla spadków; ostatnia kolumna składa każdy pokazany rok w jedną liczbę.
+
+- **Wciąż trwający rok zostaje poza siatką.** Pół roku czytane jako całe to kłamstwo o rozmiarze ruchu — bieżący rok pojawia się więc dopiero po zamknięciu jego ostatniego dnia notowań.
+- **Roczna stopa pyta o dwie liczby**: końcowe zamknięcie tego roku wobec zamknięcia poprzedniego. Jak cena trzepotała w środku roku — tego w komórce nie widać; to sprawa miesięcznej siatki.
+- Gdy zakres nie dostarcza pełnych lat, strona mówi to wprost — brakuje pełnych lat — zamiast łatać ramę półkolumnami. Zapasowe źródło niesie ledwie około roku dziennych cen; na nim to właśnie ten przypadek.
+- **Zakres** to dwanaście, dwadzieścia cztery lub sześćdziesiąt miesięcy albo własny — domyślnie pięć lat, co daje cztery pełne kolumny.
 
 ## Film
 

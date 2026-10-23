@@ -548,12 +548,60 @@ As quinze moedas com a maior capitalização hoje e como essa ordem se moveu dia
 
 ## Retornos mensais cripto
 
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-monthly.png)
+
 Os movimentos mês a mês de uma moeda em uma grade de ano × mês, vermelho para altas e verde para baixas, com o ano inteiro composto na última coluna.
 
 - **Os meses são dobrados, não pedidos.** O mercado cripto não tem um acesso mensal: a página traz tudo o que a fonte diária guarda — cerca de dez anos — e dobra o último fechamento diário de cada mês contra o do mês anterior no movimento daquele mês. O número de anos é, por isso, uma releitura: mudá-lo redesenha a grade sem pedir nada.
 - **Um mês só conta quando terminou.** O mês em andamento não está na grade. O movimento de meio mês vestido de mês inteiro é o erro que esta imagem mais induz a acreditar; por isso ele é tornado impossível, e não apenas avisado.
 - Os anos vão de 1 a 10, e não há «todos»: a fonte diária chega a cerca de dez anos, e a resposta honesta mais longa é a última. A fonte de reserva carrega um único ano, e nela a grade é uma só fileira.
 - As estatísticas finais dão o mês mais forte e o mais fraco, a proporção de meses em alta e o mês isolado mais forte.
+
+## Comparar cripto
+
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-compare.png)
+
+Várias moedas numa mesma corrida: o preço de cada uma é redefinido para 100 no primeiro dia em que todas têm preço, e o que compete depois é quem sobe mais rápido, não quem é mais caro.
+
+- **A largada é o primeiro dia em que cada moeda escolhida tem preço.** A corrida inteira parte desse dia — uma moeda listada tarde puxa a largada para si, porque não pode arrancar da história de outra. Para uma pista mais longa, deixe fora as moedas recém-nascidas.
+- **O que se desenha é o retorno acumulado, não o preço.** Ao lado dos sessenta mil dólares do bitcoin, o preço de uma moeda de menos de um centavo não cabe — um vira linha e o outro vira reta colada no chão. Trazidos a uma mesma escala, uma moeda de seis dígitos e uma de um dígito conseguem dividir a mesma imagem.
+- Seis moedas no máximo: uma sétima é recusada, porque a sétima curva usaria a cor que a sexta já levou.
+- **O intervalo** é de doze, vinte e quatro ou sessenta meses, ou personalizado — e o personalizado alcança o primeiro dia da fonte: a linha diária do bitcoin começa em setembro de 2014.
+- A linha de status final diz quantas moedas e dias foram obtidos e quem liderava no fim.
+
+## Movimentos cripto
+
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-movers.png)
+
+Os maiores movimentos de 24 horas, dia após dia — vermelho para altas, verde para quedas, ordenados pelo tamanho; um quadro de movimentos quer o maior movimento nos dois sentidos, não uma escada com sinal.
+
+- **O movimento de cada dia é o fechamento contra o da véspera.** A classificação de 24 horas ao vivo é a fonte natural desta página, mas mora atrás da mesma muralha do resto desse ponto de acesso; o substituto é o fechamento do dia contra o da véspera — num mercado que nunca dorme, um substituto honesto da variação de 24 horas. A nota na página diz com clareza: um substituto, não o tick ao vivo.
+- Quem está no quadro você escolhe: seis moedas no máximo, ordenadas dentro do conjunto escolhido.
+- O dia zero não tem fechamento anterior e lê zero — esse dia fica de fora, em vez de ser desenhado como uma fila de nada.
+- **O intervalo** é de doze, vinte e quatro ou sessenta meses, ou personalizado.
+
+## Dominância cripto
+
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-dominance.png)
+
+A fatia de cada moeda escolhida na capitalização total do conjunto escolhido, dia após dia — as fatias somam cem entre as moedas do quadro.
+
+- **A fatia vale para o conjunto que você escolheu, não para o mercado inteiro.** A fonte dá a capitalização circulante de cada moeda, mas nenhum total do mercado; as barras somam cem entre as moedas escolhidas. A pergunta que respondem: quem é o maior nesse conjunto e quem está se movendo — não quanto do mercado inteiro o bitcoin guarda.
+- O denominador está vivo: tire uma moeda e as demais se dividem de novo pelo novo total.
+- As capitalizações circulantes vêm da série estimada da CoinMetrics, cada moeda de pé sobre o mesmo chão — daí as fatias serem honestas de uma moeda à outra e de um dia a outro.
+- Menos de trinta dias em comum, e a página diz sem rodeios que não há história para contar, em vez de estender uma mesa fina demais para se sustentar.
+- **O intervalo** é de doze, vinte e quatro ou sessenta meses, ou personalizado.
+
+## Retornos anuais cripto
+
+![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-annual.png)
+
+Moedas em linhas, anos civis em colunas, cada célula o retorno de uma moeda naquele ano, vermelho para altas e verde para quedas; a última coluna compõe cada ano mostrado em um só número.
+
+- **O ano ainda em andamento fica fora da grade.** Meio ano lido como inteiro é uma mentira sobre o tamanho do movimento — o ano corrente só aparece depois do fechamento do seu último dia de pregão.
+- **O retorno de um ano pede dois números**: o fechamento final daquele ano contra o do anterior. Como o preço se agitou dentro do ano não está na célula — isso é assunto da grade mensal.
+- Quando o intervalo não consegue fornecer anos completos, a página diz — faltam anos completos — em vez de remendar o quadro com colunas pela metade. A fonte reserva carrega cerca de um único ano de preços diários; nela, é exatamente esse o caso.
+- **O intervalo** é de doze, vinte e quatro ou sessenta meses, ou personalizado — cinco anos por padrão, que assentam quatro colunas completas.
 
 ## Vídeo
 

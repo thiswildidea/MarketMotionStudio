@@ -561,12 +561,60 @@ Le quindici monete con la capitalizzazione maggiore oggi e come quest'ordine si 
 
 ## Rendimenti mensili crypto
 
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-monthly.png)
+
 I movimenti mese per mese di una moneta in una griglia anno × mese, rosso per i rialzi e verde per i ribassi, con l'intero anno composto nell'ultima colonna.
 
 - **I mesi sono ripiegati, non richiesti.** Il mercato crypto non ha un endpoint mensile: la pagina recupera tutto ciò che la fonte giornaliera possiede — circa dieci anni — e ripiega l'ultima chiusura giornaliera di ogni mese contro quella del mese precedente nel movimento di quel mese. Il numero di anni è quindi una rilettura: cambiarlo stende di nuovo la griglia senza chiedere nulla.
 - **Un mese conta solo quando è finito.** Il mese in corso non è sulla griglia. Il movimento di mezzo mese vestito da mese intero è l'errore che questa immagine invita più facilmente a prendere per buono; per questo lo si rende impossibile invece di segnalarlo.
 - Gli anni vanno da 1 a 10, e non c'è «tutto»: la fonte giornaliera si ferma a circa dieci anni, e la risposta onesta più lunga è l'ultima voce. La fonte di riserva porta un solo anno, e su di essa la griglia è una sola riga.
 - Le statistiche finali danno il mese più forte e il più debole, la quota dei mesi in rialzo e il singolo mese più forte.
+
+## Confronto crypto
+
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-compare.png)
+
+Diverse monete in una stessa gara: il prezzo di ciascuna viene riportato a 100 il primo giorno in cui tutte hanno un prezzo, e ciò che gareggia dopo è chi sale più in fretta, non chi costa di più.
+
+- **La partenza è il primo giorno in cui ogni moneta scelta ha un prezzo.** Tutta la gara parte da quel giorno — una moneta quotata tardi tira la partenza verso di sé, perché non può sganciarsi dalla storia di un'altra. Per una pista più lunga, lascia fuori le monete appena nate.
+- **Ciò che è disegnato è il rendimento cumulato, non il prezzo.** Accanto ai sessantamila dollari del bitcoin, il prezzo di una moneta da meno di un centesimo non trova posto — l'uno diventa una linea, l'altro una retta incollata al pavimento. Riportati a una stessa scala, una moneta a sei cifre e una a una cifra possono condividere la stessa immagine.
+- Al massimo sei monete: una settima è rifiutata, perché la settima curva userebbe il colore che la sesta ha già preso.
+- **L'intervallo** è di dodici, ventiquattro o sessanta mesi, o personalizzato — e il personalizzato risale fino al primo giorno della fonte: la linea giornaliera del bitcoin comincia nel settembre 2014.
+- La riga di stato finale dice quante monete e quanti giorni sono stati presi, e chi guidava alla fine.
+
+## Movimenti crypto
+
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-movers.png)
+
+I maggiori movimenti di 24 ore, giorno per giorno — rosso per i rialzi, verde per i ribassi, ordinati per entità; un tabellone dei movimenti vuole la scossa più grande in entrambe le direzioni, non una scala con segno.
+
+- **Il movimento di un giorno è la chiusura contro quella del giorno prima.** La classifica live di 24 ore è la fonte naturale di questa pagina, ma abita dietro lo stesso muro del resto di quell'endpoint; la supplente è la chiusura del giorno contro quella del precedente — su un mercato che non dorme mai, un surrogato onesto della variazione di 24 ore. La nota sulla pagina lo dice chiaro: un surrogato, non il tick in diretta.
+- Chi sta sul tabellone lo scegli tu: al massimo sei monete, ordinate nell'insieme scelto.
+- Il giorno zero non ha chiusura precedente e legge zero — quel giorno resta vuoto, anziché disegnato come una fila di nulla.
+- **L'intervallo** è di dodici, ventiquattro o sessanta mesi, o personalizzato.
+
+## Dominanza crypto
+
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-dominance.png)
+
+La quota di ogni moneta scelta sulla capitalizzazione totale dell'insieme scelto, giorno per giorno — le quote sommano a cento tra le monete dell'inquadratura.
+
+- **La quota vale per l'insieme che hai scelto, non per tutto il mercato.** La fonte dà la capitalizzazione circolante di ogni moneta, ma nessun totale del mercato; le barre quindi sommano a cento tra le monete scelte. La domanda a cui rispondono: chi è il più grande in questo insieme e chi si muove — non quanto di tutto il mercato tiene il bitcoin.
+- Il denominatore è vivo: togli una moneta e le altre si ridividono secondo il nuovo totale.
+- Le capitalizzazioni circolanti vengono dalla serie stimata di CoinMetrics, ogni moneta in piedi sullo stesso pavimento — da lì che le quote sono oneste da una moneta all'altra e da un giorno all'altro.
+- Meno di trenta giorni in comune e la pagina dice senza giri di parole che non c'è una storia da raccontare, invece di stendere una tavola troppo sottile per stare in piedi.
+- **L'intervallo** è di dodici, ventiquattro o sessanta mesi, o personalizzato.
+
+## Rendimenti annuali crypto
+
+![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-annual.png)
+
+Monete in righe, anni civili in colonne, ogni cella il rendimento di una moneta in quell'anno, rosso per i rialzi e verde per i ribassi; l'ultima colonna compone ogni anno mostrato in una sola cifra.
+
+- **L'anno ancora in cammino resta fuori dalla griglia.** Mezzo anno letto come intero è una menzogna sull'ampiezza del movimento — l'anno in corso appare solo dopo la chiusura del suo ultimo giorno di borsa.
+- **Il rendimento di un anno chiede due numeri**: la chiusura finale di quell'anno contro quella dell'anno prima. Come il prezzo ha vacillato dentro l'anno non è nella cella — è affare della griglia mensile.
+- Quando l'intervallo non può fornire anni interi, la pagina lo dice — mancano anni completi — invece di rattoppare il telaio con colonne a metà. La fonte di riserva porta circa un solo anno di prezzi giornalieri; su di essa è esattamente questo caso.
+- **L'intervallo** è di dodici, ventiquattro o sessanta mesi, o personalizzato — cinque anni per impostazione predefinita, che assestano quattro colonne intere.
 
 ## Video
 

@@ -562,12 +562,60 @@ Die fünfzehn Münzen mit der größten Marktkapitalisierung heute und wie sich 
 
 ## Krypto-Monatsrenditen
 
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-monthly.png)
+
 Die Bewegungen einer Münze Monat für Monat als Jahr-×-Monat-Raster, rot für Steigungen und grün für Stürze, in der letzten Spalte das ganze Jahr aufgezinst.
 
 - **Die Monate sind gefaltet, nicht erfragt.** Krypto hat keinen Monatsendpunkt: Die Seite holt alles, was die Tagesquelle hat — etwa zehn Jahre — und faltet den letzten Tagesschluss jedes Monats gegen den des Vormonats in die Bewegung dieses Monats. Die Jahreszahl ist damit nur ein Nachlesen: Sie legt das Raster neu und holt nichts.
 - **Ein Monat zählt erst, wenn er vorbei ist.** Der laufende Monat steht nicht im Raster. Die Bewegung eines halben Monats im Kleid eines ganzen ist der Fehler, den dieses Bild am ehesten einlädt — deshalb wird er unmöglich gemacht, nicht beschriftet.
 - Die Jahre laufen 1–10, und ein „Alle“ gibt es nicht: Die Tagesquelle endet bei etwa zehn Jahren, die längste ehrliche Antwort ist der letzte Eintrag. Die Ausweichquelle trägt ein einziges Jahr, und auf ihr ist das Raster eine Zeile.
 - Die Abschlussstatistik nennt den stärksten und den schwächsten Monat, den Anteil der Monate im Plus und den stärksten einzelnen Monat.
+
+## Krypto-Vergleich
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-compare.png)
+
+Mehrere Coins in einem Rennen: Der Preis jedes Coins wird am ersten gemeinsamen Tag auf 100 neu gesetzt, und was danach wetteifert, ist, wer am schnellsten steigt — nicht, wer teurer ist.
+
+- **Der Start ist der erste Tag, an dem jeder gewählte Coin einen Preis hat.** Das ganze Rennen bricht von diesem Tag auf — ein später notierter Coin zieht den Start zu sich, denn er kann nicht aus der Geschichte eines anderen aufbrechen. Wer eine längere Bahn will, lässt die neugeborenen Coins weg.
+- **Gezeichnet wird die kumulierte Rendite, nicht der Preis.** Neben Bitcoins sechzigtausend Dollar hat der Preis eines Coins unter einem Cent keinen Platz — der eine wird zur Linie, der andere zur bodennahen Geraden. Erst auf eine Skala gebracht, lesen ein sechsstelliger und ein einstelliger Coin dasselbe Bild.
+- Höchstens sechs Coins: Ein siebter wird abgelehnt, denn die siebte Kurve würde die Farbe gebrauchen, die die sechste schon verbraucht hat.
+- **Der Zeitraum** ist zwölf, vierundzwanzig oder sechzig Monate, oder eigen — eigen reicht bis zum ersten Tag der Quelle zurück; Bitcoins Tageslinie beginnt im September 2014.
+- Die Statuszeile am Ende sagt, wie viele Coins und Tage geholt wurden und wer zuletzt führte.
+
+## Krypto-Bewegungen
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-movers.png)
+
+Die größten 24-Stunden-Bewegungen, Tag für Tag — rot für Steigungen, grün für Stürze, der Größe nach geordnet; ein Bewegungsblatt will die größte Bewegung in beide Richtungen, keine Leiter mit Vorzeichen.
+
+- **Die Bewegung eines Tages ist der Schluss gegen den Schluss des Vortages.** Das Live-Ranking der 24 Stunden ist die natürliche Quelle dieser Seite, aber es wohnt hinter derselben Mauer wie der Rest jenes Endpunkts; der Ersatz ist der Tagesschluss gegen den des Vortages — auf einem Markt, der nie schläft, ein redlicher Stellvertreter für die 24-Stunden-Bewegung. Die Anmerkung auf der Seite sagt es klar: ein Stellvertreter, nicht der live Ticker.
+- Wer auf dem Blatt steht, wählst du: höchstens sechs Coins, geordnet innerhalb der gewählten Gruppe.
+- Tag null hat keinen Vortagsschluss und liest null — der Tag bleibt leer, statt als Reihe aus Nichts gezeichnet zu werden.
+- **Der Zeitraum** ist zwölf, vierundzwanzig oder sechzig Monate, oder eigen.
+
+## Krypto-Dominanz
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-dominance.png)
+
+Der Anteil jedes gewählten Coins an der Gesamtkapitalisierung der gewählten Menge, Tag für Tag — die Anteile summieren sich über die Coins im Bild zu Hundert.
+
+- **Der Anteil gilt für die gewählte Menge, nicht für den ganzen Markt.** Die Quelle nennt die Umlaufkapitalisierung jedes Coins, aber keine Marktsumme, darum summieren sich die Balken über die gewählten Coins zu Hundert. Die Frage, die sie beantworten: wer in dieser Menge am größten ist und wer sich bewegt — nicht, wie viel vom ganzen Markt Bitcoin hält.
+- Der Nenner lebt: Nimmt man einen Coin heraus, werden die übrigen nach der neuen Summe neu geteilt.
+- Die Umlaufkapitalisierungen stammen aus CoinMetrics' Schätzreihe, jeder Coin steht auf demselben Boden — darin sind die Anteile über Coins und über Tage ehrlich.
+- Weniger als dreißig gemeinsame Tage, und die Seite sagt geradeheraus, dass es keine Geschichte zu erzählen gibt — statt einen Tisch zu legen, der zu dünn ist, um zu stehen.
+- **Der Zeitraum** ist zwölf, vierundzwanzig oder sechzig Monate, oder eigen.
+
+## Krypto-Jahresrenditen
+
+![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-annual.png)
+
+Coins als Zeilen, Kalenderjahre als Spalten, jede Zelle die Rendite eines Coins in jenem Jahr, rot für Steigungen und grün für Stürze; die letzte Spalte zinst jedes gezeigte Jahr in eine Zahl zusammen.
+
+- **Das noch laufende Jahr bleibt vom Raster fern.** Ein halbes Jahr als ganzes gelesen ist eine Lüge über die Größe der Bewegung — darum erscheint das laufende Jahr erst, nachdem sein letzter Handelstag geschlossen hat.
+- **Die Rendite eines Jahres fragt zwei Zahlen**: den Schlussschluss des Jahres gegen den des Vorjahres. Wie der Preis im Innern des Jahres gerang, steht nicht in der Zelle — das ist des Monatsrasters Sache.
+- Kann der Zeitraum keine ganzen Jahre liefern, sagt die Seite es — es fehlen ganze Jahre — statt das Feld mit halben Spalten zurechtzuzimmern. Die Ausweichquelle trägt etwa ein einziges Jahr Tageswerte; auf ihr ist es genau dieser Fall.
+- **Der Zeitraum** ist zwölf, vierundzwanzig oder sechzig Monate, oder eigen — fünf Jahre als Vorgabe, das tragen vier volle Spalten.
 
 ## Video
 

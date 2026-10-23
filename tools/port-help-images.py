@@ -51,13 +51,19 @@ PICTURES = [
     ("NavGainCalendar", "gain-calendar.png"),
     ("NavDcaPlan", "dca-plan.png"),
     ("NavPosition", "position.png"),
-    # 加密六页：它们只在市场切成「加密货币」时在导航里，图片也是单独那趟拍的。
+    # 加密十一页：它们只在市场切成「加密货币」时在导航里，图片也是单独那趟拍的。
+    # 16-20 是 1.0.20 补上的五张 —— 月度收益上一版有章无图，另四页上一版整章缺。
     ("NavCryptoCandle", "crypto-candle.png"),
     ("NavCryptoDca", "crypto-dca.png"),
     ("NavCryptoPosition", "crypto-position.png"),
     ("NavCryptoCalendar", "crypto-calendar.png"),
     ("NavCryptoCapHistory", "crypto-caphistory.png"),
     ("NavCryptoMarketCap", "crypto-marketcap.png"),
+    ("NavCryptoMatrix", "crypto-monthly.png"),
+    ("NavCryptoCompare", "crypto-compare.png"),
+    ("NavCryptoMovers", "crypto-movers.png"),
+    ("NavCryptoDominance", "crypto-dominance.png"),
+    ("NavCryptoAnnual", "crypto-annual.png"),
 ]
 
 CAPTIONS = {

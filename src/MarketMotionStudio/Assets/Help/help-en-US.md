@@ -552,12 +552,60 @@ The fifteen coins with the largest market cap today, and how that order moved da
 
 ## Crypto Monthly Returns
 
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-monthly.png)
+
 One coin's month-by-month moves as a year × month grid, red for rises and green for falls, with the whole year compounded in the last column.
 
 - **The months are folded, not asked for.** Crypto has no monthly endpoint: the page fetches everything the daily source holds — about ten years — and folds each month's last daily close against the month before's into that month's move. That also makes the year count a re-reading: changing it re-lays the grid and fetches nothing.
 - **A month counts only when it is over.** The month being walked is not on the grid. Half a month's move dressed up as a whole one is the mistake this picture invites most, which is why it is made impossible rather than labelled.
 - The years run 1–10, and there is no "all": the daily source tops out at about ten years, so the longest honest answer is the last entry. The fallback source carries a single year, and on it the grid is one row.
 - The closing statistics give the strongest and the weakest month, the share of months that rose, and the strongest single month.
+
+## Crypto Compare
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-compare.png)
+
+Several coins in one race: each coin's price is rebased to 100 on the first day they all have prices, and what races after that is who rises fastest, not who is pricier.
+
+- **The start is the first day every chosen coin has a price.** The whole race sets off from that day — a coin that listed later pulls the start toward itself, because it cannot set out from another coin's history. For a longer track, leave the newborn coins out.
+- **What is drawn is cumulative return, not price.** Next to Bitcoin's sixty thousand dollars, the price of a sub-cent coin is a line glued to the floor. Rebased to one scale, a six-figure coin and a one-figure coin can share one picture.
+- Six coins at most: a seventh is refused, because the seventh curve would use up the colour the sixth already took.
+- **The range** is twelve, twenty-four or sixty months, or custom — and custom reaches back to the source's first day: Bitcoin's daily line begins in September 2014.
+- The closing status line says how many coins and days were fetched, and who leads at the end.
+
+## Crypto Movers
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-movers.png)
+
+The biggest 24-hour moves, day by day — red for rises, green for falls, ranked by size, because a movers board wants the biggest motion in either direction, not a signed ladder.
+
+- **Each day's move is the close over the previous day's close.** A live 24-hour ranking is this page's natural source, but it lives behind the same wall the rest of that endpoint does; the stand-in is the day's close against the day before's — on a market that never sleeps, a fair proxy for the 24-hour change. The note on the page says so plainly: a proxy, not the live tick.
+- Who is on the board is yours to pick: six coins at most, ranked within the set you chose.
+- Day zero has no previous close and reads zero — the day is left out rather than drawn as a row of nothing.
+- **The range** is twelve, twenty-four or sixty months, or custom.
+
+## Crypto Dominance
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-dominance.png)
+
+Each chosen coin's share of the chosen set's total market cap, day by day — the shares sum to one hundred across the coins on the frame.
+
+- **The share is of the set you picked, not of the whole market.** The source serves each coin's circulating cap but no market total, so the bars sum to one hundred across the chosen coins. The question they answer is who is biggest in this set and who is moving — not how much of the entire market Bitcoin holds.
+- The denominator is alive: drop a coin and the rest are redivided by the new total.
+- Circulating caps come from CoinMetrics on the estimate metric, every coin standing on the same floor — which is what makes the shares honest across coins and over time.
+- Fewer than thirty shared days and the page says there is no story to tell, instead of laying a table too thin to stand on.
+- **The range** is twelve, twenty-four or sixty months, or custom.
+
+## Crypto Annual Returns
+
+![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-annual.png)
+
+Coins as rows, calendar years as columns, each cell a coin's return over that year, red for rises and green for falls; the last column compounds every year shown into one figure.
+
+- **The year still being walked stays off the grid.** A half year read as a whole one is a lie about the size of the move, so the running year appears only after its last trading day has closed.
+- **A year's return asks two numbers**: that year's final close against the year before's. How the price thrashed inside the year is not in the cell — that is the monthly grid's business.
+- When the range cannot supply whole years, the page says so — not enough full years — rather than filling the frame with half columns. The fallback source holds about a single year of dailies, and on it that is exactly the case.
+- **The range** is twelve, twenty-four or sixty months, or custom — five years by default, which settles four full columns.
 
 ## Video
 

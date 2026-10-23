@@ -553,12 +553,60 @@ Las quince monedas con mayor capitalización hoy y cómo se movió ese orden dí
 
 ## Rendimientos mensuales cripto
 
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-monthly.png)
+
 Los movimientos mes a mes de una moneda en una cuadrícula de año × mes, rojo para las subidas y verde para las bajadas, con el año completo compuesto en la última columna.
 
 - **Los meses se pliegan, no se piden.** El mercado cripto no tiene un acceso mensual: la página trae todo lo que la fuente diaria guarda — unos diez años — y pliega el último cierre diario de cada mes contra el del mes anterior en el movimiento de ese mes. El número de años es, por eso, una releída: cambiarlo vuelve a tender la cuadrícula sin pedir nada.
 - **Un mes cuenta solo cuando terminó.** El mes en curso no está en la cuadrícula. El movimiento de medio mes vestido de mes entero es el error que esta imagen más induce a creer; por eso se vuelve imposible en vez de avisarlo.
 - Los años van de 1 a 10, y no hay «todos»: la fuente diaria llega a unos diez años, y la respuesta honesta más larga es la última. La fuente de respaldo lleva un solo año, y en ella la cuadrícula es una sola fila.
 - La estadística final da el mes más fuerte y el más débil, la proporción de meses al alza y el mes individual más fuerte.
+
+## Comparar cripto
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-compare.png)
+
+Varias monedas en una misma carrera: el precio de cada una se reajusta a 100 el primer día en que todas tienen precio, y lo que compite después es quién sube más rápido, no quién es más caro.
+
+- **La salida es el primer día en que cada moneda elegida tiene precio.** Toda la carrera parte de ese día — una moneda cotizada más tarde acerca la salida hacia sí, porque no puede arrancar desde la historia de otra. Para una pista más larga, deja fuera las monedas recién nacidas.
+- **Lo que se dibuja es la rentabilidad acumulada, no el precio.** Junto a los sesenta mil dólares del bitcoin, el precio de una moneda de menos de un céntimo no tiene sitio — uno se vuelve línea y el otro una recta pegada al suelo. Llevados a una misma escala, una moneda de seis cifras y otra de una cifra pueden compartir una misma imagen.
+- Seis monedas como máximo: una séptima se rechaza, porque la séptima curva usaría el color que la sexta ya tomó.
+- **El intervalo** es de doce, veinticuatro o sesenta meses, o personalizado — y el personalizado llega hasta el primer día de la fuente: la línea diaria del bitcoin empieza en septiembre de 2014.
+- La línea de estado final dice cuántas monedas y días se obtuvieron y quién iba en cabeza al final.
+
+## Movimientos cripto
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-movers.png)
+
+Los mayores movimientos de 24 horas, día a día — rojo para las subidas, verde para las caídas, ordenados por tamaño; un tablón de movimientos quiere la mayor sacudida en ambos sentidos, no una escalera con signo.
+
+- **El movimiento de cada día es el cierre contra el cierre de la víspera.** La clasificación de 24 horas en vivo es la fuente natural de esta página, pero vive tras la misma muralla que el resto de ese punto de acceso; el sustituto es el cierre del día contra el de la víspera — en un mercado que nunca duerme, un sustituto honrado de la variación de 24 horas. La nota de la página lo dice claro: un sustituto, no la cotización en vivo.
+- Quién está en el tablón lo eliges tú: seis monedas como máximo, ordenadas dentro del conjunto elegido.
+- El día cero no tiene cierre previo y lee cero — ese día queda vacío, en vez de dibujarse como una fila de nada.
+- **El intervalo** es de doce, veinticuatro o sesenta meses, o personalizado.
+
+## Dominancia cripto
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-dominance.png)
+
+La cuota de cada moneda elegida en la capitalización total del conjunto elegido, día a día — las cuotas suman cien entre las monedas del cuadro.
+
+- **La cuota vale para el conjunto que elegiste, no para todo el mercado.** La fuente da la capitalización circulante de cada moneda, pero ningún total del mercado; así que las barras suman cien entre las monedas elegidas. La pregunta que responden: quién es el más grande en este conjunto y quién se mueve — no cuánto del mercado entero guarda el bitcoin.
+- El denominador está vivo: quita una moneda y las demás se reparten de nuevo según el nuevo total.
+- Las capitalizaciones circulantes vienen de la serie estimada de CoinMetrics, cada moneda de pie sobre el mismo suelo — de ahí que las cuotas sean honradas de una moneda a otra y de un día a otro.
+- Con menos de treinta días comunes, la página dice sin rodeos que no hay historia que contar, en vez de tender una mesa demasiado delgada para sostenerse.
+- **El intervalo** es de doce, veinticuatro o sesenta meses, o personalizado.
+
+## Rendimientos anuales cripto
+
+![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-annual.png)
+
+Monedas en filas, años naturales en columnas, cada celda la rentabilidad de una moneda en ese año, rojo para las subidas y verde para las caídas; la última columna compone cada año mostrado en una sola cifra.
+
+- **El año aún en marcha queda fuera de la cuadrícula.** Medio año leído como entero es una mentira sobre el tamaño del movimiento — el año en curso aparece solo tras el cierre de su último día de bolsa.
+- **La rentabilidad de un año pide dos números**: el cierre final de ese año contra el del anterior. Cómo tembló el precio dentro del año no está en la celda — ese es el asunto de la cuadrícula mensual.
+- Cuando el intervalo no puede dar años completos, la página lo dice — faltan años completos — en vez de remendar el marco con columnas a medias. La fuente de reserva solo lleva cerca de un año de precios diarios; en ella es exactamente este caso.
+- **El intervalo** es de doce, veinticuatro o sesenta meses, o personalizado — cinco años por defecto, que asientan cuatro columnas completas.
 
 ## Vídeo
 
