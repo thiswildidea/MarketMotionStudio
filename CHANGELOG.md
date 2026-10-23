@@ -20,7 +20,32 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.20.0 — 2026-10-23
+
+**本版重做了实时持仓收益页，标题样式改为全局设置。** 持仓列表跟着时间轴走，每一分钟的股数、成本与盈亏都在动；曲线经过成交时弹出买入/卖出点文字标签；交易费率成为页面设置项；页眉的「持仓市值」按画面当前分钟实时计算——它原先印的是收盘值，同一行两句话说的不是同一分钟，而且买卖都不会让它动。成交导入改为粘贴或表格文件；持仓列表可整份导出与导入（CSV，逐行校验，一行不合全拒）。管理持仓对话框显示最新收盘持仓，检索建议显示记录转储的毛病修掉；关闭应用时，当天未记的成交自动折进账本。三款标题与配色在设置页选一次，所有页面即改即生效。1.0.18 已上线的四个加密页（比较、涨跌、占比、年度回报）本版补齐 14 语言手册与商店介绍，商店清单的页数从 25 校准到实际的 30。
+
+**This release reworks the live portfolio page and makes title styles global.** The holdings list
+follows the timeline — shares, cost and P&L moving minute by minute; the curve raises buy/sell
+labels as it passes each fill; commission rates become a page setting; and the position value in
+the header is computed for the frame's own minute (it printed the closing figure — one line making
+two statements about two different moments, unmoved by any trade). Trade import switches to paste
+or a spreadsheet file; the holdings list can be exported and re-imported whole as CSV, validated
+line by line, one bad line refusing the lot. The manage-holdings dialog shows the latest close and
+its search glitch is fixed; on shutdown the day's unrecorded fills fold into the ledger
+automatically. Three title designs and colours are chosen once in Settings and every page follows
+at once. The four crypto pages shipped in 1.0.18 — Compare, Movers, Dominance and Annual Returns —
+get their manuals and store text in all 14 languages, and the store listing's page count is
+calibrated from 25 to the actual 30.
+
+---
+
 ## 1.0.18.0 — 2026-10-16
+
+> **补记（1.0.20 时加）**：本版同时上架了加密货币比较、涨跌、占比、年度回报四页，当时的条目漏了它们；它们的说明当时也只写了七页里的内容。1.0.20 补齐了这四页的 14 语言手册与商店介绍。
+>
+> **Addendum (added at 1.0.20)**: this release also shipped four crypto pages — Compare, Movers,
+> Dominance and Annual Returns — which the entry below left out, along with their store text. 1.0.20
+> completes their manuals and listings in all 14 languages.
 
 **本版聚焦加密货币与持仓页。** 加密 K 线现在像 A 股那样在线检索真实币种，不再限于一张固定列表；加密货币市值历程支持同时画多只币种、各一条线，并可切换「实际数值 / 归一到 100」两种刻度；加密货币新增月度收益页，把一只币逐月涨跌铺成年×月的红绿热力表。持仓收益页的牛熊图标移到名称与收益框的正上方居中。
 
