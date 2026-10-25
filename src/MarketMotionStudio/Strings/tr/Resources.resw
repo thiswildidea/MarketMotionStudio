@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>Satım</value></data>
   <data name="SettingsTitleLabel.Text"><value>Başlık</value></data>
   <data name="SettingsTitleNote.Text"><value>Tüm sayfalarda geçerlidir. Portföy sayfası kendi stilini ve rengini yine de ayrıca ayarlayabilir.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Görüntü stili</value></data>
+  <data name="RaceStyleBar"><value>Çubuk yarışı</value></data>
+  <data name="RaceStylePodium"><value>Podyum kolonları</value></data>
+  <data name="RaceStyleSkyline"><value>Silüet kolonlar</value></data>
+  <data name="RaceStylePyramid"><value>Taht piramidi</value></data>
+  <data name="RaceStyleFocusTour"><value>Odaklı silüet</value></data>
 </root>

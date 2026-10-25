@@ -203,6 +203,8 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        RaceStyleCombo.Bind(_prefs);
+        RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -247,6 +249,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
             Preview.Renderer = new SectorRaceRenderer(
                 series, ChosenMetric, VideoSettings.Duration)
             {
+                Style = RaceStyleCombo.ChosenStyle,
                 Title = VideoSettings.TitleText,
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = ChosenListLabel(),

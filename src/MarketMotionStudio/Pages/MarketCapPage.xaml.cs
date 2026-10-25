@@ -119,6 +119,8 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        RaceStyleCombo.Bind(_prefs);
+        RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -156,6 +158,7 @@ public sealed partial class MarketCapPage : StudioPage, IPlaybackHost
             Preview.Renderer = new SectorRaceRenderer(
                 series, RaceMetric.Amount, VideoSettings.Duration, MarketCapLists.Board)
             {
+                Style = RaceStyleCombo.ChosenStyle,
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = Strings.Format("MarketCapListLabel", MarketCapLists.Board),

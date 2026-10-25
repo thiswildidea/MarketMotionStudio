@@ -90,6 +90,7 @@ Zbiór sektorów lub akcji jako poziome paski, które wyprzedzają się nawzajem
 - Cztery listy: branże Shenwan poziomu 1, popularne tematy, własna (zaznacz), pojedyncze akcje (dodaj przez wyszukiwanie). Własna lista startuje wypełniona branżami Shenwan poziomu 1.
 - Wbudowane listy zmieniają się wraz z rynkiem: branże Shenwan poziomu 1 i popularne tematy dla akcji A, cztery subindeksy Hang Seng dla Hongkongu, dziesięć sektorowych ETF-ów SPDR dla USA. Lista własna i lista akcji są na każdym rynku.
 - Zakres to 1, 3, 6, 12 lub 24 miesiące albo dowolna data początkowa i końcowa. Własny zakres sięga około 900 dni — tyle, ile obejmuje jedno żądanie — i tam kończą się selektory dat.
+- **Styl wykresu** ma pięć odmian: wyścig pasków, kolumny podium, kolumny panoramy, piramida tronu i skyline z fokusem. Wszystkie czytają te same rankingi — zmiana tylko przerysowuje, niczego nie pobiera ponownie, a strona zapamiętuje ostatni wybór.
 - Lista ma minimalną i maksymalną liczbę pozycji — za mało pasków to nie wyścig, za dużo się zleje.
 
 

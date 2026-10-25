@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>Prodej</value></data>
   <data name="SettingsTitleLabel.Text"><value>Titulek</value></data>
   <data name="SettingsTitleNote.Text"><value>Platí pro všechny stránky. Stránka portfolia může mít stále vlastní styl a barvu.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Styl zobrazení</value></data>
+  <data name="RaceStyleBar"><value>Závod pruhů</value></data>
+  <data name="RaceStylePodium"><value>Podiové sloupce</value></data>
+  <data name="RaceStyleSkyline"><value>Sloupce panorámy</value></data>
+  <data name="RaceStylePyramid"><value>Pyramida trůnu</value></data>
+  <data name="RaceStyleFocusTour"><value>Skyline s fokusem</value></data>
 </root>

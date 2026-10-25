@@ -225,6 +225,13 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     /// <summary>Rows the frame shows, at most.</summary>
     private readonly int _showTop;
 
+    /// <summary>How the field is staged. Bar is the original; the other four draw the
+    /// same interpolated standings as a podium, a skyline, a pyramid or the skyline
+    /// under a camera. A property and not a constructor argument — it changes only how
+    /// the frame is drawn, never how the ranking table was built, so the page can set
+    /// it in the object initialiser without re-reading a thing.</summary>
+    public RaceStyle Style { get; set; } = RaceStyle.Bar;
+
     public string Title { get; set; } = string.Empty;
 
     public bool ShowTitle { get; set; } = true;
@@ -284,15 +291,45 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     {
         var t = context.Progress * TotalMs;
 
+        // One clock for everything the frame reads — board, axis, header date. The
+        // focusing tour squeezes the race into the window before the lens opens, and the
+        // squeeze has to move the *whole* frame together: a board drawn on the squeezed
+        // clock under a header date still ticking the real one would sit a caption over
+        // final standings the race had not reached yet. See RaceClock.
+        var clock = RaceClock(t);
+
         // Before the rows and the axis: both are placed against the bottom of the header block,
         // which is placed by how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
-        var state = StateAt(t);
-        DrawAxis(session, context, t, state);
-        DrawRows(session, context, t, state);
+        // One standings table, five stagings. The axis belongs to the bars alone — the
+        // other styles carry their scale in the columns' own heights.
+        var state = StateAt(clock);
+
+        if (Style is RaceStyle.Bar)
+        {
+            DrawAxis(session, context, t, state);
+            DrawRows(session, context, t, state);
+        }
+        else if (Style is RaceStyle.Podium)
+        {
+            DrawPodium(session, context, t, state);
+        }
+        else if (Style is RaceStyle.Skyline)
+        {
+            DrawSkyline(session, context, t, state);
+        }
+        else if (Style is RaceStyle.FocusTour)
+        {
+            DrawFocusTour(session, context, t, state);
+        }
+        else
+        {
+            DrawPyramid(session, context, t, state);
+        }
+
         DrawFooter(session, context, t);
         DrawHeader(session, context, t, state);
         DrawProgress(session, context);
@@ -744,6 +781,927 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     /// `[SectorUnitPercent]` ended up rendered literally in a shipped frame.
     /// </summary>
     public string UnitWord { get; set; } = string.Empty;
+
+    // ---- the column stagings: podium, skyline, pyramid, the focusing tour ---------------
+    //
+    // Ported from NbaMotionStudio's StatRaceRenderer, where the career race shipped all
+    // five stagings first. The differences are the two named in RaceStyle's own remark:
+    // no headshots (a badge draws where a face would), and columns sized by the same
+    // magnitude the board ranks by, so the extreme-day board's falls stand as tall as
+    // its rises. Everything else — the interpolated slots, the pacing, the tour's clock
+    // — reads straight off the same StateAt the bar rows do.
+
+    /// <summary>Gold, silver, bronze — the podium's three inks, flat so the columns read
+    /// at preview scale.</summary>
+    private static readonly Color[] Medals =
+    [
+        Color.FromArgb(0xFF, 0xF5, 0xC5, 0x42),
+        Color.FromArgb(0xFF, 0xC9, 0xD2, 0xE0),
+        Color.FromArgb(0xFF, 0xC9, 0x8A, 0x5B),
+    ];
+
+    private static readonly Color MedalInk = Color.FromArgb(0xFF, 0x0D, 0x14, 0x24);
+    private static readonly Color BadgePlate = Color.FromArgb(0xFF, 0x16, 0x21, 0x3C);
+    private static readonly Color RowInk = Color.FromArgb(0xFF, 0xC7, 0xD2, 0xE8);
+
+    private static Color Medal(int rank) => Medals[Math.Clamp(rank, 0, Medals.Length - 1)];
+
+    /// <summary>
+    /// How many slim rows the pyramid's histogram holds — the places past the throne.
+    ///
+    /// Capped, and deliberately small: a board whose field is wide enough to need twenty
+    /// rows is a board for the bar staging. Six cards and eight rows is what a throne
+    /// reads as, and the cap is what buys each of those rows the height to be read at all.
+    /// </summary>
+    private const int PyramidRows = 8;
+
+    /// <summary>
+    /// The design height of one pyramid histogram row: the share of the frame the rows
+    /// reserve before the throne takes the rest. A target rather than a rule — the
+    /// throne has a floor, and when the rows' share would push the throne under it the
+    /// rows take what is left instead.
+    /// </summary>
+    private const double PyramidRowPitch = 80;
+
+    /// <summary>The design row every measure inside <see cref="DrawSlimRow"/> scales against.</summary>
+    private const double SlimRowPitch = 60;
+
+    /// <summary>The slim row's bar thickness, in design rows.</summary>
+    private const double SlimBar = 22;
+
+    /// <summary>The slim row's badge diameter, in design rows.</summary>
+    private const double SlimBadge = 46;
+
+    /// <summary>The slim row's rank and name type size, in design rows.</summary>
+    private const double SlimFont = 26;
+
+    /// <summary>What share of the row past the badge the name column may take.</summary>
+    private const double SlimNameShare = 0.46;
+
+    /// <summary>The column heights read the value the way the ranking reads it: by the
+    /// signed value on a board of things that race up, by magnitude on the extreme-day
+    /// board, whose falls are as much the point as its rises. A signed read on that
+    /// board would seat a −7.7% day on the podium as a stub.</summary>
+    private double HeightOf(double value) => _rankByMagnitude ? Math.Abs(value) : value;
+
+    /// <summary>
+    /// The badge every face-less staging shows where the career board drew a headshot:
+    /// the dark plate and its medal ring, with the racer's own first character inside.
+    /// One character, because a name is spelled out in full beside the column anyway —
+    /// the badge is what the eye holds onto while the columns cross.
+    /// </summary>
+    private void DrawBadge(
+        CanvasDrawingSession session, FrameContext context,
+        string name, double cx, double cy, double radius, Color ring, double alpha)
+    {
+        if (alpha <= 0)
+        {
+            return;
+        }
+
+        session.FillCircle((float)cx, (float)cy, (float)radius, Ink.Fade(BadgePlate, alpha));
+        session.DrawCircle((float)cx, (float)cy, (float)radius, Ink.Fade(ring, alpha), (float)(radius * 0.07));
+
+        var initial = name.Length > 0 ? name[..1] : "?";
+
+        using var format = Ink.Format(radius * 1.1, bold: true);
+
+        Ink.Centred(session, initial, cx, cy, format, RowInk, alpha);
+    }
+
+    /// <summary>The three-point crown over a reigning leader. Size is the crown's width;
+    /// baseY is where its bottom edge sits.</summary>
+    private static void Crown(
+        CanvasDrawingSession session, double cx, double baseY, double size, double alpha)
+    {
+        using var path = new CanvasPathBuilder(session);
+        var s = size;
+
+        path.BeginFigure((float)(cx - s), (float)baseY);
+        path.AddLine((float)(cx - s), (float)(baseY - (s * 0.52)));
+        path.AddLine((float)(cx - (s * 0.5)), (float)(baseY - (s * 0.18)));
+        path.AddLine((float)cx, (float)(baseY - s));
+        path.AddLine((float)(cx + (s * 0.5)), (float)(baseY - (s * 0.18)));
+        path.AddLine((float)(cx + s), (float)(baseY - (s * 0.52)));
+        path.AddLine((float)(cx + s), (float)baseY);
+        path.EndFigure(CanvasFigureLoop.Closed);
+
+        using var geometry = CanvasGeometry.CreatePath(path);
+
+        session.FillGeometry(geometry, Ink.Fade(Medals[0], alpha));
+    }
+
+    /// <summary>
+    /// The podium staging: three medal columns — the leader centred and crowned, silver
+    /// and bronze flanking — their heights the values themselves, and every rank past
+    /// the podium a slim row underneath. A column's place comes straight off the
+    /// interpolated slot, so an overtake is the two columns crossing, exactly as the
+    /// bar race's rows cross; the medal inks follow the nearest rank through the swap.
+    /// </summary>
+    private void DrawPodium(
+        CanvasDrawingSession session, FrameContext context, double t,
+        (double[] Values, double[] Slots, int[] Finals, double AxisMin, double AxisMax, int DayIndex) state)
+    {
+        var (top, bottom) = PlotArea(context);
+        var cx = context.Width / 2;
+        var day = state.DayIndex;
+
+        var colArea = (bottom - top) * 0.60;
+        var yBase = top + colArea;
+        var colMaxH = Math.Max(context.Px(80), colArea - context.Px(150));
+        var colW = context.Px(120);
+        var gap = context.Px(28);
+        var leftCx = cx - colW - gap;
+        var rightCx = cx + colW + gap;
+
+        var rowTop = yBase + context.Px(30);
+        var rowH = context.Px(54);
+        var capacity = (int)Math.Max(0, Math.Floor((bottom - rowTop) / rowH));
+
+        // One name size for the whole column, fitted to the room the bar leaves it — the
+        // same rule the pyramid's rows use, so the two stagings' histograms read alike.
+        using var rowNameFormat = SlimNameFormat(session, context, rowH, out var rowNameWidth);
+
+        using var rankFormat = Ink.Format(context.Px(34), bold: true);
+        using var valueFormat = Ink.Format(context.Px(24), bold: true);
+
+        var axisDenom = Math.Max(state.AxisMax, 1e-9);
+
+        for (var k = 0; k < _series.Racers; k++)
+        {
+            if (day < _starts[k])
+            {
+                continue;
+            }
+
+            var intro = Easing.Ramp(t, 300 + (k * 60), 700);
+            if (intro <= 0)
+            {
+                continue;
+            }
+
+            var s = state.Slots[k];
+            var value = state.Values[k];
+            var name = _series.Entries[k].Name;
+
+            if (s < 3)
+            {
+                // Slot 0 is the centre, 1 the left column, 2 the right; the interpolated
+                // slot slides the column between them, so a swap is a crossing.
+                var px = s <= 1 ? Lerp(cx, leftCx, s) : Lerp(leftCx, rightCx, s - 1);
+                var rank = Math.Clamp((int)Math.Round(s), 0, 2);
+                var medal = Medal(rank);
+                var a = intro * Math.Clamp((3.05 - s) / 0.45, 0, 1);
+
+                if (a <= 0)
+                {
+                    continue;
+                }
+
+                var h = Math.Max(context.Px(44), (HeightOf(value) / axisDenom) * colMaxH);
+
+                session.FillRoundedRectangle(
+                    (float)(px - (colW / 2)), (float)(yBase - h), (float)colW, (float)h,
+                    (float)context.Px(10), (float)context.Px(10), Ink.Fade(medal, a));
+
+                Ink.Centred(session, (rank + 1).ToString(CultureInfo.InvariantCulture),
+                    px, yBase - context.Px(20), rankFormat, MedalInk, a);
+
+                if (h > context.Px(96))
+                {
+                    Ink.Centred(session, ValueText(value), px, yBase - h + context.Px(36),
+                        valueFormat, MedalInk, a);
+                }
+
+                var badgeR = context.Px(40);
+                var badgeCy = yBase - h - badgeR - context.Px(10);
+
+                DrawBadge(session, context, name, px, badgeCy, badgeR + context.Px(3), medal, a);
+
+                var nameSize = Math.Min(context.Px(26),
+                    Ink.FitSize(session, name, context.Px(26), colW + context.Px(90), bold: true));
+
+                using var nameFormat = Ink.Format(nameSize, bold: true);
+
+                var nameY = badgeCy - badgeR - (rank == 0 ? context.Px(46) : context.Px(22));
+
+                Ink.Centred(session, name, px, nameY, nameFormat, RowInk, a);
+
+                if (rank == 0)
+                {
+                    Crown(session, px, badgeCy - badgeR - context.Px(10), context.Px(22), a);
+                }
+            }
+            else
+            {
+                // Same overflow rule as the pyramid's rows: `capacity` places past the
+                // podium, a fade across the last slot of travel, gone one slot later.
+                var a = intro
+                    * Math.Clamp((s - 2.55) / 0.5, 0, 1)
+                    * Math.Clamp(capacity + 3 - s, 0, 1);
+
+                if (a <= 0)
+                {
+                    continue;
+                }
+
+                var yc = rowTop + ((s - 3 + 0.5) * rowH);
+
+                DrawSlimRow(session, context, k, s, value, yc, a, state.AxisMax, rowH, rowNameFormat, rowNameWidth);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The skyline staging: one column per board place, side by side, heights the values
+    /// themselves. A column's x comes off the interpolated slot, so the whole line
+    /// reorders the way a bar race's rows do — columns crossing as ranks change. The
+    /// podium three get badges and names above their columns; the rest a rank number, so
+    /// the eye can still follow a chaser down the line.
+    /// </summary>
+    private void DrawSkyline(
+        CanvasDrawingSession session, FrameContext context, double t,
+        (double[] Values, double[] Slots, int[] Finals, double AxisMin, double AxisMax, int DayIndex) state)
+    {
+        var (top, bottom) = PlotArea(context);
+        var day = state.DayIndex;
+        var places = Math.Min(_showTop, Math.Max(1, _series.Racers));
+
+        var x0 = context.Margins.Left + context.Px(6);
+        var x1 = context.Width - context.Margins.Right - context.Px(6);
+        var pitch = (x1 - x0) / places;
+        var colW = Math.Min(pitch * 0.62, context.Px(46));
+        var yBase = bottom - context.Px(8);
+        var maxH = Math.Max(context.Px(60), yBase - top - context.Px(150));
+
+        using var rankFormat = Ink.Format(context.Px(22), bold: true);
+
+        var axisDenom = Math.Max(state.AxisMax, 1e-9);
+
+        for (var k = 0; k < _series.Racers; k++)
+        {
+            if (day < _starts[k])
+            {
+                continue;
+            }
+
+            var intro = Easing.Ramp(t, 240 + (k * 50), 700);
+            if (intro <= 0)
+            {
+                continue;
+            }
+
+            var s = state.Slots[k];
+            var a = intro * Math.Clamp((places - 0.55 - s) / 0.45 + 1, 0, 1);
+
+            if (a <= 0)
+            {
+                continue;
+            }
+
+            var value = state.Values[k];
+            var name = _series.Entries[k].Name;
+            var xc = x0 + (pitch * (s + 0.5));
+            var h = Math.Max(context.Px(8), (HeightOf(value) / axisDenom) * maxH);
+            var colour = ColourBySign
+                ? (value >= 0 ? Rgb(0xEF, 0x44, 0x44) : Rgb(0x22, 0xC5, 0x5E))
+                : Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)];
+
+            session.FillRoundedRectangle(
+                (float)(xc - (colW / 2)), (float)(yBase - h), (float)colW, (float)h,
+                (float)context.Px(4), (float)context.Px(4), Ink.Fade(colour, a));
+
+            var rank = (int)Math.Round(s);
+
+            if (rank < 3)
+            {
+                var badgeR = Math.Min(context.Px(28), pitch * 0.72);
+                var badgeCy = yBase - h - badgeR - context.Px(8);
+
+                DrawBadge(session, context, name, xc, badgeCy, badgeR + context.Px(2.5), Medal(rank), a);
+
+                // Name, then value, stacked above the badge — both fitted to the column's
+                // own pitch, because a label measured against a wider room is what ran
+                // across the neighbour's label. The value sits between name and crown.
+                var label = ValueText(value);
+                var nameSize = Math.Min(context.Px(20), Ink.FitSize(session, name, context.Px(20), pitch * 0.98, bold: true));
+                var valueSize = Math.Min(nameSize * 0.92, Ink.FitSize(session, label, nameSize * 0.92, pitch * 0.98, bold: true));
+
+                using var nameFormat = Ink.Format(nameSize, bold: true);
+                using var valueFormat = Ink.Format(valueSize, bold: true);
+
+                var nameY = badgeCy - badgeR - context.Px(10);
+                var valueY = nameY - (nameSize * 1.3);
+
+                Ink.Centred(session, name, xc, nameY, nameFormat, RowInk, a);
+                Ink.Centred(session, label, xc, valueY, valueFormat, Medal(rank), a);
+
+                if (rank == 0)
+                {
+                    Crown(session, xc, valueY - (valueSize * 1.4), context.Px(18), a);
+                }
+            }
+            else
+            {
+                Ink.Centred(session, (rank + 1).ToString(CultureInfo.InvariantCulture),
+                    xc, yBase - h - context.Px(16), rankFormat, Palette.Credit, a);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The focusing tour: a skyline staged in three camera movements.
+    ///
+    /// The first movement is the race itself — the whole line growing and reordering, with
+    /// only the top columns the camera will visit marked. Then the lens opens: it walks the
+    /// board from a lower place to first, one column at a time, centring it, widening it,
+    /// opening a big badge above it with the name and the total, everything else dimmed to
+    /// an outline of itself. Then it pulls back and hands the chart back whole.
+    ///
+    /// Every column still reads off the same interpolated slot and the same values the
+    /// plain skyline uses. Through the tour the standings are frozen at the final frame,
+    /// because the tour is about who finished where, not another pass of the race.
+    /// </summary>
+    private void DrawFocusTour(
+        CanvasDrawingSession session, FrameContext context, double t,
+        (double[] Values, double[] Slots, int[] Finals, double AxisMin, double AxisMax, int DayIndex) state)
+    {
+        var total = TotalMs;
+        var tourStart = total * TourStartFraction;
+        var tourEnd = total * TourEndFraction;
+
+        // The board under the lens is the one `state` already carries: Draw built it on
+        // RaceClock, which squeezes the race to finish exactly as the lens starts opening,
+        // so the tour begins on a settled board. Only the lens's own choreography below
+        // reads the real clock — the walk is staged time, not race time.
+
+        // Only as many visits as there are columns to visit — a narrow board gets a
+        // short tour, not one with stops pointing at nothing.
+        var places = Math.Min(_showTop, Math.Max(1, _series.Racers));
+        var focuses = Math.Min(TourFocuses, places);
+
+        var zoom = TourZoom(t, tourStart, tourEnd, total, focuses);
+        var (firstPlace, secondPlace, move) = TourBeat(t, tourStart, tourEnd, focuses);
+
+        var (top, bottom) = PlotArea(context);
+
+        var x0 = context.Margins.Left + context.Px(6);
+        var x1 = context.Width - context.Margins.Right - context.Px(6);
+        var pitch = (x1 - x0) / places;
+        var colW = Math.Min(pitch * 0.62, context.Px(46));
+        var yBase = bottom - context.Px(8);
+
+        // The close-up needs air above its column for badge, name and total. Take it out of
+        // the columns' headroom as the lens opens, and shorten them by the same breath, so
+        // even the tallest one cannot reach up into the header.
+        var headroom = context.Px(150) + (context.Px(120) * zoom);
+        var maxH = Math.Max(context.Px(60), yBase - top - headroom);
+        var heightScale = 1 - (0.26 * zoom);
+
+        // Board place → racer. The tour runs on a frozen board, so one racer per place;
+        // while the race is still running the rounding can briefly share and the last wins.
+        var byPlace = new (int Racer, double Slot, double Value, double X)[places];
+        var taken = new bool[places];
+
+        for (var k = 0; k < _series.Racers; k++)
+        {
+            if (state.DayIndex < _starts[k])
+            {
+                continue;
+            }
+
+            var s = state.Slots[k];
+            var place = (int)Math.Round(s);
+
+            if (place < 0 || place >= places)
+            {
+                continue;
+            }
+
+            byPlace[place] = (k, s, state.Values[k], x0 + (pitch * (s + 0.5)));
+            taken[place] = true;
+        }
+
+        // Where the lens is pointing — between the outgoing column and the incoming one, so
+        // the pan is continuous. The whole line slides by that much: a camera pan, not a zoom.
+        var firstX = taken[firstPlace] ? byPlace[firstPlace].X : context.Width / 2;
+        var secondX = taken[secondPlace] ? byPlace[secondPlace].X : context.Width / 2;
+        var shift = (context.Width / 2 - Lerp(firstX, secondX, move)) * zoom;
+
+        DrawTourGround(session, context, state, byPlace, taken, places, pitch, colW, yBase,
+            maxH, heightScale, shift, t, firstPlace, secondPlace, move, zoom, focuses);
+
+        DrawTourDots(session, context, bottom, t, move, firstPlace, focuses);
+    }
+
+    /// <summary>The line, then the close-ups drawn over it: a focused column can never be
+    /// covered by the neighbour it has just left behind.</summary>
+    private void DrawTourGround(
+        CanvasDrawingSession session, FrameContext context,
+        (double[] Values, double[] Slots, int[] Finals, double AxisMin, double AxisMax, int DayIndex) state,
+        (int Racer, double Slot, double Value, double X)[] byPlace, bool[] taken, int places,
+        double pitch, double colW, double yBase, double maxH, double heightScale,
+        double shift, double t, int firstPlace, int secondPlace, double move, double zoom,
+        int focuses)
+    {
+        using var rankFormat = Ink.Format(context.Px(22), bold: true);
+
+        var wide = Lerp(colW, Math.Min(pitch * 2.6, context.Px(300)), zoom);
+        var axisDenom = Math.Max(state.AxisMax, 1e-9);
+
+        for (var place = 0; place < places; place++)
+        {
+            if (!taken[place])
+            {
+                continue;
+            }
+
+            var (k, s, value, _) = byPlace[place];
+            var intro = Easing.Ramp(t, 240 + (k * 50), 700);
+            var a = intro * Math.Clamp((places - 0.55 - s) / 0.45 + 1, 0, 1) * (1 - (0.82 * zoom));
+
+            if (a <= 0)
+            {
+                continue;
+            }
+
+            var x = byPlace[place].X + shift;
+            var h = Math.Max(context.Px(8), (HeightOf(value) / axisDenom) * maxH) * heightScale;
+            var w = place == firstPlace || place == secondPlace ? wide : colW;
+            var name = _series.Entries[k].Name;
+
+            session.FillRoundedRectangle(
+                (float)(x - (w / 2)), (float)(yBase - h), (float)w, (float)h,
+                (float)context.Px(4), (float)context.Px(4),
+                Ink.Fade(Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)], a));
+
+            if (place < focuses)
+            {
+                // The mark is this staging's whole point: a column the camera will come to
+                // carries its ring even with no lens on it.
+                var badgeR = Math.Min(context.Px(28), pitch * 0.72);
+                var badgeCy = yBase - h - badgeR - context.Px(8);
+
+                DrawBadge(session, context, name, x, badgeCy, badgeR + context.Px(2.5), TourRing(place), a);
+            }
+            else
+            {
+                Ink.Centred(session, (place + 1).ToString(CultureInfo.InvariantCulture),
+                    x, yBase - h - context.Px(16), rankFormat, Palette.Credit, a);
+            }
+        }
+
+        if (zoom <= 0)
+        {
+            return;
+        }
+
+        // Outgoing first, fading; incoming second, arriving in its place.
+        if (taken[firstPlace] && firstPlace != secondPlace)
+        {
+            DrawTourCloseUp(session, context, state, byPlace[firstPlace], firstPlace, PlotArea(context).Top,
+                yBase, maxH, heightScale, shift, wide, zoom * (1 - move));
+        }
+
+        if (taken[secondPlace])
+        {
+            DrawTourCloseUp(session, context, state, byPlace[secondPlace], secondPlace, PlotArea(context).Top,
+                yBase, maxH, heightScale, shift, wide, zoom * move);
+        }
+    }
+
+    /// <summary>One column under the lens: widened, crowned if it leads, its badge opened
+    /// above it, then the name, then the total.</summary>
+    private void DrawTourCloseUp(
+        CanvasDrawingSession session, FrameContext context,
+        (double[] Values, double[] Slots, int[] Finals, double AxisMin, double AxisMax, int DayIndex) state,
+        (int Racer, double Slot, double Value, double X) entry, int place,
+        double top, double yBase, double maxH, double heightScale, double shift,
+        double wide, double alpha)
+    {
+        if (alpha <= 0)
+        {
+            return;
+        }
+
+        var k = entry.Racer;
+        var x = entry.X + shift;
+        var value = entry.Value;
+        var ring = TourRing(place);
+        var h = Math.Max(context.Px(8), (HeightOf(value) / Math.Max(state.AxisMax, 1e-9)) * maxH) * heightScale;
+        var barTop = yBase - h;
+
+        session.FillRoundedRectangle(
+            (float)(x - (wide / 2)), (float)barTop, (float)wide, (float)h,
+            (float)context.Px(6), (float)context.Px(6), Ink.Fade(ring, alpha));
+
+        // Everything above the column is fitted to the air the column left it — badge, name
+        // and total scale together, so a short leader and a tall one both read.
+        var room = barTop - top;
+        var badge0 = context.Px(130);
+        var name0 = context.Px(28);
+        var value0 = context.Px(36);
+        var f = Math.Clamp(room / (badge0 + (name0 * 1.3) + (value0 * 1.35) + context.Px(46)), 0.5, 1);
+
+        var badgeSize = badge0 * f;
+        var nameSize = name0 * f;
+        var valueSize = value0 * f;
+
+        var valueY = barTop - context.Px(14 * f);
+        var nameY = valueY - (valueSize * 1.25);
+        var badgeCy = nameY - (nameSize * 1.15) - (badgeSize / 2);
+
+        var name = _series.Entries[k].Name;
+
+        DrawBadge(session, context, name, x, badgeCy, badgeSize / 2 + context.Px(3 * f), ring, alpha);
+
+        var width = context.Width - context.Margins.Left - context.Margins.Right - context.Px(48);
+
+        using var nameFormat = Ink.Format(Ink.FitSize(session, name, nameSize, width, bold: true), bold: true);
+        using var valueFormat = Ink.Format(valueSize, bold: true);
+
+        Ink.Centred(session, name, x, nameY, nameFormat, RowInk, alpha);
+        Ink.Centred(session, ValueText(value), x, valueY, valueFormat, ring, alpha);
+
+        if (place == 0)
+        {
+            Crown(session, x, badgeCy - (badgeSize / 2) - context.Px(8 * f), context.Px(24 * f), alpha);
+        }
+    }
+
+    /// <summary>One dot per place the camera visits, so the viewer can tell how far through
+    /// the walk up the board the tour has got.</summary>
+    private void DrawTourDots(
+        CanvasDrawingSession session, FrameContext context, double bottom, double t,
+        double move, int firstPlace, int focuses)
+    {
+        var visible = Math.Min(Easing.Ramp(t, IntroMs, 900), 1 - Easing.Ramp(t, TotalMs - 300, 300));
+
+        if (visible <= 0)
+        {
+            return;
+        }
+
+        var cy = bottom + context.Px(18);
+        var span = context.Width - context.Margins.Left - context.Margins.Right - context.Px(80);
+        var pitch = Math.Min(context.Px(22), span / Math.Max(1, focuses - 1));
+        var left = (context.Width / 2) - (pitch * (focuses - 1) / 2);
+
+        for (var i = 0; i < focuses; i++)
+        {
+            var place = focuses - i - 1;
+            var current = place == firstPlace;
+            var colour = current ? TourRing(place) : Color.FromArgb(0xFF, 0x2A, 0x3A, 0x5C);
+            var a = visible * (current ? Lerp(1, 0.55, move) : 0.75);
+
+            session.FillCircle((float)(left + (i * pitch)), (float)cy, (float)context.Px(4),
+                Ink.Fade(colour, a));
+        }
+    }
+
+    /// <summary>
+    /// The clock the race board reads. On the focusing tour the race is squeezed into the
+    /// window before the lens opens — <see cref="TourStartFraction"/> of the film carries
+    /// the whole run, so the tour begins on a settled board — and after that moment the
+    /// board holds on the final standings while the lens walks it.
+    /// </summary>
+    private double RaceClock(double t)
+    {
+        if (Style is not RaceStyle.FocusTour)
+        {
+            return t;
+        }
+
+        var tourStart = TotalMs * TourStartFraction;
+
+        return tourStart > 0
+            ? Math.Min(t, tourStart) / tourStart * (IntroMs + RaceSpan)
+            : t;
+    }
+
+    /// <summary>How far the lens has opened: nothing until the race settles, open through
+    /// the tour, and out again at the end.</summary>
+    private double TourZoom(double t, double tourStart, double tourEnd, double total, int focuses)
+    {
+        if (t < tourStart)
+        {
+            return 0;
+        }
+
+        var beat = (tourEnd - tourStart) / Math.Max(1, focuses);
+        var opening = SmoothStep(Math.Clamp((t - tourStart) / (beat * 0.45), 0, 1));
+
+        if (t < tourEnd)
+        {
+            return opening;
+        }
+
+        return opening * (1 - SmoothStep(Math.Clamp((t - tourEnd) / (total * 0.06), 0, 1)));
+    }
+
+    /// <summary>Which column the camera is on: the lowest place first, first place last,
+    /// holding on each before sliding across to the next.</summary>
+    private (int First, int Second, double Move) TourBeat(
+        double t, double tourStart, double tourEnd, int focuses)
+    {
+        var span = Math.Max(1, tourEnd - tourStart);
+        var p = Math.Clamp((t - tourStart) / span * focuses, 0, focuses);
+        var index = (int)Math.Clamp(Math.Floor(p), 0, focuses - 1);
+        var move = SmoothStep(Math.Clamp((p - index - BeatHold) / (1 - BeatHold), 0, 1));
+
+        var first = focuses - index;
+        var second = Math.Max(1, first - 1);
+
+        return (first - 1, second - 1, move);
+    }
+
+    /// <summary>The inks of the board's walked places — gold, silver and bronze for the
+    /// podium, then a different hue each step down, so a column's standing is readable
+    /// without reading a number.</summary>
+    private static Color TourRing(int place) => TourRings[Math.Clamp(place, 0, TourRings.Length - 1)];
+
+    // The walk runs from 45% of the film to 92% of it, so each column gets roughly a
+    // second on screen at the app's default durations, with the race squeezed in front
+    // of it and a breath of pull-back behind.
+    private const double TourStartFraction = 0.45;
+    private const double TourEndFraction = 0.92;
+    private const double BeatHold = 0.6;
+    private const int TourFocuses = 10;
+
+    private static readonly Color[] TourRings =
+    [
+        Color.FromArgb(0xFF, 0xF5, 0xC5, 0x42),
+        Color.FromArgb(0xFF, 0xC9, 0xD2, 0xE0),
+        Color.FromArgb(0xFF, 0xC9, 0x8A, 0x5B),
+        Color.FromArgb(0xFF, 0x5F, 0xA8, 0xFF),
+        Color.FromArgb(0xFF, 0x34, 0xD3, 0x99),
+        Color.FromArgb(0xFF, 0xA5, 0xB4, 0xFC),
+        Color.FromArgb(0xFF, 0xC4, 0xB5, 0xFD),
+        Color.FromArgb(0xFF, 0xF9, 0xA8, 0xD4),
+        Color.FromArgb(0xFF, 0xFD, 0xBA, 0x74),
+        Color.FromArgb(0xFF, 0x7D, 0xD3, 0xC0),
+    ];
+
+    /// <summary>
+    /// The pyramid staging: tiered cards — the leader alone on the golden throne row, two
+    /// beneath, three beneath them, and the rest as slim rows. A card's centre is its
+    /// integer rank's anchor, lerped through the interpolated slot, so an overtake slides
+    /// one card across a tier and the throne change is a card drifting up to the top row.
+    /// </summary>
+    private void DrawPyramid(
+        CanvasDrawingSession session, FrameContext context, double t,
+        (double[] Values, double[] Slots, int[] Finals, double AxisMin, double AxisMax, int DayIndex) state)
+    {
+        var (top, bottom) = PlotArea(context);
+        var cx = context.Width / 2;
+        var day = state.DayIndex;
+
+        // Base geometry at scale 1 — the three card heights and the two tier gaps.
+        const double BaseHeight = 96 + 30 + 70 + 24 + 56;
+        var free = context.Width - context.Margins.Left - context.Margins.Right - context.Px(24);
+
+        // The histogram comes first and the throne takes what is left. Its rows are the
+        // reason this staging exists, so they reserve their own share of the frame up
+        // front; the throne is then as large as the remainder allows and no larger. The
+        // second tier — two cards and the air between — is the widest, so the frame's
+        // width caps the throne's width before its height does: the throne grows into the
+        // vertical room the rows leave (a short board's throne is a tall one) and can
+        // never grow wider than the frame.
+        var rows = Math.Clamp(_series.Racers - 6, 1, PyramidRows);
+        var rowPitch = context.Px(PyramidRowPitch);
+        var throneRoom = (bottom - top) - context.Px(24) - (rowPitch * rows);
+
+        var sw = Math.Max(0.6, free / context.Px((236 * 2) + 28));
+        var sh = Math.Max(sw, throneRoom / context.Px(BaseHeight));
+
+        // Widths by the width scale, heights by the height scale: the two differ whenever
+        // the board is short, and a card drawn with one scale for both came out either too
+        // narrow to hold its name or too short to hold its badge.
+        var w0 = context.Px(330) * sw;
+        var h0 = context.Px(96) * sh;
+        var w1 = context.Px(236) * sw;
+        var h1 = context.Px(70) * sh;
+        var w2 = context.Px(152) * sw;
+        var h2 = context.Px(56) * sh;
+
+        var y0 = top + (h0 / 2);
+        var y1 = y0 + (h0 / 2) + context.Px(30 * sh) + (h1 / 2);
+        var y2 = y1 + (h1 / 2) + context.Px(24 * sh) + (h2 / 2);
+
+        // Anchor per integer rank: where a card centred on that rank sits.
+        var anchors = new (double X, double Y, double W, double H)[6]
+        {
+            (cx, y0, w0, h0),
+            (cx - (w1 / 2) - context.Px(14 * sw), y1, w1, h1),
+            (cx + (w1 / 2) + context.Px(14 * sw), y1, w1, h1),
+            (cx - w2 - context.Px(10 * sw), y2, w2, h2),
+            (cx, y2, w2, h2),
+            (cx + w2 + context.Px(10 * sw), y2, w2, h2),
+        };
+
+        // The rows start below the pyramid — never over it — and run down to the credit.
+        // Their pitch is the target set above; it only comes down when the throne's own
+        // floor took the room first, and the floor is what keeps a row from collapsing
+        // onto its neighbour when a title wraps or margins close in.
+        var rowTop = top + context.Px(BaseHeight * sh) + context.Px(24);
+        var rowH = Math.Max(context.Px(34), Math.Min(rowPitch, (bottom - rowTop) / rows));
+        var capacity = rows;
+
+        using var nameFormat = SlimNameFormat(session, context, rowH, out var nameWidth);
+
+        for (var k = 0; k < _series.Racers; k++)
+        {
+            if (day < _starts[k])
+            {
+                continue;
+            }
+
+            var intro = Easing.Ramp(t, 300 + (k * 60), 700);
+            if (intro <= 0)
+            {
+                continue;
+            }
+
+            var s = state.Slots[k];
+            var name = _series.Entries[k].Name;
+
+            if (s < 6)
+            {
+                var i0 = Math.Clamp((int)Math.Floor(s), 0, 5);
+                var i1 = Math.Min(i0 + 1, 5);
+                var f = SmoothStep(Math.Clamp(s - i0, 0, 1));
+                var (ax, ay, aw, ah) = anchors[i0];
+                var (bx, by, bw, bh) = anchors[i1];
+                var x = Lerp(ax, bx, f);
+                var y = Lerp(ay, by, f);
+                var w = Lerp(aw, bw, f);
+                var h = Lerp(ah, bh, f);
+
+                var rank = (int)Math.Round(s);
+                var king = rank == 0;
+                var a = intro * Math.Clamp((6.05 - s) / 0.45, 0, 1);
+
+                if (a <= 0)
+                {
+                    continue;
+                }
+
+                session.FillRoundedRectangle(
+                    (float)(x - (w / 2)), (float)(y - (h / 2)), (float)w, (float)h,
+                    (float)(context.Px(12) * sw), (float)(context.Px(12) * sh),
+                    Ink.Fade(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), 0.055 * a));
+
+                session.DrawRoundedRectangle(
+                    (float)(x - (w / 2)), (float)(y - (h / 2)), (float)w, (float)h,
+                    (float)(context.Px(12) * sw), (float)(context.Px(12) * sh),
+                    Ink.Fade(king ? Medals[0] : Color.FromArgb(0xFF, 0x2A, 0x35, 0x50), king ? a : 0.8 * a),
+                    (float)(context.Px(king ? 2.4 : 1) * sw));
+
+                var badgeR = (h * 0.72) / 2;
+                var badgeCx = x - (w / 2) + context.Px(14 * sw) + badgeR;
+
+                DrawBadge(session, context, name, badgeCx, y, badgeR + context.Px(2.5 * sw),
+                    king ? Medals[0] : Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)], a);
+
+                var room = w - (badgeR * 2) - context.Px(58 * sw);
+                var nameSize = Math.Min(context.Px(king ? 28 : 24) * sh, Ink.FitSize(session, name, context.Px(king ? 28 : 24) * sh, room, bold: true));
+
+                using var cardNameFormat = Ink.Format(nameSize, bold: true);
+                using var valueFormat = Ink.Format(nameSize * 0.92, bold: true);
+
+                var textX = badgeCx + badgeR + context.Px(16 * sw);
+
+                Ink.LeftAt(session, name, textX, y - context.Px(12 * sh), cardNameFormat,
+                    king ? Medals[0] : RowInk, a);
+                Ink.LeftAt(session, ValueText(state.Values[k]), textX, y + context.Px(14 * sh), valueFormat, RowInk, a);
+
+                if (king)
+                {
+                    Crown(session, x + (w / 2) - context.Px(26 * sw), y - (h / 2) + context.Px(6 * sh), context.Px(20 * sh), a);
+                }
+            }
+            else
+            {
+                // The rows hold exactly `capacity` places past the pyramid; a member past
+                // them fades across its last slot of travel, and one slot further out it
+                // is gone.
+                var a = intro
+                    * Math.Clamp((s - 5.55) / 0.5, 0, 1)
+                    * Math.Clamp(capacity + 6 - s, 0, 1);
+
+                if (a <= 0)
+                {
+                    continue;
+                }
+
+                var yc = rowTop + ((s - 6 + 0.5) * rowH);
+
+                DrawSlimRow(session, context, k, s, state.Values[k], yc, a, state.AxisMax, rowH, nameFormat, nameWidth);
+            }
+        }
+    }
+
+    /// <summary>
+    /// One name size for a whole slim-row column: the widest name in the cast, fitted into
+    /// the share of the row the labels leave the bar.
+    ///
+    /// One size for the column rather than one per row — rows sized individually read as a
+    /// ransom note rather than as a list — and measured from the widest name rather than
+    /// the longest, because a nine-character Latin name can be narrower than a
+    /// four-character one in a logographic script. The width comes back with the format
+    /// because the bar's own room is whatever the name does not take.
+    /// </summary>
+    private CanvasTextFormat SlimNameFormat(
+        CanvasDrawingSession session, FrameContext context, double pitch, out double nameWidth)
+    {
+        var f = pitch / context.Px(SlimRowPitch);
+        var barX = context.Margins.Left + context.Px(104 * f);
+        var right = context.Width - context.Margins.Right - context.Px(10);
+        var room = Math.Max(context.Px(120), (right - barX) * SlimNameShare);
+
+        var widest = string.Empty;
+        var widestAt = 0.0;
+        using var probe = Ink.Format(context.Px(SlimFont * f), bold: true);
+
+        for (var k = 0; k < _series.Racers; k++)
+        {
+            var name = _series.Entries[k].Name;
+            var width = Ink.Measure(session, name, probe);
+
+            if (width > widestAt)
+            {
+                widestAt = width;
+                widest = name;
+            }
+        }
+
+        var size = Ink.FitSize(session, widest, context.Px(SlimFont * f), room, bold: true);
+        nameWidth = Ink.Measure(session, widest, Ink.Format(size, bold: true));
+
+        return Ink.Format(size, bold: true);
+    }
+
+    /// <summary>The slim row under the podium or the pyramid: rank, a colour chip, one bar
+    /// to scale with its value riding the end, the name at the edge. The row's y is the
+    /// slot itself, so a member leaving the podium slides into its row without a cut.
+    /// Every measure inside scales by <paramref name="pitch"/> against the design row, so
+    /// a compressed row band reads small but never overlaps.</summary>
+    private void DrawSlimRow(
+        CanvasDrawingSession session, FrameContext context, int k, double s, double value,
+        double yc, double alpha, double axisMax, double pitch, CanvasTextFormat nameFormat, double nameWidth)
+    {
+        var f = pitch / context.Px(SlimRowPitch);
+        var x0 = context.Margins.Left + context.Px(8);
+        var right = context.Width - context.Margins.Right - context.Px(10);
+        var rank = (int)Math.Floor(s) + 1;
+
+        using var rankFormat = Ink.Format(context.Px(SlimFont * f), bold: true);
+        using var valueFormat = Ink.Format(context.Px(SlimFont * f), bold: true);
+
+        Ink.RightMiddle(session, rank.ToString(CultureInfo.InvariantCulture),
+            x0 + context.Px(30 * f), yc, rankFormat, Palette.Credit, alpha);
+
+        // Where the career board drew a face, a chip in the racer's own colour: the same
+        // identity the bar carries, at the head of the row.
+        var colour = ColourBySign
+            ? (value >= 0 ? Rgb(0xEF, 0x44, 0x44) : Rgb(0x22, 0xC5, 0x5E))
+            : Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)];
+        var chipR = context.Px(SlimBadge * f) * 0.34;
+
+        session.FillCircle((float)(x0 + context.Px(68 * f)), (float)yc, (float)chipR, Ink.Fade(colour, alpha));
+
+        // The bar runs to the name and no further: the name's width is measured once for
+        // the whole column, so a long name in any language costs the bar its room rather
+        // than pushing the bar off the row.
+        var barX = x0 + context.Px(104 * f);
+        var barMax = Math.Max(context.Px(8), right - barX - nameWidth - context.Px(28 * f));
+        var w = Math.Max(context.Px(4), (HeightOf(value) / Math.Max(axisMax, 1e-9)) * barMax);
+
+        session.FillRoundedRectangle(
+            (float)barX, (float)(yc - (context.Px(SlimBar * f) / 2)), (float)w, (float)context.Px(SlimBar * f),
+            (float)Math.Min(context.Px(SlimBar * f) / 2, w / 2),
+            (float)Math.Min(context.Px(SlimBar * f) / 2, w / 2), Ink.Fade(colour, alpha));
+
+        // The value rides the bar's end — inside it when the bar is long enough to hold
+        // its own label, just past the end when it is not. The same rule the bar staging
+        // uses, for the same reason: the longest bar is the one that would push a label
+        // outside into the names, and by construction it is also the one long enough to
+        // hold it inside.
+        var text = ValueText(value);
+        var textWidth = Ink.Measure(session, text, valueFormat);
+        var inside = w >= textWidth + context.Px(26 * f);
+
+        if (inside)
+        {
+            Ink.RightMiddle(session, text, barX + w - context.Px(13 * f), yc, valueFormat, Ink.OnTopOf(colour), alpha);
+        }
+        else if (barX + w + context.Px(12 * f) + textWidth <= right - nameWidth - context.Px(8 * f))
+        {
+            Ink.LeftAt(session, text, barX + w + context.Px(12 * f), yc, valueFormat, colour, alpha);
+        }
+
+        Ink.RightMiddle(session, _series.Entries[k].Name, right, yc, nameFormat, RowInk, alpha);
+    }
 
     private static string Iso(DateOnly day) => day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 

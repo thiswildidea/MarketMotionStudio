@@ -1,4 +1,4 @@
-using MarketMotionStudio.Localization;
+﻿using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
 using Microsoft.UI.Xaml;
@@ -116,6 +116,7 @@ public sealed partial class CryptoMarketCapPage : StudioPage, IPlaybackHost
             Preview.Renderer = new SectorRaceRenderer(
                 series, RaceMetric.Amount, VideoSettings.Duration, CryptoCapBoard.Board)
             {
+                Style = RaceStyleCombo.ChosenStyle,
                 Title = title,
                 ShowTitle = showTitle,
                 ListLabel = AutoTitle(),
@@ -381,6 +382,8 @@ public sealed partial class CryptoMarketCapPage : StudioPage, IPlaybackHost
         }
 
         VideoSettings.Restore(_prefs);
+        RaceStyleCombo.Bind(_prefs);
+        RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
 
         _prefs.Restoring = false;
     }

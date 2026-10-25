@@ -88,6 +88,7 @@ Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhán
 - Čtyři seznamy: odvětví Shenwan úrovně 1, populární témata, vlastní (zaškrtnout) a jednotlivé akcie (přidat hledáním). Vlastní seznam začíná naplněný odvětvími Shenwan úrovně 1.
 - Vestavěné seznamy se řídí trhem: obory Shenwan úrovně 1 a populární témata u A-akcií, čtyři subindexy Hang Seng u Hongkongu, deset sektorových ETF SPDR u USA. Vlastní seznam a seznam akcií jsou na každém trhu.
 - Období může být 1, 3, 6, 12 nebo 24 měsíců, nebo vlastní počáteční a koncové datum. Vlastní rozsah sahá přibližně 900 dní — tolik zvládne jeden požadavek — a výběr dat tam končí.
+- **Styl zobrazení** nabízí pět podob: závod pruhů, podiové sloupce, sloupce panorámy, pyramida trůnu a skyline s fokusem. Všechny čtou stejné pořadí — přepnutí jen změní kresbu, nic nenačítá znovu, a stránka si pamatuje poslední volbu.
 - Seznam má minimální a maximální počet položek — málo pruhů není závod, příliš mnoho se slije.
 
 

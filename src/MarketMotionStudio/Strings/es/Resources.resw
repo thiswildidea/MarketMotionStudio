@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>Venta</value></data>
   <data name="SettingsTitleLabel.Text"><value>Título</value></data>
   <data name="SettingsTitleNote.Text"><value>Se aplica a todas las páginas. La página de cartera puede seguir configurando su propio estilo y color.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Estilo de visualización</value></data>
+  <data name="RaceStyleBar"><value>Carrera de barras</value></data>
+  <data name="RaceStylePodium"><value>Columnas de podio</value></data>
+  <data name="RaceStyleSkyline"><value>Columnas horizonte</value></data>
+  <data name="RaceStylePyramid"><value>Pirámide del trono</value></data>
+  <data name="RaceStyleFocusTour"><value>Skyline con foco</value></data>
 </root>

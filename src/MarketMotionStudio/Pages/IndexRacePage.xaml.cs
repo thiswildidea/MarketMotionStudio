@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
@@ -123,6 +123,8 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        RaceStyleCombo.Bind(_prefs);
+        RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -177,6 +179,7 @@ public sealed partial class IndexRacePage : StudioPage, IPlaybackHost
             // racing for fifteen places, it is twelve named indices and all twelve are the board.
             Preview.Renderer = new SectorRaceRenderer(series, RaceMetric.Return, VideoSettings.Duration)
             {
+                Style = RaceStyleCombo.ChosenStyle,
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = ChosenListName(),

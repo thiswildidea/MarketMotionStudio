@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>売り</value></data>
   <data name="SettingsTitleLabel.Text"><value>タイトル</value></data>
   <data name="SettingsTitleNote.Text"><value>すべてのページに適用されます。ポートフォリオページでは引き続き個別にスタイルと色を設定できます。</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>表示スタイル</value></data>
+  <data name="RaceStyleBar"><value>バーレース</value></data>
+  <data name="RaceStylePodium"><value>柱の表彰台</value></data>
+  <data name="RaceStyleSkyline"><value>スカイライン柱</value></data>
+  <data name="RaceStylePyramid"><value>王座ピラミッド</value></data>
+  <data name="RaceStyleFocusTour"><value>フォーカス・スカイライン</value></data>
 </root>

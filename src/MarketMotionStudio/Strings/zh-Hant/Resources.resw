@@ -1117,4 +1117,11 @@
   <data name="PortfolioPnlSellLabel"><value>賣出</value></data>
   <data name="SettingsTitleLabel.Text"><value>標題</value></data>
   <data name="SettingsTitleNote.Text"><value>對所有頁面生效。持倉收益頁仍可在本頁單獨設定樣式與顏色。</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>顯示樣式</value></data>
+  <data name="RaceStyleBar"><value>條形競速</value></data>
+  <data name="RaceStylePodium"><value>三柱頒獎台</value></data>
+  <data name="RaceStyleSkyline"><value>天際線立柱</value></data>
+  <data name="RaceStylePyramid"><value>王座金字塔</value></data>
+  <data name="RaceStyleFocusTour"><value>聚焦天際線</value></data>
 </root>

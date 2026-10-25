@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -121,6 +121,7 @@ public sealed partial class CryptoMoversPage : StudioPage, IPlaybackHost
             Preview.Renderer = new SectorRaceRenderer(
                 series, RaceMetric.Return, VideoSettings.Duration, series.Racers, rankByMagnitude: true)
             {
+                Style = RaceStyleCombo.ChosenStyle,
                 Title = title,
                 ShowTitle = showTitle,
                 ListLabel = AutoTitle(),
@@ -401,6 +402,8 @@ public sealed partial class CryptoMoversPage : StudioPage, IPlaybackHost
             ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 
         VideoSettings.Restore(_prefs);
+        RaceStyleCombo.Bind(_prefs);
+        RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
 
         _prefs.Restoring = false;
 

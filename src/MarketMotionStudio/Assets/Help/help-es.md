@@ -91,6 +91,7 @@ Un conjunto de sectores o acciones dibujado como barras horizontales que se adel
 - Cuatro listas: sectores Shenwan de nivel 1, temas de actualidad, personalizada (marcar casillas) y acciones individuales (añadir por búsqueda). La lista personalizada empieza rellena con los sectores Shenwan de nivel 1.
 - Las listas integradas siguen al mercado: sectores Shenwan de nivel 1 y temas de actualidad para acciones A, los cuatro subíndices Hang Seng para Hong Kong, diez ETF sectoriales SPDR para Estados Unidos. Las listas personalizada y de acciones existen en todos los mercados.
 - El periodo puede ser de 1, 3, 6, 12 o 24 meses, o fechas de inicio y fin personalizadas. Un intervalo personalizado llega a unos 900 días — lo que abarca una solicitud — y los selectores de fecha terminan ahí.
+- **Estilo de visualización**: cinco variantes — carrera de barras, columnas de podio, columnas horizonte, pirámide del trono y skyline con foco. Las cinco leen la misma clasificación — cambiar solo cambia el dibujo, no vuelve a descargar nada, y cada página recuerda la última elección.
 - Una lista tiene un mínimo y un máximo de elementos — pocas barras no es una carrera, demasiadas se amontonan.
 
 

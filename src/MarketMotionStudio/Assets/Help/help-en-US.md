@@ -90,6 +90,7 @@ A set of sectors or stocks, drawn as horizontal bars that overtake one another, 
 - Four rosters: SW Level-1 industries, hot themes, custom (tick the boxes), and individual stocks (search to add). The custom roster starts filled with the SW Level-1 set.
 - The built-in rosters follow the market: SW Level-1 industries and hot themes for A-shares, the four Hang Seng sub-indices for Hong Kong, ten SPDR sector ETFs for the US. The custom and stock rosters exist on every market.
 - The interval can be 1, 3, 6, 12 or 24 months, or a custom start and end date. A custom span reaches about 900 days — one request's worth — and the date pickers stop there.
+- **Display style** comes in five: bar race, podium columns, skyline columns, throne pyramid and the focus skyline. All five read the same standings — switching redraws the race, it never refetches, and each page remembers the last choice.
 - A roster has a minimum and a maximum size — too few bars is no race, too many crowd into a blur.
 
 

@@ -1127,4 +1127,11 @@
   <data name="PortfolioPnlSellLabel"><value>卖出</value></data>
   <data name="SettingsTitleLabel.Text"><value>标题</value></data>
   <data name="SettingsTitleNote.Text"><value>对所有页面生效。持仓收益页仍可在本页单独设置样式与颜色。</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>展示样式</value></data>
+  <data name="RaceStyleBar"><value>条形竞速</value></data>
+  <data name="RaceStylePodium"><value>三柱领奖台</value></data>
+  <data name="RaceStyleSkyline"><value>天际线立柱</value></data>
+  <data name="RaceStylePyramid"><value>王座金字塔</value></data>
+  <data name="RaceStyleFocusTour"><value>聚焦天际线</value></data>
 </root>

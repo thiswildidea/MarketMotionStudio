@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>Verkauf</value></data>
   <data name="SettingsTitleLabel.Text"><value>Titel</value></data>
   <data name="SettingsTitleNote.Text"><value>Gilt für alle Seiten. Die Portfolio-Seite kann Stil und Farbe weiterhin separat festlegen.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Anzeigestil</value></data>
+  <data name="RaceStyleBar"><value>Balkenrennen</value></data>
+  <data name="RaceStylePodium"><value>Podestsäulen</value></data>
+  <data name="RaceStyleSkyline"><value>Skyline-Säulen</value></data>
+  <data name="RaceStylePyramid"><value>Thronpyramide</value></data>
+  <data name="RaceStyleFocusTour"><value>Fokus-Skyline</value></data>
 </root>

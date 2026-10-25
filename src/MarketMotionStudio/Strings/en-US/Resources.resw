@@ -1129,4 +1129,11 @@
   <data name="PortfolioPnlSellLabel"><value>Sell</value></data>
   <data name="SettingsTitleLabel.Text"><value>Title</value></data>
   <data name="SettingsTitleNote.Text"><value>Applies to every page. The portfolio page can still set its own style and colour.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Display style</value></data>
+  <data name="RaceStyleBar"><value>Bar race</value></data>
+  <data name="RaceStylePodium"><value>Podium columns</value></data>
+  <data name="RaceStyleSkyline"><value>Skyline columns</value></data>
+  <data name="RaceStylePyramid"><value>Throne pyramid</value></data>
+  <data name="RaceStyleFocusTour"><value>Focus skyline</value></data>
 </root>

@@ -2628,3 +2628,27 @@ boxes agree across languages to within 21 px, the width of the widest parameter 
 **Owed:** the package still holds the old manual — 1.0.16.0 was built before the market paragraphs
 and the pictures, so both are waiting on the next version number; and the Store gallery still describes
 nine pages of twenty-four, with the crypto six captured but not yet placed in it.
+
+## 五种画面形态：把 NBA 生涯竞速的五路分频移植到十二个条形竞速页（2026-10-25）
+
+条形竞速系列页（行业板块竞速、市值榜竞速、AH 溢价、极端交易日、指数长跑、大类资产、债市固收
+竞速、持有胜率，以及加密的市值榜/比较/涨跌/占比，共十二页）原先只有横向条形一种画法。姊妹工程
+NbaMotionStudio 的生涯竞速页已经把同一份插值排名画成了五种样子——`RaceStyle`：条形竞速、
+三柱领奖台、天际线立柱、王座金字塔、聚焦天际线——两个渲染器本是同源，移植是机械的。
+
+- **只换画法，不换排名。** 四种新形态读的全是 `StateAt` 已经算出的值、插值槽位与轴；聚焦天际线
+  的 RaceClock 把整场比赛挤进镜头打开之前的那 45% 片长，看板、表头日期一起被挤——单独挤看板
+  会让表头日期坐在它还没走到的终局上。
+- **无头像的两处替代。** 行情实体没有 headshot：Nba 画脸的地方改画徽章（深底圆盘＋名次环＋名字
+  首字），细行里改画竞速者自己的颜色圆点。徽章首字在极端交易日页读作日期的首字「2」——可接受，
+  该行的完整名字本来就在旁边。
+- **双向榜的柱高。** 极端交易日按幅度排名、值有正有负，柱高若按带符号的值算，−7.7% 的日子会在
+  领奖台上立成一根矮桩。柱高一律走 `HeightOf`（＝排名所用的那个量：幅度榜取绝对值，其余取原值）。
+- **共享控件收口。** `Views/RaceStyleCombo`：ComboBox 子类，自填五项、自带持久化
+  （`Bind(_prefs)` 恢复、变更即存），页面只接一个 `Chosen` 事件去重建渲染器。十二个页面各得
+  四处机械插入（XAML 一行、Bind 一行、Chosen 订阅一行、初始化器一个 `Style`），全部由幂等的
+  `tools/port-race-styles.py` 落地；resw 六键 ×14 语言与手册一行 ×14 份分别由同脚本与
+  `port-race-styles-help.py` 移植（文案取自 Nba 工程，零新造词）。
+- **验证。** 构建 0 警告 0 错误；部署后 UIA 实测行业板块竞速页五项切换各拍一帧，极端交易日
+  （双向榜）另拍天际线与金字塔；`verify-docs.py` 434 项全过、`verify-resw-uids.py` 14 语言
+  1075 键 0 问题。截图在 `artifacts/probe-race-style-*.png`、`probe-extreme-style-*.png`。

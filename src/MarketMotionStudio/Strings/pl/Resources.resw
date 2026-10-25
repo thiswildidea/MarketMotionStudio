@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>Sprzedaż</value></data>
   <data name="SettingsTitleLabel.Text"><value>Tytuł</value></data>
   <data name="SettingsTitleNote.Text"><value>Dotyczy wszystkich stron. Strona portfela może nadal ustawiać własny styl i kolor.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Styl wykresu</value></data>
+  <data name="RaceStyleBar"><value>Wyścig pasków</value></data>
+  <data name="RaceStylePodium"><value>Kolumny podium</value></data>
+  <data name="RaceStyleSkyline"><value>Kolumny panoramy</value></data>
+  <data name="RaceStylePyramid"><value>Piramida tronu</value></data>
+  <data name="RaceStyleFocusTour"><value>Skyline z fokusem</value></data>
 </root>

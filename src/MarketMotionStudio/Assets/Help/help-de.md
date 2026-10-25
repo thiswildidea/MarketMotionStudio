@@ -92,6 +92,7 @@ Eine Gruppe von Sektoren oder Aktien als waagerechte Balken, die einander überh
 - Vier Listen: Shenwan-Ebene-1-Branchen, beliebte Themen, benutzerdefiniert (ankreuzen) und Einzelaktien (per Suche hinzufügen). Die benutzerdefinierte Liste beginnt mit den Shenwan-Ebene-1-Branchen gefüllt.
 - Die eingebauten Listen folgen dem Markt: Shenwan-Ebene-1-Branchen und beliebte Themen bei A-Aktien, die vier Hang-Seng-Subindizes bei Hongkong, zehn SPDR-Sektor-ETFs bei den USA. Die benutzerdefinierte Liste und die Aktienliste gibt es auf jedem Markt.
 - Der Zeitraum kann 1, 3, 6, 12 oder 24 Monate betragen oder frei mit Start- und Enddatum gewählt werden. Ein eigener Zeitraum reicht etwa 900 Tage weit — so viel wie eine Anfrage — und die Datumsauswahl endet dort.
+- **Anzeigestil** hat fünf Varianten: Balkenrennen, Podestsäulen, Skyline-Säulen, Thronpyramide und Fokus-Skyline. Alle fünf lesen dieselbe Rangliste — das Umschalten ändert nur die Zeichnung, lädt nichts neu, und jede Seite merkt sich die letzte Wahl.
 - Eine Liste hat eine Mindest- und Höchstzahl an Einträgen — zu wenige Balken sind kein Rennen, zu viele ein Wirrwarr.
 
 

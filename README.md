@@ -21,7 +21,10 @@ between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
 bars and per-minute intraday), favourites, covers and exports all verified against live data for
 贵州茅台. Sector Race is the third: a dozen sectors' or stocks' bars overtaking one another,
-their order interpolated smoothly to the last frame, on four rosters and two metrics. Monthly
+their order interpolated smoothly to the last frame, on four rosters and two metrics — and drawn
+in five display styles, the bar race, a podium, a skyline, a throne pyramid and a camera walk
+up the board, all five redrawing the same interpolated standings (the port of NbaMotionStudio's
+career race; every race page carries the menu and remembers its choice). Monthly
 Matrix is the fourth — a decade of monthly bars per request, cells lighting up in time order, as
 a year × month seasonality table or a targets × months rotation, both verified live (上证指数
 ten years; CSI Level-1 twelve months). Gain-loss Calendar is the fifth: the whole-market page's

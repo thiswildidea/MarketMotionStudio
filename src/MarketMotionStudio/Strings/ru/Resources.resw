@@ -1118,4 +1118,11 @@
   <data name="PortfolioPnlSellLabel"><value>Продажа</value></data>
   <data name="SettingsTitleLabel.Text"><value>Заголовок</value></data>
   <data name="SettingsTitleNote.Text"><value>Применяется ко всем страницам. На странице портфеля по-прежнему можно задать свой стиль и цвет.</value></data>
+  <!-- 竞速画面样式（移植自 NbaMotionStudio 生涯竞速）。 -->
+  <data name="RaceStyleHeader"><value>Стиль показа</value></data>
+  <data name="RaceStyleBar"><value>Гонка полос</value></data>
+  <data name="RaceStylePodium"><value>Колонны пьедестала</value></data>
+  <data name="RaceStyleSkyline"><value>Колонны-небоскрёбы</value></data>
+  <data name="RaceStylePyramid"><value>Пирамида трона</value></data>
+  <data name="RaceStyleFocusTour"><value>Небоскрёбы с фокусом</value></data>
 </root>
