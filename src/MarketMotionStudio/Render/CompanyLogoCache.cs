@@ -332,7 +332,16 @@ public sealed class CompanyLogoCache
     /// plates anyway; a square mark loses only what a circle would cover.</summary>
     private static async Task<CanvasBitmap> MaskedAsync(CanvasDevice device, string path)
     {
-        var source = await CanvasBitmap.LoadAsync(device, path);
+        // ConfigureAwait(false) everywhere, and why it is not decoration: Peek answers
+        // the draw path with a blocking GetResult, and when that path is the UI thread
+        // the block must not also own the context this method's continuation wants to
+        // resume on — decode finishes, queues the rest of this method to the thread
+        // that is waiting for it, and the app freezes until it is killed. The awaited
+        // load and the masking below are free-threaded (Win2D), so resuming on the
+        // pool costs nothing; Backdrop's own blocking load stays safe for the same
+        // reason a level lower — it waits on the operation's task itself, with no
+        // continuation of its own to marshal back.
+        var source = await CanvasBitmap.LoadAsync(device, path).AsTask().ConfigureAwait(false);
 
         var target = new CanvasRenderTarget(device, Size, Size, 96);
         var w = (float)source.SizeInPixels.Width;
