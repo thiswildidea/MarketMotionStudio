@@ -75,6 +75,11 @@ public sealed partial class AssetRacePage : StudioPage, IPlaybackHost
     {
         InitializeComponent();
 
+        // Late-landing logos repaint the preview; the marshal keeps the hop on
+        // the UI thread, the way the cache's contract asks for.
+        CompanyLogoCache.Shared.Marshal = a => DispatcherQueue.TryEnqueue(() => a());
+        CompanyLogoCache.Shared.Invalidated = () => Preview.Redraw();
+
         foreach (var (key, label) in Lists)
         {
             ListCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(label), Tag = key });
@@ -177,6 +182,7 @@ public sealed partial class AssetRacePage : StudioPage, IPlaybackHost
             Preview.Renderer = new SectorRaceRenderer(series, RaceMetric.Return, VideoSettings.Duration)
             {
                 Style = RaceStyleCombo.ChosenStyle,
+                Faces = CompanyLogoCache.Shared,
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = ChosenListName(),

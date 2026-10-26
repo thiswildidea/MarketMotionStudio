@@ -91,6 +91,7 @@ Um conjunto de setores ou ações desenhado como barras horizontais que se ultra
 - As listas integradas seguem o mercado: setores Shenwan de nível 1 e temas em alta para ações A, os quatro subíndices Hang Seng para Hong Kong, dez ETFs setoriais SPDR para os Estados Unidos. As listas personalizada e de ações existem em todos os mercados.
 - O intervalo pode ser de 1, 3, 6, 12 ou 24 meses, ou datas de início e fim personalizadas. Um intervalo personalizado alcança cerca de 900 dias — o alcance de uma solicitação — e os seletores de data param aí.
 - **Estilo de exibição**: cinco variantes — corrida de barras, colunas de pódio, colunas horizonte, pirâmide do trono e skyline com foco. As cinco leem a mesma classificação — trocar apenas redesenha, não baixa nada de novo, e cada página lembra a última escolha.
+- Os emblemas de companhias listadas exibem o **logo da empresa**: buscado uma vez por código e depois mantido no cache local; índices, datas e moedas mantêm o emblema com a inicial.
 - Uma lista tem um mínimo e um máximo de itens — poucas barras não é uma corrida, muitas se amontoam.
 
 

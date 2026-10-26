@@ -89,6 +89,7 @@ Sada sektorů nebo akcií nakreslená jako vodorovné pruhy, které se předhán
 - Vestavěné seznamy se řídí trhem: obory Shenwan úrovně 1 a populární témata u A-akcií, čtyři subindexy Hang Seng u Hongkongu, deset sektorových ETF SPDR u USA. Vlastní seznam a seznam akcií jsou na každém trhu.
 - Období může být 1, 3, 6, 12 nebo 24 měsíců, nebo vlastní počáteční a koncové datum. Vlastní rozsah sahá přibližně 900 dní — tolik zvládne jeden požadavek — a výběr dat tam končí.
 - **Styl zobrazení** nabízí pět podob: závod pruhů, podiové sloupce, sloupce panorámy, pyramida trůnu a skyline s fokusem. Všechny čtou stejné pořadí — přepnutí jen změní kresbu, nic nenačítá znovu, a stránka si pamatuje poslední volbu.
+- Odznaky závodů, jejichž účastník je kotovaná společnost, nosí **logo firmy**: stáhne se jednou podle kódu a dál se drží v místní mezipaměti; indexy, data a měny si ponechají odznak s prvním písmenem.
 - Seznam má minimální a maximální počet položek — málo pruhů není závod, příliš mnoho se slije.
 
 

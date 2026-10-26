@@ -2652,3 +2652,33 @@ NbaMotionStudio 的生涯竞速页已经把同一份插值排名画成了五种�
 - **验证。** 构建 0 警告 0 错误；部署后 UIA 实测行业板块竞速页五项切换各拍一帧，极端交易日
   （双向榜）另拍天际线与金字塔；`verify-docs.py` 434 项全过、`verify-resw-uids.py` 14 语言
   1075 键 0 问题。截图在 `artifacts/probe-race-style-*.png`、`probe-extreme-style-*.png`。
+
+## 徽章里的公司 Logo：行情版头像（2026-10-25/26）
+
+五种画面形态的徽章原本画名字首字；这轮把 NbaMotionStudio 的球员头像方式移植过来，
+上市公司条目改画**公司 Logo**（`Render/CompanyLogoCache.cs`），其余条目——指数、
+日期、币种、ETF——保留首字徽章。
+
+- **按设备缓存，Backdrop 的老规矩。** `Peek` 首次同步解码落盘文件（每图每设备一次），
+  位图存进 `ConditionalWeakTable<CanvasDevice,…>` 弱表；遮罩（圆形裁切）在加载时做
+  一次，画帧只剩 `DrawImage`。渲染器上是一个 `Faces` 属性，赋值即预取——预取不需要
+  设备，只要磁盘，所以取数刚完、用户还没切样式，图多半已经在盘上了。
+- **来源两跳，串行有礼。** 同花顺 `basic.10jqka.com.cn/{6位码}/company.html` 页面里
+  带一条 GUID 直链的 company-logo PNG，抓回来存 `LocalState/logos`，永久复用。第一版
+  并发两百连发，同花顺用无直链的挑战页静默挡掉（日志一行没有、盘上只有 7 张图）——
+  改成信号量 2 并发 + 每跳 250ms，跟行情端"一次一个、别刮别人"的规矩看齐。静默失败
+  也补了日志（`page carried no logo link` / `answer was not a picture`）。
+- **KeyOf 是唯一守门员。** 8 位码、沪 60/68、深 00/30、北 43/83/87/92 才有 key；
+  指数（sh000/sz399）、基金（51x）、港美股、币种一律空串——渲染器、预取、导出预热
+  三处共用这一把闸，接错页面也不会张冠李戴。
+- **导出预热加了接口。** `IFaceWarmup.PrepareAsync(device)`，`VideoExporter` 在建好
+  自己的 CanvasDevice 之后、第一帧之前调；`WarmAsync` 带 30 秒上限，到点没齐的照画
+  首字徽章（与预览中"图还没落地"同一表现）。
+- **验证两截。** 机制端全绿：构建 0 警告 0 错误；同花顺源对五只 A 股逐只核对直链与
+  图片内容（茅台圆标确认）；持有胜率页实测 ETF 徽章正确保留首字（KeyOf 拦截生效）；
+  `verify-docs` 434 项、`verify-resw-uids` 1075 键全过；12 页接线由幂等
+  `port-race-logos.py` 落地（顺带修了它丢 BOM 的 bug——插入脚本必须原样带回 BOM）。
+  个股 Logo 在画面里的最终目视确认被两件事挡住：市值榜整版取数被腾讯限速卡死
+  （重复全量取数所致，环境问题），以及测试中途机器自动锁屏。自选股名单已留下
+  六只大票（工行/建行/茅台/中石油/宁德/国债ETF），解锁后打开持有胜率页取数即可
+  目视核对——同一画面里股票带 Logo、ETF 带首字，两条路径都有。

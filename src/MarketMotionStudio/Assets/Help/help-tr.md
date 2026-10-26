@@ -90,6 +90,7 @@ Bir grup sektör veya hissenin yatay çubuklarla çizimi; çubuklar birbirini ge
 - Yerleşik listeler piyasaya göre değişir: A hisseleri için Shenwan 1. düzey sektörler ve güncel temalar, Hong Kong için dört Hang Seng alt endeksi, ABD için on SPDR sektör ETF'i. Özel liste ve hisse listesi her piyasada vardır.
 - Dönem 1, 3, 6, 12 veya 24 ay ya da özel başlangıç ve bitiş tarihi olabilir. Kendi aralığınız yaklaşık 900 güne ulaşır — bir isteğin kapsadığı kadar — ve tarih seçiciler orada durur.
 - **Görüntü stili** beş çeşittir: çubuk yarışı, podyum kolonları, silüet kolonlar, taht piramidi ve odaklı silüet. Beşi de aynı sıralamayı okur — geçiş yalnızca çizimi değiştirir, yeniden veri almaz ve her sayfa son seçimi hatırlar.
+- Halka açık şirketlerin nişanları **şirket logosunu** taşır: kodla bir kez indirilir, sonra yerel önbellekten sunulur; endeksler, tarihler ve coinler ilk harf nişanını korur.
 - Bir listenin en az ve en fazla sayıda kalemi vardır — çok az çubuk yarış olmaz, çok fazlası yığılır.
 
 

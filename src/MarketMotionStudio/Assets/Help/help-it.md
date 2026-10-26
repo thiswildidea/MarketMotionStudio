@@ -92,6 +92,7 @@ Un insieme di settori o azioni disegnati come barre orizzontali che si sorpassan
 - Gli elenchi integrati seguono il mercato: settori Shenwan di livello 1 e temi di tendenza per le azioni A, i quattro sottoindici Hang Seng per Hong Kong, dieci ETF settoriali SPDR per gli Stati Uniti. Gli elenchi personalizzato e azioni esistono su ogni mercato.
 - Il periodo può essere di 1, 3, 6, 12 o 24 mesi, oppure date di inizio e fine personalizzate. Un intervallo personalizzato arriva a circa 900 giorni — quanto copre una richiesta — e i selettori di data si fermano lì.
 - **Stile di visualizzazione**: cinque varianti — gara a barre, colonne podio, colonne skyline, piramide del trono e skyline con fuoco. Tutte e cinque leggono la stessa classifica — il cambio ridisegna soltanto, non riscarica nulla, e ogni pagina ricorda l'ultima scelta.
+- I badge delle società quotate portano il **logo dell'azienda**: scaricato una volta per codice, poi servito dalla cache locale; indici, date e monete mantengono il badge con l'iniziale.
 - Un elenco ha un numero minimo e massimo di voci — poche barre non fanno una gara, troppe si accalcano.
 
 

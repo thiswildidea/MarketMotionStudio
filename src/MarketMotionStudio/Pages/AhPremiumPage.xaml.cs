@@ -65,6 +65,11 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
     {
         InitializeComponent();
 
+        // Late-landing logos repaint the preview; the marshal keeps the hop on
+        // the UI thread, the way the cache's contract asks for.
+        CompanyLogoCache.Shared.Marshal = a => DispatcherQueue.TryEnqueue(() => a());
+        CompanyLogoCache.Shared.Invalidated = () => Preview.Redraw();
+
         foreach (var (months, key) in Ranges)
         {
             RangeCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = months });
@@ -139,6 +144,7 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
                 series, RaceMetric.Return, VideoSettings.Duration, AhPairs.Board)
             {
                 Style = RaceStyleCombo.ChosenStyle,
+                Faces = CompanyLogoCache.Shared,
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = Strings.Get("AhPremiumListLabel"),

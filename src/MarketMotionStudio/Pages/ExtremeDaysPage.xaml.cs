@@ -110,6 +110,11 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
     {
         InitializeComponent();
 
+        // Late-landing logos repaint the preview; the marshal keeps the hop on
+        // the UI thread, the way the cache's contract asks for.
+        CompanyLogoCache.Shared.Marshal = a => DispatcherQueue.TryEnqueue(() => a());
+        CompanyLogoCache.Shared.Invalidated = () => Preview.Redraw();
+
         // The market's broad indices: an index is the instrument whose single-day move is a
         // sentence about the market, so they lead. One tap each, and still a shortcut rather
         // than the limit — the search box above them takes any code the market quotes, and most
@@ -312,6 +317,7 @@ public sealed partial class ExtremeDaysPage : StudioPage, IPlaybackHost
                 rankByMagnitude: true)
             {
                 Style = RaceStyleCombo.ChosenStyle,
+                Faces = CompanyLogoCache.Shared,
                 Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
                 ShowTitle = VideoSettings.ShowTitle,
                 ListLabel = ChosenInstrumentName(),

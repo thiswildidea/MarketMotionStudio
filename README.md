@@ -24,7 +24,10 @@ bars and per-minute intraday), favourites, covers and exports all verified again
 their order interpolated smoothly to the last frame, on four rosters and two metrics — and drawn
 in five display styles, the bar race, a podium, a skyline, a throne pyramid and a camera walk
 up the board, all five redrawing the same interpolated standings (the port of NbaMotionStudio's
-career race; every race page carries the menu and remembers its choice). Monthly
+career race; every race page carries the menu and remembers its choice). Where the career board
+wore headshots, the badges wear **company logos**: fetched once per listed code, kept in the
+local cache, and anything without a corporate mark — an index, a date, a coin — keeps the
+first-character badge. Monthly
 Matrix is the fourth — a decade of monthly bars per request, cells lighting up in time order, as
 a year × month seasonality table or a targets × months rotation, both verified live (上证指数
 ten years; CSI Level-1 twelve months). Gain-loss Calendar is the fifth: the whole-market page's

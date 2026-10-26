@@ -80,6 +80,17 @@ public static class VideoExporter
 
         using var device = new CanvasDevice();
 
+        // A renderer that carries pictures of its own — the race pages' company
+        // logos — warms them onto this device and onto disk before the first
+        // frame, so no video frame ever draws the first-character badge that a
+        // ready logo stands behind.
+        if (renderer is IFaceWarmup warm)
+        {
+            await warm.PrepareAsync(device);
+
+            Diagnostics.CrashLog.Note("encode: faces warmed");
+        }
+
         // One render target for the whole export rather than one per frame. At 1080×1920 each is an
         // 8 MB surface, and allocating one per frame would spend more time in the allocator than in
         // the renderer.

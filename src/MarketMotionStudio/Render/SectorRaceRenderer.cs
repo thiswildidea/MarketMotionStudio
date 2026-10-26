@@ -26,7 +26,7 @@ namespace MarketMotionStudio.Render;
 /// rescales in one jump at each midnight — with fixed headroom on both ends because the value
 /// labels sit outside the bar's end until the bar is long enough to hold them inside.
 /// </summary>
-public sealed class SectorRaceRenderer : IFrameRenderer
+public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
 {
     /// <summary>The left gutter's name column, in baseline pixels.</summary>
     private const double GutterLeft = 176;
@@ -231,6 +231,61 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     /// the frame is drawn, never how the ranking table was built, so the page can set
     /// it in the object initialiser without re-reading a thing.</summary>
     public RaceStyle Style { get; set; } = RaceStyle.Bar;
+
+    /// <summary>Where the badges' pictures come from, or null for the first-character
+    /// badge everywhere. Set once by the page in the object initialiser; the badge asks
+    /// it per row and falls back to the character while a picture is still landing.
+    ///
+    /// <para>Assigning starts every racer's download right away — no device needed for
+    /// that, only the disk — so by the time a user switches to a badge-wearing style the
+    /// pictures are mostly on disk, and an export's warm-up is a formality.</para>
+    ///
+    /// <para>The cache keys by <see cref="CompanyLogoCache.KeyOf"/>, so wiring it on a
+    /// board of indexes, dates or coins changes nothing — their codes carry no key.</para></summary>
+    public CompanyLogoCache? Faces
+    {
+        get => _faces;
+
+        set
+        {
+            _faces = value;
+
+            if (value is { } cache)
+            {
+                foreach (var key in FaceKeys)
+                {
+                    cache.Ensure(key);
+                }
+            }
+        }
+    }
+
+    private CompanyLogoCache? _faces;
+
+    /// <summary>Every racer's logo key — what the export's warm-up waits for.</summary>
+    public string[] FaceKeys =>
+        [.. _series.Entries
+            .Select(e => CompanyLogoCache.KeyOf(e.Code))
+            .Where(k => k.Length > 0)
+            .Distinct()];
+
+    /// <summary>The export's warm-up: every logo either on this device or known absent
+    /// before the first frame, so a file never draws the fallback a ready picture
+    /// stands behind.</summary>
+    public async Task PrepareAsync(CanvasDevice device)
+    {
+        if (Faces is not { } cache || FaceKeys.Length == 0)
+        {
+            return;
+        }
+
+        await cache.WarmAsync(FaceKeys);
+
+        foreach (var key in FaceKeys)
+        {
+            cache.Peek(device, key);
+        }
+    }
 
     public string Title { get; set; } = string.Empty;
 
@@ -845,14 +900,15 @@ public sealed class SectorRaceRenderer : IFrameRenderer
     private double HeightOf(double value) => _rankByMagnitude ? Math.Abs(value) : value;
 
     /// <summary>
-    /// The badge every face-less staging shows where the career board drew a headshot:
-    /// the dark plate and its medal ring, with the racer's own first character inside.
-    /// One character, because a name is spelled out in full beside the column anyway —
-    /// the badge is what the eye holds onto while the columns cross.
+    /// The badge every staging shows where the career board drew a headshot: the dark
+    /// plate and its medal ring, and inside — a **company logo** when the racer is a
+    /// listed company and its picture has landed, otherwise the racer's own first
+    /// character. One character, because a name is spelled out in full beside the
+    /// column anyway — the badge is what the eye holds onto while the columns cross.
     /// </summary>
     private void DrawBadge(
         CanvasDrawingSession session, FrameContext context,
-        string name, double cx, double cy, double radius, Color ring, double alpha)
+        string code, string name, double cx, double cy, double radius, Color ring, double alpha)
     {
         if (alpha <= 0)
         {
@@ -860,13 +916,65 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         }
 
         session.FillCircle((float)cx, (float)cy, (float)radius, Ink.Fade(BadgePlate, alpha));
+
+        var faced = TryFace(session, code, cx, cy, radius * 2, alpha);
+
         session.DrawCircle((float)cx, (float)cy, (float)radius, Ink.Fade(ring, alpha), (float)(radius * 0.07));
+
+        if (faced)
+        {
+            return;
+        }
 
         var initial = name.Length > 0 ? name[..1] : "?";
 
         using var format = Ink.Format(radius * 1.1, bold: true);
 
         Ink.Centred(session, initial, cx, cy, format, RowInk, alpha);
+    }
+
+    /// <summary>The racer's company logo, drawn through the device-keyed cache —
+    /// true when a picture went down, false when the badge should keep its character.
+    /// A miss starts the download; the invalidation repaints when it lands.</summary>
+    private bool TryFace(
+        CanvasDrawingSession session, string code, double cx, double cy, double size, double alpha)
+    {
+        if (Faces is not { } cache || alpha <= 0)
+        {
+            return false;
+        }
+
+        var key = CompanyLogoCache.KeyOf(code);
+
+        if (key.Length == 0)
+        {
+            return false;
+        }
+
+        var face = cache.Peek(session.Device, key);
+
+        if (face is null)
+        {
+            cache.Ensure(key);
+
+            return false;
+        }
+
+        // Scale, place in frame pixels, then the session's letterbox — the order the
+        // career board's rows settled on after the matrix-order lesson.
+        var saved = session.Transform;
+        session.Transform = System.Numerics.Matrix3x2.CreateScale((float)(size / CompanyLogoCache.Size))
+            * System.Numerics.Matrix3x2.CreateTranslation((float)(cx - (size / 2)), (float)(cy - (size / 2)))
+            * saved;
+
+        using (session.CreateLayer((float)Math.Clamp(alpha, 0, 1)))
+        {
+            session.DrawImage(face, 0, 0);
+        }
+
+        session.Transform = saved;
+
+        return true;
     }
 
     /// <summary>The three-point crown over a reigning leader. Size is the crown's width;
@@ -976,7 +1084,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                 var badgeR = context.Px(40);
                 var badgeCy = yBase - h - badgeR - context.Px(10);
 
-                DrawBadge(session, context, name, px, badgeCy, badgeR + context.Px(3), medal, a);
+                DrawBadge(session, context, _series.Entries[k].Code, name, px, badgeCy, badgeR + context.Px(3), medal, a);
 
                 var nameSize = Math.Min(context.Px(26),
                     Ink.FitSize(session, name, context.Px(26), colW + context.Px(90), bold: true));
@@ -1078,7 +1186,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                 var badgeR = Math.Min(context.Px(28), pitch * 0.72);
                 var badgeCy = yBase - h - badgeR - context.Px(8);
 
-                DrawBadge(session, context, name, xc, badgeCy, badgeR + context.Px(2.5), Medal(rank), a);
+                DrawBadge(session, context, _series.Entries[k].Code, name, xc, badgeCy, badgeR + context.Px(2.5), Medal(rank), a);
 
                 // Name, then value, stacked above the badge — both fitted to the column's
                 // own pitch, because a label measured against a wider room is what ran
@@ -1242,7 +1350,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                 var badgeR = Math.Min(context.Px(28), pitch * 0.72);
                 var badgeCy = yBase - h - badgeR - context.Px(8);
 
-                DrawBadge(session, context, name, x, badgeCy, badgeR + context.Px(2.5), TourRing(place), a);
+                DrawBadge(session, context, _series.Entries[k].Code, name, x, badgeCy, badgeR + context.Px(2.5), TourRing(place), a);
             }
             else
             {
@@ -1313,7 +1421,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
 
         var name = _series.Entries[k].Name;
 
-        DrawBadge(session, context, name, x, badgeCy, badgeSize / 2 + context.Px(3 * f), ring, alpha);
+        DrawBadge(session, context, _series.Entries[k].Code, name, x, badgeCy, badgeSize / 2 + context.Px(3 * f), ring, alpha);
 
         var width = context.Width - context.Margins.Left - context.Margins.Right - context.Px(48);
 
@@ -1560,7 +1668,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer
                 var badgeR = (h * 0.72) / 2;
                 var badgeCx = x - (w / 2) + context.Px(14 * sw) + badgeR;
 
-                DrawBadge(session, context, name, badgeCx, y, badgeR + context.Px(2.5 * sw),
+                DrawBadge(session, context, _series.Entries[k].Code, name, badgeCx, y, badgeR + context.Px(2.5 * sw),
                     king ? Medals[0] : Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)], a);
 
                 var room = w - (badgeR * 2) - context.Px(58 * sw);
@@ -1661,14 +1769,40 @@ public sealed class SectorRaceRenderer : IFrameRenderer
         Ink.RightMiddle(session, rank.ToString(CultureInfo.InvariantCulture),
             x0 + context.Px(30 * f), yc, rankFormat, Palette.Credit, alpha);
 
-        // Where the career board drew a face, a chip in the racer's own colour: the same
-        // identity the bar carries, at the head of the row.
+        // Where the career board drew a face: a **company logo** on its plate when the
+        // racer is a listed company, otherwise the chip in the racer's own colour — the
+        // same identity the bar carries, at the head of the row.
         var colour = ColourBySign
             ? (value >= 0 ? Rgb(0xEF, 0x44, 0x44) : Rgb(0x22, 0xC5, 0x5E))
             : Palette.Race16[Palette.RaceIndex(_series.Entries[k].Code)];
         var chipR = context.Px(SlimBadge * f) * 0.34;
+        var chipCx = x0 + context.Px(68 * f);
+        var faceKey = CompanyLogoCache.KeyOf(_series.Entries[k].Code);
 
-        session.FillCircle((float)(x0 + context.Px(68 * f)), (float)yc, (float)chipR, Ink.Fade(colour, alpha));
+        if (faceKey.Length > 0 && Faces is { } faces)
+        {
+            // The column badge's staging in miniature: plate, picture, and the racer's
+            // own colour for the ring.
+            var faceR = chipR * 1.45;
+
+            session.FillCircle((float)chipCx, (float)yc, (float)faceR, Ink.Fade(BadgePlate, alpha));
+
+            if (TryFace(session, _series.Entries[k].Code, chipCx, yc, faceR * 2, alpha))
+            {
+                session.DrawCircle((float)chipCx, (float)yc, (float)faceR,
+                    Ink.Fade(colour, alpha), (float)(faceR * 0.07));
+            }
+            else
+            {
+                faces.Ensure(faceKey);
+
+                session.FillCircle((float)chipCx, (float)yc, (float)chipR, Ink.Fade(colour, alpha));
+            }
+        }
+        else
+        {
+            session.FillCircle((float)chipCx, (float)yc, (float)chipR, Ink.Fade(colour, alpha));
+        }
 
         // The bar runs to the name and no further: the name's width is measured once for
         // the whole column, so a long name in any language costs the bar its room rather
