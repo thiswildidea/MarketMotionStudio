@@ -356,10 +356,11 @@ public sealed class BoardSplitRenderer(
     }
 
     /// <summary>
-    /// The day's figure at the curve's head: right-aligned against the head dot, above it unless
-    /// the curve is at the plot's ceiling, and clamped inside the plot on both axes. Sized as the
-    /// frame's headline — it is the one number the frame is about — and inked in the sign's
-    /// colour, which says the half of the answer the digits also carry.
+    /// The day's figure at the curve's head, in a pill of the sign's colour — the index lines'
+    /// end tag, carrying the book's money instead. Above the head by default, below it when the
+    /// curve is at the plot's ceiling, and clamped inside the plot on both axes. Dark text on a
+    /// red or a green pill says the half of the answer the digits also carry, and a number set on
+    /// its own colour survives a backdrop the curve has already filled.
     /// </summary>
     private void DrawEndValue(
         CanvasDrawingSession session2, FrameContext context,
@@ -367,33 +368,43 @@ public sealed class BoardSplitRenderer(
         double left, double plotWidth, double top, double bottom, double appear)
     {
         var text = PortfolioPnlRenderer.Money(head.Value);
+        var colour = head.Value >= 0 ? Palette.Emphasis : Palette.Fall;
 
-        using var format = Ink.Format(context.Px(58), bold: true);
+        using var format = Ink.Format(context.Px(48), bold: true);
 
         using var layout = new CanvasTextLayout(session2, text, format, 0, 0);
+
         var textWidth = layout.LayoutBounds.Width;
         var textHeight = layout.LayoutBounds.Height;
+        var padX = context.Px(22);
+        var padY = context.Px(10);
+        var boxWidth = textWidth + (padX * 2);
+        var boxHeight = textHeight + (padY * 2);
 
+        // Right-aligned against the head dot, kept inside the plot's left edge.
         var x = Math.Max(
             left + context.Px(6),
-            head.X - context.Px(22) - textWidth);
+            head.X - context.Px(16) - boxWidth);
 
         // Above the head by default; below it when the head is near the plot's top, and clamped
         // so a head near either edge still keeps its number inside the plot.
-        var y = head.Y - textHeight - context.Px(18);
+        var y = head.Y - boxHeight - context.Px(18);
 
         if (y < top + context.Px(6))
         {
             y = head.Y + context.Px(18);
         }
 
-        y = Math.Clamp(y, top + context.Px(6), Math.Max(top + context.Px(6), bottom - textHeight - context.Px(6)));
+        y = Math.Clamp(y, top + context.Px(6), Math.Max(top + context.Px(6), bottom - boxHeight - context.Px(6)));
 
-        var colour = head.Value >= 0 ? Palette.Emphasis : Palette.Fall;
+        session2.FillRoundedRectangle(
+            (float)x, (float)y, (float)boxWidth, (float)boxHeight,
+            (float)(boxHeight / 2), (float)(boxHeight / 2),
+            Ink.Fade(colour, appear));
 
-        Ink.Glow(session2, context.Px(10), 0.4 * appear,
-            ds => ds.DrawText(text, (float)x, (float)y, colour, format));
-        session2.DrawText(text, (float)x, (float)y, Ink.Fade(colour, appear), format);
+        session2.DrawText(
+            text, (float)(x + padX), (float)(y + padY),
+            Ink.Fade(Ink.OnTopOf(colour), appear), format);
     }
 
     /// <summary>The contributor names, or the same length of asterisks. An instance method, not
