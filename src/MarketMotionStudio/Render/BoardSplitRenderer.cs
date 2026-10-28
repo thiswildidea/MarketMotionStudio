@@ -357,10 +357,11 @@ public sealed class BoardSplitRenderer(
 
     /// <summary>
     /// The day's figure at the curve's head, in a pill of the sign's colour — the index lines'
-    /// end tag, carrying the book's money instead. Above the head by default, below it when the
-    /// curve is at the plot's ceiling, and clamped inside the plot on both axes. Dark text on a
-    /// red or a green pill says the half of the answer the digits also carry, and a number set on
-    /// its own colour survives a backdrop the curve has already filled.
+    /// end tag, carrying the book's money instead. It rides *beside* the moving head, vertically
+    /// centred on it: right of the dot while there is room (the curve has not drawn there yet),
+    /// and on the dot's left shoulder once the head runs against the plot's right edge — a pill
+    /// pressed against the frame's edge is a pill half-read. Clamped inside the plot on both
+    /// axes either way.
     /// </summary>
     private void DrawEndValue(
         CanvasDrawingSession session2, FrameContext context,
@@ -381,19 +382,19 @@ public sealed class BoardSplitRenderer(
         var boxWidth = textWidth + (padX * 2);
         var boxHeight = textHeight + (padY * 2);
 
-        // Right-aligned against the head dot, kept inside the plot's left edge.
-        var x = Math.Max(
-            left + context.Px(6),
-            head.X - context.Px(16) - boxWidth);
+        // Right of the head while the plot has room for it; left of it once the head gets near
+        // the plot's right edge. A line stopped early (the mainland close rule) still has axis
+        // to its right, so it keeps the pill on the right there.
+        var x = head.X + context.Px(16);
 
-        // Above the head by default; below it when the head is near the plot's top, and clamped
-        // so a head near either edge still keeps its number inside the plot.
-        var y = head.Y - boxHeight - context.Px(18);
-
-        if (y < top + context.Px(6))
+        if (x + boxWidth > left + plotWidth - context.Px(6))
         {
-            y = head.Y + context.Px(18);
+            x = head.X - context.Px(16) - boxWidth;
         }
+
+        x = Math.Max(x, left + context.Px(6));
+
+        var y = head.Y - (boxHeight / 2);
 
         y = Math.Clamp(y, top + context.Px(6), Math.Max(top + context.Px(6), bottom - boxHeight - context.Px(6)));
 
