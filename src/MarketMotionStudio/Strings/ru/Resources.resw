@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Колонны-небоскрёбы</value></data>
   <data name="RaceStylePyramid"><value>Пирамида трона</value></data>
   <data name="RaceStyleFocusTour"><value>Небоскрёбы с фокусом</value></data>
+  <data name="NavBoard.Content"><value>Портфель и рынок, пополам</value></data>
+  <data name="BoardPageTitle.Text"><value>Портфель и рынок, пополам</value></data>
+  <data name="BoardPageSubtitle.Text"><value>Сверху день портфеля, снизу индексы материка и Гонконга: по половине кадра, на одних часах.</value></data>
+  <data name="BoardTitle"><value>Портфель и рынок</value></data>
+  <data name="BoardSectionIndex.Text"><value>Индексы (материк / Гонконг)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Индексы материка · закрытие 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Индексы Гонконга · закрытие 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>Портфель (правится на странице «Интрадей П&amp;У»)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Обновлять во время торгов</value></data>
+  <data name="BoardNote.Text"><value>Данные — поминутные котировки последнего торгового дня; одно обновление после закрытия даёт весь день.</value></data>
+  <data name="BoardFetched"><value>{0} из {1} индексов · {2} минут · портфель {3}</value></data>
+  <data name="BoardNeedIndex"><value>Выберите хотя бы один индекс — иначе нижней половине нечего рисовать.</value></data>
+  <data name="BoardFetchFailed"><value>Загрузка не удалась; попробуйте позже. Уже нарисованное остаётся.</value></data>
+  <data name="BoardPnlLabel"><value>День портфеля</value></data>
+  <data name="BoardPnlStatLine"><value>Портфель {0} · {1} позиций</value></data>
+  <data name="BoardContribBest"><value>Лучший вклад: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Худший: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Индексы · изменение от вчерашнего закрытия</value></data>
+  <data name="BoardNoIndex"><value>Индексы не выбраны</value></data>
+  <data name="BoardNoon"><value>Обеденный перерыв</value></data>
+  <data name="BoardMainlandClose"><value>Закрытие материка 15:00</value></data>
 </root>

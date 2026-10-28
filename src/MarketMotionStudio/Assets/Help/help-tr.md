@@ -456,6 +456,22 @@ Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana 
 
 - İlk defter, bu sayfanın doğduğu dokuz pozisyondur; kullanmadıklarınızı tek tek çıkarıp kendi pozisyonlarınızı ekleyin.
 
+## Portföy ve Piyasa bölünmüş
+
+Üstte portföyün günü, altta Çin anakarası ve Hong Kong endeksleri: yarısı yarıya, tek saat, animasyon birlikte dakika dakika ilerler.
+
+- **Üst yarı kendi portföyünü çizer** — gün içi kâr sayfasının okuduğu aynı defter: günün kâr eğrisi sıfır çizgisi üzerinde, bugünün sayısı, getiri, pozisyon sayısı, ve en iyi ile en kötü katkı sahibi adlarıyla. Burada salt okunur; düzenleme gün içi sayfasında.
+
+- **Alt yarı yalnızca endeks çizer**: anakaradan altısı (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) ve Hong Kong'dan üçü (Hang Seng, HSCEI, Hang Seng Tech); başlangıçta SSE Composite ve Hang Seng işlidir. Hisse, ETF ve coin bu sayfada değil — sayfa bugün piyasasının nasıl gittiğini yanıtlar.
+
+- **Her endeks dünkü kapanışa göre değişim olarak çizilir**: yirmi üç bindeki Hang Seng ile üç bin altı yüzdaki SSE aynı ekseni paylaşamaz; yüzdeler paylaşır. Gösterge sağda ve görüntüyle birlikte yürür.
+
+- **Saat en geç kapanışa kadar koşar**: yalnız anakara — 15:00'e; bir Hong Kong endeksi işliyse — 16:00'ya. İkisi de seçiliyken anakara çizgileri 15:00 kapanışından sonra «anakara kapanışı 15:00» çizgisi altında düz kalır, Hong Kong 16:00'ya kadar sürer.
+
+- **Veriler son işlem gününün dakikalarıdır**: seans sırasında «şimdi»; kapanıştan sonra bir çekim günün tamamını verir. Piyasa açıkken otomatik yenileme (30 saniyede bir) açılabilir, gün içi sayfasıyla aynı tempoda.
+
+- Süre, başlık, arka plan ve dışa aktarma her sayfada olduğu gibi sağdaki panelde ayarlanır.
+
 ## Kripto mumlar
 
 ![Sayfanın tamamı: solda önizleme, altta oynatma çubuğu, sağda ayarlar.](media/crypto-candle.png)

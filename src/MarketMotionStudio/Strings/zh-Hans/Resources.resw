@@ -1134,4 +1134,25 @@
   <data name="RaceStyleSkyline"><value>天际线立柱</value></data>
   <data name="RaceStylePyramid"><value>王座金字塔</value></data>
   <data name="RaceStyleFocusTour"><value>聚焦天际线</value></data>
+  <data name="NavBoard.Content"><value>持仓·大盘 双屏</value></data>
+  <data name="BoardPageTitle.Text"><value>持仓·大盘 双屏</value></data>
+  <data name="BoardPageSubtitle.Text"><value>上半是持仓的当日盈亏，下半是 A 股与港股指数的实时走势：两边各占一半，共用一根时钟。</value></data>
+  <data name="BoardTitle"><value>持仓·大盘</value></data>
+  <data name="BoardSectionIndex.Text"><value>指数（A 股 / 港股）</value></data>
+  <data name="BoardSectionMainland.Text"><value>A 股指数 · 15:00 收盘</value></data>
+  <data name="BoardSectionKong.Text"><value>港股指数 · 16:00 收盘</value></data>
+  <data name="BoardSectionBook.Text"><value>持仓（在「实时持仓收益」里编辑）</value></data>
+  <data name="BoardAutoRefresh.Header"><value>开盘时自动刷新</value></data>
+  <data name="BoardNote.Text"><value>数据是最近一个交易日的分钟行情；收盘后重取即可得到当日全貌。</value></data>
+  <data name="BoardFetched"><value>取到 {0} / {1} 个指数 · {2} 分钟 · 组合 {3}</value></data>
+  <data name="BoardNeedIndex"><value>至少选一个指数，下半屏才有东西可画。</value></data>
+  <data name="BoardFetchFailed"><value>取数失败，稍后再试；已经画出的画面仍然可用。</value></data>
+  <data name="BoardPnlLabel"><value>持仓当日盈亏</value></data>
+  <data name="BoardPnlStatLine"><value>组合 {0} · 持仓 {1} 只</value></data>
+  <data name="BoardContribBest"><value>贡献最大 {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>拖累最大 {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>指数走势 · 涨跌幅</value></data>
+  <data name="BoardNoIndex"><value>未选指数</value></data>
+  <data name="BoardNoon"><value>午间休市</value></data>
+  <data name="BoardMainlandClose"><value>A 股收盘 15:00</value></data>
 </root>

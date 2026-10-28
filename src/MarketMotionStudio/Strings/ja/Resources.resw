@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>スカイライン柱</value></data>
   <data name="RaceStylePyramid"><value>王座ピラミッド</value></data>
   <data name="RaceStyleFocusTour"><value>フォーカス・スカイライン</value></data>
+  <data name="NavBoard.Content"><value>資産と市場の分割表示</value></data>
+  <data name="BoardPageTitle.Text"><value>資産と市場の分割表示</value></data>
+  <data name="BoardPageSubtitle.Text"><value>上に保有資産の当日損益、下に A 股と香港指数のリアルタイム推移：半分ずつ、一つの時計で。</value></data>
+  <data name="BoardTitle"><value>資産と市場</value></data>
+  <data name="BoardSectionIndex.Text"><value>指数（A 股 / 香港株）</value></data>
+  <data name="BoardSectionMainland.Text"><value>A 股指数 · 15:00 終了</value></data>
+  <data name="BoardSectionKong.Text"><value>香港指数 · 16:00 終了</value></data>
+  <data name="BoardSectionBook.Text"><value>保有資産（編集は「リアルタイム損益」で）</value></data>
+  <data name="BoardAutoRefresh.Header"><value>取引時間中は自動更新</value></data>
+  <data name="BoardNote.Text"><value>データは直近取引日の分足です。終了後に取り直せば一日分がそろいます。</value></data>
+  <data name="BoardFetched"><value>指数 {0} / {1} · {2} 分 · 資産 {3}</value></data>
+  <data name="BoardNeedIndex"><value>指数を一つ以上選んでください。下半分に描くものがなくなります。</value></data>
+  <data name="BoardFetchFailed"><value>取得に失敗しました。すでに描かれた画面はそのまま使えます。</value></data>
+  <data name="BoardPnlLabel"><value>保有資産の当日損益</value></data>
+  <data name="BoardPnlStatLine"><value>資産 {0} · 保有 {1} 銘柄</value></data>
+  <data name="BoardContribBest"><value>最大の功労者 {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>最大の足かせ {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>指数の推移 · 前日終値比</value></data>
+  <data name="BoardNoIndex"><value>指数未選択</value></data>
+  <data name="BoardNoon"><value>昼間休場</value></data>
+  <data name="BoardMainlandClose"><value>A 股終了 15:00</value></data>
 </root>

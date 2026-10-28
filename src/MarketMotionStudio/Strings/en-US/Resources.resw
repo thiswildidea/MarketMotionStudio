@@ -1136,4 +1136,25 @@
   <data name="RaceStyleSkyline"><value>Skyline columns</value></data>
   <data name="RaceStylePyramid"><value>Throne pyramid</value></data>
   <data name="RaceStyleFocusTour"><value>Focus skyline</value></data>
+  <data name="NavBoard.Content"><value>Book &amp; Board Split</value></data>
+  <data name="BoardPageTitle.Text"><value>Book &amp; Board Split</value></data>
+  <data name="BoardPageSubtitle.Text"><value>The book's day above, mainland and Hong Kong indexes below: half the frame each, on one clock.</value></data>
+  <data name="BoardTitle"><value>Book &amp; Board</value></data>
+  <data name="BoardSectionIndex.Text"><value>Indexes (mainland / Hong Kong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Mainland indexes · close 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Hong Kong indexes · close 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>The book (edited on Intraday P&amp;L)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Refresh while the market is open</value></data>
+  <data name="BoardNote.Text"><value>The data is the latest trading day, minute by minute; one fetch after the close is the whole day.</value></data>
+  <data name="BoardFetched"><value>{0} of {1} indexes · {2} minutes · book {3}</value></data>
+  <data name="BoardNeedIndex"><value>Pick at least one index — the lower half has nothing to draw otherwise.</value></data>
+  <data name="BoardFetchFailed"><value>The fetch failed; try again later. What is already drawn stays.</value></data>
+  <data name="BoardPnlLabel"><value>The book's day</value></data>
+  <data name="BoardPnlStatLine"><value>Book {0} · {1} positions</value></data>
+  <data name="BoardContribBest"><value>Best: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Worst: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Indexes · change from yesterday's close</value></data>
+  <data name="BoardNoIndex"><value>No index selected</value></data>
+  <data name="BoardNoon"><value>Lunch break</value></data>
+  <data name="BoardMainlandClose"><value>Mainland close 15:00</value></data>
 </root>

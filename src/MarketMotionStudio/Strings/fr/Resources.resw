@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Colonnes skyline</value></data>
   <data name="RaceStylePyramid"><value>Pyramide du trône</value></data>
   <data name="RaceStyleFocusTour"><value>Skyline animée</value></data>
+  <data name="NavBoard.Content"><value>Portefeuille &amp; marché partagés</value></data>
+  <data name="BoardPageTitle.Text"><value>Portefeuille &amp; marché partagés</value></data>
+  <data name="BoardPageSubtitle.Text"><value>En haut la journée du portefeuille, en bas les indices de Chine continentale et de Hong Kong : une moitié chacun, une seule horloge.</value></data>
+  <data name="BoardTitle"><value>Portefeuille &amp; marché</value></data>
+  <data name="BoardSectionIndex.Text"><value>Indices (continent / Hong Kong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Indices du continent · clôture 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Indices de Hong Kong · clôture 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>Le portefeuille (à modifier dans « P&amp;L intraday »)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Actualiser pendant la séance</value></data>
+  <data name="BoardNote.Text"><value>Les données sont les minutes du dernier jour de bourse ; un fetch après la clôture donne la journée entière.</value></data>
+  <data name="BoardFetched"><value>{0} sur {1} indices · {2} minutes · portefeuille {3}</value></data>
+  <data name="BoardNeedIndex"><value>Choisis au moins un indice — sinon la moitié basse n'a rien à dessiner.</value></data>
+  <data name="BoardFetchFailed"><value>Le fetch a échoué ; réessaie plus tard. Ce qui est déjà dessiné reste.</value></data>
+  <data name="BoardPnlLabel"><value>La journée du portefeuille</value></data>
+  <data name="BoardPnlStatLine"><value>Portefeuille {0} · {1} positions</value></data>
+  <data name="BoardContribBest"><value>Meilleure contribution : {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Pire contribution : {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Indices · variation depuis la clôture d'hier</value></data>
+  <data name="BoardNoIndex"><value>Aucun indice choisi</value></data>
+  <data name="BoardNoon"><value>Pause déjeuner</value></data>
+  <data name="BoardMainlandClose"><value>Clôture continentale 15:00</value></data>
 </root>

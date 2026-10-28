@@ -485,6 +485,22 @@ Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 ge
 
 - Das erste Depot besteht aus den neun Positionen, mit denen diese Seite entstanden ist; entfernen Sie sie Zeile für Zeile und fügen Sie Ihre eigenen hinzu.
 
+## Depot & Markt geteilt
+
+Oben der Tag des Depots, unten die Festland- und Hongkong-Indizes: je die halbe Bildhöhe, eine Uhr für beide, die Animation geht Minute für Minute zusammen vorwärts.
+
+- **Die obere Hälfte zeichnet dein eigenes Depot** — dasselbe, das die Intraday-Gewinnseite liest: die Tageskurve auf ihrer Nulllinie, die heutige Zahl, die Tagesrendite, die Zahl der Positionen, und die beste und die schlechteste Position namentlich. Hier nur lesend; bearbeitet wird auf der Intraday-Seite.
+
+- **Die untere Hälfte zeichnet nur Indizes**: sechs vom Festland (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) und drei aus Hongkong (Hang Seng, HSCEI, Hang Seng Tech), vorgewählt sind SSE Composite und Hang Seng. Einzelwerte, ETFs und Münzen gehören nicht auf diese Seite — sie antwortet darauf, wie der Markt heute lief.
+
+- **Jeder Index wird als Veränderung zum Vortagsschluss gezeichnet**: der Hang Seng bei dreiundzwanzigtausend und der SSE bei dreitausendsechshundert teilen keine Achse; Prozente schon. Die Legende steht rechts und wandert mit dem Bild mit.
+
+- **Die Uhr läuft bis zum späteren Schluss**: nur Festland, bis 15:00; mit einem Hongkong-Index, bis 16:00. Bei beiden halten die Festlandlinien nach 15:00 flach unter einer Marke „Festland-Schluss 15:00", während Hongkong bis 16:00 weiterläuft.
+
+- **Die Daten sind die Minutenkurse des letzten Handelstags**: während der Sitzung „jetzt", nach Schluss ein Abruf für den ganzen Tag. Bei offener Börse lässt sich die automatische Aktualisierung einschalten (alle 30 Sekunden), im Takt der Intraday-Seite.
+
+- Länge, Titel, Hintergrund und Export wie auf jeder anderen Seite, im Panel rechts.
+
 ## Krypto-Kerzen
 
 ![Die Seite im Ganzen: Vorschau links, Zeitleiste darunter, Einstellungen rechts.](media/crypto-candle.png)

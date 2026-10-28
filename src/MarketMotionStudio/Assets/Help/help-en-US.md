@@ -475,6 +475,22 @@ Your own holdings, marked to the minute: what today has made or cost since 09:30
 
 - The first book is the nine positions this page was built from; remove them a row at a time and add your own.
 
+## Book & Board Split
+
+The book's day above, mainland and Hong Kong indexes below: half the frame each, on one clock, the animation walking forward a minute at a time together.
+
+- **The upper half draws your own book** — the same one the Intraday P&L page reads: the day's profit curve on its zero line, today's figure, the day's return and the count of positions, plus the best and the worst contributor named. The book is read-only here; edits belong to the intraday page.
+
+- **The lower half draws indexes only**: six mainland ones (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) and three from Hong Kong (Hang Seng, HSCEI, Hang Seng Tech), the SSE Composite and the Hang Seng ticked to start. Stocks, ETFs and coins are not on this page — it answers how the market is doing today.
+
+- **Every index is plotted as its change against yesterday's close**: the Hang Seng at twenty-three thousand and the SSE at thirty-six hundred cannot share an axis, percentages can. The legend sits to the right and moves with the frame.
+
+- **The clock runs to whoever closes last**: mainland indexes only, to 15:00; a Hong Kong index selected, to 16:00. With both, the mainland lines hold flat after the 15:00 close under a rule marked "mainland close 15:00", while Hong Kong keeps going to 16:00.
+
+- **The data is the latest trading day, minute by minute**: during the session it reads as "right now"; one fetch after the close is the whole day. While the market is open the auto-refresh can be switched on (every 30 seconds), the same beat as the intraday page.
+
+- Duration, title, backdrop and export are set in the panel on the right, like every other page.
+
 ## Crypto Candles
 
 ![The page in full: preview on the left, scrubber below, settings on the right.](media/crypto-candle.png)

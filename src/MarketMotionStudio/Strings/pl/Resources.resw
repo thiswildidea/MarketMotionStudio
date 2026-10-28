@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Kolumny panoramy</value></data>
   <data name="RaceStylePyramid"><value>Piramida tronu</value></data>
   <data name="RaceStyleFocusTour"><value>Skyline z fokusem</value></data>
+  <data name="NavBoard.Content"><value>Portfel i rynek, na pół</value></data>
+  <data name="BoardPageTitle.Text"><value>Portfel i rynek, na pół</value></data>
+  <data name="BoardPageSubtitle.Text"><value>U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po połowie kadru, na jednym zegarze.</value></data>
+  <data name="BoardTitle"><value>Portfel i rynek</value></data>
+  <data name="BoardSectionIndex.Text"><value>Indeksy (kontynent / Hongkong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Indeksy kontynentu · zamknięcie 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Indeksy Hongkongu · zamknięcie 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>Portfel (edycja na stronie «P&amp;L intraday»)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Odświeżaj w czasie sesji</value></data>
+  <data name="BoardNote.Text"><value>Dane to minuty ostatniego dnia sesji; jedno pobranie po zamknięciu daje cały dzień.</value></data>
+  <data name="BoardFetched"><value>{0} z {1} indeksów · {2} minut · portfel {3}</value></data>
+  <data name="BoardNeedIndex"><value>Wybierz przynajmniej jeden indeks — inaczej dolna połowa nie ma czego rysować.</value></data>
+  <data name="BoardFetchFailed"><value>Pobranie nie powiodło się; spróbuj później. To, co już narysowano, zostaje.</value></data>
+  <data name="BoardPnlLabel"><value>Dzień portfela</value></data>
+  <data name="BoardPnlStatLine"><value>Portfel {0} · {1} pozycji</value></data>
+  <data name="BoardContribBest"><value>Najlepszy wkład: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Najgorszy: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Indeksy · zmiana od wczorajszego zamknięcia</value></data>
+  <data name="BoardNoIndex"><value>Nie wybrano indeksu</value></data>
+  <data name="BoardNoon"><value>Przerwa obiadowa</value></data>
+  <data name="BoardMainlandClose"><value>Zamknięcie kontynentu 15:00</value></data>
 </root>

@@ -468,6 +468,22 @@ Własne pozycje wyceniane co minutę: ile dzisiejsza sesja dała lub kosztowała
 
 - Pierwszy portfel to dziewięć pozycji, z którymi ta strona powstała; usuń zbędne po jednej i dodaj własne.
 
+## Portfel i rynek, na pół
+
+U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po połowie kadru, na jednym zegarze, animacja idzie do przodu minuta po minucie razem.
+
+- **Górna połowa rysuje twój własny portfel** — ten sam, który czyta strona P&L intraday: krzywą dnia na linii zera, dzisiejszą liczbę, stopę zwrotu, liczbę pozycji, a także najlepszego i najgorszego wkład z nazwy. Tu tylko odczyt; edycja należy do strony intraday.
+
+- **Dolna połowa rysuje tylko indeksy**: sześć z kontynentu (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) i trzy z Hongkongu (Hang Seng, HSCEI, Hang Seng Tech); domyślnie zaznaczone są SSE Composite i Hang Seng. Akcji, ETF i monet tu nie ma — strona odpowiada, jak dziś szedł rynek.
+
+- **Każdy indeks rysowany jest jako zmiana od wczorajszego zamknięcia**: Hang Seng na dwudziestu trzech tysiącach i SSE na trzech tysiącach sześciuset nie dzielą osi; procenty — dzielą. Legenda po prawej i wędruje z obrazem.
+
+- **Zegar biegnie do późniejszego zamknięcia**: sam kontynent — do 15:00; zaznaczony indeks hongkoński — do 16:00. Z oboma linie kontynentu po zamknięciu 15:00 trzymają się płasko pod kreską «zamknięcie kontynentu 15:00», a Hongkong idzie do 16:00.
+
+- **Dane to minuty ostatniego dnia sesji**: w czasie sesji to «teraz»; jedno pobranie po zamknięciu daje cały dzień. Przy otwartej sesji można włączyć automatyczne odświeżanie (co 30 sekund), w tym samym rytmie co strona intraday.
+
+- Długość, tytuł, tło i eksport ustawia się w panelu po prawej, jak na każdej stronie.
+
 ## Świece krypto
 
 ![Strona w całości: podgląd po lewej, pasek odtwarzania poniżej, ustawienia po prawej.](media/crypto-candle.png)

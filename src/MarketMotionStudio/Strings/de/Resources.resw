@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Skyline-Säulen</value></data>
   <data name="RaceStylePyramid"><value>Thronpyramide</value></data>
   <data name="RaceStyleFocusTour"><value>Fokus-Skyline</value></data>
+  <data name="NavBoard.Content"><value>Depot &amp; Markt geteilt</value></data>
+  <data name="BoardPageTitle.Text"><value>Depot &amp; Markt geteilt</value></data>
+  <data name="BoardPageSubtitle.Text"><value>Oben der Tag des Depots, unten die Festland- und Hongkong-Indizes: je die halbe Bildhöhe, eine Uhr für beide.</value></data>
+  <data name="BoardTitle"><value>Depot &amp; Markt</value></data>
+  <data name="BoardSectionIndex.Text"><value>Indizes (Festland / Hongkong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Festland-Indizes · Schluss 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Hongkong-Indizes · Schluss 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>Depot (bearbeitet unter »Intraday-Gewinn«)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Während der Handelszeit aktualisieren</value></data>
+  <data name="BoardNote.Text"><value>Die Daten sind die Minutenkurse des letzten Handelstags; ein Abruf nach Schluss ergibt den ganzen Tag.</value></data>
+  <data name="BoardFetched"><value>{0} von {1} Indizes · {2} Minuten · Depot {3}</value></data>
+  <data name="BoardNeedIndex"><value>Wähle mindestens einen Index — sonst hat die untere Hälfte nichts zu zeichnen.</value></data>
+  <data name="BoardFetchFailed"><value>Der Abruf ist fehlgeschlagen; versuche es später erneut. Gezeichnetes bleibt stehen.</value></data>
+  <data name="BoardPnlLabel"><value>Der Tag des Depots</value></data>
+  <data name="BoardPnlStatLine"><value>Depot {0} · {1} Positionen</value></data>
+  <data name="BoardContribBest"><value>Bester Beitrag: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Schlechtester: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Indizes · Veränderung zum Vortagsschluss</value></data>
+  <data name="BoardNoIndex"><value>Kein Index gewählt</value></data>
+  <data name="BoardNoon"><value>Mittagspause</value></data>
+  <data name="BoardMainlandClose"><value>Festland-Schluss 15:00</value></data>
 </root>

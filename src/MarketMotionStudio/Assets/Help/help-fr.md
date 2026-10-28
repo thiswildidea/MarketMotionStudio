@@ -490,6 +490,22 @@ Vos propres positions, valorisées à la minute : ce que la séance a rapporté 
 
 - Le premier portefeuille reprend les neuf positions avec lesquelles cette page a été conçue ; retirez-les une à une et ajoutez les vôtres.
 
+## Portefeuille & marché partagés
+
+En haut la journée du portefeuille, en bas les indices du continent et de Hong Kong : une moitié chacun, une seule horloge, l'animation avance minute par minute ensemble.
+
+- **La moitié haute dessine votre propre portefeuille** — le même que lit la page P&L intraday : la courbe du jour sur sa ligne zéro, le chiffre du jour, la performance, le nombre de positions, et les meilleures et pires contributions nommément. Lecture seule ici ; les modifications se font sur la page intraday.
+
+- **La moitié basse ne dessine que des indices** : six du continent (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) et trois de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech), SSE Composite et Hang Seng cochés au départ. Les actions, ETF et monnaies ne sont pas sur cette page — elle répond à « comment le marché a-t-il tourné aujourd'hui ».
+
+- **Chaque indice est tracé en variation depuis la clôture d'hier** : le Hang Seng à vingt-trois mille et le SSE à trois mille six cents ne partagent pas d'axe ; les pourcentages, oui. La légende est à droite et suit l'image.
+
+- **L'horloge court jusqu'à la dernière clôture** : continent seul, jusqu'à 15:00 ; un indice hongkongais coché, jusqu'à 16:00. Avec les deux, les lignes du continent restent plates après la clôture de 15:00 sous un trait « clôture continentale 15:00 », et Hong Kong continue jusqu'à 16:00.
+
+- **Les données sont les minutes du dernier jour de bourse** : pendant la séance c'est « maintenant » ; un fetch après la clôture donne la journée entière. L'actualisation automatique (toutes les 30 secondes) peut être activée, au même rythme que la page intraday.
+
+- Durée, titre, fond et export se règlent dans le panneau de droite, comme partout.
+
 ## Chandeliers crypto
 
 ![La page en entier : aperçu à gauche, barre de lecture en bas, réglages à droite.](media/crypto-candle.png)

@@ -15,7 +15,7 @@ belong together: bump `Version` in the manifest, add the entry, and update the f
 listing copy for all fourteen languages, and it lives in the repository — it used to sit in the
 ignored `artifacts/`, where a cleared directory would have taken it for good.
 
-Status: **thirty pages working, and export working on all of them, across four markets.** Market Turnover fetches
+Status: **thirty-one pages working, and export working on all of them, across four markets.** Market Turnover fetches
 live quotes and animates them as a bar race or a turnover calendar; its parameters are remembered
 between runs; a cover PNG and an MP4 both export at full resolution.
 Stock Volume does the same for one instrument — search by code, name or pinyin, two modes (daily
@@ -209,7 +209,7 @@ Three facts about the source that a market switch would otherwise hide:
   as one bar from 2011, which looks like a listing that barely trades. The venues are tried in
   turn (`.OQ`, `.N`, `.AM`) and the first that answers with a real history wins.
 
-## The thirty pages
+## The thirty-one pages
 
 **Market Turnover** — the whole market's daily turnover: the Shanghai and Shenzhen composite
 amounts added together. Only days on which every included market traded are kept, so one market's
@@ -1065,6 +1065,50 @@ import puts a file back over the list — one unreadable line (columns, code, sh
 repeated code) holds the whole import and reports each line number, so a book is never left
 half replaced.
 
+**Book and board, split** — the one page that draws two things at once, and the only one that
+exists in a single market: the book's day in the upper half, the mainland and Hong Kong indexes in
+the lower, **each exactly half the frame, on one clock**. It is A-share only because it is the only
+market where both halves have data — the book marks mainland and Hong Kong codes, and the indexes
+are that pair of venues — so the navigation item is added when the market setting says A-share and
+removed otherwise, rather than hidden and left to fetch nothing. The upper half is not a second
+drawing of the intraday page: it reads the same `PortfolioSession`, so the big figure, the book's
+reference value and the two contributors are the same numbers to the fen, and a cover exported from
+either page shows the same day. What is new is the pairing: a curve filled above the zero line in
+red and below it in green — a segment that crosses zero is cut at the crossing, so the colour is
+never wrong by half a stroke — a head dot at the playhead, and three figures instead of a table,
+because at 1080×1920 the upper half has room for one big number and two small ones, and a fourth
+line would be read from across a room as a smudge.
+
+The lower half is minutes, not candles, and that was decided by the sources rather than by taste:
+the one-minute candle endpoint answers for a mainland index and answers `param error` for `hkHSI`,
+while the minute query answers for both — 242 rows to 15:00 for the mainland, 332 to 16:08 for Hong
+Kong. Two venues can only share one drawing if the drawing is minutes. Each line is the change from
+yesterday's close, and that previous close travels in the same quote block as the name, so the zero
+line is yesterday's close and this morning's gap shows as a jump instead of being drawn flat. The
+axis is **symmetric** — the taller reach of the two, mirrored — because two indexes on one axis are
+compared by eye, and a +2% line drawn twice as tall as a −2% line is a lie about which venue had the
+worse morning. The lunch break keeps its real width as a shaded band rather than being closed up:
+outside the band the two venues traded, and Hong Kong breaks at noon while Shanghai breaks at half
+past eleven.
+
+**One clock, and the three things it broke.** Both halves advance on the same minute, derived from
+the playhead across the shared window, so the index lines and the book's curve can never drift apart
+and the frame is honest about what time it is. The window closes at the *latest* close among the
+ticked venues — 15:00 with only mainland indexes, 16:00 as soon as one Hong Kong index is on the
+frame — and the three faults that came out of that first draft are all the same fault wearing
+different clothes. Hong Kong lines stopped at 15:00, because each series was clipped to its own
+venue's close and the frame's clock was the mainland's; now a series stops at its own close and then
+holds its last level out to the axis's end, which is what a closed market does. The 15:00 and 16:00
+clock labels printed over each other once the axis ran to four o'clock — fifty pixels apart at this
+width — so with a Hong Kong index present the middle two labels are dropped and the ticks read
+09:30 / 13:00 / 16:00, while a vertical rule at 15:00 names the mainland's close in words instead of
+as a number two labels would collide with. And a frame with no mainland index at all was drawing the
+mainland's 11:30 lunch band over a Hong Kong morning that was still trading: the band is whichever
+pause the drawn venues actually keep. Ticking a box fetches only the indexes that are not already
+loaded, so adding the Hang Seng Index to a frame that has the Shanghai composite re-asks the source
+for one code rather than for the set, and the page refreshes itself every thirty seconds while the
+market is open and stops after the close, on the same rule as the intraday page.
+
 **Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
 over a coin instead of a share, and the three pages that come with **a fourth market** rather than
 sitting beside the stock ones. Both sources that carry a coin's history sit outside the mainland, so
@@ -1640,7 +1684,7 @@ detector still sees it. A detector whose control sample is clean is not a detect
 
 What every frame is drawn on is a setting: the page's own gradient, a two-colour gradient of the
 user's, or a picture — from the computer or from Windows' own wallpapers, the last six kept. One
-setting for all thirty pages, and it reaches the preview, the cover PNG and the MP4 alike, which
+setting for all thirty-one pages, and it reaches the preview, the cover PNG and the MP4 alike, which
 is the single-render-path rule restated: one renderer draws all three.
 
 **It travels in `FrameContext`, not through a global the renderers read.** Each draw is handed
@@ -1699,9 +1743,9 @@ a renderer with no watermark is one with nothing to draw rather than one that ha
 ## The subscription, and the two things it buys
 
 Exporting a video and taking the watermark off it take a monthly subscription. Everything else
-stays free on all thirty pages — fetching data, playing the animation, saving a cover image —
+stays free on all thirty-one pages — fetching data, playing the animation, saving a cover image —
 and is meant to stay free: what is metered here is **writing a file**, not opening the app. Those
-two are the ends that leave home, and the thirty pages of live market animation are what
+two are the ends that leave home, and the thirty-one pages of live market animation are what
 somebody came for.
 
 The gate is a dialog rather than a disabled button, and that is the whole sales argument. A greyed
@@ -1811,7 +1855,7 @@ first export asks and then remembers.
   So what is verified is the gate, its placement, the licence read, and the watermark's dependency
   on it — not the Store's own purchase dialog, and not what Microsoft's report says when the add-on
   is finally there.
-- **The Store screenshots cover fifteen of the thirty pages.** `tools/store-screenshots.py` stops
+- **The Store screenshots cover fifteen of the thirty-one pages.** `tools/store-screenshots.py` stops
   at the bond board, so the gallery has no volume & turnover page, market-value page, A+H page,
   extreme-day board, currency corridor, index race, asset-class board, drawdown board or hold-odds
   board. The eleven cryptocurrency pages need a run of their own (`--crypto`): selecting that market

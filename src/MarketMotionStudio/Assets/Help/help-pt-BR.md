@@ -471,6 +471,22 @@ Suas próprias posições, marcadas ao minuto: o que o dia rendeu ou custou desd
 
 - A primeira carteira são as nove posições com que esta página nasceu; remova uma a uma as que não usar e acrescente as suas.
 
+## Carteira e mercado divididos
+
+Em cima o dia da carteira, em baixo os índices do continente e de Hong Kong: meia tela para cada, um só relógio, a animação avança minuto a minuto junta.
+
+- **A metade de cima desenha a sua própria carteira** — a mesma que a página de P&L intradiário lê: a curva do dia na linha zero, o número de hoje, o retorno, a contagem de posições, e o melhor e o pior contribuinte nomeados. Somente leitura aqui; edições ficam na página intradiária.
+
+- **A metade de baixo desenha só índices**: seis do continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) e três de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite e Hang Seng marcados de início. Ações, ETFs e moedas não estão nesta página — ela responde como o mercado foi hoje.
+
+- **Cada índice é traçado como variação desde o fechamento de ontem**: o Hang Seng a vinte e três mil e o SSE a três mil e seiscentos não dividem eixo; porcentagens, sim. A legenda fica à direita e acompanha a imagem.
+
+- **O relógio corre até o fechamento mais tarde**: só continente, até 15:00; com um índice de Hong Kong, até 16:00. Com os dois, as linhas do continente ficam planas após o fechamento de 15:00 sob um traço «fechamento do continente 15:00», e Hong Kong segue até 16:00.
+
+- **Os dados são os minutos do último dia de pregão**: durante a sessão é «agora»; uma leitura após o fechamento dá o dia inteiro. Com o pregão aberto, a atualização automática (a cada 30 segundos) pode ser ligada, no mesmo compasso da página intradiária.
+
+- Duração, título, fundo e exportação se ajustam no painel à direita, como em toda página.
+
 ## Velas cripto
 
 ![A página inteira: pré-visualização à esquerda, barra de reprodução abaixo, ajustes à direita.](media/crypto-candle.png)

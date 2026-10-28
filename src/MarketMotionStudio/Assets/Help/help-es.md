@@ -476,6 +476,22 @@ Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costa
 
 - La primera cartera son las nueve posiciones con las que nació esta página; quite las que no use una a una y añada las suyas.
 
+## Cartera y mercado, divididos
+
+Arriba el día de la cartera, abajo los índices del continente y de Hong Kong: media pantalla cada uno, un solo reloj, la animación avanza minuto a minuto junta.
+
+- **La mitad superior dibuja tu propia cartera** — la misma que lee la página de P&L intradía: la curva del día sobre su línea cero, la cifra de hoy, la rentabilidad, el número de posiciones, y nombrados el mejor y el peor contribuyente. Solo lectura aquí; las ediciones, en la página intradía.
+
+- **La mitad inferior dibuja solo índices**: seis del continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) y tres de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite y Hang Seng marcados de inicio. Acciones, ETF y monedas no están en esta página — responde a cómo fue el mercado hoy.
+
+- **Cada índice se traza como variación desde el cierre de ayer**: el Hang Seng a veintitrés mil y el SSE a tres mil seiscientos no comparten eje; los porcentajes sí. La leyenda está a la derecha y se mueve con la imagen.
+
+- **El reloj corre hasta el cierre más tardío**: solo continente, hasta las 15:00; con un índice de Hong Kong, hasta las 16:00. Con ambos, las líneas del continente quedan planas tras el cierre de 15:00 bajo una regla «cierre continental 15:00», y Hong Kong sigue hasta las 16:00.
+
+- **Los datos son los minutos del último día de bolsa**: durante la sesión es «ahora»; una lectura tras el cierre da el día completo. Con la sesión abierta puede activarse la actualización automática (cada 30 segundos), al mismo compás que la página intradía.
+
+- Duración, título, fondo y exportación se ajustan en el panel de la derecha, como en todas las páginas.
+
 ## Velas cripto
 
 ![La página completa: vista previa a la izquierda, barra de reproducción abajo, ajustes a la derecha.](media/crypto-candle.png)

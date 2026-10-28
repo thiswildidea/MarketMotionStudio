@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Silüet kolonlar</value></data>
   <data name="RaceStylePyramid"><value>Taht piramidi</value></data>
   <data name="RaceStyleFocusTour"><value>Odaklı silüet</value></data>
+  <data name="NavBoard.Content"><value>Portföy ve Piyasa bölünmüş</value></data>
+  <data name="BoardPageTitle.Text"><value>Portföy ve Piyasa bölünmüş</value></data>
+  <data name="BoardPageSubtitle.Text"><value>Üstte portföyün günü, altta Çin anakarası ve Hong Kong endeksleri: yarısı yarıya, tek saat.</value></data>
+  <data name="BoardTitle"><value>Portföy ve Piyasa</value></data>
+  <data name="BoardSectionIndex.Text"><value>Endeksler (anakara / Hong Kong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Anakara endeksleri · kapanış 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Hong Kong endeksleri · kapanış 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>Portföy («Gün içi kâr» sayfasında düzenlenir)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Piyasa açıkken yenile</value></data>
+  <data name="BoardNote.Text"><value>Veriler son işlem gününün dakikalarıdır; kapanıştan sonra bir çekim günün tamamını verir.</value></data>
+  <data name="BoardFetched"><value>{0} / {1} endeks · {2} dakika · portföy {3}</value></data>
+  <data name="BoardNeedIndex"><value>En az bir endeks seç — yoksa alt yarıya çizilecek bir şey yok.</value></data>
+  <data name="BoardFetchFailed"><value>Çekim başarısız; sonra tekrar dene. Çizilmiş olan yerinde kalır.</value></data>
+  <data name="BoardPnlLabel"><value>Portföyün günü</value></data>
+  <data name="BoardPnlStatLine"><value>Portföy {0} · {1} pozisyon</value></data>
+  <data name="BoardContribBest"><value>En iyi katkı: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>En kötü: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Endeksler · dünkü kapanışa göre değişim</value></data>
+  <data name="BoardNoIndex"><value>Endeks seçilmedi</value></data>
+  <data name="BoardNoon"><value>Öğle arası</value></data>
+  <data name="BoardMainlandClose"><value>Anakara kapanışı 15:00</value></data>
 </root>

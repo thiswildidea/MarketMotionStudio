@@ -451,6 +451,22 @@ Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála
 
 - První portfolio tvoří devět pozic, se kterými tahle stránka vznikla; nepotřebné po jedné odstraňte a přidejte svoje.
 
+## Portfolio a trh napůl
+
+Nahoře den portfolia, dole indexy pevninské Číny a Hongkongu: po polovině rámu, na jedny hodiny, animace jde dopředu minutu za minutou spolu.
+
+- **Horní polovina kreslí tvé vlastní portfolio** — tutéž, kterou čte stránka Intraday P&L: denní křivku na nulové linii, dnešní číslo, výnos, počet pozic, a pojmenované největší přínosy i brzdy. Zde jen ke čtení; úpravy patří na stránku intraday.
+
+- **Dolní polovina kreslí jen indexy**: šest z pevniny (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) a tři z Hongkongu (Hang Seng, HSCEI, Hang Seng Tech); předvoleny jsou SSE Composite a Hang Seng. Akcie, ETF a mince na této stránce nejsou — odpovídá na to, jak dnes šel trh.
+
+- **Každý index se kreslí jako změna od včerejšího uzavření**: Hang Seng ve třiadvaceti tisících a SSE v šestiapůltisících jednu osu nesdílejí; procenta ano. Legenda vpravo a jde s obrazem.
+
+- **Hodiny běží do pozdějšího uzavření**: jen pevnina — do 15:00; zaškrtnut hongkongský index — do 16:00. S oběma drží se linie pevniny po uzavření 15:00 v rovině pod čarou «uzavření pevniny 15:00», a Hongkong jde do 16:00.
+
+- **Data jsou minuty posledního obchodního dne**: během seance je to «teď»; jedno stažení po uzavření dá celý den. Za otevřené burzy lze zapnout automatickou aktualizaci (každých 30 sekund), ve stejném rytmu jako stránka intraday.
+
+- Délku, titul, pozadí a export nastavíš v panelu vpravo, jako na každé stránce.
+
 ## Krypto svíčky
 
 ![Stránka jako celek: náhled vlevo, přehrávací lišta dole, nastavení vpravo.](media/crypto-candle.png)

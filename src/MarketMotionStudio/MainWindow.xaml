@@ -276,6 +276,13 @@
                     <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPortfolioPnl}" /></mux:NavigationViewItem.Icon>
                 </mux:NavigationViewItem>
 
+                <!-- The intraday book and the two markets on one clock, under it because it is
+                     that page's subject seen against the market it was made in. Offered only
+                     under A 股: see `ApplyMarket`, which is the one place that decides it. -->
+                <mux:NavigationViewItem x:Name="NavBoard" x:Uid="NavBoard" Tag="Board">
+                    <mux:NavigationViewItem.Icon><PathIcon Data="{StaticResource IconPortfolioPnl}" /></mux:NavigationViewItem.Icon>
+                </mux:NavigationViewItem>
+
                 <!-- The three crypto pages, listed only while the market is the crypto
                      one. See `ApplyMarket`, which is the single place that decides it:
                      chosen, the stock pages come out and these three are shown; not

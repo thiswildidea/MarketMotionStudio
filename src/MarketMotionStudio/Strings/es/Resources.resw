@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Columnas horizonte</value></data>
   <data name="RaceStylePyramid"><value>Pirámide del trono</value></data>
   <data name="RaceStyleFocusTour"><value>Skyline con foco</value></data>
+  <data name="NavBoard.Content"><value>Cartera y mercado, divididos</value></data>
+  <data name="BoardPageTitle.Text"><value>Cartera y mercado, divididos</value></data>
+  <data name="BoardPageSubtitle.Text"><value>Arriba el día de la cartera, abajo los índices de China continental y Hong Kong: media pantalla cada uno, un solo reloj.</value></data>
+  <data name="BoardTitle"><value>Cartera y mercado</value></data>
+  <data name="BoardSectionIndex.Text"><value>Índices (continental / Hong Kong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Índices continentales · cierre 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Índices de Hong Kong · cierre 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>La cartera (se edita en «P&amp;L intradía»)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Actualizar durante la sesión</value></data>
+  <data name="BoardNote.Text"><value>Los datos son los minutos del último día de bolsa; una lectura tras el cierre da el día completo.</value></data>
+  <data name="BoardFetched"><value>{0} de {1} índices · {2} minutos · cartera {3}</value></data>
+  <data name="BoardNeedIndex"><value>Elige al menos un índice; si no, la mitad inferior no tiene nada que dibujar.</value></data>
+  <data name="BoardFetchFailed"><value>La lectura falló; inténtalo más tarde. Lo ya dibujado permanece.</value></data>
+  <data name="BoardPnlLabel"><value>El día de la cartera</value></data>
+  <data name="BoardPnlStatLine"><value>Cartera {0} · {1} posiciones</value></data>
+  <data name="BoardContribBest"><value>Mejor aporte: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Peor aporte: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Índices · variación desde el cierre de ayer</value></data>
+  <data name="BoardNoIndex"><value>Ningún índice elegido</value></data>
+  <data name="BoardNoon"><value>Pausa del mediodía</value></data>
+  <data name="BoardMainlandClose"><value>Cierre continental 15:00</value></data>
 </root>

@@ -421,6 +421,15 @@ public sealed partial class MainWindow : Window
         {
             Nav.MenuItems.Remove(NavMarketTurnover);
         }
+
+        // 持仓·大盘 双屏 is a mainland book with Hong Kong's indexes drawn under it: under any
+        // other market the lower half's subject is not the chosen market's, so the page leaves
+        // the menu rather than sitting there drawing somebody else's board. The same reason the
+        // crypto pages do, one rule up.
+        if (MarketSettings.Current is not MarketId.AShare)
+        {
+            Nav.MenuItems.Remove(NavBoard);
+        }
     }
 
     /// <summary>
@@ -789,6 +798,7 @@ public sealed partial class MainWindow : Window
             "Candle" => typeof(CandlePage),
             "Position" => typeof(PositionPage),
             "PortfolioPnl" => typeof(PortfolioIntradayPage),
+            "Board" => typeof(BoardPage),
             "CryptoCandle" => typeof(CryptoCandlePage),
             "CryptoDca" => typeof(CryptoDcaPage),
             "CryptoPosition" => typeof(CryptoPositionPage),
@@ -814,6 +824,13 @@ public sealed partial class MainWindow : Window
         // on offer: a stale selection, a restored one, or any future caller with a tag
         // in hand would otherwise land on a page the market cannot feed.
         if (page == typeof(MarketTurnoverPage) && !Markets.WholeMarket(MarketSettings.Current))
+        {
+            return;
+        }
+
+        // The same guard for the board: a tag restored from a visit under A 股 would otherwise
+        // land on it after the market moved, silently.
+        if (page == typeof(BoardPage) && MarketSettings.Current is not MarketId.AShare)
         {
             return;
         }

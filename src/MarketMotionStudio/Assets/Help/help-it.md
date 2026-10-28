@@ -484,6 +484,22 @@ Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costat
 
 - Il primo portafoglio parte dalle nove posizioni con cui questa pagina è nata; toglile una per una e aggiungi le tue.
 
+## Portafoglio e mercato divisi
+
+Sopra la giornata del portafoglio, sotto gli indici del continente e di Hong Kong: metà schermo ciascuno, un solo orologio, l'animazione avanza minuto per minuto insieme.
+
+- **La metà superiore disegna il tuo portafoglio** — lo stesso che legge la pagina P&L intraday: la curva del giorno sulla sua linea zero, la cifra di oggi, la resa, il numero di posizioni, e il migliore e il peggiore contributo nominati. Solo lettura qui; le modifiche si fanno sulla pagina intraday.
+
+- **La metà inferiore disegna solo indici**: sei del continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) e tre di Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite e Hang Seng spuntati all'inizio. Azioni, ETF e monete non sono su questa pagina — risponde a come è andato il mercato oggi.
+
+- **Ogni indice è tracciato come variazione dalla chiusura di ieri**: l'Hang Seng a ventitremila e l'SSE a tremilaseicento non condividono un asse; le percentuali sì. La legenda è a destra e si muove con l'immagine.
+
+- **L'orologio corre fino all'ultima chiusura**: solo continente, fino alle 15:00; con un indice di Hong Kong, fino alle 16:00. Con entrambi, le linee del continente restano piatte dopo la chiusura delle 15:00 sotto un tratto «chiusura continentale 15:00», mentre Hong Kong prosegue fino alle 16:00.
+
+- **I dati sono i minuti dell'ultima giornata di borsa**: durante la seduta è «adesso»; un prelievo dopo la chiusura dà la giornata intera. Con la seduta aperta si può attivare l'aggiornamento automatico (ogni 30 secondi), allo stesso passo della pagina intraday.
+
+- Durata, titolo, sfondo ed esportazione si regolano nel pannello a destra, come su ogni pagina.
+
 ## Candele crypto
 
 ![La pagina per intero: anteprima a sinistra, barra di riproduzione sotto, impostazioni a destra.](media/crypto-candle.png)

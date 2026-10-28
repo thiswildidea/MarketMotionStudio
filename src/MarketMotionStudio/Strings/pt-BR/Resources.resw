@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Colunas horizonte</value></data>
   <data name="RaceStylePyramid"><value>Pirâmide do trono</value></data>
   <data name="RaceStyleFocusTour"><value>Skyline com foco</value></data>
+  <data name="NavBoard.Content"><value>Carteira e mercado divididos</value></data>
+  <data name="BoardPageTitle.Text"><value>Carteira e mercado divididos</value></data>
+  <data name="BoardPageSubtitle.Text"><value>Em cima o dia da carteira, em baixo os índices da China continental e de Hong Kong: meia tela para cada, um só relógio.</value></data>
+  <data name="BoardTitle"><value>Carteira e mercado</value></data>
+  <data name="BoardSectionIndex.Text"><value>Índices (continental / Hong Kong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Índices do continente · fechamento 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Índices de Hong Kong · fechamento 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>A carteira (editada em «P&amp;L intradiário»)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Atualizar durante o pregão</value></data>
+  <data name="BoardNote.Text"><value>Os dados são os minutos do último dia de pregão; uma leitura após o fechamento dá o dia inteiro.</value></data>
+  <data name="BoardFetched"><value>{0} de {1} índices · {2} minutos · carteira {3}</value></data>
+  <data name="BoardNeedIndex"><value>Escolha pelo menos um índice; senão a metade de baixo não tem nada a desenhar.</value></data>
+  <data name="BoardFetchFailed"><value>A leitura falhou; tente mais tarde. O que já está desenhado permanece.</value></data>
+  <data name="BoardPnlLabel"><value>O dia da carteira</value></data>
+  <data name="BoardPnlStatLine"><value>Carteira {0} · {1} posições</value></data>
+  <data name="BoardContribBest"><value>Melhor contribuição: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Pior contribuição: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Índices · variação desde o fechamento de ontem</value></data>
+  <data name="BoardNoIndex"><value>Nenhum índice escolhido</value></data>
+  <data name="BoardNoon"><value>Pausa do almoço</value></data>
+  <data name="BoardMainlandClose"><value>Fechamento do continente 15:00</value></data>
 </root>

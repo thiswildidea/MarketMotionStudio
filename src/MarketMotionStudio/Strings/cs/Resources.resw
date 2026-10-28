@@ -1125,4 +1125,25 @@
   <data name="RaceStyleSkyline"><value>Sloupce panorámy</value></data>
   <data name="RaceStylePyramid"><value>Pyramida trůnu</value></data>
   <data name="RaceStyleFocusTour"><value>Skyline s fokusem</value></data>
+  <data name="NavBoard.Content"><value>Portfolio a trh napůl</value></data>
+  <data name="BoardPageTitle.Text"><value>Portfolio a trh napůl</value></data>
+  <data name="BoardPageSubtitle.Text"><value>Nahoře den portfolia, dole indexy pevninské Číny a Hongkongu: po polovině rámu, na jedny hodiny.</value></data>
+  <data name="BoardTitle"><value>Portfolio a trh</value></data>
+  <data name="BoardSectionIndex.Text"><value>Indexy (pevnina / Hongkong)</value></data>
+  <data name="BoardSectionMainland.Text"><value>Indexy pevniny · uzavření 15:00</value></data>
+  <data name="BoardSectionKong.Text"><value>Indexy Hongkongu · uzavření 16:00</value></data>
+  <data name="BoardSectionBook.Text"><value>Portfolio (upravuje se na «Intraday P&amp;L»)</value></data>
+  <data name="BoardAutoRefresh.Header"><value>Aktualizovat během obchodování</value></data>
+  <data name="BoardNote.Text"><value>Data jsou minuty posledního obchodního dne; jedno stažení po uzavření dá celý den.</value></data>
+  <data name="BoardFetched"><value>{0} z {1} indexů · {2} minut · portfolio {3}</value></data>
+  <data name="BoardNeedIndex"><value>Vyber alespoň jeden index — jinak spodní polovina nemá co kreslit.</value></data>
+  <data name="BoardFetchFailed"><value>Stažení se nezdařilo; zkus to později. To, co už je nakresleno, zůstává.</value></data>
+  <data name="BoardPnlLabel"><value>Den portfolia</value></data>
+  <data name="BoardPnlStatLine"><value>Portfolio {0} · {1} pozic</value></data>
+  <data name="BoardContribBest"><value>Největší přínos: {0} {1}</value></data>
+  <data name="BoardContribWorst"><value>Největší brzda: {0} {1}</value></data>
+  <data name="BoardIndexLabel"><value>Indexy · změna od včerejšího uzavření</value></data>
+  <data name="BoardNoIndex"><value>Není vybrán index</value></data>
+  <data name="BoardNoon"><value>Polední přestávka</value></data>
+  <data name="BoardMainlandClose"><value>Uzavření pevniny 15:00</value></data>
 </root>
