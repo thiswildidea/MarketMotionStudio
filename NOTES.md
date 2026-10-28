@@ -2826,3 +2826,31 @@ Bold→ExtraBold（`Ink.Format` 新增 `heavy` 参数）；「持仓当日盈亏
 （artifacts/board-clock-mid-*.png）；帮助文档对轴的描述（互换/午休/收盘范围）
 不涉及位置，无需改。探针技巧：视口外的 CheckBox 用 TogglePattern.Toggle() 而非
 invoke_click（后者要移动光标、对 0×0 矩形直接失败）。
+
+## 发版：1.0.21.0（2026-10-29 晨）
+
+**版本怎么定的**：这次用户直接指定 1.0.21.0，等于回答了「上一版交了没有」—— 1.0.20.0
+已交，所以要的是下一个版本，不是改写 1.0.20.0 的说明。manifest 版本 1.0.20.0 → 1.0.21.0
+（第四段恒 0）。自 1.0.20.0 起有 13 次未发版的提交。
+
+**商店文案**走两条新脚本，都是幂等的（第二遍 0 改动）：
+- `port-store-listing-10210.py` 换「此版本的新增功能」14 语言（新双屏页 + 竞速五形态 +
+  Logo + 卡死修复；`verify-docs` 的 `this_version_news()` **按 manifest 版本号算出脚本名**，
+  所以脚本名必须是 `…-10210.py`，写死就对不上）。
+- `port-listing-page-count-10210.py` 页数 30→31：页数行、产品功能枚举行、**说明条目**各一处。
+  新条目插在「实时持仓收益」之后——导航里 `NavBoard` 就紧跟 `NavPortfolioPnl`；加密十一页
+  收尾的位置没动，判据因此只多一条「新页紧跟锚点」而不是重写尾巴那三条。
+  坑：枚举行里英文写的是短名 `live P&L`（resw 是全名 Live portfolio P&L），俄/捷/波/土
+  一律小写 —— 所以锚点大小写不敏感匹配，插进去的页名跟着锚点自己的首字母大小写。
+- CSV 由 `port-listing-csv.py`（权威）从 md 改写 docs 那一份；`build-store-listing.py`
+  产出的是**根目录的投递副本**（md+CSV 两份），用完删掉，不入库。
+
+**判据自己也会过期**：`verify-store-package.py` 里 `HELP_MEDIA = 70` 还是「每语言 5 张」
+那阵的口径，如今 14 语言 × 16 = 224 —— 一个写得好的包被常数判成坏包。改成从
+`Assets/Help/media/` 实算（Project rule：锚从唯一事实源算，不写死）。
+
+**打包**：清理两个 Release 输出的 `Upload`/`ForBundle`/`*.appxrecipe` 后重编。本机
+MSBuild.exe 被安全策略拦（LOLBin），走 `dotnet build` + `AppxSymbolPackageEnabled=false`
+那条备选路；符号包因此缺失（不影响上架，只影响商店还原崩溃堆栈），包的内容——六个内包
+Identity 全是 1.0.21.0、每语言 16 张图、14 份手册——都验过。
+产物 `artifacts/MarketMotionStudio_1.0.21.0_x64_arm64_bundle.msixupload`。

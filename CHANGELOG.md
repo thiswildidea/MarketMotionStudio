@@ -20,6 +20,29 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.21.0 — 2026-10-29
+
+**本版新增第三十一页「持仓·大盘 双屏」，并处理了一处会卡死的操作。** 这一页把两幅图画在一帧里：
+上半是持仓当日盈亏的分钟曲线，下半是 A 股与港股指数的分钟走势，两幅图共用同一条时间轴——时间轴
+挂在两图之间，逐分钟对着看，是哪只票带动、哪只票拖累一目了然。持仓曲线的末尾跟着一颗胶囊标签写出
+当日金额，每条指数线末尾各挂一枚标签写出名称与实时涨跌幅，红涨绿跌；面板标题也按各自的正负着色。
+条形竞速系列新增五种画面形态（条形竞速、三柱领奖台、天际线立柱、王座金字塔、聚焦天际线），排行榜
+首次挂上公司 Logo。另修一处取数后在样式列表里切换会卡死的问题——旧表格 AICES 同步解码在 UI 线程
+上死锁。
+
+**This release adds the thirty-first page, Book & Board Split, and fixes one action that could
+freeze.** The page draws two pictures in one frame: the day's P&L minute by minute above, A-share
+and Hong Kong index lines below, both on one shared clock with its axis between them — so the stock
+that carried the day and the one that dragged it are read against the same minute. A pill follows
+the P&L curve's head with the day's money on it, each index line ends in a tag carrying its name
+and live change, red when up and green when down, and the panel headings are inked in their own
+signs. The bar-race pages gain five shapes — bar race, three-column podium, skyline pillars, throne
+pyramid and focused skyline — and their leader boards carry company logos for the first time. It
+also fixes a freeze when switching a style after a fetch: sync decoding an old spreadsheet deadlocked
+on the UI thread.
+
+---
+
 ## 1.0.20.0 — 2026-10-23
 
 **本版重做了实时持仓收益页，标题样式改为全局设置。** 持仓列表跟着时间轴走，每一分钟的股数、成本与盈亏都在动；曲线经过成交时弹出买入/卖出点文字标签；交易费率成为页面设置项；页眉的「持仓市值」按画面当前分钟实时计算——它原先印的是收盘值，同一行两句话说的不是同一分钟，而且买卖都不会让它动。成交导入改为粘贴或表格文件；持仓列表可整份导出与导入（CSV，逐行校验，一行不合全拒）。管理持仓对话框显示最新收盘持仓，检索建议显示记录转储的毛病修掉；关闭应用时，当天未记的成交自动折进账本。三款标题与配色在设置页选一次，所有页面即改即生效。1.0.18 已上线的四个加密页（比较、涨跌、占比、年度回报）本版补齐 14 语言手册与商店介绍，商店清单的页数从 25 校准到实际的 30。

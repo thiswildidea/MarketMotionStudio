@@ -219,8 +219,10 @@ def listing_checks():
         # `port-store-listing-caphistory.py` 补进来的；第十九到二十五条是加密货币那七页，
         # 由 `port-store-listing-crypto-pages.py` 一次补进前六页、1.0.18.0 再补第七页；
         # 第二十六条实时持仓收益与第二十七到三十条加密后四页由 `port-listing-page-count.py`
-        # 在 1.0.20.0 一次补齐。）
-        check(f"{lang} 说明段是三十条", len(items) == 30, f"{len(items)} 条")
+        # 在 1.0.20.0 一次补齐；第三十一页持仓·大盘 双屏由 `port-listing-page-count-10210.py`
+        # 紧跟在实时持仓收益之后 —— 它在导航里的位置就是这样，加密十一页收尾的位置也因此
+        # 没动。）
+        check(f"{lang} 说明段是三十一条", len(items) == 31, f"{len(items)} 条")
 
         if items:
             # 末十一条是加密十一页，顺序与导航一致 —— 页名从各语言的 resw 取，不写死：导航
@@ -247,6 +249,16 @@ def listing_checks():
                   or lines[items[-len(CRYPTO_PAGES) - 2]].startswith(f"• {older}"),
                   lines[items[-len(CRYPTO_PAGES) - 2]][:40] if len(items) > len(CRYPTO_PAGES) + 1
                   else "（不够长）")
+
+            # 第三十一页插在它在导航里的位置 —— 紧跟实时持仓收益之后，而不是追加在末尾：
+            # 清单这一串的顺序是历次上架追加出来的，追加会把加密十一页这条尾巴顶开。
+            board = page_name(lang, "NavBoard")
+            after = page_name(lang, "NavPortfolioPnl")
+            where = [n for n, i in enumerate(items) if lines[i].startswith(f"• {board}")]
+            anchor_at = [n for n, i in enumerate(items) if lines[i].startswith(f"• {after}")]
+            check(f"{lang} 持仓·大盘 双屏紧跟实时持仓收益",
+                  len(where) == 1 and len(anchor_at) == 1 and where[0] == anchor_at[0] + 1,
+                  f"在第 {where} 位 / 锚点第 {anchor_at} 位")
 
         # 「此版本的新增功能」：本版要写在里面，上一版那一页一页数的旧文案不能还在。
         subs = [i for i in range(start, end) if lines[i].startswith("### ")]

@@ -12,10 +12,15 @@ r"""拆包核验商店上传包：版本、架构、以及「该在里面的东�
   「这次构建走了哪条路」的一条证据 —— 所以下面**把它打印出来**，而不是假装看不见。
 
 包是怎么分层的（这次实测，别再猜）：上传包里只有 1 个 bundle；bundle 里 **6 个** `msix` ——
-2 个架构包（`ProcessorArchitecture="x64"/"arm64"`，各 181 项：应用本体、14 份手册、70 张帮助插图、
+2 个架构包（`ProcessorArchitecture="x64"/"arm64"`，各装着应用本体、14 份手册、帮助插图、
 `resources.pri`、Win2D 原生 dll、`runtimeconfig.json` / `deps.json`）+ 4 个资源包
 （`ResourceId="split.scale-100/125/150/400"`，只装按比例分的那一版图标）。bundle 清单在
 `AppxMetadata/AppxBundleManifest.xml`，不在根上。
+
+**插图张数不写死** —— 它从 `Assets/Help/media/` 下实际有多少张算出来。写死过一次：这句注释里
+那时候是「各 181 项 / 70 张插图」，后来每语言的插图从 5 张长到 16 张（14 语言 × 16 = 224），
+一句没跟着走的常数就此拒绝了一个**内容完全正确**的包，而且看着像是包坏了。判据要站在事实源上：
+源目录才是「这一版该有多少张」的答案。
 
 用法：python tools\verify-store-package.py [上传包路径]
 """
@@ -41,7 +46,11 @@ DEFAULT = ROOT / "artifacts" / ("MarketMotionStudio_%s_x64_arm64_bundle.msixuplo
 SCALES = ["split.scale-100", "split.scale-125", "split.scale-150", "split.scale-400"]
 ARCHS = ["x64", "arm64"]
 HELP_DOCS = 14
-HELP_MEDIA = 70
+
+# 每个架构包里该有多少张帮助插图 —— **从源目录数**，不写死。插图按语言分子目录，每种
+# 语言一套；14 语言 × 16 张 = 224。见文件头的那段注释：写死 70 那次把一个好包判成了坏的。
+HELP_MEDIA_DIR = ROOT / "src" / "MarketMotionStudio" / "Assets" / "Help" / "media"
+HELP_MEDIA = len([p for p in HELP_MEDIA_DIR.rglob("*.png")])
 
 PASSED = []
 FAILED = []

@@ -12,7 +12,7 @@
 
 MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9:16 竖屏动画，专为抖音、视频号、快手等竖屏平台设计：选择市场与标的，应用自动抓取行情、生成动画，一键导出 H.264 MP4，开箱即发。所有图表页都免费：取数、预览、保存封面图都不收费。导出视频与去掉水印需要按月订阅，可随时取消。
 
-三十大图表页：  
+三十一大图表页：  
 • 市场成交额——全市场每日成交额的历史长卷（A股）  
 • 成交量与换手率——单只股票的量价齐观（A股/港股）  
 • 行业板块竞速——行业指数涨跌的赛跑动画  
@@ -21,6 +21,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 • 定投计划——模拟按周/按月定投的累计收益曲线  
 • 持仓收益——一次买入、持有至今的市值与回撤回放
 • 实时持仓收益——自己持有的那几只，按分钟记着今天挣了多少：从 9:30 到收盘的收益曲线，开市时自动刷新。
+• 持仓·大盘 双屏——上半是持仓的当日盈亏，下半是 A 股与港股指数的实时走势：两边各占一半，共用一根时钟，动画一起一分钟一分钟往前走
 • K线——一只标的的日/周/月 K 线，四种画法，带均线与成交量副图
 • 市值榜竞速——一个市场市值最大的十五家公司按总市值赛跑，成员会随时间进出
 • AH 溢价——同一家公司在 A 股与 H 股的价格差，按月竞速
@@ -52,13 +53,13 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版重做实时持仓收益页：持仓列表跟着时间轴走，每一分钟的股数、成本与盈亏都在动；曲线经过成交时弹出买入/卖出点文字标签；交易费率成为页面设置项；页眉的「持仓市值」按画面当前分钟实时计算，买入卖出即动。成交导入改为粘贴或表格文件，持仓列表可整份导出与导入（CSV）。管理持仓对话框显示最新收盘持仓，检索问题已修复；关闭应用时会把当天未记的成交自动折进账本。标题样式改为全局设置：三款标题与配色在设置页选一次，所有页面即改即生效。加密货币比较、涨跌、占比、年度回报四个页面上个版本已上线，本版为它们补齐了 14 种语言的手册与商店介绍。
+本版新增第三十一页「持仓·大盘 双屏」：上半是持仓当日盈亏的分钟曲线，下半是 A 股与港股指数的分钟走势，两幅图共用同一条时间轴——时间轴挂在两图之间，逐分钟对着看，是谁带动当日盈亏、谁在拖累一目了然。持仓曲线的末尾跟着一枚胶囊标签写出当日金额，每条指数线的末尾各挂一枚标签写出指数名与实时涨跌幅，红涨绿跌，两个面板的标题也按各自的正负着色。条形竞速系列新增五种画面形态，排行榜开始挂上公司 Logo。另修一处卡死：取数之后在样式列表里切换，应用会不再响应。
 
 ### 产品功能
 
 - 一键生成 9:16 竖屏行情动画视频
 - 覆盖A股、港股、美股与加密货币四大市场——加密货币自带十一页，只在中国大陆以外的市场提供
-- 三十种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、实时持仓收益、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率、债市固收、市值历程、加密货币 K 线、加密货币定投、加密货币持仓、加密货币涨跌日历、加密货币市值历程、加密货币市值榜、加密货币月度收益、加密货币比较、加密货币涨跌、加密货币占比、加密货币年度回报
+- 三十一种图表：成交额、量价、板块竞速、市值榜、AH 溢价、收益矩阵、涨跌日历、定投、持仓、实时持仓收益、持仓·大盘 双屏、K线、极端交易日、汇率走廊、指数长跑、大类资产、回撤与修复、持有胜率、债市固收、市值历程、加密货币 K 线、加密货币定投、加密货币持仓、加密货币涨跌日历、加密货币市值历程、加密货币市值榜、加密货币月度收益、加密货币比较、加密货币涨跌、加密货币占比、加密货币年度回报
 - 导出 H.264 MP4，可直接发布到短视频平台
 - 界面内置 14 种语言
 - 无账号、无遥测，数据留在你自己的电脑上
@@ -73,7 +74,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shorts、Reels 等直式平台設計：選擇市場與標的，應用程式自動抓取行情、生成動畫，一鍵匯出 H.264 MP4，開箱即發。所有圖表頁都免費：取數、預覽、儲存封面圖都不收費。匯出影片與移除浮水印需要按月訂閱，可隨時取消。
 
-三十大圖表頁：  
+三十一大圖表頁：  
 • 市場成交額——全市場每日成交額的歷史長卷（陸股）  
 • 成交量與換手率——單一股票的量價齊觀（陸股/港股）  
 • 行業板塊競速——類股指數漲跌的賽跑動畫  
@@ -82,6 +83,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 • 定期定額——模擬每週/每月定期定額的累計報酬曲線  
 • 持倉收益——一次買入、持有至今的市值與回撤回放
 • 即時持倉收益——自己持有的那幾檔，按分鐘記著今天賺了多少：從 9:30 到收盤的收益曲線，開市時自動更新。
+• 持倉·大盤 雙屏——上半是持倉的當日盈虧，下半是 A 股與港股指數的即時走勢：兩邊各佔一半，共用一根時鐘，動畫一起一分鐘一分鐘往前走
 • K線——一檔標的的日線/週線/月線，四種畫法，帶均線與成交量副圖
 • 市值榜競速——一個市場市值最大的十五家公司按總市值賽跑，成員會隨時間進出
 • AH 溢價——同一家公司在 A 股與 H 股的價格差，按月競速
@@ -113,13 +115,13 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版重做即時持倉收益頁：持倉清單跟著時間軸走，每一分鐘的股數、成本與損益都在動；曲線經過成交時彈出買入/賣出點文字標籤；交易費率成為頁面設定項；頁眉的「持倉市值」按畫面當前分鐘即時計算，買入賣出即動。成交匯入改為貼上或表格檔案，持倉清單可整份匯出與匯入（CSV）。管理持倉對話框顯示最新收盤持倉，檢索問題已修復；關閉應用程式時會把當天未記的成交自動折進帳本。標題樣式改為全域設定：三款標題與配色在設定頁選一次，所有頁面即改即生效。加密貨幣比較、漲跌、佔比、年度報酬四個頁面上個版本已上線，本版為它們補齊了 14 種語言的手冊與商店介紹。
+本版新增第三十一頁「持倉·大盤 雙屏」：上半是持倉當日損益的分鐘曲線，下半是 A 股與港股指數的分鐘走勢，兩幅圖共用同一條時間軸——時間軸掛在兩圖之間，逐分鐘對著看，是誰帶動當日損益、誰在拖累一目了然。持倉曲線的末尾跟著一枚膠囊標籤寫出當日金額，每條指數線的末尾各掛一枚標籤寫出指數名與即時漲跌幅，紅漲綠跌，兩個面板的標題也按各自的正負著色。條形競速系列新增五種畫面形態，排行榜開始掛上公司 Logo。另修一處卡死：取數之後在樣式清單裡切換，應用程式會不再回應。
 
 ### 產品功能
 
 - 一鍵生成 9:16 直式行情動畫影片
 - 涵蓋陸股、港股、美股與加密貨幣四大市場——加密貨幣自帶十一頁，只在中國大陸以外的市場提供
-- 三十種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、即時持倉收益、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率、債市固收、市值歷程、加密貨幣 K 線、加密貨幣定投、加密貨幣持倉、加密貨幣漲跌日曆、加密貨幣市值歷程、加密貨幣市值榜、加密貨幣月度收益、加密貨幣比較、加密貨幣漲跌、加密貨幣佔比、加密貨幣年度報酬
+- 三十一種圖表：成交額、量價、板塊競速、市值榜、AH 溢價、收益矩陣、漲跌日曆、定期定額、持倉、即時持倉收益、持倉·大盤 雙屏、K線、極端交易日、匯率走廊、指數長跑、大類資產、回撤與修復、持有勝率、債市固收、市值歷程、加密貨幣 K 線、加密貨幣定投、加密貨幣持倉、加密貨幣漲跌日曆、加密貨幣市值歷程、加密貨幣市值榜、加密貨幣月度收益、加密貨幣比較、加密貨幣漲跌、加密貨幣佔比、加密貨幣年度報酬
 - 匯出 H.264 MP4，可直接發布到短影音平台
 - 介面內建 14 種語言
 - 無帳號、無遙測，資料留在你自己的電腦上
@@ -134,7 +136,7 @@ Turn stock-market indicators into ready-to-post vertical animated videos.
 
 Market Motion Studio turns stock-market data into 9:16 vertical animations, built for vertical platforms like TikTok, Shorts and Reels: pick a market and a symbol, the app fetches the data, animates it, and exports an H.264 MP4 ready to post. Every chart page is free: fetching data, previewing and saving a cover image cost nothing. Exporting the video — and taking the watermark off it — takes a monthly subscription that can be cancelled at any time.
 
-Thirty chart pages:  
+Thirty-one chart pages:  
 • Market turnover — a historical reel of whole-market daily turnover (A-share)  
 • Volume & turnover rate — a single stock's price and volume together (A-share/Hong Kong)  
 • Sector race — sector indices racing up and down  
@@ -143,6 +145,7 @@ Thirty chart pages:
 • DCA plan — simulated weekly/monthly dollar-cost-averaging return curve  
 • Position replay — buy once, hold to today: market value and drawdown replayed day by day
 • Live portfolio P&L — Your own holdings, marked to the minute: what today has made or cost since 09:30, refreshed while the market is open.
+• Book & Board Split — The book's day above, mainland and Hong Kong indexes below: half the frame each, on one clock, the animation walking forward a minute at a time together
 • Candles — one instrument's daily/weekly/monthly candles, four ways, with moving averages and a volume panel
 • Market cap race — one market's fifteen largest companies racing on total market value
 • AH premium — one company's two listings, priced against each other month by month
@@ -174,13 +177,13 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-This release reworks the live portfolio page: the holdings list follows the timeline, with shares, cost and P&L moving minute by minute; the curve raises buy/sell labels as it passes each fill; commission rates become a page setting; and the position value in the header is computed for the frame's own minute, moving with every buy and sell. Trade import switches to paste or a spreadsheet file, and the holdings list can be exported and re-imported whole as CSV. The manage-holdings dialog shows the latest close and its search glitch is fixed; on shutdown the day's unrecorded fills are folded into the ledger automatically. Title styles become a global setting: pick one of three title designs and colours in Settings, and every page follows at once. The four crypto pages — Compare, Movers, Dominance and Annual Returns — shipped last release; this one completes their manuals and store text in all 14 languages.
+This release adds the thirty-first page, Book & Board Split: the day's P&L minute by minute above, A-share and Hong Kong index lines below, both on one clock whose axis hangs between the two pictures — read them against the same minute and it is plain which holding carried the day and which dragged it. A pill follows the head of the P&L curve with the day's money on it; each index line ends in a tag with its name and live change, red when up and green when down, and the two panel headings are inked in their own signs. The bar-race pages gain five shapes, and their leader boards carry company logos for the first time. One freeze is also fixed: switching a style in the list after a fetch used to leave the app unresponsive.
 
 ### Product features
 
 - One-click 9:16 vertical market-animation videos
 - Four markets: China A-shares, Hong Kong, US, and cryptocurrency — the last with eleven pages of its own, offered outside mainland China
-- Thirty charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, live P&L, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds, Bond market, Market value, Crypto Candles, Crypto DCA, Crypto Holdings, Crypto Gain Calendar, Crypto Market Cap History, Crypto Market Cap Race, Crypto Monthly Returns, Crypto Compare, Crypto Movers, Crypto Dominance, Crypto Annual Returns
+- Thirty-one charts: turnover, volume, sector race, market cap, AH premium, return matrix, calendar, DCA, position replay, live P&L, book & Board Split, candles, Extreme days, Currency corridors, Index race, Asset classes, Drawdowns, Hold odds, Bond market, Market value, Crypto Candles, Crypto DCA, Crypto Holdings, Crypto Gain Calendar, Crypto Market Cap History, Crypto Market Cap Race, Crypto Monthly Returns, Crypto Compare, Crypto Movers, Crypto Dominance, Crypto Annual Returns
 - Exports H.264 MP4, ready for short-video platforms
 - Interface available in 14 languages
 - No account, no telemetry — your data stays on your computer
@@ -195,7 +198,7 @@ This release reworks the live portfolio page: the holdings list follows the time
 
 Market Motion Studio は株式市場データを 9:16 の縦型アニメーションに変換する、TikTok・ショート動画・リール向けの Windows アプリです。市場と銘柄を選ぶだけで、アプリが自動で相場データを取得し、アニメーションを生成、H.264 MP4 で書き出します。どのチャートページも無料で使えます。データの取得、プレビュー、カバー画像の保存には費用がかかりません。動画の書き出しとウォーターマークの解除には、いつでも解約できる月額サブスクリプションが必要です。
 
-30 つのチャートページ：  
+31 つのチャートページ：  
 • 市場の売買代金 — 全市場の売買代金の歴史ロングリール（中国A株）  
 • 出来高と回転率 — 一眼でわかる銘柄の量価（中国A株/香港）  
 • 業界セクター競争 — セクター指数の騰落レース  
@@ -204,6 +207,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 • 積立投資 — 週次/月次の積立投資の累積リターン曲線をシミュレーション  
 • 保有収益 — 一度買って保有し続けた時価総額とドローダウンを日々再生
 • リアルタイム保有損益 — 自分の保有銘柄を分単位で評価する：9:30 から引けまでの今日の損益曲線。
+• 資産と市場の分割表示 — 上に保有資産の当日損益、下に A 股と香港指数のリアルタイム推移：半分ずつ、一つの時計で、アニメーションは一分ずつ一緒に進みます
 • ローソク足 — 1 銘柄の日足・週足・月足を4種類の描き方で。移動平均線と出来高パネル付き
 • 時価総額レース — 1 つの市場の時価総額上位 15 社が総額で競う
 • A/H プレミアム — 同一企業の A 株と H 株の価格差を月次で競走
@@ -235,13 +239,13 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-今回の更新は、リアルタイム保有損益ページの作り直しです。保有リストがタイムラインに沿って動き、株数・取得単価・損益が一分ごとに変わります。曲線が約定を通過するときに「買い / 売り」の文字ラベルが出ます。手数料率はページの設定項目になり、ヘッダーの保有評価額は表示中の一分でリアルタイムに計算され、売買のたびに動きます。約定の取り込みは貼り付けか表ファイルになり、保有リストは CSV で丸ごと書き出し・読み込みできます。保有管理ダイアログは最新の大引け時点の保有を示し、検索の不具合を直しました。終了時には、まだ帳簿に折り込まれていない当日の約定を自動で折り込みます。タイトルのスタイルは全体設定になりました。三つのスタイルと配色を設定ページで一度選べば、全ページがすぐに反映します。暗号資産の比較・値動き・占有率・年間収益の四ページは前回の版で既に搭載済みですが、本版で 14 言語のマニュアルとストア紹介を補いました。
+今回の更新で三十一ページ目「資産と市場の分割表示」が加わりました。上半分にその日の保有損益を一分ごと、下半分に A 株と香港株の指数の値動きを描きます。二つの絵は同じ時間軸を共有し、軸は絵と絵の間に置かれます。同じ一分で見比べれば、当日の損益を牽引した銘柄と足を引っ張った銘柄が一目でわかります。保有曲線の先頭にはその日の金額を書いたカプセルがついて動き、指数の線の終わりには名前と騰落率のラベルが出ます。上昇は赤、下落は緑で、二つのパネルの見出しもその符号に合わせて色づきます。棒のレースのページに五つの表示形が増え、順位表には初めて会社のロゴが入りました。また、データを取った直後にスタイルを切り替えると固まる不具合を直しました。
 
 ### 製品の機能
 
 - ワンクリックで 9:16 縦型の相場アニメーション動画を作成
 - 中国A株・香港・米国・暗号資産の 4 市場に対応——暗号資産は十一のページを持ち、中国本土以外の市場で提供
-- 30 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、リアルタイム保有損益、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率、債券市場、時価総額の推移、暗号資産のローソク足、暗号資産のつみたて、暗号資産の保有、暗号資産の値動きカレンダー、暗号資産の時価総額の推移、暗号資産の時価総額レース、暗号資産の月次リターン、暗号資産の比較、暗号資産の値動き、暗号資産の占有率、暗号資産の年間収益
+- 31 種類のチャート：売買代金、量価、セクターレース、時価総額レース、A/H プレミアム、リターンマトリクス、カレンダー、積立、保有収益、リアルタイム保有損益、資産と市場の分割表示、ローソク足、極端な日、為替コリドー、指数レース、資産クラス、ドローダウン、保有勝率、債券市場、時価総額の推移、暗号資産のローソク足、暗号資産のつみたて、暗号資産の保有、暗号資産の値動きカレンダー、暗号資産の時価総額の推移、暗号資産の時価総額レース、暗号資産の月次リターン、暗号資産の比較、暗号資産の値動き、暗号資産の占有率、暗号資産の年間収益
 - H.264 MP4 で書き出し、ショート動画プラットフォームにそのまま投稿可能
 - インターフェースは 14 言語内蔵
 - アカウント不要・テレメトリなし — データはあなたの PC の中だけ
@@ -256,7 +260,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이션으로 바꿔주는 Windows 앱입니다. 틱톡, 쇼츠, 릴스 같은 세로형 플랫폼을 위해 설계되었으며, 시장과 종목만 선택하면 앱이 자동으로 시세를 가져오고 애니메이션을 만들어 H.264 MP4로 내보냅니다.모든 차트 페이지는 무료입니다. 데이터 불러오기, 미리보기, 커버 이미지 저장에는 비용이 들지 않습니다. 동영상 내보내기와 워터마크 제거에는 언제든 해지할 수 있는 월간 구독이 필요합니다.
 
-30가지 차트 페이지:  
+31가지 차트 페이지:  
 • 시장 거래대금 — 전체 시장 일별 거래대금의 히스토리 릴 (중국 A주식)  
 • 거래량과 회전율 — 종목의 가격과 거래량을 한 화면에 (중국 A주식/홍콩)  
 • 업종 경주 — 업종 지수의 등락 레이스  
@@ -265,6 +269,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 • 적립 투자 — 주간/월간 적립 투자의 누적 수익 곡선 시뮬레이션  
 • 보유 수익 — 한 번 사서 오늘까지: 시가총액과 낙폭을 하루씩 재생
 • 실시간 보유 손익 — 내 보유 종목을 분 단위로 평가한다: 9:30부터 장 마감까지 오늘의 손익 곡선. 장중에는 자동으로 새로 고친다.
+• 계좌·시장 분할 — 위쪽은 보유 계좌의 당일 손익, 아래쪽은 A주와 홍콩 지수의 실시간 흐름: 반씩, 하나의 시계로, 애니메이션은 함께 1분씩 앞으로 갑니다
 • 캔들 — 하나의 종목을 일/주/월 단위로, 네 가지 방식으로. 이동평균선과 거래량 패널 포함
 • 시가총액 레이스 — 한 시장의 시가총액 상위 15개 기업의 경주
 • A/H 프리미엄 — 같은 기업의 A주와 H주 가격 차이를 월 단위로 경주
@@ -296,13 +301,13 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이번 업데이트는 실시간 보유 손익 페이지를 다시 만든 것입니다. 보유 목록이 타임라인을 따라 움직이며 주식 수·평단가·손익이 1분마다 바뀝니다. 곡선이 체결을 지날 때 매수/매도 문자 레이블이 나타납니다. 수수료율은 페이지 설정 항목이 되었고, 머리글의 보유 평가액은 화면의 그 1분 기준으로 실시간 계산되어 매매 때마다 움직입니다. 체결 가져오기는 붙여넣기나 표 파일로 바뀌었고, 보유 목록은 CSV로 통째로 내보내고 가져올 수 있습니다. 보유 관리 대화상자는 최신 종가 시점의 보유를 보여 주며 검색 문제를 고쳤습니다. 종료할 때 아직 장부에 반영되지 않은 당일 체결이 자동으로 반영됩니다. 제목 스타일은 전역 설정이 되었습니다. 세 가지 스타일과 색을 설정 페이지에서 한 번 고르면 모든 페이지에 곧바로 적용됩니다. 암호화폐 비교·등락·점유율·연간 수익 네 페이지는 지난 버전에 이미 들어 있었고, 이번 버전에서 14개 언어의 매뉴얼과 스토어 소개를 채웠습니다.
+이번 업데이트는 서른한 번째 페이지「계좌·시장 분할」을 더합니다. 위에는 그날의 보유 손익을 1분 단위로, 아래에는 A주와 홍콩 지수의 움직임을 그립니다. 두 그림은 같은 시간축을 쓰고 축은 그림 사이에 놓입니다. 같은 1분으로 견주어 보면 그날 손익을 이끈 종목과 끌어내린 종목이 한눈에 보입니다. 보유 곡선의 머리에는 그날 금액을 적은 알약표가 따라붙고, 지수선 끝에는 이름과 실시간 등락률 라벨이 붙습니다. 오르면 빨강, 내리면 초록이며 두 패널의 제목도 각자부호에 맞춰 색을 칠합니다. 막대 경주 페이지에 다섯 가지 화면 형태가 늘고 순위표에 처음으로 회사 로고가 들어갔습니다. 또한 데이터를 가져온 뒤 스타일을 바꾸면 멈추던 문제도 고쳤습니다.
 
 ### 제품 기능
 
 - 원클릭으로 9:16 세로형 시장 애니메이션 영상 제작
 - 중국 A주식, 홍콩, 미국, 암호화폐 4개 시장 지원——암호화폐는 열한 페이지를 가지며 중국 본토 밖 시장에서 제공
-- 30가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 실시간 보유 손익, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률、채권시장、시가총액 추이、크립토 캔들、크립토 적립、크립토 보유、크립토 등락 캘린더、크립토 시가총액 추이、크립토 시가총액 레이스、크립토 월간 수익률、암호화폐 비교、암호화폐 등락、암호화폐 점유율、암호화폐 연간 수익
+- 31가지 차트: 거래대금, 거래량, 업종 경주, 시가총액 레이스, A/H 프리미엄, 수익 매트릭스, 달력, 적립 투자, 보유 수익, 실시간 보유 손익, 계좌·시장 분할, 캔들、극단의 날、환율 코리도、지수 레이스、자산군、낙폭、보유 승률、채권시장、시가총액 추이、크립토 캔들、크립토 적립、크립토 보유、크립토 등락 캘린더、크립토 시가총액 추이、크립토 시가총액 레이스、크립토 월간 수익률、암호화폐 비교、암호화폐 등락、암호화폐 점유율、암호화폐 연간 수익
 - H.264 MP4로 내보내 숏폼 플랫폼에 바로 게시
 - 14개 언어 인터페이스 내장
 - 계정 없음, 텔레메트리 없음 — 데이터는 내 컴퓨터에만
@@ -317,7 +322,7 @@ Verwandeln Sie Marktindikatoren in direkt veröffentlichbare vertikale Animation
 
 Market Motion Studio macht aus Börsendaten 9:16-Animationen im Hochformat – gebaut für vertikale Plattformen wie TikTok, Shorts und Reels: Markt und Symbol wählen, die App ruft die Kurse ab, animiert sie und exportiert eine H.264-MP4, bereit zum Posten. Jede Diagrammseite ist kostenlos: Daten laden, Vorschau und Titelbild speichern kosten nichts. Das Video zu exportieren — und das Wasserzeichen zu entfernen — verlangt ein monatliches Abonnement, das jederzeit kündbar ist.
 
-Dreißig Diagrammseiten:  
+Einunddreißig Diagrammseiten:  
 • Marktumsatz – ein historischer Reel des täglichen Gesamtmarktumsatzes (China A-Aktien)  
 • Volumen und Umschlag – Kurs und Volumen einer Aktie zusammen (China A/Hongkong)  
 • Sektor-Rennen – Branchenindizes im Auf und Ab im Rennen  
@@ -326,6 +331,7 @@ Dreißig Diagrammseiten:
 • Sparplan – simulierte Renditekurve für wöchentliches/monatliches Sparen  
 • Depotrendite – einmal gekauft, bis heute gehalten: Marktwert und Drawdown Tag für Tag
 • Depot live——Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 gebracht oder gekostet hat, während der Handelszeit laufend aktualisiert.
+• Depot & Markt geteilt——Oben der Tag des Depots, unten die Festland- und Hongkong-Indizes: je die halbe Bildhöhe, eine Uhr für beide, die Animation geht Minute für Minute zusammen vorwärts
 • Kerzen — ein Instrument täglich, wöchentlich oder monatlich, in vier Darstellungen, mit Durchschnitten und Volumenpanel
 • Marktkapitalisierungs-Rennen – die fünfzehn größten Unternehmen eines Marktes im Rennen nach Marktwert
 • A/H-Prämie – die beiden Notierungen eines Unternehmens, Monat für Monat gegeneinander
@@ -357,13 +363,13 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Dieses Release baut die Seite Depot live um: Die Bestandsliste folgt der Zeitleiste, Stückzahl, Einstand und Gewinn/Verlust bewegen sich Minute für Minute; beim Passieren jedes Abschlusses erscheint ein Kauf-/Verkauf-Label; die Gebührenrate wird zu einer Seiteneinstellung; und der Positionswert in der Kopfzeile wird für die jeweilige Minute berechnet und bewegt sich mit jedem Kauf und Verkauf. Der Import von Abschlüssen wechselt zu Einfügen oder Tabellendatei, und die Bestandsliste lässt sich als CSV ganz exportieren und wieder einlesen. Der Dialog Bestand verwalten zeigt den letzten Schlussbestand, und der Suchfehler ist behoben; beim Beenden werden die nicht verbuchten Abschlüsse des Tages automatisch ins Konto gefaltet. Titeldesigns werden zur globalen Einstellung: Drei Titelentwürfe und Farben einmal in den Einstellungen gewählt, und jede Seite folgt sofort. Die vier Krypto-Seiten Vergleich, Bewegungen, Dominanz und Jahresrenditen kamen im letzten Release; dieses ergänzt ihre Handbücher und Shop-Texte in allen 14 Sprachen.
+Dieses Release bringt die einunddreißigste Seite, Depot & Markt geteilt: oben das Tagesergebnis des Depots Minute für Minute, unten die Verläufe der A-Aktien- und der Hongkong-Indizes. Beide Bilder teilen eine Uhr, deren Achse zwischen ihnen hängt — in derselben Minute gelesen zeigt sich, welche Position den Tag getragen und welche ihn gedrückt hat. Eine Kapsel folgt dem Kopf der Ergebniskurve mit dem Tagesbetrag; jede Indexlinie endet mit einem Etikett aus Namen und augenblicklicher Veränderung — rot bei Plus, grün bei Minus —, und beide Paneltitel sind im eigenen Vorzeichen eingefärbt. Die Balkenrennen-Seiten erhalten fünf Bildformen, und ihre Bestenlisten zeigen erstmals die Logos der Gesellschaften. Behoben ist außerdem ein Hänger: Ein Wechsel des Stils direkt nach dem Datenabruf ließ die Anwendung nicht mehr reagieren.
 
 ### Produktfunktionen
 
 - Mit einem Klick 9:16-Marktanimationsvideos im Hochformat
 - Vier Märkte: China A-Aktien, Hongkong, USA und Kryptowährungen — letztere mit elf eigenen Seiten, angeboten außerhalb des chinesischen Festlands
-- Dreißig Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Depot live, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote, Anleihemarkt, Marktwert, Krypto-Kerzen, Krypto-Sparplan, Krypto-Bestände, Krypto-Gewinnkalender, Krypto-Marktkapitalisierung im Verlauf, Rennen der Krypto-Marktkapitalisierung, Krypto-Monatsrenditen, Krypto-Vergleich, Krypto-Bewegungen, Krypto-Dominanz, Krypto-Jahresrenditen
+- Einunddreißig Diagramme: Umsatz, Volumen, Sektor-Rennen, Marktkapitalisierungs-Rennen, A/H-Prämie, Renditematrix, Kalender, Sparplan, Depotrendite, Depot live, Depot & Markt geteilt, Kerzen, Extreme Tage, Währungskorridore, Index-Rennen, Anlageklassen, Rücksetzer, Haltequote, Anleihemarkt, Marktwert, Krypto-Kerzen, Krypto-Sparplan, Krypto-Bestände, Krypto-Gewinnkalender, Krypto-Marktkapitalisierung im Verlauf, Rennen der Krypto-Marktkapitalisierung, Krypto-Monatsrenditen, Krypto-Vergleich, Krypto-Bewegungen, Krypto-Dominanz, Krypto-Jahresrenditen
 - Export als H.264-MP4, fertig für Kurzvideo-Plattformen
 - Oberfläche in 14 Sprachen
 - Kein Konto, keine Telemetrie – Ihre Daten bleiben auf Ihrem Computer
@@ -378,7 +384,7 @@ Transformez les indicateurs de marché en vidéos animées verticales, prêtes �
 
 Market Motion Studio transforme les données boursières en animations 9:16 verticales, conçu pour les plateformes verticales comme TikTok, Shorts et Reels : choisissez un marché et un symbole, l'application récupère les cours, les anime et exporte un MP4 H.264 prêt à publier. Chaque page de graphiques est gratuite : charger les données, prévisualiser et enregistrer une image de couverture ne coûtent rien. Exporter la vidéo — et retirer le filigrane — demande un abonnement mensuel, résiliable à tout moment.
 
-Trente pages de graphiques :  
+Trente et une pages de graphiques :  
 • Volume d'échanges du marché — un long format historique du volume quotidien de tout le marché (Chine A)  
 • Volume et rotation — le prix et le volume d'une action ensemble (Chine A/Hong Kong)  
 • Course de secteurs — les indices sectoriels qui montent et descendent en course  
@@ -387,6 +393,7 @@ Trente pages de graphiques :
 • Plan DCA — courbe de rendement simulée d'un plan d'achat hebdomadaire/mensuel  
 • Rendement de position — acheté une fois, conservé jusqu'à aujourd'hui : valeur et drawdown rejoués jour après jour
 • P&L en direct — Vos propres positions, valorisées à la minute : ce que la séance a rapporté ou coûté depuis 09:30, rafraîchi pendant que le marché est ouvert.
+• Portefeuille & marché partagés — En haut la journée du portefeuille, en bas les indices du continent et de Hong Kong : une moitié chacun, une seule horloge, l'animation avance minute par minute ensemble
 • Chandeliers — un instrument en quotidien, hebdomadaire ou mensuel, quatre tracés, avec moyennes mobiles et panneau de volume
 • Course des capitalisations — les quinze plus grandes sociétés d'un marché en course
 • Prime A/H — les deux cotations d'une société, comparées mois après mois
@@ -418,13 +425,13 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Cette version refait la page P&L en direct : la liste des positions suit la frise, les titres, le prix de revient et le résultat bougent minute par minute ; la courbe fait apparaître une étiquette achat/vente en passant sur chaque opération ; le taux de frais devient un réglage de la page ; et la valeur de position dans l'en-tête est calculée à la minute affichée, bougeant à chaque achat et vente. L'import d'opérations passe au collage ou au fichier tableur, et la liste des positions s'exporte et se réimporte entière en CSV. La boîte Gérer les positions montre la dernière clôture, et son défaut de recherche est corrigé ; à la fermeture, les opérations du jour non encore comptabilisées sont versées au registre automatiquement. Les styles de titre deviennent un réglage global : trois dessins de titre et couleurs choisis une fois dans les réglages, et chaque page suit aussitôt. Les quatre pages crypto — Comparaison, Mouvements, Dominance et Rendements annuels — sont arrivées à la version précédente ; celle-ci achève leurs manuels et textes de boutique dans les 14 langues.
+Cette version ajoute la trente et unième page, Portefeuille & marché partagés : en haut le résultat du jour du portefeuille minute par minute, en bas le parcours des indices A et de Hong Kong. Les deux dessins partagent une même horloge dont l'axe est placé entre eux : lus à la même minute, ils montrent tout de suite quelle position a porté la journée et laquelle l'a plombée. Une pastille suit la tête de la courbe avec le montant du jour ; chaque ligne d'indice se termine par une étiquette avec son nom et sa variation en direct — rouge à la hausse, vert à la baisse —, et les deux titres de panneau se colorent à leur propre signe. Les pages de course de barres reçoivent cinq formes d'affichage, et leurs classements affichent pour la première fois les logos des sociétés. Un gel est aussi corrigé : changer de style après une récupération laissait l'application sans réponse.
 
 ### Fonctionnalités
 
 - Vidéos d'animation de marché 9:16 verticales en un clic
 - Quatre marchés : Chine A, Hong Kong, États-Unis et cryptomonnaies — ces dernières avec onze pages à elles, proposées hors de Chine continentale
-- Trente graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, P&L en direct, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite, Marché obligataire, Valeur de marché, Chandeliers crypto, DCA crypto, Portefeuille crypto, Calendrier des hausses et baisses crypto, Historique de capitalisation crypto, Course des capitalisations crypto, Rendements mensuels crypto, Comparaison crypto, Mouvements crypto, Dominance crypto, Rendements annuels crypto
+- Trente et une graphiques : volume d'échanges, volume et rotation, course de secteurs, course des capitalisations, prime A/H, matrice des rendements, calendrier, plan DCA, rendement de position, P&L en direct, Portefeuille & marché partagés, chandeliers, Jours extrêmes, Couloirs de devises, Course des indices, Classes d'actifs, Reculs, Taux de réussite, Marché obligataire, Valeur de marché, Chandeliers crypto, DCA crypto, Portefeuille crypto, Calendrier des hausses et baisses crypto, Historique de capitalisation crypto, Course des capitalisations crypto, Rendements mensuels crypto, Comparaison crypto, Mouvements crypto, Dominance crypto, Rendements annuels crypto
 - Export MP4 H.264, prêt pour les plateformes de vidéos courtes
 - Interface disponible en 14 langues
 - Pas de compte, pas de télémétrie — vos données restent sur votre ordinateur
@@ -439,7 +446,7 @@ Trasforma gli indicatori di mercato in video animati verticali pronti da pubblic
 
 Market Motion Studio trasforma i dati di borsa in animazioni verticali 9:16, pensate per piattaforme verticali come TikTok, Shorts e Reels: scegli un mercato e un simbolo, l'app recupera i dati, li anima ed esporta un MP4 H.264 pronto da pubblicare. Ogni pagina di grafici è gratuita: scaricare i dati, l'anteprima e il salvataggio della copertina non costano nulla. Esportare il video — e togliere il marchio — richiede un abbonamento mensile, annullabile in qualsiasi momento.
 
-Trenta pagine di grafici:  
+Trentuno pagine di grafici:  
 • Volume degli scambi di mercato — una lunga carrellata storica del volume giornaliero di tutto il mercato (Cina A)  
 • Volume e rotazione — prezzo e volume di una azione insieme (Cina A/Hong Kong)  
 • Corsa dei settori — gli indici settoriali che salgono e scendono in gara  
@@ -448,6 +455,7 @@ Trenta pagine di grafici:
 • Piano DCA — curva di rendimento simulata di acquisti settimanali/mensili  
 • Rendimento della posizione — comprato una volta, tenuto fino a oggi: valore e drawdown riprodotti giorno per giorno
 • P&L in tempo reale — Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costato dalle 09:30, aggiornate mentre il mercato è aperto.
+• Portafoglio e mercato divisi — Sopra la giornata del portafoglio, sotto gli indici del continente e di Hong Kong: metà schermo ciascuno, un solo orologio, l'animazione avanza minuto per minuto insieme
 • Candele — uno strumento in giornaliero, settimanale o mensile, quattro tracciati, con medie mobili e pannello dei volumi
 • Corsa delle capitalizzazioni — le quindici maggiori società di un mercato in gara
 • Premio A/H — le due quotazioni di una società, confrontate mese per mese
@@ -479,13 +487,13 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Questa versione rifà la pagina P&L in tempo reale: l'elenco delle posizioni segue la linea del tempo, con azioni, costo medio e utile/perdita che si muovono minuto per minuto; la curva fa comparire un'etichetta acquisto/vendita al passaggio su ogni eseguito; il tasso di commissioni diventa un'impostazione della pagina; e il valore di posizione nell'intestazione è calcolato al minuto mostrato, muovendosi a ogni acquisto e vendita. L'importazione degli eseguiti passa a incolla o file di foglio di calcolo, e l'elenco delle posizioni si esporta e reimporta intero in CSV. La finestra Gestisci posizioni mostra l'ultima chiusura e il difetto di ricerca è corretto; alla chiusura, gli eseguiti del giorno non ancora registrati confluiscono automaticamente nel registro. Gli stili del titolo diventano un'impostazione globale: tre disegni di titolo e colori scelti una volta nelle impostazioni, e ogni pagina li segue subito. Le quattro pagine crypto — Confronto, Movimenti, Dominanza e Rendimenti annuali — sono arrivate con la versione precedente; questa completa i loro manuali e testi dello store in tutte le 14 lingue.
+Questa versione aggiunge la trentunesima pagina, Portafoglio e mercato divisi: in alto il risultato del giorno del portafoglio minuto per minuto, in basso l'andamento degli indici A e di Hong Kong. I due disegni condividono un solo orologio, con l'asse appeso fra loro: letti allo stesso minuto mostrano subito quale posizione ha sorretto la giornata e quale l'ha appesantita. Una capsula segue la testa della curva con la cifra del giorno; ogni linea di indice finisce con un'etichetta con il nome e la variazione in diretta — rosso al rialzo, verde al ribasso —, e i due titoli dei pannelli si tingono del proprio segno. Le pagine di corsa delle barre ricevono cinque forme, e le loro classifiche mostrano per la prima volta i loghi delle società. È corretto anche un blocco: cambiare stile dopo un recupero dati lasciava l'applicazione senza risposta.
 
 ### Funzionalità del prodotto
 
 - Video di animazione di mercato verticali 9:16 con un clic
 - Quattro mercati: Cina A, Hong Kong, Stati Uniti e criptovalute — quest'ultime con undici pagine proprie, offerte fuori dalla Cina continentale
-- Trenta grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, P&L in tempo reale, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita, Mercato obbligazionario, Valore di mercato, Candele crypto, DCA crypto, Portafoglio crypto, Calendario dei movimenti crypto, Storia della capitalizzazione crypto, Corsa della capitalizzazione crypto, Rendimenti mensili crypto, Confronto crypto, Movimenti crypto, Dominanza crypto, Rendimenti annuali crypto
+- Trentuno grafici: scambi, volume e rotazione, corsa dei settori, corsa delle capitalizzazioni, premio A/H, matrice dei rendimenti, calendario, piano DCA, rendimento della posizione, P&L in tempo reale, Portafoglio e mercato divisi, candele, Giorni estremi, Corridoi valutari, Corsa degli indici, Classi di attività, Ribassi, Tasso di riuscita, Mercato obbligazionario, Valore di mercato, Candele crypto, DCA crypto, Portafoglio crypto, Calendario dei movimenti crypto, Storia della capitalizzazione crypto, Corsa della capitalizzazione crypto, Rendimenti mensili crypto, Confronto crypto, Movimenti crypto, Dominanza crypto, Rendimenti annuali crypto
 - Esportazione MP4 H.264, pronta per le piattaforme di video brevi
 - Interfaccia disponibile in 14 lingue
 - Nessun account, nessuna telemetria — i tuoi dati restano sul tuo computer
@@ -500,7 +508,7 @@ Convierta los indicadores de mercado en vídeos animados verticales listos para 
 
 Market Motion Studio convierte los datos bursátiles en animaciones verticales 9:16, diseñado para plataformas verticales como TikTok, Shorts y Reels: elija un mercado y un símbolo, la app obtiene los datos, los anima y exporta un MP4 H.264 listo para publicar. Todas las páginas de gráficos son gratuitas: descargar datos, previsualizar y guardar una portada no cuestan nada. Exportar el vídeo —y quitarle la marca de agua— requiere una suscripción mensual que puedes cancelar cuando quieras.
 
-Treinta páginas de gráficos:  
+Treinta y una páginas de gráficos:  
 • Volumen negociado del mercado — un carrete histórico del volumen diario de todo el mercado (China A)  
 • Volumen y rotación — el precio y el volumen de una acción juntos (China A/Hong Kong)  
 • Carrera de sectores — los índices sectoriales subiendo y bajando en carrera  
@@ -509,6 +517,7 @@ Treinta páginas de gráficos:
 • Plan DCA — curva de rentabilidad simulada de un plan de compra semanal/mensual  
 • Rentabilidad de cartera — comprado una vez, mantenido hasta hoy: valor y caída máxima reproducidos día a día
 • P&L en vivo — Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costado desde las 09:30, actualizado mientras el mercado está abierto.
+• Cartera y mercado, divididos — Arriba el día de la cartera, abajo los índices del continente y de Hong Kong: media pantalla cada uno, un solo reloj, la animación avanza minuto a minuto junta
 • Velas — un instrumento en diario, semanal o mensual, con cuatro trazados, medias móviles y panel de volumen
 • Carrera de capitalización — las quince mayores compañías de un mercado en carrera
 • Prima A/H — las dos cotizaciones de una compañía, comparadas mes a mes
@@ -540,13 +549,13 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Esta versión rehace la página de P&L en vivo: la lista de posiciones sigue la línea de tiempo, con títulos, coste medio y ganancia/pérdida moviéndose minuto a minuto; la curva muestra una etiqueta de compra/venta al pasar por cada operación; la tasa de comisiones pasa a ser un ajuste de la página; y el valor de posición de la cabecera se calcula en el minuto mostrado, moviéndose con cada compra y venta. La importación de operaciones pasa a pegado o archivo de hoja de cálculo, y la lista de posiciones se exporta y reimporta entera en CSV. El cuadro Gestionar posiciones muestra el último cierre, y su fallo de búsqueda queda corregido; al cerrar, las operaciones del día aún no registradas se incorporan automáticamente al libro. Los estilos de título pasan a ser un ajuste global: tres diseños de título y colores elegidos una vez en Ajustes, y cada página los sigue al momento. Las cuatro páginas de cripto — Comparar, Movimientos, Dominancia y Rendimientos anuales — llegaron en la versión anterior; esta completa sus manuales y textos de la tienda en los 14 idiomas.
+Esta versión añade la página treinta y una, Cartera y mercado, divididos: arriba el resultado del día de la cartera minuto a minuto y abajo el recorrido de los índices A y de Hong Kong. Los dos dibujos comparten un mismo reloj, con el eje colgado entre ellos: leídos en el mismo minuto dejan claro qué posición sostuvo la jornada y cuál la lastró. Una píldora sigue la cabeza de la curva con el importe del día; cada línea de índice termina en una etiqueta con su nombre y su variación en vivo — rojo al alza, verde a la baja —, y los dos títulos de panel se tiñen de su propio signo. Las páginas de carrera de barras reciben cinco formas, y sus clasificaciones muestran por primera vez los logotipos de las empresas. También se corrige un bloqueo: cambiar de estilo tras una descarga dejaba la aplicación sin respuesta.
 
 ### Funciones del producto
 
 - Vídeos de animación de mercado 9:16 verticales con un clic
 - Cuatro mercados: China A, Hong Kong, EE. UU. y criptomonedas — estas últimas con once páginas propias, ofrecidas fuera de China continental
-- Treinta gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, P&L en vivo, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto, Renta fija, Valor de mercado, Velas cripto, DCA cripto, Cartera cripto, Calendario de ganancias cripto, Historial de capitalización cripto, Carrera de capitalización cripto, Rendimientos mensuales cripto, Comparar cripto, Movimientos cripto, Dominancia cripto, Rendimientos anuales cripto
+- Treinta y un gráficos: volumen negociado, volumen y rotación, carrera de sectores, carrera de capitalización, prima A/H, matriz de rentabilidad, calendario, plan DCA, rentabilidad de cartera, P&L en vivo, Cartera y mercado, divididos, velas, Días extremos, Corredores de divisas, Carrera de índices, Clases de activos, Caídas, Tasa de acierto, Renta fija, Valor de mercado, Velas cripto, DCA cripto, Cartera cripto, Calendario de ganancias cripto, Historial de capitalización cripto, Carrera de capitalización cripto, Rendimientos mensuales cripto, Comparar cripto, Movimientos cripto, Dominancia cripto, Rendimientos anuales cripto
 - Exportación a MP4 H.264, lista para plataformas de vídeo corto
 - Interfaz disponible en 14 idiomas
 - Sin cuenta, sin telemetría — sus datos se quedan en su equipo
@@ -560,7 +569,7 @@ Transforme indicadores de mercado em vídeos animados verticais prontos para pub
 
 O Market Motion Studio transforma dados do mercado de ações em animações verticais 9:16, criado para plataformas verticais como TikTok, Shorts e Reels: escolha um mercado e um símbolo, o app busca os dados, anima e exporta um MP4 H.264 pronto para publicar. Todas as páginas de gráficos são gratuitas: buscar dados, pré-visualizar e salvar uma capa não custam nada. Exportar o vídeo — e tirar a marca d'água — exige uma assinatura mensal, que pode ser cancelada a qualquer momento.
 
-Trinta páginas de gráficos:  
+Trinta e uma páginas de gráficos:  
 • Volume financeiro do mercado — um carretel histórico do volume diário de todo o mercado (China A)  
 • Volume e giro — preço e volume de uma ação juntos (China A/Hong Kong)  
 • Corrida de setores — os índices setoriais subindo e caindo em corrida  
@@ -569,6 +578,7 @@ Trinta páginas de gráficos:
 • Plano DCA — curva de retorno simulada de aportes semanais/mensais  
 • Retorno de posição — comprou uma vez, segurou até hoje: valor e queda máxima reproduzidos dia a dia
 • P&L ao vivo — Suas próprias posições, marcadas ao minuto: o que o dia rendeu ou custou desde as 09:30, atualizado enquanto o mercado está aberto.
+• Carteira e mercado divididos — Em cima o dia da carteira, em baixo os índices do continente e de Hong Kong: meia tela para cada, um só relógio, a animação avança minuto a minuto junta
 • Candlestick — um instrumento em diário, semanal ou mensal, com quatro traçados, médias móveis e painel de volume
 • Corrida de valor de mercado — as quinze maiores companhias de um mercado em corrida
 • Prêmio A/H — as duas cotações de uma companhia, comparadas mês a mês
@@ -600,13 +610,13 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Esta versão refaz a página de P&L ao vivo: a lista de posições segue a linha do tempo, com ações, preço médio e lucro/prejuízo se movendo minuto a minuto; a curva mostra um rótulo de compra/venda ao passar por cada negócio; a taxa de corretagem vira um ajuste da página; e o valor de posição no cabeçalho é calculado no minuto exibido, movendo-se a cada compra e venda. A importação de negócios passa a colar ou arquivo de planilha, e a lista de posições pode ser exportada e reimportada inteira em CSV. O diálogo Gerenciar posições mostra o último fechamento, e sua falha de busca foi corrigida; ao fechar, os negócios do dia ainda não registrados entram automaticamente no livro. Os estilos de título viram um ajuste global: três desenhos de título e cores escolhidos uma vez em Configurações, e todas as páginas os seguem na hora. As quatro páginas de cripto — Comparar, Movimentos, Dominância e Retornos anuais — chegaram na versão anterior; esta completa os manuais delas e os textos da loja nos 14 idiomas.
+Esta versão acrescenta a trigésima primeira página, Carteira e mercado divididos: em cima o resultado do dia da carteira minuto a minuto, embaixo o traçado dos índices A e de Hong Kong. Os dois desenhos compartilham um só relógio, com o eixo pendurado entre eles: lidos no mesmo minuto, deixam claro qual posição sustentou o dia e qual o puxou para baixo. Uma pílula segue a cabeça da curva com o valor do dia; cada linha de índice termina numa etiqueta com o nome e a variação ao vivo — vermelho na alta, verde na baixa —, e os dois títulos de painel assumem o próprio sinal. As páginas de corrida de barras recebem cinco formas e suas classificações mostram pela primeira vez os logotipos das empresas. Também corrigimos um travamento: mudar de estilo depois de uma consulta deixava o aplicativo sem resposta.
 
 ### Funcionalidades do produto
 
 - Vídeos de animação de mercado verticais 9:16 com um clique
 - Quatro mercados: China A, Hong Kong, EUA e criptomoedas — estas últimas com onze páginas próprias, oferecidas fora da China continental
-- Trinta gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, P&L ao vivo, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto, Mercado de títulos, Histórico de valor de mercado, Velas cripto, DCA cripto, Carteira cripto, Calendário de altas e baixas cripto, Histórico de capitalização cripto, Corrida de capitalização cripto, Retornos mensais cripto, Comparar cripto, Movimentos cripto, Dominância cripto, Retornos anuais cripto
+- Trinta e um gráficos: volume financeiro, volume e giro, corrida de setores, corrida de valor de mercado, prêmio A/H, matriz de retorno, calendário, plano DCA, retorno de posição, P&L ao vivo, Carteira e mercado divididos, candles, Dias extremos, Corredores de câmbio, Corrida de índices, Classes de ativos, Quedas, Taxa de acerto, Mercado de títulos, Histórico de valor de mercado, Velas cripto, DCA cripto, Carteira cripto, Calendário de altas e baixas cripto, Histórico de capitalização cripto, Corrida de capitalização cripto, Retornos mensais cripto, Comparar cripto, Movimentos cripto, Dominância cripto, Retornos anuais cripto
 - Exporta MP4 H.264, pronto para plataformas de vídeo curto
 - Interface disponível em 14 idiomas
 - Sem conta, sem telemetria — seus dados ficam no seu computador
@@ -621,7 +631,7 @@ Zamień wskaźniki rynkowe w pionowe filmy animowane gotowe do publikacji.
 
 Market Motion Studio zamienia dane giełdowe w pionowe animacje 9:16, stworzone dla pionowych platform jak TikTok, Shorts i Reels: wybierz rynek i symbol, aplikacja pobierze dane, zanimuje je i wyeksportuje plik MP4 H.264 gotowy do publikacji. Każda strona wykresów jest darmowa: pobieranie danych, podgląd i zapisanie okładki nic nie kosztują. Zapisanie filmu — i zdjęcie znaku wodnego — wymaga miesięcznej subskrypcji, którą można anulować w każdej chwili.
 
-Trzydzieści stron wykresów:  
+Trzydzieści jeden stron wykresów:  
 • Obroty rynku — historyczna zwijanka dziennych obrotów całego rynku (Chiny A)  
 • Wolumen i obrót — cena i wolumen jednej akcji razem (Chiny A/Hongkong)  
 • Wyścig sektorów — indeksy branżowe w wyścigu w górę i w dół  
@@ -630,6 +640,7 @@ Trzydzieści stron wykresów:
 • Plan DCA — symulowana krzywa zwrotu z cotygodniowych/miesięcznych zakupów  
 • Zwrot z pozycji — kupione raz, trzymane do dziś: wartość i obsunięcie odtwarzane dzień po dniu
 • Wynik na żywo — Własne pozycje wyceniane co minutę: ile dzisiejsza sesja dała lub kosztowała od 09:30, odświeżane w czasie handlu.
+• Portfel i rynek, na pół — U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po połowie kadru, na jednym zegarze, animacja idzie do przodu minuta po minucie razem
 • Świece — jeden instrument w ujęciu dziennym, tygodniowym lub miesięcznym, cztery sposoby, ze średnimi i panelem wolumenu
 • Wyścig kapitalizacji — piętnaście największych spółek rynku w wyścigu
 • Premia A/H — dwa notowania jednej spółki, porównywane miesiąc po miesiącu
@@ -661,13 +672,13 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-To wydanie przebudowuje stronę wyniku na żywo: lista pozycji podąża za osią czasu — liczba akcji, cena nabycia i zysk/strata ruszają się co minutę; krzywa pokazuje etykietę kupna/sprzedaży przy mijaniu każdej transakcji; stawka prowizji staje się ustawieniem strony; a wartość pozycji w nagłówku jest liczona dla pokazywanej minuty i rusza się przy każdym kupnie i sprzedaży. Import transakcji przechodzi na wklejanie albo plik arkusza, a listę pozycji można wyeksportować i zaimportować w całości jako CSV. Okno Zarządzanie pozycjami pokazuje ostatnie zamknięcie, a jego błąd wyszukiwania jest naprawiony; przy zamykaniu niezaksięgowane transakcje dnia trafiają automatycznie do księgi. Style tytułu stają się ustawieniem globalnym: trzy projekty tytułu i barwy wybiera się raz w ustawieniach, a każda strona od razu za nimi idzie. Cztery strony krypto — Porównanie, Ruchy, Dominacja i Roczne stopy — przyszły w poprzednim wydaniu; to uzupełnia ich podręczniki i teksty sklepu we wszystkich 14 językach.
+To wydanie dodaje trzydziestą pierwszą stronę, Portfel i rynek, na pół: u góry wynik dnia portfela minuta po minucie, u dołu przebieg indeksów A i Hongkongu. Oba rysunki mają jeden zegar, a jego oś wisi między nimi: czytane w tej samej minucie od razu pokazują, która pozycja dzień niosła, a która go ciągnęła w dół. Za głową krzywej idzie kapsułka z kwotą dnia; każda linia indeksu kończy się etykietą z nazwą i bieżącą zmianą — czerwono przy wzroście, zielono przy spadku — a oba nagłówki paneli przyjmują własny znak. Strony wyścigu słupków dostają pięć form, a ich tablice po raz pierwszy pokazują logo spółek. Naprawiono też zawieszenie: zmiana stylu po pobraniu danych zostawiała aplikację bez odpowiedzi.
 
 ### Funkcje produktu
 
 - Pionowe filmy z animacją rynku 9:16 jednym kliknięciem
 - Cztery rynki: Chiny A, Hongkong, USA i kryptowaluty — te ostatnie z jedenastoma własnymi stronami, oferowane poza Chinami kontynentalnymi
-- Trzydzieści wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, wynik na żywo, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność, Rynek obligacji, Wartość rynkowa, Świece krypto, Krypto DCA, Portfel krypto, Kalendarz zmian krypto, Historia kapitalizacji krypto, Wyścig kapitalizacji krypto, Miesięczne stopy zwrotu krypto, Porównanie krypto, Ruchy krypto, Dominacja krypto, Roczne stopy krypto
+- Trzydzieści jeden wykresów: obroty, wolumen, wyścig sektorów, wyścig kapitalizacji, premia A/H, macierz stóp zwrotu, kalendarz, plan DCA, zwrot z pozycji, wynik na żywo, portfel i rynek, na pół, świece, Ekstremalne dni, Korytarze walutowe, Wyścig indeksów, Klasy aktywów, Obsunięcia, Skuteczność, Rynek obligacji, Wartość rynkowa, Świece krypto, Krypto DCA, Portfel krypto, Kalendarz zmian krypto, Historia kapitalizacji krypto, Wyścig kapitalizacji krypto, Miesięczne stopy zwrotu krypto, Porównanie krypto, Ruchy krypto, Dominacja krypto, Roczne stopy krypto
 - Eksport MP4 H.264, gotowy dla platform krótkich filmów
 - Interfejs w 14 językach
 - Bez konta, bez telemetrii — Twoje dane zostają na Twoim komputerze
@@ -682,7 +693,7 @@ Převeďte tržní ukazatele na svislá animovaná videa připravená k publikov
 
 Market Motion Studio mění burzovní data na svislé animace 9:16, určené pro vertikální platformy jako TikTok, Shorts a Reels: vyberte trh a symbol, aplikace stáhne data, zanimuje je a exportuje MP4 H.264 připravené k publikování. Každá stránka s grafy je zdarma: načtení dat, náhled i uložení titulního obrázku nic nestojí. Zápis videa — a odebrání vodoznaku — vyžaduje měsíční předplatné, které lze kdykoli zrušit.
 
-Třicet stránek s grafy:  
+Třicet jedna stránek s grafy:  
 • Obrat trhu — historický svitek denních obratů celého trhu (Čína A)  
 • Objem a obrat — cena a objem jedné akcie společně (Čína A/Hongkong)  
 • Závod sektorů — odvětvové indexy závodící nahoru a dolů  
@@ -691,6 +702,7 @@ Třicet stránek s grafy:
 • DCA plán — simulovaná křivka výnosu týdenního/měsíčního pravidelného nakupování  
 • Výnos pozice — koupeno jednou, drženo do dneška: hodnota a pokles přehrávané den za dnem
 • Výsledek živě — Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála od 09:30, aktualizované během obchodování.
+• Portfolio a trh napůl — Nahoře den portfolia, dole indexy pevninské Číny a Hongkongu: po polovině rámu, na jedny hodiny, animace jde dopředu minutu za minutou spolu
 • Svíčky — jeden nástroj denně, týdně nebo měsíčně, čtyři způsoby, s průměry a panelem objemu
 • Závod tržních kapitalizací — patnáct největších společností trhu v závodě
 • Prémie A/H — dvě kotace jedné společnosti, srovnávané měsíc po měsíci
@@ -722,13 +734,13 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Tato verze přestavuje stránku výsledku živě: seznam pozic sleduje časovou osu — počty akcií, vstupní cena a zisk/ztráta se hýbou minutu co minutu; křivka ukazuje štítek nákupu/prodeje při průchodu každým obchodem; sazba poplatků se stává nastavením stránky; a hodnota pozice v záhlaví se počítá pro zobrazenou minutu a hýbe se s každým nákupem a prodejem. Import obchodů přechází na vložení nebo tabulkový soubor a seznam pozic lze vyexportovat a znovu načíst celý jako CSV. Dialog Správa pozic ukazuje poslední uzavření a jeho chyba hledání je opravena; při uzavření se nezaúčtované obchody dne automaticky zapíší do knihy. Styly titulku se stávají globálním nastavením: tři podoby titulku a barvy se jednou zvolí v nastavení a každá stránka je hned následuje. Čtyři krypto stránky — Srovnání, Pohyby, Dominance a Roční výnosy — přišly v předchozí verzi; tato doplňuje jejich příručky a texty obchodu ve všech 14 jazycích.
+Tato verze přidává třicátou první stránku Portfolio a trh napůl: nahoře výsledek dne portfolia minutu po minutě, dole průběh indexů A a Hongkongu. Oba obrázky sdílejí jeden čas a jeho osa visí mezi nimi: čtené ve stejné minutě hned ukážou, která pozice den nesla a která ho stahovala. Za hlavou křivky jde tobolka s částkou dne; každá čára indexu končí štítkem se jménem a živou změnou — červeně při růstu, zeleně při poklesu — a oba nadpisy panelů se barví svým znakem. Strany závodu sloupců dostávají pět podob a jejich tabulky poprvé ukazují loga firem. Opraveno je i zatuhnutí: změna stylu po načtení dat nechávala aplikaci bez odezvy.
 
 ### Funkce produktu
 
 - Svislá tržní animovaná videa 9:16 na jedno kliknutí
 - Čtyři trhy: Čína A, Hongkong, USA a kryptoměny — ty poslední s jedenácti vlastními stránkami, nabízené mimo pevninskou Čínu
-- Třicet grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, výsledek živě, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost, Trh dluhopisů, Tržní hodnota, Krypto svíčky, Krypto DCA, Krypto portfolio, Kalendář pohybů krypto, Historie kapitalizace krypto, Závod kapitalizací krypto, Měsíční výnosy krypto, Srovnání krypto, Krypto pohyby, Krypto dominance, Roční výnosy krypto
+- Třicet jeden grafů: obrat, objem, závod sektorů, závod kapitalizací, prémie A/H, matice výnosů, kalendář, DCA plán, výnos pozice, výsledek živě, portfolio a trh napůl, svíčky, Extrémní dny, Měnové koridory, Závod indexů, Třídy aktiv, Poklesy, Úspěšnost, Trh dluhopisů, Tržní hodnota, Krypto svíčky, Krypto DCA, Krypto portfolio, Kalendář pohybů krypto, Historie kapitalizace krypto, Závod kapitalizací krypto, Měsíční výnosy krypto, Srovnání krypto, Krypto pohyby, Krypto dominance, Roční výnosy krypto
 - Export MP4 H.264, připravený pro platformy krátkých videí
 - Rozhraní ve 14 jazycích
 - Bez účtu, bez telemetrie — vaše data zůstávají na vašem počítači
@@ -743,7 +755,7 @@ Tato verze přestavuje stránku výsledku živě: seznam pozic sleduje časovou 
 
 Market Motion Studio превращает биржевые данные в вертикальные анимации 9:16, созданное для вертикальных платформ вроде TikTok, Shorts и Reels: выберите рынок и символ, приложение само загрузит данные, оживит их и экспортирует MP4 H.264, готовый к публикации. Каждая страница с графиками бесплатна: загрузка данных, предпросмотр и сохранение обложки ничего не стоят. Экспорт видео — и снятие водяного знака — требуют ежемесячной подписки, которую можно отменить в любой момент.
 
-Тридцать страниц с графиками:  
+Тридцать одна страница с графиками:  
 • Оборот рынка — историческая лента ежедневного оборота всего рынка (Китай, A-акции)  
 • Объём и оборачиваемость — цена и объём одной акции вместе (Китай A/Гонконг)  
 • Гонка секторов — отраслевые индексы в гонке вверх и вниз  
@@ -752,6 +764,7 @@ Market Motion Studio превращает биржевые данные в ве�
 • План DCA — смоделированная кривая доходности еженедельных/ежемесячных покупок  
 • Доходность позиции — купил один раз, держал до сегодняшнего дня: стоимость и просадка, воспроизводимые день за днём
 • Портфель онлайн — Свои позиции, оценённые по минутам: сколько день принёс или стоил с 09:30, с обновлением во время торгов.
+• Портфель и рынок, пополам — Сверху день портфеля, снизу индексы материка и Гонконга: по половине кадра, на одних часах, анимация идёт вперёд минута за минутой вместе
 • Свечи — один инструмент в дневном, недельном или месячном виде, четыре способа, со средними и панелью объёма
 • Гонка капитализаций — пятнадцать крупнейших компаний рынка в гонке
 • Премия A/H — две котировки одной компании, сравнение месяц за месяцем
@@ -783,13 +796,13 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Этот выпуск перестраивает страницу «Портфель онлайн»: список позиций следует за шкалой времени — число акций, себестоимость и прибыль/убыток меняются минута за минутой; кривая показывает подпись «покупка/продажа», проходя через каждую сделку; ставка комиссии становится настройкой страницы; а стоимость позиций в шапке считается для показанной минуты и движется с каждой покупкой и продажей. Импорт сделок переходит на вставку или файл таблицы, а список позиций можно целиком выгрузить и загрузить обратно в CSV. Диалог управления портфелем показывает позиции последнего закрытия, ошибка поиска исправлена; при закрытии незаписанные сделки дня автоматически попадают в книгу. Стили заголовка становятся глобальной настройкой: три вида заголовка и цвета выбираются один раз в настройках — и каждая страница сразу им следует. Четыре криптостраницы — Сравнение, Движения, Доминирование и Годовые доходности — вышли в прошлом выпуске; этот дополняет их руководства и тексты магазина на всех 14 языках.
+Этот выпуск добавляет тридцать первую страницу «Портфель и рынок, пополам»: сверху результат дня портфеля минута за минутой, снизу ход индексов A-акций и Гонконга. Оба рисунка делят одну шкалу времени, и ось висит между ними: читаемые в одну и ту же минуту, они сразу показывают, какая позиция день несла, а какая тянула вниз. За головой кривой идёт капсула с суммой дня; каждая линия индекса заканчивается подписью с названием и текущим изменением — красная при росте, зелёная при падении —, а оба заголовка панелей окрашены в свой знак. Страницы гонки столбцов получают пять форм, и их таблицы впервые показывают логотипы компаний. Исправлена и «заморозка»: смена стиля после загрузки данных оставляла приложение без ответа.
 
 ### Функции продукта
 
 - Вертикальные анимационные видео рынка 9:16 одним кликом
 - Четыре рынка: Китай (A-акции), Гонконг, США и криптовалюты — у последних одиннадцать собственных страниц, предлагаемых за пределами материкового Китая
-- Тридцать графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, портфель онлайн, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных, Рынок облигаций, История капитализации, Криптосвечи, Крипто-DCA, Криптопортфель, Календарь роста и падения крипто, История капитализации крипто, Гонка капитализаций крипто, Месячная доходность крипто, Сравнение крипто, Движения крипто, Доминирование крипто, Годовые доходности крипто
+- Тридцать один графиков: оборот, объём, гонка секторов, гонка капитализаций, премия A/H, матрица доходности, календарь, план DCA, доходность позиции, портфель онлайн, портфель и рынок, пополам, свечи, Экстремальные дни, Валютные коридоры, Гонка индексов, Классы активов, Просадки, Доля удачных, Рынок облигаций, История капитализации, Криптосвечи, Крипто-DCA, Криптопортфель, Календарь роста и падения крипто, История капитализации крипто, Гонка капитализаций крипто, Месячная доходность крипто, Сравнение крипто, Движения крипто, Доминирование крипто, Годовые доходности крипто
 - Экспорт MP4 H.264, готовый для платформ коротких видео
 - Интерфейс на 14 языках
 - Без аккаунта, без телеметрии — ваши данные остаются на вашем компьютере
@@ -804,7 +817,7 @@ Piyasa göstergelerini doğrudan yayınlanmaya hazır dikey animasyon videoları
 
 Market Motion Studio, borsa verilerini 9:16 dikey animasyonlara dönüştüren, TikTok, Shorts ve Reels gibi dikey platformlar için tasarlanmış bir Windows uygulamasıdır: bir piyasa ve sembol seçin, uygulama verileri çeker, animasyona dönüştürür ve yayınlanmaya hazır H.264 MP4 olarak dışa aktarır. Her grafik sayfası ücretsizdir: veri çekmek, önizleme ve kapak görselini kaydetmek hiçbir ücrete tabi değildir. Videoyu dışa aktarmak — ve filigranı kaldırmak — her zaman iptal edilebilen aylık bir abonelik gerektirir.
 
-Otuz grafik sayfası:  
+Otuz bir grafik sayfası:  
 • Piyasa işlem hacmi — tüm piyasanın günlük işlem hacminin tarihî şeridi (Çin A)  
 • Hacim ve devir — bir hissenin fiyat ve hacmi birlikte (Çin A/Hong Kong)  
 • Sektör yarışı — sektör endeksleri yukarı ve aşağı yarışıyor  
@@ -813,6 +826,7 @@ Otuz grafik sayfası:
 • DCA Planı — haftalık/aylık düzenli alımların simüle edilmiş getiri eğrisi  
 • Pozisyon Getirisi — bir kez alındı, bugüne kadar tutuldu: değer ve düşüş gün gün oynatılır
 • Canlı portföy — Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana ne kazandırdığı ya da neye mal olduğu, piyasa açıkken kendiliğinden yenilenir.
+• Portföy ve Piyasa bölünmüş — Üstte portföyün günü, altta Çin anakarası ve Hong Kong endeksleri: yarısı yarıya, tek saat, animasyon birlikte dakika dakika ilerler
 • Mumlar — bir enstrüman günlük, haftalık veya aylık, dört çizim biçimi, hareketli ortalamalar ve hacim paneliyle
 • Piyasa değeri yarışı — bir piyasanın en büyük on beş şirketi yarışta
 • A/H primi — bir şirketin iki kotasyonu, ay ay karşılaştırma
@@ -844,13 +858,13 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürüm Canlı portföy sayfasını yeniden kuruyor: pozisyon listesi zaman çizelgesini izliyor — hisse adedi, maliyet ve kâr/zarar dakikada bir değişiyor; eğri her işlemin üzerinden geçerken alış/satış etiketi çıkarıyor; komisyon oranı sayfa ayarı oluyor; ve başlıktaki pozisyon değeri gösterilen dakika için hesaplanıyor, her alım satımla birlikte hareket ediyor. İşlem aktarımı yapıştırmaya veya tablo dosyasına geçiyor; pozisyon listesi CSV olarak bütün halde dışa aktarılıp geri yüklenebiliyor. Portföy yönetimi penceresi son kapanıştaki pozisyonları gösteriyor ve arama hatası düzeltildi; kapanışta günün henüz kaydedilmemiş işlemleri otomatik olarak deftere geçiyor. Başlık stilleri genel ayar oluyor: üç başlık tasarımı ve renk ayarlar sayfasında bir kez seçiliyor ve her sayfa hemen izliyor. Dört kripto sayfası — Karşılaştırma, Hareketler, Hakimiyet ve Yıllık Getiriler — önceki sürümde gelmişti; bu sürüm 14 dilin hepsinde kılavuzlarını ve mağaza metinlerini tamamlıyor.
+Bu sürüm otuz birinci sayfayı ekliyor, Portföy ve Piyasa bölünmüş: üstte portföyün gün içi kâr/zararı dakika dakika, altta A hissesi ve Hong Kong endekslerinin seyri. İki çizim de tek bir saat kullanır ve eksen ikisinin arasında durur: aynı dakikada okunduğunda günü hangi pozisyonun taşıdığı, hangisinin aşağı çektiği hemen görülür. Eğrinin başını günün tutarını yazan bir kapsül izler; her endeks çizgisi adını ve canlı değişimini yazan bir etiketle biter — yükselişte kırmızı, düşüşte yeşil — ve iki panelin başlığı da kendi işaretine göre renklenir. Çubuk yarışı sayfaları beş görünüm kazandı ve sıralama tabloları ilk kez şirket logolarını gösteriyor. Bir donma da düzeltildi: veri çekildikten sonra stil değiştirmek uygulamayı yanıtsız bırakıyordu.
 
 ### Ürün özellikleri
 
 - Tek tıkla 9:16 dikey piyasa animasyon videoları
 - Dört piyasa: Çin A, Hong Kong, ABD ve kripto paralar — kripto kendine ait on bir sayfayla, Çin anakarası dışında sunulur
-- Otuz grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, canlı portföy, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı, Tahvil piyasası, Piyasa değeri geçmişi, Kripto mumlar, Kripto DCA, Kripto varlıklar, Kripto artış-düşüş takvimi, Kripto piyasa değeri geçmişi, Kripto piyasa değeri yarışı, Kripto aylık getiriler, Kripto Karşılaştırma, Kripto Hareketler, Kripto Hakimiyeti, Kripto Yıllık Getiriler
+- Otuz bir grafik: işlem hacmi, hacim ve devir, sektör yarışı, piyasa değeri yarışı, A/H primi, getiri matrisi, takvim, DCA planı, pozisyon getirisi, canlı portföy, portföy ve Piyasa bölünmüş, mumlar, Aşırı günler, Döviz koridorları, Endeks yarışı, Varlık sınıfları, Düşüşler, Tutma oranı, Tahvil piyasası, Piyasa değeri geçmişi, Kripto mumlar, Kripto DCA, Kripto varlıklar, Kripto artış-düşüş takvimi, Kripto piyasa değeri geçmişi, Kripto piyasa değeri yarışı, Kripto aylık getiriler, Kripto Karşılaştırma, Kripto Hareketler, Kripto Hakimiyeti, Kripto Yıllık Getiriler
 - H.264 MP4 dışa aktarma, kısa video platformlarına hazır
 - 14 dilde arayüz
 - Hesap yok, telemetri yok — verileriniz kendi bilgisayarınızda kalır

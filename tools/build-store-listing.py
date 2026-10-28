@@ -30,14 +30,14 @@ TEMPLATE = os.path.join(
     DOCS, "listingData-9NGDNH0CCW7L-1152921505702020674.csv")
 LISTING = os.path.join(DOCS, "store-listing.md")
 
-VERSION = "1.0.20.0"
-VERSION_DATE = "2026-10-23"
+VERSION = "1.0.21.0"
+VERSION_DATE = "2026-10-29"
 APP_TITLE = "MarketMotionStudio"
 DEV_STUDIO = "YiwenYang"
 COPYRIGHT = "© 2026 YiwenYang. All rights reserved."
 
 # The nine screenshots, in Partner Center order, and the description bullet each
-# one illustrates (0-based index into the thirty-chart list, identical in every
+# one illustrates (0-based index into the thirty-one-chart list, identical in every
 # language, which is where the per-language captions come from).
 SHOTS = [
     ("01-market-turnover", 0),
