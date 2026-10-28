@@ -685,8 +685,12 @@ public sealed class BoardSplitRenderer(
 
         var appear = Easing.Ramp(t, plan.IntroMs * 0.4, 900);
 
+        // The heading is inked in the sign of the reference index — the Shanghai composite when
+        // it is on the frame, else the first mainland index, else the first of them — red while
+        // that index is up and green while it is down. The heading answers "which kind of day is
+        // the market having" the same way the book's heading answers it for the portfolio.
         Ink.Left(session2, Strings.Get("BoardIndexLabel"), left, Row(context, labelRow),
-            labelFormat, Palette.StockPanelTitle, appear);
+            labelFormat, HeadingColour(clock), appear);
 
         if (indexes.Count == 0 || appear <= 0)
         {
@@ -777,6 +781,28 @@ public sealed class BoardSplitRenderer(
 
         Ink.Centred(session2, Strings.Get("BoardNoon"), (from + to) / 2, top + context.Px(24),
             format, Palette.AxisLabel, 0.75 * appear);
+    }
+
+    /// <summary>The index heading's colour: the reference index's change sign — red up, green
+    /// down, and the neutral title colour when there is nothing on the frame to read a sign
+    /// from.</summary>
+    private Color HeadingColour(double clock)
+    {
+        var reference =
+            indexes.FirstOrDefault(s => s.Code == "sh000001") ??
+            indexes.FirstOrDefault(s => !IndexIntraday.IsHongKong(s.Code)) ??
+            indexes.FirstOrDefault();
+
+        if (reference is null)
+        {
+            return Palette.StockPanelTitle;
+        }
+
+        var stop = Math.Min(clock, reference.CloseMinute);
+        var sample = reference.Minutes.LastOrDefault(m => m.Minute <= stop) ?? reference.Last;
+        var change = reference.ChangeAt(sample);
+
+        return change > 0 ? Palette.Emphasis : change < 0 ? Palette.Fall : Palette.StockPanelTitle;
     }
 
     private void DrawIndex(
