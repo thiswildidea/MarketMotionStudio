@@ -291,13 +291,19 @@ public sealed class BoardSplitRenderer(
         var bottom = Row(context, bottomRow);
         var height = bottom - top;
 
-        using var labelFormat = Ink.Format(context.Px(24), bold: true);
+        // The panel headings read from across a room: set large and heavy, and the book's own
+        // heading is inked in the day's sign — red while the book is up, green while it is down —
+        // so the heading itself answers "which kind of day is this" before the curve does.
+        using var labelFormat = Ink.Format(context.Px(34), bold: true, heavy: true);
         using var noteFormat = Ink.Format(context.Px(27));
 
         var appear = Easing.Ramp(t, plan.IntroMs * 0.4, 900);
 
+        var pnlNow = shown >= 0 && shown < session.Samples.Count ? session.Samples[shown].Pnl : 0;
+        var headingColour = pnlNow > 0 ? Palette.Emphasis : pnlNow < 0 ? Palette.Fall : Palette.StockPanelTitle;
+
         Ink.Left(session2, Strings.Get("BoardPnlLabel"), left, Row(context, labelRow),
-            labelFormat, Palette.StockPanelTitle, appear);
+            labelFormat, headingColour, appear);
 
         var (high, low) = Range(shown);
 
@@ -661,7 +667,8 @@ public sealed class BoardSplitRenderer(
         var top = Row(context, topRow);
         var bottom = Row(context, bottomRow);
 
-        using var labelFormat = Ink.Format(context.Px(24), bold: true);
+        // Same heading treatment as the book's half: large, heavy, readable from across a room.
+        using var labelFormat = Ink.Format(context.Px(34), bold: true, heavy: true);
         using var tickFormat = Ink.Format(context.Px(19));
         using var legendFormat = Ink.Format(context.Px(20));
 

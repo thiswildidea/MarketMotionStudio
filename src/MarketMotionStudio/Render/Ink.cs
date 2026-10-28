@@ -45,11 +45,13 @@ public static class Ink
     /// contain a comma would therefore be drawn as another font altogether, and the
     /// one thing a choice of font must not do is silently pick a different one.
     /// </param>
-    public static CanvasTextFormat Format(double sizeInPixels, bool bold = false, string? family = null) => new()
+    public static CanvasTextFormat Format(double sizeInPixels, bool bold = false, string? family = null, bool heavy = false) => new()
     {
         FontFamily = Chosen(family),
         FontSize = (float)sizeInPixels,
-        FontWeight = bold ? Microsoft.UI.Text.FontWeights.Bold : Microsoft.UI.Text.FontWeights.Normal,
+        FontWeight = bold
+            ? heavy ? Microsoft.UI.Text.FontWeights.ExtraBold : Microsoft.UI.Text.FontWeights.Bold
+            : Microsoft.UI.Text.FontWeights.Normal,
         WordWrapping = CanvasWordWrapping.NoWrap,
         HorizontalAlignment = CanvasHorizontalAlignment.Left,
         VerticalAlignment = CanvasVerticalAlignment.Top,
