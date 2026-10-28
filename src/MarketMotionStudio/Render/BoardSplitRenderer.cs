@@ -687,9 +687,15 @@ public sealed class BoardSplitRenderer(
             (float)left, (float)zero, (float)(left + plotWidth), (float)zero,
             Ink.Fade(Palette.Grid, 0.9 * appear), 1.5f);
 
+        // Each line carries its own tag at its end — name and live change on the line's colour.
+        // The tags know about each other only as rectangles: two lines that end close together
+        // must not print their tags on top of one another.
+        var tags = new List<(double Top, double Bottom)>(indexes.Count);
+
         foreach (var series in indexes)
         {
-            DrawIndex(session2, context, series, left, plotWidth, top, bottom - top, high, low, clock);
+            DrawIndex(session2, context, series, left, plotWidth, top, bottom - top, high, low,
+                clock, legendFormat, tags, appear);
         }
 
         DrawCloseRule(session2, context, left, plotWidth, top, bottom, appear);
@@ -757,7 +763,8 @@ public sealed class BoardSplitRenderer(
 
     private void DrawIndex(
         CanvasDrawingSession session2, FrameContext context, IndexIntradaySeries series,
-        double left, double width, double top, double height, double high, double low, double clock)
+        double left, double width, double top, double height, double high, double low, double clock,
+        CanvasTextFormat tagFormat, List<(double Top, double Bottom)> tags, double appear)
     {
         var colour = Palette.Race16[Palette.RaceIndex(series.Code)];
         var stop = Math.Min(clock, series.CloseMinute);
@@ -796,6 +803,71 @@ public sealed class BoardSplitRenderer(
         }
 
         session2.FillCircle(points[^1], 6f, colour);
+
+        DrawEndTag(session2, context, series, colour, points[^1], stop, left, width,
+            top, top + height, tagFormat, tags, appear);
+    }
+
+    /// <summary>
+    /// The tag riding a line's end: the index's name and its change at the minute on screen, on
+    /// a pill of the line's own colour. A legend answers *which line is which*; this answers
+    /// *where is it now* — the reader follows the line's head and the number is already there,
+    /// not across the frame in a column. The pill sits just left of the head dot (the lines end
+    /// at the plot's right edge, so the tag reads backwards into the morning it summarises),
+    /// clamped inside the plot, and nudged vertically clear of the tags already placed when two
+    /// lines end close together.
+    /// </summary>
+    private void DrawEndTag(
+        CanvasDrawingSession session2, FrameContext context, IndexIntradaySeries series, Color colour,
+        Vector2 head, double stop, double left, double width, double top, double bottom,
+        CanvasTextFormat format, List<(double Top, double Bottom)> tags, double appear)
+    {
+        var sample = series.Minutes.LastOrDefault(m => m.Minute <= stop) ?? series.Last;
+        var text = $"{series.Name} {Signed(series.ChangeAt(sample))}";
+
+        using var layout = new CanvasTextLayout(session2, text, format, 0, 0);
+
+        var textWidth = layout.LayoutBounds.Width;
+        var textHeight = layout.LayoutBounds.Height;
+        var padX = context.Px(11);
+        var padY = context.Px(5);
+        var boxWidth = textWidth + (padX * 2);
+        var boxHeight = textHeight + (padY * 2);
+
+        var x = head.X - context.Px(12) - boxWidth;
+
+        if (x < left)
+        {
+            // A line that stopped early (the mainland close rule) may end near the left; the
+            // tag then reads off the dot's right shoulder instead, kept inside the plot.
+            x = Math.Min(head.X + context.Px(12), left + width - boxWidth);
+        }
+
+        var y = head.Y - (boxHeight / 2);
+        var gap = boxHeight + context.Px(6);
+
+        for (var guard = 0; guard < 8; guard++)
+        {
+            if (!tags.Any(t => y < t.Bottom + context.Px(4) && y + boxHeight > t.Top - context.Px(4)))
+            {
+                break;
+            }
+
+            y += gap;
+        }
+
+        y = Math.Clamp(y, top + context.Px(4), Math.Max(top + context.Px(4), bottom - boxHeight - context.Px(4)));
+
+        tags.Add((y, y + boxHeight));
+
+        session2.FillRoundedRectangle(
+            (float)x, (float)y, (float)boxWidth, (float)boxHeight,
+            (float)(boxHeight / 2), (float)(boxHeight / 2),
+            Ink.Fade(colour, appear));
+
+        session2.DrawText(
+            text, (float)(x + padX), (float)(y + padY),
+            Ink.Fade(Ink.OnTopOf(colour), appear), format);
     }
 
     /// <summary>The rule at 15:00, drawn only when the axis actually runs past it.</summary>

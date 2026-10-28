@@ -1112,9 +1112,11 @@ for one code rather than for the set, and the page refreshes itself every thirty
 market is open and stops after the close, on the same rule as the intraday page.
 
 **The two halves are drawn to be compared, and the page gives the reader the levers that
-comparison needs.** Both plots run the same width — the legend's column comes off the upper half
-too, so a vertical line dropped through the frame lands on the same minute of the book and of the
-market — and they can swap ends, indexes on top or the book on top. The midday pause can come off
+comparison needs.** Both plots run the frame's full width — the legend rides the indexes' own
+label row instead of claiming a column the curves would pay for — so a vertical line dropped
+through the frame lands on the same minute of the book and of the market. Each index line also
+carries its name and live change on a pill of its own colour at the line's end, where the eye
+already is, and the two halves can swap ends, indexes on top or the book on top. The midday pause can come off
 the clock altogether, and what comes off is the minutes *both* drawn sides keep: 12:00 to 13:00
 with the two venues on one frame, because 11:30-to-noon Hong Kong still traded. The book is
 editable here through the intraday page's own two doors — 管理持仓 and 导入成交 are the same
