@@ -23,10 +23,11 @@ namespace MarketMotionStudio.Render;
 /// </para>
 ///
 /// <para>
-/// **The two curves are the same width.** The halves are compared by eye, and a plot that runs
-/// wider than the one under it invites the reader to line a feature of one against a different
-/// minute of the other — the legend's column is taken off *both* halves, so a vertical line
-/// dropped through the frame lands on the same minute of the book and of the market.
+/// **The two curves are the same width — and the frame's whole width.** The halves are compared
+/// by eye, and a plot that runs wider than the one under it invites the reader to line a feature
+/// of one against a different minute of the other; both run edge to edge of the same margins.
+/// The legend pays for that: it rides the indexes' own label row, at its right end, instead of
+/// claiming a column the curves would both have to give up.
 /// </para>
 ///
 /// <para>
@@ -77,28 +78,30 @@ public sealed class BoardSplitRenderer(
 {
     // The frame, in fractions of its height. Two slots of near-equal weight, and the halves swap
     // between them: the book's panel and the indexes' panel each take a slot's label row, plot
-    // and the strip under the plot, whichever order the reader asked for.
+    // and the strip under the plot, whichever order the reader asked for. The book's slot is a
+    // shade shorter: under it sit *two* contributor lines — one per stock, see ContribPitch —
+    // and both have to clear the divider.
     private const double TopLabelRow = 0.238;
     private const double TopTop = 0.262;
-    private const double TopBottom = 0.520;
+    private const double TopBottom = 0.504;
 
-    private const double DividerRow = 0.578;
+    private const double DividerRow = 0.590;
 
-    private const double BottomLabelRow = 0.606;
-    private const double BottomTop = 0.630;
-    private const double BottomBottom = 0.862;
+    private const double BottomLabelRow = 0.618;
+    private const double BottomTop = 0.642;
+    private const double BottomBottom = 0.858;
 
     /// <summary>From a slot's bottom edge to the row that follows it: a clock axis, or the
     /// contributor lines.</summary>
     private const double RowGap = 0.032;
 
+    /// <summary>From the best contributor's row to the worst's. Two lines, not one: the old
+    /// single line set the best from the left and the worst from the right, and the two met in
+    /// the middle once names went long — masked or not (实测：两串在中点压在一起).</summary>
+    private const double ContribPitch = 0.028;
+
     /// <summary>Radius of the bull/bear badge, in baseline pixels.</summary>
     private const double MascotRadius = 30;
-
-    /// <summary>Room the legend column takes off the right of *both* plots, in baseline pixels.</summary>
-    private const double LegendWidth = 292;
-
-    private const double LegendPitch = 40;
 
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
@@ -239,10 +242,11 @@ public sealed class BoardSplitRenderer(
 
         var width = Math.Max(1, right - left);
 
-        // **Both halves' curves span the same run.** The legend's column comes off the right of
-        // the lower half, so it comes off the upper half too: two plots of different width cannot
-        // be compared by eye, and comparing them is what this page exists for.
-        var plotWidth = Math.Max(1, width - context.Px(LegendWidth));
+        // **Both halves' curves span the whole run.** The legend rides the indexes' label row
+        // instead of claiming a column, so nothing stands between the curves and the margins:
+        // two plots of the same width cannot be compared crooked, and comparing them is what
+        // this page exists for.
+        var plotWidth = width;
 
         var p = Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs));
         var shown = ShownAt(p);
@@ -323,28 +327,24 @@ public sealed class BoardSplitRenderer(
 
         DrawMascot(session2, context, shown, p, value, left, plotWidth, top, height, high, low);
 
-        // Which position is doing the day's work, and which is undoing it. Two names, not a
-        // table: the reader who wants the table has the page's own list beside the frame. The
-        // names can be masked — a published video says more about a holding than its owner may
-        // mean to say — and the lines are set larger than a caption, because they are the only
-        // per-stock reading the frame carries now.
+        // Which position is doing the day's work, and which is undoing it. Two lines, one stock
+        // each, both hanging from the left: the old arrangement set the best from the left and
+        // the worst from the right on a single line, and the two met in the middle once the
+        // names went long — masked or not. The names can be masked — a published video says more
+        // about a holding than its owner may mean to say — and the lines are set larger than a
+        // caption, because they are the only per-stock reading the frame carries now.
         if (Contributions(shown) is var (best, worst) && best is not null && worst is not null)
         {
-            // Ink.Left hangs text from a baseline, Ink.RightMiddle from a middle; the offset
-            // puts the two on one visual line.
-            var mid = Row(context, contribRow);
-            var baseline = mid + context.Px(9);
-
             Ink.Left(session2,
                 Strings.Format("BoardContribBest", Mask(best.Value.Name),
                     PortfolioPnlRenderer.Money(best.Value.Money)),
-                left, baseline, noteFormat,
+                left, Row(context, contribRow) + context.Px(9), noteFormat,
                 best.Value.Money >= 0 ? Palette.Emphasis : Palette.Fall, appear * 0.9);
 
-            Ink.RightMiddle(session2,
+            Ink.Left(session2,
                 Strings.Format("BoardContribWorst", Mask(worst.Value.Name),
                     PortfolioPnlRenderer.Money(worst.Value.Money)),
-                left + plotWidth, mid, noteFormat,
+                left, Row(context, contribRow + ContribPitch) + context.Px(9), noteFormat,
                 worst.Value.Money >= 0 ? Palette.Emphasis : Palette.Fall, appear * 0.9);
         }
     }
@@ -695,7 +695,8 @@ public sealed class BoardSplitRenderer(
         DrawCloseRule(session2, context, left, plotWidth, top, bottom, appear);
         DrawClocks(session2, context, left, plotWidth, clockRow, tickFormat, appear);
 
-        DrawLegend(session2, context, indexes, left + plotWidth + context.Px(24), top, legendFormat, clock, appear);
+        DrawLegend(session2, context, indexes, left + plotWidth, Row(context, labelRow),
+            legendFormat, clock, appear);
     }
 
     /// <summary>
@@ -851,33 +852,57 @@ public sealed class BoardSplitRenderer(
     }
 
     /// <summary>
-    /// The legend: one row per index, a dot in the line's colour, the name, and the change at the
-    /// minute on screen. Right of *both* plots — the column is what both halves give up, so the
-    /// two curves underneath it stay the same width and stay comparable.
+    /// The legend: one entry per index — a dot in the line's colour, the name, and the change at
+    /// the minute on screen — laid out in a row along the indexes' own label line, right-aligned
+    /// to the plot's right edge. It used to sit in a column of its own that *both* plots paid
+    /// for; a column is a poor trade when the two curves underneath it exist to be compared, and
+    /// a label row has the whole right half of itself to spare.
     /// </summary>
     private void DrawLegend(
         CanvasDrawingSession session2, FrameContext context, IReadOnlyList<IndexIntradaySeries> list,
-        double x, double top, CanvasTextFormat format, double clock, double appear)
+        double right, double baseline, CanvasTextFormat format, double clock, double appear)
     {
-        for (var i = 0; i < list.Count; i++)
+        var entries = new List<(Color Colour, string Name, string Change, double Width)>(list.Count);
+        var total = 0d;
+
+        foreach (var series in list)
         {
-            var series = list[i];
-            var colour = Palette.Race16[Palette.RaceIndex(series.Code)];
-            var y = top + context.Px(6) + (i * context.Px(LegendPitch));
+            var name = series.Name.Length > 6 ? series.Name[..6] : series.Name;
             var stop = Math.Min(clock, series.CloseMinute);
             var sample = series.Minutes.LastOrDefault(m => m.Minute <= stop) ?? series.Last;
-            var change = series.ChangeAt(sample);
+            var change = Signed(series.ChangeAt(sample));
+            var colour = Palette.Race16[Palette.RaceIndex(series.Code)];
 
-            session2.FillCircle((float)(x + context.Px(6)), (float)(y + context.Px(7)),
-                (float)context.Px(6), Ink.Fade(colour, appear));
+            using var nameLayout = new CanvasTextLayout(session2, name, format, 0, 0);
+            using var changeLayout = new CanvasTextLayout(session2, change, format, 0, 0);
 
-            var name = series.Name.Length > 6 ? series.Name[..6] : series.Name;
+            var width = context.Px(6) + context.Px(10) + nameLayout.LayoutBounds.Width
+                + context.Px(8) + changeLayout.LayoutBounds.Width;
 
-            Ink.Left(session2, name, x + context.Px(22), y + context.Px(14), format,
+            entries.Add((colour, name, change, width));
+            total += width;
+        }
+
+        total += context.Px(30) * Math.Max(0, entries.Count - 1);
+
+        var x = right - total;
+
+        foreach (var entry in entries)
+        {
+            session2.FillCircle(
+                (float)(x + context.Px(6)), (float)(baseline - context.Px(8)),
+                (float)context.Px(6), Ink.Fade(entry.Colour, appear));
+
+            Ink.Left(session2, entry.Name, x + context.Px(20), baseline, format,
                 Palette.AxisLabel, appear);
 
-            Ink.Left(session2, Signed(change), x + context.Px(22), y + context.Px(14) + context.Px(24),
-                format, change >= 0 ? Palette.Emphasis : Palette.Fall, appear);
+            using var nameLayout = new CanvasTextLayout(session2, entry.Name, format, 0, 0);
+
+            Ink.Left(session2, entry.Change,
+                x + context.Px(20) + nameLayout.LayoutBounds.Width + context.Px(8), baseline,
+                format, entry.Change.StartsWith('+') ? Palette.Emphasis : Palette.Fall, appear);
+
+            x += entry.Width + context.Px(30);
         }
     }
 
