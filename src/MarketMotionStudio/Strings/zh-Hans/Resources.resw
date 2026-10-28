@@ -1155,4 +1155,6 @@
   <data name="BoardNoIndex"><value>未选指数</value></data>
   <data name="BoardNoon"><value>午间休市</value></data>
   <data name="BoardMainlandClose"><value>A 股收盘 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>指数在上半屏</value></data>
+  <data name="BoardMaskNames.Content"><value>贡献最大/拖累最大 以 * 隐藏名称</value></data>
 </root>

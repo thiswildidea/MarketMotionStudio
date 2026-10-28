@@ -11,8 +11,8 @@ using Windows.UI;
 namespace MarketMotionStudio.Render;
 
 /// <summary>
-/// One frame, two answers: what the reader's book did today, above, and how the two markets it
-/// lives in moved, below — each half of the frame to itself, both on one clock.
+/// One frame, two answers: what the reader's book did today, and how the two markets it lives in
+/// moved — each half of the frame to itself, both on one clock.
 ///
 /// <para>
 /// **The halves are a comparison, so they share an axis of time.** The book's curve and the
@@ -20,6 +20,13 @@ namespace MarketMotionStudio.Render;
 /// minute, which is the only thing that lets a reader see that the morning's loss turned at the
 /// same moment the Hang Seng turned. Drawn on two independent clocks the same two shapes would
 /// sit in one frame saying nothing to each other.
+/// </para>
+///
+/// <para>
+/// **The two curves are the same width.** The halves are compared by eye, and a plot that runs
+/// wider than the one under it invites the reader to line a feature of one against a different
+/// minute of the other — the legend's column is taken off *both* halves, so a vertical line
+/// dropped through the frame lands on the same minute of the book and of the market.
 /// </para>
 ///
 /// <para>
@@ -36,26 +43,59 @@ namespace MarketMotionStudio.Render;
 /// halves speak the same language as well as keeping the same clock.
 /// </para>
 /// </summary>
+/// <param name="crossSafeRight">
+/// Whether the picture may run into the band the host covers with its button rail — the same
+/// switch the intraday page carries, read once at construction as every other renderer reads it.
+/// </param>
+/// <param name="mascot">Whether the head of the book's curve carries a bull or a bear.</param>
+/// <param name="dynamicAxis">
+/// Whether the book's vertical axis follows the curve drawn so far instead of being fixed at the
+/// whole day's excursion from the first frame.
+/// </param>
+/// <param name="lunchBreak">
+/// Whether the midday pause is on the axis at all. On, it is a shaded stretch of the clock — and
+/// only the minutes *both* drawn venues keep: mainland stops at 11:30, Hong Kong at noon, and
+/// with both on the frame the shared pause is 12:00 to 13:00, because 11:30-to-noon Hong Kong
+/// still traded. Off, the pause comes off the axis altogether and morning and afternoon meet
+/// where the market shut.
+/// </param>
+/// <param name="indexOnTop">Whether the indexes take the upper half and the book the lower.</param>
+/// <param name="maskNames">
+/// Whether the contributor lines hide the stocks' names behind asterisks — a published video
+/// says more about a holding than its owner may mean to.
+/// </param>
 public sealed class BoardSplitRenderer(
     PortfolioSession session,
     IReadOnlyList<IndexIntradaySeries> indexes,
-    AnimationPlan plan) : IFrameRenderer
+    AnimationPlan plan,
+    bool crossSafeRight = false,
+    bool mascot = false,
+    bool dynamicAxis = false,
+    bool lunchBreak = true,
+    bool indexOnTop = false,
+    bool maskNames = false) : IFrameRenderer
 {
-    // The frame, in fractions of its height, so the layout survives every format. Two panels of
-    // equal weight: the book's plot and the indexes' plot are within a few per cent of the same
-    // height, because neither half is decoration for the other.
-    private const double PnlLabelRow = 0.238;
-    private const double PnlTop = 0.262;
-    private const double PnlBottom = 0.468;
-    private const double ValueRow = 0.548;
-    private const double StatRow = 0.590;
-    private const double DividerRow = 0.619;
-    private const double IndexLabelRow = 0.651;
-    private const double IndexTop = 0.675;
-    private const double IndexBottom = 0.856;
-    private const double ClockRow = 0.888;
+    // The frame, in fractions of its height. Two slots of near-equal weight, and the halves swap
+    // between them: the book's panel and the indexes' panel each take a slot's label row, plot
+    // and the strip under the plot, whichever order the reader asked for.
+    private const double TopLabelRow = 0.238;
+    private const double TopTop = 0.262;
+    private const double TopBottom = 0.520;
 
-    /// <summary>Room the legend column takes off the right of the lower plot, in baseline pixels.</summary>
+    private const double DividerRow = 0.578;
+
+    private const double BottomLabelRow = 0.606;
+    private const double BottomTop = 0.630;
+    private const double BottomBottom = 0.862;
+
+    /// <summary>From a slot's bottom edge to the row that follows it: a clock axis, or the
+    /// contributor lines.</summary>
+    private const double RowGap = 0.032;
+
+    /// <summary>Radius of the bull/bear badge, in baseline pixels.</summary>
+    private const double MascotRadius = 30;
+
+    /// <summary>Room the legend column takes off the right of *both* plots, in baseline pixels.</summary>
     private const double LegendWidth = 292;
 
     private const double LegendPitch = 40;
@@ -113,13 +153,74 @@ public sealed class BoardSplitRenderer(
 
     private bool AnyMainland => indexes.Any(s => !s.IsHongKong);
 
+    private bool AnyKong => indexes.Any(s => s.IsHongKong);
+
     private int WindowOpen() => IntradayPnl.OpenMinute;
 
+    /// <summary>
+    /// Which midday pause is off the axis or shaded: the minutes **both** drawn sides keep.
+    /// Mainland stops at 11:30, Hong Kong at noon, and both are back at one — so a frame showing
+    /// both venues pauses at 12:00, where Hong Kong joins the mainland, and a frame of one venue
+    /// pauses where that venue stops. The book itself counts: a frame whose indexes are all
+    /// mainland still shortens to the shared pause when the book holds Hong Kong shares, because
+    /// the upper half is on the same axis and the same rule.
+    /// </summary>
+    private (int From, int To) MiddayPause()
+    {
+        var bookMainland = session.Holdings.Any(h => h.Shares > 0 && !h.IsHongKong);
+        var bookKong = session.Holdings.Any(h => h.Shares > 0 && h.IsHongKong);
+
+        var mainland = AnyMainland || bookMainland;
+        var kong = AnyKong || bookKong;
+
+        var from = mainland && kong ? IntradayPnl.KongLunch
+            : mainland ? IntradayPnl.MainlandLunch
+            : IntradayPnl.KongLunch;
+
+        return (from, IntradayPnl.AfternoonOpen);
+    }
+
+    /// <summary>
+    /// Minutes since midnight to an x position, on whichever axis is in force.
+    ///
+    /// <para>
+    /// With the pause on the axis, the clock *is* the axis: 09:30 to close laid out evenly, and
+    /// the pause is a stretch of it that <see cref="DrawBands"/> shades so a flat stretch reads as
+    /// a pause rather than as an hour of nothing happening.
+    /// </para>
+    ///
+    /// <para>
+    /// With it off, the pause is not on the axis: the morning and the afternoon each take the
+    /// share of the width their own minutes earned, and they meet where the market shut. A minute
+    /// inside the pause lands on the seam, which is the afternoon's first point and where the
+    /// curve carries it.
+    /// </para>
+    /// </summary>
     private double X(double minute, double left, double width)
     {
-        var span = Math.Max(1, WindowClose() - WindowOpen());
+        var open = WindowOpen();
+        var close = WindowClose();
+        var span = Math.Max(1, close - open);
+        var clamped = Math.Clamp(minute, open, close);
 
-        return left + (Math.Clamp(minute - WindowOpen(), 0, span) / (double)span * width);
+        if (lunchBreak)
+        {
+            return left + ((clamped - open) / (double)span * width);
+        }
+
+        var (from, to) = MiddayPause();
+
+        if (from <= open || to >= close)
+        {
+            return left + ((clamped - open) / (double)span * width);
+        }
+
+        var total = span - (to - from);
+        var offset = clamped <= from
+            ? clamped - open
+            : (from - open) + (clamped - to);
+
+        return left + (offset / (double)total * width);
     }
 
     public void Draw(CanvasDrawingSession session2, FrameContext context)
@@ -134,51 +235,74 @@ public sealed class BoardSplitRenderer(
 
         // The same rail rule as every other page: the host's avatar strip is wider than the
         // default right margin, so a plot measured to the margin alone runs under it.
-        var right = Math.Min(context.ChartRight, context.SafeRight());
+        var right = crossSafeRight ? context.ChartRight : Math.Min(context.ChartRight, context.SafeRight());
 
         var width = Math.Max(1, right - left);
+
+        // **Both halves' curves span the same run.** The legend's column comes off the right of
+        // the lower half, so it comes off the upper half too: two plots of different width cannot
+        // be compared by eye, and comparing them is what this page exists for.
+        var plotWidth = Math.Max(1, width - context.Px(LegendWidth));
 
         var p = Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs));
         var shown = ShownAt(p);
 
         // The clock the whole frame runs on is the window, not the book's own last print: with a
         // Hong Kong index selected the axis reaches 16:00, and the book — closed at three — is
-        // held flat across the last hour exactly the way its line in the lower half is. Mapping
+        // held flat across the last hour exactly the way its line in the other half is. Mapping
         // the ramp onto the book's minutes instead would stop every line at 15:00 and leave the
         // right fifth of the lower half permanently empty (实测：恒指线画到 15:00 戛然而止).
         var clock = WindowOpen() + (p * (WindowClose() - WindowOpen()));
 
-        DrawPnlPanel(session2, context, t, left, width, shown, clock);
+        // The two slots, and whichever half sits in each. Swapping moves the whole panel — label
+        // row, plot and the strip under it — so each half keeps its own furniture in both orders.
+        (double Label, double Top, double Bottom) bookSlot = indexOnTop
+            ? (BottomLabelRow, BottomTop, BottomBottom)
+            : (TopLabelRow, TopTop, TopBottom);
+        (double Label, double Top, double Bottom) indexSlot = indexOnTop
+            ? (TopLabelRow, TopTop, TopBottom)
+            : (BottomLabelRow, BottomTop, BottomBottom);
+
+        // The clock axis belongs to the indexes' half (it is their shared time scale), so it
+        // follows the slot the indexes are in; the contributor lines belong to the book.
+        var clockRow = indexSlot.Bottom + RowGap;
+        var contribRow = bookSlot.Bottom + RowGap + 0.002;
+
+        DrawBookPanel(session2, context, t, left, plotWidth, shown, clock, p,
+            bookSlot.Label, bookSlot.Top, bookSlot.Bottom, contribRow);
         DrawDivider(session2, context, left, width);
-        DrawIndexPanel(session2, context, t, left, width, shown, clock);
+        DrawIndexPanel(session2, context, t, left, plotWidth, clock,
+            indexSlot.Label, indexSlot.Top, indexSlot.Bottom, clockRow);
         DrawProgress(session2, context, t);
     }
 
-    // ---- upper half: the book ---------------------------------------------------------
+    // ---- the book's half ---------------------------------------------------------------
 
-    private void DrawPnlPanel(
+    private void DrawBookPanel(
         CanvasDrawingSession session2, FrameContext context, double t,
-        double left, double width, int shown, double clock)
+        double left, double plotWidth, int shown, double clock, double p,
+        double labelRow, double topRow, double bottomRow, double contribRow)
     {
-        var top = Row(context, PnlTop);
-        var bottom = Row(context, PnlBottom);
+        var top = Row(context, topRow);
+        var bottom = Row(context, bottomRow);
+        var height = bottom - top;
 
         using var labelFormat = Ink.Format(context.Px(24), bold: true);
-        using var noteFormat = Ink.Format(context.Px(19));
+        using var noteFormat = Ink.Format(context.Px(27));
 
         var appear = Easing.Ramp(t, plan.IntroMs * 0.4, 900);
 
-        Ink.Left(session2, Strings.Get("BoardPnlLabel"), left, Row(context, PnlLabelRow),
+        Ink.Left(session2, Strings.Get("BoardPnlLabel"), left, Row(context, labelRow),
             labelFormat, Palette.StockPanelTitle, appear);
 
-        var (high, low) = Range();
+        var (high, low) = Range(shown);
 
         // The zero line is this panel's subject — the moment the morning's gain became the
         // afternoon's loss is what a reader of a day's book is looking for.
-        var zero = Y(0, top, bottom - top, high, low);
+        var zero = Y(0, top, height, high, low);
 
         session2.DrawLine(
-            (float)left, (float)zero, (float)(left + width), (float)zero,
+            (float)left, (float)zero, (float)(left + plotWidth), (float)zero,
             Ink.Fade(Palette.Grid, 0.85 * appear), 1.5f);
 
         if (appear <= 0 || shown < 0)
@@ -186,55 +310,118 @@ public sealed class BoardSplitRenderer(
             return;
         }
 
-        var points = Curve(left, width, top, bottom - top, high, low, shown, clock);
+        var points = Curve(left, plotWidth, top, height, high, low, shown, clock);
 
         FillSigned(session2, points, (float)zero);
         Stroke(session2, points, here: shown);
 
-        // The frame's own read-out: what the book was worth at this minute, said in figures.
-        var value = session.Samples[shown].Pnl;
-        var positive = value >= 0;
+        var value = points.Count > 0 ? points[^1].Value : session.Samples[shown].Pnl;
 
-        using var valueFormat = Ink.Format(context.Px(76), bold: true);
+        // The day's figure rides the end of the curve rather than the middle of the frame: the
+        // number is *about* the curve's last point, and a reader's eye is already there.
+        DrawEndValue(session2, context, points[^1], left, plotWidth, top, bottom, appear);
 
-        Ink.Centred(session2, PortfolioPnlRenderer.Money(value), context.Width / 2,
-            Row(context, ValueRow), valueFormat,
-            positive ? Palette.Emphasis : Palette.Fall, appear);
-
-        var pct = session.PrevValue > 0 ? value / session.PrevValue * 100 : 0;
-
-        Ink.Centred(session2, Strings.Format(
-                "BoardPnlStatLine",
-                Signed(pct),
-                session.OpenPositions.ToString(CultureInfo.InvariantCulture)),
-            context.Width / 2, Row(context, StatRow), noteFormat, Palette.Muted, appear);
+        DrawMascot(session2, context, shown, p, value, left, plotWidth, top, height, high, low);
 
         // Which position is doing the day's work, and which is undoing it. Two names, not a
-        // table: at this height a table would be four rows of eight-pixel type, and the reader
-        // who wants the table has the page's own list beside the frame.
+        // table: the reader who wants the table has the page's own list beside the frame. The
+        // names can be masked — a published video says more about a holding than its owner may
+        // mean to say — and the lines are set larger than a caption, because they are the only
+        // per-stock reading the frame carries now.
         if (Contributions(shown) is var (best, worst) && best is not null && worst is not null)
         {
+            // Ink.Left hangs text from a baseline, Ink.RightMiddle from a middle; the offset
+            // puts the two on one visual line.
+            var mid = Row(context, contribRow);
+            var baseline = mid + context.Px(9);
+
             Ink.Left(session2,
-                Strings.Format("BoardContribBest", best.Value.Name, PortfolioPnlRenderer.Money(best.Value.Money)),
-                left, Row(context, StatRow) + context.Px(34), noteFormat,
+                Strings.Format("BoardContribBest", Mask(best.Value.Name),
+                    PortfolioPnlRenderer.Money(best.Value.Money)),
+                left, baseline, noteFormat,
                 best.Value.Money >= 0 ? Palette.Emphasis : Palette.Fall, appear * 0.9);
 
             Ink.RightMiddle(session2,
-                Strings.Format("BoardContribWorst", worst.Value.Name, PortfolioPnlRenderer.Money(worst.Value.Money)),
-                left + width, Row(context, StatRow) + context.Px(34) - context.Px(7), noteFormat,
+                Strings.Format("BoardContribWorst", Mask(worst.Value.Name),
+                    PortfolioPnlRenderer.Money(worst.Value.Money)),
+                left + plotWidth, mid, noteFormat,
                 worst.Value.Money >= 0 ? Palette.Emphasis : Palette.Fall, appear * 0.9);
         }
     }
 
     /// <summary>
-    /// The panel's vertical range: the day's larger excursion on either side of zero, padded so
-    /// the curve never touches the frame. Zero is always inside it — the distance from zero is
-    /// the number being drawn.
+    /// The day's figure at the curve's head: right-aligned against the head dot, above it unless
+    /// the curve is at the plot's ceiling, and clamped inside the plot on both axes. Sized as the
+    /// frame's headline — it is the one number the frame is about — and inked in the sign's
+    /// colour, which says the half of the answer the digits also carry.
     /// </summary>
-    private (double High, double Low) Range()
+    private void DrawEndValue(
+        CanvasDrawingSession session2, FrameContext context,
+        (float X, float Y, double Value) head,
+        double left, double plotWidth, double top, double bottom, double appear)
     {
-        var high = Math.Max(0, session.Peak);
-        var low = Math.Min(0, session.Trough);
+        var text = PortfolioPnlRenderer.Money(head.Value);
+
+        using var format = Ink.Format(context.Px(58), bold: true);
+
+        using var layout = new CanvasTextLayout(session2, text, format, 0, 0);
+        var textWidth = layout.LayoutBounds.Width;
+        var textHeight = layout.LayoutBounds.Height;
+
+        var x = Math.Max(
+            left + context.Px(6),
+            head.X - context.Px(22) - textWidth);
+
+        // Above the head by default; below it when the head is near the plot's top, and clamped
+        // so a head near either edge still keeps its number inside the plot.
+        var y = head.Y - textHeight - context.Px(18);
+
+        if (y < top + context.Px(6))
+        {
+            y = head.Y + context.Px(18);
+        }
+
+        y = Math.Clamp(y, top + context.Px(6), Math.Max(top + context.Px(6), bottom - textHeight - context.Px(6)));
+
+        var colour = head.Value >= 0 ? Palette.Emphasis : Palette.Fall;
+
+        Ink.Glow(session2, context.Px(10), 0.4 * appear,
+            ds => ds.DrawText(text, (float)x, (float)y, colour, format));
+        session2.DrawText(text, (float)x, (float)y, Ink.Fade(colour, appear), format);
+    }
+
+    /// <summary>The contributor names, or the same length of asterisks. An instance method, not
+    /// a static one: the switch is a primary-constructor parameter, and those may not be read
+    /// from static members.</summary>
+    private string Mask(string name) => maskNames ? new string('*', name.Length) : name;
+
+    /// <summary>
+    /// The book's vertical range: the day's larger excursion on either side of zero, padded so
+    /// the curve never touches the frame. Zero is always inside it — the distance from zero is
+    /// the number being drawn. With the dynamic axis on, the range is the running extreme of the
+    /// points drawn so far, so a violent afternoon is drawn at its own scale instead of being
+    /// flattened by a morning that happened to travel further; at the last point the running
+    /// extreme is the whole day's, so the closing frame matches the fixed scale.
+    /// </summary>
+    private (double High, double Low) Range(int shown)
+    {
+        var peak = session.Peak;
+        var trough = session.Trough;
+
+        if (dynamicAxis && shown >= 0)
+        {
+            peak = 0;
+            trough = 0;
+
+            for (var i = 0; i <= shown && i < session.Samples.Count; i++)
+            {
+                peak = Math.Max(peak, session.Samples[i].Pnl);
+                trough = Math.Min(trough, session.Samples[i].Pnl);
+            }
+        }
+
+        var high = Math.Max(0, peak);
+        var low = Math.Min(0, trough);
 
         if (high - low < 1e-9)
         {
@@ -273,7 +460,7 @@ public sealed class BoardSplitRenderer(
         }
 
         // The book's own last print: past it the line holds its level, the way a closed market's
-        // line does in the lower half. A mainland book under a 16:00 axis is the case this exists
+        // line does in the other half. A mainland book under a 16:00 axis is the case this exists
         // for; a book that itself reached 16:00 is untouched by it.
         var printed = session.Samples[Math.Min(shown, session.Samples.Count - 1)];
 
@@ -386,6 +573,38 @@ public sealed class BoardSplitRenderer(
     }
 
     /// <summary>
+    /// The bull or the bear, riding the head of the book's curve — the intraday page's badge, on
+    /// the same rule: the animal is the day's sign, not the slope's, so it changes exactly when
+    /// the curve crosses zero.
+    /// </summary>
+    private void DrawMascot(
+        CanvasDrawingSession session2, FrameContext context, int shown, double p, double value,
+        double left, double width, double top, double height, double high, double low)
+    {
+        if (!mascot || shown < 0 || p <= 0)
+        {
+            return;
+        }
+
+        var x = X(session.Samples[shown].Minute, left, width);
+        var y = Y(value, top, height, high, low);
+
+        // Grows in with the curve and bobs on progress alone, so the preview and the export move
+        // the badge through exactly the same places.
+        var radius = context.Px(MascotRadius) * (0.55 + (0.45 * Math.Min(1, p)));
+        var bob = Math.Sin(context.Progress * Math.Tau * 2) * context.Px(4);
+
+        // Kept inside the plot: a head near the top would otherwise push the badge out of the
+        // panel, and one near the right edge would put half of it outside the frame.
+        var cx = Math.Clamp(x, left + radius, Math.Max(left + radius, left + width - radius));
+        var cy = Math.Max(top + radius + context.Px(6), y - radius - context.Px(14)) + bob;
+
+        Mascots.Draw(
+            session2, (float)cx, (float)cy, (float)radius,
+            value >= 0, Palette.Emphasis, Palette.Fall, Math.Min(1, p));
+    }
+
+    /// <summary>
     /// The best and worst contributors at the minute on screen, or nothing when the session has
     /// no per-minute breakdown to read.
     /// </summary>
@@ -432,14 +651,15 @@ public sealed class BoardSplitRenderer(
             Ink.Fade(Palette.Grid, 0.9), 1);
     }
 
-    // ---- lower half: the two markets ---------------------------------------------------
+    // ---- the markets' half -------------------------------------------------------------
 
     private void DrawIndexPanel(
         CanvasDrawingSession session2, FrameContext context, double t,
-        double left, double width, int shown, double clock)
+        double left, double plotWidth, double clock,
+        double labelRow, double topRow, double bottomRow, double clockRow)
     {
-        var top = Row(context, IndexTop);
-        var bottom = Row(context, IndexBottom);
+        var top = Row(context, topRow);
+        var bottom = Row(context, bottomRow);
 
         using var labelFormat = Ink.Format(context.Px(24), bold: true);
         using var tickFormat = Ink.Format(context.Px(19));
@@ -447,7 +667,7 @@ public sealed class BoardSplitRenderer(
 
         var appear = Easing.Ramp(t, plan.IntroMs * 0.4, 900);
 
-        Ink.Left(session2, Strings.Get("BoardIndexLabel"), left, Row(context, IndexLabelRow),
+        Ink.Left(session2, Strings.Get("BoardIndexLabel"), left, Row(context, labelRow),
             labelFormat, Palette.StockPanelTitle, appear);
 
         if (indexes.Count == 0 || appear <= 0)
@@ -458,16 +678,13 @@ public sealed class BoardSplitRenderer(
             return;
         }
 
-        var plotRight = left + width - context.Px(LegendWidth);
-        var plotWidth = Math.Max(1, plotRight - left);
-
         var (high, low) = IndexRange();
         var zero = Y(0, top, bottom - top, high, low);
 
         DrawBands(session2, context, left, plotWidth, top, bottom, appear);
 
         session2.DrawLine(
-            (float)left, (float)zero, (float)plotRight, (float)zero,
+            (float)left, (float)zero, (float)(left + plotWidth), (float)zero,
             Ink.Fade(Palette.Grid, 0.9 * appear), 1.5f);
 
         foreach (var series in indexes)
@@ -476,13 +693,13 @@ public sealed class BoardSplitRenderer(
         }
 
         DrawCloseRule(session2, context, left, plotWidth, top, bottom, appear);
-        DrawClocks(session2, context, left, plotWidth, bottom, tickFormat, appear);
+        DrawClocks(session2, context, left, plotWidth, clockRow, tickFormat, appear);
 
-        DrawLegend(session2, context, indexes, plotRight + context.Px(24), top, legendFormat, clock, appear);
+        DrawLegend(session2, context, indexes, left + plotWidth + context.Px(24), top, legendFormat, clock, appear);
     }
 
     /// <summary>
-    /// The vertical range of the lower panel: symmetric about the zero line, because an axis
+    /// The vertical range of the indexes' panel: symmetric about the zero line, because an axis
     /// where a one-per-cent fall takes a tenth of the height and a one-per-cent rise takes a
     /// third makes the two directions look like different things.
     /// </summary>
@@ -504,20 +721,23 @@ public sealed class BoardSplitRenderer(
     }
 
     /// <summary>
-    /// The lunch break and the mainland's close, as bands and a rule rather than as flat stretches
-    /// the reader has to interpret. Hong Kong breaks an hour later than Shanghai, so the shaded
-    /// band is the one they share — 11:30 to 13:00 — and the half hour either side of noon is
-    /// named as what it is: the mainland's pause, or Hong Kong's.
+    /// The midday pause, shaded rather than merely skipped over — and only when the pause is on
+    /// the axis at all. The band is the minutes **both** drawn venues keep (see
+    /// <see cref="MiddayPause"/>): 11:30-to-noon Hong Kong still traded, and shading it would
+    /// call traded minutes a break.
     /// </summary>
     private void DrawBands(
         CanvasDrawingSession session2, FrameContext context,
         double left, double width, double top, double bottom, double appear)
     {
-        // The band is whichever pause the drawn venues keep: Hong Kong stops at noon, the
-        // mainland at half past eleven, and both are back at one.
-        var lunchStart = AnyMainland ? IntradayPnl.MainlandLunch : IntradayPnl.KongLunch;
-        var from = X(lunchStart, left, width);
-        var to = X(IntradayPnl.AfternoonOpen, left, width);
+        if (!lunchBreak || indexes.Count == 0)
+        {
+            return;
+        }
+
+        var (fromMinute, toMinute) = MiddayPause();
+        var from = X(fromMinute, left, width);
+        var to = X(toMinute, left, width);
 
         if (to <= from)
         {
@@ -601,19 +821,20 @@ public sealed class BoardSplitRenderer(
 
     private void DrawClocks(
         CanvasDrawingSession session2, FrameContext context,
-        double left, double width, double bottom, CanvasTextFormat format, double appear)
+        double left, double width, double clockRow, CanvasTextFormat format, double appear)
     {
-        var y = Row(context, ClockRow);
+        var y = Row(context, clockRow);
 
         // With the axis running to 16:00 the 15:00 label is left off: the close rule names that
         // minute already, and two labels fifty pixels apart print over each other (实测：
-        // "15:00" 与 "16:00" 连成一串). Without a mainland index there is no rule, and the
-        // three o'clock label is dropped with it — the axis still reads, and the reader who
-        // wants the exact minute has the legend's own clock in the frame's header.
+        // "15:00" 与 "16:00" 连成一串). With the pause off the axis, the pause's own label goes
+        // with it — 11:30 is not on the axis to be labelled.
         var ticks = WindowClose() > IntradayPnl.MainlandClose
             ? new[] { IntradayPnl.OpenMinute, IntradayPnl.AfternoonOpen, IntradayPnl.HongKongClose }
-            : new[] { IntradayPnl.OpenMinute, IntradayPnl.MainlandLunch, IntradayPnl.AfternoonOpen,
-                      IntradayPnl.MainlandClose };
+            : lunchBreak
+                ? new[] { IntradayPnl.OpenMinute, IntradayPnl.MainlandLunch, IntradayPnl.AfternoonOpen,
+                          IntradayPnl.MainlandClose }
+                : new[] { IntradayPnl.OpenMinute, IntradayPnl.AfternoonOpen, IntradayPnl.MainlandClose };
 
         foreach (var minute in ticks)
         {
@@ -631,8 +852,8 @@ public sealed class BoardSplitRenderer(
 
     /// <summary>
     /// The legend: one row per index, a dot in the line's colour, the name, and the change at the
-    /// minute on screen. Right of the plot rather than across its top, because a row of names
-    /// above the plot would push the plot down into the clock labels.
+    /// minute on screen. Right of *both* plots — the column is what both halves give up, so the
+    /// two curves underneath it stay the same width and stay comparable.
     /// </summary>
     private void DrawLegend(
         CanvasDrawingSession session2, FrameContext context, IReadOnlyList<IndexIntradaySeries> list,

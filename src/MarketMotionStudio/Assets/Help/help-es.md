@@ -480,7 +480,9 @@ Sus propias posiciones, valoradas al minuto: lo que la sesión ha ganado o costa
 
 Arriba el día de la cartera, abajo los índices del continente y de Hong Kong: media pantalla cada uno, un solo reloj, la animación avanza minuto a minuto junta.
 
-- **La mitad superior dibuja tu propia cartera** — la misma que lee la página de P&L intradía: la curva del día sobre su línea cero, la cifra de hoy, la rentabilidad, el número de posiciones, y nombrados el mejor y el peor contribuyente. Solo lectura aquí; las ediciones, en la página intradía.
+- **La mitad superior dibuja tu propia cartera** — la misma que lee la página «P&L intradía»: la curva del día sobre su línea cero, la cifra del día al final de la curva, y el mejor y el peor aporte nombrados (los nombres pueden ocultarse con asteriscos). Gestionar cartera e importar operaciones también están aquí — los mismos diálogos sobre el mismo libro, y un cambio en una página es la siguiente lectura de la otra.
+
+- **Las dos mitades pueden intercambiarse** (índices arriba, o la cartera arriba), las dos curvas corren con la misma anchura para compararlas, y la pausa del mediodía puede salir del eje — con ambas plazas en pantalla, la que se quita es la común de 12:00 a 13:00. Las cuatro comisiones son el ajuste de la página intradía: cambiadas aquí, aquélla también las aplica en su próxima lectura.
 
 - **La mitad inferior dibuja solo índices**: seis del continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) y tres de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite y Hang Seng marcados de inicio. Acciones, ETF y monedas no están en esta página — responde a cómo fue el mercado hoy.
 

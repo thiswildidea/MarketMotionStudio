@@ -488,7 +488,9 @@ Le proprie posizioni, valorizzate al minuto: quanto la giornata ha reso o costat
 
 Sopra la giornata del portafoglio, sotto gli indici del continente e di Hong Kong: metà schermo ciascuno, un solo orologio, l'animazione avanza minuto per minuto insieme.
 
-- **La metà superiore disegna il tuo portafoglio** — lo stesso che legge la pagina P&L intraday: la curva del giorno sulla sua linea zero, la cifra di oggi, la resa, il numero di posizioni, e il migliore e il peggiore contributo nominati. Solo lettura qui; le modifiche si fanno sulla pagina intraday.
+- **La metà superiore disegna il tuo portafoglio** — lo stesso che legge la pagina «P&L intraday»: la curva del giorno sulla sua linea dello zero, la cifra del giorno in fondo alla curva, e il migliore e il peggiore contributo con nome (i nomi possono essere nascosti con asterischi). Gestisci portafoglio e importa operazioni sono qui pure — le stesse finestre sullo stesso registro, e una modifica su una pagina è la prossima lettura dell'altra.
+
+- **Le due metà si possono scambiare** (indici sopra, o portafoglio sopra), le due curve corrono alla stessa larghezza per confrontarle, e la pausa di mezzogiorno può uscire dall'asse — con entrambe le piazze nel fotogramma, quella tolta è la comune dalle 12:00 alle 13:00. Le quattro commissioni sono l'impostazione della pagina intraday: cambiate qui, vale anche lì alla prossima lettura.
 
 - **La metà inferiore disegna solo indici**: sei del continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) e tre di Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite e Hang Seng spuntati all'inizio. Azioni, ETF e monete non sono su questa pagina — risponde a come è andato il mercato oggi.
 

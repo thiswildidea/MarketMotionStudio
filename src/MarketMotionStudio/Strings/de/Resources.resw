@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>Kein Index gewählt</value></data>
   <data name="BoardNoon"><value>Mittagspause</value></data>
   <data name="BoardMainlandClose"><value>Festland-Schluss 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Indizes in der oberen Hälfte</value></data>
+  <data name="BoardMaskNames.Content"><value>Größter Beitrag/größte Bremse: Namen mit * verdecken</value></data>
 </root>

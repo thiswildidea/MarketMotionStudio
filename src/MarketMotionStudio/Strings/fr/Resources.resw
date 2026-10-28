@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>Aucun indice choisi</value></data>
   <data name="BoardNoon"><value>Pause déjeuner</value></data>
   <data name="BoardMainlandClose"><value>Clôture continentale 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Indices dans la moitié supérieure</value></data>
+  <data name="BoardMaskNames.Content"><value>Meilleur/pires contributeurs : noms masqués par *</value></data>
 </root>

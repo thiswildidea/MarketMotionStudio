@@ -21,7 +21,9 @@ SECTIONS = {
 
 上半是持仓的当日盈亏，下半是 A 股与港股指数的实时走势：两边各占一半，共用一根时钟，动画一起一分钟一分钟往前走。
 
-- **上半画你自己的账**，和「实时持仓收益」读的是同一本：当日盈亏曲线、零轴、今天的盈亏数字、收益率与持仓只数，还标出贡献最大与拖累最大的两只。账本在这页只读，要改去「实时持仓收益」。
+- **上半画你自己的账**，和「实时持仓收益」读的是同一本：当日盈亏曲线、零轴，今天的盈亏数字就标在曲线末端，还标出贡献最大与拖累最大的两只（可按设置把股票名藏成 \\*）。管理持仓与导入成交这页也有——同一套对话框、同一本账，任何一页改了，另一页取数后就是最新。
+
+- **两个半屏可以互换**（指数在上或收益在上），两条曲线一样宽，好对照着看；午休可以从时间轴上拿掉——两个市场同显时，拿掉的是双方都休的 12:00–13:00。四项费率与「实时持仓收益」是同一份设置，在这页改，那页重取数后同样生效。
 
 - **下半只画指数**：A 股六个（上证、沪深300、深证成指、中证500、创业板指、上证50）与港股三个（恒生、国企、恒生科技），默认选上证和恒生。个股、ETF、币种都不在这页 —— 它回答的是「大盘今天怎么走」。
 
@@ -37,7 +39,9 @@ SECTIONS = {
 
 上半是持倉的當日盈虧，下半是 A 股與港股指數的即時走勢：兩邊各佔一半，共用一根時鐘，動畫一起一分鐘一分鐘往前走。
 
-- **上半畫你自己的帳**，和「即時持倉收益」讀的是同一本：當日盈虧曲線、零軸、今天的盈虧數字、收益率與持倉隻數，還標出貢獻最大與拖累最大的兩隻。帳本在這頁唯讀，要改去「即時持倉收益」。
+- **上半畫你自己的帳**，和「即時持倉收益」讀的是同一本：當日盈虧曲線、零軸，今天的盈虧數字就標在曲線末端，還標出貢獻最大與拖累最大的兩隻（可按設定把股票名藏成 \\*）。管理持倉與匯入成交這頁也有——同一套對話框、同一本帳，任何一頁改了，另一頁取數後就是最新。
+
+- **兩個半屏可以互換**（指數在上或收益在上），兩條曲線一樣寬，好對照著看；午休可以從時間軸上拿掉——兩個市場同顯時，拿掉的是雙方都休的 12:00–13:00。四項費率與「即時持倉收益」是同一份設定，在這頁改，那頁重取數後同樣生效。
 
 - **下半只畫指數**：A 股六個（上證、滬深300、深證成指、中證500、創業板指、上證50）與港股三個（恆生、國企、恆生科技），預設選上證和恆生。個股、ETF、幣種都不在這頁 —— 它回答的是「大盤今天怎麼走」。
 
@@ -53,7 +57,9 @@ SECTIONS = {
 
 The book's day above, mainland and Hong Kong indexes below: half the frame each, on one clock, the animation walking forward a minute at a time together.
 
-- **The upper half draws your own book** — the same one the Intraday P&L page reads: the day's profit curve on its zero line, today's figure, the day's return and the count of positions, plus the best and the worst contributor named. The book is read-only here; edits belong to the intraday page.
+- **The upper half draws your own book** — the same one the Intraday P&L page reads: the day's profit curve on its zero line, today's figure riding the curve's end, plus the best and the worst contributor named (their names can be hidden behind asterisks). Manage holdings and import trades live here too — the same dialogs over the same book, and an edit on either page is the other page's next fetch.
+
+- **The two halves can swap** (indexes on top, or the book on top), the two curves run the same width so they read against each other, and the midday pause can come off the clock — with both venues on the frame, the pause taken out is the one both keep, 12:00 to 13:00. The four fee rates are the intraday page's own setting: change them here and that page recomputes with them too.
 
 - **The lower half draws indexes only**: six mainland ones (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) and three from Hong Kong (Hang Seng, HSCEI, Hang Seng Tech), the SSE Composite and the Hang Seng ticked to start. Stocks, ETFs and coins are not on this page — it answers how the market is doing today.
 
@@ -69,7 +75,9 @@ The book's day above, mainland and Hong Kong indexes below: half the frame each,
 
 上に保有資産の当日損益、下に A 股と香港指数のリアルタイム推移：半分ずつ、一つの時計で、アニメーションは一分ずつ一緒に進みます。
 
-- **上の半分はあなた自身の帳簿**です。「リアルタイム損益」と同じ帳簿を読みます：当日損益の曲線とゼロ線、今日の数字、収益率、保有銘柄数、さらに貢献最大と足かせ最大の二銘柄まで。ここでは読み取り専用、編集はリアルタイム損益のページで。
+- **上半分はあなた自身の帳簿**を描きます。「時間内損益」と同じ帳を読みます。当日の損益カーブとゼロ軸、その日の数字はカーブの先端に添え、最大の貢献と最大の足引っ張りも名前付きで示します（設定で名前を \\* で隠せます）。保有管理と約定の取り込みもこのページにあります——同じダイアログ、同じ帳で、どちらで変えてももう一方の次の取得で最新になります。
+
+- **二つの半分は入れ替えられます**（インデックスを上に、あるいは損益を上に）。二つの曲線は同じ幅で並び見比べられ、昼休みは時間軸から外せます——両市場を同時に出しているとき外れるのは、双方が休んでいる 12:00–13:00 です。四つの手数料は「時間内損益」と同じ設定で、こちらで変えればあちらの再取得にも反映されます。
 
 - **下の半分は指数だけ**：A 股六本（上証、滬深300、深証成指、中証500、創業板指、上証50）と香港三本（恒生、国企、恒生テック）。既定は上証と恒生。個別株・ETF・通貨はこのページにありません —— 答えるのは「市場は今日どう動いたか」。
 
@@ -85,7 +93,9 @@ The book's day above, mainland and Hong Kong indexes below: half the frame each,
 
 위쪽은 보유 계좌의 당일 손익, 아래쪽은 A주와 홍콩 지수의 실시간 흐름: 반씩, 하나의 시계로, 애니메이션은 함께 1분씩 앞으로 갑니다.
 
-- **위쪽은 자기 계좌입니다.** 「실시간 수익」과 같은 장부를 읽습니다: 당일 손익 곡선과 0선, 오늘의 숫자, 수익률, 보유 종목 수, 그리고 최고 기여와 최대 발목 두 종목까지. 이 페이지에서는 읽기 전용, 편집은 실시간 수익 페이지에서.
+- **위쪽 절반은 자신의 계좌를 그립니다.** 「실시간 손익」과 같은 장부를 읽습니다. 당일 손익 곡선과 0축, 그날의 숫자는 곡선 끝에 붙고, 가장 크게 기여한 종목과 가장 크게 발목 잡은 종목도 이름으로 표시됩니다(설정에서 이름을 \\*로 가릴 수 있습니다). 계좌 관리와 체결 가져오기도 이 페이지에 있습니다 — 같은 대화상자, 같은 장부이며, 한쪽에서 고치면 다른 쪽은 다시 가져오기로 최신이 됩니다.
+
+- **두 절반은 서로 바꿀 수 있습니다**(지수를 위에, 또는 수익을 위에). 두 곡선은 같은 폭이라 나란히 비교되며, 점심시간은 시간축에서 뺄 수 있습니다 — 두 시장을 함께 표시할 때 빠지는 것은 둘 다 쉬는 12:00–13:00입니다. 네 가지 수수료는 「실시간 손익」과 같은 설정으로, 여기서 바꾸면 그쪽 재가져오기에도 반영됩니다.
 
 - **아래쪽은 지수만**: A주 여섯(상해지수, CSI 300, 심천성분, CSI 500, 친업판지수, 상해50)과 홍콩 셋(항셍, 국기, 항생테크). 기본값은 상해지수와 항셍. 개별주·ETF·코인은 이 페이지에 없습니다 —— 대답하는 것은 "시장이 오늘 어떻게 움직였나".
 
@@ -101,7 +111,9 @@ The book's day above, mainland and Hong Kong indexes below: half the frame each,
 
 Oben der Tag des Depots, unten die Festland- und Hongkong-Indizes: je die halbe Bildhöhe, eine Uhr für beide, die Animation geht Minute für Minute zusammen vorwärts.
 
-- **Die obere Hälfte zeichnet dein eigenes Depot** — dasselbe, das die Intraday-Gewinnseite liest: die Tageskurve auf ihrer Nulllinie, die heutige Zahl, die Tagesrendite, die Zahl der Positionen, und die beste und die schlechteste Position namentlich. Hier nur lesend; bearbeitet wird auf der Intraday-Seite.
+- **Die obere Hälfte zeichnet Ihr eigenes Depot** — dasselbe, das die Seite «Intraday P&L» liest: die Tageskurve auf ihrer Nulllinie, die Zahl des Tages am Ende der Kurve, dazu bester und schlechtester Beitrag mit Namen (die Namen lassen sich hinter Sternchen verbergen). Depot verwalten und Trades importieren gibt es auch hier — dieselben Dialoge über dasselbe Depot, und eine Änderung auf einer Seite ist der nächste Abruf der anderen.
+
+- **Die beiden Hälften lassen sich tauschen** (Indizes oben oder das Depot oben), beide Kurven laufen gleich breit und lassen sich so direkt vergleichen, und die Mittagspause kann von der Achse genommen werden — mit beiden Märkten im Bild wird die gemeinsame Pause 12:00–13:00 herausgenommen. Die vier Gebührensätze sind die Einstellung der Intraday-Seite: hier geändert, rechnet sie dort beim nächsten Abruf mit.
 
 - **Die untere Hälfte zeichnet nur Indizes**: sechs vom Festland (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) und drei aus Hongkong (Hang Seng, HSCEI, Hang Seng Tech), vorgewählt sind SSE Composite und Hang Seng. Einzelwerte, ETFs und Münzen gehören nicht auf diese Seite — sie antwortet darauf, wie der Markt heute lief.
 
@@ -117,7 +129,9 @@ Oben der Tag des Depots, unten die Festland- und Hongkong-Indizes: je die halbe 
 
 En haut la journée du portefeuille, en bas les indices du continent et de Hong Kong : une moitié chacun, une seule horloge, l'animation avance minute par minute ensemble.
 
-- **La moitié haute dessine votre propre portefeuille** — le même que lit la page P&L intraday : la courbe du jour sur sa ligne zéro, le chiffre du jour, la performance, le nombre de positions, et les meilleures et pires contributions nommément. Lecture seule ici ; les modifications se font sur la page intraday.
+- **La moitié supérieure dessine votre propre portefeuille** — le même que la page « P&L intraday » lit : la courbe du jour sur sa ligne zéro, le chiffre du jour au bout de la courbe, et les meilleur et pire contributeurs nommés (leurs noms peuvent être masqués par des astérisques). Gérer le portefeuille et importer les transactions sont là aussi — les mêmes boîtes de dialogue sur le même carnet, et une modification d'un côté est le prochain rafraîchissement de l'autre.
+
+- **Les deux moitiés peuvent s'échanger** (indices en haut, ou portefeuille en haut), les deux courbes ont la même largeur pour se comparer, et la pause du midi peut sortir de l'axe — avec les deux places à l'écran, c'est la pause commune de 12:00 à 13:00 qui est retirée. Les quatre taux de frais sont le réglage de la page intraday : changés ici, elle les applique aussi à son prochain rafraîchissement.
 
 - **La moitié basse ne dessine que des indices** : six du continent (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) et trois de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech), SSE Composite et Hang Seng cochés au départ. Les actions, ETF et monnaies ne sont pas sur cette page — elle répond à « comment le marché a-t-il tourné aujourd'hui ».
 
@@ -133,7 +147,9 @@ En haut la journée du portefeuille, en bas les indices du continent et de Hong 
 
 Arriba el día de la cartera, abajo los índices del continente y de Hong Kong: media pantalla cada uno, un solo reloj, la animación avanza minuto a minuto junta.
 
-- **La mitad superior dibuja tu propia cartera** — la misma que lee la página de P&L intradía: la curva del día sobre su línea cero, la cifra de hoy, la rentabilidad, el número de posiciones, y nombrados el mejor y el peor contribuyente. Solo lectura aquí; las ediciones, en la página intradía.
+- **La mitad superior dibuja tu propia cartera** — la misma que lee la página «P&L intradía»: la curva del día sobre su línea cero, la cifra del día al final de la curva, y el mejor y el peor aporte nombrados (los nombres pueden ocultarse con asteriscos). Gestionar cartera e importar operaciones también están aquí — los mismos diálogos sobre el mismo libro, y un cambio en una página es la siguiente lectura de la otra.
+
+- **Las dos mitades pueden intercambiarse** (índices arriba, o la cartera arriba), las dos curvas corren con la misma anchura para compararlas, y la pausa del mediodía puede salir del eje — con ambas plazas en pantalla, la que se quita es la común de 12:00 a 13:00. Las cuatro comisiones son el ajuste de la página intradía: cambiadas aquí, aquélla también las aplica en su próxima lectura.
 
 - **La mitad inferior dibuja solo índices**: seis del continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) y tres de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite y Hang Seng marcados de inicio. Acciones, ETF y monedas no están en esta página — responde a cómo fue el mercado hoy.
 
@@ -149,7 +165,9 @@ Arriba el día de la cartera, abajo los índices del continente y de Hong Kong: 
 
 Sopra la giornata del portafoglio, sotto gli indici del continente e di Hong Kong: metà schermo ciascuno, un solo orologio, l'animazione avanza minuto per minuto insieme.
 
-- **La metà superiore disegna il tuo portafoglio** — lo stesso che legge la pagina P&L intraday: la curva del giorno sulla sua linea zero, la cifra di oggi, la resa, il numero di posizioni, e il migliore e il peggiore contributo nominati. Solo lettura qui; le modifiche si fanno sulla pagina intraday.
+- **La metà superiore disegna il tuo portafoglio** — lo stesso che legge la pagina «P&L intraday»: la curva del giorno sulla sua linea dello zero, la cifra del giorno in fondo alla curva, e il migliore e il peggiore contributo con nome (i nomi possono essere nascosti con asterischi). Gestisci portafoglio e importa operazioni sono qui pure — le stesse finestre sullo stesso registro, e una modifica su una pagina è la prossima lettura dell'altra.
+
+- **Le due metà si possono scambiare** (indici sopra, o portafoglio sopra), le due curve corrono alla stessa larghezza per confrontarle, e la pausa di mezzogiorno può uscire dall'asse — con entrambe le piazze nel fotogramma, quella tolta è la comune dalle 12:00 alle 13:00. Le quattro commissioni sono l'impostazione della pagina intraday: cambiate qui, vale anche lì alla prossima lettura.
 
 - **La metà inferiore disegna solo indici**: sei del continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) e tre di Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite e Hang Seng spuntati all'inizio. Azioni, ETF e monete non sono su questa pagina — risponde a come è andato il mercato oggi.
 
@@ -165,7 +183,9 @@ Sopra la giornata del portafoglio, sotto gli indici del continente e di Hong Kon
 
 Em cima o dia da carteira, em baixo os índices do continente e de Hong Kong: meia tela para cada, um só relógio, a animação avança minuto a minuto junta.
 
-- **A metade de cima desenha a sua própria carteira** — a mesma que a página de P&L intradiário lê: a curva do dia na linha zero, o número de hoje, o retorno, a contagem de posições, e o melhor e o pior contribuinte nomeados. Somente leitura aqui; edições ficam na página intradiária.
+- **A metade superior desenha a sua própria carteira** — a mesma que a página «P&L intradiário» lê: a curva do dia sobre a linha zero, o número do dia no fim da curva, e o melhor e o pior contribuinte nomeados (os nomes podem ser ocultados com asteriscos). Gerir carteira e importar negócios também estão aqui — os mesmos diálogos sobre o mesmo livro, e uma mudança numa página é a próxima leitura da outra.
+
+- **As duas metades podem trocar de lugar** (índices em cima, ou a carteira em cima), as duas curvas correm com a mesma largura para compará-las, e a pausa do meio-dia pode sair do eixo — com as duas praças no quadro, a que sai é a comum das 12:00 às 13:00. As quatro taxas são o ajuste da página intradiária: mudas aqui, ela também as aplica na próxima leitura.
 
 - **A metade de baixo desenha só índices**: seis do continente (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) e três de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech); SSE Composite e Hang Seng marcados de início. Ações, ETFs e moedas não estão nesta página — ela responde como o mercado foi hoje.
 
@@ -181,7 +201,9 @@ Em cima o dia da carteira, em baixo os índices do continente e de Hong Kong: me
 
 Сверху день портфеля, снизу индексы материка и Гонконга: по половине кадра, на одних часах, анимация идёт вперёд минута за минутой вместе.
 
-- **Верхняя половина рисует ваш собственный портфель** — тот же, что читает страница интрадей-П&У: кривую дня на нулевой линии, сегодняшнюю цифру, доходность, число позиций, и названными лучшего и худшего вкладчика. Здесь только чтение; правки — на странице интрадей.
+- **Верхняя половина рисует ваш собственный портфель** — тот же, что читает страница «Интрадей П&У»: кривая дня на нулевой линии, цифра дня на конце кривой, лучший и худший вклад с именами (имена можно скрыть звёздочками). Управление портфелем и импорт сделок есть и здесь — те же диалоги над тем же файлом, и правка на одной странице — это следующий запрос другой.
+
+- **Половины можно поменять местами** (индексы сверху или портфель сверху), обе кривые идут одной шириной и читаются вровень, а обед можно снять с оси — при обеих площадках на кадре снимается общая пауза 12:00–13:00. Четыре тарифа — та же настройка страницы интрадей: меняете здесь, она применит их при следующем запросе.
 
 - **Нижняя половина рисует только индексы**: шесть с материка (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) и три гонконгских (Hang Seng, HSCEI, Hang Seng Tech); по умолчанию отмечены SSE Composite и Hang Seng. Акций, ETF и монет здесь нет — страница отвечает на вопрос, как сегодня шёл рынок.
 
@@ -197,7 +219,9 @@ Em cima o dia da carteira, em baixo os índices do continente e de Hong Kong: me
 
 U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po połowie kadru, na jednym zegarze, animacja idzie do przodu minuta po minucie razem.
 
-- **Górna połowa rysuje twój własny portfel** — ten sam, który czyta strona P&L intraday: krzywą dnia na linii zera, dzisiejszą liczbę, stopę zwrotu, liczbę pozycji, a także najlepszego i najgorszego wkład z nazwy. Tu tylko odczyt; edycja należy do strony intraday.
+- **Górna połowa rysuje twój własny portfel** — ten sam, który czyta strona «Intraday P&L»: krzywa dnia na linii zera, liczba dnia na końcu krzywej, największy wkład i największa brzda z nazwami (nazwy można ukryć gwiazdkami). Zarządzanie portfelem i import zleceń są też tutaj — te same okna nad tym samym rejestrem, i zmiana na jednej stronie to następne pobranie drugiej.
+
+- **Połówki można zamienić** (indeksy u góry albo portfel u góry), obie krzywe biegną tą samą szerokością i czytają się w rzędzie, a przerwa obiadowa może zejść z osi — przy obu rynkach na kadrze znika wspólna przerwa 12:00–13:00. Cztery stawki to ustawienie strony intraday: zmienione tutaj, ona też je zastosuje przy następnym pobraniu.
 
 - **Dolna połowa rysuje tylko indeksy**: sześć z kontynentu (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) i trzy z Hongkongu (Hang Seng, HSCEI, Hang Seng Tech); domyślnie zaznaczone są SSE Composite i Hang Seng. Akcji, ETF i monet tu nie ma — strona odpowiada, jak dziś szedł rynek.
 
@@ -213,7 +237,9 @@ U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po po
 
 Üstte portföyün günü, altta Çin anakarası ve Hong Kong endeksleri: yarısı yarıya, tek saat, animasyon birlikte dakika dakika ilerler.
 
-- **Üst yarı kendi portföyünü çizer** — gün içi kâr sayfasının okuduğu aynı defter: günün kâr eğrisi sıfır çizgisi üzerinde, bugünün sayısı, getiri, pozisyon sayısı, ve en iyi ile en kötü katkı sahibi adlarıyla. Burada salt okunur; düzenleme gün içi sayfasında.
+- **Üst yarı kendi portföyünüzü çizer** — «Gün içi kâr» sayfasının okuduğu aynı defter: günün kâr eğrisi sıfır çizgisi üzerinde, günün rakamı eğrinin ucunda, en iyi ve en kötü katkı isimleriyle (isimler istenirse \\* ile gizlenir). Portföyü yönet ve işlemleri içe aktar da burada — aynı defter üzerinde aynı pencereler; bir sayfada yapılan değişiklik diğerinin sonraki çekimidir.
+
+- **İki yarı yer değiştirebilir** (endeksler üstte ya da portföy üstte), iki eğri aynı genişlikte akar ve karşılaştırılır; öğle arası eksenden çıkarılabilir — her iki piyasa da kadrajdayken çıkarılan, ikisinin de kapalı olduğu 12:00–13:00'dir. Dört komisyon oranı gün içi sayfasının kendi ayarıdır: burada değiştirilirse o da sonraki çekiminde uygular.
 
 - **Alt yarı yalnızca endeks çizer**: anakaradan altısı (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) ve Hong Kong'dan üçü (Hang Seng, HSCEI, Hang Seng Tech); başlangıçta SSE Composite ve Hang Seng işlidir. Hisse, ETF ve coin bu sayfada değil — sayfa bugün piyasasının nasıl gittiğini yanıtlar.
 
@@ -229,7 +255,9 @@ U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po po
 
 Nahoře den portfolia, dole indexy pevninské Číny a Hongkongu: po polovině rámu, na jedny hodiny, animace jde dopředu minutu za minutou spolu.
 
-- **Horní polovina kreslí tvé vlastní portfolio** — tutéž, kterou čte stránka Intraday P&L: denní křivku na nulové linii, dnešní číslo, výnos, počet pozic, a pojmenované největší přínosy i brzdy. Zde jen ke čtení; úpravy patří na stránku intraday.
+- **Horní polovina kreslí tvůj vlastní portfol** — ten samý, který čte stránka «Intraday P&L»: křivka dne na nulové linii, číslo dne na konci křivky, největší přínos a největší brzda se jmény (jména lze skrýt hvězdičkami). Správa portfolia a import obchodů jsou i tady — stejná okna nad stejným registrem, a úprava na jedné straně je příští stažení druhé.
+
+- **Poloviny lze prohodit** (indexy nahoře, nebo portfol nahoře), obě křivky běží stejně široko a čtou se vedle sebe, a polední pauza může z osi zmizet — s oběma trhy v záběru mizí společná pauza 12:00–13:00. Čtyři sazby jsou nastavení stránky intraday: změněné tady, použije je i ona při příštím stažení.
 
 - **Dolní polovina kreslí jen indexy**: šest z pevniny (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) a tři z Hongkongu (Hang Seng, HSCEI, Hang Seng Tech); předvoleny jsou SSE Composite a Hang Seng. Akcie, ETF a mince na této stránce nejsou — odpovídá na to, jak dnes šel trh.
 
@@ -265,7 +293,15 @@ for lang in LANGS:
     heading = SECTIONS[lang].splitlines()[0]
 
     if heading in text:
-        print(f"{lang}: already present")
+        # 小节已在：整节替换。这一节的唯一事实源就是本脚本里的 SECTIONS，
+        # 文案改了哪句、加删了哪条，这里说了算 —— 逐句补丁反而会漂。
+        lines = text.splitlines(keepends=True)
+        start = next(i for i, l in enumerate(lines) if l.rstrip() == heading)
+        end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
+        text = "".join(lines[:start]) + SECTIONS[lang].rstrip() + "\n\n" + "".join(lines[end:])
+        path.write_text(text, encoding="utf-8", newline="")
+        changed += 1
+        print(f"{lang}: section replaced")
         continue
 
     # The section goes in where the crypto pages begin — the manual follows the menu's

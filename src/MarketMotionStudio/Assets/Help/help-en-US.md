@@ -479,7 +479,9 @@ Your own holdings, marked to the minute: what today has made or cost since 09:30
 
 The book's day above, mainland and Hong Kong indexes below: half the frame each, on one clock, the animation walking forward a minute at a time together.
 
-- **The upper half draws your own book** — the same one the Intraday P&L page reads: the day's profit curve on its zero line, today's figure, the day's return and the count of positions, plus the best and the worst contributor named. The book is read-only here; edits belong to the intraday page.
+- **The upper half draws your own book** — the same one the Intraday P&L page reads: the day's profit curve on its zero line, today's figure riding the curve's end, plus the best and the worst contributor named (their names can be hidden behind asterisks). Manage holdings and import trades live here too — the same dialogs over the same book, and an edit on either page is the other page's next fetch.
+
+- **The two halves can swap** (indexes on top, or the book on top), the two curves run the same width so they read against each other, and the midday pause can come off the clock — with both venues on the frame, the pause taken out is the one both keep, 12:00 to 13:00. The four fee rates are the intraday page's own setting: change them here and that page recomputes with them too.
 
 - **The lower half draws indexes only**: six mainland ones (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) and three from Hong Kong (Hang Seng, HSCEI, Hang Seng Tech), the SSE Composite and the Hang Seng ticked to start. Stocks, ETFs and coins are not on this page — it answers how the market is doing today.
 

@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>Индексы не выбраны</value></data>
   <data name="BoardNoon"><value>Обеденный перерыв</value></data>
   <data name="BoardMainlandClose"><value>Закрытие материка 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Индексы в верхней половине</value></data>
+  <data name="BoardMaskNames.Content"><value>Лучший/худший вклад: имена под *</value></data>
 </root>

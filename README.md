@@ -1075,9 +1075,11 @@ drawing of the intraday page: it reads the same `PortfolioSession`, so the big f
 reference value and the two contributors are the same numbers to the fen, and a cover exported from
 either page shows the same day. What is new is the pairing: a curve filled above the zero line in
 red and below it in green — a segment that crosses zero is cut at the crossing, so the colour is
-never wrong by half a stroke — a head dot at the playhead, and three figures instead of a table,
-because at 1080×1920 the upper half has room for one big number and two small ones, and a fourth
-line would be read from across a room as a smudge.
+never wrong by half a stroke — a head dot at the playhead, and the day's figure riding the
+curve's own end, because the number is *about* that point and the reader's eye is already there;
+the two contributors are named underneath in type that reads from across a room, and their names
+can be hidden behind asterisks, because a published video says more about a holding than its
+owner may mean to say.
 
 The lower half is minutes, not candles, and that was decided by the sources rather than by taste:
 the one-minute candle endpoint answers for a mainland index and answers `param error` for `hkHSI`,
@@ -1108,6 +1110,19 @@ pause the drawn venues actually keep. Ticking a box fetches only the indexes tha
 loaded, so adding the Hang Seng Index to a frame that has the Shanghai composite re-asks the source
 for one code rather than for the set, and the page refreshes itself every thirty seconds while the
 market is open and stops after the close, on the same rule as the intraday page.
+
+**The two halves are drawn to be compared, and the page gives the reader the levers that
+comparison needs.** Both plots run the same width — the legend's column comes off the upper half
+too, so a vertical line dropped through the frame lands on the same minute of the book and of the
+market — and they can swap ends, indexes on top or the book on top. The midday pause can come off
+the clock altogether, and what comes off is the minutes *both* drawn sides keep: 12:00 to 13:00
+with the two venues on one frame, because 11:30-to-noon Hong Kong still traded. The book is
+editable here through the intraday page's own two doors — 管理持仓 and 导入成交 are the same
+dialogs over the same portfolio.json, and an edit on either page is the other page's next fetch —
+and the four fee rates are the intraday page's own setting under its own preference prefix, so a
+rate changed here recomputes that page's day as well. The four look switches — the safe-line
+overrun, the bull and bear, the dynamic axis and the lunch break itself — travel with them, one
+setting read by both renderers rather than two translations of one sentence.
 
 **Crypto Candles, Crypto DCA Plan and Crypto Holdings Return** — the candle, plan and holdings pages
 over a coin instead of a share, and the three pages that come with **a fourth market** rather than

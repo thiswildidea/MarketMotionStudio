@@ -489,7 +489,9 @@ Die eigenen Positionen, minutenweise bewertet: was der heutige Tag seit 09:30 ge
 
 Oben der Tag des Depots, unten die Festland- und Hongkong-Indizes: je die halbe Bildhöhe, eine Uhr für beide, die Animation geht Minute für Minute zusammen vorwärts.
 
-- **Die obere Hälfte zeichnet dein eigenes Depot** — dasselbe, das die Intraday-Gewinnseite liest: die Tageskurve auf ihrer Nulllinie, die heutige Zahl, die Tagesrendite, die Zahl der Positionen, und die beste und die schlechteste Position namentlich. Hier nur lesend; bearbeitet wird auf der Intraday-Seite.
+- **Die obere Hälfte zeichnet Ihr eigenes Depot** — dasselbe, das die Seite «Intraday P&L» liest: die Tageskurve auf ihrer Nulllinie, die Zahl des Tages am Ende der Kurve, dazu bester und schlechtester Beitrag mit Namen (die Namen lassen sich hinter Sternchen verbergen). Depot verwalten und Trades importieren gibt es auch hier — dieselben Dialoge über dasselbe Depot, und eine Änderung auf einer Seite ist der nächste Abruf der anderen.
+
+- **Die beiden Hälften lassen sich tauschen** (Indizes oben oder das Depot oben), beide Kurven laufen gleich breit und lassen sich so direkt vergleichen, und die Mittagspause kann von der Achse genommen werden — mit beiden Märkten im Bild wird die gemeinsame Pause 12:00–13:00 herausgenommen. Die vier Gebührensätze sind die Einstellung der Intraday-Seite: hier geändert, rechnet sie dort beim nächsten Abruf mit.
 
 - **Die untere Hälfte zeichnet nur Indizes**: sechs vom Festland (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) und drei aus Hongkong (Hang Seng, HSCEI, Hang Seng Tech), vorgewählt sind SSE Composite und Hang Seng. Einzelwerte, ETFs und Münzen gehören nicht auf diese Seite — sie antwortet darauf, wie der Markt heute lief.
 

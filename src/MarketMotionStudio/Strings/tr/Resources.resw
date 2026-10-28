@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>Endeks seçilmedi</value></data>
   <data name="BoardNoon"><value>Öğle arası</value></data>
   <data name="BoardMainlandClose"><value>Anakara kapanışı 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Endeksler üst yarıda</value></data>
+  <data name="BoardMaskNames.Content"><value>En iyi/en kötü katkı: adları * ile gizle</value></data>
 </root>

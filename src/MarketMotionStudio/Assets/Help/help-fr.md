@@ -494,7 +494,9 @@ Vos propres positions, valorisées à la minute : ce que la séance a rapporté 
 
 En haut la journée du portefeuille, en bas les indices du continent et de Hong Kong : une moitié chacun, une seule horloge, l'animation avance minute par minute ensemble.
 
-- **La moitié haute dessine votre propre portefeuille** — le même que lit la page P&L intraday : la courbe du jour sur sa ligne zéro, le chiffre du jour, la performance, le nombre de positions, et les meilleures et pires contributions nommément. Lecture seule ici ; les modifications se font sur la page intraday.
+- **La moitié supérieure dessine votre propre portefeuille** — le même que la page « P&L intraday » lit : la courbe du jour sur sa ligne zéro, le chiffre du jour au bout de la courbe, et les meilleur et pire contributeurs nommés (leurs noms peuvent être masqués par des astérisques). Gérer le portefeuille et importer les transactions sont là aussi — les mêmes boîtes de dialogue sur le même carnet, et une modification d'un côté est le prochain rafraîchissement de l'autre.
+
+- **Les deux moitiés peuvent s'échanger** (indices en haut, ou portefeuille en haut), les deux courbes ont la même largeur pour se comparer, et la pause du midi peut sortir de l'axe — avec les deux places à l'écran, c'est la pause commune de 12:00 à 13:00 qui est retirée. Les quatre taux de frais sont le réglage de la page intraday : changés ici, elle les applique aussi à son prochain rafraîchissement.
 
 - **La moitié basse ne dessine que des indices** : six du continent (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) et trois de Hong Kong (Hang Seng, HSCEI, Hang Seng Tech), SSE Composite et Hang Seng cochés au départ. Les actions, ETF et monnaies ne sont pas sur cette page — elle répond à « comment le marché a-t-il tourné aujourd'hui ».
 

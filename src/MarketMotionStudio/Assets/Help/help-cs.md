@@ -455,7 +455,9 @@ Vlastní pozice oceňované po minutě: co dnešní seance přinesla nebo stála
 
 Nahoře den portfolia, dole indexy pevninské Číny a Hongkongu: po polovině rámu, na jedny hodiny, animace jde dopředu minutu za minutou spolu.
 
-- **Horní polovina kreslí tvé vlastní portfolio** — tutéž, kterou čte stránka Intraday P&L: denní křivku na nulové linii, dnešní číslo, výnos, počet pozic, a pojmenované největší přínosy i brzdy. Zde jen ke čtení; úpravy patří na stránku intraday.
+- **Horní polovina kreslí tvůj vlastní portfol** — ten samý, který čte stránka «Intraday P&L»: křivka dne na nulové linii, číslo dne na konci křivky, největší přínos a největší brzda se jmény (jména lze skrýt hvězdičkami). Správa portfolia a import obchodů jsou i tady — stejná okna nad stejným registrem, a úprava na jedné straně je příští stažení druhé.
+
+- **Poloviny lze prohodit** (indexy nahoře, nebo portfol nahoře), obě křivky běží stejně široko a čtou se vedle sebe, a polední pauza může z osi zmizet — s oběma trhy v záběru mizí společná pauza 12:00–13:00. Čtyři sazby jsou nastavení stránky intraday: změněné tady, použije je i ona při příštím stažení.
 
 - **Dolní polovina kreslí jen indexy**: šest z pevniny (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) a tři z Hongkongu (Hang Seng, HSCEI, Hang Seng Tech); předvoleny jsou SSE Composite a Hang Seng. Akcie, ETF a mince na této stránce nejsou — odpovídá na to, jak dnes šel trh.
 

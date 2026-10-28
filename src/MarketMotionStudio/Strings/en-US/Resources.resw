@@ -1157,4 +1157,6 @@
   <data name="BoardNoIndex"><value>No index selected</value></data>
   <data name="BoardNoon"><value>Lunch break</value></data>
   <data name="BoardMainlandClose"><value>Mainland close 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Indexes on the upper half</value></data>
+  <data name="BoardMaskNames.Content"><value>Mask names with * in the contributor lines</value></data>
 </root>

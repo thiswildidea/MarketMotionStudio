@@ -460,7 +460,9 @@ Kendi pozisyonlarınız, dakika dakika değerlenmiş: günün 09:30'dan bu yana 
 
 Üstte portföyün günü, altta Çin anakarası ve Hong Kong endeksleri: yarısı yarıya, tek saat, animasyon birlikte dakika dakika ilerler.
 
-- **Üst yarı kendi portföyünü çizer** — gün içi kâr sayfasının okuduğu aynı defter: günün kâr eğrisi sıfır çizgisi üzerinde, bugünün sayısı, getiri, pozisyon sayısı, ve en iyi ile en kötü katkı sahibi adlarıyla. Burada salt okunur; düzenleme gün içi sayfasında.
+- **Üst yarı kendi portföyünüzü çizer** — «Gün içi kâr» sayfasının okuduğu aynı defter: günün kâr eğrisi sıfır çizgisi üzerinde, günün rakamı eğrinin ucunda, en iyi ve en kötü katkı isimleriyle (isimler istenirse \* ile gizlenir). Portföyü yönet ve işlemleri içe aktar da burada — aynı defter üzerinde aynı pencereler; bir sayfada yapılan değişiklik diğerinin sonraki çekimidir.
+
+- **İki yarı yer değiştirebilir** (endeksler üstte ya da portföy üstte), iki eğri aynı genişlikte akar ve karşılaştırılır; öğle arası eksenden çıkarılabilir — her iki piyasa da kadrajdayken çıkarılan, ikisinin de kapalı olduğu 12:00–13:00'dir. Dört komisyon oranı gün içi sayfasının kendi ayarıdır: burada değiştirilirse o da sonraki çekiminde uygular.
 
 - **Alt yarı yalnızca endeks çizer**: anakaradan altısı (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) ve Hong Kong'dan üçü (Hang Seng, HSCEI, Hang Seng Tech); başlangıçta SSE Composite ve Hang Seng işlidir. Hisse, ETF ve coin bu sayfada değil — sayfa bugün piyasasının nasıl gittiğini yanıtlar.
 

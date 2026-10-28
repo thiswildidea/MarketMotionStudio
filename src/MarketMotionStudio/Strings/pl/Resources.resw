@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>Nie wybrano indeksu</value></data>
   <data name="BoardNoon"><value>Przerwa obiadowa</value></data>
   <data name="BoardMainlandClose"><value>Zamknięcie kontynentu 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Indeksy w górnej połowie</value></data>
+  <data name="BoardMaskNames.Content"><value>Największy wkład/największa brzda: nazwy jako *</value></data>
 </root>

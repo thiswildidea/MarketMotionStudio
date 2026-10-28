@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>선택된 지수 없음</value></data>
   <data name="BoardNoon"><value>점심 휴장</value></data>
   <data name="BoardMainlandClose"><value>A주 마감 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>지수를 위쪽 절반에</value></data>
+  <data name="BoardMaskNames.Content"><value>최대 기여/최대 발목 이름을 *로 가리기</value></data>
 </root>

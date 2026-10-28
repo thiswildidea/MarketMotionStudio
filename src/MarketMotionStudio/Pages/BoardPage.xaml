@@ -111,9 +111,84 @@
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
-                    <!-- The book spans three venues, so the page draws whatever it holds: the
-                         market setting is what puts this page in the menu, not what it reads. -->
+                    <!-- 同一把闸，两个页面：管理持仓与导入成交在两个页面是同一套对话框、
+                         同一本 portfolio.json 账本，这里改完那边取数即最新。 -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Button x:Name="ManageButton"
+                                Grid.Column="0"
+                                x:Uid="PortfolioPnlManage"
+                                HorizontalAlignment="Stretch"
+                                Click="OnManage" />
+                        <Button x:Name="ImportButton"
+                                Grid.Column="1"
+                                x:Uid="PortfolioPnlImport"
+                                HorizontalAlignment="Stretch"
+                                Click="OnImport" />
+                    </Grid>
+
+                    <!-- 初值不写在标记里：这个开关的初值是**偏好**，RestorePreferences 会在
+                         构造时把它摆到位（见实时持仓收益页同款开关的注）。 -->
                     <ToggleSwitch x:Name="AutoRefresh" x:Uid="BoardAutoRefresh" Toggled="OnAutoRefreshToggled" />
+
+                    <!-- 画面开关。四个与实时持仓收益页同款（同一句翻译、同一份偏好键，
+                         两页互通）；两个是本页自己的。都不重新取数，只重画。 -->
+                    <CheckBox x:Name="IndexTopCheck"
+                              x:Uid="BoardIndexOnTop"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="CrossCheck"
+                              x:Uid="SafeRightCross"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="MascotCheck"
+                              x:Uid="PositionMascot"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="DynamicAxisCheck"
+                              x:Uid="PositionDynamicAxis"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <!-- 开：午休是一段带刻度的轴，画成阴影带（两个市场同显时只遮共用的
+                         12:00–13:00）。关：午休从轴上拿掉，上午下午在 13:00 相接。 -->
+                    <CheckBox x:Name="LunchCheck"
+                              x:Uid="PortfolioPnlLunch"
+                              IsChecked="True"
+                              Click="OnLookChanged" />
+
+                    <CheckBox x:Name="MaskCheck"
+                              x:Uid="BoardMaskNames"
+                              IsChecked="False"
+                              Click="OnLookChanged" />
+
+                    <!-- 费率与实时持仓收益页共用同一份偏好（Portfolio. 前缀），两页任一处
+                         改动，另一页取数后即按新费率重算。 -->
+                    <TextBlock x:Uid="PortfolioPnlFees"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <NumberBox x:Name="FeeCommission"
+                               x:Uid="PortfolioPnlFeeCommission"
+                               Minimum="0" SmallChange="0.5" LargeChange="1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeMinimum"
+                               x:Uid="PortfolioPnlFeeMinimum"
+                               Minimum="0" SmallChange="1" LargeChange="5"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeStamp"
+                               x:Uid="PortfolioPnlFeeStamp"
+                               Minimum="0" SmallChange="0.5" LargeChange="1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeTransfer"
+                               x:Uid="PortfolioPnlFeeTransfer"
+                               Minimum="0" SmallChange="0.05" LargeChange="0.1"
+                               ValueChanged="OnFeeChanged" />
 
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"

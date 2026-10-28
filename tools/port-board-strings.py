@@ -37,6 +37,8 @@ ZH = {
     "BoardNoIndex": "未选指数",
     "BoardNoon": "午间休市",
     "BoardMainlandClose": "A 股收盘 15:00",
+    "BoardIndexOnTop.Content": "指数在上半屏",
+    "BoardMaskNames.Content": "贡献最大/拖累最大 以 * 隐藏名称",
 }
 
 T = {}
@@ -63,6 +65,8 @@ T["en-US"] = {
     "BoardNoIndex": "No index selected",
     "BoardNoon": "Lunch break",
     "BoardMainlandClose": "Mainland close 15:00",
+    "BoardIndexOnTop.Content": "Indexes on the upper half",
+    "BoardMaskNames.Content": "Mask names with * in the contributor lines",
 }
 
 T["zh-Hant"] = {
@@ -87,6 +91,8 @@ T["zh-Hant"] = {
     "BoardNoIndex": "未選指數",
     "BoardNoon": "午間休市",
     "BoardMainlandClose": "A 股收盤 15:00",
+    "BoardIndexOnTop.Content": "指數在上半屏",
+    "BoardMaskNames.Content": "貢獻最大/拖累最大 以 * 隱藏名稱",
 }
 
 T["ja"] = {
@@ -111,6 +117,8 @@ T["ja"] = {
     "BoardNoIndex": "指数未選択",
     "BoardNoon": "昼間休場",
     "BoardMainlandClose": "A 股終了 15:00",
+    "BoardIndexOnTop.Content": "インデックスを上半分に",
+    "BoardMaskNames.Content": "最大寄与/最大足引っ張り 名前を * で隠す",
 }
 
 T["ko"] = {
@@ -135,6 +143,8 @@ T["ko"] = {
     "BoardNoIndex": "선택된 지수 없음",
     "BoardNoon": "점심 휴장",
     "BoardMainlandClose": "A주 마감 15:00",
+    "BoardIndexOnTop.Content": "지수를 위쪽 절반에",
+    "BoardMaskNames.Content": "최대 기여/최대 발목 이름을 *로 가리기",
 }
 
 T["de"] = {
@@ -159,6 +169,8 @@ T["de"] = {
     "BoardNoIndex": "Kein Index gewählt",
     "BoardNoon": "Mittagspause",
     "BoardMainlandClose": "Festland-Schluss 15:00",
+    "BoardIndexOnTop.Content": "Indizes in der oberen Hälfte",
+    "BoardMaskNames.Content": "Größter Beitrag/größte Bremse: Namen mit * verdecken",
 }
 
 T["fr"] = {
@@ -183,6 +195,8 @@ T["fr"] = {
     "BoardNoIndex": "Aucun indice choisi",
     "BoardNoon": "Pause déjeuner",
     "BoardMainlandClose": "Clôture continentale 15:00",
+    "BoardIndexOnTop.Content": "Indices dans la moitié supérieure",
+    "BoardMaskNames.Content": "Meilleur/pires contributeurs : noms masqués par *",
 }
 
 T["es"] = {
@@ -207,6 +221,8 @@ T["es"] = {
     "BoardNoIndex": "Ningún índice elegido",
     "BoardNoon": "Pausa del mediodía",
     "BoardMainlandClose": "Cierre continental 15:00",
+    "BoardIndexOnTop.Content": "Índices en la mitad superior",
+    "BoardMaskNames.Content": "Mayor aporte/mayor lastre: nombres ocultos con *",
 }
 
 T["it"] = {
@@ -231,6 +247,8 @@ T["it"] = {
     "BoardNoIndex": "Nessun indice scelto",
     "BoardNoon": "Pausa pranzo",
     "BoardMainlandClose": "Chiusura continentale 15:00",
+    "BoardIndexOnTop.Content": "Indici nella metà superiore",
+    "BoardMaskNames.Content": "Migliore/peggiore contributo: nomi nascosti con *",
 }
 
 T["pt-BR"] = {
@@ -255,6 +273,8 @@ T["pt-BR"] = {
     "BoardNoIndex": "Nenhum índice escolhido",
     "BoardNoon": "Pausa do almoço",
     "BoardMainlandClose": "Fechamento do continente 15:00",
+    "BoardIndexOnTop.Content": "Índices na metade superior",
+    "BoardMaskNames.Content": "Maior contribuição/maior peso: nomes ocultos com *",
 }
 
 T["ru"] = {
@@ -279,6 +299,8 @@ T["ru"] = {
     "BoardNoIndex": "Индексы не выбраны",
     "BoardNoon": "Обеденный перерыв",
     "BoardMainlandClose": "Закрытие материка 15:00",
+    "BoardIndexOnTop.Content": "Индексы в верхней половине",
+    "BoardMaskNames.Content": "Лучший/худший вклад: имена под *",
 }
 
 T["pl"] = {
@@ -303,6 +325,8 @@ T["pl"] = {
     "BoardNoIndex": "Nie wybrano indeksu",
     "BoardNoon": "Przerwa obiadowa",
     "BoardMainlandClose": "Zamknięcie kontynentu 15:00",
+    "BoardIndexOnTop.Content": "Indeksy w górnej połowie",
+    "BoardMaskNames.Content": "Największy wkład/największa brzda: nazwy jako *",
 }
 
 T["tr"] = {
@@ -327,6 +351,8 @@ T["tr"] = {
     "BoardNoIndex": "Endeks seçilmedi",
     "BoardNoon": "Öğle arası",
     "BoardMainlandClose": "Anakara kapanışı 15:00",
+    "BoardIndexOnTop.Content": "Endeksler üst yarıda",
+    "BoardMaskNames.Content": "En iyi/en kötü katkı: adları * ile gizle",
 }
 
 T["cs"] = {
@@ -351,6 +377,8 @@ T["cs"] = {
     "BoardNoIndex": "Není vybrán index",
     "BoardNoon": "Polední přestávka",
     "BoardMainlandClose": "Uzavření pevniny 15:00",
+    "BoardIndexOnTop.Content": "Indexy v horní polovině",
+    "BoardMaskNames.Content": "Největší přínos/brzda: názvy jako *",
 }
 
 def esc(value):
@@ -369,14 +397,22 @@ for lang in LANGS:
     had_bom = raw.startswith(b"\xef\xbb\xbf")
     text = raw.decode("utf-8-sig")
 
-    if 'name="NavBoard.Content"' in text:
-        print(f"{lang}: already present")
+    # zh-Hans 是页面建成时手写的那份，不在这张表里。
+    if lang not in T:
+        print(f"{lang}: kept by hand")
         continue
 
     table = T[lang]
     assert set(table) == set(ZH), lang
 
-    block = "".join(f'  <data name="{k}"><value>{esc(v)}</value></data>\n' for k, v in table.items())
+    # 只补缺的键：页面迭代会往同一张表里加新键，整表跳过会让老文件永远拿不到它们。
+    missing = {k: v for k, v in table.items() if f'name="{k}"' not in text}
+
+    if not missing:
+        print(f"{lang}: already present")
+        continue
+
+    block = "".join(f'  <data name="{k}"><value>{esc(v)}</value></data>\n' for k, v in missing.items())
 
     trimmed = text.rstrip()
     assert trimmed.endswith("</root>")
@@ -384,6 +420,6 @@ for lang in LANGS:
 
     path.write_bytes((b"\xef\xbb\xbf" if had_bom else b"") + text.encode("utf-8"))
     changed += 1
-    print(f"{lang}: added {len(table)} keys")
+    print(f"{lang}: added {len(missing)} keys")
 
 print(f"changed {changed} files")

@@ -31,9 +31,10 @@ namespace MarketMotionStudio.Pages;
 /// </para>
 ///
 /// <para>
-/// **The book is read, never edited, here.** It has an editor on the intraday page, on a dialog
-/// with room for four editable fields per row. A second editor for one file would be a second way
-/// to get the same numbers wrong, so this page draws the book and points at the page that owns it.
+/// **The book is edited here through the same two doors as on the intraday page.** 管理持仓 and
+/// 导入成交 are the same dialogs over the same portfolio.json — one editor for one file, offered
+/// from both pages that draw it — and an edit on either page is the other page's next fetch.
+/// The page draws the book and hands the reader the levers, rather than pointing at another page.
 /// </para>
 /// </summary>
 public sealed partial class BoardPage : StudioPage, IPlaybackHost
@@ -43,6 +44,14 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
     /// <summary>Remembers this page's parameters. Prefixed, because the video panel is shared.</summary>
     private readonly StudioPreferences _prefs = new("Board.");
+
+    /// <summary>
+    /// The switches and rates this page shares with the intraday page, under that page's own
+    /// prefix: one setting, two pages, and a change on either is what the other reads. The four
+    /// look switches and the fee schedule are facts about the *book*, not about the page showing
+    /// it, which is why they do not live under "Board.".
+    /// </summary>
+    private readonly StudioPreferences _shared = new("Portfolio.");
 
     /// <summary>The timer behind "refresh while the market is open", the same beat as the
     /// intraday page's.</summary>
@@ -58,6 +67,20 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
     /// <summary>Guards against a timer tick landing on top of a fetch already in flight.</summary>
     private bool _busy;
+
+    /// <summary>
+    /// Waits for the typing in a fee box to stop. `ValueChanged` fires on every keystroke, and
+    /// each load is a request per holding — so the rate is applied when the reader stops.
+    /// </summary>
+    private readonly DispatcherTimer _feeTimer = new() { Interval = TimeSpan.FromSeconds(0.8) };
+
+    /// <summary>
+    /// Set when the book itself has just been edited by hand, cleared by the next fetch. The list
+    /// prefers the session's per-minute moments over the stored book, and those moments were built
+    /// from the book as it was **before** the edit — with the flag on, the list reads the stored
+    /// book until the re-fetch rebuilds the session around it.
+    /// </summary>
+    private bool _bookDirty;
 
     /// <summary>
     /// Which minute the list was last built for. Playback calls back sixty times a second and a
@@ -94,6 +117,8 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         InitializeComponent();
 
         Portfolio.EnsureLoaded();
+
+        _feeTimer.Tick += OnFeeSettled;
 
         VideoSettings.AllowHideTitle = true;
         VideoSettings.Changed += (_, _) =>
@@ -264,7 +289,13 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
                 session.Samples.Count,
                 Math.Max(Math.Abs(session.Peak), Math.Abs(session.Trough)));
 
-            var renderer = new BoardSplitRenderer(session, _indexes, plan)
+            var renderer = new BoardSplitRenderer(session, _indexes, plan,
+                crossSafeRight: CrossCheck.IsChecked is true,
+                mascot: MascotCheck.IsChecked is true,
+                dynamicAxis: DynamicAxisCheck.IsChecked is true,
+                lunchBreak: LunchCheck.IsChecked is true,
+                indexOnTop: IndexTopCheck.IsChecked is true,
+                maskNames: MaskCheck.IsChecked is true)
             {
                 Title = title,
                 ShowTitle = showTitle,
@@ -300,12 +331,18 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
     {
         var rows = new List<HoldingRow>();
 
-        var moment = _session is { Moments.Count: > 0 } live
+        // A book just edited by hand has a stale session behind it — the moments on hand were
+        // built before the edit, and showing them would put the old numbers straight back up.
+        var moment = !_bookDirty && _session is { Moments.Count: > 0 } live
             ? live.Moments[index < 0 ? live.Moments.Count - 1 : Math.Min(index, live.Moments.Count - 1)]
             : null;
 
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         foreach (var holding in Portfolio.Holdings)
         {
+            seen.Add(holding.Code);
+
             var priced = _session?.Holdings.FirstOrDefault(h =>
                 string.Equals(h.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
@@ -340,6 +377,45 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             };
 
             rows.Add(new HoldingRow(InstrumentNames.Display(holding.Code, holding.Name), detail, text, tone));
+        }
+
+        // **当天买出来的仓位也要有行。** The book only carries positions held at the open; a
+        // fill that opens one mid-session exists in the moments alone. From its first fill's
+        // minute onward the position gets a row of its own, appended at the bottom; a code the
+        // day's journal only ever sold was never held, and gets no row.
+        if (moment is not null && _session is { } day)
+        {
+            foreach (var trade in day.Trades)
+            {
+                if (!seen.Add(trade.Code) || moment.Minute < trade.Minute)
+                {
+                    continue;
+                }
+
+                moment.Shares.TryGetValue(trade.Code, out var shares);
+                moment.Costs.TryGetValue(trade.Code, out var cost);
+
+                if (shares <= 0)
+                {
+                    continue;
+                }
+
+                var money = (trade.Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase) ? "HK$" : "¥")
+                    + cost.ToString("0.###", CultureInfo.InvariantCulture);
+
+                var detail = Strings.Format(
+                    "PortfolioPnlRowDetail",
+                    shares.ToString("#,##0", CultureInfo.InvariantCulture),
+                    money);
+
+                var made = moment.Contributions.TryGetValue(trade.Code, out var sofar) ? sofar : 0d;
+
+                rows.Add(new HoldingRow(
+                    InstrumentNames.Display(trade.Code, trade.Name),
+                    detail,
+                    PortfolioPnlRenderer.Money(made),
+                    made >= 0 ? Palette.Emphasis : Palette.Fall));
+            }
         }
 
         Holdings.ItemsSource = rows;
@@ -388,7 +464,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
                     return await IntradayPnl.LoadAsync(
                         Services.Http, Services.Stocks, [.. Portfolio.Holdings],
                         [.. Portfolio.Trades], progress, cancellation,
-                        FeeSchedule.Mainland, Portfolio.Settled);
+                        Fees(), Portfolio.Settled);
                 }
 
                 var bookTask = ReadBookAsync();
@@ -416,6 +492,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         if (session is { Samples.Count: > 1 })
         {
             _session = session;
+            _bookDirty = false;
         }
 
         _indexes.Clear();
@@ -467,7 +544,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             var session = await IntradayPnl.LoadAsync(
                 Services.Http, Services.Stocks, [.. Portfolio.Holdings],
                 [.. Portfolio.Trades], null, cancellation.Token,
-                FeeSchedule.Mainland, Portfolio.Settled);
+                Fees(), Portfolio.Settled);
 
             var indexes = await IndexIntraday.LoadAsync(Services.Http, picked, cancellation.Token);
 
@@ -521,6 +598,218 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         {
             _auto.Stop();
         }
+    }
+
+    // ---- the book's two doors ----------------------------------------------------------
+
+    /// <summary>
+    /// A look switch moved: rebuild the renderer and stop there. Nothing is re-read, because none
+    /// of these changes a number — they change where the same numbers sit or how they are named.
+    /// </summary>
+    private void OnLookChanged(object sender, RoutedEventArgs e)
+    {
+        ApplyPreviewSettings();
+        SavePreferences();
+    }
+
+    /// <summary>
+    /// The book as **the day's last minute** leaves it — what 管理持仓 is handed to show. Rows the
+    /// book does not carry (a position opened by today's fills) are appended, exactly as the
+    /// page's list appends them; a book just edited by hand has a stale session behind it, so the
+    /// stored book comes back instead of the stale moments.
+    /// </summary>
+    private List<Holding> ClosingBook()
+    {
+        if (_bookDirty || _session is not { Moments.Count: > 0 } session)
+        {
+            return [.. Portfolio.Holdings];
+        }
+
+        var moment = session.Moments[^1];
+        var rows = new List<Holding>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var holding in Portfolio.Holdings)
+        {
+            seen.Add(holding.Code);
+
+            var shares = moment.Shares.TryGetValue(holding.Code, out var held) ? held : holding.Shares;
+            var cost = shares > 0 && moment.Costs.TryGetValue(holding.Code, out var paid) ? paid : holding.Cost;
+
+            rows.Add(new Holding(holding.Code, holding.Name, shares, shares > 0 ? cost : 0));
+        }
+
+        foreach (var trade in session.Trades)
+        {
+            if (!seen.Add(trade.Code))
+            {
+                continue;
+            }
+
+            moment.Shares.TryGetValue(trade.Code, out var shares);
+            moment.Costs.TryGetValue(trade.Code, out var cost);
+
+            rows.Add(new Holding(trade.Code, trade.Name, shares, shares > 0 ? cost : 0));
+        }
+
+        return rows;
+    }
+
+    private async void OnManage(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var dialog = new PortfolioDialog(ClosingBook()) { XamlRoot = XamlRoot };
+
+        await Dialogs.ShowAsync(dialog);
+
+        // A hand-entered book outranks every fill still waiting to roll into it — marking them
+        // folded keeps tomorrow's roll off them while the journal keeps them for today's replay.
+        if (dialog.Edited)
+        {
+            Portfolio.MarkManualEdit();
+        }
+
+        _bookDirty = true;
+        RefreshBook();
+
+        if (Portfolio.Holdings.Count == 0)
+        {
+            _session = null;
+
+            SummaryText.Text = string.Empty;
+            UpdatedText.Text = string.Empty;
+
+            ApplyPreviewSettings();
+            return;
+        }
+
+        // Waits out any fetch already running — the in-flight one holds a snapshot taken before
+        // the edit, so skipping would leave the session blind to the new book.
+        await RefreshAfterChangeAsync(report: true);
+    }
+
+    private async void OnImport(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var dialog = new TradeImportDialog(ImportDay()) { XamlRoot = XamlRoot };
+
+        var choice = await Dialogs.ShowAsync(dialog);
+
+        if (choice == ContentDialogResult.Primary && dialog.Trades.Count > 0)
+        {
+            var result = Portfolio.Apply(dialog.Trades);
+
+            RefreshBook();
+
+            ShowStatus(
+                result.Unmatched > 0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success,
+                Strings.Format("PortfolioPnlImported", result.Applied, result.Duplicates, result.Unmatched));
+
+            await RefreshAfterChangeAsync(report: true);
+        }
+    }
+
+    /// <summary>
+    /// The day an import is stamped with: **the day the page is drawing**, not the day the clock
+    /// says it is — before the open that is yesterday, and a fill stamped with today lands on a
+    /// day nothing has traded on.
+    /// </summary>
+    private DateOnly ImportDay() =>
+        _session is { Day.Length: > 0 } session && DateOnly.TryParse(session.Day, out var day)
+            ? day
+            : DateOnly.FromDateTime(DateTime.Today);
+
+    /// <summary>
+    /// Refreshes after the book or the journal changed underneath the page. Waits the in-flight
+    /// fetch out, then re-reads **only the book**: the indexes on hand are untouched by an edit,
+    /// and re-asking the source for them is a request each for numbers that did not move.
+    /// </summary>
+    private async Task RefreshAfterChangeAsync(bool report)
+    {
+        while (_busy)
+        {
+            await Task.Delay(120);
+        }
+
+        if (_busy || Portfolio.Holdings.Count == 0)
+        {
+            return;
+        }
+
+        _busy = true;
+
+        try
+        {
+            using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(90));
+
+            var session = await IntradayPnl.LoadAsync(
+                Services.Http, Services.Stocks, [.. Portfolio.Holdings],
+                [.. Portfolio.Trades], null, cancellation.Token,
+                Fees(), Portfolio.Settled);
+
+            Adopt(session, [.. _indexes], _indexes.Count);
+        }
+        catch (OperationCanceledException)
+        {
+            // The next fetch or tick asks again.
+        }
+        catch (Exception)
+        {
+            if (report)
+            {
+                ShowStatus(InfoBarSeverity.Error, Strings.Get("BoardFetchFailed"));
+            }
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    // ---- fees --------------------------------------------------------------------------
+
+    /// <summary>What it costs to trade, as the four boxes currently read — the same schedule the
+    /// intraday page computes from the same stored rates.</summary>
+    private FeeSchedule Fees() => new(
+        Read(FeeCommission, FeeSchedule.Mainland.Commission),
+        Read(FeeMinimum, FeeSchedule.Mainland.Minimum),
+        Read(FeeStamp, FeeSchedule.Mainland.Stamp),
+        Read(FeeTransfer, FeeSchedule.Mainland.Transfer));
+
+    /// <summary>
+    /// A rate box's value, falling back when it has not got one. `NaN` is what a NumberBox holds
+    /// while it is empty or half-typed — reading that as zero would drop every fee mid-edit.
+    /// </summary>
+    private static double Read(NumberBox box, double fallback) =>
+        double.IsFinite(box.Value) ? box.Value : fallback;
+
+    private void OnFeeChanged(object sender, NumberBoxValueChangedEventArgs e)
+    {
+        if (_prefs.Restoring || _shared.Restoring)
+        {
+            return;
+        }
+
+        SavePreferences();
+
+        _feeTimer.Stop();
+        _feeTimer.Start();
+    }
+
+    private async void OnFeeSettled(object? sender, object e)
+    {
+        _feeTimer.Stop();
+
+        // The indexes did not move; only the book's arithmetic did.
+        await RefreshAfterChangeAsync(report: false);
     }
 
     // ---- playback and export -----------------------------------------------------------
@@ -679,6 +968,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
     private void RestorePreferences()
     {
         _prefs.Restoring = true;
+        _shared.Restoring = true;
 
         AutoRefresh.IsOn = _prefs.GetBool("Auto", true);
 
@@ -704,20 +994,49 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             }
         }
 
+        // The switches and rates the intraday page also reads, from the same stored values —
+        // whatever that page last saved is what this page opens with.
+        IndexTopCheck.IsChecked = _prefs.GetBool("IndexOnTop", false);
+        MaskCheck.IsChecked = _prefs.GetBool("MaskNames", false);
+
+        CrossCheck.IsChecked = _shared.GetBool("CrossSafeRight", false);
+        MascotCheck.IsChecked = _shared.GetBool("Mascot", false);
+        DynamicAxisCheck.IsChecked = _shared.GetBool("DynamicAxis", false);
+        LunchCheck.IsChecked = _shared.GetBool("Lunch", true);
+
+        FeeCommission.Value = _shared.GetDouble("FeeCommission", FeeSchedule.Mainland.Commission);
+        FeeMinimum.Value = _shared.GetDouble("FeeMinimum", FeeSchedule.Mainland.Minimum);
+        FeeStamp.Value = _shared.GetDouble("FeeStamp", FeeSchedule.Mainland.Stamp);
+        FeeTransfer.Value = _shared.GetDouble("FeeTransfer", FeeSchedule.Mainland.Transfer);
+
         VideoSettings.Restore(_prefs);
 
         _prefs.Restoring = false;
+        _shared.Restoring = false;
     }
 
     private void SavePreferences()
     {
-        if (_prefs.Restoring)
+        if (_prefs.Restoring || _shared.Restoring)
         {
             return;
         }
 
         _prefs.Save("Auto", AutoRefresh.IsOn);
         _prefs.Save("Indexes", string.Join(',', Picked().Select(p => p.Code)));
+        _prefs.Save("IndexOnTop", IndexTopCheck.IsChecked is true);
+        _prefs.Save("MaskNames", MaskCheck.IsChecked is true);
+
+        // The shared settings under the intraday page's prefix, so the two pages read one truth.
+        _shared.Save("CrossSafeRight", CrossCheck.IsChecked is true);
+        _shared.Save("Mascot", MascotCheck.IsChecked is true);
+        _shared.Save("DynamicAxis", DynamicAxisCheck.IsChecked is true);
+        _shared.Save("Lunch", LunchCheck.IsChecked is true);
+
+        _shared.Save("FeeCommission", Read(FeeCommission, FeeSchedule.Mainland.Commission));
+        _shared.Save("FeeMinimum", Read(FeeMinimum, FeeSchedule.Mainland.Minimum));
+        _shared.Save("FeeStamp", Read(FeeStamp, FeeSchedule.Mainland.Stamp));
+        _shared.Save("FeeTransfer", Read(FeeTransfer, FeeSchedule.Mainland.Transfer));
 
         VideoSettings.Save(_prefs);
     }

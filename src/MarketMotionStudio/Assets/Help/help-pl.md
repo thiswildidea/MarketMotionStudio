@@ -472,7 +472,9 @@ Własne pozycje wyceniane co minutę: ile dzisiejsza sesja dała lub kosztowała
 
 U góry dzień portfela, u dołu indeksy Chin kontynentalnych i Hongkongu: po połowie kadru, na jednym zegarze, animacja idzie do przodu minuta po minucie razem.
 
-- **Górna połowa rysuje twój własny portfel** — ten sam, który czyta strona P&L intraday: krzywą dnia na linii zera, dzisiejszą liczbę, stopę zwrotu, liczbę pozycji, a także najlepszego i najgorszego wkład z nazwy. Tu tylko odczyt; edycja należy do strony intraday.
+- **Górna połowa rysuje twój własny portfel** — ten sam, który czyta strona «Intraday P&L»: krzywa dnia na linii zera, liczba dnia na końcu krzywej, największy wkład i największa brzda z nazwami (nazwy można ukryć gwiazdkami). Zarządzanie portfelem i import zleceń są też tutaj — te same okna nad tym samym rejestrem, i zmiana na jednej stronie to następne pobranie drugiej.
+
+- **Połówki można zamienić** (indeksy u góry albo portfel u góry), obie krzywe biegną tą samą szerokością i czytają się w rzędzie, a przerwa obiadowa może zejść z osi — przy obu rynkach na kadrze znika wspólna przerwa 12:00–13:00. Cztery stawki to ustawienie strony intraday: zmienione tutaj, ona też je zastosuje przy następnym pobraniu.
 
 - **Dolna połowa rysuje tylko indeksy**: sześć z kontynentu (SSE Composite, CSI 300, SZSE Component, CSI 500, ChiNext, SSE 50) i trzy z Hongkongu (Hang Seng, HSCEI, Hang Seng Tech); domyślnie zaznaczone są SSE Composite i Hang Seng. Akcji, ETF i monet tu nie ma — strona odpowiada, jak dziś szedł rynek.
 

@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>Není vybrán index</value></data>
   <data name="BoardNoon"><value>Polední přestávka</value></data>
   <data name="BoardMainlandClose"><value>Uzavření pevniny 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>Indexy v horní polovině</value></data>
+  <data name="BoardMaskNames.Content"><value>Největší přínos/brzda: názvy jako *</value></data>
 </root>

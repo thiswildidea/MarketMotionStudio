@@ -1146,4 +1146,6 @@
   <data name="BoardNoIndex"><value>指数未選択</value></data>
   <data name="BoardNoon"><value>昼間休場</value></data>
   <data name="BoardMainlandClose"><value>A 股終了 15:00</value></data>
+  <data name="BoardIndexOnTop.Content"><value>インデックスを上半分に</value></data>
+  <data name="BoardMaskNames.Content"><value>最大寄与/最大足引っ張り 名前を * で隠す</value></data>
 </root>
