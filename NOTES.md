@@ -2814,3 +2814,15 @@ Bold→ExtraBold（`Ink.Format` 新增 `heavy` 参数）；「持仓当日盈亏
 （轴到 16:00）下 100% 时头点同样顶到右缘、翻转照样触发——探针用进度条
 （RangeValue 0.5 / 1.0，滑杆 Maximum=1，SetValue(100) 会 E_INVALIDARG）抓两帧
 逐一目检通过（artifacts/board-pill-flip-*.png）。
+
+## 时间轴移到两面板中间（2026-10-29 晨）
+
+用户截图画面底部的时间轴，要求挪到收益与指数两个面板**中间**。原先轴跟指数槽走
+（`indexSlot.Bottom + RowGap`）：指数在下时轴被带到画面最底。现在轴固定挂在两槽
+之间的带子里——`ClockRuleRow=0.566` 一条基线 + 其下 30px 刻度（09:30/13:00/16:00），
+**取代了原分隔线**（DrawDivider 删除）：同样是横贯的 Grid 线，但轴基线有语义。
+收益在上时其两行贡献注脚上移贴自己图底（`BookContribRow=0.526`），给轴让行；
+收益在下时注脚仍在画面底部（0.892）不变。两种布局探针目检通过
+（artifacts/board-clock-mid-*.png）；帮助文档对轴的描述（互换/午休/收盘范围）
+不涉及位置，无需改。探针技巧：视口外的 CheckBox 用 TogglePattern.Toggle() 而非
+invoke_click（后者要移动光标、对 0×0 矩形直接失败）。

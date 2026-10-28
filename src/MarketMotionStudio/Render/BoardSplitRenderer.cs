@@ -78,18 +78,25 @@ public sealed class BoardSplitRenderer(
 {
     // The frame, in fractions of its height. Two slots of near-equal weight, and the halves swap
     // between them: the book's panel and the indexes' panel each take a slot's label row, plot
-    // and the strip under the plot, whichever order the reader asked for. The book's slot is a
-    // shade shorter: under it sit *two* contributor lines — one per stock, see ContribPitch —
-    // and both have to clear the divider.
+    // and the strip under the plot, whichever order the reader asked for. The band between the
+    // slots carries the shared clock axis — rule plus tick labels — and, when the book is the
+    // upper panel, its two contributor lines squeezed in just under the book's own plot.
     private const double TopLabelRow = 0.238;
     private const double TopTop = 0.262;
     private const double TopBottom = 0.504;
 
-    private const double DividerRow = 0.590;
-
     private const double BottomLabelRow = 0.618;
     private const double BottomTop = 0.642;
     private const double BottomBottom = 0.858;
+
+    /// <summary>The shared clock axis, drawn between the two panels in either order: a rule
+    /// across the plot with the tick labels just under it. The old divider lived on this row;
+    /// an axis that names the scale is a better tenant than a bare line.</summary>
+    private const double ClockRuleRow = 0.566;
+
+    /// <summary>The book's contributor lines when the book is the upper panel: tucked just
+    /// under their own plot so the axis rule keeps the row below.</summary>
+    private const double BookContribRow = 0.526;
 
     /// <summary>From a slot's bottom edge to the row that follows it: a clock axis, or the
     /// contributor lines.</summary>
@@ -267,16 +274,24 @@ public sealed class BoardSplitRenderer(
             ? (TopLabelRow, TopTop, TopBottom)
             : (BottomLabelRow, BottomTop, BottomBottom);
 
-        // The clock axis belongs to the indexes' half (it is their shared time scale), so it
-        // follows the slot the indexes are in; the contributor lines belong to the book.
-        var clockRow = indexSlot.Bottom + RowGap;
-        var contribRow = bookSlot.Bottom + RowGap + 0.002;
+        // The clock axis is both halves' shared time scale, so it lives *between* the panels:
+        // one rule with its tick labels under it, hung in the band between the two plots in
+        // either order. It reads as one axis for the two plots above and below it, and it
+        // replaces the old divider — a bare line separating halves is a worse use of the same
+        // row than a line that says what the halves are measured in.
+        var clockRuleRow = ClockRuleRow;
+
+        // The contributor lines belong to the book. Under a book in the lower slot they keep
+        // their place at the frame's foot; under a book in the upper slot they take the band's
+        // top, just under their own plot, and leave the axis rule the row below.
+        var contribRow = indexOnTop
+            ? bookSlot.Bottom + RowGap + 0.002
+            : BookContribRow;
 
         DrawBookPanel(session2, context, t, left, plotWidth, shown, clock, p,
             bookSlot.Label, bookSlot.Top, bookSlot.Bottom, contribRow);
-        DrawDivider(session2, context, left, width);
         DrawIndexPanel(session2, context, t, left, plotWidth, clock,
-            indexSlot.Label, indexSlot.Top, indexSlot.Bottom, clockRow);
+            indexSlot.Label, indexSlot.Top, indexSlot.Bottom, clockRuleRow);
         DrawProgress(session2, context, t);
     }
 
@@ -661,14 +676,6 @@ public sealed class BoardSplitRenderer(
         return (best, worst);
     }
 
-    private void DrawDivider(CanvasDrawingSession session2, FrameContext context, double left, double width)
-    {
-        var y = Row(context, DividerRow);
-
-        session2.DrawLine((float)left, (float)y, (float)(left + width), (float)y,
-            Ink.Fade(Palette.Grid, 0.9), 1);
-    }
-
     // ---- the markets' half -------------------------------------------------------------
 
     private void DrawIndexPanel(
@@ -939,9 +946,17 @@ public sealed class BoardSplitRenderer(
 
     private void DrawClocks(
         CanvasDrawingSession session2, FrameContext context,
-        double left, double width, double clockRow, CanvasTextFormat format, double appear)
+        double left, double width, double clockRuleRow, CanvasTextFormat format, double appear)
     {
-        var y = Row(context, clockRow);
+        // The rule is the axis itself — the same faint line the divider used to be, but here
+        // it has a job: the ticks under it say what the two plots above and below are measured
+        // in. The labels sit one caption's height below the rule, clear of it.
+        var ruleY = Row(context, clockRuleRow);
+
+        session2.DrawLine((float)left, (float)ruleY, (float)(left + width), (float)ruleY,
+            Ink.Fade(Palette.Grid, 0.9 * appear), 1);
+
+        var y = ruleY + context.Px(30);
 
         // With the axis running to 16:00 the 15:00 label is left off: the close rule names that
         // minute already, and two labels fifty pixels apart print over each other (实测：
