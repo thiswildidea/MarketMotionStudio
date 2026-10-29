@@ -2878,3 +2878,9 @@ DcaRenderer.Money 的万/K/M 缩写、负号外置），指数面板按步长定
 用户要求 Y 轴与时间轴刻度值都用纯白、调大一点。`Palette.White` 新增（纯白）；
 两组刻度字号 19→22、颜色从 AxisLabel/DateLabel（灰蓝）改 White。目检通过
 （artifacts/board-ticks-white-*.png）。
+
+## 刻度颜色回退（2026-10-29 晚）
+
+用户看过纯白版后要求改回：Y 轴与时间轴刻度颜色退回 AxisLabel/DateLabel 灰蓝，
+字号 22 保留；`Palette.White` 撤销（不留死代码）。目检通过
+（artifacts/board-ticks-reverted-*.png）。

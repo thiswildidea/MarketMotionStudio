@@ -499,7 +499,7 @@ public sealed class BoardSplitRenderer(
             }
 
             Ink.RightMiddle(session2, text(v), left - context.Px(12),
-                Y(v, top, bottom - top, high, low), format, Palette.White, appear);
+                Y(v, top, bottom - top, high, low), format, Palette.AxisLabel, appear);
         }
     }
 
@@ -1046,7 +1046,7 @@ public sealed class BoardSplitRenderer(
 
             Ink.Centred(session2, PortfolioSession.Clock(minute),
                 Math.Clamp(x, left + half, left + width - half), y, format,
-                Palette.White, appear);
+                Palette.DateLabel, appear);
         }
     }
 
