@@ -1577,7 +1577,7 @@ $msb = "C:\Program Files\Microsoft Visual Studio\18\Professional\MSBuild\Current
 The second command produces `artifacts\MarketMotionStudio_<version>_x64_arm64_bundle.msixupload`,
 which is the file Partner Center takes.
 
-Two traps, both hit on 2026-10-24:
+Three traps, the first two hit on 2026-10-24:
 
 - **`dotnet build` fails at the symbols step.** `MSBuild.exe` finds `mspdbcmf.exe` in the VS
   install; `dotnet build` looks for it under the dotnet SDK and does not, so
@@ -1589,6 +1589,12 @@ Two traps, both hit on 2026-10-24:
   1.0.18.0. Delete `Upload`, `ForBundle` and `*.appxrecipe` under both Release outputs before
   rebuilding, then verify by unpacking: read the `Identity` of every `.msix` inside the
   `.msixupload`, not just the bundle manifest.
+- **The first build after that clean drops the resource packs.** Clean the staging folders and
+  the *next* build bundles two architecture packages and **no** `scale-100/125/150/400`
+  resource packs — the icons exist in `Assets\` and nowhere in the bundle, so those DPI factors
+  fall back to a stretched `scale-200` tile. Build the *same* command once more and all four
+  packs appear. Always check the bundle holds six packages before calling the build done;
+  `tools/verify-store-package.py` says so in its own words.
 
 
 Use `Build`, not `Rebuild`, when the app may be running: `Rebuild` cleans first, the clean

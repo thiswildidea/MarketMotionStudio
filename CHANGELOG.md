@@ -26,6 +26,7 @@ Entries run newest first. / 新版本在上。
 上半是持仓当日盈亏的分钟曲线，下半是 A 股与港股指数的分钟走势，两幅图共用同一条时间轴——时间轴
 挂在两图之间，逐分钟对着看，是哪只票带动、哪只票拖累一目了然。持仓曲线的末尾跟着一颗胶囊标签写出
 当日金额，每条指数线末尾各挂一枚标签写出名称与实时涨跌幅，红涨绿跌；面板标题也按各自的正负着色。
+两幅图各自带上了带数值的 Y 轴刻度，收益曲线上也标出了全天盈利最多与亏损最多的两个时刻。
 条形竞速系列新增五种画面形态（条形竞速、三柱领奖台、天际线立柱、王座金字塔、聚焦天际线），排行榜
 首次挂上公司 Logo。另修一处取数后在样式列表里切换会卡死的问题——旧表格 AICES 同步解码在 UI 线程
 上死锁。
@@ -36,7 +37,9 @@ and Hong Kong index lines below, both on one shared clock with its axis between 
 that carried the day and the one that dragged it are read against the same minute. A pill follows
 the P&L curve's head with the day's money on it, each index line ends in a tag carrying its name
 and live change, red when up and green when down, and the panel headings are inked in their own
-signs. The bar-race pages gain five shapes — bar race, three-column podium, skyline pillars, throne
+signs. Each picture carries its own Y axis with values, and the P&L curve marks the minute it
+gained the most and the minute it lost the most. The bar-race pages gain five shapes — bar race,
+three-column podium, skyline pillars, throne
 pyramid and focused skyline — and their leader boards carry company logos for the first time. It
 also fixes a freeze when switching a style after a fetch: sync decoding an old spreadsheet deadlocked
 on the UI thread.
