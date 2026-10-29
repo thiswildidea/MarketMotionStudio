@@ -22,22 +22,31 @@ Entries run newest first. / 新版本在上。
 
 ## 1.0.22.0 — 2026-10-29
 
-**本版补齐「持仓·大盘 双屏」页两处遗落的与全站不一致的地方。** 这一页上线时少接了两样别的页面都有的
+**本版补齐「持仓·大盘 双屏」页三处遗落的与全站不一致的地方。** 这一页上线时少接了几样别的页面都有的
 东西。其一，画面顶部的标题文字：行高让位是做了的，字却从未画出来——现在连同换行一起补上，样式（纯色 /
 金属 / 浮雕与取色）跟随设置页里那一份全局标题设置，与其它页同源，不必单独再调。其二，下边距滑杆：
 这一页的竖向行原本全部锚在画面顶部，滑杆只能改数字、画面纹丝不动。现在竖向布局改成上下双轨——上轨
 跟着标题与上边距，下轨跟着下边距移动，中间各行按比例舒展或压缩，150 到 420 全程有效；默认那一档的
-画面与此前一模一样。
+画面与此前一模一样。其三，上下两幅图按同一个节拍播：指数线在自己没有数据的时段平着跟到下一个开盘
+时刻——午休不再冻在 11:30，A 股 15:00 收市后一路跟到 16:00；持仓曲线改成按分钟推进，不再按条数跳，
+两半的线头逐帧落在同一条竖线上。下面画哪几条指数也跟着账本走：全是 A 股就只画 A 股指数、时间轴收到
+15:00，全是港股就只画港股，混合的才把两个市场都摆上。不带午休播放时，中间也不再空等一段。
 
-**This release brings the Book & Board Split page up to the two things every other page already
-had.** When the page shipped it was missing two of the app's own conventions. First, its title:
+**This release brings the Book & Board Split page up to the three things every other page already
+had.** When the page shipped it was missing three of the app's own conventions. First, its title:
 the rows were laid out for it and the lines were measured, but the words were never drawn. They are
 now, wrapping included, in whichever look — plain, gilded or engraved, with its own colour — the
 settings page has chosen for titles everywhere, so there is nothing here to set twice. Second, the
 bottom margin slider: this page's vertical rows were anchored to the top of the frame only, so the
 slider moved a number and nothing else. The stack is now held between two rails — the title and top
 margin above, the bottom margin below — and the rows between them open out or close up as it asks,
-all the way from 150 to 450. At the default value the picture is exactly what it was.
+all the way from 150 to 420. At the default value the picture is exactly what it was. Third, the two
+halves now play on one beat: an index line runs flat through the stretches where it has no prints —
+the lunch break, and the hour after the A-share close at three — instead of stopping dead, and the
+book's own curve advances by the minute rather than by row count, so every head lands on the same
+vertical line frame after frame. Which indices the lower half draws follows the book: an all-A-share
+portfolio gets A-share indices and a clock that stops at 15:00, an all-Hong Kong one gets Hong Kong
+only, and a mixed book gets both. Playing without the lunch break, nothing stands still midway.
 
 ---
 
