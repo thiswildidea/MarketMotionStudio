@@ -1043,9 +1043,12 @@ public sealed class BoardSplitRenderer(
             return;
         }
 
-        // A venue that has closed while the frame's clock runs on: the line holds its last level
-        // out to the end of the axis, which is what a closed market does.
-        if (stop >= series.CloseMinute && clock > series.CloseMinute)
+        // Past the line's own last print the head holds its level out to where the clock has
+        // reached — the same convention the book's curve keeps in the other half (see Curve).
+        // A board fetched mid-session has index data that ends at the fetch minute, and without
+        // this the three lines would stop dead there while the book walked on flat — the halves
+        // visibly out of sync (实测：持仓走到 13:20，三条指数线冻在 13:00).
+        if (clock > series.Minutes[^1].Minute)
         {
             points.Add(new Vector2(
                 (float)X(clock, left, width),

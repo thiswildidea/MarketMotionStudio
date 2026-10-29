@@ -2964,3 +2964,14 @@ fr 1024 字，仍在上限 1500 以内。CHANGELOG 中英同补一句并按原�
 - 探针坑补充：uiautomation 库设滑杆用 `slider.GetRangeValuePattern().SetValue(v)`
   （这里 RangeValue 就是 0..420 实际值，不是 0–1；之前 0–1 那根是 Maximum=1 的特例）；
   `PatternId` 枚举里没有 RangeValue 成员，别走 GetPattern。
+
+## 双屏页指数线盘中取数后不同步（2026-10-29 深夜）
+- 现象：持仓曲线过了自己最后一笔之后拉平延伸到时钟当前位置，指数线只在过了
+  收市（`clock > series.CloseMinute`）才延伸——盘中取的数（数据止于取数那分钟）
+  会让三个指数冻在原地，两个半区明显不同步（实测：持仓走到 13:20，指数冻在 13:00）。
+- 修法：`DrawIndex` 的延伸条件从「过了收市」放宽为「过了本线最后一笔」
+  （`clock > series.Minutes[^1].Minute`），与 `Curve` 里持仓曲线的约定一致；
+  尾标签骑在 points[^1] 上自动跟到延伸后的线头。
+- 验证：临时把 `IndexIntraday.Parse` 截断到 13:00（PROBE 行，已还原）构建，
+  UIA 探针拖进度条到 43/60 与 55/60 两帧截图——两个半区线头横位一致，
+  指数胶囊跟到延伸后的线头，无越轴。
