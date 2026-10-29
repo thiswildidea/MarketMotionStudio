@@ -312,12 +312,51 @@ public sealed class BoardSplitRenderer(
             return left + ((clamped - open) / (double)span * width);
         }
 
+        // Two piles of minutes meeting at the seam, each taking the share of the width its own
+        // minutes earned. A minute inside the pause belongs to neither pile: it sits on the seam,
+        // where the morning ends and the afternoon begins — which is also where the curve carries
+        // the pause. Extrapolating it backwards with (clamped - to), as this used to, drove every
+        // such minute *into the morning*: the head reached noon and then walked left again towards
+        // 11:30 before the afternoon's prints resumed, so the clip looked like it rewound and
+        // replayed the break (实测：不带午休时播放到 12:00，线头跳回 11:30 重新画一遍).
         var total = span - (to - from);
         var offset = clamped <= from
             ? clamped - open
-            : (from - open) + (clamped - to);
+            : clamped >= to
+                ? (from - open) + (clamped - to)
+                : from - open;
 
         return left + (offset / (double)total * width);
+    }
+
+    /// <summary>
+    /// The minute on screen for a slice of progress — the clock side of <see cref="X"/>.
+    ///
+    /// <para>
+    /// With the pause on the axis the clock rides the whole window, pause included: the pause is
+    /// width on the screen, so it is time on the ramp too, and the heads cross it flat. With the
+    /// pause off the axis it costs no width — so it must cost no time either, or every head parks
+    /// on the seam for the pause's whole slice of the clip and the playback visibly stalls
+    /// (实测：不带午休时，动画在 12:00 附近停住约六分之一时长). The ramp therefore runs over
+    /// the traded minutes only — morning, then afternoon — stepping over the seam exactly where
+    /// <see cref="X"/> compresses it, so position and clock stay on one mapping.
+    /// </para>
+    /// </summary>
+    private double ScreenClock(double p)
+    {
+        var open = WindowOpen();
+        var close = WindowClose();
+        var (from, to) = MiddayPause();
+
+        if (lunchBreak || from <= open || to >= close)
+        {
+            return open + (p * (close - open));
+        }
+
+        var traded = close - open - (to - from);
+        var minute = open + (p * traded);
+
+        return minute <= from ? minute : to + (minute - from);
     }
 
     public void Draw(CanvasDrawingSession session2, FrameContext context)
@@ -357,7 +396,7 @@ public sealed class BoardSplitRenderer(
         // held flat across the last hour exactly the way its line in the other half is. Mapping
         // the ramp onto the book's minutes instead would stop every line at 15:00 and leave the
         // right fifth of the lower half permanently empty (实测：恒指线画到 15:00 戛然而止).
-        var clock = WindowOpen() + (p * (WindowClose() - WindowOpen()));
+        var clock = ScreenClock(p);
 
         // Which indexes this frame carries — the book's venues decide — and how far the book's
         // own curve has walked, both settled before the panels read them.
