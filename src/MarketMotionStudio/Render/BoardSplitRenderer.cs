@@ -731,8 +731,12 @@ public sealed class BoardSplitRenderer(
         DrawCloseRule(session2, context, left, plotWidth, top, bottom, appear);
         DrawClocks(session2, context, left, plotWidth, clockRow, tickFormat, appear);
 
-        DrawLegend(session2, context, indexes, left + plotWidth, Row(context, labelRow),
-            legendFormat, clock, appear);
+        // The legend sits on its own line under the heading: the heading grew to headline size,
+        // and with three indexes live the two no longer share a row (实测：图例左端压进标题).
+        // The slot's label band is the vertical room between the heading's baseline and the
+        // plot's top edge; a drop of 30px parks the legend inside it, clear of both.
+        DrawLegend(session2, context, indexes, left + plotWidth,
+            Row(context, labelRow) + context.Px(30), legendFormat, clock, appear);
     }
 
     /// <summary>
