@@ -345,6 +345,11 @@ public sealed class BoardSplitRenderer(
         FillSigned(session2, points, (float)zero);
         Stroke(session2, points, here: shown);
 
+        // The day's two extremes, pinned to the curve: the best moment in the red of a gain, the
+        // worst in the green of a loss — a peak's figure above its dot, a trough's below it, so
+        // each label sits on the side the curve does not fill.
+        DrawExtremes(session2, context, left, plotWidth, top, bottom, high, low, shown, appear);
+
         var value = points.Count > 0 ? points[^1].Value : session.Samples[shown].Pnl;
 
         // The day's figure rides the end of the curve rather than the middle of the frame: the
@@ -471,6 +476,89 @@ public sealed class BoardSplitRenderer(
 
     private static double Y(double value, double top, double height, double high, double low) =>
         top + ((high - value) / (high - low) * height);
+
+    /// <summary>
+    /// The day's best and worst moments, pinned to the curve they belong to: a red dot and
+    /// figure on the largest gain, a green dot and figure on the largest loss. A gain only gets
+    /// its mark when there was one (a day that never crossed zero marks nothing red), and the
+    /// figure rides the side of the point the fill does not claim — above a peak, below a
+    /// trough. Both move as the animation runs: the extremes are of the minutes drawn so far.
+    /// </summary>
+    private void DrawExtremes(
+        CanvasDrawingSession session2, FrameContext context,
+        double left, double plotWidth, double top, double bottom,
+        double high, double low, int shown, double appear)
+    {
+        if (appear <= 0 || shown < 0)
+        {
+            return;
+        }
+
+        double best = 0, worst = 0;
+        var bestAt = -1;
+        var worstAt = -1;
+
+        for (var i = 0; i <= shown && i < session.Samples.Count; i++)
+        {
+            var v = session.Samples[i].Pnl;
+
+            if (bestAt < 0 || v > best)
+            {
+                best = v;
+                bestAt = i;
+            }
+
+            if (worstAt < 0 || v < worst)
+            {
+                worst = v;
+                worstAt = i;
+            }
+        }
+
+        using var format = Ink.Format(context.Px(20), bold: true);
+
+        if (bestAt >= 0 && best > 0)
+        {
+            Mark(session2, context, left, plotWidth, top, bottom, high, low,
+                session.Samples[bestAt], above: true, Palette.Emphasis, format, appear);
+        }
+
+        if (worstAt >= 0 && worst < 0)
+        {
+            Mark(session2, context, left, plotWidth, top, bottom, high, low,
+                session.Samples[worstAt], above: false, Palette.Fall, format, appear);
+        }
+    }
+
+    /// <summary>One extreme's furniture: a dot on the curve and the moment's figure beside it,
+    /// centred on the dot and clamped inside the plot on both axes.</summary>
+    private void Mark(
+        CanvasDrawingSession session2, FrameContext context,
+        double left, double plotWidth, double top, double bottom,
+        double high, double low, PnlSample sample, bool above,
+        Color colour, CanvasTextFormat format, double appear)
+    {
+        var text = PortfolioPnlRenderer.Money(sample.Pnl);
+        var x = X(sample.Minute, left, plotWidth);
+        var y = Y(sample.Pnl, top, bottom - top, high, low);
+
+        session2.FillCircle((float)x, (float)y, (float)context.Px(5), Ink.Fade(colour, appear));
+
+        using var layout = new CanvasTextLayout(session2, text, format, 0, 0);
+        var textWidth = layout.LayoutBounds.Width;
+        var textHeight = layout.LayoutBounds.Height;
+
+        // DrawText positions by the top-left corner: a peak's figure clears its dot from above,
+        // a trough's from below, and both are clamped inside the plot on both axes.
+        var textX = Math.Clamp(x - (textWidth / 2), left + context.Px(4), left + plotWidth - textWidth - context.Px(4));
+        var textY = above ? y - context.Px(14) - textHeight : y + context.Px(14);
+
+        textY = Math.Clamp(textY, top + context.Px(4), Math.Max(top + context.Px(4), bottom - textHeight - context.Px(4)));
+
+        Ink.Glow(session2, context.Px(8), 0.35 * appear, ds => ds.DrawText(text, (float)textX, (float)textY, colour, format));
+
+        session2.DrawText(text, (float)textX, (float)textY, Ink.Fade(colour, appear), format);
+    }
 
     /// <summary>
     /// The value axis for either half: a faint rule across the plot at each nice step, with the
