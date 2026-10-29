@@ -322,6 +322,11 @@ public sealed class BoardSplitRenderer(
 
         var (high, low) = Range(shown);
 
+        // The value axis both plots share a shape: faint rules at each nice step, each with its
+        // figure right-aligned just left of the plot. Drawn before the zero line so the zero —
+        // this panel's subject — keeps the stronger stroke it already had.
+        DrawValueAxis(session2, context, left, plotWidth, top, bottom, high, low, AxisMoney, appear);
+
         // The zero line is this panel's subject — the moment the morning's gain became the
         // afternoon's loss is what a reader of a day's book is looking for.
         var zero = Y(0, top, height, high, low);
@@ -466,6 +471,52 @@ public sealed class BoardSplitRenderer(
 
     private static double Y(double value, double top, double height, double high, double low) =>
         top + ((high - value) / (high - low) * height);
+
+    /// <summary>
+    /// The value axis for either half: a faint rule across the plot at each nice step, with the
+    /// step's figure right-aligned just left of the plot's start — the axis-label convention
+    /// every other page keeps. The zero row is skipped: each half draws its own zero line with
+    /// a stronger stroke, and a second rule there would only double the ink.
+    /// </summary>
+    private void DrawValueAxis(
+        CanvasDrawingSession session2, FrameContext context,
+        double left, double plotWidth, double top, double bottom,
+        double high, double low, Func<double, string> text, double appear)
+    {
+        var step = NiceStep((high - low) / 4);
+        using var format = Ink.Format(context.Px(19));
+        var stroke = (float)Math.Max(1, context.Px(1));
+
+        for (var v = Math.Ceiling(low / step) * step; v <= high + 1e-9; v += step)
+        {
+            if (Math.Abs(v) >= step * 0.25)
+            {
+                var tickY = Y(v, top, bottom - top, high, low);
+
+                session2.DrawLine(
+                    (float)left, (float)tickY, (float)(left + plotWidth), (float)tickY,
+                    Ink.Fade(Palette.Grid, 0.4 * appear), stroke);
+            }
+
+            Ink.RightMiddle(session2, text(v), left - context.Px(12),
+                Y(v, top, bottom - top, high, low), format, Palette.AxisLabel, appear);
+        }
+    }
+
+    /// <summary>A step a reader rounds to: 1 / 2 / 2.5 / 5 × a power of ten, so the ticks on an
+    /// axis read as amounts rather than as the debris of dividing by four.</summary>
+    private static double NiceStep(double rough)
+    {
+        var pow = Math.Pow(10, Math.Floor(Math.Log10(Math.Max(rough, 1e-9))));
+        var frac = rough / pow;
+
+        return pow * (frac <= 1 ? 1 : frac <= 2 ? 2 : frac <= 2.5 ? 2.5 : frac <= 5 ? 5 : 10);
+    }
+
+    /// <summary>The axis form of the book's money: sign kept, magnitude shortened the way the
+    /// 定投 page shortens its own axis (万 where the strings have it, K/M where it hasn't).</summary>
+    private static string AxisMoney(double value) =>
+        value < 0 ? "-" + DcaRenderer.Money(-value) : DcaRenderer.Money(value);
 
     /// <summary>
     /// The curve to the minute being drawn, in device coordinates. The last point is interpolated
@@ -710,6 +761,18 @@ public sealed class BoardSplitRenderer(
 
         var (high, low) = IndexRange();
         var zero = Y(0, top, bottom - top, high, low);
+
+        // Same axis furniture as the book's half: rules and figures at each nice step. Percent
+        // ticks carry their sign (+/−) like the legend's changes do, and 0 stays bare.
+        var axisStep = NiceStep((high - low) / 4);
+        var axisDecimals = axisStep < 0.25 ? 2 : axisStep <= 2.5 ? 1 : 0;
+
+        DrawValueAxis(session2, context, left, plotWidth, top, bottom, high, low, v =>
+            Math.Abs(v) < axisStep * 0.25
+                ? "0"
+                : (v > 0 ? "+" : string.Empty) + v.ToString(
+                    "0." + new string('#', axisDecimals), CultureInfo.InvariantCulture) + "%",
+            appear);
 
         DrawBands(session2, context, left, plotWidth, top, bottom, appear);
 
