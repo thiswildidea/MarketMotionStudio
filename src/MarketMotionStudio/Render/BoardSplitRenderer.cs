@@ -962,20 +962,40 @@ public sealed class BoardSplitRenderer(
             x = Math.Min(head.X + context.Px(12), left + width - boxWidth);
         }
 
-        var y = head.Y - (boxHeight / 2);
+        // The nudging searches both directions and takes the nearest free slot, not just the
+        // next one down: a line ending among friends (指数 lines crowd the top when the market
+        // is only slightly off) used to see its tag walk past every tag below it and land at
+        // the plot's foot — where the reader reads the frame's worst number as *its* number
+        // (实测：恒生 -0.67% 的标签被挤到最底、挂在跌幅最大的那条线旁).
+        var home = head.Y - (boxHeight / 2);
         var gap = boxHeight + context.Px(6);
+        var plotFloor = Math.Max(top + context.Px(4), bottom - boxHeight - context.Px(4));
 
-        for (var guard = 0; guard < 8; guard++)
+        var y = home;
+        var placed = false;
+
+        for (var ring = 0; ring <= 8 && !placed; ring++)
         {
-            if (!tags.Any(t => y < t.Bottom + context.Px(4) && y + boxHeight > t.Top - context.Px(4)))
+            foreach (var candidate in ring == 0 ? new[] { home } : new[] { home - (ring * gap), home + (ring * gap) })
             {
-                break;
-            }
+                var clamped = Math.Clamp(candidate, top + context.Px(4), plotFloor);
 
-            y += gap;
+                if (!tags.Any(t => clamped < t.Bottom + context.Px(4) && clamped + boxHeight > t.Top - context.Px(4)))
+                {
+                    y = clamped;
+                    placed = true;
+                    break;
+                }
+            }
         }
 
-        y = Math.Clamp(y, top + context.Px(4), Math.Max(top + context.Px(4), bottom - boxHeight - context.Px(4)));
+        // A tag that had to leave its line's side carries a leader back to the head dot, in the
+        // line's own colour — the one thread a displaced tag needs to stay read as *this* line's.
+        if (Math.Abs(y - home) > gap * 0.5)
+        {
+            session2.DrawLine(head, new Vector2(
+                (float)(x + boxWidth), (float)(y + (boxHeight / 2))), colour, 1.5f);
+        }
 
         tags.Add((y, y + boxHeight));
 
