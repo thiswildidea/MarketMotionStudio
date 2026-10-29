@@ -126,6 +126,28 @@ public sealed class BoardSplitRenderer(
 
     private int _titleLines;
 
+    /// <summary>The indexes this frame draws: the reader's picks, kept only where their venue
+    /// is one the book itself traded. An all-mainland book does not carry a Hong Kong index —
+    /// the line would walk a market the upper half never touched, and stretch the shared axis
+    /// to 16:00 for an hour nothing printed (实测：全 A 股账本下面挂着恒生、轴空跑到 16:00).
+    /// Rebuilt at the top of <see cref="Draw"/>; falls back to every pick when the book's
+    /// venues match none of them, so a ticked box never buys an empty half.</summary>
+    private IReadOnlyList<IndexIntradaySeries> _drawn = [];
+
+    private void ChooseDrawnIndexes()
+    {
+        var kong = session.Holdings.Any(h => h.Shares > 0 && h.IsHongKong);
+        var mainland = session.Holdings.Any(h => h.Shares > 0 && !h.IsHongKong);
+
+        IReadOnlyList<IndexIntradaySeries> picked = mainland && !kong
+            ? [.. indexes.Where(s => !IndexIntraday.IsHongKong(s.Code))]
+            : kong && !mainland
+                ? [.. indexes.Where(s => IndexIntraday.IsHongKong(s.Code))]
+                : indexes;
+
+        _drawn = picked.Count > 0 ? picked : indexes;
+    }
+
     /// <summary>
     /// A layout row, in device pixels.
     ///
@@ -179,31 +201,56 @@ public sealed class BoardSplitRenderer(
         return ShownAt(p);
     }
 
-    private int ShownAt(double p)
+    /// <summary>
+    /// The book's last sample at or before the minute on screen — the same rule the indexes
+    /// keep (data to the clock, flat after it), so the two halves' heads stay on one vertical.
+    ///
+    /// <para>
+    /// This used to count prints: the head advanced one sample per slice of progress. A mixed
+    /// book's morning and afternoon are not evenly spaced on the axis — a shared pause spends
+    /// axis width no sample occupies — and across it the counting head jumped ahead of the
+    /// clock while the index lines, drawn by the clock, held back (实测：午休里持仓线头跳到
+    /// 13:00，三条指数线还停在 11:30).
+    /// </para>
+    /// </summary>
+    private int ShownAt(double clock)
     {
-        var last = session.Samples.Count - 1;
+        if (session.Samples.Count < 2)
+        {
+            return -1;
+        }
 
-        return last < 1 ? -1 : Math.Min(last, (int)Math.Floor(p * last));
+        for (var i = session.Samples.Count - 1; i >= 0; i--)
+        {
+            if (session.Samples[i].Minute <= clock)
+            {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     /// <summary>
-    /// The minute the frame's axis ends: the later of the selected venues' closes. With no index
-    /// selected the book's own session decides, which is what the page shows before the first
-    /// fetch of a board.
+    /// The minute the frame's axis ends: the later of the drawn indexes' closes — the picks
+    /// kept to the book's own venues (<see cref="ChooseDrawnIndexes"/>), so an all-mainland
+    /// book ends at 15:00 however many Hong Kong boxes are ticked. With no index at all the
+    /// book's own session decides, which is what the page shows before the first fetch of a
+    /// board.
     /// </summary>
     private int WindowClose()
     {
-        if (indexes.Count == 0)
+        if (_drawn.Count == 0)
         {
             return Math.Max(session.CloseMinute, IntradayPnl.MainlandClose);
         }
 
-        return indexes.Max(s => s.CloseMinute);
+        return _drawn.Max(s => s.CloseMinute);
     }
 
-    private bool AnyMainland => indexes.Any(s => !s.IsHongKong);
+    private bool AnyMainland => _drawn.Any(s => !s.IsHongKong);
 
-    private bool AnyKong => indexes.Any(s => s.IsHongKong);
+    private bool AnyKong => _drawn.Any(s => s.IsHongKong);
 
     private int WindowOpen() => IntradayPnl.OpenMinute;
 
@@ -304,7 +351,6 @@ public sealed class BoardSplitRenderer(
         var plotWidth = width;
 
         var p = Easing.Ramp(t, plan.IntroMs, Math.Max(1, plan.FinaleStartMs - plan.IntroMs));
-        var shown = ShownAt(p);
 
         // The clock the whole frame runs on is the window, not the book's own last print: with a
         // Hong Kong index selected the axis reaches 16:00, and the book — closed at three — is
@@ -312,6 +358,11 @@ public sealed class BoardSplitRenderer(
         // the ramp onto the book's minutes instead would stop every line at 15:00 and leave the
         // right fifth of the lower half permanently empty (实测：恒指线画到 15:00 戛然而止).
         var clock = WindowOpen() + (p * (WindowClose() - WindowOpen()));
+
+        // Which indexes this frame carries — the book's venues decide — and how far the book's
+        // own curve has walked, both settled before the panels read them.
+        ChooseDrawnIndexes();
+        var shown = ShownAt(clock);
 
         // The two slots, and whichever half sits in each. Swapping moves the whole panel — label
         // row, plot and the strip under it — so each half keeps its own furniture in both orders.
@@ -887,7 +938,7 @@ public sealed class BoardSplitRenderer(
         Ink.Left(session2, Strings.Get("BoardIndexLabel"), left, Row(context, labelRow),
             labelFormat, HeadingColour(clock), appear);
 
-        if (indexes.Count == 0 || appear <= 0)
+        if (_drawn.Count == 0 || appear <= 0)
         {
             Ink.Left(session2, Strings.Get("BoardNoIndex"), left, top + context.Px(40),
                 tickFormat, Palette.Muted, appear);
@@ -919,9 +970,9 @@ public sealed class BoardSplitRenderer(
         // Each line carries its own tag at its end — name and live change on the line's colour.
         // The tags know about each other only as rectangles: two lines that end close together
         // must not print their tags on top of one another.
-        var tags = new List<(double Top, double Bottom)>(indexes.Count);
+        var tags = new List<(double Top, double Bottom)>(_drawn.Count);
 
-        foreach (var series in indexes)
+        foreach (var series in _drawn)
         {
             DrawIndex(session2, context, series, left, plotWidth, top, bottom - top, high, low,
                 clock, legendFormat, tags, appear);
@@ -934,7 +985,7 @@ public sealed class BoardSplitRenderer(
         // and with three indexes live the two no longer share a row (实测：图例左端压进标题).
         // The slot's label band is the vertical room between the heading's baseline and the
         // plot's top edge; a drop of 30px parks the legend inside it, clear of both.
-        DrawLegend(session2, context, indexes, left + plotWidth,
+        DrawLegend(session2, context, _drawn, left + plotWidth,
             Row(context, labelRow) + context.Px(30), legendFormat, clock, appear);
     }
 
@@ -947,7 +998,7 @@ public sealed class BoardSplitRenderer(
     {
         var reach = 0d;
 
-        foreach (var series in indexes)
+        foreach (var series in _drawn)
         {
             foreach (var minute in series.Minutes)
             {
@@ -970,7 +1021,7 @@ public sealed class BoardSplitRenderer(
         CanvasDrawingSession session2, FrameContext context,
         double left, double width, double top, double bottom, double appear)
     {
-        if (!lunchBreak || indexes.Count == 0)
+        if (!lunchBreak || _drawn.Count == 0)
         {
             return;
         }
@@ -1000,9 +1051,9 @@ public sealed class BoardSplitRenderer(
     private Color HeadingColour(double clock)
     {
         var reference =
-            indexes.FirstOrDefault(s => s.Code == "sh000001") ??
-            indexes.FirstOrDefault(s => !IndexIntraday.IsHongKong(s.Code)) ??
-            indexes.FirstOrDefault();
+            _drawn.FirstOrDefault(s => s.Code == "sh000001") ??
+            _drawn.FirstOrDefault(s => !IndexIntraday.IsHongKong(s.Code)) ??
+            _drawn.FirstOrDefault();
 
         if (reference is null)
         {
@@ -1025,6 +1076,7 @@ public sealed class BoardSplitRenderer(
         var stop = Math.Min(clock, series.CloseMinute);
 
         var points = new List<Vector2>();
+        var lastDrawn = -1;
 
         foreach (var minute in series.Minutes)
         {
@@ -1036,23 +1088,28 @@ public sealed class BoardSplitRenderer(
             points.Add(new Vector2(
                 (float)X(minute.Minute, left, width),
                 (float)Y(series.ChangeAt(minute), top, height, high, low)));
+            lastDrawn = minute.Minute;
+        }
+
+        // Past the minute the line was drawn to, the head holds its level out to where the clock
+        // has reached — the same convention the book's curve keeps in the other half (see
+        // Curve). One rule, three cases: the lunch gap (mainland data stops at 11:30 while Hong
+        // Kong trades to noon — the line follows flat instead of freezing there, 实测：持仓走
+        // 到 13:00 三条 A 股指数还冻在 11:30), a board fetched mid-session (data ends at the
+        // fetch minute), and the line's own close (a mainland index rides the 16:00 axis flat
+        // from 15:00, where its market shut but Hong Kong's has not). The old condition
+        // compared the clock against the series' *last* print, which none of the first two
+        // cases reach — the freeze the screenshot caught.
+        if (points.Count > 0 && clock > lastDrawn)
+        {
+            points.Add(new Vector2(
+                (float)X(clock, left, width),
+                points[^1].Y));
         }
 
         if (points.Count < 2)
         {
             return;
-        }
-
-        // Past the line's own last print the head holds its level out to where the clock has
-        // reached — the same convention the book's curve keeps in the other half (see Curve).
-        // A board fetched mid-session has index data that ends at the fetch minute, and without
-        // this the three lines would stop dead there while the book walked on flat — the halves
-        // visibly out of sync (实测：持仓走到 13:20，三条指数线冻在 13:00).
-        if (clock > series.Minutes[^1].Minute)
-        {
-            points.Add(new Vector2(
-                (float)X(clock, left, width),
-                points[^1].Y));
         }
 
         for (var i = 1; i < points.Count; i++)
