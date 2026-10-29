@@ -89,6 +89,12 @@ public sealed class BoardSplitRenderer(
     private const double BottomTop = 0.642;
     private const double BottomBottom = 0.858;
 
+    /// <summary>The room the default layout already leaves between the stack's last slot
+    /// edge and the credit line, in baseline pixels: the bottom rail of <see cref="Row"/>
+    /// rides this far above <see cref="FrameContext.CreditLine"/> at every margin, which is
+    /// what makes the default margins draw exactly the fractions above.</summary>
+    private const double CreditLineReserve = (0.87 - BottomBottom) * VideoFormat.BaselineHeight;
+
     /// <summary>The shared clock axis, drawn between the two panels in either order: a rule
     /// across the plot with the tick labels just under it. The old divider lived on this row;
     /// an axis that names the scale is a better tenant than a bare line.</summary>
@@ -120,8 +126,42 @@ public sealed class BoardSplitRenderer(
 
     private int _titleLines;
 
-    private double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
+    /// <summary>
+    /// A layout row, in device pixels.
+    ///
+    /// <para>
+    /// The stack's rows are stated as fractions of frame height, and they used to be
+    /// multiplied straight out — which made the bottom margin a control that moved a number
+    /// and nothing else: every row was anchored to the top of the frame, so dragging the
+    /// margin left the picture exactly where it was (实测：下边距滑杆全程无效果). The
+    /// contract the other pages keep is that the bottom margin measures to the lowest thing
+    /// drawn, and its anchor here is <see cref="FrameContext.CreditLine"/>.
+    /// </para>
+    /// <para>
+    /// The map is a linear remap between two fixed rails: the top rail is where the first
+    /// row lands today — still through <see cref="FrameContext.HeaderRow"/>, so the title
+    /// block and the top margin keep the behaviour every other page has — and the bottom
+    /// rail rides <see cref="CreditLineReserve"/> above the credit line, so it moves with
+    /// the bottom margin. Rows between the rails keep their relative positions and
+    /// compress or stretch as the margin asks; rows past the bottom rail (the contributor
+    /// lines under a book in the lower slot) extrapolate on the same slope, so they move
+    /// with their panel and shrink with it rather than hanging at a fixed depth.
+    /// </para>
+    /// <para>
+    /// At the default margins the rails reproduce the tuned fractions exactly — the
+    /// reserve is the distance the default layout already left under the stack — so this
+    /// changes nothing about the picture users were shown, and only makes the slider mean
+    /// what it says.
+    /// </para>
+    /// </summary>
+    private double Row(FrameContext context, double fraction)
+    {
+        var top = context.HeaderRow(TopLabelRow, _titleLines);
+        var bottom = context.CreditLine - context.Px(CreditLineReserve);
+        var slope = (bottom - top) / (BottomBottom - TopLabelRow);
+
+        return top + ((fraction - TopLabelRow) * slope);
+    }
 
     private string ResolvedTitle() =>
         Title.Length > 0 ? Title : Strings.Get("BoardTitle");

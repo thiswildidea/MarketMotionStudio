@@ -2950,3 +2950,17 @@ fr 1024 字，仍在上限 1500 以内。CHANGELOG 中英同补一句并按原�
 破坏了「zh-hans 九张、其余八张」的商店口径。恢复 HEAD 后只重放文案同步。
 **结论：截图列要不要更新（几张、哪些页）是产品决策——得先改
 `store-screenshots.py` 的清单与判据口径，再跑 screens 脚本；不能顺手跑。**
+
+## 下边距滑杆在双屏页无效（2026-10-29 深夜）
+- 根因：`BoardSplitRenderer.Row()` 直接 `HeaderRow(fraction)`——所有竖向行都锚在
+  画面顶部，下边距滑杆只改数字不动画面（左/右边距走 ChartLeft/ChartRight 是好的，
+  上边距走 TopShift 也是好的，唯独底部没锚点）。
+- 修法：`Row()` 改成双轨线性重映射——上轨仍 `HeaderRow(TopLabelRow)`（标题/上边距
+  行为不变），下轨 = `CreditLine - Px(CreditLineReserve)`（随下边距走）；中间行按
+  分数线性内插，低于下轨的贡献注脚行（0.892/0.920）沿同一斜率外推、随面板一起
+  压缩。`CreditLineReserve = (0.87-0.858)*1920 = 23.04` 恰是默认布局已留的缝，
+  **默认边距下像素级不变**。
+- 实测（UIA 三档截图）：150 贴近底边、420 整体上收、250 与原版一致；无压盖。
+- 探针坑补充：uiautomation 库设滑杆用 `slider.GetRangeValuePattern().SetValue(v)`
+  （这里 RangeValue 就是 0..420 实际值，不是 0–1；之前 0–1 那根是 Maximum=1 的特例）；
+  `PatternId` 枚举里没有 RangeValue 成员，别走 GetPattern。
