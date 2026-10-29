@@ -2872,3 +2872,9 @@ Identity 全是 1.0.21.0、每语言 16 张图、14 份手册——都验过。
 两个面板各自的零线是主角、保留强描边。收益面板用 `AxisMoney`（复用
 DcaRenderer.Money 的万/K/M 缩写、负号外置），指数面板按步长定小数位、带 +/- 号。
 刻度跟着量程走（动态轴时随线头缩放）。目检通过（artifacts/board-yaxis-*.png）。
+
+## 刻度值纯白加大（2026-10-29 晚）
+
+用户要求 Y 轴与时间轴刻度值都用纯白、调大一点。`Palette.White` 新增（纯白）；
+两组刻度字号 19→22、颜色从 AxisLabel/DateLabel（灰蓝）改 White。目检通过
+（artifacts/board-ticks-white-*.png）。

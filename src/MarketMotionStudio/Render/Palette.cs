@@ -47,6 +47,10 @@ public static class Palette
     /// <summary>The title.</summary>
     public static readonly Color Title = Rgb(0xF0, 0xF5, 0xFF);
 
+    /// <summary>Axis figures: tick values are read at a glance and from a distance, and gray
+    /// made the board page's two axes look disabled rather than quiet.</summary>
+    public static readonly Color White = Rgb(0xFF, 0xFF, 0xFF);
+
     /// <summary>Supporting text: the subtitle lines, card labels, the unit.</summary>
     public static readonly Color Muted = Rgb(0x7E, 0x94, 0xB8);
 

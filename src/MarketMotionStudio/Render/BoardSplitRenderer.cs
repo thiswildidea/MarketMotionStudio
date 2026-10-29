@@ -484,7 +484,7 @@ public sealed class BoardSplitRenderer(
         double high, double low, Func<double, string> text, double appear)
     {
         var step = NiceStep((high - low) / 4);
-        using var format = Ink.Format(context.Px(19));
+        using var format = Ink.Format(context.Px(22));
         var stroke = (float)Math.Max(1, context.Px(1));
 
         for (var v = Math.Ceiling(low / step) * step; v <= high + 1e-9; v += step)
@@ -499,7 +499,7 @@ public sealed class BoardSplitRenderer(
             }
 
             Ink.RightMiddle(session2, text(v), left - context.Px(12),
-                Y(v, top, bottom - top, high, low), format, Palette.AxisLabel, appear);
+                Y(v, top, bottom - top, high, low), format, Palette.White, appear);
         }
     }
 
@@ -739,7 +739,7 @@ public sealed class BoardSplitRenderer(
 
         // Same heading treatment as the book's half: large, heavy, readable from across a room.
         using var labelFormat = Ink.Format(context.Px(34), bold: true, heavy: true);
-        using var tickFormat = Ink.Format(context.Px(19));
+        using var tickFormat = Ink.Format(context.Px(22));
         using var legendFormat = Ink.Format(context.Px(20));
 
         var appear = Easing.Ramp(t, plan.IntroMs * 0.4, 900);
@@ -1046,7 +1046,7 @@ public sealed class BoardSplitRenderer(
 
             Ink.Centred(session2, PortfolioSession.Clock(minute),
                 Math.Clamp(x, left + half, left + width - half), y, format,
-                Palette.DateLabel, appear);
+                Palette.White, appear);
         }
     }
 
