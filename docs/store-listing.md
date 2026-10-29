@@ -53,7 +53,7 @@ MarketMotionStudio（行情指标动画工作室）把股票市场数据做成 9
 
 ### 此版本的新增功能
 
-本版新增第三十一页「持仓·大盘 双屏」：上半是持仓当日盈亏的分钟曲线，下半是 A 股与港股指数的分钟走势，两幅图共用同一条时间轴——时间轴挂在两图之间，逐分钟对着看，是谁带动当日盈亏、谁在拖累一目了然。持仓曲线的末尾跟着一枚胶囊标签写出当日金额，每条指数线的末尾各挂一枚标签写出指数名与实时涨跌幅，红涨绿跌，两个面板的标题也按各自的正负着色。两幅图各自带上了带数值的 Y 轴刻度，收益曲线上也标出了全天盈利最多与亏损最多的两个时刻。条形竞速系列新增五种画面形态，排行榜开始挂上公司 Logo。另修一处卡死：取数之后在样式列表里切换，应用会不再响应。
+本版补齐「持仓·大盘 双屏」页的两处旧账。其一，这一页终于画自己的标题了：行的高度早就留好，字却从头到尾没画上去——现在连换行一起补上，字体样式（纯色、金属、浮雕）和颜色跟着你在设置页挑的那一份全局标题设置，不必在这一页再调一遍。其二，下边距滑杆真正接进了画面：以前这一页的每一行都只在画面顶部生根，滑杆挪半天只是改了一个数字、图画一像素都没动。现在竖着排的那些行上下各有抓手——上头顶着标题和上边距，下头跟着下边距走，中间按比例舒展或收拢，150 到 420 全程有效；默认的那一档画面和从前一模一样。
 
 ### 产品功能
 
@@ -115,7 +115,7 @@ MarketMotionStudio 把股市數據做成 9:16 直式動畫，專為抖音、Shor
 
 ### 此版本的新增功能
 
-本版新增第三十一頁「持倉·大盤 雙屏」：上半是持倉當日損益的分鐘曲線，下半是 A 股與港股指數的分鐘走勢，兩幅圖共用同一條時間軸——時間軸掛在兩圖之間，逐分鐘對著看，是誰帶動當日損益、誰在拖累一目了然。持倉曲線的末尾跟著一枚膠囊標籤寫出當日金額，每條指數線的末尾各掛一枚標籤寫出指數名與即時漲跌幅，紅漲綠跌，兩個面板的標題也按各自的正負著色。兩幅圖各自帶上了帶數值的 Y 軸刻度，損益曲線上也標出了全天獲利最多與虧損最多的兩個時刻。條形競速系列新增五種畫面形態，排行榜開始掛上公司 Logo。另修一處卡死：取數之後在樣式清單裡切換，應用程式會不再回應。
+本版補齊「持倉·大盤 雙屏」頁的兩處舊帳。其一，這一頁終於畫自己的標題了：行的高度早就留好，字卻從頭到尾沒畫上去——現在連換行一起補上，字體樣式（純色、金屬、浮雕）和顏色跟著你在設定頁挑的那一份全域標題設定，不必在這一頁再調一次。其二，下邊界滑桿真正接進了畫面：以前這一頁的每一行都只在畫面頂端生根，滑桿拉半天只是改了一個數字、圖畫一像素都沒動。現在豎著排的那些行上下各有抓手——上頭頂著標題和上邊界，下頭跟著下邊界走，中間按比例舒展或收攏，150 到 420 全程有效；預設的那一檔畫面和從前一模一樣。
 
 ### 產品功能
 
@@ -177,7 +177,7 @@ Data shown comes from a public quote service, for illustration and reference onl
 
 ### What's new in this version
 
-This release adds the thirty-first page, Book & Board Split: the day's P&L minute by minute above, A-share and Hong Kong index lines below, both on one clock whose axis hangs between the two pictures — read them against the same minute and it is plain which holding carried the day and which dragged it. A pill follows the head of the P&L curve with the day's money on it; each index line ends in a tag with its name and live change, red when up and green when down, and the two panel headings are inked in their own signs. Each picture carries its own Y axis with values, and the P&L curve marks the minute it gained the most and the minute it lost the most. The bar-race pages gain five shapes, and their leader boards carry company logos for the first time. One freeze is also fixed: switching a style in the list after a fetch used to leave the app unresponsive.
+This release settles two debts on the Book & Board Split page. First, that page now draws its own title: the rows were always spaced for it, but the words were never put on the canvas — they are now, wrapping included, taking their look (plain, gilded or engraved) and colour from the one set of title settings you pick for the whole app, so nothing has to be chosen twice. Second, the bottom margin slider reaches the picture: every row on that page used to take root at the top of the frame and nowhere else, so dragging the slider moved a number and not one pixel. The rows now have a hold at each end — the title and top margin above, the bottom margin below — opening out or closing up between them, live across the whole 150 to 420 range, with the default value drawing exactly what it drew before.
 
 ### Product features
 
@@ -239,7 +239,7 @@ Market Motion Studio は株式市場データを 9:16 の縦型アニメーシ�
 
 ### このバージョンの新機能
 
-今回の更新で三十一ページ目「資産と市場の分割表示」が加わりました。上半分にその日の保有損益を一分ごと、下半分に A 株と香港株の指数の値動きを描きます。二つの絵は同じ時間軸を共有し、軸は絵と絵の間に置かれます。同じ一分で見比べれば、当日の損益を牽引した銘柄と足を引っ張った銘柄が一目でわかります。保有曲線の先頭にはその日の金額を書いたカプセルがついて動き、指数の線の終わりには名前と騰落率のラベルが出ます。上昇は赤、下落は緑で、二つのパネルの見出しもその符号に合わせて色づきます。二つの絵にはそれぞれ数値つきの Y 軸がつき、損益の曲線には一日で最も稼いだ瞬間と最も損した瞬間に印がつきます。棒のレースのページに五つの表示形が増え、順位表には初めて会社のロゴが入りました。また、データを取った直後にスタイルを切り替えると固まる不具合を直しました。
+今回の更新は「資産と市場の分割表示」ページの二つの宿題を片づけます。ひとつはタイトルです。行の高さは最初から空けてあったのに、文字は一度も描かれていませんでした。折り返しも含めて描くようになり、書体（単色・金属・浮き彫り）と色は設定ページで選んだアプリ全体のタイトル設定をそのまま使います。このページで改めて選び直す必要はありません。もうひとつは下マージンのスライダーです。このページの行はすべて画面の上辺だけで固定されていたため、いくら動かしても数字が変わるだけで絵は一画素も動きませんでした。行は両端で支えられるようになりました。上はタイトルと上マージン、下は下マージンです。その間は比率を保ったまま伸び縮みし、150 から 420 までの全域が有効になりました。既定値の絵は以前とまったく同じです。
 
 ### 製品の機能
 
@@ -301,7 +301,7 @@ Market Motion Studio는 주식 시장 데이터를 9:16 세로형 애니메이�
 
 ### 이 버전의 새 기능
 
-이번 업데이트는 서른한 번째 페이지「계좌·시장 분할」을 더합니다. 위에는 그날의 보유 손익을 1분 단위로, 아래에는 A주와 홍콩 지수의 움직임을 그립니다. 두 그림은 같은 시간축을 쓰고 축은 그림 사이에 놓입니다. 같은 1분으로 견주어 보면 그날 손익을 이끈 종목과 끌어내린 종목이 한눈에 보입니다. 보유 곡선의 머리에는 그날 금액을 적은 알약표가 따라붙고, 지수선 끝에는 이름과 실시간 등락률 라벨이 붙습니다. 오르면 빨강, 내리면 초록이며 두 패널의 제목도 각자부호에 맞춰 색을 칠합니다. 두 그림에는 각각 눈금이 달린 Y축이 있고, 손익 곡선에는 하루 중 가장 벌어들인 순간과 가장 잃은 순간에 표시가 붙습니다. 막대 경주 페이지에 다섯 가지 화면 형태가 늘고 순위표에 처음으로 회사 로고가 들어갔습니다. 또한 데이터를 가져온 뒤 스타일을 바꾸면 멈추던 문제도 고쳤습니다.
+이번 업데이트는 「계좌·시장 분할」 페이지의 오래된 빚 두 가지를 갚습니다. 하나는 제목입니다. 줄 높이는 처음부터 비워 두었지만 글자는 한 번도 그려지지 않았습니다. 줄바꿈까지 이제 그리며, 글꼴(단색·금속·양각)과 색은 설정 페이지에서 고른 앱 전체 제목 설정을 그대로 따릅니다. 이 페이지에서 다시 고를 필요는 없습니다. 다른 하나는 아래쪽 여백 슬라이더입니다. 이 페이지의 모든 줄이 화면의 위쪽에만 뿌리를 두고 있어, 아무리 움직여도 숫자만 바뀌고 그림은 한 픽셀도 움직이지 않았습니다. 이제 줄은 양끝에서 붙잡힙니다. 위는 제목과 위쪽 여백, 아래는 아래쪽 여백입니다. 그 사이는 비율을 지키며 늘어나고 오므라들어 150부터 420까지 전 구간이 동작합니다. 기본값의 그림은 이전과 한 치도 다르지 않습니다.
 
 ### 제품 기능
 
@@ -363,7 +363,7 @@ Die angezeigten Daten stammen von einem öffentlichen Kursdienst – nur zur Ver
 
 ### Neu in dieser Version
 
-Dieses Release bringt die einunddreißigste Seite, Depot & Markt geteilt: oben das Tagesergebnis des Depots Minute für Minute, unten die Verläufe der A-Aktien- und der Hongkong-Indizes. Beide Bilder teilen eine Uhr, deren Achse zwischen ihnen hängt — in derselben Minute gelesen zeigt sich, welche Position den Tag getragen und welche ihn gedrückt hat. Eine Kapsel folgt dem Kopf der Ergebniskurve mit dem Tagesbetrag; jede Indexlinie endet mit einem Etikett aus Namen und augenblicklicher Veränderung — rot bei Plus, grün bei Minus —, und beide Paneltitel sind im eigenen Vorzeichen eingefärbt. Jedes Bild trägt eine eigene Y-Achse mit Werten, und die Ergebniskurve markiert die Minute des größten Gewinns und die des größten Verlusts. Die Balkenrennen-Seiten erhalten fünf Bildformen, und ihre Bestenlisten zeigen erstmals die Logos der Gesellschaften. Behoben ist außerdem ein Hänger: Ein Wechsel des Stils direkt nach dem Datenabruf ließ die Anwendung nicht mehr reagieren.
+Dieses Release begleicht zwei alte Schulden der Seite Depot & Markt geteilt. Erstens zeichnet diese Seite nun ihre eigene Überschrift: Die Zeilen waren von Anfang an dafür freigehalten, die Wörter aber nie auf die Fläche gesetzt — das geschieht jetzt, Zeilenumbruch inbegriffen, und Schriftart (einfarbig, metallisch oder graviert) sowie Farbe nimmt sie aus denselben Titeleinstellungen, die du in den Einstellungen für die ganze Anwendung wählst. Nichts muss hier ein zweites Mal eingestellt werden. Zweitens erreicht der Schieber für den unteren Rand endlich das Bild: Jede Zeile dieser Seite war bisher nur am oberen Rahmen verankert, also bewegte das Ziehen eine Zahl und keinen einzigen Pixel. Die Zeilen haben nun an beiden Enden Halt — oben Titel und oberer Rand, unten der untere Rand — und dehnen oder stauchen sich dazwischen im Verhältnis, über den ganzen Bereich von 150 bis 420. Bei der Voreinstellung entsteht genau das Bild von zuvor.
 
 ### Produktfunktionen
 
@@ -425,7 +425,7 @@ Les données affichées proviennent d'un service de cotations public, à titre d
 
 ### Nouveautés de cette version
 
-Cette version ajoute la trente et unième page, Portefeuille & marché partagés : en haut le résultat du jour du portefeuille minute par minute, en bas le parcours des indices A et de Hong Kong. Les deux dessins partagent une même horloge dont l'axe est placé entre eux : lus à la même minute, ils montrent tout de suite quelle position a porté la journée et laquelle l'a plombée. Une pastille suit la tête de la courbe avec le montant du jour ; chaque ligne d'indice se termine par une étiquette avec son nom et sa variation en direct — rouge à la hausse, vert à la baisse —, et les deux titres de panneau se colorent à leur propre signe. Chaque dessin porte son propre axe Y chiffré, et la courbe de résultat marque la minute du plus grand gain et celle de la plus grande perte. Les pages de course de barres reçoivent cinq formes d'affichage, et leurs classements affichent pour la première fois les logos des sociétés. Un gel est aussi corrigé : changer de style après une récupération laissait l'application sans réponse.
+Cette version règle deux vieilles dettes de la page Portefeuille & marché partagés. D'abord, cette page dessine enfin son propre titre : les lignes lui étaient réservées depuis le départ, mais les mots n'ont jamais été posés sur l'image — c'est fait maintenant, retour à la ligne compris, et la police (uni, doré ou gravé) comme la couleur viennent des réglages de titre que tu choisis une fois pour toute l'application. Rien n'est à régler deux fois ici. Ensuite, le curseur de marge basse atteint enfin le dessin : chaque ligne de cette page n'était ancrée qu'au bord supérieur, si bien que le tirer ne bougeait qu'un chiffre et pas un seul pixel. Les lignes tiennent désormais par les deux bouts — en haut le titre et la marge haute, en bas la marge basse — et s'étirent ou se resserrent entre les deux à proportion, sur toute la plage de 150 à 420. À la valeur par défaut, l'image est exactement celle d'avant.
 
 ### Fonctionnalités
 
@@ -487,7 +487,7 @@ I dati mostrati provengono da un servizio pubblico di quotazioni, solo a scopo i
 
 ### Novità di questa versione
 
-Questa versione aggiunge la trentunesima pagina, Portafoglio e mercato divisi: in alto il risultato del giorno del portafoglio minuto per minuto, in basso l'andamento degli indici A e di Hong Kong. I due disegni condividono un solo orologio, con l'asse appeso fra loro: letti allo stesso minuto mostrano subito quale posizione ha sorretto la giornata e quale l'ha appesantita. Una capsula segue la testa della curva con la cifra del giorno; ogni linea di indice finisce con un'etichetta con il nome e la variazione in diretta — rosso al rialzo, verde al ribasso —, e i due titoli dei pannelli si tingono del proprio segno. Ogni disegno porta il proprio asse Y con i valori, e la curva del risultato segna il minuto del guadagno maggiore e quello della perdita maggiore. Le pagine di corsa delle barre ricevono cinque forme, e le loro classifiche mostrano per la prima volta i loghi delle società. È corretto anche un blocco: cambiare stile dopo un recupero dati lasciava l'applicazione senza risposta.
+Questa versione salda due debiti antichi della pagina Portafoglio e mercato divisi. Primo: la pagina ora disegna il proprio titolo. Le righe erano tenute libere dall'inizio, ma le parole non sono mai state scritte — ora lo sono, andata a capo compresa, e il carattere (tinta unita, dorato o inciso) e il colore arrivano dalle stesse impostazioni di titolo che scegli una volta per tutta l'applicazione: qui non c'è nulla da regolare due volte. Secondo: il cursore del margine inferiore raggiunge finalmente il disegno. Ogni riga di questa pagina era ancorata solo al bordo superiore, così spostarlo cambiava un numero e non un pixel. Ora le righe sono tenute da entrambi i capi — sopra il titolo e il margine alto, sotto il margine basso — e si aprono o si stringono in proporzione fra i due, su tutta la gamma da 150 a 420. Al valore predefinito il disegno è esattamente quello di prima.
 
 ### Funzionalità del prodotto
 
@@ -549,7 +549,7 @@ Los datos mostrados provienen de un servicio público de cotizaciones, solo con 
 
 ### Novedades de esta versión
 
-Esta versión añade la página treinta y una, Cartera y mercado, divididos: arriba el resultado del día de la cartera minuto a minuto y abajo el recorrido de los índices A y de Hong Kong. Los dos dibujos comparten un mismo reloj, con el eje colgado entre ellos: leídos en el mismo minuto dejan claro qué posición sostuvo la jornada y cuál la lastró. Una píldora sigue la cabeza de la curva con el importe del día; cada línea de índice termina en una etiqueta con su nombre y su variación en vivo — rojo al alza, verde a la baja —, y los dos títulos de panel se tiñen de su propio signo. Cada dibujo lleva su propio eje Y con valores, y la curva de resultado marca el minuto de la mayor ganancia y el de la mayor pérdida. Las páginas de carrera de barras reciben cinco formas, y sus clasificaciones muestran por primera vez los logotipos de las empresas. También se corrige un bloqueo: cambiar de estilo tras una descarga dejaba la aplicación sin respuesta.
+Esta versión salda dos deudas antiguas de la página Cartera y mercado divididos. Primero, esa página por fin dibuja su propio título: las líneas estaban reservadas desde el principio, pero las palabras nunca llegaron al lienzo — ya están, con el salto de línea incluido, y la tipografía (liso, dorado o grabado) y el color salen de los mismos ajustes de título que eligues una vez para toda la aplicación, sin nada que volver a ajustar aquí. Segundo, la barra del margen inferior por fin alcanza el dibujo: cada línea de esa página solo echaba raíces en el borde superior, así que moverla cambiaba un número y ni un solo píxel. Ahora las líneas se sujetan por los dos extremos — arriba el título y el margen superior, abajo el margen inferior — y se abren o se cierran entre ambos a escala, en todo el rango de 150 a 420. Con el valor predeterminado el dibujo es exactamente el de antes.
 
 ### Funciones del producto
 
@@ -610,7 +610,7 @@ Os dados exibidos vêm de um serviço público de cotações, apenas para ilustr
 
 ### Novidades desta versão
 
-Esta versão acrescenta a trigésima primeira página, Carteira e mercado divididos: em cima o resultado do dia da carteira minuto a minuto, embaixo o traçado dos índices A e de Hong Kong. Os dois desenhos compartilham um só relógio, com o eixo pendurado entre eles: lidos no mesmo minuto, deixam claro qual posição sustentou o dia e qual o puxou para baixo. Uma pílula segue a cabeça da curva com o valor do dia; cada linha de índice termina numa etiqueta com o nome e a variação ao vivo — vermelho na alta, verde na baixa —, e os dois títulos de painel assumem o próprio sinal. Cada desenho traz o próprio eixo Y com valores, e a curva de resultado marca o minuto do maior ganho e o da maior perda. As páginas de corrida de barras recebem cinco formas e suas classificações mostram pela primeira vez os logotipos das empresas. Também corrigimos um travamento: mudar de estilo depois de uma consulta deixava o aplicativo sem resposta.
+Esta versão quita duas dívidas antigas da página Carteira e mercado divididos. Primeiro, essa página finalmente desenha o próprio título: as linhas estavam reservadas desde o começo, mas as palavras nunca foram para o quadro — agora vão, com a quebra de linha incluída, e a tipografia (lisa, dourada ou gravada) e a cor vêm dos mesmos ajustes de título que você escolhe uma vez para todo o aplicativo, sem nada para regular duas vezes aqui. Segundo, a barra da margem inferior finalmente alcança o desenho: cada linha dessa página criava raízes apenas na borda de cima, então arrastá-la mudava um número e nenhum pixel. Agora as linhas se apoiam nos dois extremos — em cima o título e a margem superior, embaixo a margem inferior — e se abrem ou se fecham entre os dois, em toda a faixa de 150 a 420. No valor padrão o desenho é exatamente o de antes.
 
 ### Funcionalidades do produto
 
@@ -672,7 +672,7 @@ Prezentowane dane pochodzą z publicznej usługi notowań — wyłącznie w cela
 
 ### Co nowego w tej wersji
 
-To wydanie dodaje trzydziestą pierwszą stronę, Portfel i rynek, na pół: u góry wynik dnia portfela minuta po minucie, u dołu przebieg indeksów A i Hongkongu. Oba rysunki mają jeden zegar, a jego oś wisi między nimi: czytane w tej samej minucie od razu pokazują, która pozycja dzień niosła, a która go ciągnęła w dół. Za głową krzywej idzie kapsułka z kwotą dnia; każda linia indeksu kończy się etykietą z nazwą i bieżącą zmianą — czerwono przy wzroście, zielono przy spadku — a oba nagłówki paneli przyjmują własny znak. Każdy rysunek ma własną oś Y z wartościami, a krzywa wyniku oznacza minutę największego zysku i minutę największej straty. Strony wyścigu słupków dostają pięć form, a ich tablice po raz pierwszy pokazują logo spółek. Naprawiono też zawieszenie: zmiana stylu po pobraniu danych zostawiała aplikację bez odpowiedzi.
+To wydanie spłaca dwa stare długi strony Portfel i rynek na pół. Po pierwsze, ta strona wreszcie rysuje własny tytuł: wiersze były dla niego od początku odłożone, ale słowa nigdy nie trafiły na obraz — teraz trafiają, z łamaniem wiersza, a krój (gładki, złocony lub grawerowany) i kolor biorą się z tych samych ustawień tytułu, które wybierasz raz dla całej aplikacji. Tu nie trzeba niczego ustawiać powtórnie. Po drugie, suwak dolnego marginesu wreszcie dosięga rysunku: każdy wiersz tej strony miał korzenie tylko przy górnej krawędzi, więc przesunięcie zmieniało liczbę, a nie ani jeden piksel. Wiersze trzymają się teraz obu końców — u góry tytuł i margines górny, u dołu margines dolny — i rozwierają się lub zwierają między nimi proporcjonalnie, w całym zakresie od 150 do 420. Przy wartości domyślnej rysunek jest dokładnie taki jak wcześniej.
 
 ### Funkcje produktu
 
@@ -734,7 +734,7 @@ Zobrazená data pocházejí z veřejné služby kotací, pouze pro ilustraci a r
 
 ### Co je nového v této verzi
 
-Tato verze přidává třicátou první stránku Portfolio a trh napůl: nahoře výsledek dne portfolia minutu po minutě, dole průběh indexů A a Hongkongu. Oba obrázky sdílejí jeden čas a jeho osa visí mezi nimi: čtené ve stejné minutě hned ukážou, která pozice den nesla a která ho stahovala. Za hlavou křivky jde tobolka s částkou dne; každá čára indexu končí štítkem se jménem a živou změnou — červeně při růstu, zeleně při poklesu — a oba nadpisy panelů se barví svým znakem. Každý obrázek má vlastní osu Y s hodnotami a křivka výsledku označuje minutu největšího zisku a minutu největší ztráty. Strany závodu sloupců dostávají pět podob a jejich tabulky poprvé ukazují loga firem. Opraveno je i zatuhnutí: změna stylu po načtení dat nechávala aplikaci bez odezvy.
+Tato verze vyrovnává dva staré dluhy strany Portfolio a trh napůl. Zaprvé: ta strana si konečně kreslí vlastní nadpis. Řádky pro něj byly od začátku uvolněné, ale slova se na plátno nikdy nedostala — teď ano, i se zalamováním, a písmo (hladké, zlacené nebo ryté) i barva přicházejí ze stejného nastavení nadpisů, které volíš jednou pro celou aplikaci. Zde není co nastavovat podruhé. Zadruhé: jezdec dolního okraje konečně dosáhne obrázku. Každý řádek té strany dřív zakořenil jen u horní hrany, takže táhnout znamenalo změnit číslo a ani jeden pixel. Řádky se teď drží na obou koncích — nahoře nadpis a horní okraj, dole dolní okraj — a mezi nimi se úměrně roztahují či stahují v celém rozsahu 150 až 420. Při výchozí hodnotě je obrázek přesně takový jako dřív.
 
 ### Funkce produktu
 
@@ -796,7 +796,7 @@ Market Motion Studio превращает биржевые данные в ве�
 
 ### Что нового в этой версии
 
-Этот выпуск добавляет тридцать первую страницу «Портфель и рынок, пополам»: сверху результат дня портфеля минута за минутой, снизу ход индексов A-акций и Гонконга. Оба рисунка делят одну шкалу времени, и ось висит между ними: читаемые в одну и ту же минуту, они сразу показывают, какая позиция день несла, а какая тянула вниз. За головой кривой идёт капсула с суммой дня; каждая линия индекса заканчивается подписью с названием и текущим изменением — красная при росте, зелёная при падении —, а оба заголовка панелей окрашены в свой знак. У каждого рисунка своя ось Y с подписями, а кривая результата отмечает минуту наибольшей прибыли и минуту наибольшего убытка. Страницы гонки столбцов получают пять форм, и их таблицы впервые показывают логотипы компаний. Исправлена и «заморозка»: смена стиля после загрузки данных оставляла приложение без ответа.
+Этот выпуск закрывает два старых долга страницы «Портфель и рынок пополам». Во-первых, страница наконец рисует собственный заголовок: строки под него были оставлены с самого начала, но слова ни разу не были написаны — теперь написаны, вместе с переносом, а начертание (гладкое, золотое или гравированное) и цвет берутся из той самой настройки заголовков, которую ты выбираешь один раз для всего приложения. Здесь нечего настраивать дважды. Во-вторых, ползунок нижнего поля наконец доходит до рисунка: каждая строка этой страницы пускала корни только у верхнего края, поэтому сдвиг менял число и ни одного пикселя. Теперь строки держатся за оба конца — сверху заголовок и верхнее поле, снизу нижнее поле — и раскрываются или сжимаются между ними пропорционально, во всём диапазоне от 150 до 420. При значении по умолчанию рисунок в точности такой же, как прежде.
 
 ### Функции продукта
 
@@ -858,7 +858,7 @@ Gösterilen veriler kamuya açık bir kotasyon hizmetinden gelir; yalnızca gös
 
 ### Bu sürümdeki yenilikler
 
-Bu sürüm otuz birinci sayfayı ekliyor, Portföy ve Piyasa bölünmüş: üstte portföyün gün içi kâr/zararı dakika dakika, altta A hissesi ve Hong Kong endekslerinin seyri. İki çizim de tek bir saat kullanır ve eksen ikisinin arasında durur: aynı dakikada okunduğunda günü hangi pozisyonun taşıdığı, hangisinin aşağı çektiği hemen görülür. Eğrinin başını günün tutarını yazan bir kapsül izler; her endeks çizgisi adını ve canlı değişimini yazan bir etiketle biter — yükselişte kırmızı, düşüşte yeşil — ve iki panelin başlığı da kendi işaretine göre renklenir. Her çizimin kendi değerli Y ekseni var ve kâr/zarar eğrisi o gün en çok kazandıran ve en çok kaybettiren dakikayı işaretliyor. Çubuk yarışı sayfaları beş görünüm kazandı ve sıralama tabloları ilk kez şirket logolarını gösteriyor. Bir donma da düzeltildi: veri çekildikten sonra stil değiştirmek uygulamayı yanıtsız bırakıyordu.
+Bu sürüm, Portföy ve Piyasa bölünmüş sayfasının iki eski borcunu kapatıyor. Birincisi: sayfa artık kendi başlığını çiziyor. Satırlar en başından beri ona ayrılmıştı ama sözcükler hiç tuvale yazılmadı — şimdi yazılıyor, satır kaydırmasıyla birlikte; yazı tipi (düz, altın veya oyma) ve renk, tüm uygulama için bir kez seçtiğin başlık ayarlarından geliyor, burada ikinci kez ayar yapman gerekmiyor. İkincisi: alt kenar boşluğu kaydırıcısı sonunda çizime ulaştı. Bu sayfanın her satırı kökünü yalnızca üst kenara salmıştı, bu yüzden kaydırmak bir sayıyı değiştiriyor, tek bir pikseli değil. Satırlar artık iki ucundan tutunuyor — üstte başlık ve üst kenar boşluğu, altta alt kenar boşluğu — ve arada 150’den 420’ye tüm aralıkta orana göre açılıp kapanıyor. Öntanımlı değerde çizim tıpkı eskisi gibi.
 
 ### Ürün özellikleri
 

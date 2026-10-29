@@ -30,7 +30,7 @@ TEMPLATE = os.path.join(
     DOCS, "listingData-9NGDNH0CCW7L-1152921505702020674.csv")
 LISTING = os.path.join(DOCS, "store-listing.md")
 
-VERSION = "1.0.21.0"
+VERSION = "1.0.22.0"
 VERSION_DATE = "2026-10-29"
 APP_TITLE = "MarketMotionStudio"
 DEV_STUDIO = "YiwenYang"

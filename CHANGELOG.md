@@ -20,6 +20,27 @@ Entries run newest first. / 新版本在上。
 
 ---
 
+## 1.0.22.0 — 2026-10-29
+
+**本版补齐「持仓·大盘 双屏」页两处遗落的与全站不一致的地方。** 这一页上线时少接了两样别的页面都有的
+东西。其一，画面顶部的标题文字：行高让位是做了的，字却从未画出来——现在连同换行一起补上，样式（纯色 /
+金属 / 浮雕与取色）跟随设置页里那一份全局标题设置，与其它页同源，不必单独再调。其二，下边距滑杆：
+这一页的竖向行原本全部锚在画面顶部，滑杆只能改数字、画面纹丝不动。现在竖向布局改成上下双轨——上轨
+跟着标题与上边距，下轨跟着下边距移动，中间各行按比例舒展或压缩，150 到 420 全程有效；默认那一档的
+画面与此前一模一样。
+
+**This release brings the Book & Board Split page up to the two things every other page already
+had.** When the page shipped it was missing two of the app's own conventions. First, its title:
+the rows were laid out for it and the lines were measured, but the words were never drawn. They are
+now, wrapping included, in whichever look — plain, gilded or engraved, with its own colour — the
+settings page has chosen for titles everywhere, so there is nothing here to set twice. Second, the
+bottom margin slider: this page's vertical rows were anchored to the top of the frame only, so the
+slider moved a number and nothing else. The stack is now held between two rails — the title and top
+margin above, the bottom margin below — and the rows between them open out or close up as it asks,
+all the way from 150 to 450. At the default value the picture is exactly what it was.
+
+---
+
 ## 1.0.21.0 — 2026-10-29
 
 **本版新增第三十一页「持仓·大盘 双屏」，并处理了一处会卡死的操作。** 这一页把两幅图画在一帧里：
