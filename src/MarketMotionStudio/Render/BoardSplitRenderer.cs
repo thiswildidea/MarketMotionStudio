@@ -237,9 +237,17 @@ public sealed class BoardSplitRenderer(
     {
         var t = context.Progress * plan.TotalMs;
 
-        _titleLines = _title.For(session2, ResolvedTitle(), context, ShowTitle).Lines;
+        var title = ResolvedTitle();
+        var titleShape = _title.For(session2, title, context, ShowTitle);
+        _titleLines = titleShape.Lines;
 
         context.Backdrop.Fill(session2, context, Palette.Background);
+
+        // The headline the other pages draw: measured once above for the rows below, drawn here
+        // before the panels take their own rows. The skin and the ink come from the global
+        // setting inside TitleBlock itself, so the choice made on the settings page reaches this
+        // page's next redraw the same way it reaches every other page.
+        _title.Draw(session2, context, title, titleShape, Palette.Title, Easing.Ramp(t, 0, 1000));
 
         var left = context.ChartLeft;
 

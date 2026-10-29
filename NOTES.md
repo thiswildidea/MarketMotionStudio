@@ -2900,3 +2900,53 @@ DcaRenderer.Money 的万/K/M 缩写、负号外置），指数面板按步长定
 盈利（峰上方）、绿点+绿字标最大亏损（谷下方，DrawText 顶边定位），居中夹在
 绘图区内，Ink.Glow 微光晕。极值只在穿越零轴时才标（全天无盈利不标红）；
 动态轴下随线头实时更新。目检通过（board-extremes-*.png：谷底 -¥1,494.19 绿标）。
+
+## 重打商店包 1.0.21.0（2026-10-29 夜）
+
+第一次提要求时 1.0.21.0 的清单/文档/包已经在当天上午落地（`66e6e15`），但`66e6e15`
+之后又提交了六个可见修复（图例下移、补 Y 轴刻度、刻度改白、刻度色回退、指数标签
+双向就近、收益极值标记），六个都不在那包里。**先问「上一版交上去没有」**——答案是
+没上传，于是同一版本号覆盖重打，而不是升 1.0.22.0（升号意味着 14 份商店文案重写）。
+
+因为是首版上线、文案要如实反映包里的内容，「此版本的新增功能」补了二仓库都漏掉的
+Y 轴刻度与盈亏极值标记：改 `tools/port-store-listing-10210.py` 的 `NEWS`（14 语言
+各插一句，位置统一放在条形竞速那句之前），重跑脚本落到 `docs/store-listing.md`，
+再由 `port-listing-csv.py` 同步 CSV。第二遍跑脚本「改了 0 条」，幂等成立；最长
+fr 1024 字，仍在上限 1500 以内。CHANGELOG 中英同补一句并按原行宽重排。
+
+帮助文档不用改：14 份手册里没有任何写死的版本号，也没有最低版本条款；设置页的版本
+号是运行时从 `Package.Current.Id.Version` 取的（`Pages/SettingsPage.xaml.cs`），
+双屏页章节本身也没有截图引用（不少章节本来就没图）。
+
+**打包前必须清暂存**：`bin/<arch>/Release/**/Upload`、`ForBundle`、`*.appxrecipe`。
+这轮版本号没变、源码变了，暂存不删被复用的风险比升号时更高。仍然走 `dotnet build`
+（MSBuild.exe 被安全策略拦）+ `AppxSymbolPackageEnabled=false`。
+
+**清完暂存的第一轮构建会漏资源包。** 清了 `Upload`/`ForBundle`/`*.appxrecipe`
+之后的那次 `dotnet build` 打出的 bundle 只有 2 个架构包——4 个 `scale-100/125/150/400`
+资源包（各档 DPI 的图标，源资产在 `Assets/` 里明明有）一次都没生成；用同一条命令
+**原样再跑第二遍**，4 个资源包就都出来了，bundle 六包齐全。验收判据
+`verify-store-package.py` 抓到了这个（它写死「6 个内包 + 四个 scale」），第一次
+被它拦下、第二遍才过。已记入 README 的打包陷阱（第三条）。
+
+## 双屏页补画标题块（2026-10-29 夜）
+
+用户在双屏页输入标题文字（「一损盖百利，普跌无完卵」）画面上却没有标题——不是
+没移植输入，是移植了一半：`BoardSplitRenderer` 调了 `_title.For(...)`（测量行数、
+给下面的行让位）却从没调 `_title.Draw(...)`，全站十几个渲染器里唯独它漏了画。
+补上后 skin/ink 一分钱代码都不用加——`TitleBlock` 在 draw 时读全局
+`TitleSettings`，设置页选的样式与颜色下一帧自动生效，与其它页同一套约定。
+探针目检通过（artifacts/board-title-probe.png：单行居中、绿色金属渐变、与
+两个面板无压盖；`For` 的换行预留本来就在，两行标题也预留过位置）。
+
+探针三坑：取数完成的汇总文案在 `SummaryText` 不在 `Status`；`SendKeys("^a")`
+会把 `^a` 三个字符当字面量打进框——TextBox 设值走
+`GetValuePattern().SetValue(...)`，中文根本不该碰键盘；ctypes 剪贴板 API 的
+句柄要 `restype=c_void_p`，否则 64 位句柄溢出。
+
+**CSV 险情复盘**：跑完 `port-listing-csv.py`（只写文案三块，原地改行，结构
+安全，43/43）之后又跑了 `port-listing-csv-screens.py`（管截图列）——它把
+所有 DesktopScreenshotN 重写成磁盘上的完整清单（如今 11 张/语言，含加密页），
+破坏了「zh-hans 九张、其余八张」的商店口径。恢复 HEAD 后只重放文案同步。
+**结论：截图列要不要更新（几张、哪些页）是产品决策——得先改
+`store-screenshots.py` 的清单与判据口径，再跑 screens 脚本；不能顺手跑。**
