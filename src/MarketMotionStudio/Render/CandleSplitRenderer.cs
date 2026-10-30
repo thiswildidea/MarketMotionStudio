@@ -142,17 +142,21 @@ public sealed class CandleSplitRenderer : IFrameRenderer
             eased[i] = Easing.OutCubic(Easing.Ramp(t, _plan.IntroMs + (i * _plan.StaggerMs), _plan.BarMs));
         }
 
-        // Computed up here rather than where it is drawn from, because the header states the moment
-        // the window has rolled to and is drawn before any panel. `-1` before the first point has
-        // arrived is not a window; it is the absence of one, and the header is handed a real minute
-        // either way.
+        // Computed up here rather than where it is drawn from, because the header states a moment
+        // of the picture and is drawn before any panel. `-1` before the first point has arrived is
+        // not a window; it is the absence of one, and the header is handed a real minute either
+        // way.
         var (count, head, first) = moving < 0
             ? ((double)n, -1d, 0d)
             : _plan.Window(_motion is CandleMotion.Scroll, _window, n, moving + eased[moving], t);
 
+        // The header reads the **curve's** leading end, not the window's right edge — the edge
+        // leads the arrival, so a window as long as the whole range stands on the last day from
+        // the first frame and a date read off it never moves (see the longer note in
+        // CandleRaceRenderer.Draw, which fixes the same call the same way).
         CandleLine.Header(
             session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t,
-            Math.Max(0, head));
+            moving < 0 ? 0 : moving + eased[moving]);
 
         // The instruments the frame is about. The page has already taken the board down to
         // MostPanels where there were more picks than panels; the clamp is here as well so that a

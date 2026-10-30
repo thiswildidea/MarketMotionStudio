@@ -139,17 +139,25 @@ public sealed class CandleRaceRenderer : IFrameRenderer
         // The window: shared with the two pages offering the same choice, so that a motion
         // means the same thing everywhere it is offered.
         //
-        // Computed up here rather than where it is drawn from, because the header states the moment
-        // the window has rolled to and is drawn before the plot. `-1` before the first point has
-        // arrived is not a window; it is the absence of one, and the header is handed a real minute
-        // either way.
+        // Computed up here rather than where it is drawn from, because the header states a moment
+        // of the picture and is drawn before the plot. `-1` before the first point has arrived is
+        // not a window; it is the absence of one, and the header is handed a real minute either
+        // way.
         var (count, head, first) = moving < 0
             ? ((double)n, -1d, 0d)
             : _plan.Window(_motion is CandleMotion.Scroll, _window, n, moving + eased[moving], t);
 
+        // The header reads the **curve's** leading end, not the window's right edge. The edge
+        // leads the arrival — `max(reached, held - 1)` — so a window as long as the whole range
+        // (or any stretch before a short window has filled) has its right edge already standing
+        // on the range's last day while the curves are still walking toward it; a date read off
+        // the edge would then name the end from the first frame and never move (实测：窗口滚动、
+        // 窗口 17 根 = 全跨 17 根，曲线走到一半日期已写 2026-10-30 且全程不动). The curves'
+        // own leading end is what "now" means on the picture, and on a growing window it *is*
+        // the right edge, so the two agree wherever they can.
         CandleLine.Header(
             session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t,
-            Math.Max(0, head));
+            moving < 0 ? 0 : moving + eased[moving]);
 
         var (lo, hi, step) = Bounds();
 

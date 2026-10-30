@@ -60,8 +60,8 @@ public static class CandleLine
     /// statement: they are read off the bottom of the picture, they move with the window, and a
     /// viewer who is told the codes and the period still cannot say which day the curves are.
     ///
-    /// Read at the window's right-hand edge, so this row moves as the picture does — see
-    /// <see cref="TimeBlock"/>. On a minute board that edge is a minute of one session, so the day
+    /// Read at the curves' leading end, so this row moves as the picture does — see
+    /// <see cref="TimeBlock"/>. On a minute board that end is a minute of one session, so the day
     /// it falls on is the day the picker chose and the row stands still; on a daily, weekly or
     /// monthly board it is a different day on every frame of the video.
     /// </summary>
@@ -120,10 +120,12 @@ public static class CandleLine
     /// is three — and passes through the same line rather than having one of its own.
     /// </summary>
     /// <param name="moment">
-    /// Which point of the board the frame has drawn up to, as the window's right-hand edge — the
-    /// same number the curves' leading ends are placed from, so that the clock in the header and
-    /// the ink under it agree about what "now" is. Fractional, because the window's edge leads the
-    /// arriving point by the part of it that has come through.
+    /// Which point of the board the frame has drawn up to — the curves' leading end, as the
+    /// arriving point counts its own fractional part. Fractional, so the day moves in step with
+    /// the ink rather than in day-sized jumps. This used to be the window's right-hand edge,
+    /// which leads the arrival whenever the window is longer than what has arrived; read there,
+    /// a window as long as the whole range named the range's last day from the first frame and
+    /// never moved (实测：窗口滚动、窗口等于全跨，日期全程停在最后一天).
     /// </param>
     public static void Header(
         CanvasDrawingSession session, FrameContext context, TitleBlock title,
@@ -156,15 +158,18 @@ public static class CandleLine
     /// The day the frame has reached, and — on a minute board only — the clock it has reached with
     /// it.
     ///
-    /// Both are read at the window's right-hand edge, which is where the curves' leading ends are:
-    /// a header whose clock disagreed with the ink under it would be worse than either. On a
-    /// minute board every point of the axis is on one day, so the day is the one the picker chose
-    /// and that row stands still; on a daily, weekly or monthly board the axis counts in days, and
-    /// the row walks with the picture. The same statement in a coarser unit — and the same one the
+    /// Both are read at the curves' leading end, which is where "now" is on the picture: a header
+    /// whose day disagreed with the ink under it would be worse than either. On a minute board
+    /// every point of the axis is on one day, so the day is the one the picker chose and that row
+    /// stands still; on a daily, weekly or monthly board the axis counts in days, and the row
+    /// walks with the picture. The same statement in a coarser unit — and the same one the
     /// single-instrument frame makes in its header, which names the candle it is drawing rather
     /// than the first candle of its range. Writing the first day of the span instead was the one
     /// thing on the frame that said nothing about the frame, and stood there unchanging for the
-    /// whole of it.
+    /// whole of it. Reading the window's right-hand edge instead was the correction that overcorrected:
+    /// the edge leads the curves wherever the window is longer than what has arrived, and a window
+    /// as long as the whole range led it all the way to the last day on frame one. The curves' own
+    /// end is what the row names now.
     ///
     /// The second row is the minute board's alone. It started as the stretch the frame covers —
     /// "09:30 - 15:00" — which is a statement about the source's session rather than about the
