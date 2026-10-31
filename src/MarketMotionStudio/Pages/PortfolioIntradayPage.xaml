@@ -17,6 +17,7 @@
                        TextWrapping="Wrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
         </StackPanel>
 
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
@@ -53,7 +54,29 @@
             <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
                 <StackPanel Spacing="14">
 
+                    <!-- Which book the page is reading: the mainland holdings alone, or those plus the
+                         Hong Kong ones held through 港股通.
+
+                         Two books rather than one with a filter on it, because the two cannot be drawn
+                         on one axis: the Hong Kong side is priced in another currency, charged another
+                         fee schedule and — having no snapshot to rebuild a past day from — can only be
+                         asked about today. So the choice also decides what the page *can* answer: 港股通
+                         hides the span picker above, and 近一月 is a question only the other one takes. -->
+                    <ComboBox x:Name="ScopeCombo"
+                              x:Uid="PortfolioPnlScope"
+                              AutomationProperties.AutomationId="ScopeCombo"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnScopeChanged">
+                        <ComboBoxItem x:Uid="PortfolioScopeAShare" />
+                        <ComboBoxItem x:Uid="PortfolioScopeWithKong" />
+                    </ComboBox>
+
                     <TextBlock x:Uid="PortfolioPnlSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- Which span of days the page is answering about. The same control the
+                         double-screen page binds, so both answer the same question about the
+                         same book rather than two questions with one label between them. -->
+                    <views:RangePicker x:Name="SpanPicker" />
 
                     <!-- The book, read-only. It is edited in a dialog rather than inline: a
                          nine-row table of four editable fields does not fit a 360-pixel
@@ -223,6 +246,18 @@
                     <NumberBox x:Name="FeeTransfer"
                                x:Uid="PortfolioPnlFeeTransfer"
                                Minimum="0" SmallChange="0.05" LargeChange="0.1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <!-- 港股通走的是另一套费：印花税双向 0.1%、交易费、证监会征费、会财局征费、
+                         结算费都是法定费率，写死在代码里；佣金和最低额由券商定，所以只让读者填这两项。 -->
+                    <NumberBox x:Name="FeeKongCommission"
+                               x:Uid="PortfolioPnlFeeKongCommission"
+                               Minimum="0" SmallChange="0.5" LargeChange="1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeKongMinimum"
+                               x:Uid="PortfolioPnlFeeKongMinimum"
+                               Minimum="0" SmallChange="1" LargeChange="5"
                                ValueChanged="OnFeeChanged" />
 
                     <ComboBox x:Name="TitleSkinCombo"

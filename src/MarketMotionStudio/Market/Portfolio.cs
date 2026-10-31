@@ -14,6 +14,49 @@ public enum TradeSide
 }
 
 /// <summary>
+/// Which of the two books the portfolio pages are reading.
+///
+/// <para>
+/// **Two books, because two questions are asked and one answer will not serve both.** The
+/// mainland holdings are the book the reader looks at every morning, and the account they belong
+/// to is an A-share one. The Hong Kong positions are held through 港股通: same person, same
+/// broker app, a different venue with a different currency, a different fee schedule and a
+/// different settlement story. Putting both in one curve is not wrong arithmetic, it is two
+/// answers wearing one axis — and it is the reason a 200-share Hong Kong sale could move a
+/// mainland day by more than all of the mainland's own trades put together.
+/// </para>
+///
+/// <para>
+/// **The two differ in more than which rows they carry.** <see cref="AShare"/> is a book with a
+/// history, so it can be asked about a week, a month or a year, and it is answered from the
+/// snapshot plus the fills since it. <see cref="WithKong"/> is a book about **today only**: the
+/// Hong Kong side is walked from this morning's opening through today's fills, and there is no
+/// snapshot to rebuild a past day from — which is why the span picker is hidden under it rather
+/// than shown and answered wrong.
+/// </para>
+///
+/// <para>
+/// Each carries **its own baseline**, because they start from different mornings' figures for
+/// different reasons: the Hong Kong one is today's opening position, and the mainland one is the
+/// snapshot the reader took. Switching the scope switches the baseline with it.
+/// </para>
+/// </summary>
+public enum PortfolioScope
+{
+    /// <summary>
+    /// The mainland holdings alone: `sh`, `sz` and `bj`. Hong Kong rows and Hong Kong fills are
+    /// left out of the baseline, out of the replay and out of the list.
+    /// </summary>
+    AShare = 0,
+
+    /// <summary>
+    /// The mainland holdings **and** the Hong Kong ones bought through 港股通, drawn for today
+    /// from the position the day opened on.
+    /// </summary>
+    WithKong = 1,
+}
+
+/// <summary>
 /// One line of a person's holdings **as they stood when the day opened**: how much of it, and
 /// what it cost.
 ///
@@ -100,6 +143,17 @@ public sealed record PortfolioTrade(
     /// <summary>Minutes since midnight, for ordering a day's trades. Zero when unreadable.</summary>
     [JsonIgnore]
     public int MinuteOfDay => TimeOfDay(Time);
+
+    /// <summary>
+    /// Whether this fill was made in Hong Kong.
+    ///
+    /// The mainland book asks this of every archived fill so that it can leave them out: a fill
+    /// in another currency, at another fee schedule, on shares the mainland baseline does not
+    /// hold. The archive itself keeps them — history is history — and the other book reads it
+    /// whole.
+    /// </summary>
+    [JsonIgnore]
+    public bool IsHongKong => Code.StartsWith("hk", StringComparison.OrdinalIgnoreCase);
 
     /// <summary>Reads `HH:mm:ss` (or `HH:mm`) as minutes since midnight; zero if it is neither.</summary>
     public static int TimeOfDay(string clock)
@@ -439,6 +493,68 @@ public static class Portfolio
     }
 
     /// <summary>
+    /// Starts the book again from a snapshot: the holdings become the snapshot's rows, the journal
+    /// becomes the fills dated on or after its day, and nothing is left marked folded.
+    ///
+    /// **Why the journal is rebuilt and the marks cleared.** The book and the archive are two
+    /// halves of one story — the snapshot is the morning it starts, and every fill since is what
+    /// turns it into today's position. Swapping in a new snapshot while keeping a journal that was
+    /// folded *against the old one* leaves the app holding a position built from a book that no
+    /// longer exists: the curve redraws from the new start while the list still shows the old
+    /// finish. That is exactly the disagreement a reader reports as "导入以后界面没变" (实测：换掉
+    /// 起点后曲线重算，持仓列表原地不动).
+    ///
+    /// Fills stamped before the snapshot's day are dropped: the snapshot already carries their
+    /// effect, and replaying them would count the same shares twice.
+    /// </summary>
+    /// <param name="day">The morning — or, for a closing book, the evening — the figures belong to.</param>
+    /// <param name="rows">What was held.</param>
+    /// <param name="archive">Every fill the ledger has archived, all books together.</param>
+    /// <param name="closeBook">
+    /// Whether the rows are a <em>closing</em> figure — a book photographed after that day's last
+    /// print rather than before its first. The 港股通 book is one: its baseline is rewritten off the
+    /// curve's final frame, so the day's own fills are already inside the rows, and keeping them in
+    /// the journal would apply them a second time at the next roll (buy 100, rebase on the close,
+    /// roll tomorrow → 200). Strictly-after rather than on-or-after, then — with a morning book the
+    /// day's fills still lie ahead of it and belong in the journal, which is the default.
+    /// </param>
+    public static void Rebase(
+        DateOnly day,
+        IReadOnlyList<Holding> rows,
+        IReadOnlyList<PortfolioTrade> archive,
+        bool closeBook = false)
+    {
+        EnsureLoaded();
+
+        var stamp = day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        Holdings.Clear();
+
+        foreach (var row in rows.Where(r => r.Shares > 0))
+        {
+            Holdings.Add(row);
+        }
+
+        var kept = archive
+            .Where(t => string.CompareOrdinal(t.Day, stamp) > (closeBook ? 0 : -1))
+            .GroupBy(t => t.Fingerprint, StringComparer.Ordinal)
+            .Select(group => group.First())
+            .OrderBy(t => t.Day, StringComparer.Ordinal)
+            .ThenBy(t => t.MinuteOfDay)
+            .ThenBy(t => t.Time, StringComparer.Ordinal)
+            .ToList();
+
+        Journal.Clear();
+        Journal.AddRange(kept);
+
+        // A fingerprint left here would keep the next roll from applying a fill this book has not
+        // seen yet — the marks describe the old book, and that book is gone.
+        Folded.Clear();
+
+        Save();
+    }
+
+    /// <summary>
     /// Records that the book was just corrected **by hand**, which outranks every fill still
     /// waiting to roll: the numbers the reader typed are the position as it really is, and letting
     /// tomorrow's roll apply the same fills on top of them would move the book twice.
@@ -504,7 +620,7 @@ public static class Portfolio
             return 0;
         }
 
-        var fees = FeeSchedule.Mainland;
+        var fees = FeeTable.Default;
 
         foreach (var group in fresh.GroupBy(t => t.Code, StringComparer.OrdinalIgnoreCase))
         {
@@ -521,8 +637,8 @@ public static class Portfolio
             {
                 var gross = trade.Shares * trade.Price;
                 var fee = trade.Side == TradeSide.Buy
-                    ? fees.OnBuy(gross)
-                    : fees.OnSell(gross);
+                    ? fees.OnBuy(trade.Code, gross)
+                    : fees.OnSell(trade.Code, gross);
 
                 cost = IntradayPnl.Diluted(cost, shares, trade.Shares, trade, fee);
                 shares = trade.Side == TradeSide.Buy

@@ -39,10 +39,25 @@ public sealed record IndexIntradaySeries(
     double PrevClose,
     IReadOnlyList<IndexMinute> Minutes)
 {
-    public int OpenMinute => IntradayPnl.OpenMinute;
+    /// <summary>
+    /// The last slot, when this line is a span rather than one venue's session. Left unset, the
+    /// line is intraday and its last minute is the venue's own close.
+    ///
+    /// The same object serves both because everything downstream asks for is already here: a
+    /// first position, a last one, prints between them and a level to measure them against.
+    /// A span's price axis still runs in percentages off <see cref="PrevClose"/> — across a year,
+    /// levels are even less comparable than they are across a day.
+    /// </summary>
+    public int? SlotEnd { get; init; }
+
+    public int OpenMinute => SlotEnd is null ? IntradayPnl.OpenMinute : 0;
 
     /// <summary>When this venue stops: 15:00 on the mainland, 16:00 in Hong Kong.</summary>
-    public int CloseMinute => IsHongKong ? IntradayPnl.HongKongClose : IntradayPnl.MainlandClose;
+    public int CloseMinute =>
+        SlotEnd ?? (IsHongKong ? IntradayPnl.HongKongClose : IntradayPnl.MainlandClose);
+
+    /// <summary>Whether this line is a span of days rather than one session's minutes.</summary>
+    public bool IsSpan => SlotEnd is not null;
 
     public IndexMinute Last => Minutes.Count > 0 ? Minutes[^1] : new(OpenMinute, PrevClose);
 

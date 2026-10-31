@@ -3042,3 +3042,69 @@ fr 1024 字，仍在上限 1500 以内。CHANGELOG 中英同补一句并按原�
     BoundingRectangle 有面积过滤；RECT 没有 width/height 属性（是 right/bottom）。
   - WatchlistPicker 的选中集合 `_on` 与 `_touched` **不持久化**，重启后回落
     picks[0]——每轮探针都要重新设置 chips。
+
+## 单日区间指数半区全空（2026-10-31 午后）
+- 现象：双屏页持仓范围=A 股、区间 10/26–10/26（或 10/30–10/31 中只有一天有样本
+  ——`ReturnHistory.From/To` 取实际样本日），下半屏永远「未选指数」，Summary 写
+  **「取到 0 / 3 个指数」**；上半持仓曲线照画，两半不同步（用户截图）。
+- 根因（一处空、一处错配）：
+  1. `SpanFrame.AxisFor` 的**单日分支从不填 `Slots`**（只填时钟 Labels/Ticks），
+     而 `IndexSpan.LoadAsync` 开头就是 `axis.Slots.Count == 0 → return []`——
+     单日区间整板指数直接不取。
+  2. 就算取了，`IndexSpan.Build` 给 `IndexMinute` 编的是**槽位序号 i**，而单日
+     session 的样本保留**真实分钟**（`SpanFrame.ToSession` 的 `single` 分支）——
+     两套词汇，画出来会全部挤在轴左缘。`SlotEnd` 也得留空（指数按市场收盘截断，
+     而不是 count-1）。
+- 修法：AxisFor 单日分支把 `slots` 一并填上（Slots 的消费方只有 IndexSpan，
+  ToSession 只读 Labels/Ticks，安全）；IndexSpan 加 `singleDay = grain==Session
+  && first==last`，Build 里 `IndexMinute(singleDay ? axis.Slots[i].Minute : i)`
+  且 `SlotEnd = singleDay ? null : count-1`。
+- 顺手两笔：① HoldingReturns 的「正在读取 HKD/CNY 的分钟价…」进度消息原来
+  **无条件上报**，纯 A 股区间也报——挪进 `codes.Any(hk)` 分支（ReadWithNoticeAsync）。
+  ② 双屏页持仓范围=A 股时隐藏「港股指数 · 16:00 收盘」整节（XAML 加
+  `x:Name="KongHeader"` + `ApplyScope` 切换；勾选状态保留，切回港股通即恢复）；
+  取数链路（FetchAsync/RefreshAsync/FillMissingAsync）改用 `Wanted()`——A 股下
+  剔除 hk 指数，隐藏的框不再偷偷发请求。Picked() 仍存偏好原样。
+- 实测（UIA）：10/26–10/26 区间 Summary 从「取到 0 / 3」变**「取到 3 / 3 个指数
+  · 267 分钟」**；预览下半三条指数线（上证/深证/创业板）画满到收市，播放到
+  0:10/1:30 时上下两半线头对齐在同一竖直位置；切「A股+港股通」港股指数节恢复、
+  切回 A 股再次隐藏。
+- 部署坑（这次踩的）：`Add-AppxPackage -Register` 的包根是
+  `bin\...\net10.0-...\`（README 那条），**不是它下面的 `AppX\` 子目录**——那里
+  躺着 9/30 的旧发布布局，注册错了会跑一天前的 DLL 还以为代码没生效。判别办法：
+  看进程 Path + `obj` 与部署目录 DLL 的时间戳。
+
+## 快照导入接受混合日期（2026-10-31 傍晚）
+
+用户报：双屏页持仓范围=A股+港股通，点「导入初始持仓」，导入列表不完全显示——
+10 行文件进去，理想汽车丢了。根因不在双屏页：文件里九行是 2026/10/30，
+理想汽车那行是 **2026/10/29**（手工维护的持仓快照，行日期停在它最后一次变动的日子），
+而 `SnapshotFromCsv` 的规则是「多处日期整份拒」→ 10 行全不入，列表停在旧基准
+（恰好也是缺理想的 9 行），读起来就是"导了一半"。
+
+- 修法：**行日期允许不同，快照日取文件里最新的那天**（`days.Max`）。较早的日期是
+  出处不是主张——读者在看今天的书，早先买入的股票行日期停在买入日正是初始持仓
+  的本义。整份拒掉反而交出一本缺仓位的账。
+- `SnapshotRead.Rejected` 不再有 `0` 标记；`ReportSnapshotFile` 的混合日期分支删除
+  （resw 键 `LedgerBaselineImportMixedDays` 留着不再引用，无碍）。
+- 实测（UIA 全流程，用户真实文件 `Desktop\成交记录\包括港股通\baseline.csv`）：
+  导入前列表 9 行 → 导入后 10 行（理想 200 归位）；磁盘基准 Day=2026-10-30、10 行；
+  关闭对话框 Rebase 后 portfolio.json 10 行含理想 200@70.025；页面重取重画正常。
+- 部署照旧走包根 `bin\...\\net10.0-...\\AppxManifest.xml`；改前已备份四份账本 JSON 到
+  `artifacts/ledger-backup-1031-1626/`。
+
+## 页面「标题样式」选常规不生效（2026-10-31 晚）
+
+用户报：实时持仓收益页选「常规」，预览标题仍是鎏金渐变。根因：`TitleBlock.EffectiveSkin`
+拿 **`Plain` 当"页面没传"的哨兵**——`_skin != Plain ? _skin : TitleSettings.Skin`。
+但常规（Plain）同时是三种样式之一，页面明明传了「常规」，渲染端却当成没选，
+回落到设置页的全局样式（全局停在鎏金/雕琢时页面永远变不回常规）。
+
+- 修法：**"没传"改用 `null`**。`TitleBlock` 构造参数 `TitleSkin? skin = null`、
+  `EffectiveSkin() => _skin ?? TitleSettings.Skin`、`ResolveInk` 同步改 `_skin is {}`；
+  `PortfolioPnlRenderer.skin` 参数跟着改可空（`TitleInk` 用 `skin ?? Plain` 兜底）。
+  其它十几处 `new TitleBlock(62)` 不传 skin 的照旧走全局，行为不变。
+- 实测（UIA + 截图）：页面选「常规」→ 标题纯色无描边无光晕；切「镀金」→ 金属
+  渐变字立现；切回「常规」→ 恢复纯色。样式切换两个方向都即时生效。
+- 注意：页面还存着一个自定义「标题颜色」（当前是品红），常规样式画的就是
+  这个纯色——要回各样式默认色，点样式下拉下面的「默认」按钮清掉即可。

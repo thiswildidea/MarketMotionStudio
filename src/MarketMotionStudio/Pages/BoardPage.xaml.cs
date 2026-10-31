@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using MarketMotionStudio.Localization;
 using MarketMotionStudio.Market;
 using MarketMotionStudio.Render;
@@ -59,11 +59,51 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
     private PortfolioSession? _session;
 
+    /// <summary>
+    /// The session whose closing figures have already been written into the 港股通 baseline —
+    /// reference compared, so a fresh auto-refresh earns its own sync and the frames after the
+    /// last rewrite nothing. See the intraday page's note on the same field; the two pages draw
+    /// one book and either may be the one playing when the day ends.
+    /// </summary>
+    private PortfolioSession? _synced;
+
+    /// <summary>
+    /// True while <see cref="Adopt"/> parks the playhead, so a background refresh that lands on
+    /// the last frame is not read as the end of an animation — the reader-driven ends (a playback
+    /// run to completion, a scrub to the close) are the ones the baseline follows, and a park must
+    /// not clobber an initial position imported moments earlier. See the intraday page's note.
+    /// </summary>
+    private bool _adopting;
+
+    /// <summary>
+    /// The span actually drawn, which is not always the span that was asked for.
+    ///
+    /// Named after its job rather than after the picker because the two differ: the picker's answer
+    /// is what was requested, and this is what the engine could answer for, starting no earlier
+    /// than the snapshot. The frame's label, the index half's axis and the exported file's name
+    /// all read this one, so all three say the same thing about the same span.
+    /// </summary>
+    private (DateOnly From, DateOnly To)? _span;
+
+    /// <summary>The span's own history, kept for the index half to be read against.</summary>
+    private ReturnHistory? _history;
+
+    /// <summary>What was asked for, before the snapshot pulled the start forward.</summary>
+    private DateOnly? _asked;
+
     /// <summary>Every selected index's day, in the order the page draws them.</summary>
     private readonly List<IndexIntradaySeries> _indexes = [];
 
     /// <summary>The renderer on the preview, so the read-out can ask where "now" is.</summary>
     private BoardSplitRenderer? _board;
+
+    /// <summary>
+    /// Which book the page is reading: the mainland holdings alone, or those plus the Hong Kong
+    /// positions held through 港股通. Shared with the intraday page under `Portfolio.`, because it
+    /// is a fact about the book and not about the page showing it — a reader who switched on one
+    /// has switched it for both.
+    /// </summary>
+    private PortfolioScope _scope = PortfolioScope.AShare;
 
     /// <summary>Guards against a timer tick landing on top of a fetch already in flight.</summary>
     private bool _busy;
@@ -142,6 +182,11 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         ApplyPreviewSettings();
         RefreshBook();
 
+        // Bound after the restore: the value arriving from preferences is not the reader asking
+        // for anything, and a fetch raised there would be one nobody requested.
+        SpanPicker.Bind(_shared);
+        SpanPicker.Changed += OnRangeChanged;
+
         _auto.Tick += OnAutoTick;
 
         Loaded += async (_, _) =>
@@ -196,6 +241,17 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
     private List<RaceEntry> Picked() =>
         [.. _boxes.Where(b => b.IsChecked is true).Select(b => (RaceEntry)b.Tag)];
 
+    /// <summary>
+    /// The ticked codes the **current book** can be read against: under A 股 the Hong Kong boxes
+    /// are out of the reads (and off the rail, see <see cref="ApplyScope"/>), even while their
+    /// ticks survive in the preferences for the switch back. Every fetch path asks this one, so
+    /// a hidden box cannot keep costing requests for lines the frame will not draw.
+    /// </summary>
+    private List<RaceEntry> Wanted() =>
+        _scope is PortfolioScope.WithKong
+            ? Picked()
+            : [.. Picked().Where(p => !IndexIntraday.IsHongKong(p.Code))];
+
     private async void OnIndexToggled(object sender, RoutedEventArgs e)
     {
         if (_prefs.Restoring)
@@ -223,7 +279,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
     /// </summary>
     private async Task FillMissingAsync()
     {
-        var picked = Picked();
+        var picked = Wanted();
         var missing = picked.Where(p => _indexes.All(s => !Same(s.Code, p.Code))).ToList();
         var dropped = _indexes.Where(s => picked.All(p => !Same(s.Code, p.Code))).ToList();
 
@@ -339,7 +395,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var holding in Portfolio.Holdings)
+        foreach (var holding in BookRows())
         {
             seen.Add(holding.Code);
 
@@ -433,7 +489,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             return;
         }
 
-        var picked = Picked();
+        var picked = Wanted();
 
         if (picked.Count == 0)
         {
@@ -451,9 +507,21 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
                 var progress = new Progress<string>(message =>
                     ShowStatus(InfoBarSeverity.Informational, message));
 
-                // Both halves in one pass, in parallel: two round trips that do not depend on
-                // each other, and a frame that showed the book before the indexes arrived would
-                // be a frame with half its subject missing.
+                // Both halves in one pass. Today they race each other, because neither knows
+                // anything the other would tell it.
+                //
+                // **The index read takes the span's own numbering when there is one.** The lower
+                // half exists to be read against the upper, and two series plotted on two
+                // numberings — the index on its own clock while the book is counted in slots —
+                // would let the reader line any day of one against any minute of the other. So a
+                // span's indexes are read *for the slots the book already has*, which is also the
+                // only way either half knows which days the other actually traded.
+                // Whether the book is being asked about one day. Decided here rather than inside
+                // `ReadBookAsync` because the index half has to agree with it: which days a range
+                // contains comes from the book's own read, and the two halves are drawn on one
+                // axis. 港股通 is always one day — see the note on `_scope`.
+                var wholeDay = _scope is PortfolioScope.WithKong || SpanPicker.Span == RangeSpan.Today;
+
                 async Task<PortfolioSession?> ReadBookAsync()
                 {
                     if (Portfolio.Holdings.Count == 0)
@@ -461,20 +529,63 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
                         return null;
                     }
 
-                    return await IntradayPnl.LoadAsync(
-                        Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                        [.. Portfolio.Trades], progress, cancellation,
-                        Fees(), Portfolio.Settled);
+                    // **港股通 is answered about today whatever the picker says** — see the note
+                    // on `_scope`. The picker is hidden under it, so today is not a guess at the
+                    // reader's meaning; it is the only day this book can be drawn for.
+                    if (wholeDay)
+                    {
+                        return await IntradayPnl.LoadAsync(
+                            Services.Http, Services.Stocks, BookRows(),
+                            BookTrades(), progress, cancellation,
+                            Fees(), Portfolio.Settled);
+                    }
+
+                    if (SpanPicker.Range is not { } wanted)
+                    {
+                        throw new InvalidOperationException(Strings.Get("PortfolioSpanIncomplete"));
+                    }
+
+                    var history = await HoldingReturns.LoadAsync(
+                        Services.Http, Services.Quotes, wanted.From, wanted.To, progress, cancellation,
+                        Fees(), PortfolioScope.AShare);
+
+                    _history = history;
+                    _span = (history.From, history.To);
+                    _asked = wanted.From;
+
+                    return SpanFrame.ToSession(history, SpanFrame.AxisFor(history));
                 }
 
+                async Task<List<IndexIntradaySeries>> ReadIndexSpanAsync() =>
+                    _history is { } history
+                        ? await IndexSpan.LoadAsync(
+                            Services.Http, Services.Quotes, picked,
+                            SpanFrame.AxisFor(history), history.Grain, cancellation)
+                        : [];
+
                 var bookTask = ReadBookAsync();
-                var indexTask = IndexIntraday.LoadAsync(Services.Http, picked, cancellation);
+
+                // Today's two halves race each other, because neither knows anything the other
+                // would tell it. **A span's cannot**: which days a range contains is decided by the
+                // instruments the reader held through it, and only the book's own read knows that.
+                // So that half is asked afterwards, with the answer in hand — two guesses in
+                // parallel would be two different answers about where Tuesday is.
+                var todayIndexes = wholeDay
+                    ? IndexIntraday.LoadAsync(Services.Http, picked, cancellation)
+                    : null;
 
                 var session = await bookTask;
-                var indexes = await indexTask;
+                var indexes = todayIndexes is { } racing
+                    ? await racing
+                    : await ReadIndexSpanAsync();
 
                 Adopt(session, indexes, picked.Count);
             }, TimeSpan.FromMinutes(3));
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Nothing to measure a span against — see the note on the intraday page's version.
+            ShowFailure("PortfolioSpanNoBaseline", ex);
         }
         finally
         {
@@ -500,19 +611,45 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
         _listed = int.MinValue;
 
-        ApplyPreviewSettings();
-        RefreshBook();
+        // The flag covers ApplyPreviewSettings too — it re-shows the frame through its own
+        // ShowMoment call, and a park at progress 1 must not read as an animation's end (see the
+        // intraday page's note; 实测：导入的基准在一轮自动刷新后回到收盘股数，正是这条路写的).
+        _adopting = true;
 
-        ShowMoment(wasAtEnd ? 1 : Preview.Progress);
+        try
+        {
+            ApplyPreviewSettings();
+            RefreshBook();
+
+            ShowMoment(wasAtEnd ? 1 : Preview.Progress);
+        }
+        finally
+        {
+            _adopting = false;
+        }
 
         if (_session is { } day)
         {
+            // A span is counted in days and a session in minutes; saying "分钟" over ten closes
+            // would be ten numbers claiming to be twenty thousand.
             SummaryText.Text = Strings.Format(
-                "BoardFetched",
+                day.SlotIsDaily ? "BoardFetchedDays" : "BoardFetched",
                 indexes.Count.ToString(CultureInfo.InvariantCulture),
                 asked.ToString(CultureInfo.InvariantCulture),
                 day.Samples.Count.ToString(CultureInfo.InvariantCulture),
                 PortfolioPnlRenderer.Money(day.Last));
+
+            // A range the snapshot had to shorten says so: a reader who asked for a year and got
+            // ten days is owed the reason, or the page reads as broken rather than as bounded.
+            if (_asked is { } wantedFrom && _span is { } drawn && drawn.From > wantedFrom)
+            {
+                // Two shortenings, two sentences — see the note on the intraday page's copy.
+                var snapped = Ledger.BaselineDayOf(_scope) == drawn.From;
+
+                SummaryText.Text += "  " + Strings.Format(
+                    snapped ? "PortfolioSpanTrimmed" : "PortfolioSpanShallow",
+                    drawn.From.ToString("M/d", CultureInfo.InvariantCulture));
+            }
 
             UpdatedText.Text = Strings.Format(
                 "PortfolioPnlUpdated",
@@ -539,11 +676,11 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         {
             using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(90));
 
-            var picked = Picked();
+            var picked = Wanted();
 
             var session = await IntradayPnl.LoadAsync(
-                Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                [.. Portfolio.Trades], null, cancellation.Token,
+                Services.Http, Services.Stocks, BookRows(),
+                BookTrades(), null, cancellation.Token,
                 Fees(), Portfolio.Settled);
 
             var indexes = await IndexIntraday.LoadAsync(Services.Http, picked, cancellation.Token);
@@ -590,7 +727,13 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
     /// </summary>
     private void UpdateAutoTimer()
     {
-        if (AutoRefresh.IsOn)
+        // A span excludes itself from the timer: re-reading a month every thirty seconds costs the
+        // source a request per holding and answers with the same closes all afternoon, and worse
+        // than the cost, it would redraw a picture the reader had left alone.
+        //
+        // 港股通 is today whatever the (hidden) picker is left on, so it is on the timer too.
+        if (AutoRefresh.IsOn &&
+            (_scope is PortfolioScope.WithKong || SpanPicker.Span == RangeSpan.Today))
         {
             _auto.Start();
         }
@@ -599,6 +742,79 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             _auto.Stop();
         }
     }
+
+    /// <summary>
+    /// The span moved, and with it both halves of the frame: a different set of days is a different
+    /// picture, not the same one redrawn.
+    ///
+    /// Everything downstream follows from that — the instruments the range prices, how many points
+    /// the curve has, and which index lines can be read against it — so this asks again rather than
+    /// trying to keep any part of the old frame.
+    /// </summary>
+    private async void OnRangeChanged(object? sender, EventArgs e)
+    {
+        UpdateAutoTimer();
+        SavePreferences();
+
+        await FetchAsync(report: false);
+    }
+
+    /// <summary>
+    /// What the chosen book changes about the page: the span it can be asked about, and the two
+    /// fee fields only one of the two books has an answer for.
+    ///
+    /// Same reasoning as the intraday page's, and the same caption on the picker, because the two
+    /// pages draw one book and a reader who switched on one of them has switched it for both.
+    /// </summary>
+    private void ApplyScope()
+    {
+        var kong = _scope is PortfolioScope.WithKong;
+
+        SpanPicker.Visibility = kong ? Visibility.Collapsed : Visibility.Visible;
+
+        // The Hong Kong group goes with the book it belongs to: a mainland book is not read
+        // against an index of a market it never touched, and offering the boxes would invite
+        // exactly that. The ticks survive the hiding — restoring them is what switching back
+        // means, and a preference silently erased is a preference lost.
+        KongHeader.Visibility = kong ? Visibility.Visible : Visibility.Collapsed;
+        KongBoxes.Visibility = kong ? Visibility.Visible : Visibility.Collapsed;
+
+        FeeKongCommission.Visibility = kong ? Visibility.Visible : Visibility.Collapsed;
+        FeeKongMinimum.Visibility = kong ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    /// <summary>The book changed: read the other one. Shared with the intraday page, so both move.</summary>
+    private async void OnScopeChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_prefs.Restoring || _shared.Restoring)
+        {
+            return;
+        }
+
+        _scope = ScopeCombo.SelectedIndex == 1 ? PortfolioScope.WithKong : PortfolioScope.AShare;
+
+        ApplyScope();
+        SavePreferences();
+
+        UpdateAutoTimer();
+
+        await FetchAsync(report: false);
+    }
+
+    /// <summary>
+    /// The rows of the book the page is reading: every holding under 港股通, the mainland ones
+    /// alone otherwise.
+    /// </summary>
+    private IReadOnlyList<Holding> BookRows() =>
+        _scope is PortfolioScope.WithKong
+            ? [.. Portfolio.Holdings]
+            : [.. Portfolio.Holdings.Where(h => !h.IsHongKong)];
+
+    /// <summary>The fills of the book the page is reading, in the same terms.</summary>
+    private IReadOnlyList<PortfolioTrade> BookTrades() =>
+        _scope is PortfolioScope.WithKong
+            ? [.. Portfolio.Trades]
+            : [.. Portfolio.Trades.Where(t => !t.IsHongKong)];
 
     // ---- the book's two doors ----------------------------------------------------------
 
@@ -612,49 +828,6 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         SavePreferences();
     }
 
-    /// <summary>
-    /// The book as **the day's last minute** leaves it — what 管理持仓 is handed to show. Rows the
-    /// book does not carry (a position opened by today's fills) are appended, exactly as the
-    /// page's list appends them; a book just edited by hand has a stale session behind it, so the
-    /// stored book comes back instead of the stale moments.
-    /// </summary>
-    private List<Holding> ClosingBook()
-    {
-        if (_bookDirty || _session is not { Moments.Count: > 0 } session)
-        {
-            return [.. Portfolio.Holdings];
-        }
-
-        var moment = session.Moments[^1];
-        var rows = new List<Holding>();
-        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        foreach (var holding in Portfolio.Holdings)
-        {
-            seen.Add(holding.Code);
-
-            var shares = moment.Shares.TryGetValue(holding.Code, out var held) ? held : holding.Shares;
-            var cost = shares > 0 && moment.Costs.TryGetValue(holding.Code, out var paid) ? paid : holding.Cost;
-
-            rows.Add(new Holding(holding.Code, holding.Name, shares, shares > 0 ? cost : 0));
-        }
-
-        foreach (var trade in session.Trades)
-        {
-            if (!seen.Add(trade.Code))
-            {
-                continue;
-            }
-
-            moment.Shares.TryGetValue(trade.Code, out var shares);
-            moment.Costs.TryGetValue(trade.Code, out var cost);
-
-            rows.Add(new Holding(trade.Code, trade.Name, shares, shares > 0 ? cost : 0));
-        }
-
-        return rows;
-    }
-
     private async void OnManage(object sender, RoutedEventArgs e)
     {
         if (App.Window is not { } window)
@@ -662,16 +835,9 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             return;
         }
 
-        var dialog = new PortfolioDialog(ClosingBook()) { XamlRoot = XamlRoot };
+        var dialog = new PortfolioDialog(null, _scope) { XamlRoot = XamlRoot };
 
         await Dialogs.ShowAsync(dialog);
-
-        // A hand-entered book outranks every fill still waiting to roll into it — marking them
-        // folded keeps tomorrow's roll off them while the journal keeps them for today's replay.
-        if (dialog.Edited)
-        {
-            Portfolio.MarkManualEdit();
-        }
 
         _bookDirty = true;
         RefreshBook();
@@ -701,18 +867,12 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
         var dialog = new TradeImportDialog(ImportDay()) { XamlRoot = XamlRoot };
 
-        var choice = await Dialogs.ShowAsync(dialog);
+        await Dialogs.ShowAsync(dialog);
 
-        if (choice == ContentDialogResult.Primary && dialog.Trades.Count > 0)
+        // The dialog applies its own imports — see the note on the intraday page's copy. All that
+        // is left here is re-reading: the session on screen was built before the rows were filed.
+        if (dialog.ArchiveChanged)
         {
-            var result = Portfolio.Apply(dialog.Trades);
-
-            RefreshBook();
-
-            ShowStatus(
-                result.Unmatched > 0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success,
-                Strings.Format("PortfolioPnlImported", result.Applied, result.Duplicates, result.Unmatched));
-
             await RefreshAfterChangeAsync(report: true);
         }
     }
@@ -751,8 +911,8 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(90));
 
             var session = await IntradayPnl.LoadAsync(
-                Services.Http, Services.Stocks, [.. Portfolio.Holdings],
-                [.. Portfolio.Trades], null, cancellation.Token,
+                Services.Http, Services.Stocks, BookRows(),
+                BookTrades(), null, cancellation.Token,
                 Fees(), Portfolio.Settled);
 
             Adopt(session, [.. _indexes], _indexes.Count);
@@ -778,11 +938,23 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
     /// <summary>What it costs to trade, as the four boxes currently read — the same schedule the
     /// intraday page computes from the same stored rates.</summary>
-    private FeeSchedule Fees() => new(
-        Read(FeeCommission, FeeSchedule.Mainland.Commission),
-        Read(FeeMinimum, FeeSchedule.Mainland.Minimum),
-        Read(FeeStamp, FeeSchedule.Mainland.Stamp),
-        Read(FeeTransfer, FeeSchedule.Mainland.Transfer));
+    /// <summary>
+    /// Both bills: the mainland's four rates and the Connect's two.
+    ///
+    /// The Hong Kong side asks only for what a broker sets — the rate and the floor — because every
+    /// other line on a 港股通 ticket is a statutory charge with a published rate (stamp duty, the
+    /// exchange's trading fee, the SFC and AFRC levies, CCASS settlement) and belongs in code, not
+    /// in a settings box the reader has to look up.
+    /// </summary>
+    private FeeTable Fees() => new(
+        new FeeSchedule(
+            Read(FeeCommission, FeeSchedule.Mainland.Commission),
+            Read(FeeMinimum, FeeSchedule.Mainland.Minimum),
+            Read(FeeStamp, FeeSchedule.Mainland.Stamp),
+            Read(FeeTransfer, FeeSchedule.Mainland.Transfer)),
+        new HongKongFees(
+            Read(FeeKongCommission, HongKongFees.Connect.Commission),
+            Read(FeeKongMinimum, HongKongFees.Connect.Minimum)));
 
     /// <summary>
     /// A rate box's value, falling back when it has not got one. `NaN` is what a NumberBox holds
@@ -830,6 +1002,21 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
             RefreshBook(index);
         }
 
+        // The same closing-baseline sync the intraday page runs: the 港股通 book's baseline
+        // becomes the curve's final frame, the mainland book never moves. Whichever page the
+        // reader is watching when the day ends is the one that writes it. The progress test
+        // stands beside the index one because this renderer's index ramp can sit a sample short
+        // of the last while the playhead itself is already at the end.
+        if (!_adopting &&
+            _scope is PortfolioScope.WithKong &&
+            _session is { Moments.Count: > 0 } live &&
+            (progress >= 0.999 || index >= live.Moments.Count - 1) &&
+            !ReferenceEquals(_synced, live))
+        {
+            _synced = live;
+            Ledger.SyncKongClose(live);
+        }
+
         RefreshScrubText();
         Preview.Redraw();
     }
@@ -871,7 +1058,9 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
     TimeSpan IPlaybackHost.PlaybackDuration => VideoSettings.Duration;
 
     private (DateOnly From, DateOnly To)? Range() =>
-        _session is { } session && DateOnly.TryParse(session.Day, out var day) ? (day, day) : null;
+        _span ?? (_session is { } session && DateOnly.TryParse(session.Day, out var day)
+            ? (day, day)
+            : null);
 
     private async void OnExport(object sender, RoutedEventArgs e)
     {
@@ -972,6 +1161,11 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
         AutoRefresh.IsOn = _prefs.GetBool("Auto", true);
 
+        // The book is shared with the intraday page, so the scope is too: whichever page the
+        // reader switched it on is the one both open with.
+        _scope = _shared.GetInt("Scope", 0) == 1 ? PortfolioScope.WithKong : PortfolioScope.AShare;
+        ScopeCombo.SelectedIndex = (int)_scope;
+
         var saved = _prefs.GetString("Indexes", string.Empty);
         var picks = saved.Length > 0
             ? [.. saved.Split(',', StringSplitOptions.RemoveEmptyEntries)]
@@ -1008,11 +1202,19 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         FeeMinimum.Value = _shared.GetDouble("FeeMinimum", FeeSchedule.Mainland.Minimum);
         FeeStamp.Value = _shared.GetDouble("FeeStamp", FeeSchedule.Mainland.Stamp);
         FeeTransfer.Value = _shared.GetDouble("FeeTransfer", FeeSchedule.Mainland.Transfer);
+        FeeKongCommission.Value = _shared.GetDouble("FeeKongCommission", HongKongFees.Connect.Commission);
+
+        // A new key, not a new default: the old "FeeKongMinimum" was written down at five dollars
+        // by any reader who touched any other setting on this page, and a stored five would keep
+        // overriding the corrected floor for ever. Renaming the key is what lets the hundred apply.
+        FeeKongMinimum.Value = _shared.GetDouble("FeeKongFloor", HongKongFees.Connect.Minimum);
 
         VideoSettings.Restore(_prefs);
 
         _prefs.Restoring = false;
         _shared.Restoring = false;
+
+        ApplyScope();
     }
 
     private void SavePreferences()
@@ -1028,6 +1230,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         _prefs.Save("MaskNames", MaskCheck.IsChecked is true);
 
         // The shared settings under the intraday page's prefix, so the two pages read one truth.
+        _shared.Save("Scope", (int)_scope);
         _shared.Save("CrossSafeRight", CrossCheck.IsChecked is true);
         _shared.Save("Mascot", MascotCheck.IsChecked is true);
         _shared.Save("DynamicAxis", DynamicAxisCheck.IsChecked is true);
@@ -1037,6 +1240,8 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         _shared.Save("FeeMinimum", Read(FeeMinimum, FeeSchedule.Mainland.Minimum));
         _shared.Save("FeeStamp", Read(FeeStamp, FeeSchedule.Mainland.Stamp));
         _shared.Save("FeeTransfer", Read(FeeTransfer, FeeSchedule.Mainland.Transfer));
+        _shared.Save("FeeKongCommission", Read(FeeKongCommission, HongKongFees.Connect.Commission));
+        _shared.Save("FeeKongFloor", Read(FeeKongMinimum, HongKongFees.Connect.Minimum));
 
         VideoSettings.Save(_prefs);
     }

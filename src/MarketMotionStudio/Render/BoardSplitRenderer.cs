@@ -242,7 +242,12 @@ public sealed class BoardSplitRenderer(
     {
         if (_drawn.Count == 0)
         {
-            return Math.Max(session.CloseMinute, IntradayPnl.MainlandClose);
+            // A span's last position is its own last sample; the mainland's 15:00 is not on that
+            // axis at all, and taking it as the frame's end would draw a year's closes into the
+            // last ninth of a window measured to a clock the picture is not keeping.
+            return session.IsSpan
+                ? session.CloseMinute
+                : Math.Max(session.CloseMinute, IntradayPnl.MainlandClose);
         }
 
         return _drawn.Max(s => s.CloseMinute);
@@ -252,7 +257,7 @@ public sealed class BoardSplitRenderer(
 
     private bool AnyKong => _drawn.Any(s => s.IsHongKong);
 
-    private int WindowOpen() => IntradayPnl.OpenMinute;
+    private int WindowOpen() => session.IsSpan ? session.OpenMinute : IntradayPnl.OpenMinute;
 
     /// <summary>
     /// Which midday pause is off the axis or shaded: the minutes **both** drawn sides keep.
@@ -278,6 +283,36 @@ public sealed class BoardSplitRenderer(
     }
 
     /// <summary>
+    /// Whether the window drawn actually spans the pause. A morning that stopped before the
+    /// break — a book whose last print did, or a half day — has nothing to take out.
+    /// </summary>
+    private bool CrossesLunch()
+    {
+        var (from, to) = MiddayPause();
+
+        return WindowOpen() < from && WindowClose() > to;
+    }
+
+    /// <summary>
+    /// Whether the midday pause may be taken off <em>this</em> frame's axis at all.
+    ///
+    /// A run of days borrows the slot numbering, whose later positions are counted in hundreds —
+    /// and those are larger than 13:00 is in minutes, so <see cref="CrossesLunch"/>'s question
+    /// answers itself wrong and a year's closes get laid out on a clock that thinks it is
+    /// afternoon. **A run one day wide is a day, though**: its positions are still minutes
+    /// (see `SpanFrame.ToSession`), so it has a real lunch to drop — which is why the single-day
+    /// case is asked about here and not swept up with the rest of the spans. The same reading the
+    /// returns page took; two pages drawing one book cannot keep two rules for one hour.
+    /// </summary>
+    private bool HasLunch() => (!session.IsSpan || session.SingleDay) && CrossesLunch();
+
+    /// <summary>
+    /// Whether this frame's axis is the clock, lunch included. Used wherever the two halves have
+    /// to agree on what a position means.
+    /// </summary>
+    private bool ClockAxis() => lunchBreak || !HasLunch();
+
+    /// <summary>
     /// Minutes since midnight to an x position, on whichever axis is in force.
     ///
     /// <para>
@@ -300,7 +335,10 @@ public sealed class BoardSplitRenderer(
         var span = Math.Max(1, close - open);
         var clamped = Math.Clamp(minute, open, close);
 
-        if (lunchBreak)
+        // A span's positions are slots counted from zero, and the same hour-of-the-day arithmetic
+        // applied to them is nonsense: there is no lunch between 09:30 and the two hundred and
+        // forty-third sample of a year, which in minutes-of-day terms the nineteenth of November.
+        if (ClockAxis())
         {
             return left + ((clamped - open) / (double)span * width);
         }
@@ -346,9 +384,17 @@ public sealed class BoardSplitRenderer(
     {
         var open = WindowOpen();
         var close = WindowClose();
+
+        // A span's positions are slots and there is no pause to step over, so progress and
+        // position are one linear mapping — the same one X is using.
+        if (ClockAxis())
+        {
+            return open + (p * (close - open));
+        }
+
         var (from, to) = MiddayPause();
 
-        if (lunchBreak || from <= open || to >= close)
+        if (from <= open || to >= close)
         {
             return open + (p * (close - open));
         }
@@ -455,7 +501,7 @@ public sealed class BoardSplitRenderer(
         var pnlNow = shown >= 0 && shown < session.Samples.Count ? session.Samples[shown].Pnl : 0;
         var headingColour = pnlNow > 0 ? Palette.Emphasis : pnlNow < 0 ? Palette.Fall : Palette.StockPanelTitle;
 
-        Ink.Left(session2, Strings.Get("BoardPnlLabel"), left, Row(context, labelRow),
+        Ink.Left(session2, Strings.Get(session.IsSpan ? "BoardPnlLabelSpan" : "BoardPnlLabel"), left, Row(context, labelRow),
             labelFormat, headingColour, appear);
 
         var (high, low) = Range(shown);
@@ -1060,7 +1106,10 @@ public sealed class BoardSplitRenderer(
         CanvasDrawingSession session2, FrameContext context,
         double left, double width, double top, double bottom, double appear)
     {
-        if (!lunchBreak || _drawn.Count == 0)
+        // A span has no pause to shade: a week's nights are already off its axis, and a shaded
+        // hour somewhere inside three hundred and sixty-five days would claim a closure that the
+        // positions either side of it did not agree about. A one-day span still has its lunch.
+        if (!lunchBreak || _drawn.Count == 0 || !HasLunch())
         {
             return;
         }
@@ -1280,16 +1329,28 @@ public sealed class BoardSplitRenderer(
 
         var y = ruleY + context.Px(30);
 
-        // With the axis running to 16:00 the 15:00 label is left off: the close rule names that
-        // minute already, and two labels fifty pixels apart print over each other (实测：
-        // "15:00" 与 "16:00" 连成一串). With the pause off the axis, the pause's own label goes
-        // with it — 11:30 is not on the axis to be labelled.
-        var ticks = WindowClose() > IntradayPnl.MainlandClose
-            ? new[] { IntradayPnl.OpenMinute, IntradayPnl.AfternoonOpen, IntradayPnl.HongKongClose }
-            : lunchBreak
-                ? new[] { IntradayPnl.OpenMinute, IntradayPnl.MainlandLunch, IntradayPnl.AfternoonOpen,
-                          IntradayPnl.MainlandClose }
-                : new[] { IntradayPnl.OpenMinute, IntradayPnl.AfternoonOpen, IntradayPnl.MainlandClose };
+        // A span's ticks come from the assembly, which is the only thing that knows which
+        // positions opened a new trading day; a clock's are the opening bell, the turn and the
+        // close. Both Colour their ends inside the plot, because a label centred on the very edge
+        // prints half outside the frame.
+        var ticks = session.IsSpan && session.SlotTicks is { Count: > 0 } chosen
+            ? chosen.Distinct().ToList()
+            : WindowClose() > IntradayPnl.MainlandClose
+                ? new[] { IntradayPnl.OpenMinute, IntradayPnl.AfternoonOpen, IntradayPnl.HongKongClose }.ToList()
+                : lunchBreak
+                    ? new[] { IntradayPnl.OpenMinute, IntradayPnl.MainlandLunch, IntradayPnl.AfternoonOpen,
+                              IntradayPnl.MainlandClose }.ToList()
+                    : new[] { IntradayPnl.OpenMinute, IntradayPnl.AfternoonOpen,
+                              IntradayPnl.MainlandClose }.ToList();
+
+        // Five date labels across a frame already leaves each its own clear width at this caption
+        // size; a sixth starts printing into its neighbour. Dropped from the middle outwards, so
+        // the ends that name the span always survive.
+        if (ticks.Count > 5)
+        {
+            ticks = [ticks[0], ticks[ticks.Count / 3], ticks[ticks.Count / 2],
+                     ticks[ticks.Count * 2 / 3], ticks[^1]];
+        }
 
         foreach (var minute in ticks)
         {
@@ -1297,10 +1358,11 @@ public sealed class BoardSplitRenderer(
 
             // The last label's centre would hang past the plot's edge; it is pulled inside so the
             // axis does not end in a number half outside the frame.
-            var half = context.Px(28);
+            var inset = context.Px(minute == ticks[0] ? 28 : 0);
+            var outset = context.Px(minute == ticks[^1] ? 28 : 0);
 
-            Ink.Centred(session2, PortfolioSession.Clock(minute),
-                Math.Clamp(x, left + half, left + width - half), y, format,
+            Ink.Centred(session2, session.Label(minute),
+                Math.Clamp(x, left + inset, left + width - outset), y, format,
                 Palette.DateLabel, appear);
         }
     }

@@ -93,6 +93,12 @@ public partial class App : Application
         // quit that never reached MainWindow's exit path — a kill, a crash, a shutdown.
         Market.Portfolio.RollForward();
 
+        // The book's history, once: a reader upgrading has a book nobody should have to retype,
+        // and this takes it as the starting point the first time anything asks for a range. It
+        // happens here rather than on the two pages that draw one so that both find it already
+        // set, and neither has to know who got there first.
+        Market.Ledger.SeedFromCurrentBook();
+
         var shell = new MainWindow();
         Window = shell;
 

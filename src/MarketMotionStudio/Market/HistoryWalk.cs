@@ -74,8 +74,9 @@ internal static class HistoryWalk
         string display,
         DateOnly start,
         DateOnly end,
-        IProgress<string> progress,
-        CancellationToken cancellation)
+        IProgress<string>? progress,
+        CancellationToken cancellation,
+        string adjustment = "hfq")
     {
         var closes = new SortedList<DateOnly, double>();
 
@@ -84,7 +85,7 @@ internal static class HistoryWalk
 
         for (var request = 0; request < MostRequests; request++)
         {
-            progress.Report($"{display}: {closes.Count} …");
+            progress?.Report($"{display}: {closes.Count} …");
 
             // The walk stops when the earliest bar held is at or before the range's
             // own start, so the cursor never precedes it — but a start landing one
@@ -95,7 +96,17 @@ internal static class HistoryWalk
                 break;
             }
 
-            var bars = await kline.StockBarsAsync(code, start, cursor, cancellation, adjustment: "hfq");
+            // Two doors for two questions. An adjusted series is served by the venue's own
+            // endpoint, which is the only place it exists; the unadjusted rows live on the
+            // general one, and asking the Hong Kong endpoint for them is refused outright —
+            // `hkfqkline` answers an empty adjustment with an error code rather than with the
+            // price that was paid. Both come back as (day, close), which is all the walk reads.
+            List<(DateOnly Date, double Close)> bars = adjustment.Length == 0
+                ? [.. (await kline.RawBarsAsync(
+                        code, "day", start, cursor, TencentKline.MostBarsPerRequest, cancellation))
+                    .Select(bar => (bar.Date, bar.Close))]
+                : [.. (await kline.StockBarsAsync(code, start, cursor, cancellation, adjustment: adjustment))
+                    .Select(bar => (bar.Date, bar.Close))];
 
             if (bars.Count == 0)
             {

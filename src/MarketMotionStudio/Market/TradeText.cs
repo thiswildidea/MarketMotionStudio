@@ -18,7 +18,22 @@ public readonly record struct OcrWord(string Text, double X, double Y, double He
 /// <param name="Price">The price ordered at — see the class note on why it is not the current price.</param>
 /// <param name="Shares">How many shares filled.</param>
 /// <param name="Time">`HH:mm:ss` from the list.</param>
-public sealed record ParsedTrade(TradeSide Side, string Code, string Name, double Price, double Shares, string Time);
+/// <param name="Day">
+/// The day the row itself names, in `yyyy-MM-dd`, or empty when it names none.
+///
+/// **A day of orders has no dates on it; a record of months does.** The screen a reader copies
+/// their fills from is one session, and the dialog asks which one. The file this app exports from
+/// 管理持仓 → 导出全部成交记录 is the opposite: every row carries its own day, and applying them
+/// all to the one day the picker happens to hold would file a year of trades inside a morning.
+/// Empty therefore means "the dialog's day", and a row that has one keeps it.
+/// </param>
+/// <param name="Reported">
+/// What the row said its status was, when it said anything — 全部成交, 已成, 部分成交. Carried so
+/// the preview can show it; a cancelled row never reaches here.
+/// </param>
+public sealed record ParsedTrade(
+    TradeSide Side, string Code, string Name, double Price, double Shares, string Time,
+    string Day = "", string Reported = "");
 
 /// <summary>What a list parsed into, and what it could not read.</summary>
 /// <param name="Trades">The trades, in the order they were listed.</param>
@@ -276,6 +291,25 @@ public static class TradeText
     /// </summary>
     public static TradeParse Parse(string raw)
     {
+        // **The export is recognised before anything normalises it.** `Normalize` exists to undo
+        // what OCR does to a table — `、` read for a comma, a thousands separator inside a size,
+        // a full-width colon — and every one of those repairs is damage to a comma-separated file:
+        // it turned 46 well-formed rows into 46 unreadable ones (实测：先 Normalize 再切字段，
+        // 一份 46 笔的导出「没有读到成交记录」). So the header is looked for in the text as it
+        // arrived, and the file that has one is read field by field from the original.
+        var shipped = raw
+            .Replace("\r\n", "\n")
+            .Replace('\r', '\n')
+            .Split('\n')
+            .Select(l => l.Trim())
+            .Where(l => l.Length > 0)
+            .ToList();
+
+        if (shipped.Count > 1 && shipped[0].StartsWith("day,", StringComparison.OrdinalIgnoreCase))
+        {
+            return ParseExport(shipped.Skip(1).ToList());
+        }
+
         var lines = Normalize(raw)
             .Split('\n')
             .Select(l => l.Trim())
@@ -324,6 +358,93 @@ public static class TradeText
             Cancelled = cancelled,
             Incomplete = incomplete,
         };
+    }
+
+    /// <summary>
+    /// The export's own rows: `day,time,code,name,side,price,shares`, one trade each.
+    ///
+    /// **Field order is known, so nothing is inferred.** The heuristic reader above earns its
+    /// keep on a screenshot, where the only thing that can be trusted is a clock and a direction
+    /// word; on a file this app wrote, guessing is what puts a date where a price belongs. A row
+    /// that does not fit the seven columns is skipped and named, the same way an unreadable
+    /// screenshot row is.
+    /// </summary>
+    private static TradeParse ParseExport(IReadOnlyList<string> lines)
+    {
+        var trades = new List<ParsedTrade>();
+        var skipped = new List<string>();
+
+        foreach (var line in lines)
+        {
+            var fields = CsvLine.Split(line);
+
+            if (fields.Count < 7)
+            {
+                skipped.Add(line);
+
+                continue;
+            }
+
+            var day = Day(fields[0].Trim());
+
+            var side = fields[4].Trim().ToLowerInvariant() switch
+            {
+                "buy" or "b" => TradeSide.Buy,
+                "sell" or "s" => TradeSide.Sell,
+                _ => (TradeSide?)null,
+            };
+
+            var code = fields[2].Trim();
+
+            if (day.Length == 0 || side is null || code.Length == 0 ||
+                !double.TryParse(fields[5].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var price) ||
+                !double.TryParse(fields[6].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var shares) ||
+                price <= 0 || shares <= 0)
+            {
+                skipped.Add(line);
+
+                continue;
+            }
+
+            trades.Add(new ParsedTrade(
+                side.Value, code, fields[3].Trim(), price, shares,
+                NormalizeClock(fields[1].Trim()), day));
+        }
+
+        return new TradeParse(trades, skipped);
+    }
+
+    /// <summary>
+    /// A clock as `HH:mm:ss`, or the row's own text when it is not a clock this app reads.
+    ///
+    /// **The export writes `9:34:57`, and this app sorts clocks as strings.** Unpadded, `9:34:57`
+    /// sorts after `13:55:13` — every fill before ten o'clock appears at the end of its day, in the
+    /// table and in the archive. Padding on the way in is what keeps the record in the order it
+    /// happened, and it is also what the duplicate fingerprint compares, so a file imported once
+    /// unpadded and once padded would otherwise file every fill twice.
+    /// </summary>
+    public static string NormalizeClock(string value)
+    {
+        var parts = value.Split(':');
+
+        if (parts.Length < 2 ||
+            !int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var hour) ||
+            !int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var minute))
+        {
+            return value;
+        }
+
+        var second = 0;
+
+        if (parts.Length > 2 &&
+            !int.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out second))
+        {
+            return value;
+        }
+
+        return hour is >= 0 and <= 23 && minute is >= 0 and <= 59 && second is >= 0 and <= 59
+            ? $"{hour:00}:{minute:00}:{second:00}"
+            : value;
     }
 
     /// <summary>
@@ -591,6 +712,14 @@ public static class TradeText
             return null;
         }
 
+        // **The date comes off before any number is read.** `2026-10-26` is three numbers to a
+        // digit matcher, and they arrive before the price: an imported record of October would
+        // file every fill at 2,026 yuan a share and a size of 10 (实测：直接读导出文件，价格成
+        // 2026、数量成 10). Taken off by value rather than by index, because the code was removed
+        // first and every index after it has moved.
+        var stamp = Stamp.Match(block);
+        var day = stamp.Success ? Day(stamp.Value) : string.Empty;
+
         // Everything that is not a number belonging to the trade is removed before the numbers
         // are read: the code's own digits would otherwise be the first number on the row, and
         // 688083 is not a price.
@@ -598,6 +727,11 @@ public static class TradeText
             .Remove(match.Index, match.Length)
             .Replace(clock.Value, " ")
             .Replace("全部成交", " ");
+
+        if (stamp.Success && day.Length > 0)
+        {
+            rest = rest.Replace(stamp.Value, " ");
+        }
 
         var values = Figures.Matches(rest).Select(m => m.Value).ToList();
 
@@ -645,7 +779,42 @@ public static class TradeText
             return null;
         }
 
-        return new ParsedTrade(side.Value, match.Code, Name(block, match), price, shares, clock.Value);
+        return new ParsedTrade(
+            side.Value, match.Code, Name(block, match), price, shares,
+            NormalizeClock(clock.Value), day);
+    }
+
+    /// <summary>
+    /// A calendar date written on the row: `2026-10-26`, `2026/10/26`, `2026.10.26`.
+    ///
+    /// Guarded against its neighbours so a four-digit figure inside a longer run is not taken for
+    /// a year, and so the date is not matched as the left half of something longer.
+    /// </summary>
+    private static readonly Regex Stamp =
+        new(@"(?<![\d\-/.])\d{4}[\-/\.]\d{1,2}[\-/\.]\d{1,2}(?![\d\-/.])", RegexOptions.Compiled);
+
+    /// <summary>
+    /// A date as `yyyy-MM-dd`, or empty when it is not one this app would accept.
+    ///
+    /// Validated rather than trusted: a rejected date leaves the row on the dialog's own day,
+    /// which is the honest reading of "this row does not say when it happened" — better than
+    /// filing it under a day invented from a mis-read number.
+    /// </summary>
+    private static string Day(string value)
+    {
+        var parts = value.Split('-', '/', '.');
+
+        if (parts.Length != 3 ||
+            !int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var year) ||
+            !int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var month) ||
+            !int.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var day))
+        {
+            return string.Empty;
+        }
+
+        return year is >= 1990 and <= 2100 && month is >= 1 and <= 12 && day is >= 1 and <= 31
+            ? $"{year:0000}-{month:00}-{day:00}"
+            : string.Empty;
     }
 
     private static readonly Regex Figures = new(@"\d+(?:\.\d+)?", RegexOptions.Compiled);
@@ -668,8 +837,25 @@ public static class TradeText
             return TradeSide.Sell;
         }
 
-        return null;
+        // **The file this app exports from 管理持仓 says `buy` and `sell`.** Without these two the
+        // app could write a record it could not read back, which is the one thing an export must
+        // never be (实测：导出的流水粘回来，「方向」全部认不出，整份被当成读不懂的行).
+        //
+        // Whole words only, and never the single letters: `s` and `b` are all over a code.
+        var english = English.Match(block);
+
+        if (!english.Success)
+        {
+            return null;
+        }
+
+        return english.Value.StartsWith('b') ? TradeSide.Buy : TradeSide.Sell;
     }
+
+    /// <summary>`buy` / `sell` / `bought` / `sold`, as whole words outside a code.</summary>
+    private static readonly Regex English = new(
+        @"(?<![a-z])(buy|sell|bought|sold)(?![a-z])",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     /// <summary>
     /// The code on the row, with the venue it was quoted on.

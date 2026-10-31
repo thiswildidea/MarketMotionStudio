@@ -3,24 +3,43 @@
     x:Class="MarketMotionStudio.Views.TradeImportDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:views="using:MarketMotionStudio.Views"
-    PrimaryButtonClick="OnApply">
+    xmlns:views="using:MarketMotionStudio.Views">
 
-    <StackPanel Width="520" Spacing="10">
+    <!-- **The whole dialog scrolls, not just the table.** The archive table plus the day's import
+         are taller than a ContentDialog is allowed to be, and a dialog does not scroll its own
+         content: what sticks out the bottom is simply cut, which put 全量导出 and 全量导入 below the
+         fold where they were invisible rather than merely low. -->
+    <ScrollViewer MaxHeight="760"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollMode="Disabled"
+                  HorizontalScrollBarVisibility="Disabled">
+    <!-- **500, not 520.** The dialog's content is wrapped in a scrolling area, and a vertical
+         scrollbar takes about twelve pixels out of the width before anything is laid out: at 520
+         the right edge of every full-width row was clipped — 导入表格 came out as 导入表 plus half a
+         character. The widest thing below is the 480-wide table plus its border, which still fits. -->
+    <StackPanel Width="500" Spacing="10">
 
         <TextBlock x:Uid="PortfolioImportHint"
                    TextWrapping="Wrap"
                    Style="{StaticResource CaptionTextBlockStyle}"
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
-        <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10">
+        <!-- **Caption, fields and the button on one line**, which is only possible because the
+             caption is a label beside the picker rather than its `Header` — a `Header` sits above
+             the fields and no vertical alignment can bring a third item level with it.
+             The picker takes the slack (`*`): it is the only one of the three whose width is worth
+             having, and giving it the remainder keeps the line inside 500 no matter how long the
+             caption is in a given language ("Trading day" is half again as wide as 交易日期). -->
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+            <TextBlock x:Uid="PortfolioImportDay"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource BodyTextBlockStyle}" />
+            <DatePicker x:Name="Day" Grid.Column="1" />
             <Button x:Name="SheetButton"
                     x:Uid="PortfolioImportSheet"
-                    Grid.Column="0"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
                     Click="OnPickSheet" />
-            <DatePicker x:Name="Day"
-                        x:Uid="PortfolioImportDay"
-                        Grid.Column="1" />
         </Grid>
 
         <!-- The single source of truth for the import. A screenshot fills it in, a reader can
@@ -30,35 +49,211 @@
                  x:Uid="PortfolioImportRaw"
                  AcceptsReturn="True"
                  TextWrapping="Wrap"
-                 Height="150"
+                 Height="104"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  TextChanged="OnRawChanged" />
 
-        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+        <!-- **导入 sits here, not on the dialog's primary button.** It used to close the dialog,
+             which meant the reader could not see what it did to the record they were looking at;
+             now it applies, refreshes the list below, and leaves the dialog open so a second day's
+             list can be pasted straight after. 关闭 is the only way out — see `OnApply`. -->
+        <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10">
             <Button x:Name="ParseButton"
                     x:Uid="PortfolioImportParse"
                     Grid.Column="0"
                     Click="OnParse" />
+            <Button x:Name="ApplyButton"
+                    x:Uid="PortfolioImportApply"
+                    Grid.Column="1"
+                    IsEnabled="False"
+                    Click="OnApply" />
             <TextBlock x:Name="Note"
-                       Grid.Column="1"
+                       Grid.Column="2"
                        VerticalAlignment="Center"
                        TextWrapping="Wrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </Grid>
 
-        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="Preview">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="views:ParsedRow">
-                        <TextBlock Text="{x:Bind Line}"
-                                   Margin="0,3"
-                                   VerticalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   Style="{StaticResource CaptionTextBlockStyle}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <!-- **What the parse read, as a table — the same one the archive below uses.** The text box
+             above has to stay a text box: it is where a broker's list is pasted and where a row that
+             read wrong gets corrected by hand. But its contents are a picture of a table, and reading
+             them back as prose is what makes the reader count columns in their head. Columns line up
+             with 历史成交记录 below (same widths, same headings) so a row that is about to be filed
+             can be checked against a row already filed without moving the eye sideways.
+             Collapsed until there is something to show: an empty frame under the box reads as a
+             failed parse. -->
+        <Border x:Name="PreviewPanel"
+                Visibility="Collapsed"
+                BorderThickness="1"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                CornerRadius="6"
+                Padding="6,4">
+            <StackPanel Spacing="2">
+
+                <Grid ColumnDefinitions="30,50,56,38,178,50,58" ColumnSpacing="3">
+                    <TextBlock x:Uid="TradeColumnNumber" Grid.Column="0" HorizontalAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnDay" Grid.Column="1"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnTime" Grid.Column="2"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnSide" Grid.Column="3"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnName" Grid.Column="4"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnPrice" Grid.Column="5" HorizontalAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnShares" Grid.Column="6" HorizontalAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <ScrollViewer MaxHeight="104"
+                              HorizontalScrollMode="Disabled"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="Preview">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="30,50,56,38,178,50,58" ColumnSpacing="3">
+                                    <TextBlock Text="{Binding Number}" Grid.Column="0"
+                                               HorizontalAlignment="Right"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Day}" Grid.Column="1"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Time}" Grid.Column="2"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Side}" Grid.Column="3"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Display}" Grid.Column="4"
+                                               TextTrimming="CharacterEllipsis"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Price}" Grid.Column="5"
+                                               HorizontalAlignment="Right"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Shares}" Grid.Column="6"
+                                               HorizontalAlignment="Right"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- The rows the parse could not use, named as they were written. They cannot be
+                     table cells — a row with no direction has nothing for the 方向 column — so they
+                     sit under the table as the text they are. -->
+                <TextBlock x:Name="Problems"
+                           Margin="0,2,0,0"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+            </StackPanel>
+        </Border>
+
+        <!-- **What is filed, after what is about to be.** The archive is the one record in this app
+             a reader cannot rebuild from the source; showing it under the import that changes it
+             is what makes the change something they can watch happen rather than something they
+             find out about afterwards. -->
+        <TextBlock x:Uid="TradeHistoryTitle"
+                   Margin="0,6,0,0"
+                   Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+        <TextBlock x:Name="HistoryNote"
+                   TextWrapping="Wrap"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+        <!-- A table, because this is what the record is: six fixed columns and a running number.
+             **The two `ColumnDefinitions` below must stay identical** — the header and the rows are
+             separate grids (WinUI has no column-definition inheritance), and a mismatch shows up as
+             prices under the name column, which reads as corrupted data rather than as layout. -->
+        <Border BorderThickness="1"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                CornerRadius="6"
+                Padding="6,4">
+            <StackPanel Spacing="2">
+
+                <Grid ColumnDefinitions="30,50,56,38,178,50,58" ColumnSpacing="3">
+                    <TextBlock x:Uid="TradeColumnNumber" Grid.Column="0" HorizontalAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnDay" Grid.Column="1"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnTime" Grid.Column="2"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnSide" Grid.Column="3"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnName" Grid.Column="4"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnPrice" Grid.Column="5" HorizontalAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Uid="TradeColumnShares" Grid.Column="6" HorizontalAlignment="Right"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+
+                <ScrollViewer MaxHeight="168"
+                              HorizontalScrollMode="Disabled"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="History">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="30,50,56,38,178,50,58" ColumnSpacing="3">
+                                    <TextBlock Text="{Binding Number}" Grid.Column="0"
+                                               HorizontalAlignment="Right"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Day}" Grid.Column="1"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Time}" Grid.Column="2"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Side}" Grid.Column="3"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Display}" Grid.Column="4"
+                                               TextTrimming="CharacterEllipsis"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Price}" Grid.Column="5"
+                                               HorizontalAlignment="Right"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Shares}" Grid.Column="6"
+                                               HorizontalAlignment="Right"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+
+        <!-- The whole record, out and back in. 全量导入 replaces the archive outright — that is what
+             "the whole record" means, and it is the only way to restore a file that was saved — so
+             it asks with a second press rather than doing it on the first. -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button x:Name="ArchiveExportButton"
+                    x:Uid="TradeHistoryExport"
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Click="OnExportArchive" />
+            <Button x:Name="ArchiveImportButton"
+                    x:Uid="TradeHistoryImport"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    Click="OnImportArchive" />
+        </Grid>
     </StackPanel>
+    </ScrollViewer>
 </ContentDialog>

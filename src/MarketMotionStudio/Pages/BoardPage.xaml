@@ -53,7 +53,26 @@
             <ScrollViewer Grid.Column="1" Width="360" Padding="12,0,24,24">
                 <StackPanel Spacing="14">
 
+                    <!-- The same choice the per-stock page offers, and the same caption: the two
+                         pages draw one book, and a reader who switched on one of them has switched
+                         it for both in their own head. See PortfolioIntradayPage for what it
+                         decides. Top of the rail, above the index list — it decides what the
+                         whole page reads, so nothing sits before it. -->
+                    <ComboBox x:Name="ScopeCombo"
+                              x:Uid="PortfolioPnlScope"
+                              AutomationProperties.AutomationId="ScopeCombo"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="OnScopeChanged">
+                        <ComboBoxItem x:Uid="PortfolioScopeAShare" />
+                        <ComboBoxItem x:Uid="PortfolioScopeWithKong" />
+                    </ComboBox>
+
                     <TextBlock x:Uid="BoardSectionIndex" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- Which span of days both halves of the frame are answering about. The
+                         same control the returns page binds, so the two pages cannot disagree
+                         about what 近一周 means — a disagreement neither would be able to show. -->
+                    <views:RangePicker x:Name="SpanPicker" />
 
                     <!-- Two groups and not one list: the page's whole subject is that these are
                          two markets with two closing bells, and a single column of nine would
@@ -65,7 +84,12 @@
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     <StackPanel x:Name="MainlandBoxes" Spacing="2" />
 
-                    <TextBlock x:Uid="BoardSectionKong"
+                    <!-- The whole group follows the 持仓范围 picker: a mainland book has no
+                         Hong Kong half to read against, so under A 股 the caption and its boxes
+                         go with it (ApplyScope) — the ticks themselves are kept, so switching
+                         back restores them. -->
+                    <TextBlock x:Name="KongHeader"
+                               x:Uid="BoardSectionKong"
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     <StackPanel x:Name="KongBoxes" Spacing="2" />
@@ -188,6 +212,18 @@
                     <NumberBox x:Name="FeeTransfer"
                                x:Uid="PortfolioPnlFeeTransfer"
                                Minimum="0" SmallChange="0.05" LargeChange="0.1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <!-- 港股通走的是另一套费：印花税双向 0.1%、交易费、证监会征费、会财局征费、
+                         结算费都是法定费率，写死在代码里；佣金和最低额由券商定，所以只让读者填这两项。 -->
+                    <NumberBox x:Name="FeeKongCommission"
+                               x:Uid="PortfolioPnlFeeKongCommission"
+                               Minimum="0" SmallChange="0.5" LargeChange="1"
+                               ValueChanged="OnFeeChanged" />
+
+                    <NumberBox x:Name="FeeKongMinimum"
+                               x:Uid="PortfolioPnlFeeKongMinimum"
+                               Minimum="0" SmallChange="1" LargeChange="5"
                                ValueChanged="OnFeeChanged" />
 
                     <Button x:Name="FetchButton"

@@ -85,7 +85,7 @@ public sealed class TitleBlock
     private readonly double _wanted;
     private readonly bool _bold;
     private readonly int _maxLines;
-    private readonly TitleSkin _skin;
+    private readonly TitleSkin? _skin;
     private Cache? _memo;
 
     /// <param name="wantedBaselineSize">
@@ -94,11 +94,16 @@ public sealed class TitleBlock
     /// </param>
     /// <param name="bold">Whether the headline is set bold — the same on every page so far.</param>
     /// <param name="maxLines">Automatic wraps allowed before the size gives way instead.</param>
-    /// <param name="skin">How the type is inked. <see cref="TitleSkin.Plain"/> is what the pages
-    /// shipped with, and it is the only one that leaves the face and the finish alone.</param>
+    /// <param name="skin">
+    /// How the type is inked, when the page has a choice of its own. Null — the default — means
+    /// the page never opted in, and the global setting answers. **Plain is a choice, not the
+    /// absence of one**: a page that passes <see cref="TitleSkin.Plain"/> has said "常规", and the
+    /// global setting must not overrule it (实测：页面选常规、全局停在鎏金，标题照画鎏金，
+    /// 「样式不能生效」).
+    /// </param>
     public TitleBlock(
         double wantedBaselineSize, bool bold = true, int maxLines = MaxLines,
-        TitleSkin skin = TitleSkin.Plain)
+        TitleSkin? skin = null)
     {
         _wanted = wantedBaselineSize;
         _bold = bold;
@@ -287,7 +292,7 @@ public sealed class TitleBlock
     /// portfolio page keeps its per-page choice — otherwise the global setting.
     /// </summary>
     private TitleSkin EffectiveSkin() =>
-        _skin != TitleSkin.Plain ? _skin : TitleSettings.Skin;
+        _skin ?? TitleSettings.Skin;
 
     /// <summary>
     /// The ink this draw uses, following the same ownership rule as the skin.
@@ -300,7 +305,7 @@ public sealed class TitleBlock
     /// </summary>
     private Color ResolveInk(Color passed)
     {
-        if (_skin != TitleSkin.Plain)
+        if (_skin is { })
         {
             return passed;
         }

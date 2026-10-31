@@ -42,12 +42,12 @@ public sealed record StockChoice(StockRef Stock)
 /// </para>
 ///
 /// <para>
-/// **What it shows is the day's closing, and what it writes is only what the reader changed.**
-/// The page's list walks the book forward through the day's fills, so the numbers under the
-/// preview are the closing ones; a dialog opening on the stored book would answer with the
-/// morning's and read as an import that never landed. So it is handed the closing rows — and
-/// because those are not what the book holds, closing the dialog writes nothing: the first real
-/// change is what commits the closing figures into the book (see <see cref="Adopt"/>).
+/// **What it shows is the initial position, and what it writes is that same position.** The rows,
+/// the file 导入初始持仓 reads, and the file 导出初始持仓 writes are one list — 导出 writes the rows
+/// above it, not a snapshot from disk, so the file and the screen can never disagree. The book the
+/// rest of the app draws is this position walked forward by every fill since; that walk is redone
+/// once when the dialog closes (see <see cref="RebaseBook"/>), because a new starting point makes
+/// the old finish stale.
 /// </para>
 ///
 /// <para>
@@ -100,28 +100,38 @@ public sealed partial class PortfolioDialog : ContentDialog
     private readonly List<Action> _commits = [];
 
     /// <summary>
-    /// What the dialog is showing, row by row — **the position as the day left it**, not as it
-    /// opened.
+    /// What the dialog is showing, row by row — **the initial position**, which is the one thing
+    /// this dialog owns.
     /// </summary>
     /// <remarks>
-    /// The page's list is the book walked forward by the day's fills, so the closing figures are
-    /// what the reader has just been reading there. A dialog that opened on the stored book showed
-    /// them the *morning* — 公牛集团 100 instead of 900, 恒生科技ETF 10,000 instead of 20,000 —
-    /// which reads as an import that never landed (实测：列表 900 股 / 成本 37.054，对话框 100 股 /
-    /// 成本 37.73). The book is still the morning's; what the dialog shows is the morning's plus
-    /// the day, which is the only thing a reader recognises as "my holdings".
+    /// It used to show the day's closing figures, on the argument that those are what the reader
+    /// recognises as "my holdings". That made the three baseline buttons describe a different book
+    /// from the one on screen: 导入 changed a snapshot nobody could see, and 导出 wrote a file that
+    /// did not match the rows above it (实测：导入 9 只之后列表仍是 14,100 股，导出的却是 3,000 股).
+    /// A dialog that edits the initial position has to show the initial position.
     /// </remarks>
     private readonly List<Holding> _rows;
 
     /// <summary>
-    /// Whether those rows have been written into the book yet.
+    /// Whether the baseline moved during this visit — an import, an edit, a row added or removed.
     ///
-    /// They are the **closing** figures and the book holds the **opening**, so simply closing the
-    /// dialog must not commit them: doing so would turn the morning's book into the evening's and
-    /// leave the day's replay with nothing to walk. The book is replaced the first time the reader
-    /// actually changes something, and not before.
+    /// The book behind the dialog is the same position walked forward, so a new starting point
+    /// makes it stale. Nothing is rebased until the dialog closes: the rows above are a form being
+    /// edited, and recomputing a book from a half-typed form would move the position on every
+    /// keystroke.
     /// </summary>
-    private bool _adopted;
+    private bool _baselineMoved;
+
+    /// <summary>
+    /// Which of the two baselines this visit edits: the mainland one or the one carrying the Hong
+    /// Kong positions.
+    ///
+    /// **The page passes the scope it is drawing.** A dialog that always edited the same snapshot
+    /// would leave the other book invisible but not untouched: a reader who switched to 港股通 and
+    /// pressed 管理持仓 would see the mainland rows, correct one, and file the correction against
+    /// a book the page has stopped reading — "改了没变" with nothing on screen to explain it.
+    /// </summary>
+    private readonly PortfolioScope _scope;
 
     public PortfolioDialog()
         : this(null)
@@ -129,21 +139,62 @@ public sealed partial class PortfolioDialog : ContentDialog
     }
 
     /// <param name="rows">
-    /// The book as the page is currently drawing it — the page hands in its closing figures.
-    /// Null reads the stored book, which is also the right answer when there is nothing to fetch.
+    /// Ignored when a baseline exists — the dialog always opens on the initial position, not on
+    /// whatever the page is currently drawing. Kept for the fallback: with no baseline set, the
+    /// book on hand is the only starting point there is.
     /// </param>
-    public PortfolioDialog(IReadOnlyList<Holding>? rows)
+    /// <param name="scope">Which of the two books this visit edits.</param>
+    public PortfolioDialog(IReadOnlyList<Holding>? rows, PortfolioScope scope = PortfolioScope.WithKong)
     {
         InitializeComponent();
+
+        _scope = scope;
 
         Title = Strings.Get("PortfolioDialogTitle");
         CloseButtonText = Strings.Get("PortfolioDialogClose");
 
         Portfolio.EnsureLoaded();
 
-        _rows = rows is { Count: > 0 } ? [.. rows] : [.. Portfolio.Holdings];
+        // The snapshot's day, so the reader sees which morning is set before deciding whether to
+        // change it. Today when nothing has been set: it is the day a snapshot taken now describes,
+        // and a picker sitting on 1918 would only be confusing.
+        Ledger.EnsureLoaded();
 
-        Closing += (_, _) => CommitAll();
+        var baselineDay = Ledger.BaselineDayOf(_scope);
+
+        var anchor = baselineDay == DateOnly.MinValue
+            ? DateOnly.FromDateTime(DateTime.Today)
+            : baselineDay;
+
+        BaselineDay.Date = new DateTimeOffset(anchor.ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+        BaselineDay.MaxYear = new DateTimeOffset(DateTime.Today.AddYears(1));
+
+        // **The 港股通 book's day is not the reader's to set.** Its baseline is the last session's
+        // close — rewritten by the page whenever the curve reaches its final frame — so a picker
+        // would offer a choice the next animation silently overwrites, and a date filed by hand
+        // against figures the page no longer holds. The mainland book keeps its picker: its
+        // baseline is one morning the reader filed, and the spans are measured from it.
+        BaselineDay.IsEnabled = _scope is PortfolioScope.AShare;
+
+        // **The baseline is what this dialog edits**, so it is what the dialog opens on. The page's
+        // drawing is the fallback, used only when no starting point has been set — in that case the
+        // book on hand is the only thing there is to show.
+        // **This scope's baseline**, not the other one: the mainland book and the Hong Kong one
+        // are two different mornings' figures and a dialog that mixed them would correct a book
+        // the page is not reading.
+        _rows = Ledger.BaselineOf(_scope) is { Empty: false } opening
+            ? [.. opening.Kept]
+            : rows is { Count: > 0 } ? [.. rows] : [.. Portfolio.Holdings];
+
+        // Closing does not move focus, so a number typed into a box can still be sitting there
+        // uncommitted; every row's write-back is also held in `_commits` and run here. The book is
+        // then rebased once, off the committed rows rather than off what the boxes happened to say.
+        Closing += (_, _) =>
+        {
+            CommitAll();
+
+            RebaseBook();
+        };
 
         _debounce.Tick += async (_, _) =>
         {
@@ -164,22 +215,55 @@ public sealed partial class PortfolioDialog : ContentDialog
     }
 
     /// <summary>
-    /// Writes the closing rows into the book, once, on the reader's first change.
+    /// Writes the rows above into the baseline, under the date the picker holds.
     ///
-    /// Every other row has to move with the edited one: the book is about to hold one moment, and
-    /// a book mixing nine morning figures with one evening figure is a position nobody ever held
-    /// (公牛集团 900 shares beside 恒生科技ETF 10,000 — the day half applied).
+    /// **Every change goes through here**, whether it came from a retyped share count, a row added
+    /// at the bottom, a removal, or a file. The alternative — keeping the edits in memory until the
+    /// reader presses 设为初始持仓 — makes 导出 write the *previous* baseline while the screen shows
+    /// the new one, which is the exact disagreement this dialog just stopped having.
+    ///
+    /// The day comes from the picker rather than from the last import: a reader who moves the date
+    /// and then fixes a share count means both, and a snapshot filed under the old date would
+    /// quietly undo the move.
     /// </summary>
-    private void Adopt()
+    private void CommitBaseline()
     {
-        if (_adopted)
+        var rows = _rows.Where(r => r.Shares > 0).ToList();
+
+        if (rows.Count == 0)
         {
             return;
         }
 
-        _adopted = true;
+        Ledger.SetBaseline(_scope, ChosenBaselineDay, rows);
 
-        Portfolio.ReplaceAll(_rows);
+        _baselineMoved = true;
+
+        Edited = true;
+    }
+
+    /// <summary>
+    /// Makes the book behind the dialog agree with the baseline it just took.
+    ///
+    /// The position on the page is this snapshot walked forward by every fill since, so replacing
+    /// the snapshot without walking it again leaves two answers on one screen — the curve drawn from
+    /// the new start and the list still showing the old finish. Called once, on close, and only
+    /// when something actually moved: an untouched dialog must not rewrite the book.
+    /// </summary>
+    private void RebaseBook()
+    {
+        if (!_baselineMoved || _rows.All(r => r.Shares <= 0))
+        {
+            return;
+        }
+
+        // The 港股通 rows are a closing figure — its day is locked to the last session and the
+        // page keeps the baseline on the curve's final frame — so the journal restarts strictly
+        // after that day: the day's own fills are inside the rows already, and keeping them would
+        // fold them a second time at the next roll. The mainland book is a morning snapshot and
+        // keeps the on-or-after default.
+        Portfolio.Rebase(ChosenBaselineDay, _rows, Ledger.Archive,
+            closeBook: _scope is PortfolioScope.WithKong);
     }
 
     /// <summary>Draws the book, one row per holding.</summary>
@@ -306,14 +390,10 @@ public sealed partial class PortfolioDialog : ContentDialog
                 return;
             }
 
-            Adopt();
-
             // An untouched cost keeps its full precision; only the one the reader retyped is
             // written at the four decimals the box can show.
             var updated = new Holding(
                 holding.Code, holding.Name, size, sameCost ? holding.Cost : price);
-
-            Portfolio.Put(updated);
 
             var at = _rows.FindIndex(r => string.Equals(r.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
@@ -322,7 +402,9 @@ public sealed partial class PortfolioDialog : ContentDialog
                 _rows[at] = updated;
             }
 
-            Edited = true;
+            // The baseline is the record this dialog edits, so the edit lands there now rather
+            // than in a copy that only the dialog can see.
+            CommitBaseline();
         }
 
         void Commit(object _, RoutedEventArgs __) => WriteBack();
@@ -343,12 +425,9 @@ public sealed partial class PortfolioDialog : ContentDialog
 
         remove.Click += (_, _) =>
         {
-            Adopt();
-
-            Portfolio.Remove(holding.Code);
             _rows.RemoveAll(r => string.Equals(r.Code, holding.Code, StringComparison.OrdinalIgnoreCase));
 
-            Edited = true;
+            CommitBaseline();
             Rebuild();
         };
 
@@ -594,11 +673,7 @@ public sealed partial class PortfolioDialog : ContentDialog
 
             var existed = _rows.Any(r => string.Equals(r.Code, code, StringComparison.OrdinalIgnoreCase));
 
-            Adopt();
-
             var added = new Holding(code, name, Math.Round(shares, 4), Math.Round(cost, 4));
-
-            Portfolio.Put(added);
 
             var at = _rows.FindIndex(r => string.Equals(r.Code, code, StringComparison.OrdinalIgnoreCase));
 
@@ -611,7 +686,7 @@ public sealed partial class PortfolioDialog : ContentDialog
                 _rows.Add(added);
             }
 
-            Edited = true;
+            CommitBaseline();
 
             CodeBox.Text = string.Empty;
             SharesBox.Text = string.Empty;
@@ -646,6 +721,16 @@ public sealed partial class PortfolioDialog : ContentDialog
     // ---- the list as a file --------------------------------------------------------
 
     /// <summary>
+    /// The snapshot's day, as the picker has it.
+    ///
+    /// A `DateTimeOffset` is what the control carries and `yyyy-MM-dd` is what every line of the
+    /// ledger speaks, so the conversion happens once, here, rather than at each of the three
+    /// places below that would otherwise each do their own.
+    /// </summary>
+    private DateOnly ChosenBaselineDay =>
+        DateOnly.FromDateTime(BaselineDay.Date.DateTime);
+
+    /// <summary>
     /// Writes the list as it stands to a CSV the reader can open in anything.
     ///
     /// Exports **what the dialog shows** — the day's closing figures — because that is the list
@@ -654,41 +739,14 @@ public sealed partial class PortfolioDialog : ContentDialog
     /// </summary>
     private async void OnExport(object sender, RoutedEventArgs e)
     {
-        if (App.Window is not { } window)
-        {
-            return;
-        }
-
-        var picker = new Windows.Storage.Pickers.FileSavePicker
-        {
-            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary,
-            SuggestedFileName = "holdings",
-        };
-
-        picker.FileTypeChoices.Add("CSV", [".csv"]);
-
-        WinRT.Interop.InitializeWithWindow.Initialize(
-            picker, WinRT.Interop.WindowNative.GetWindowHandle(window));
-
-        if (await picker.PickSaveFileAsync() is not { } file)
-        {
-            return;
-        }
-
         SheetExportButton.IsEnabled = false;
 
         try
         {
-            // **BOM first.** Excel reads a UTF-8 CSV without one as the system code page and
-            // shows every Chinese name as mojibake; with it, the file opens correctly by
-            // double-click on a Chinese, Japanese or German machine alike.
-            var bytes = System.Text.Encoding.UTF8.GetPreamble()
-                .Concat(System.Text.Encoding.UTF8.GetBytes(HoldingsSheet.Write(_rows)))
-                .ToArray();
-
-            await Windows.Storage.FileIO.WriteBytesAsync(file, bytes);
-
-            Say(Strings.Format("PortfolioDialogExportDone", _rows.Count));
+            if (await CsvFiles.WriteAsync("holdings", HoldingsSheet.Write(_rows)))
+            {
+                Say(Strings.Format("PortfolioDialogExportDone", _rows.Count));
+            }
         }
         catch (Exception ex)
         {
@@ -697,6 +755,214 @@ public sealed partial class PortfolioDialog : ContentDialog
         finally
         {
             SheetExportButton.IsEnabled = true;
+        }
+    }
+
+    /// <summary>
+    /// Sets the book's starting point to **the list as it stands now**, on the day chosen.
+    ///
+    /// Taking it from what is on screen rather than from a second form is not laziness: the rows
+    /// have just been reconciled against the broker, and a snapshot entered twice from two places
+    /// is two answers to "what did I hold".
+    /// </summary>
+    private void OnSetBaseline(object sender, RoutedEventArgs e)
+    {
+        Ledger.EnsureLoaded();
+
+        var rows = _rows.Where(r => r.Shares > 0).ToList();
+
+        if (rows.Count == 0)
+        {
+            Say(Strings.Get("LedgerBaselineNone"));
+
+            return;
+        }
+
+        var day = ChosenBaselineDay;
+
+        // Same path every other change takes, so the book is rebased on close whether the new
+        // baseline came from a button press or from a file.
+        CommitBaseline();
+
+        Say(Strings.Format(
+            "LedgerBaselineDone",
+            day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+            rows.Count.ToString(CultureInfo.InvariantCulture)));
+    }
+
+    /// <summary>
+    /// Reads a snapshot back in, replacing the one in force.
+    ///
+    /// <para>
+    /// **The file the export writes is the file this accepts**, and nothing else: the five columns
+    /// `day,code,name,shares,cost` with one date for the whole file. That is deliberate. A general
+    /// spreadsheet reader here would let a broker's holdings page be pasted in "as a snapshot",
+    /// and the columns it guessed wrong would be the cost — which is the number every figure on
+    /// the two portfolio pages is then measured from.
+    /// </para>
+    ///
+    /// <para>
+    /// **Replacing, not merging.** The snapshot is one morning, so a second file is a second
+    /// answer to the same question. Anything else would leave the reader holding the union of two
+    /// books that were never held together.
+    /// </para>
+    ///
+    /// <para>
+    /// **Nothing is applied unless every line reads.** A snapshot missing two of its twenty rows
+    /// opens every curve on a book the reader does not hold, and no page can say which two fell
+    /// out; the line numbers come back instead, so the file can be fixed.
+    /// </para>
+    /// </summary>
+    private async void OnImportBaseline(object sender, RoutedEventArgs e)
+    {
+        if (App.Window is not { } window)
+        {
+            return;
+        }
+
+        var picker = new Windows.Storage.Pickers.FileOpenPicker
+        {
+            SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary,
+            ViewMode = Windows.Storage.Pickers.PickerViewMode.List,
+        };
+
+        picker.FileTypeFilter.Add(".csv");
+        picker.FileTypeFilter.Add(".txt");
+
+        WinRT.Interop.InitializeWithWindow.Initialize(
+            picker, WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+        if (await picker.PickSingleFileAsync() is not { } file)
+        {
+            return;
+        }
+
+        BaselineImportButton.IsEnabled = false;
+
+        try
+        {
+            using var stream = await file.OpenStreamForReadAsync();
+            using var memory = new MemoryStream();
+
+            await stream.CopyToAsync(memory);
+
+            if (!HoldingsSheet.TryDecode(memory.ToArray(), out var text))
+            {
+                Say(Strings.Get("PortfolioDialogSheetEncoding"));
+
+                return;
+            }
+
+            var read = Ledger.SnapshotFromCsv(text);
+
+            if (!read.Ready)
+            {
+                ReportSnapshotFile(read);
+
+                return;
+            }
+
+            var snapshot = read.Snapshot!;
+
+            // **The list is the file's rows, at once and for good.** This is the whole point of
+            // the dialog: an import replaces the initial position, so the position on screen has
+            // to become the one in the file — and stay that way, because there is nothing else on
+            // this dialog for it to fall back to. It used to write the snapshot and leave the list
+            // showing the closing figures, which read as "the import did nothing" (实测：导入 9 只
+            // 后列表仍是 14,100 股).
+            _rows.Clear();
+            _rows.AddRange(snapshot.Kept);
+
+            Ledger.SetBaseline(_scope, snapshot.Day, snapshot.Kept);
+
+            _baselineMoved = true;
+            Edited = true;
+
+            // The picker follows the file, so the day on screen is the day in force: leaving it
+            // on whatever it held before would let the next 以当前列表设为初始持仓 silently reset
+            // a date the reader had just read out of a file.
+            BaselineDay.Date = new DateTimeOffset(
+                snapshot.Day.ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+
+            Rebuild();
+
+            Say(Strings.Format(
+                "LedgerBaselineImported",
+                snapshot.Day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                snapshot.Count.ToString(CultureInfo.InvariantCulture)));
+        }
+        catch (Exception ex)
+        {
+            Say(Strings.Reason(ex));
+        }
+        finally
+        {
+            BaselineImportButton.IsEnabled = true;
+        }
+    }
+
+    /// <summary>
+    /// Why a snapshot file could not be applied, in terms of what the reader can do about it.
+    ///
+    /// Two failures and two sentences: a file with unreadable lines names them, and a file with
+    /// no rows at all is not one of these exports. Rows disagreeing about the day are not a
+    /// failure — the snapshot takes the latest day the file mentions.
+    /// </summary>
+    private void ReportSnapshotFile(SnapshotRead read)
+    {
+        if (read.Rejected.Count > 0)
+        {
+            Say(Strings.Format(
+                "LedgerBaselineImportRejected",
+                string.Join("、", read.Rejected.Select(n => n.ToString(CultureInfo.InvariantCulture)))));
+
+            return;
+        }
+
+        Say(Strings.Get("LedgerBaselineImportShape"));
+    }
+
+    /// <summary>Writes the snapshot out, so a book rebuilt elsewhere can be checked against it.</summary>
+    private async void OnExportBaseline(object sender, RoutedEventArgs e)
+    {
+        Ledger.EnsureLoaded();
+
+        // A number typed and not yet blurred is still in its box; the button press is about to
+        // move focus, but the file must not depend on that ordering.
+        CommitAll();
+
+        // **The rows on screen, not the file already on disk.** 导出 is the reader saving what they
+        // have just built up here; reading the stored snapshot instead would hand them a file that
+        // disagrees with the list above it, which is the one thing an export must never do.
+        var rows = _rows.Where(r => r.Shares > 0).ToList();
+
+        if (rows.Count == 0)
+        {
+            Say(Strings.Get("LedgerBaselineNone"));
+
+            return;
+        }
+
+        var snapshot = new HoldingSnapshot(ChosenBaselineDay, rows);
+
+        BaselineExportButton.IsEnabled = false;
+
+        try
+        {
+            if (await CsvFiles.WriteAsync("baseline", Ledger.SnapshotToCsv(snapshot)))
+            {
+                Say(Strings.Format(
+                    "PortfolioDialogExportDone",
+                    snapshot.Count.ToString(CultureInfo.InvariantCulture)));
+            }
+        }
+        catch (Exception ex)
+        {
+            Say(Strings.Reason(ex));
+        }
+        finally
+        {
+            BaselineExportButton.IsEnabled = true;
         }
     }
 
@@ -773,12 +1039,10 @@ public sealed partial class PortfolioDialog : ContentDialog
             _rows.Clear();
             _rows.AddRange(named);
 
-            // The file is a whole list, so the book becomes it now — past the "only what the
-            // reader changed" rule, because this *is* a change, and a large one.
-            _adopted = true;
-            Portfolio.ReplaceAll(_rows);
-
-            Edited = true;
+            // A whole list replaces the starting position, the same way a file dropped on 导入初始持仓
+            // does. Nothing is written into the book here: the rows are the baseline, and the book
+            // is that baseline walked forward — recomputed once on close.
+            CommitBaseline();
 
             Rebuild();
             ScrollToEnd();

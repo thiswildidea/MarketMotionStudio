@@ -156,7 +156,9 @@ public sealed record PortfolioSession(
     int TradeCount,
     IReadOnlyList<PnlTrade> Trades,
     IReadOnlyList<string> Closed,
-    DateTime FetchedAt)
+    DateTime FetchedAt,
+    IReadOnlyDictionary<string, double>? Opening = null,
+    IReadOnlyDictionary<string, double>? OpeningCosts = null)
 {
     /// <summary>The day's return: profit over what the book was worth at yesterday's close.</summary>
     public double ReturnPct => PrevValue > 0 ? (Last / PrevValue) * 100 : 0;
@@ -167,6 +169,59 @@ public sealed record PortfolioSession(
 
     /// <summary>The minute the last sample landed on.</summary>
     public int LastMinute => Samples.Count > 0 ? Samples[^1].Minute : OpenMinute;
+
+    /// <summary>
+    /// What each axis position is called, when this is a span rather than a day.
+    ///
+    /// Left unset — the case for every intraday session there has ever been — the axis is a clock
+    /// and every position answers with <see cref="Clock"/>. Set, the session is a run of several
+    /// days and the positions are <em>slots</em>, counted from zero, whose labels are dates.
+    ///
+    /// The alternative was a second session type with a second renderer behind it, which is two
+    /// engines for one definition of profit — and the two would have drifted. Everything a
+    /// renderer asks of an axis is already here: <see cref="OpenMinute"/> and
+    /// <see cref="CloseMinute"/> bound it, the samples' own minutes are positions on it, and this
+    /// says what to print under each tick.
+    /// </summary>
+    public IReadOnlyDictionary<int, string>? SlotLabels { get; init; }
+
+    /// <summary>
+    /// The positions a span's axis is ticked at. Empty or unset means a clock's ticks.
+    ///
+    /// Chosen when the span is assembled rather than measured out by the renderer: only the
+    /// assembly knows which slots opened a new trading day, and a tick every ten days is readable
+    /// where a tick every twenty minutes across two hundred and forty of them is a smear.
+    /// </summary>
+    public IReadOnlyList<int>? SlotTicks { get; init; }
+
+    /// <summary>Whether this is a run of days rather than one day's minutes.</summary>
+    public bool IsSpan => SlotLabels is { Count: > 0 };
+
+    /// <summary>
+    /// Whether each slot is a whole trading day's close rather than a minute inside one.
+    ///
+    /// A span is one or the other: a week is drawn minute by minute and a year would be two
+    /// hundred thousand of them, so past the source's minute window each slot becomes a close.
+    /// Counted in slots either way, which is why it is worth saying separately — the difference
+    /// is only in what to call them, and "1660 个交易日" over a week of minutes is wrong by
+    /// three orders of magnitude (实测：近一周被数成 1660 个交易日).
+    /// </summary>
+    public bool SlotIsDaily { get; init; }
+
+    /// <summary>
+    /// Whether this span is one trading day wide.
+    ///
+    /// A span's axis is a run of samples, and the lunch rule has always been "not on a span" —
+    /// true for a week, wrong for a single day, which is a day in every respect that matters here:
+    /// it has a lunch, and the reader's 显示午间休市 switch is about *its* lunch. Without this the
+    /// switch was ignored and the ninety minutes stayed on the axis whatever it said (实测：取消
+    /// 勾选，午休仍占一整段宽度，曲线跨过去拉一条直线).
+    /// </summary>
+    public bool SingleDay { get; init; }
+
+    /// <summary>What one position on this session's axis is called, whichever kind it is.</summary>
+    public string Label(int position) =>
+        IsSpan && SlotLabels!.TryGetValue(position, out var text) ? text : Clock(position);
 
     /// <summary>How many positions the book actually holds, closed-out codes excluded.</summary>
     public int OpenPositions => Holdings.Count(h => h.Shares > 0);
@@ -231,7 +286,7 @@ public static class IntradayPnl
         IReadOnlyList<PortfolioTrade> journal,
         IProgress<string>? progress,
         CancellationToken cancellation,
-        FeeSchedule? fees = null,
+        FeeTable? fees = null,
         IReadOnlySet<string>? settled = null)
     {
         if (holdings.Count == 0)
@@ -277,7 +332,7 @@ public static class IntradayPnl
             ? await ReadHkdCnyAsync(http, cancellation)
             : 0;
 
-        return Assemble(day, holdings, journal, shots, sessions, hkd, fees ?? FeeSchedule.Mainland, settled);
+        return Assemble(day, holdings, journal, shots, sessions, hkd, fees ?? FeeTable.Default, settled);
     }
 
     /// <summary>
@@ -291,7 +346,7 @@ public static class IntradayPnl
         IReadOnlyDictionary<string, StockSnapshot> shots,
         IReadOnlyDictionary<string, DaySession> sessions,
         double hkdCny,
-        FeeSchedule fees,
+        FeeTable fees,
         IReadOnlySet<string>? settled = null)
     {
         var trades = journal
@@ -510,7 +565,9 @@ public static class IntradayPnl
                     // not the ticket's — and in the venue's own currency, so both terms convert with
                     // one rate below.
                     var gross = moved * trade.Price;
-                    var fee = trade.Side == TradeSide.Buy ? fees.OnBuy(gross) : fees.OnSell(gross);
+                    var fee = trade.Side == TradeSide.Buy
+                        ? fees.OnBuy(trade.Code, gross)
+                        : fees.OnSell(trade.Code, gross);
 
                     cash += ((trade.Side == TradeSide.Buy ? -1 : 1) * gross - fee) * rate;
                     cashOf[trade.Code] = Cash(cashOf, trade.Code)
@@ -658,7 +715,7 @@ public static class IntradayPnl
     /// the curve behind it would be two answers to the same question — one that knows about
     /// commission and one that does not.</param>
     private static (double Shares, double Cash) Replay(
-        IEnumerable<PortfolioTrade> trades, string code, double opening, FeeSchedule fees,
+        IEnumerable<PortfolioTrade> trades, string code, double opening, FeeTable fees,
         IReadOnlySet<string> settled)
     {
         var shares = opening;
@@ -677,7 +734,7 @@ public static class IntradayPnl
                 var gross = trade.Shares * trade.Price;
 
                 shares += trade.Shares;
-                cash -= gross + fees.OnBuy(gross);
+                cash -= gross + fees.OnBuy(trade.Code, gross);
             }
             else
             {
@@ -685,7 +742,7 @@ public static class IntradayPnl
                 var gross = sold * trade.Price;
 
                 shares -= sold;
-                cash += gross - fees.OnSell(gross);
+                cash += gross - fees.OnSell(trade.Code, gross);
             }
         }
 

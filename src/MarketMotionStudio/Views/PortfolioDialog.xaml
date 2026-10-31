@@ -13,6 +13,39 @@
                    Style="{StaticResource CaptionTextBlockStyle}"
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
+        <!-- The book's starting point, and the first thing on the dialog, because every range's
+             arithmetic begins here: the rows below are the day's closing figures, while the
+             curves are measured from one morning the reader can name. It used to sit under the
+             list and fell past the bottom of the dialog — two buttons nobody could reach
+             without scrolling a list that already had its own scroll bar. -->
+        <DatePicker x:Name="BaselineDay"
+                    x:Uid="LedgerBaseline"
+                    Margin="0,6,0,0"
+                    HorizontalAlignment="Stretch" />
+
+        <!-- Setting the snapshot from the list, then the file it can leave and come back by.
+             **One row for the act, one for the file**, because they answer different questions:
+             the top button says "this is where my record starts", and the pair under it is the
+             same snapshot written out or read back in. 导入 sits next to 导出 rather than with the
+             list's own import because it replaces *the snapshot*, not the holdings. -->
+        <Button x:Name="BaselineSetButton"
+                x:Uid="LedgerBaselineSet"
+                HorizontalAlignment="Stretch"
+                Click="OnSetBaseline" />
+
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+            <Button x:Name="BaselineExportButton"
+                    x:Uid="LedgerBaselineExport"
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Click="OnExportBaseline" />
+            <Button x:Name="BaselineImportButton"
+                    x:Uid="LedgerBaselineImport"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    Click="OnImportBaseline" />
+        </Grid>
+
         <ScrollViewer x:Name="Scroller" MaxHeight="280" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="Rows" Spacing="4" />
         </ScrollViewer>

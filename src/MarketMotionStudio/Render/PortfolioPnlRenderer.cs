@@ -55,7 +55,8 @@ namespace MarketMotionStudio.Render;
 /// <param name="skin">
 /// How the headline is inked: plain, ramped, or ramped on a serif. It is a constructor argument
 /// for the same reason the switches are: read back off a property, the frame that matters would
-/// be drawn before the page had set it.
+/// be drawn before the page had set it. Null means the page never opted in and the global
+/// setting answers; Plain is the page's own choice of 常规 and is kept.
 /// </param>
 /// <param name="titleColour">
 /// The headline's colour, or null for the one <paramref name="skin"/> defaults to. The ramp is
@@ -64,7 +65,7 @@ namespace MarketMotionStudio.Render;
 public sealed class PortfolioPnlRenderer(
     PortfolioSession session, AnimationPlan plan,
     bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,
-    bool lunchBreak = true, TitleSkin skin = TitleSkin.Plain, Color? titleColour = null)
+    bool lunchBreak = true, TitleSkin? skin = null, Color? titleColour = null)
     : IFrameRenderer
 {
     /// <summary>Distance from the credit up to the top of the statistic cards.</summary>
@@ -89,7 +90,7 @@ public sealed class PortfolioPnlRenderer(
     /// with. Kept as a method rather than a field so the fallback cannot be computed before the
     /// constructor's arguments are in scope.
     /// </summary>
-    private Color TitleInk() => titleColour ?? TitleSkins.Default(skin);
+    private Color TitleInk() => titleColour ?? TitleSkins.Default(skin ?? TitleSkin.Plain);
 
     private int _titleLines;
 
@@ -153,8 +154,9 @@ public sealed class PortfolioPnlRenderer(
         var (high, low) = Range(shown);
 
         // Only drawn when the break is on the axis: with it dropped there is no band to shade,
-        // because the minutes it would cover are not on the axis at all.
-        if (lunchBreak)
+        // because the minutes it would cover are not on the axis at all. A run of days has no
+        // lunch either — the band would print a closure across a year of closes.
+        if (lunchBreak && HasLunch())
         {
             DrawLunch(session2, context, left, width, top, baseline, high, low);
         }
@@ -278,6 +280,17 @@ public sealed class PortfolioPnlRenderer(
     }
 
     /// <summary>
+    /// Whether the lunch hour may be taken off <em>this</em> frame's axis at all.
+    ///
+    /// A span of days borrows the slot numbering, whose later positions are counted in hundreds —
+    /// and those are larger than 13:00 is in minutes, so <see cref="CrossesLunch"/>'s question
+    /// answers itself wrong and a year's closes get laid out on a clock that thinks it is
+    /// afternoon. A week has no lunch either: the nights between its days are already off the
+    /// axis, and shading one hour of every twenty-four back in would be a strange thing to do.
+    /// </summary>
+    private bool HasLunch() => (!session.IsSpan || session.SingleDay) && CrossesLunch();
+
+    /// <summary>
     /// Minutes since midnight to an x position, on whichever axis is in force.
     ///
     /// <para>
@@ -298,7 +311,7 @@ public sealed class PortfolioPnlRenderer(
         var open = session.OpenMinute;
         var span = Math.Max(1, session.CloseMinute - open);
 
-        if (lunchBreak || !CrossesLunch())
+        if (lunchBreak || !HasLunch())
         {
             return left + (width * (minute - open) / (double)span);
         }
@@ -328,7 +341,7 @@ public sealed class PortfolioPnlRenderer(
         var open = session.OpenMinute;
         var close = session.CloseMinute;
 
-        if (lunchBreak || !CrossesLunch())
+        if (lunchBreak || !HasLunch())
         {
             return (open + close) / 2;
         }
@@ -412,9 +425,30 @@ public sealed class PortfolioPnlRenderer(
         area.AddLine(new Vector2(head.X, zeroY));
         area.EndFigure(CanvasFigureLoop.Closed);
 
+        // **Red above the zero line, green below it — both at once.** The single colour the whole
+        // curve used to take was the *head's* sign: a day that closed at −1,639.98 was painted
+        // green end to end, including the morning it spent at +4,930 (实测：读者拿旧图来问，旧图
+        // 峰顶红、尾部绿，新图整条绿). Two clips, one geometry, each half in its own side's colour.
+        var above = new Rect(left, top, width, Math.Max(0, zeroY - top));
+        var below = new Rect(left, zeroY, width, Math.Max(0, baseline - zeroY));
+
         using (var ground = CanvasGeometry.CreatePath(area))
         {
-            session2.FillGeometry(ground, Ink.Fade(colour, 0.22));
+            if (above.Height > 0)
+            {
+                using (session2.CreateLayer(1f, above))
+                {
+                    session2.FillGeometry(ground, Ink.Fade(Palette.Emphasis, 0.22));
+                }
+            }
+
+            if (below.Height > 0)
+            {
+                using (session2.CreateLayer(1f, below))
+                {
+                    session2.FillGeometry(ground, Ink.Fade(Palette.Fall, 0.22));
+                }
+            }
         }
 
         // The line.
@@ -431,7 +465,23 @@ public sealed class PortfolioPnlRenderer(
 
         using (var line = CanvasGeometry.CreatePath(shape))
         {
-            session2.DrawGeometry(line, colour, (float)context.Px(4));
+            var weight = (float)context.Px(4);
+
+            if (above.Height > 0)
+            {
+                using (session2.CreateLayer(1f, above))
+                {
+                    session2.DrawGeometry(line, Palette.Emphasis, weight);
+                }
+            }
+
+            if (below.Height > 0)
+            {
+                using (session2.CreateLayer(1f, below))
+                {
+                    session2.DrawGeometry(line, Palette.Fall, weight);
+                }
+            }
         }
 
         // Where the day's extremes were. Marked with their clock and their number: a marker
@@ -748,14 +798,25 @@ public sealed class PortfolioPnlRenderer(
 
         using var format = Ink.Format(context.Px(20));
 
-        var ticks = new[] { session.OpenMinute, MidMinute(), session.CloseMinute };
+        // A span's ticks are chosen when it is assembled, from the days it actually contains,
+        // because only then is it known which positions opened a new trading day.
+        var ticks = session.IsSpan && session.SlotTicks is { Count: > 0 } ticks0
+            ? ticks0.Distinct().ToList()
+            : new[] { session.OpenMinute, MidMinute(), session.CloseMinute }.Distinct().ToList();
+
         var y = baseline + context.Px(34);
 
-        foreach (var minute in ticks.Distinct())
+        foreach (var minute in ticks)
         {
             var x = X(minute, left, width);
 
-            Ink.Centred(session2, PortfolioSession.Clock(minute), x, y, format, Palette.DateLabel, a);
+            // The first and last are pushed inside the plot: their centres would otherwise hang
+            // past either edge, which on a span means half of "10/30" outside the frame.
+            var inset = context.Px(minute == ticks[0] ? 22 : 0);
+            var outset = context.Px(minute == ticks[^1] ? 22 : 0);
+
+            Ink.Centred(session2, session.Label(minute),
+                Math.Clamp(x, left + inset, left + width - outset), y, format, Palette.DateLabel, a);
         }
     }
 
@@ -913,10 +974,10 @@ public sealed class PortfolioPnlRenderer(
         // The clock the frame has reached, which is what "实时" means on a still frame. The same
         // amber as the day above and bigger than it was, because on this page the time *is* the
         // subject: every other number is only true at this minute.
-        using (var clockFormat = Ink.Format(context.Px(40), bold: true))
+        using (var clockFormat = Ink.Format(context.Px(session.IsSpan ? 32 : 40), bold: true))
         {
             Ink.Centred(
-                session2, PortfolioSession.Clock(session.Samples[index].Minute),
+                session2, session.Label(session.Samples[index].Minute),
                 cx, Row(context, 0.2533), clockFormat, Palette.Moving, a);
         }
 
