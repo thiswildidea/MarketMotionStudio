@@ -147,9 +147,17 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
 
         Coins.Changed += OnCoinsChanged;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -501,7 +509,9 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+        TitlePanel.TitleText = title;
         var candles = Services.Crypto.GivesCandles;
 
         if (_board is { } board)
@@ -511,10 +521,12 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
                 Math.Max(Math.Abs(board.Peak), Math.Abs(board.Trough)));
 
             Preview.Renderer = new CandleRaceRenderer(
-                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(),
+                TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
             };
         }
         else if (_fetched is { } fetched)
@@ -524,10 +536,11 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
             Preview.Renderer = new CandleRenderer(
                 fetched, plan, ChosenStyle(), ChosenMotion(), ChosenWindow(),
                 AveragesCheck.IsChecked is true, VolumeCheck.IsChecked is true && candles,
-                CrossSafeRight())
+                CrossSafeRight(), TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
             };
         }
         else
@@ -910,6 +923,7 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
         }
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -933,6 +947,7 @@ public sealed partial class CryptoCandlePage : StudioPage, IPlaybackHost
         _prefs.Save("Coins", string.Join(";", Chosen().Select(c => c.Code)));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

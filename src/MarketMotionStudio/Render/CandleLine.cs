@@ -129,11 +129,20 @@ public static class CandleLine
     /// </param>
     public static void Header(
         CanvasDrawingSession session, FrameContext context, TitleBlock title,
-        CandleBoard board, string resolved, bool showTitle, int titleLines, double t, double moment)
+        CandleBoard board, string resolved, bool showTitle, int titleLines, double t, double moment,
+        TitleBlock? subtitle = null, string subtitleText = "", int subtitleLines = 0)
     {
         var a = Easing.Ramp(t, 0, 1000);
 
         title.Draw(session, context, resolved, title.For(session, resolved, context, showTitle), Palette.Title, a);
+
+        // The user's own subtitle, on the line after the title's last — before the code-and-period
+        // line, which stays where it was, shifted by the subtitle's own rows.
+        if (subtitle is { } sub && subtitleText.Length > 0 && showTitle)
+        {
+            sub.Draw(session, context, subtitleText, sub.For(session, subtitleText, context, true),
+                Palette.Moving, a, lineOffset: titleLines);
+        }
 
         using var small = Ink.Format(context.Px(25));
 
@@ -144,14 +153,16 @@ public static class CandleLine
             codes.Add("+" + (board.Tracks.Count - codes.Count).ToString(CultureInfo.InvariantCulture));
         }
 
+        var shift = subtitleLines * FrameContext.TitleLineHeight;
+
         Ink.Centred(
             session,
             Strings.Format("CandleSubtitleLine",
                 string.Join(" / ", codes),
                 Strings.Get(CandleLoader.NameKey(board.Period))),
-            context.Width / 2, context.HeaderRow(SubtitleRow, titleLines), small, Palette.Muted, a);
+            context.Width / 2, context.HeaderRow(SubtitleRow, titleLines) + context.Px(shift), small, Palette.Muted, a);
 
-        TimeBlock(session, context, board, titleLines, moment, a);
+        TimeBlock(session, context, board, titleLines + subtitleLines, moment, a);
     }
 
     /// <summary>

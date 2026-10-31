@@ -99,12 +99,23 @@ public sealed partial class DrawdownPage : StudioPage, IPlaybackHost
         // The picker has no panel of its own to write into, so what it has to say is said here.
         Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+            TitlePanel.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            VideoSettings.Save(_prefs);
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -120,6 +131,7 @@ public sealed partial class DrawdownPage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -155,12 +167,22 @@ public sealed partial class DrawdownPage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle();
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 resolved（含默认回退）。
+        TitlePanel.TitleText = title;
+
         if (_series is { } series)
         {
-            Preview.Renderer = new UnderwaterRenderer(series, VideoSettings.Duration)
+            Preview.Renderer = new UnderwaterRenderer(
+                    series, VideoSettings.Duration,
+                    titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
-                Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
                 UnitWord = ChosenUnit(),
 
                 // Monthly, so the header counts months — the renderer's own fallback names
@@ -173,7 +195,7 @@ public sealed partial class DrawdownPage : StudioPage, IPlaybackHost
             _stage.Title = VideoSettings.TitleText.Length > 0
                 ? VideoSettings.TitleText
                 : Strings.Get("DrawdownStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 

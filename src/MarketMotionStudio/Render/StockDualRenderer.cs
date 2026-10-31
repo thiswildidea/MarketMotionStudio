@@ -44,10 +44,15 @@ public sealed class StockDualRenderer : IFrameRenderer
     private readonly (double Step, double Top) _rateScale;
 
     /// <summary>The title, already resolved: the user's text, or the instrument's name.</summary>
-    public StockDualRenderer(StockPanelSeries series, AnimationPlan plan)
+    public StockDualRenderer(
+        StockPanelSeries series, AnimationPlan plan,
+        TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _series = series;
         _plan = plan;
+
+        _title = new TitleBlock(64, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         // Each panel carries its own axis — one step for both would leave one panel's gridlines
         // disagreeing with its own data, which reads as that panel being wrong.
@@ -57,19 +62,32 @@ public sealed class StockDualRenderer : IFrameRenderer
 
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title. Empty draws nothing. Its style falls back
+    /// to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The venue-prefixed code shown in the header line.</summary>
     public string Code { get; set; } = string.Empty;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(64);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what the header's rows below it
     /// and the panels' top edge are moved by. Set once at the top of <see cref="Draw"/>.
     /// </summary>
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     /// <summary>
     /// The headline this frame draws: what the user typed, or the instrument's name. One place,
@@ -85,6 +103,10 @@ public sealed class StockDualRenderer : IFrameRenderer
         // Before the panels: their top edge is placed against the bottom of the header block, which
         // is placed by how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.StockBackground);
 
@@ -105,9 +127,14 @@ public sealed class StockDualRenderer : IFrameRenderer
 
     /// <summary>The two panels' rectangles. The gap between them is fixed; the bottom margin
     /// decides where the lower one ends and the two share what is left equally.</summary>
+    /// <summary>A header row, shifted down by the user's subtitle's own rows.</summary>
+    private double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
+
     private (double Top, double Bottom) PanelArea(FrameContext context, bool isRate)
     {
-        var top = context.HeaderRow(PanelTopFraction, _titleLines);
+        var top = Row(context, PanelTopFraction);
         var bottom = context.CreditLine - context.Px(CreditGap);
         var span = (bottom - top - context.Height * PanelMidFraction) / 2;
 
@@ -492,6 +519,15 @@ public sealed class StockDualRenderer : IFrameRenderer
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
+        // The user's own subtitle, on the line after the title's last. The code-and-range line
+        // below it stays where it was, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
+
         using (var plain = Ink.Format(context.Px(26)))
         using (var strong = Ink.Format(context.Px(26), bold: true))
         {
@@ -522,7 +558,7 @@ public sealed class StockDualRenderer : IFrameRenderer
             runs.Add((" " + Strings.Get(_series.RateIsCumulative ? "StockMinutesUnit" : "StockTradingDaysUnit"),
                 Palette.StockMuted, plain));
 
-            Ink.Runs(session, runs, cx, context.HeaderRow(0.188, _titleLines), a);
+            Ink.Runs(session, runs, cx, Row(context, 0.188), a);
         }
 
         if (moving >= 0)
@@ -531,7 +567,7 @@ public sealed class StockDualRenderer : IFrameRenderer
 
             // The moving date is drawn from the labels themselves: `09:30` in the intraday mode,
             // where the source had a separate date line, because the label is already the moment.
-            Ink.Centred(session, _series.Labels[moving], cx, context.HeaderRow(0.222, _titleLines),
+            Ink.Centred(session, _series.Labels[moving], cx, Row(context, 0.222),
                 format, Palette.Moving, a);
         }
     }

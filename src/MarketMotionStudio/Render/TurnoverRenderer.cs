@@ -18,7 +18,9 @@ namespace MarketMotionStudio.Render;
 /// Stateless with respect to time, per `one-render-path.mdc`: every frame comes from
 /// <see cref="FrameContext.Progress"/> alone.
 /// </summary>
-public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan, Metric metric)
+public abstract class TurnoverRenderer(
+    TurnoverSeries series, AnimationPlan plan, Metric metric,
+    TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     : IFrameRenderer
 {
     /// <summary>
@@ -56,7 +58,10 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// The headline, wrapped and drawn — shared by both forms and by the intraday one, because
     /// all three put the same block on the same frame.
     /// </summary>
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title = new(62, titleStyle, () => TitleSettings.MainStyle);
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle = new(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
     /// <summary>
     /// How many lines the title took on the frame being drawn, and therefore how far every row
@@ -65,8 +70,18 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// </summary>
     private int _titleLines;
 
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
+
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
+
+    /// <summary>The user's own line under the title, drawn before the metric's own subtitle.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
 
     /// <summary>
     /// Whether the title row is drawn at all.
@@ -91,7 +106,8 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
     /// would leave the plot behind when the header moved.
     /// </summary>
     protected double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
 
     protected TurnoverSeries Series => series;
 
@@ -117,6 +133,10 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
         // than inside the header keeps the block that draws the title and the rows that make way
         // for it from ever disagreeing about how much room it needed.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -196,6 +216,15 @@ public abstract class TurnoverRenderer(TurnoverSeries series, AnimationPlan plan
         var title = ResolvedTitle();
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
+
+        // The user's own subtitle, on the line after the title's last. The metric's own
+        // subtitle below it stays where it was, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
 
         using var small = Ink.Format(context.Px(25));
 

@@ -199,11 +199,18 @@ public sealed class CandleRenderer : IFrameRenderer
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the code-and-period line.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     /// <summary>Whether the title row is drawn at all; hiding it hands its row back.</summary>
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what the subtitle, the price row
@@ -211,13 +218,20 @@ public sealed class CandleRenderer : IFrameRenderer
     /// </summary>
     private int _titleLines;
 
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
+
     /// <param name="crossSafeRight">
     /// Whether the picture may run into the band the host covers with its button rail. See
     /// <see cref="_crossSafeRight"/>.
     /// </param>
     public CandleRenderer(
         CandleSeries series, AnimationPlan plan, CandleStyle style, CandleMotion motion,
-        int window, bool showAverages, bool showVolume, bool crossSafeRight = false)
+        int window, bool showAverages, bool showVolume, bool crossSafeRight = false,
+        TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _series = series;
         _plan = plan;
@@ -227,6 +241,9 @@ public sealed class CandleRenderer : IFrameRenderer
         _showAverages = showAverages;
         _showVolume = showVolume;
         _crossSafeRight = crossSafeRight;
+
+        _title = new TitleBlock(62, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         _averages = [.. AverageLengths.Select(series.Average)];
         _stamps = Stamps(series.Bars);
@@ -303,6 +320,10 @@ public sealed class CandleRenderer : IFrameRenderer
         // Before the view is worked out: the plot's top edge is placed by the header block's
         // bottom, and the header block's bottom now depends on how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -929,6 +950,15 @@ public sealed class CandleRenderer : IFrameRenderer
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
+        // The user's own subtitle, on the line after the title's last. The code-and-period
+        // line below it stays where it was, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
+
         using var small = Ink.Format(context.Px(25));
 
         Ink.Centred(session, Strings.Format("CandleSubtitleLine", _series.Code.ToUpperInvariant(), period),
@@ -1078,7 +1108,8 @@ public sealed class CandleRenderer : IFrameRenderer
     }
 
     private double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
 
     /// <summary>
     /// The headline this frame draws: what the user typed, or the instrument and the period. One

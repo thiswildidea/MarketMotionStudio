@@ -16,8 +16,10 @@ namespace MarketMotionStudio.Render;
 /// two differ only in the value and its colour — so this is one renderer taking a
 /// <see cref="Metric"/> rather than two nearly identical ones.
 /// </summary>
-public sealed class CalendarHeatmapRenderer(TurnoverSeries series, AnimationPlan plan, Metric metric)
-    : TurnoverRenderer(series, plan, metric)
+public sealed class CalendarHeatmapRenderer(
+    TurnoverSeries series, AnimationPlan plan, Metric metric,
+    TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
+    : TurnoverRenderer(series, plan, metric, titleStyle, subtitleStyle)
 {
     /// <summary>
     /// Monday to Friday only — five columns, not seven.

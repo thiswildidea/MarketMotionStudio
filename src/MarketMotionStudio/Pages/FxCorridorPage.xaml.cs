@@ -92,12 +92,23 @@ public sealed partial class FxCorridorPage : StudioPage, IPlaybackHost
         FromDate.Date = today.AddYears(-5);
         ToDate.Date = today;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+            TitlePanel.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            VideoSettings.Save(_prefs);
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -113,6 +124,7 @@ public sealed partial class FxCorridorPage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -141,12 +153,22 @@ public sealed partial class FxCorridorPage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle();
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 resolved（含默认回退）。
+        TitlePanel.TitleText = title;
+
         if (_series is { } series)
         {
-            Preview.Renderer = new FxCorridorRenderer(series, VideoSettings.Duration)
+            Preview.Renderer = new FxCorridorRenderer(
+                    series, VideoSettings.Duration,
+                    titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
-                Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
 
                 // Both by the page, and both for the reason the race renderer learned the hard
                 // way: the interval and the list are what the page chose, and a renderer that
@@ -160,7 +182,7 @@ public sealed partial class FxCorridorPage : StudioPage, IPlaybackHost
             _stage.Title = VideoSettings.TitleText.Length > 0
                 ? VideoSettings.TitleText
                 : Strings.Get("FxCorridorStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 

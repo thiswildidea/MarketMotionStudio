@@ -74,7 +74,9 @@ public sealed class BoardSplitRenderer(
     bool dynamicAxis = false,
     bool lunchBreak = true,
     bool indexOnTop = false,
-    bool maskNames = false) : IFrameRenderer
+    bool maskNames = false,
+    TitleStyle? titleStyle = null,
+    TitleStyle? subtitleStyle = null) : IFrameRenderer
 {
     // The frame, in fractions of its height. Two slots of near-equal weight, and the halves swap
     // between them: the book's panel and the indexes' panel each take a slot's label row, plot
@@ -119,12 +121,25 @@ public sealed class BoardSplitRenderer(
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title. Empty draws nothing. Its style falls back
+    /// to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     /// <summary>Whether the title row is drawn at all.</summary>
     public bool ShowTitle { get; set; } = true;
 
-    private readonly TitleBlock _title = new(58);
+    private readonly TitleBlock _title = new(58, titleStyle, () => TitleSettings.MainStyle);
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle = new(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     /// <summary>The indexes this frame draws: the reader's picks, kept only where their venue
     /// is one the book itself traded. An all-mainland book does not carry a Hong Kong index —
@@ -178,7 +193,8 @@ public sealed class BoardSplitRenderer(
     /// </summary>
     private double Row(FrameContext context, double fraction)
     {
-        var top = context.HeaderRow(TopLabelRow, _titleLines);
+        var top = context.HeaderRow(TopLabelRow, _titleLines)
+            + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
         var bottom = context.CreditLine - context.Px(CreditLineReserve);
         var slope = (bottom - top) / (BottomBottom - TopLabelRow);
 
@@ -413,6 +429,10 @@ public sealed class BoardSplitRenderer(
         var titleShape = _title.For(session2, title, context, ShowTitle);
         _titleLines = titleShape.Lines;
 
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session2, Subtitle, context, true).Lines
+            : 0;
+
         context.Backdrop.Fill(session2, context, Palette.Background);
 
         // The headline the other pages draw: measured once above for the rows below, drawn here
@@ -420,6 +440,15 @@ public sealed class BoardSplitRenderer(
         // setting inside TitleBlock itself, so the choice made on the settings page reaches this
         // page's next redraw the same way it reaches every other page.
         _title.Draw(session2, context, title, titleShape, Palette.Title, Easing.Ramp(t, 0, 1000));
+
+        // The user's own subtitle, on the line after the title's last. The panels below it
+        // stay where they were, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session2, context, Subtitle, _subtitle.For(session2, Subtitle, context, true),
+                Palette.Moving, Easing.Ramp(t, 0, 1000), lineOffset: _titleLines);
+        }
 
         var left = context.ChartLeft;
 

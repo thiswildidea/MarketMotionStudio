@@ -121,9 +121,19 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         ToDate.MinYear = oldest;
         ToDate.MaxYear = today;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
+
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -242,16 +252,22 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        TitlePanel.TitleText = title;
 
         if (_board is { } board)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Count, board.CapPeak);
 
-            Preview.Renderer = new CapHistoryRenderer(board, plan, ChosenAxis(), CrossSafeRight(), DynamicAxisOn())
+            Preview.Renderer = new CapHistoryRenderer(
+                board, plan, ChosenAxis(), CrossSafeRight(), DynamicAxisOn(),
+                TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
 
                 // Named only while one company is on the frame; see DrawHeader.
                 Code = board.Comparing ? string.Empty : board.Tracks[0].Code,
@@ -679,6 +695,7 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         CustomRange.Visibility = ChosenMonths() == CustomMonths ? Visibility.Visible : Visibility.Collapsed;
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         // The companies are the shared list, which the picker loads on its own — there is
         // nothing instrument-shaped left to remember here. What is remembered is the list
@@ -701,6 +718,7 @@ public sealed partial class CapHistoryPage : StudioPage, IPlaybackHost
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private static void Select(ComboBox combo, int tag)

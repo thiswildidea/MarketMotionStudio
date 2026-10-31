@@ -123,9 +123,18 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         // title names a market, not an instrument, so there was nothing to keep out of frame — but
         // a clean frame with just the number is a legitimate look, and the switch is free: the
         // panel, the persistence and the stage renderer all already implement it.
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -187,8 +196,12 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         // "nothing typed" means now depends on which form is showing: the turnover forms default to
         // naming the market, the return calendar to naming the index.
         var title = VideoSettings.TitleText;
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
         var intraday = Chosen == View.Intraday;
+
+        // 徽章画合并后的主标题：标题文字走 resolved（含默认回退）。
+        TitlePanel.TitleText = title.Length > 0 ? title : DefaultLabel();
 
         if (intraday && _session is { } session)
         {
@@ -198,7 +211,10 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
             // until someone times an export.
             var plan = AnimationPlan.For(VideoSettings.Duration, session.Count, session.TotalYi);
 
-            Preview.Renderer = new IntradayRenderer(session, plan) { Title = title, ShowTitle = showTitle };
+            Preview.Renderer = new IntradayRenderer(
+                    session, plan,
+                    titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
+                { Title = title, ShowTitle = showTitle, Subtitle = subtitle };
         }
         else if (!intraday && _series is { } series)
         {
@@ -206,9 +222,14 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
 
             Preview.Renderer = Chosen switch
             {
-                View.Calendar => new CalendarHeatmapRenderer(series, plan, Metric.Turnover)
-                    { Title = title, ShowTitle = showTitle },
-                _ => new BarRaceRenderer(series, plan) { Title = title, ShowTitle = showTitle },
+                View.Calendar => new CalendarHeatmapRenderer(
+                        series, plan, Metric.Turnover,
+                        titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
+                    { Title = title, ShowTitle = showTitle, Subtitle = subtitle },
+                _ => new BarRaceRenderer(
+                        series, plan,
+                        titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
+                    { Title = title, ShowTitle = showTitle, Subtitle = subtitle },
             };
         }
         else
@@ -865,6 +886,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         }
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -878,6 +900,7 @@ public sealed partial class MarketTurnoverPage : StudioPage, IPlaybackHost
         _prefs.Save("To", ToDate.Date.ToString("O"));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

@@ -73,11 +73,21 @@ public sealed partial class CryptoAnnualMatrixPage : StudioPage, IPlaybackHost
 
         AutomationProperties.SetAutomationId(RangeCombo, "CryptoAnnualRange");
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
+
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            SavePreferences();
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -115,20 +125,27 @@ public sealed partial class CryptoAnnualMatrixPage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0
+            ? VideoSettings.TitleText
+            : _spec?.Title ?? Strings.Get("MatrixStageTitle");
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        TitlePanel.TitleText = title;
+
         if (_spec is { } spec)
         {
-            Preview.Renderer = new MatrixRenderer(spec, VideoSettings.Duration)
+            Preview.Renderer = new MatrixRenderer(spec, VideoSettings.Duration, TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
-                Title = VideoSettings.TitleText,
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
             };
         }
         else
         {
-            _stage.Title = VideoSettings.TitleText.Length > 0
-                ? VideoSettings.TitleText
-                : Strings.Get("MatrixStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.Title = title;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 
@@ -401,6 +418,7 @@ public sealed partial class CryptoAnnualMatrixPage : StudioPage, IPlaybackHost
             ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -418,6 +436,7 @@ public sealed partial class CryptoAnnualMatrixPage : StudioPage, IPlaybackHost
         _prefs.Save("Coins", string.Join(",", Chosen().Select(asset => asset.Code)));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

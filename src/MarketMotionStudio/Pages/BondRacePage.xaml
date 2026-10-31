@@ -93,6 +93,10 @@
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
                     <views:RaceStyleCombo x:Name="RaceStyleCombo" />
+
+                    <!-- 标题区：徽章 + 齿轮 + 隐藏开关，与实时持仓收益页同一套。 -->
+                    <views:TitlePanel x:Name="TitlePanel" />
+
                     <views:VideoSettingsPanel x:Name="VideoSettings" />
 
                     <Button x:Name="ExportButton"

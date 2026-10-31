@@ -21,8 +21,10 @@ namespace MarketMotionStudio.Render;
 /// both ways, which is a different drawing rather than this one with different numbers — and the
 /// calendar already answers that question better, because what you want from returns is *when*.
 /// </remarks>
-public sealed class BarRaceRenderer(TurnoverSeries series, AnimationPlan plan)
-    : TurnoverRenderer(series, plan, Metric.Turnover)
+public sealed class BarRaceRenderer(
+    TurnoverSeries series, AnimationPlan plan,
+    TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
+    : TurnoverRenderer(series, plan, Metric.Turnover, titleStyle, subtitleStyle)
 {
     protected override (int Index, double Value) DrawPlot(
         CanvasDrawingSession session, FrameContext context, double t)

@@ -115,13 +115,24 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
 
         // Offered here and not on the whole-market page: this title carries the name
         // of an instrument, which is the thing a poster may want out of frame.
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
         VideoSettings.TitlePlaceholder = Strings.Get("StockTitlePlaceholder");
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+            TitlePanel.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            VideoSettings.Save(_prefs);
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -148,6 +159,7 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
         // typed one does.
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -166,17 +178,26 @@ public sealed partial class StockVolumePage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
         var typed = VideoSettings.TitleText;
+
+        // 徽章画合并后的主标题：标题文字走 resolved（含默认回退）。
+        TitlePanel.TitleText = typed.Length > 0
+            ? typed
+            : _series is { } drawn ? drawn.Name : Strings.Get("StockVolumeStageTitle");
 
         if (_series is { } series)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, series.Count, series.VolumePeak);
 
-            Preview.Renderer = new StockDualRenderer(series, plan)
+            Preview.Renderer = new StockDualRenderer(
+                    series, plan,
+                    titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Title = typed,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
                 Code = series.Code,
             };
         }

@@ -189,9 +189,19 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         _instrumentName = InstrumentNames.Display(
             _market.CandleInstruments[0].Code, _market.CandleInstruments[0].Name);
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            // 标题文字从对话框写回面板（旧数据键不换），再按面板值重建预览。
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -431,7 +441,11 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 ResolvedTitle（含默认回退）。
+        TitlePanel.TitleText = title;
 
         if (_board is { } board)
         {
@@ -454,16 +468,20 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
             Preview.Renderer = split
                 ? new CandleSplitRenderer(
-                    drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                    drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(),
+                    TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
                 {
                     Title = title,
                     ShowTitle = showTitle,
+                    Subtitle = subtitle,
                 }
                 : new CandleRaceRenderer(
-                    drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                    drawn, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(),
+                    TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
                 {
                     Title = title,
                     ShowTitle = showTitle,
+                    Subtitle = subtitle,
                 };
         }
         else if (_fetched is { } fetched)
@@ -472,10 +490,12 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
 
             Preview.Renderer = new CandleRenderer(
                 fetched, plan, ChosenStyle(), ChosenMotion(), ChosenWindow(),
-                AveragesCheck.IsChecked is true, VolumeCheck.IsChecked is true, CrossSafeRight())
+                AveragesCheck.IsChecked is true, VolumeCheck.IsChecked is true, CrossSafeRight(),
+                TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
             };
         }
         else
@@ -1311,6 +1331,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         }
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         LoadFavourites();
 
         _prefs.Restoring = false;
@@ -1334,6 +1355,7 @@ public sealed partial class CandlePage : StudioPage, IPlaybackHost
         _prefs.Save("Name", _instrumentName);
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     /// <summary>

@@ -88,9 +88,22 @@ public sealed class TitleBlock
     private readonly TitleSkin? _skin;
     private Cache? _memo;
 
+    /// <summary>
+    /// The page's own style, when the page keeps one, and where the global default answers.
+    ///
+    /// Null style is the legacy path — the constructor that passes a bare skin — and it keeps
+    /// the old ownership rule untouched, because twenty-odd pages draw through it and the rule
+    /// their frames were tuned under is not this feature's to change. A style-mode block
+    /// resolves <see cref="TitleStyle.Merge"/>(own, global) fresh on every draw, so a change in
+    /// Settings reaches the next frame without a restart.
+    /// </summary>
+    private readonly TitleStyle? _style;
+    private readonly Func<TitleStyle>? _global;
+
     /// <param name="wantedBaselineSize">
     /// The size to draw at, in baseline pixels. Per page, because the pages' headline sizes were
-    /// each tuned against their own header block.
+    /// each tuned against their own header block. In style mode it is the size a style without
+    /// one of its own falls back to.
     /// </param>
     /// <param name="bold">Whether the headline is set bold — the same on every page so far.</param>
     /// <param name="maxLines">Automatic wraps allowed before the size gives way instead.</param>
@@ -109,6 +122,24 @@ public sealed class TitleBlock
         _bold = bold;
         _maxLines = Math.Max(1, maxLines);
         _skin = skin;
+    }
+
+    /// <summary>
+    /// The two-layer constructor: the page's own (partial) style over the global default.
+    ///
+    /// <paramref name="style"/> names only what the page chose; every field it left null is
+    /// filled from <paramref name="global"/> — read at draw time, not stored — which is how the
+    /// global answer stays live for a page that never re-created this block. The fields the
+    /// global leaves null too fall to the constructor's own defaults, which are the values the
+    /// pages shipped with.
+    /// </summary>
+    public TitleBlock(double wantedBaselineSize, TitleStyle? style, Func<TitleStyle> global, bool bold = true)
+    {
+        _wanted = wantedBaselineSize;
+        _bold = bold;
+        _maxLines = MaxLines;
+        _style = style;
+        _global = global;
     }
 
     /// <summary>
@@ -143,22 +174,25 @@ public sealed class TitleBlock
         // leaves the text to a fallback the renderer does not know about.
         if (string.IsNullOrWhiteSpace(text))
         {
-            return new Shape(context.Px(_wanted), 1);
+            return new Shape(context.Px(EffectiveWanted()), 1);
         }
 
-        // The skin decides the typeface — the serif tracks wider — so the line count it settles
-        // can change with it. Keyed on the skin, not only the text and width, so a global change
-        // while the page is open does not hand back a stale count.
-        var skin = EffectiveSkin();
+        // The style decides the typeface and the size — the serif tracks wider, a restyled size
+        // wraps differently — so the line count it settles can change with them. Keyed on the
+        // whole resolved style, not only the text and width, so a global change while the page
+        // is open does not hand back a stale count.
+        var chosen = Resolved();
 
-        if (_memo is { } hit && hit.Text == text && hit.Available == available && hit.Skin == skin)
+        var skin = chosen is null ? EffectiveSkin() : chosen.Skin is { } s ? (TitleSkin)s : TitleSkin.Plain;
+
+        if (_memo is { } hit && hit.Text == text && hit.Available == available && hit.Chosen == chosen)
         {
             return hit.Shape;
         }
 
         var shape = Resolve(target, text, context, available, skin);
 
-        _memo = new Cache(text, available, skin, shape);
+        _memo = new Cache(text, available, chosen, shape);
 
         return shape;
     }
@@ -166,10 +200,14 @@ public sealed class TitleBlock
     /// <summary>
     /// Draws the block, its first line's baseline at <see cref="FrameContext.TitleBaseline"/> and
     /// every line after it one <see cref="FrameContext.TitleLineHeight"/> below.
+    ///
+    /// <paramref name="lineOffset"> pushes the whole block down that many lines of the same grid
+    /// without changing its own layout: the subtitle is the same kind of block on the lines the
+    /// title did not take, not a second geometry to keep in step.
     /// </summary>
     public void Draw(
         CanvasDrawingSession session, FrameContext context, string text, Shape shape,
-        Color colour, double opacity = 1)
+        Color colour, double opacity = 1, int lineOffset = 0)
     {
         if (shape.Lines <= 0)
         {
@@ -181,7 +219,7 @@ public sealed class TitleBlock
         // read here at draw time so a change in Settings reaches every page's next redraw without a
         // restart. The ink follows the same ownership rule.
         var skin = EffectiveSkin();
-        var ink = ResolveInk(colour);
+        var ink = _style is null ? ResolveInk(colour) : Resolved()!.ParsedColour() ?? colour;
 
         var available = Available(context);
 
@@ -191,16 +229,43 @@ public sealed class TitleBlock
         // centre alignment then puts the text in the middle of it, per line, which is what a
         // wrapped title has to do to read as a block rather than as a ragged edge.
         var left = (context.Width - available) / 2;
-        var baseline = context.TitleBaseline(0);
+        var baseline = context.TitleBaseline(lineOffset);
 
-        if (skin is TitleSkin.Plain)
+        // The rotation swings the block about its own centre — read off the resolved style, and
+        // off *this* block's box rather than the title row, so a rotated subtitle (should one
+        // ever be wanted) would turn about itself. The rows stay reserved for the level block:
+        // the swing spends the room the block already paid for, and a little beyond it into the
+        // gaps the header rows leave, which is the honest price of a decoration that would
+        // otherwise charge every straight headline for the box a rotated one needs.
+        var restore = session.Transform;
+
+        if (EffectiveRotation() is { } degrees && degrees != 0 && shape.Size > 0)
         {
-            Ink.Draw(session, layout, left, baseline, ink, opacity);
+            var pitch = context.Px(FrameContext.TitleLineHeight);
+            var height = ((shape.Lines - 1) * pitch) + shape.Size;
+            var center = new Vector2(
+                (float)(context.Width / 2),
+                (float)(baseline - (shape.Size * 0.78) + (height / 2)));
 
-            return;
+            session.Transform = Matrix3x2.Multiply(
+                Matrix3x2.CreateRotation((float)(degrees * Math.PI / 180), center), restore);
         }
 
-        Painted(session, context, layout, shape.Size, left, baseline, ink, opacity);
+        try
+        {
+            if (skin is TitleSkin.Plain)
+            {
+                Ink.Draw(session, layout, left, baseline, ink, opacity);
+
+                return;
+            }
+
+            Painted(session, context, layout, shape.Size, left, baseline, ink, opacity, skin);
+        }
+        finally
+        {
+            session.Transform = restore;
+        }
     }
 
     /// <summary>
@@ -216,7 +281,7 @@ public sealed class TitleBlock
     /// </summary>
     private void Painted(
         CanvasDrawingSession session, FrameContext context, CanvasTextLayout layout, double size,
-        double left, double baseline, Color colour, double opacity)
+        double left, double baseline, Color colour, double opacity, TitleSkin skin)
     {
         var ascent = layout.LineMetrics.Length > 0
             ? layout.LineMetrics[0].Baseline
@@ -225,7 +290,7 @@ public sealed class TitleBlock
         // The layout's top edge: where the first line's box begins, not its baseline.
         var top = baseline - ascent;
 
-        using var edge = Edge(session, layout, size, left, top, colour);
+        using var edge = Edge(session, layout, size, left, top, colour, skin);
 
         using var art = new CanvasCommandList(session);
 
@@ -240,7 +305,7 @@ public sealed class TitleBlock
             // read as "covered". Drawing the text with a brush pins the ramp to the layout's own
             // box, so the whole glyph takes the gradient and nothing is left to the edge alone.
             using var brush = new CanvasLinearGradientBrush(session,
-                [.. TitleSkins.Ramp(colour).Select(s => new CanvasGradientStop { Position = s.Position, Color = s.Colour })])
+                [.. TitleSkins.RampFor(skin, colour).Select(s => new CanvasGradientStop { Position = s.Position, Color = s.Colour })])
             {
                 StartPoint = new Vector2(0, (float)top),
                 EndPoint = new Vector2(0, (float)(top + layout.LayoutBounds.Height)),
@@ -251,8 +316,34 @@ public sealed class TitleBlock
 
         // The halo is the ramp's own colour bleeding outwards, which is most of what makes a
         // metal read as metal rather than as coloured type. The same glow the page draws its
-        // headline figure with, at a third of the strength.
-        Ink.Glow(session, context.Px(10), 0.34 * opacity, drawing => drawing.DrawImage(art));
+        // headline figure with, at a third of the strength. The aurum keeps it fainter: a
+        // polished metal reads from its ramp and edge, not from a halo, and a strong one turns
+        // the blue reflection muddy. The ink has none at all — white ink with a gold edge reads
+        // from the edge, and a halo around white would wash the outline out. The neon glows in
+        // its *cyan* rather than its silver: the cold light is the whole point, so the halo is
+        // drawn in the edge colour, at a stronger reach than the metal treatments'.
+        if (skin is TitleSkin.Neon)
+        {
+            using var neonArt = new CanvasCommandList(session);
+
+            using (var nd = neonArt.CreateDrawingSession())
+            {
+                nd.DrawTextLayout(layout, (float)left, (float)top, TitleSkins.NeonGlow);
+            }
+
+            Ink.Glow(session, context.Px(14), 0.5 * opacity, drawing => drawing.DrawImage(neonArt));
+        }
+        else
+        {
+            var glow = skin switch
+            {
+                TitleSkin.Aurum => 0.16,
+                TitleSkin.Ink => 0.0,
+                _ => 0.34,
+            };
+
+            Ink.Glow(session, context.Px(10), glow * opacity, drawing => drawing.DrawImage(art));
+        }
 
         using var faded = new OpacityEffect { Source = art, Opacity = (float)Math.Clamp(opacity, 0, 1) };
 
@@ -264,11 +355,16 @@ public sealed class TitleBlock
     /// step of the same colour.
     /// </summary>
     private static CanvasCommandList Edge(
-        CanvasDrawingSession session, CanvasTextLayout layout, double size, double left, double top, Color colour)
+        CanvasDrawingSession session, CanvasTextLayout layout, double size, double left, double top,
+        Color colour, TitleSkin skin)
     {
         var list = new CanvasCommandList(session);
-        var ink = TitleSkins.Edge(colour);
-        var reach = Math.Max(0.55, size * EdgeReach);
+        var ink = TitleSkins.EdgeFor(skin, colour);
+        // The ink's gold edge is drawn *over* by the white body, so it needs to reach further
+        // out than a dark edge that is meant to show through the ramp's own dark end.
+        var reach = skin is TitleSkin.Ink
+            ? Math.Max(1.2, size * EdgeReach * 2.4)
+            : Math.Max(0.55, size * EdgeReach);
 
         using (var drawing = list.CreateDrawingSession())
         {
@@ -288,11 +384,47 @@ public sealed class TitleBlock
     private static double Available(FrameContext context) => Math.Max(1, context.Width - context.Px(SidePad));
 
     /// <summary>
-    /// The treatment this draw uses: the page's own when the page passed one — the
-    /// portfolio page keeps its per-page choice — otherwise the global setting.
+    /// The page's own style laid over the global default, fresh each call — or null on the
+    /// legacy path, where the constructor's own fields and <see cref="TitleSettings"/> answer
+    /// one question at a time.
     /// </summary>
+    private TitleStyle? Resolved() => _style is null ? null : TitleStyle.Merge(_style, _global!());
+
+    /// <summary>The treatment this draw uses. Style mode asks the merged style; the legacy path
+    /// keeps its own rule — the page's skin when the page passed one, the global setting
+    /// otherwise.</summary>
     private TitleSkin EffectiveSkin() =>
-        _skin ?? TitleSettings.Skin;
+        _style is null
+            ? (_skin ?? TitleSettings.Skin)
+            : Resolved()!.Skin is { } skin ? (TitleSkin)skin : TitleSkin.Plain;
+
+    /// <summary>The size this draw is set at: the style's when it names one, the global answer
+    /// when one is set there, and the constructor's otherwise.</summary>
+    private double EffectiveWanted() =>
+        _style is null
+            ? TitleSettings.MainStyle.Size ?? _wanted
+            : Resolved()!.Size ?? _wanted;
+
+    /// <summary>The wrap cap this draw honours, clamped — a style asking for nine lines of
+    /// headline is asking for the chart's whole top half.</summary>
+    private int EffectiveMaxLines() =>
+        _style is null
+            ? Math.Clamp(TitleSettings.MainStyle.MaxLines ?? _maxLines, 1, 4)
+            : Math.Clamp(Resolved()!.MaxLines ?? _maxLines, 1, 4);
+
+    /// <summary>Whether this draw is set bold.</summary>
+    private bool EffectiveBold() => _style is null ? _bold : Resolved()!.Bold ?? _bold;
+
+    /// <summary>The face this draw is set in. Null = the treatment decides, which on the legacy
+    /// path means the serif for 雕琢 and the app's own face everywhere else.</summary>
+    private string? EffectiveFont() =>
+        _style is null ? TitleSettings.MainStyle.Font : Resolved()!.Font;
+
+    /// <summary>The whole block's rotation, in degrees. Style mode reads the merged style; the
+    /// legacy path reads the global answer — every page ships level, and a global tilt is the
+    /// settings page's decision to reach them all.</summary>
+    private double EffectiveRotation() =>
+        _style is null ? TitleSettings.MainStyle.Rotation ?? 0 : Resolved()!.Rotation ?? 0;
 
     /// <summary>
     /// The ink this draw uses, following the same ownership rule as the skin.
@@ -349,12 +481,13 @@ public sealed class TitleBlock
     /// </summary>
     private Shape Resolve(ICanvasResourceCreator target, string text, FrameContext context, double available, TitleSkin skin)
     {
-        var size = context.Px(_wanted);
+        var size = context.Px(EffectiveWanted());
         var floor = size * Floor;
+        var cap = EffectiveMaxLines();
 
         var lines = Count(target, text, context, size, available, skin);
 
-        while (lines > _maxLines && size > floor)
+        while (lines > cap && size > floor)
         {
             size = Math.Max(floor, size * ShrinkStep);
 
@@ -389,8 +522,11 @@ public sealed class TitleBlock
         var engraved = skin is TitleSkin.Engraved;
 
         // The serif is set at its own weight: synthetic bold on Song fills in the thin
-        // horizontals, which are the one thing the face was chosen for.
-        var format = Ink.Format(size, _bold && !engraved, engraved ? Serif : null);
+        // horizontals, which are the one thing the face was chosen for. A style naming its own
+        // face wins over the treatment's — an explicit choice of 宋体 under 雕琢 is the reader
+        // asking for that face's ramp, not for the one the treatment shipped with.
+        var font = EffectiveFont() ?? (engraved ? Serif : null);
+        var format = Ink.Format(size, EffectiveBold() && !engraved, font);
 
         format.WordWrapping = CanvasWordWrapping.Wrap;
         format.HorizontalAlignment = CanvasHorizontalAlignment.Center;
@@ -400,5 +536,5 @@ public sealed class TitleBlock
         return format;
     }
 
-    private sealed record Cache(string Text, double Available, TitleSkin Skin, Shape Shape);
+    private sealed record Cache(string Text, double Available, TitleStyle? Chosen, Shape Shape);
 }

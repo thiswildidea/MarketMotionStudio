@@ -86,11 +86,16 @@ public sealed class UnderwaterRenderer : IFrameRenderer
     /// <summary>The depth the axis reaches on each month — the deepest point any row has hit.</summary>
     private readonly double[] _depth;
 
-    public UnderwaterRenderer(DrawdownSeries series, TimeSpan duration)
+    public UnderwaterRenderer(
+        DrawdownSeries series, TimeSpan duration,
+        TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _series = series;
         Duration = duration;
         TotalMs = duration.TotalMilliseconds;
+
+        _title = new TitleBlock(64, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         _rank = new int[series.Racers][];
         _starts = new int[series.Racers];
@@ -174,16 +179,29 @@ public sealed class UnderwaterRenderer : IFrameRenderer
 
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title. Empty draws nothing. Its style falls back
+    /// to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(64);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what the header's rows below it
     /// and the plot's top edge are moved by. Set once at the top of <see cref="Draw"/>.
     /// </summary>
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     public TimeSpan Duration { get; set; }
 
@@ -204,6 +222,10 @@ public sealed class UnderwaterRenderer : IFrameRenderer
         // Before the rows: they are placed against the bottom of the header block, which is placed
         // by how many lines the title took.
         _titleLines = _title.For(session, Title, context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -505,6 +527,15 @@ public sealed class UnderwaterRenderer : IFrameRenderer
 
         _title.Draw(session, context, Title, _title.For(session, Title, context, ShowTitle), Palette.Title, a);
 
+        // The user's own subtitle, on the line after the title's last. The rows below it stay
+        // where they were, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
+
         using (var plain = Ink.Format(context.Px(26)))
         using (var strong = Ink.Format(context.Px(26), bold: true))
         {
@@ -517,13 +548,13 @@ public sealed class UnderwaterRenderer : IFrameRenderer
                     (" " + Span + " · " + _series.Racers.ToString(CultureInfo.InvariantCulture) + " " + UnitWord,
                         Palette.StockMuted, plain),
                 ],
-                cx, context.HeaderRow(0.188, _titleLines), a);
+                cx, Row(context, 0.188), a);
         }
 
         using (var format = Ink.Format(context.Px(40), bold: true))
         {
             Ink.Centred(session, Iso(_series.Dates[state.DayIndex]), cx,
-                context.HeaderRow(0.222, _titleLines), format, Palette.Moving, a);
+                Row(context, 0.222), format, Palette.Moving, a);
         }
     }
 
@@ -541,9 +572,14 @@ public sealed class UnderwaterRenderer : IFrameRenderer
             context.Width);
     }
 
+    /// <summary>A header row, shifted down by the user's subtitle's own rows.</summary>
+    private double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
+
     /// <summary>The plot's rows: the top anchored to the header block, the bottom to the credit.</summary>
     private (double Top, double Bottom) PlotArea(FrameContext context) =>
-        (context.HeaderRow(HeaderTopFraction, _titleLines), context.CreditLine - context.Px(CreditGap));
+        (Row(context, HeaderTopFraction), context.CreditLine - context.Px(CreditGap));
 
     /// <summary>The plot's left and right, gutters inside the user's margins.</summary>
     private (double Left, double Right) PlotColumns(FrameContext context) =>

@@ -52,20 +52,21 @@ namespace MarketMotionStudio.Render;
 /// own minutes earned, meeting where the market shut — a day drawn without an hour and a half of
 /// nothing in the middle of it. On is what the page shipped with.
 /// </param>
-/// <param name="skin">
-/// How the headline is inked: plain, ramped, or ramped on a serif. It is a constructor argument
-/// for the same reason the switches are: read back off a property, the frame that matters would
-/// be drawn before the page had set it. Null means the page never opted in and the global
-/// setting answers; Plain is the page's own choice of 常规 and is kept.
+/// <param name="titleStyle">
+/// The page's own choices for the main title, as a partial <see cref="TitleStyle"/>: a field the
+/// page set wins, one it left null falls to the global default in <see cref="TitleSettings"/>.
+/// It is a constructor argument for the same reason the switches are: read back off a property,
+/// the frame that matters would be drawn before the page had set it.
 /// </param>
-/// <param name="titleColour">
-/// The headline's colour, or null for the one <paramref name="skin"/> defaults to. The ramp is
-/// derived from it, so one choice is the whole of the finish.
+/// <param name="subtitleStyle">
+/// The same, for the subtitle line under the title. The subtitle's text and switch are
+/// properties below — they ride the page's own controls — but the *style* is set up front with
+/// the rest of the look.
 /// </param>
 public sealed class PortfolioPnlRenderer(
     PortfolioSession session, AnimationPlan plan,
     bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,
-    bool lunchBreak = true, TitleSkin? skin = null, Color? titleColour = null)
+    bool lunchBreak = true, TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     : IFrameRenderer
 {
     /// <summary>Distance from the credit up to the top of the statistic cards.</summary>
@@ -83,19 +84,51 @@ public sealed class PortfolioPnlRenderer(
     /// <summary>Whether the title row is drawn at all.</summary>
     public bool ShowTitle { get; set; } = true;
 
-    private readonly TitleBlock _title = new(62, skin: skin);
-
     /// <summary>
-    /// The ink the headline is drawn in: the colour the reader chose, or the one this skin comes
-    /// with. Kept as a method rather than a field so the fallback cannot be computed before the
-    /// constructor's arguments are in scope.
+    /// The subtitle under the title, on the same grid the wrapped title grows down: the line
+    /// after the title's last, at a smaller size of its own. Empty draws nothing and hands the
+    /// rows back — a page without a subtitle is laid out exactly as it always was.
     /// </summary>
-    private Color TitleInk() => titleColour ?? TitleSkins.Default(skin ?? TitleSkin.Plain);
+    public string Subtitle { get; set; } = string.Empty;
+
+    /// <summary>Whether the subtitle row is drawn at all.</summary>
+    public bool ShowSubtitle { get; set; } = true;
+
+    private readonly TitleBlock _title = new(62, titleStyle, () => TitleSettings.MainStyle);
+
+    /// <summary>The subtitle's own block: smaller than the headline, on the same line grid, with
+    /// its own two-layer style. The amber it falls back to is the colour the day below is drawn
+    /// in — a subtitle with no colour of its chosen treatment is still part of the header's
+    /// family, not a second white line.</summary>
+    private readonly TitleBlock _subtitle = new(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
     private int _titleLines;
 
+    private int _subtitleLines;
+
+    /// <summary>
+    /// The ink the headline falls back to when no style names a colour: the chosen treatment's
+    /// own default. The block's <see cref="TitleBlock.Draw"/> overrides it with the style's
+    /// colour when there is one, so this is the bottom of the fallback chain, not the top.
+    /// </summary>
+    private Color TitleInk()
+    {
+        var skin = TitleStyle.Merge(titleStyle, TitleSettings.MainStyle).Skin is { } s
+            ? (TitleSkin)s
+            : TitleSkin.Plain;
+
+        return TitleSkins.Default(skin);
+    }
+
+    /// <summary>Whether a subtitle row exists on this frame at all. It rides the headline's
+    /// own switch: the subtitle is a line *under* the title, and a title hidden whole takes its
+    /// subtitle with it — otherwise the hide switch would leave the subtitle stranded where the
+    /// title used to be.</summary>
+    private bool SubtitleShown => ShowTitle && ShowSubtitle && Subtitle.Length > 0;
+
     private double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
 
     /// <summary>Every frame names the day it is drawing, because it is not always today.</summary>
     private string ResolvedTitle() => Title.Length > 0 ? Title : Strings.Get("PortfolioPnlTitle");
@@ -128,6 +161,12 @@ public sealed class PortfolioPnlRenderer(
         var t = context.Progress * plan.TotalMs;
 
         _titleLines = _title.For(session2, ResolvedTitle(), context, ShowTitle).Lines;
+
+        // Measured after the title, because the subtitle's first line is the line after the
+        // title's last: its rows are what every row below — and the plot itself — shift by.
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session2, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session2, context, Palette.Background);
 
@@ -936,6 +975,17 @@ public sealed class PortfolioPnlRenderer(
         var title = ResolvedTitle();
 
         _title.Draw(session2, context, title, _title.For(session2, title, context, ShowTitle), TitleInk(), a);
+
+        // The subtitle on the line after the title's last — the same grid the wrapped title
+        // grows down, so a two-line title pushes it one row and nothing overlaps by luck. Its
+        // own block answers for its style; the amber passed here is only what shows when no
+        // colour is configured anywhere.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session2, context, Subtitle, _subtitle.For(session2, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
 
         // The day on a line of its own, in the amber every other page draws an advancing date in
         // and at better than one and a half times the size the old subtitle used. It is the first

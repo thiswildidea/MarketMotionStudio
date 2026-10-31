@@ -68,27 +68,22 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
     private readonly DispatcherTimer _auto = new() { Interval = TimeSpan.FromSeconds(30) };
 
     /// <summary>
-    /// The three headline treatments, in the order the page offers them.
+    /// The page's own title choices, as the reader set them in the dialogs.
     ///
-    /// The keys keep their <c>.Content</c> suffix because these lines are not set through
-    /// <c>x:Uid</c>: the menu is filled in code, and <see cref="Strings.Get"/> reads the dotted
-    /// name as a path — a key with the suffix left off resolves to nothing and the menu comes out
-    /// reading <c>[PortfolioPnlTitlePlain]</c>.
+    /// Each record names only what was chosen: a field the reader left on 「跟随全局」 stays
+    /// null in it, and the merge with the settings page's default happens at draw time inside
+    /// the title block — the page never has to know what the global answer is.
     /// </summary>
-    private static readonly (TitleSkin Skin, string Key)[] Skins =
-    [
-        (TitleSkin.Plain, "PortfolioPnlTitlePlain.Content"),
-        (TitleSkin.Gilded, "PortfolioPnlTitleGilded.Content"),
-        (TitleSkin.Engraved, "PortfolioPnlTitleEngraved.Content"),
-    ];
+    private TitleStyle _mainStyle = new();
 
-    /// <summary>The headline colour the reader picked, as <c>#RRGGBB</c>; empty means
-    /// "whichever this treatment comes with".</summary>
-    private string _titleColour = string.Empty;
+    /// <summary>The page's own subtitle style, on the same terms.</summary>
+    private TitleStyle _subStyle = new();
 
-    /// <summary>True while the page is setting the picker's own colour, so the change it raises
-    /// on itself is not read back as a choice.</summary>
-    private bool _painting;
+    /// <summary>What the subtitle says — the page's own sentence, not a global one.</summary>
+    private string _subtitleText = string.Empty;
+
+    /// <summary>Whether the subtitle is drawn at all.</summary>
+    private bool _showSubtitle = true;
 
     private PortfolioSession? _session;
 
@@ -208,7 +203,13 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         _feeTimer.Tick += OnFeeSettled;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+
+        // The hide-title switch lives on the page now, under the badge it acts on; the
+        // panel's copy is switched off rather than carried twice. The headline's text is
+        // edited in the title dialog, and the panel keeps its value in step (SetTitleText)
+        // but no longer carries its own editor for it either.
+        VideoSettings.AllowTitleText = false;
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
@@ -224,14 +225,25 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
         SetPlaybackState(playing: false);
 
-        foreach (var (skin, key) in Skins)
+        // The gear has no label of its own — a sixteen-pixel icon cannot carry one — so its
+        // tooltip and its accessible name both say what the menu it opens says.
+        var gearTip = Strings.Get("PortfolioPnlTitleEdit.Text");
+
+        ToolTipService.SetToolTip(TitleGear, gearTip);
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(TitleGear, gearTip);
+
+        // 全局样式改了，本地没配置的项要跟着变：徽章照合并结果重画，渲染器重建一遍。
+        TitleSettings.Changed += (_, _) =>
         {
-            // The tag carries the skin rather than its position in the menu, so a treatment
-            // added in the middle cannot silently become another one.
-            TitleSkinCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)skin });
-        }
+            RefreshTitleBadge();
+            ApplyPreviewSettings();
+        };
+
+        // 视频面板里的标题文本也是徽章的内容：它变了徽章要跟上。
+        VideoSettings.Changed += (_, _) => RefreshTitleBadge();
 
         RestorePreferences();
+        RefreshTitleBadge();
         ApplyPreviewSettings();
         RefreshBook();
 
@@ -262,6 +274,15 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
 
     protected override string JobName => Strings.Get("PortfolioPnlPageTitle.Text");
 
+    /// <summary>The page's own choices, as the dialogs left them — the records are kept
+    /// whole rather than read off controls, because the controls live in the dialogs now.</summary>
+    private TitleStyle LocalTitleStyle() => _mainStyle;
+
+    /// <summary>The page's own subtitle choices, on the same terms.</summary>
+    private TitleStyle LocalSubtitleStyle() => _subStyle;
+
+    private static string? NullIfEmpty(string value) => value.Length == 0 ? null : value;
+
     /// <summary>Pushes the panel's values into the preview and redraws once.</summary>
     private void ApplyPreviewSettings()
     {
@@ -270,7 +291,11 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = VideoSettings.TitleText;
-        var showTitle = VideoSettings.ShowTitle;
+
+        // The switch under the badge is the one that decides this now — the video panel's
+        // copy is switched off on this page, and reading it would be reading a control that
+        // is not on the screen.
+        var showTitle = HideTitleToggle.IsOn is not true;
 
         if (_session is { } session && session.Samples.Count > 1)
         {
@@ -288,11 +313,13 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
                 mascot: MascotCheck.IsChecked is true,
                 dynamicAxis: DynamicAxisCheck.IsChecked is true,
                 lunchBreak: LunchCheck.IsChecked is true,
-                skin: SelectedSkin(),
-                titleColour: ChosenTitleColour())
+                titleStyle: LocalTitleStyle(),
+                subtitleStyle: LocalSubtitleStyle())
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = _subtitleText,
+                ShowSubtitle = _showSubtitle,
             };
 
             Preview.Renderer = renderer;
@@ -888,85 +915,131 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         SavePreferences();
     }
 
-    private void OnTitleSkinChanged(object sender, SelectionChangedEventArgs e)
+    /// <summary>
+    /// The hide-title switch, which lives under the badge it acts on. A toggle is a look
+    /// choice like the four checkboxes above it — the same rebuild, the same save. The
+    /// badge itself stays: it anchors the controls, and the switch is about the canvas.
+    /// </summary>
+    private void OnHideTitleChanged(object sender, RoutedEventArgs e)
     {
-        // The swatch and the picker are both answerable to the treatment: until a colour is chosen
-        // each shows the one this treatment comes with, so switching treatments moves both. A
-        // picker left on the previous treatment's colour is worse than a stale swatch — it is the
-        // control the reader would then *touch*, and touching it writes the colour it was showing:
-        // switch to 镀金, open the picker, nudge it, and the headline turns white.
-        PaintPicker();
-        PaintSwatch();
-
-        ApplyPreviewSettings();
-        SavePreferences();
-    }
-
-    private void OnTitleColourChanged(ColorPicker sender, ColorChangedEventArgs args)
-    {
-        if (_prefs.Restoring || _painting)
-        {
-            return;
-        }
-
-        var ink = args.NewColor;
-
-        _titleColour = string.Format(
-            CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", ink.R, ink.G, ink.B);
-
-        PaintSwatch();
         ApplyPreviewSettings();
         SavePreferences();
     }
 
     /// <summary>
-    /// Hands the colour back to the treatment.
+    /// The gear's first item: the main title's style, asked for in a dialog.
     ///
-    /// A picker cannot show "nothing chosen": it always has a colour, and once the reader has
-    /// touched it that colour is a choice whether they meant it as one or not. So the way back
-    /// to "whichever this treatment comes with" has to be a control of its own.
+    /// Nothing on the page re-reads the source for a style change — a headline is ink, not
+    /// numbers — so adopting the dialog's answer is a rebuild of the renderer and a save,
+    /// and the badge is redrawn from the merged result to say what is in play.
     /// </summary>
-    private void OnTitleColourDefault(object sender, RoutedEventArgs e)
+    private async void OnEditMainTitle(object sender, RoutedEventArgs e)
     {
-        _titleColour = string.Empty;
+        if (XamlRoot is null)
+        {
+            return;
+        }
 
-        PaintPicker();
-        PaintSwatch();
+        var dialog = new TitleStyleDialog(
+            subtitle: false,
+            _mainStyle,
+            titleText: VideoSettings.TitleText,
+            titlePlaceholder: VideoSettings.TitlePlaceholder)
+        { XamlRoot = XamlRoot };
+
+        if (await Dialogs.ShowAsync(dialog) != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        _mainStyle = dialog.Chosen;
+        VideoSettings.SetTitleText(dialog.TitleTextValue);
 
         ApplyPreviewSettings();
         SavePreferences();
+        RefreshTitleBadge();
     }
 
-    private TitleSkin SelectedSkin() =>
-        TitleSkinCombo.SelectedItem is ComboBoxItem { Tag: int tag } ? (TitleSkin)tag : TitleSkin.Plain;
-
-    /// <summary>The colour the reader picked, or null when they have not picked one.</summary>
-    private Color? ChosenTitleColour()
+    /// <summary>The gear's second item: the subtitle's style, its text and its switch.</summary>
+    private async void OnEditSubtitle(object sender, RoutedEventArgs e)
     {
-        var hex = _titleColour;
-
-        if (hex.Length != 7 || hex[0] != '#')
+        if (XamlRoot is null)
         {
-            return null;
+            return;
         }
 
-        return byte.TryParse(hex[1..3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var r)
-            && byte.TryParse(hex[3..5], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var g)
-            && byte.TryParse(hex[5..7], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var b)
-            ? Color.FromArgb(255, r, g, b)
-            : null;
+        var dialog = new TitleStyleDialog(
+            subtitle: true,
+            _subStyle,
+            _subtitleText,
+            _showSubtitle)
+        { XamlRoot = XamlRoot };
+
+        if (await Dialogs.ShowAsync(dialog) != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        _subStyle = dialog.Chosen;
+        _subtitleText = dialog.SubtitleText;
+        _showSubtitle = dialog.ShowSubtitle;
+
+        ApplyPreviewSettings();
+        SavePreferences();
+        RefreshTitleBadge();
     }
 
-    private void PaintSwatch() =>
-        TitleSwatch.Fill = new SolidColorBrush(ChosenTitleColour() ?? TitleSkins.Default(SelectedSkin()));
+    /// <summary>The headline the badge previews with: the video panel's title text when it
+    /// has one, the page's own name when it has not.</summary>
+    private string TitleText() =>
+        VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : Strings.Get("PortfolioPnlTitle");
 
-    private void PaintPicker()
+    /// <summary>
+    /// Redraws the badge beside the gear from the **merged** result — the page's own choices
+    /// laid over the settings page's defaults — because that is what the canvas will draw.
+    ///
+    /// <para>
+    /// The badge is the one thing on this side of the preview that says what is in play: the
+    /// reader sets a spin and a colour in a dialog, closes it, and the badge keeps saying so
+    /// after the dialog is gone. The spin and the ink are shown for real; the face follows
+    /// the choice too; the size does not, because a badge sized by the headline's own size
+    /// would grow past its row for the very values the size box exists to reach — the canvas
+    /// is where a size choice is read.
+    /// </para>
+    /// </summary>
+    private void RefreshTitleBadge()
     {
-        _painting = true;
+        var merged = TitleStyle.Merge(_mainStyle, TitleSettings.MainStyle);
 
-        TitleColour.Color = ChosenTitleColour() ?? TitleSkins.Default(SelectedSkin());
+        TitleBadgeText.Text = TitleText();
 
-        _painting = false;
+        if (merged.Font is { } font)
+        {
+            TitleBadgeText.FontFamily = new FontFamily(font);
+        }
+
+        // The badge sits on the page, not on the dark canvas, so a plain treatment's default
+        // (the canvas's white) would be invisible here. The reader's own colour wins; a ramp
+        // treatment stands in with its hue; a plain treatment leaves the theme's own ink.
+        var ink = merged.ParsedColour()
+            ?? (merged.Skin is { } skin && (TitleSkin)skin is not TitleSkin.Plain
+                ? TitleSkins.Default((TitleSkin)skin)
+                : null);
+
+        TitleBadgeText.Foreground = ink is { } colour ? new SolidColorBrush(colour) : null;
+
+        var spin = merged.Rotation ?? 0;
+
+        TitleBadgeText.RenderTransform = spin == 0
+            ? null
+            : new RotateTransform { Angle = spin };
+
+        // The subtitle's line rides under the headline when it is on and says something:
+        // off or empty, the badge is the headline alone again.
+        var sub = _showSubtitle ? _subtitleText : string.Empty;
+
+        TitleBadgeSub.Text = sub.ReplaceLineEndings(" ");
+        TitleBadgeSub.Visibility = sub.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     /// <summary>
@@ -1302,6 +1375,11 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         AutoRefresh.IsOn = _prefs.GetBool("Auto", true);
 
         CrossCheck.IsChecked = _prefs.GetBool("CrossSafeRight", false);
+
+        // The page's own hide-title switch. It used to live in the video panel under the
+        // same key, so a page upgraded reads what the panel stored; from here on it is the
+        // page's key alone.
+        HideTitleToggle.IsOn = _prefs.GetBool("PnlHideTitle", _prefs.GetBool("HideTitle", false));
         MascotCheck.IsChecked = _prefs.GetBool("Mascot", false);
         DynamicAxisCheck.IsChecked = _prefs.GetBool("DynamicAxis", false);
 
@@ -1309,8 +1387,31 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         // because they are additions to it rather than subtractions.
         LunchCheck.IsChecked = _prefs.GetBool("Lunch", true);
 
-        _titleColour = _prefs.GetString("TitleColour", string.Empty);
-        TitleSkinCombo.SelectedIndex = _prefs.GetInt("TitleSkin", 0);
+        // The title styles are one JSON record per block, merged local-over-global at draw
+        // time. A page upgraded from the two flat keys migrates once, here: the old treatment
+        // becomes a *local* choice — it was already a choice the reader made, not an absence
+        // of one — and the old colour rides along unchanged.
+        var styleJson = _prefs.GetString("TitleStyle", string.Empty);
+
+        if (styleJson.Length > 0)
+        {
+            _mainStyle = TitleStyle.FromJson(styleJson);
+        }
+        else
+        {
+            _mainStyle = new TitleStyle
+            {
+                Skin = _prefs.GetInt("TitleSkin", 0),
+                Colour = NullIfEmpty(_prefs.GetString("TitleColour", string.Empty)),
+            };
+        }
+
+        var subJson = _prefs.GetString("SubtitleStyle", string.Empty);
+
+        _subStyle = TitleStyle.FromJson(subJson);
+
+        _showSubtitle = _prefs.GetBool("ShowSubtitle", true);
+        _subtitleText = _prefs.GetString("SubtitleText", string.Empty);
 
         // The mainland's own figures unless the reader has set their own. The box is filled
         // rather than left blank: a blank one reads as "nothing is charged", which is the one
@@ -1321,9 +1422,6 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         FeeTransfer.Value = _prefs.GetDouble("FeeTransfer", FeeSchedule.Mainland.Transfer);
         FeeKongCommission.Value = _prefs.GetDouble("FeeKongCommission", HongKongFees.Connect.Commission);
         FeeKongMinimum.Value = _prefs.GetDouble("FeeKongFloor", HongKongFees.Connect.Minimum);
-
-        PaintPicker();
-        PaintSwatch();
 
         VideoSettings.Restore(_prefs);
 
@@ -1343,11 +1441,14 @@ public sealed partial class PortfolioIntradayPage : StudioPage, IPlaybackHost
         _prefs.Save("Auto", AutoRefresh.IsOn);
 
         _prefs.Save("CrossSafeRight", CrossCheck.IsChecked is true);
+        _prefs.Save("PnlHideTitle", HideTitleToggle.IsOn is true);
         _prefs.Save("Mascot", MascotCheck.IsChecked is true);
         _prefs.Save("DynamicAxis", DynamicAxisCheck.IsChecked is true);
         _prefs.Save("Lunch", LunchCheck.IsChecked is true);
-        _prefs.Save("TitleSkin", TitleSkinCombo.SelectedIndex);
-        _prefs.Save("TitleColour", _titleColour);
+        _prefs.Save("TitleStyle", _mainStyle.ToJson());
+        _prefs.Save("SubtitleStyle", _subStyle.ToJson());
+        _prefs.Save("SubtitleText", _subtitleText);
+        _prefs.Save("ShowSubtitle", _showSubtitle);
 
         _prefs.Save("FeeCommission", Read(FeeCommission, FeeSchedule.Mainland.Commission));
         _prefs.Save("FeeMinimum", Read(FeeMinimum, FeeSchedule.Mainland.Minimum));

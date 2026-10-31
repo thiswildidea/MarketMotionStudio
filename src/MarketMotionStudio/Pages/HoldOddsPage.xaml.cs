@@ -127,12 +127,22 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
         // The picker has no panel of its own to write into, so what it has to say is said here.
         Watch.Notice += message => ShowStatus(InfoBarSeverity.Error, message);
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            SavePreferences();
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -148,6 +158,7 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RaceStyleCombo.Bind(_prefs);
         RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
         RestorePreferences();
@@ -202,18 +213,28 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle();
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 title（含默认回退）。
+        TitlePanel.TitleText = title;
+
         if (_series is { } series)
         {
             // The race renderer on its **return** metric, which is the one whose labels end in %:
             // a share of entries is a percentage and has to read as one. Every holding is a row, so
             // no `showTop` — this is not a field of sixty candidates racing for fifteen places, it
             // is eight asset classes and all eight are the board.
-            Preview.Renderer = new SectorRaceRenderer(series, RaceMetric.Return, VideoSettings.Duration)
+            Preview.Renderer = new SectorRaceRenderer(
+                series, RaceMetric.Return, VideoSettings.Duration,
+                titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Style = RaceStyleCombo.ChosenStyle,
                 Faces = CompanyLogoCache.Shared,
-                Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
                 ListLabel = ChosenListName(),
                 UnitWord = ChosenUnit(),
 
@@ -227,7 +248,7 @@ public sealed partial class HoldOddsPage : StudioPage, IPlaybackHost
             _stage.Title = VideoSettings.TitleText.Length > 0
                 ? VideoSettings.TitleText
                 : Strings.Get("HoldOddsStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 

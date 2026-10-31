@@ -77,11 +77,20 @@ public sealed partial class CryptoDominancePage : StudioPage, IPlaybackHost
         // the other one's.
         AutomationProperties.SetAutomationId(RangeCombo, "CryptoDominanceRange");
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            SavePreferences();
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -118,7 +127,11 @@ public sealed partial class CryptoDominancePage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 title（含默认回退）。
+        TitlePanel.TitleText = title;
 
         if (_series is { } series)
         {
@@ -126,12 +139,14 @@ public sealed partial class CryptoDominancePage : StudioPage, IPlaybackHost
             // so the bars are read against one hundred, not against a currency. The racer count is
             // still coins, so the header's unit word is "coins" exactly as the other boards.
             Preview.Renderer = new SectorRaceRenderer(
-                series, RaceMetric.Amount, VideoSettings.Duration, series.Racers)
+                series, RaceMetric.Amount, VideoSettings.Duration, series.Racers,
+                titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Style = RaceStyleCombo.ChosenStyle,
                 Faces = CompanyLogoCache.Shared,
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
                 ListLabel = AutoTitle(),
 
                 UnitWord = Strings.Get("CryptoUnitCoins"),
@@ -411,6 +426,7 @@ public sealed partial class CryptoDominancePage : StudioPage, IPlaybackHost
             ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RaceStyleCombo.Bind(_prefs);
         RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
 
@@ -432,6 +448,7 @@ public sealed partial class CryptoDominancePage : StudioPage, IPlaybackHost
         _prefs.Save("Coins", string.Join(",", Chosen().Select(asset => asset.Code)));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

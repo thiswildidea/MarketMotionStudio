@@ -38,24 +38,42 @@ public sealed class MatrixRenderer : IFrameRenderer
 
     private readonly TimeSpan _duration;
 
-    public MatrixRenderer(MatrixSpec spec, TimeSpan duration)
+    public MatrixRenderer(
+        MatrixSpec spec, TimeSpan duration,
+        TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _spec = spec;
         _duration = duration;
+
+        _title = new TitleBlock(62, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
     }
 
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the spec's own subtitle.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what every row of the header block
     /// below it, and the grid's top edge, are moved by. Set once at the top of <see cref="Draw"/>.
     /// </summary>
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     private double TotalMs => _duration.TotalMilliseconds;
 
@@ -88,6 +106,10 @@ public sealed class MatrixRenderer : IFrameRenderer
         // which is placed by how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
+
         // This page's own backdrop: the same shape, lifted green at the top.
         context.Backdrop.Fill(session, context, Palette.MatrixBackground);
 
@@ -113,7 +135,7 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         var ml = context.Margins.Left;
         var plotW = context.ChartWidth;
-        var gridTop = context.HeaderRow(GridTopFraction, _titleLines);
+        var gridTop = Row(context, GridTopFraction);
         var gridBottom = context.CreditLine - context.Px(StatsAboveCredit);
 
         var headH = Math.Min(context.Px(42), (gridBottom - gridTop) * 0.10);
@@ -341,14 +363,24 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, appear);
 
+        // The user's own subtitle, on the line after the title's last. The spec's own
+        // subtitle and everything below it stays where it was, shifted down by the
+        // subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, appear, lineOffset: _titleLines);
+        }
+
         using (var sub = Ink.Format(context.Px(25)))
         {
-            Ink.Centred(session, _spec.Subtitle, cx, context.HeaderRow(0.188, _titleLines), sub, Palette.StockMuted, appear);
+            Ink.Centred(session, _spec.Subtitle, cx, Row(context, 0.188), sub, Palette.StockMuted, appear);
         }
 
         using (var span = Ink.Format(context.Px(24)))
         {
-            Ink.Centred(session, _spec.Span, cx, context.HeaderRow(0.218, _titleLines), span, Palette.StockMuted, appear);
+            Ink.Centred(session, _spec.Span, cx, Row(context, 0.218), span, Palette.StockMuted, appear);
         }
 
         if (current is null)
@@ -358,7 +390,7 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         using (var label = Ink.Format(context.Px(36), bold: true))
         {
-            Ink.Centred(session, current.Label, cx, context.HeaderRow(0.262, _titleLines), label, Palette.Moving, appear);
+            Ink.Centred(session, current.Label, cx, Row(context, 0.262), label, Palette.Moving, appear);
         }
 
         var colour = Palette.Return(current.Value, AbsMax);
@@ -370,7 +402,7 @@ public sealed class MatrixRenderer : IFrameRenderer
         using (var big = Ink.Format(sizeBig, bold: true))
         {
             void Figure(CanvasDrawingSession ds) =>
-                Ink.Centred(ds, text, cx, context.HeaderRow(0.330, _titleLines), big, colour, appear);
+                Ink.Centred(ds, text, cx, Row(context, 0.330), big, colour, appear);
 
             // shadowBlur 26 → sigma ~13.
             Ink.Glow(session, context.Px(13), 0.5, Figure);
@@ -379,9 +411,13 @@ public sealed class MatrixRenderer : IFrameRenderer
 
         using (var unit = Ink.Format(context.Px(26)))
         {
-            Ink.Centred(session, "%", cx, context.HeaderRow(0.357, _titleLines), unit, Palette.StockMuted, appear);
+            Ink.Centred(session, "%", cx, Row(context, 0.357), unit, Palette.StockMuted, appear);
         }
     }
+
+    private double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
 
     /// <summary>
     /// The headline this frame draws: what the user typed, or the spec's own title. One place,

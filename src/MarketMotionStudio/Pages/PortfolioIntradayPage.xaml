@@ -260,34 +260,68 @@
                                Minimum="0" SmallChange="1" LargeChange="5"
                                ValueChanged="OnFeeChanged" />
 
-                    <ComboBox x:Name="TitleSkinCombo"
-                              x:Uid="PortfolioPnlTitleSkin"
-                              HorizontalAlignment="Stretch"
-                              SelectionChanged="OnTitleSkinChanged" />
+                    <!-- The headline and the gear beside it.
 
-                    <DropDownButton x:Name="TitleColourButton" HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <Rectangle x:Name="TitleSwatch"
-                                       Width="18" Height="18"
-                                       RadiusX="3" RadiusY="3"
-                                       Stroke="{ThemeResource CardStrokeColorDefaultBrush}"
-                                       StrokeThickness="1" />
-                            <TextBlock x:Uid="PortfolioPnlTitleColour" />
-                        </StackPanel>
-                        <DropDownButton.Flyout>
-                            <Flyout>
-                                <StackPanel Spacing="10">
-                                    <mux:ColorPicker x:Name="TitleColour"
-                                                     IsAlphaEnabled="False"
-                                                     ColorChanged="OnTitleColourChanged" />
-                                    <Button x:Name="TitleColourDefault"
-                                            x:Uid="PortfolioPnlTitleColourDefault"
-                                            HorizontalAlignment="Stretch"
-                                            Click="OnTitleColourDefault" />
-                                </StackPanel>
-                            </Flyout>
-                        </DropDownButton.Flyout>
-                    </DropDownButton>
+                         **The page used to carry a dozen controls here** — a treatment, a
+                         face, a size, a spin, a wrap cap, a colour, and the same seven again
+                         for the subtitle — and the column spent more height on them than on
+                         the book they style. Now it carries a badge that shows what the
+                         headline resolves to, and one gear that opens a dialog per subject:
+                         the main title's, and the subtitle's. The choices themselves live in
+                         the dialog, where a form belongs.
+
+                         The badge is not decoration, either: with the colour and the spin
+                         chosen in a dialog, it is the only thing on this side of the canvas
+                         that says what is in play — the merged result, local choices over
+                         the settings page's defaults, is what it shows. -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Border x:Name="TitleBadge"
+                                Grid.Column="0"
+                                MinHeight="52"
+                                BorderThickness="1"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="8"
+                                Padding="10,6"
+                                VerticalAlignment="Center">
+                            <StackPanel VerticalAlignment="Center" Spacing="2">
+                                <TextBlock x:Name="TitleBadgeText"
+                                           TextAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           FontWeight="SemiBold"
+                                           RenderTransformOrigin="0.5,0.5" />
+                                <TextBlock x:Name="TitleBadgeSub"
+                                           TextAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           FontSize="11"
+                                           Visibility="Collapsed" />
+                            </StackPanel>
+                        </Border>
+                        <DropDownButton x:Name="TitleGear"
+                                        Grid.Column="1"
+                                        Padding="8"
+                                        AutomationProperties.AutomationId="TitleGear"
+                                        VerticalAlignment="Center">
+                            <FontIcon Glyph="&#xE713;" FontSize="16" />
+                            <DropDownButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Uid="PortfolioPnlTitleEdit"
+                                                    AutomationProperties.AutomationId="EditMainTitle"
+                                                    Click="OnEditMainTitle" />
+                                    <MenuFlyoutItem x:Uid="PortfolioPnlSubtitleEdit"
+                                                    AutomationProperties.AutomationId="EditSubtitle"
+                                                    Click="OnEditSubtitle" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </Grid>
+
+                    <!-- 隐藏标题：开关从视频面板挪了上来，跟在它管的东西——徽章和齿轮——
+                         正下方。一个开关离它开关的东西隔着一整屏控件，读者就得到处找；
+                         视频面板里的那份在本页关掉（AllowHideTitle），画的是同一个值。 -->
+                    <ToggleSwitch x:Name="HideTitleToggle"
+                                  x:Uid="StudioHideTitle"
+                                  Toggled="OnHideTitleChanged" />
 
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"

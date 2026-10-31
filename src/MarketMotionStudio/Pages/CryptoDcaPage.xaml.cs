@@ -100,9 +100,19 @@ public sealed partial class CryptoDcaPage : StudioPage, IPlaybackHost
 
         Coins.Changed += OnCoinsChanged;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
+
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -216,17 +226,22 @@ public sealed partial class CryptoDcaPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        TitlePanel.TitleText = title;
 
         if (_board is { } board)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
             Preview.Renderer = new DcaRenderer(
-                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(),
+                TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
                 CurrencyKey = "DcaCurrencyUsd",
             };
         }
@@ -556,6 +571,7 @@ public sealed partial class CryptoDcaPage : StudioPage, IPlaybackHost
         Coins.Select(_prefs.GetString("Coins", "BTC").Split(';', StringSplitOptions.RemoveEmptyEntries));
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -573,6 +589,7 @@ public sealed partial class CryptoDcaPage : StudioPage, IPlaybackHost
         _prefs.Save("Coins", string.Join(";", Chosen().Select(c => c.Code)));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

@@ -28,7 +28,9 @@ namespace MarketMotionStudio.Render;
 /// <see cref="TurnoverRenderer.CreditGap"/> above the credit.
 /// </para>
 /// </summary>
-public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan) : IFrameRenderer
+public sealed class IntradayRenderer(
+    IntradayTurnover series, AnimationPlan plan,
+    TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null) : IFrameRenderer
 {
     /// <summary>Distance from the credit up to the top of the statistic cards.</summary>
     private const double CardsAboveCredit = 192;
@@ -39,11 +41,18 @@ public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the session's own subtitle.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     /// <summary>Whether the title row is drawn at all — see <see cref="TurnoverRenderer.ShowTitle"/>.</summary>
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The wrapped headline, in the daily forms' own size.</summary>
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title = new(62, titleStyle, () => TitleSettings.MainStyle);
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle = new(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what every row below it is moved
@@ -51,12 +60,19 @@ public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan
     /// </summary>
     private int _titleLines;
 
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
+
     /// <summary>A header row, stated as a fraction of frame height and shifted the way every other
     /// indicator's header row is shifted: by the top margin, and by the room the title block
     /// took — up when it is hidden, down when it wraps.
     /// See <see cref="FrameContext.HeaderRow"/>.</summary>
     private double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
 
     /// <summary>
     /// The headline this frame draws: what the user typed, or the default naming the session. One
@@ -71,6 +87,10 @@ public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan
 
         // The line count before the first row is read — the plot's top edge is one of those rows.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -324,6 +344,15 @@ public sealed class IntradayRenderer(IntradayTurnover series, AnimationPlan plan
         var title = ResolvedTitle();
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
+
+        // The user's own subtitle, on the line after the title's last. The session's own
+        // subtitle below it stays where it was, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
 
         using var small = Ink.Format(context.Px(25));
 

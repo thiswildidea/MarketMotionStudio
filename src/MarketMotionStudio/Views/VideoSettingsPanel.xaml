@@ -11,7 +11,13 @@
          while. -->
     <StackPanel Spacing="14">
 
-        <TextBlock x:Uid="StudioTitleSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
+        <!-- The whole headline section, headed 「标题」: the text box, the hide switch
+             and the notes under them. Collapsed as one piece where a page edits the
+             headline in its title dialog instead — a section header standing over
+             nothing describes controls the page does not carry. -->
+        <StackPanel x:Name="TitleSectionGroup" Spacing="14">
+
+            <TextBlock x:Uid="StudioTitleSection" Style="{StaticResource BodyStrongTextBlockStyle}" />
 
         <!-- Free text, refreshing the preview as it is typed. The placeholder is set
              by the page, because what "leave it empty" means differs: the
@@ -21,13 +27,31 @@
              Enter is allowed inside it, and the box is two lines tall: the frame draws a
              title that wraps, and the one place a break cannot be asked for would be the
              control that writes it. Two lines' worth of box rather than one, so that a
-             second line is visible as you type it instead of scrolling out of sight. -->
-        <TextBox x:Name="TitleBox" x:Uid="StudioTitleText"
-                 AcceptsReturn="True"
-                 TextWrapping="Wrap"
-                 MinHeight="64"
-                 MaxHeight="120"
-                 TextChanged="OnTitleChanged" />
+             second line is visible as you type it instead of scrolling out of sight.
+
+             Hidden whole where the page edits the headline in its title dialog instead —
+             the box and the dialog are two editors of one value, and a page that has the
+             dialog has no reason to carry both. -->
+        <StackPanel x:Name="TitleTextGroup" Spacing="14">
+            <TextBox x:Name="TitleBox" x:Uid="StudioTitleText"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     MinHeight="64"
+                     MaxHeight="120"
+                     TextChanged="OnTitleChanged" />
+
+            <!-- 副标题：主标题下面的一行自定义文字，样式走全局副标题默认（设置页），
+                 留空即不画。硬编码的「代码 周期」那行各页自己画，不占这个框。 -->
+            <TextBlock x:Uid="StudioSubtitleText"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            <TextBox x:Name="SubtitleBox"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     MinHeight="40"
+                     MaxHeight="96"
+                     TextChanged="OnSubtitleChanged" />
+        </StackPanel>
 
         <!-- Collapsed as a group, switch and explanation together. Only the per-stock
              chart has a reason to hide its title — the name of the instrument is the
@@ -41,10 +65,12 @@
                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </StackPanel>
 
-        <TextBlock x:Uid="StudioTitleNote"
+        <TextBlock x:Name="TitleNote"
+                   x:Uid="StudioTitleNote"
                    TextWrapping="Wrap"
                    Style="{StaticResource CaptionTextBlockStyle}"
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
 
         <TextBlock x:Uid="StudioVideoSection"
                    Margin="0,6,0,0"

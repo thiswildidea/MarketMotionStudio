@@ -110,7 +110,7 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
     /// </param>
     public SectorRaceRenderer(
         SectorRaceSeries series, RaceMetric metric, TimeSpan duration, int showTop = int.MaxValue,
-        bool rankByMagnitude = false)
+        bool rankByMagnitude = false, TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _series = series;
         _metric = metric;
@@ -118,6 +118,9 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
         Duration = duration;
         TotalMs = duration.TotalMilliseconds;
         _showTop = Math.Clamp(showTop, 1, Math.Max(1, series.Racers));
+
+        _title = new TitleBlock(64, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         var values = series.ReturnsOrAmounts(metric);
 
@@ -289,16 +292,29 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
 
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the date-range line.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(64);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what the header's rows below it
     /// and the plot's top edge are moved by. Set once at the top of <see cref="Draw"/>.
     /// </summary>
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     /// <summary>
     /// Leave out a row whose value is zero at this moment, for a field whose rows have not all
@@ -356,6 +372,10 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
         // Before the rows and the axis: both are placed against the bottom of the header block,
         // which is placed by how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.Background);
 
@@ -739,6 +759,15 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
+        // The user's own subtitle, on the line after the title's last. The date-range line
+        // below it stays where it was, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
+
         using (var plain = Ink.Format(context.Px(26)))
         using (var strong = Ink.Format(context.Px(26), bold: true))
         {
@@ -753,13 +782,13 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
                     (" " + Span + " · " + _series.Racers.ToString(CultureInfo.InvariantCulture) + " " + unit,
                         Palette.StockMuted, plain),
                 ],
-                cx, context.HeaderRow(0.188, _titleLines), a);
+                cx, context.HeaderRow(0.188, _titleLines) + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0), a);
         }
 
         using (var format = Ink.Format(context.Px(40), bold: true))
         {
             Ink.Centred(session, Iso(_series.Dates[state.DayIndex]), cx,
-                context.HeaderRow(0.222, _titleLines), format, Palette.Moving, a);
+                context.HeaderRow(0.222, _titleLines) + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0), format, Palette.Moving, a);
         }
     }
 
@@ -780,7 +809,8 @@ public sealed class SectorRaceRenderer : IFrameRenderer, IFaceWarmup
     /// <summary>The plot's rows: the top anchored to the header block, the bottom to the credit.</summary>
     private (double Top, double Bottom) PlotArea(FrameContext context)
     {
-        var top = context.HeaderRow(HeaderTopFraction, _titleLines);
+        var top = context.HeaderRow(HeaderTopFraction, _titleLines)
+            + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
         var bottom = context.CreditLine - context.Px(CreditGap);
 
         return (top, bottom);

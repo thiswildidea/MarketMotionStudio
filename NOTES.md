@@ -3108,3 +3108,104 @@ fr 1024 字，仍在上限 1500 以内。CHANGELOG 中英同补一句并按原�
   渐变字立现；切回「常规」→ 恢复纯色。样式切换两个方向都即时生效。
 - 注意：页面还存着一个自定义「标题颜色」（当前是品红），常规样式画的就是
   这个纯色——要回各样式默认色，点样式下拉下面的「默认」按钮清掉即可。
+
+## 主标题 + 副标题：两层标题样式（2026-10-31 深夜）
+
+需求：标题栏改「主标题 + 副标题」，各自独立样式（字体/字号/颜色/换行），主标题额外
+支持旋转角；两层配置——设置页全局默认 + 页面本地配置，本地逐字段覆盖、未配置回退；
+本期只落实时持仓收益页，组件要可复用。
+
+- **TitleStyle**（新，Render/TitleStyle.cs）：一条文本的样式，全字段可空
+  （Font/Size/Colour "#RRGGBB"/Skin/Bold/MaxLines/Rotation），JSON 存取（空字段不写），
+  `Merge(local, global)` 逐字段回填——「本地覆盖全局」就是这条 record 的形状，不是某处
+  的 if 链。新加字段天然向后兼容：旧存档里它是 null，直接落到全局。
+- **TitleBlock** 两条路：旧构造（wanted, skin）原样保留，二十几页零回归；新构造
+  （wanted, style, () => TitleSettings.MainStyle）每次绘制现算 `Merge`，所以全局改动
+  不重启就到下一帧。旋转 = 绕块中心转 session.Transform，行数/占位照旧按水平块预留
+  （不为旋转的包围盒向每一条标题收租）；`Draw` 加 lineOffset，副标题就是同一网格上
+  标题没占的那几行，不是第二套几何。缓存键从 skin 换成整份 resolved style。
+- **PortfolioPnlRenderer**：skin/titleColour 两参数换成 titleStyle/subtitleStyle；
+  新 Subtitle/ShowSubtitle 属性；副标题块 `_subtitle`（缺省 40px、琥珀色回退，
+  与日期行同族）；`Row()` 在 HeaderRow 之上加 `_subtitleLines * TitleLineHeight`——
+  日期/成交/时钟/大数字与 PlotTop 全走 Row，一处加移位全页跟着走。标题隐藏时
+  副标题顶到标题行（lineOffset=0），语义自然是「占它该占的行」。
+- **TitleSettings**：全局新增 Font/Size/Rotation/MaxLines 四个平键 + SubtitleStyle
+  JSON 键；MainStyle 把平键拼成一份 style 供 Merge。可空 setter 统一走 `Set()`——
+  null 是删键，容器里存字面 null 和没有键是两种形状，别让 getter 猜。
+- **页面**（PortfolioIntradayPage）：本地配置就是控件本身——每项「跟随全局/留空」
+  读成 null 字段（`TagOf`/`TagText`/`NumberOrNull`：NumberBox 空 Text = 未配置，
+  因为 Value 的 NaN 正是"没填"）；存 JSON（TitleStyle/SubtitleStyle/SubtitleText/
+  ShowSubtitle），旧 TitleSkin/TitleColour 首次运行迁移成局部选择（不是跟随全局——
+  它本来就是读者选过的）。NumberBox RangeValue 可驱动（UIA 旋转测试就靠它），
+  清空要走内层 Edit 的 ValuePattern 写 ""。
+- 实测 verify-title-style.py 6/6：旋转 ±8° 像素变、副标题两行出现（日期行让位）、
+  本地再改仍生效、清空本地后全局字号 90 回退生效、重启后副标题保持、双屏/市值榜
+  旧路径标题无回归。
+- **推广到其它页面**（下一步）：① 该页渲染器给 `_title` 换新构造
+  `new TitleBlock(62, 页面局部style, () => TitleSettings.MainStyle)`；② 页面右栏
+  抄「徽章 + 齿轮」控件组 + 样式字段 + JSON 持久化（见下条）；③ 副标题同理
+  （渲染器加 Subtitle 行移位时抄 PortfolioPnlRenderer 的 `_subtitleLines` 三行）。
+  全局默认已就位，接入即生效——这正是两层结构的目的。
+
+## 页面标题配置收进浮动窗口：徽章 + 齿轮（2026-10-31 深夜二）
+
+用户报：页面上主/副标题十几个控件太复杂，给了张示意图——黑边框的「标题」小盒子
+加一个齿轮图标；点齿轮分别弹浮动窗口设置，旋转角改成拖拽控件。
+
+- **页面右栏**（PortfolioIntradayPage）：十三个样式控件整体换成一行两件——
+  `TitleBadge`（黑边框小盒，画**合并后**的主标题：文本取视频面板标题文本、字体
+  跟随、颜色跟随、旋转用 RotateTransform 真转；副标题开着且非空时加一行小字）+
+  `TitleGear`（DropDownButton，齿轮图标，MenuFlyout 两项：主标题样式…/副标题
+  样式…）。徽章的「 Plain 默认色是画布的白」在浅色页面不可见——无显式颜色时
+  Plain 落回主题墨色、渐变样式落回其主色，页面和窗口内预览同一条规则。
+- **TitleStyleDialog**（新，Views/）：主/副共用一个 ContentDialog，构造参数
+  `subtitle` 分叉——副标题没旋转行、多文本框和显示开关；主标题的标题文本不在这
+  窗口（它在共享的视频面板里）。字段头/按钮文字在代码里设（一个对话框两套
+  x:Uid 会打架），菜单项走 x:Uid（`.Text` 键）。窗口顶部一枚同款预览徽章，画
+  Merge(local, global) 的结果——读者确认的是「将要画出来的样子」。旋转是
+  **Slider（-45..45，拖拽）**：滑杆没法像 NumberBox 那样「留空」，旁边一枚
+  「跟随全局」CheckBox 承担"未配置"——勾上滑杆禁用、Rotation 记 null。
+- **页面代码**：本地样式不再读控件，就是两个字段 `_mainStyle`/`_subStyle`
+  （+ `_subtitleText`/`_showSubtitle`），`LocalTitleStyle()` 直接返回字段；
+  RestorePreferences 只解 JSON（旧平键迁移保留）；SavePreferences 只写 JSON。
+  对话框确定才采纳（`dialog.Chosen`——属性叫 Style 会撞 FrameworkElement.Style
+  的 CS0108），关闭即拒绝，页面保持原样。
+- 文案：port-title-dialog.py 幂等补 7 键 × 14 语言（两个菜单项、两个窗口标题、
+  窗口提示语、确定按钮、徽章占位「标题」）；字段标题沿用 port-title-style 的键。
+  verify-resw-uids 14 语言 1190 键 0 问题。
+- 判据 verify-title-style.py 重写成新链路（齿轮→菜单项→浮动窗口）：滑杆 8°
+  像素变、副标题窗口填两行副标题带变亮、再改 -8° 仍生效、勾「跟随全局」+ 设置页
+  全局字号 90 回退生效、重启副标题保持——6/6。**基线要先清副标题**：上一轮留下
+  的演示副标题会让「从空变亮」量不出来（实测 2238→2343 假失败）。
+- **标题文字也进窗口第一行**（同日追问）：主标题窗口顶部加「标题文字」多行框
+  （StudioTitleText.Header 复用），关闭前才落值；`VideoSettings.SetTitleText()`
+  写回面板（同一套 \r\n 归一），预览徽章实时跟打。新开关 `AllowTitleText` 把
+  视频面板里旧标题框连同 StudioTitleNote 一起藏掉（本页 false）——框和对话框是
+  同一个值的两个编辑器，有对话框的页面不该背两份。副标题窗口的文本框同样挪到
+  第一行（原在显示开关之后）。对话框构造去掉 sample 参数，加 titleText/
+  titlePlaceholder；副标题的文本/开关语义不变。verify 6/6 复跑通过。
+- **「隐藏标题」开关挪到页面**（同日追问三）：开关从视频面板挪到徽章+齿轮正下方
+  （x:Uid 复用 StudioHideTitle）——开关离它管的东西隔一整屏控件，读者得到处找。
+  本页 `AllowHideTitle=false` 关掉面板那份，`showTitle` 改读页面开关；持久化另立
+  键 `PnlHideTitle`（还原时回读旧键 `HideTitle` 迁移一次）——面板的 Save 还在写
+  旧键，同一个键两个写者不行。实测：开→画布品红标题像素 258→0（副标题琥珀色
+  顶到标题行 665，是既定布局行为），关→258 原样恢复。**ToggleSwitch 是 IsOn 不
+  是 IsChecked**（CS1061 三连）。
+- **设置页标题控件整合**（同日追问四）：设置页的标题卡片照实时持仓收益页对话框
+  的形态改——主/副各加一枚 `TitlePreview`（深色底画真实金属效果，样式改动即时
+  反映）；主标题字号/旋转、副标题字号从 NumberBox 改成 Slider + 数值 + 「默认」
+  勾选（勾上＝清空全局值 null，各页用自己的默认；全局这一侧没有「跟随全局」，
+  这里就是全局）。`SettleTitleControls` 里 NumberBox 赋值换成滑杆 + Default 勾选，
+  `NumberOrNull` 删除；各 handler 补 `RefreshTitlePreviews()`。**Slider Minimum 别
+  用正数**（12/120 会崩，同前）——字号滑杆 Minimum=0。判据 verify-title-style.py
+  同步：设置页字号改走 `TitleSizeSlider`+`TitleSizeDefault`；开头补「归零旋转」，
+  否则上一轮残留的本地旋转让「8° 变化」量不出来（0.000 假失败）。7/7。
+- **标题样式加「火焰」**（同日追问五）：标题皮肤从三选一扩成四选一，加
+  `TitleSkin.Fire`（火焰）——游戏字幕那种橙黄渐变 + 深红棕描边 + 暖色光晕。
+  与镀金/金宋的「用户选色派生 ramp」不同，火焰是**固定**橙红→金黄渐变（火焰不
+  随用户配色变），`TitleSkins.RampFor/EdgeFor/FireRamp` 分叉，`TitleBlock.Painted`/
+  `Edge` 多传一个 skin。文案 `PortfolioPnlTitleFire.Content` 由 port-title-fire.py
+  幂等补 14 语言（火焰/Flame/フレイム…）。实测预览 + 画布都是橙红渐变+深描边+光晕，
+  与金色/品红明显区别。resw 1191 键 0 问题，判据 7/7 复跑通过。
+
+

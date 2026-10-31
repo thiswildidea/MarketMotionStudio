@@ -146,6 +146,8 @@
                               IsChecked="False"
                               Click="OnLookChanged" />
 
+                    <views:TitlePanel x:Name="TitlePanel" />
+
                     <Button x:Name="FetchButton"
                             x:Uid="StudioFetch"
                             HorizontalAlignment="Stretch"

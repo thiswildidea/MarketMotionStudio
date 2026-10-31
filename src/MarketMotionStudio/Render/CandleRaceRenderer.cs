@@ -64,16 +64,25 @@ public sealed class CandleRaceRenderer : IFrameRenderer
 
     private readonly bool _crossSafeRight;
 
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title;
+
+    private readonly TitleBlock _subtitle;
 
     /// <summary>How much of the host's button rail this frame keeps clear, set once per frame.</summary>
     private double _giveWay = 1;
 
     private int _titleLines;
 
+    private int _subtitleLines;
+
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the code-and-period line.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     public bool ShowTitle { get; set; } = true;
+
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     /// <param name="crossSafeRight">
     /// Whether the picture may run into the band the host covers with its button rail; the
@@ -84,12 +93,15 @@ public sealed class CandleRaceRenderer : IFrameRenderer
     /// </param>
     public CandleRaceRenderer(
         CandleBoard board, AnimationPlan plan, CandleMotion motion, int window,
-        bool crossSafeRight = false)
+        bool crossSafeRight = false, TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _board = board;
         _plan = plan;
         _motion = motion;
         _crossSafeRight = crossSafeRight;
+
+        _title = new TitleBlock(62, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         // Two is the least that still draws a line.
         _window = Math.Max(2, window);
@@ -101,9 +113,13 @@ public sealed class CandleRaceRenderer : IFrameRenderer
 
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
+
         context.Backdrop.Fill(session, context, Palette.Background);
 
-        var top = context.HeaderRow(PlotTopFraction, _titleLines);
+        var top = context.HeaderRow(PlotTopFraction, _titleLines + _subtitleLines);
         var bottom = context.BaselineAbove(CreditGap);
         var span = bottom - top;
         var mx = context.ChartLeft;
@@ -157,7 +173,8 @@ public sealed class CandleRaceRenderer : IFrameRenderer
         // the right edge, so the two agree wherever they can.
         CandleLine.Header(
             session, context, _title, _board, ResolvedTitle(), ShowTitle, _titleLines, t,
-            moving < 0 ? 0 : moving + eased[moving]);
+            moving < 0 ? 0 : moving + eased[moving],
+            _subtitle, Subtitle, _subtitleLines);
 
         var (lo, hi, step) = Bounds();
 

@@ -85,6 +85,9 @@
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
                     <views:RaceStyleCombo x:Name="RaceStyleCombo" />
+
+                    <views:TitlePanel x:Name="TitlePanel" />
+
                     <views:VideoSettingsPanel x:Name="VideoSettings" />
 
                     <Button x:Name="ExportButton"

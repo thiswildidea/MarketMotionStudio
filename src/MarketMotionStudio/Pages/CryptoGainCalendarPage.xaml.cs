@@ -89,9 +89,18 @@ public sealed partial class CryptoGainCalendarPage : StudioPage, IPlaybackHost
         Microsoft.UI.Xaml.Automation.AutomationProperties.SetAutomationId(CoinCombo, "CryptoCalendarCoin");
         Microsoft.UI.Xaml.Automation.AutomationProperties.SetAutomationId(RangeCombo, "CryptoCalendarRange");
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -125,14 +134,20 @@ public sealed partial class CryptoGainCalendarPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 ResolvedTitle（含默认回退）。
+        TitlePanel.TitleText = title;
 
         if (_fetched is { } fetched)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, fetched.Count, fetched.Peak);
 
-            Preview.Renderer = new CalendarHeatmapRenderer(fetched, plan, Metric.Return)
-                { Title = title, ShowTitle = showTitle };
+            Preview.Renderer = new CalendarHeatmapRenderer(
+                    fetched, plan, Metric.Return,
+                    titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
+                { Title = title, ShowTitle = showTitle, Subtitle = subtitle };
         }
         else
         {
@@ -431,6 +446,7 @@ public sealed partial class CryptoGainCalendarPage : StudioPage, IPlaybackHost
         _asset = CryptoAsset.All[CoinCombo.SelectedIndex];
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -448,6 +464,7 @@ public sealed partial class CryptoGainCalendarPage : StudioPage, IPlaybackHost
         _prefs.Save("Code", _asset.Code);
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

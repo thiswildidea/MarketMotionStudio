@@ -4,7 +4,9 @@ using MarketMotionStudio.Render;
 using MarketMotionStudio.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.Windows.AppLifecycle;
+using System.Globalization;
 using Windows.Storage;
 
 namespace MarketMotionStudio.Pages;
@@ -66,6 +68,14 @@ public sealed partial class SettingsPage : Page
     /// <summary>True while the title colour picker is being set from the store, so its
     /// own change event is not read back as a choice.</summary>
     private bool _paintingTitle;
+
+    /// <summary>Same guard for the subtitle's picker.</summary>
+    private bool _paintingSubtitle;
+
+    /// <summary>The subtitle colour this panel has picked, as <c>#RRGGBB</c>; empty means the
+    /// treatment's own default. The stored style record is the truth — this only carries the
+    /// picker's answer between its change event and the record being rebuilt.</summary>
+    private string _globalSubtitleColour = string.Empty;
 
     /// <summary>
     /// Where to write when something is wrong. The same address the help document
@@ -171,13 +181,61 @@ public sealed partial class SettingsPage : Page
                      (TitleSkin.Plain, "PortfolioPnlTitlePlain.Content"),
                      (TitleSkin.Gilded, "PortfolioPnlTitleGilded.Content"),
                      (TitleSkin.Engraved, "PortfolioPnlTitleEngraved.Content"),
+                     (TitleSkin.Fire, "PortfolioPnlTitleFire.Content"),
+                     (TitleSkin.Aurum, "PortfolioPnlTitleAurum.Content"),
+                     (TitleSkin.Ink, "PortfolioPnlTitleInk.Content"),
+                     (TitleSkin.Neon, "PortfolioPnlTitleNeon.Content"),
                  })
         {
             TitleSkinCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)skin });
         }
 
+        // 全局默认这一侧没有「跟随全局」：这里就是那个全局。字体与换行的第一项
+        // 是「默认」——应用自己拿主意的那份；副标题的样式七选一，缺省常规。
+        TitleFontCombo.Items.Add(new ComboBoxItem { Content = Strings.Get("SettingsFollowDefault.Content"), Tag = "" });
+
+        foreach (var (family, label) in TitleSettings.Fonts[1..])
+        {
+            var name = $"{label}  ({family})";
+
+            TitleFontCombo.Items.Add(new ComboBoxItem { Content = name, Tag = family });
+            SubtitleFontCombo.Items.Add(new ComboBoxItem { Content = name, Tag = family });
+        }
+
+        SubtitleFontCombo.Items.Insert(
+            0, new ComboBoxItem { Content = Strings.Get("SettingsFollowDefault.Content"), Tag = "" });
+
+        foreach (var lines in new[] { 1, 2, 3 })
+        {
+            var item = new ComboBoxItem { Content = lines.ToString(CultureInfo.InvariantCulture), Tag = lines };
+
+            TitleLinesCombo.Items.Add(item);
+            SubtitleLinesCombo.Items.Add(new ComboBoxItem { Content = $"{lines}", Tag = lines });
+        }
+
+        TitleLinesCombo.Items.Insert(
+            0, new ComboBoxItem { Content = Strings.Get("SettingsFollowDefault.Content"), Tag = -1 });
+        SubtitleLinesCombo.Items.Insert(
+            0, new ComboBoxItem { Content = Strings.Get("SettingsFollowDefault.Content"), Tag = -1 });
+
+        foreach (var (skin, key) in new[]
+                 {
+                     (TitleSkin.Plain, "PortfolioPnlTitlePlain.Content"),
+                     (TitleSkin.Gilded, "PortfolioPnlTitleGilded.Content"),
+                     (TitleSkin.Engraved, "PortfolioPnlTitleEngraved.Content"),
+                     (TitleSkin.Fire, "PortfolioPnlTitleFire.Content"),
+                     (TitleSkin.Aurum, "PortfolioPnlTitleAurum.Content"),
+                     (TitleSkin.Ink, "PortfolioPnlTitleInk.Content"),
+                     (TitleSkin.Neon, "PortfolioPnlTitleNeon.Content"),
+                 })
+        {
+            SubtitleSkinCombo.Items.Add(new ComboBoxItem { Content = Strings.Get(key), Tag = (int)skin });
+        }
+
         TitleColour.Color = TitleSettings.Colour ?? TitleSkins.Default(TitleSettings.Skin);
         PaintTitleSwatch();
+        PaintSubtitleSwatch();
+        PaintSubtitlePicker();
         SettleTitleControls();
 
         _loading = false;
@@ -905,7 +963,223 @@ public sealed partial class SettingsPage : Page
         // With no colour set the headline already uses the treatment's own default, so
         // "use the default" would be a no-op; the button is then meaningless.
         TitleColourDefault.IsEnabled = TitleSettings.Colour is not null;
+
+        // The extensible half of the global default: a null answer selects the first item,
+        // which is the "not chosen" one, and an empty number box is the same null.
+        var global = TitleSettings.MainStyle;
+
+        TitleFontCombo.SelectedIndex = Math.Max(0, IndexOfTag(TitleFontCombo, global.Font ?? ""));
+
+        // 字号与旋转现在是滑杆 + 「默认」勾选：勾上＝没有全局值（各页用自己的默认）。
+        TitleSizeDefault.IsChecked = global.Size is null;
+        TitleSizeSlider.Value = global.Size ?? 62;
+        TitleSizeSlider.IsEnabled = TitleSizeDefault.IsChecked is not true;
+
+        TitleRotationDefault.IsChecked = global.Rotation is null;
+        TitleRotationSlider.Value = global.Rotation ?? 0;
+        TitleRotationSlider.IsEnabled = TitleRotationDefault.IsChecked is not true;
+
+        TitleLinesCombo.SelectedIndex = Math.Max(0, IndexOfTag(TitleLinesCombo, global.MaxLines ?? -1));
+
+        var sub = TitleSettings.SubtitleStyle;
+
+        SubtitleSkinCombo.SelectedIndex = Math.Max(0, IndexOfTag(SubtitleSkinCombo, sub.Skin ?? 0));
+        SubtitleFontCombo.SelectedIndex = Math.Max(0, IndexOfTag(SubtitleFontCombo, sub.Font ?? ""));
+        SubtitleSizeDefault.IsChecked = sub.Size is null;
+        SubtitleSizeSlider.Value = sub.Size ?? 40;
+        SubtitleSizeSlider.IsEnabled = SubtitleSizeDefault.IsChecked is not true;
+        SubtitleLinesCombo.SelectedIndex = Math.Max(0, IndexOfTag(SubtitleLinesCombo, sub.MaxLines ?? -1));
+        _globalSubtitleColour = sub.Colour ?? string.Empty;
+
+        SubtitleColourDefault.IsEnabled = _globalSubtitleColour.Length > 0;
+
+        RefreshTitlePreviews();
     }
+
+    /// <summary>把主/副两个预览刷成当前全局样式的合并结果。</summary>
+    private void RefreshTitlePreviews()
+    {
+        MainTitlePreview.Chosen = new TitleStyle
+        {
+            Skin = (int)TitleSettings.Skin,
+            Colour = TitleSettings.Colour is { } c ? $"#{c.R:X2}{c.G:X2}{c.B:X2}" : null,
+            Font = TagText(TitleFontCombo),
+            Size = TitleSizeDefault.IsChecked is true ? null : TitleSizeSlider.Value,
+            MaxLines = TagOf(TitleLinesCombo),
+            Rotation = TitleRotationDefault.IsChecked is true ? null : TitleRotationSlider.Value,
+        };
+
+        MainTitlePreview.Text = Strings.Get("PortfolioPnlTitleBadge");
+        MainTitlePreview.Subtitle = false;
+
+        SubtitlePreview.Chosen = new TitleStyle
+        {
+            Skin = TagOf(SubtitleSkinCombo),
+            Font = TagText(SubtitleFontCombo),
+            Size = SubtitleSizeDefault.IsChecked is true ? null : SubtitleSizeSlider.Value,
+            MaxLines = TagOf(SubtitleLinesCombo),
+            Colour = _globalSubtitleColour.Length == 0 ? null : _globalSubtitleColour,
+        };
+
+        SubtitlePreview.Text = Strings.Get("PortfolioPnlTitleBadge");
+        SubtitlePreview.Subtitle = true;
+    }
+
+    private static int IndexOfTag(ComboBox combo, object? tag) =>
+        combo.Items.OfType<ComboBoxItem>().ToList().FindIndex(item => Equals(item.Tag, tag));
+
+    private static int? TagOf(ComboBox combo) =>
+        combo.SelectedItem is ComboBoxItem { Tag: int tag } && tag >= 0 ? tag : null;
+
+    private static string? TagText(ComboBox combo) =>
+        combo.SelectedItem is ComboBoxItem { Tag: string family } && family.Length > 0 ? family : null;
+
+    /// <summary>The global subtitle default, rebuilt from the panel and stored whole — the
+    /// style record is the storage format, so writing it field by field would mean four keys
+    /// and four chances to disagree.</summary>
+    private void SaveSubtitleStyle()
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        TitleSettings.SubtitleStyle = new TitleStyle
+        {
+            Skin = TagOf(SubtitleSkinCombo),
+            Font = TagText(SubtitleFontCombo),
+            Size = SubtitleSizeDefault.IsChecked is true ? null : SubtitleSizeSlider.Value,
+            MaxLines = TagOf(SubtitleLinesCombo),
+            Colour = _globalSubtitleColour.Length == 0 ? null : _globalSubtitleColour,
+        };
+
+        SubtitleColourDefault.IsEnabled = _globalSubtitleColour.Length > 0;
+        PaintSubtitleSwatch();
+        RefreshTitlePreviews();
+    }
+
+    private void OnTitleFontChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_loading)
+        {
+            TitleSettings.Font = TagText(TitleFontCombo);
+            RefreshTitlePreviews();
+        }
+    }
+
+    private void OnTitleSizeChanged(object sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        TitleSettings.Size = TitleSizeDefault.IsChecked is true ? null : TitleSizeSlider.Value;
+        RefreshTitlePreviews();
+    }
+
+    private void OnTitleSizeDefaultChanged(object sender, RoutedEventArgs e)
+    {
+        TitleSizeSlider.IsEnabled = TitleSizeDefault.IsChecked is not true;
+
+        if (_loading)
+        {
+            return;
+        }
+
+        TitleSettings.Size = TitleSizeDefault.IsChecked is true ? null : TitleSizeSlider.Value;
+        RefreshTitlePreviews();
+    }
+
+    private void OnTitleRotationChanged(object sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        TitleSettings.Rotation = TitleRotationDefault.IsChecked is true ? null : TitleRotationSlider.Value;
+        RefreshTitlePreviews();
+    }
+
+    private void OnTitleRotationDefaultChanged(object sender, RoutedEventArgs e)
+    {
+        TitleRotationSlider.IsEnabled = TitleRotationDefault.IsChecked is not true;
+
+        if (_loading)
+        {
+            return;
+        }
+
+        TitleSettings.Rotation = TitleRotationDefault.IsChecked is true ? null : TitleRotationSlider.Value;
+        RefreshTitlePreviews();
+    }
+
+    private void OnTitleLinesChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // The global main-title style is assembled from the flat keys; the wrap cap rides with
+        // them by being folded into the same store — read here as "the cap, or none".
+        if (!_loading)
+        {
+            TitleSettings.MaxLines = TagOf(TitleLinesCombo);
+            RefreshTitlePreviews();
+        }
+    }
+
+    private void OnSubtitleSkinChanged(object sender, SelectionChangedEventArgs e) => SaveSubtitleStyle();
+
+    private void OnSubtitleFontChanged(object sender, SelectionChangedEventArgs e) => SaveSubtitleStyle();
+
+    private void OnSubtitleSizeChanged(object sender, RangeBaseValueChangedEventArgs e) => SaveSubtitleStyle();
+
+    private void OnSubtitleSizeDefaultChanged(object sender, RoutedEventArgs e)
+    {
+        SubtitleSizeSlider.IsEnabled = SubtitleSizeDefault.IsChecked is not true;
+        SaveSubtitleStyle();
+    }
+
+    private void OnSubtitleLinesChanged(object sender, SelectionChangedEventArgs e) => SaveSubtitleStyle();
+
+    private void OnSubtitleColourChanged(ColorPicker sender, ColorChangedEventArgs args)
+    {
+        if (_paintingSubtitle)
+        {
+            return;
+        }
+
+        var ink = args.NewColor;
+
+        _globalSubtitleColour = string.Format(
+            CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", ink.R, ink.G, ink.B);
+
+        SaveSubtitleStyle();
+    }
+
+    private void OnSubtitleColourDefault(object sender, RoutedEventArgs e)
+    {
+        _globalSubtitleColour = string.Empty;
+
+        PaintSubtitlePicker();
+        SaveSubtitleStyle();
+    }
+
+    /// <summary>The subtitle's swatch shows the stored colour, or the treatment's own default.</summary>
+    private void PaintSubtitleSwatch() =>
+        SubtitleSwatch.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+            StoredSubtitleColour() ?? TitleSkins.Default(StoredSubtitleSkin()));
+
+    /// <summary>Pushes the effective colour into the picker without raising its change event.</summary>
+    private void PaintSubtitlePicker()
+    {
+        _paintingSubtitle = true;
+        SubtitleColour.Color = StoredSubtitleColour() ?? TitleSkins.Default(StoredSubtitleSkin());
+        _paintingSubtitle = false;
+    }
+
+    private Windows.UI.Color? StoredSubtitleColour() => TitleSettings.SubtitleStyle.ParsedColour();
+
+    private static TitleSkin StoredSubtitleSkin() =>
+        TitleSettings.SubtitleStyle.Skin is { } skin ? (TitleSkin)skin : TitleSkin.Plain;
 
     private void OnTitleSkinChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -918,6 +1192,7 @@ public sealed partial class SettingsPage : Page
 
         PaintTitlePicker();
         PaintTitleSwatch();
+        RefreshTitlePreviews();
     }
 
     private void OnTitleColourChanged(ColorPicker sender, ColorChangedEventArgs args)
@@ -931,6 +1206,7 @@ public sealed partial class SettingsPage : Page
         TitleSettings.Colour = args.NewColor;
 
         PaintTitleSwatch();
+        RefreshTitlePreviews();
     }
 
     private void OnTitleColourDefault(object sender, RoutedEventArgs e)
@@ -939,6 +1215,7 @@ public sealed partial class SettingsPage : Page
 
         PaintTitlePicker();
         PaintTitleSwatch();
+        RefreshTitlePreviews();
     }
 
     /// <summary>The swatch shows the chosen colour, or the treatment's own default.</summary>

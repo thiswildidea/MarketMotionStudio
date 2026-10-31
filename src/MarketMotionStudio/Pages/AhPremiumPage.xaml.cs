@@ -87,12 +87,21 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
         // card showed a literal "{0}" where the board's size should have been.
         ListText.Text = Strings.Format("AhPremiumCount", AhPairs.Board);
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+        };
+
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            SavePreferences();
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -108,6 +117,7 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RaceStyleCombo.Bind(_prefs);
         RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
         RestorePreferences();
@@ -131,6 +141,11 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle();
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+        TitlePanel.TitleText = title;
+
         if (_series is { } series)
         {
             // The race renderer on its **return** metric: a premium is a percentage, and that is
@@ -141,12 +156,14 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
             // `showTop`: the field is sixty-odd pairs and the frame draws fifteen of them, the
             // fifteen that were dearest at each moment.
             Preview.Renderer = new SectorRaceRenderer(
-                series, RaceMetric.Return, VideoSettings.Duration, AhPairs.Board)
+                series, RaceMetric.Return, VideoSettings.Duration, AhPairs.Board,
+                titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Style = RaceStyleCombo.ChosenStyle,
                 Faces = CompanyLogoCache.Shared,
-                Title = VideoSettings.TitleText.Length > 0 ? VideoSettings.TitleText : AutoTitle(),
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
                 ListLabel = Strings.Get("AhPremiumListLabel"),
                 UnitWord = Strings.Get("AhPremiumUnitPairs"),
 
@@ -158,10 +175,8 @@ public sealed partial class AhPremiumPage : StudioPage, IPlaybackHost
         }
         else
         {
-            _stage.Title = VideoSettings.TitleText.Length > 0
-                ? VideoSettings.TitleText
-                : Strings.Get("AhPremiumStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.Title = title;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 

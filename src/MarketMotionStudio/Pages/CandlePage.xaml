@@ -255,6 +255,9 @@
                               IsChecked="True"
                               Click="OnLookChanged" />
 
+                    <!-- 标题区：徽章 + 齿轮 + 隐藏开关，与实时持仓收益页同一套。 -->
+                    <views:TitlePanel x:Name="TitlePanel" />
+
                     <!-- Whether the picture may run into the band the phone's own interface
                          covers — the same switch, naming the same band, as the three boards
                          that draw a label at a line's leading end.

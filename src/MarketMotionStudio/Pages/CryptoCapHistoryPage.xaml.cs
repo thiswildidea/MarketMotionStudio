@@ -117,9 +117,19 @@ public sealed partial class CryptoCapHistoryPage : StudioPage, IPlaybackHost
 
         Microsoft.UI.Xaml.Automation.AutomationProperties.SetAutomationId(RangeCombo, "CryptoCapRange");
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
+
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -196,17 +206,23 @@ public sealed partial class CryptoCapHistoryPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
         var axis = ChosenAxis();
+
+        TitlePanel.TitleText = title;
 
         if (_board is { } board)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Count, board.CapPeak);
 
-            Preview.Renderer = new CapHistoryRenderer(board, plan, axis, CrossSafeRight(), DynamicAxisOn())
+            Preview.Renderer = new CapHistoryRenderer(
+                board, plan, axis, CrossSafeRight(), DynamicAxisOn(),
+                TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
 
                 // Named only while one coin is on the frame; several codes in this line
                 // would push the dates and the count off it, and every coin is already
@@ -602,6 +618,7 @@ public sealed partial class CryptoCapHistoryPage : StudioPage, IPlaybackHost
         DynamicAxisCheck.IsChecked = _prefs.GetInt("DynamicAxis", 0) == 1;
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -622,6 +639,7 @@ public sealed partial class CryptoCapHistoryPage : StudioPage, IPlaybackHost
         _prefs.Save("DynamicAxis", DynamicAxisOn() ? 1 : 0);
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void SelectAxis(int axis)

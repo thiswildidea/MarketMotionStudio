@@ -185,13 +185,22 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     private readonly double[][] _prices;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(64);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what every header row
     /// and the panels' top edge are moved by. Set once at the top of <see cref="Draw"/>.
     /// </summary>
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     /// <param name="crossSafeRight">
     /// Whether the picture may run into the band the host covers with its button rail. This
@@ -202,7 +211,8 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     /// </param>
     public CapHistoryRenderer(
         CapBoard board, AnimationPlan plan, CapAxis axis = CapAxis.Absolute,
-        bool crossSafeRight = false, bool dynamicAxis = false)
+        bool crossSafeRight = false, bool dynamicAxis = false,
+        TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _board = board;
         _plan = plan;
@@ -210,6 +220,9 @@ public sealed class CapHistoryRenderer : IFrameRenderer
         _normalized = axis is CapAxis.Normalized;
         _giveWay = crossSafeRight ? 0 : 1;
         _dynamicAxis = dynamicAxis;
+
+        _title = new TitleBlock(64, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         // Each axis of its own: one step for both would leave one reading's gridlines
         // disagreeing with its own data, which reads as that reading being wrong — and
@@ -377,6 +390,10 @@ public sealed class CapHistoryRenderer : IFrameRenderer
 
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the code-and-range line.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The venue-prefixed code shown in the header line.</summary>
@@ -398,6 +415,10 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     /// <summary>The word for what the header counts — 个交易日, 个月 — from the page.</summary>
     public string SpanWord { get; set; } = string.Empty;
 
+    private double Row(FrameContext context, double fraction) =>
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
+
     /// <summary>The headline this frame draws: what the user typed, or the instrument's name.</summary>
     private string ResolvedTitle() =>
         Title.Length > 0 ? Title : _board.Tracks[0].Name;
@@ -409,6 +430,10 @@ public sealed class CapHistoryRenderer : IFrameRenderer
         // Before the panels: their top edge is placed against the bottom of the header
         // block, which is placed by how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
+
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
 
         context.Backdrop.Fill(session, context, Palette.StockBackground);
 
@@ -452,7 +477,7 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     /// margin decides where the lower one ends and the two share what is left equally.</summary>
     private (double Top, double Bottom) PanelArea(FrameContext context, bool isPrice)
     {
-        var top = context.HeaderRow(PanelTopFraction, _titleLines);
+        var top = Row(context, PanelTopFraction);
         var bottom = context.CreditLine - context.Px(CreditGap);
         var span = (bottom - top - context.Height * PanelMidFraction) / 2;
 
@@ -475,7 +500,7 @@ public sealed class CapHistoryRenderer : IFrameRenderer
     /// </summary>
     private int DrawComparison(CanvasDrawingSession session, FrameContext context, double t, double column)
     {
-        var top = context.HeaderRow(PanelTopFraction, _titleLines);
+        var top = Row(context, PanelTopFraction);
         var bottom = context.CreditLine - context.Px(CreditGap);
         var span = bottom - top;
         var introA = Easing.Ramp(t, 500, 1500);
@@ -1109,6 +1134,15 @@ public sealed class CapHistoryRenderer : IFrameRenderer
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
+        // The user's own subtitle, on the line after the title's last. The code-and-range
+        // line below it stays where it was, shifted down by the subtitle's own rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
+
         using (var plain = Ink.Format(context.Px(26)))
         using (var strong = Ink.Format(context.Px(26), bold: true))
         {
@@ -1128,14 +1162,14 @@ public sealed class CapHistoryRenderer : IFrameRenderer
             runs.Add((_board.Count.ToString(iso), Palette.Emphasis, strong));
             runs.Add((" " + SpanWord, Palette.StockMuted, plain));
 
-            Ink.Runs(session, runs, cx, context.HeaderRow(0.188, _titleLines), a);
+            Ink.Runs(session, runs, cx, Row(context, 0.188), a);
         }
 
         if (moving >= 0 && moving < _labels.Length)
         {
             using var format = Ink.Format(context.Px(40), bold: true);
 
-            Ink.Centred(session, _labels[moving], cx, context.HeaderRow(0.222, _titleLines),
+            Ink.Centred(session, _labels[moving], cx, Row(context, 0.222),
                 format, Palette.Moving, a);
         }
     }

@@ -167,17 +167,30 @@ public sealed class PositionRenderer : IFrameRenderer
     /// <summary>The title, already resolved: the user's text, or the default.</summary>
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>The user's own line under the title, drawn before the holding's own subtitle.
+    /// Empty draws nothing. Its style falls back to the global subtitle default.</summary>
+    public string Subtitle { get; set; } = string.Empty;
+
     /// <summary>Whether the title row is drawn at all; hiding it hands its row back.</summary>
     public bool ShowTitle { get; set; } = true;
 
     /// <summary>The wrapped headline.</summary>
-    private readonly TitleBlock _title = new(62);
+    private readonly TitleBlock _title;
+
+    /// <summary>The user's own subtitle, smaller than the headline and on the same line grid.</summary>
+    private readonly TitleBlock _subtitle;
 
     /// <summary>
     /// How many lines the title took on the frame being drawn — what the plot's top edge and
     /// every header row below it are moved by. Set once at the top of <see cref="Draw"/>.
     /// </summary>
     private int _titleLines;
+
+    /// <summary>How many lines the user's subtitle took, so the rows below it shift down.</summary>
+    private int _subtitleLines;
+
+    /// <summary>Whether the user's subtitle row exists on this frame at all.</summary>
+    private bool SubtitleShown => ShowTitle && Subtitle.Length > 0;
 
     /// <summary>
     /// Resource key for the venue's currency, set by the page from its market profile —
@@ -196,7 +209,8 @@ public sealed class PositionRenderer : IFrameRenderer
     /// </param>
     public PositionRenderer(
         PositionBoard board, AnimationPlan plan, PositionMotion motion, int window,
-        bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false)
+        bool crossSafeRight = false, bool mascot = false, bool dynamicAxis = false,
+        TitleStyle? titleStyle = null, TitleStyle? subtitleStyle = null)
     {
         _board = board;
         _plan = plan;
@@ -204,6 +218,9 @@ public sealed class PositionRenderer : IFrameRenderer
         _crossSafeRight = crossSafeRight;
         _mascot = mascot;
         _dynamicAxis = dynamicAxis;
+
+        _title = new TitleBlock(62, titleStyle, () => TitleSettings.MainStyle);
+        _subtitle = new TitleBlock(40, subtitleStyle, () => TitleSettings.SubtitleStyle);
 
         // Two is the least that still draws a line. A window longer than the range is not
         // wrong — it simply leaves nothing to scroll, and the frame grows instead of rolling.
@@ -234,6 +251,10 @@ public sealed class PositionRenderer : IFrameRenderer
         // placed by how many lines the title took.
         _titleLines = _title.For(session, ResolvedTitle(), context, ShowTitle).Lines;
 
+        _subtitleLines = SubtitleShown
+            ? _subtitle.For(session, Subtitle, context, true).Lines
+            : 0;
+
         context.Backdrop.Fill(session, context, Palette.Background);
 
         var plot = DrawPlot(session, context, t);
@@ -252,7 +273,7 @@ public sealed class PositionRenderer : IFrameRenderer
     private Plot DrawPlot(CanvasDrawingSession session, FrameContext context, double t)
     {
         var n = _board.Dates.Count;
-        var top = context.HeaderRow(PlotTopFraction, _titleLines);
+        var top = Row(context, PlotTopFraction);
         var bottom = context.BaselineAbove(CreditGap);
         var span = bottom - top;
         var mx = context.ChartLeft;
@@ -935,6 +956,15 @@ public sealed class PositionRenderer : IFrameRenderer
 
         _title.Draw(session, context, title, _title.For(session, title, context, ShowTitle), Palette.Title, a);
 
+        // The user's own subtitle, on the line after the title's last. The holding's own
+        // subtitle line below it stays where it was, shifted down by the subtitle's rows.
+        if (SubtitleShown)
+        {
+            _subtitle.Draw(
+                session, context, Subtitle, _subtitle.For(session, Subtitle, context, true),
+                Palette.Moving, a, lineOffset: _titleLines);
+        }
+
         using var small = Ink.Format(context.Px(25));
 
         // What the holdings are: when they were bought, for how much, of what, in whose
@@ -1173,7 +1203,8 @@ public sealed class PositionRenderer : IFrameRenderer
     }
 
     private double Row(FrameContext context, double fraction) =>
-        context.HeaderRow(fraction, _titleLines);
+        context.HeaderRow(fraction, _titleLines)
+        + (SubtitleShown ? context.Px(_subtitleLines * FrameContext.TitleLineHeight) : 0);
 
     /// <summary>
     /// The headline this frame draws: what the user typed, or the default naming the holdings. One

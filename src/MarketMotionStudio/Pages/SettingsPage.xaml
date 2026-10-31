@@ -463,12 +463,24 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderThickness="1"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
-                <StackPanel Spacing="10">
-                    <TextBlock x:Uid="SettingsTitleLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <!-- 整块标题设置可伸缩：点标题收起/展开，省得占一整屏。 -->
+                <mux:Expander x:Name="TitleExpander"
+                              AutomationProperties.AutomationId="TitleExpander"
+                              IsExpanded="True" HorizontalContentAlignment="Stretch">
+                    <mux:Expander.Header>
+                        <TextBlock x:Uid="SettingsTitleLabel" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    </mux:Expander.Header>
+                    <StackPanel Spacing="10">
                     <TextBlock x:Uid="SettingsTitleNote"
                                TextWrapping="Wrap"
                                Style="{StaticResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- 实时预览：和实时持仓收益页对话框同一款 TitlePreview，深色底画真实
+                         主标题效果（渐变+描边+光晕），改了样式/字号/旋转即时反映。 -->
+                    <views:TitlePreview x:Name="MainTitlePreview"
+                                        Height="72"
+                                        Margin="0,0,0,4" />
 
                     <!-- The treatment every page falls back to. The portfolio page keeps its own
                          per-page controls, so this is the default the other pages take. Filled in
@@ -502,7 +514,160 @@
                             x:Uid="PortfolioPnlTitleColourDefault"
                             HorizontalAlignment="Left"
                             Click="OnTitleColourDefault" />
-                </StackPanel>
+
+                    <!-- 全局默认的可扩展项：页面本地没配置的字体、字号、旋转、换行
+                         逐项落到这里。字号与旋转留空即“没有全局值”。 -->
+                    <TextBlock x:Uid="SettingsTitleFont"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <ComboBox x:Name="TitleFontCombo"
+                              MinWidth="240"
+                              SelectionChanged="OnTitleFontChanged" />
+
+                    <TextBlock x:Uid="SettingsTitleSize"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Slider x:Name="TitleSizeSlider"
+                                Grid.Column="0"
+                                Minimum="0" Maximum="200" StepFrequency="1"
+                                VerticalAlignment="Center"
+                                ValueChanged="OnTitleSizeChanged" />
+                        <TextBlock x:Name="TitleSizeValue"
+                                   Grid.Column="1"
+                                   MinWidth="36"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <CheckBox x:Name="TitleSizeDefault"
+                                  Grid.Column="2"
+                                  x:Uid="SettingsFollowDefault"
+                                  MinWidth="0"
+                                  VerticalAlignment="Center"
+                                  Checked="OnTitleSizeDefaultChanged"
+                                  Unchecked="OnTitleSizeDefaultChanged" />
+                    </Grid>
+
+                    <TextBlock x:Uid="SettingsTitleRotation"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Slider x:Name="TitleRotationSlider"
+                                Grid.Column="0"
+                                Minimum="-45" Maximum="45" StepFrequency="1"
+                                VerticalAlignment="Center"
+                                ValueChanged="OnTitleRotationChanged" />
+                        <TextBlock x:Name="TitleRotationValue"
+                                   Grid.Column="1"
+                                   MinWidth="36"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <CheckBox x:Name="TitleRotationDefault"
+                                  Grid.Column="2"
+                                  x:Uid="SettingsFollowDefault"
+                                  MinWidth="0"
+                                  VerticalAlignment="Center"
+                                  Checked="OnTitleRotationDefaultChanged"
+                                  Unchecked="OnTitleRotationDefaultChanged" />
+                    </Grid>
+
+                    <TextBlock x:Uid="SettingsTitleLines"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <ComboBox x:Name="TitleLinesCombo"
+                              MinWidth="240"
+                              SelectionChanged="OnTitleLinesChanged" />
+
+                    <!-- 副标题的全局默认：页面各自的副标题文本归页面，样式未配置的项落到这里。 -->
+                    <TextBlock x:Uid="SettingsSubtitleHeader"
+                               Margin="0,12,0,0"
+                               Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingsSubtitleNote"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                    <!-- 副标题预览：同一款 TitlePreview，Subtitle 模式，样式改动即时反映。 -->
+                    <views:TitlePreview x:Name="SubtitlePreview"
+                                        Height="56"
+                                        Subtitle="True"
+                                        Margin="0,0,0,4" />
+
+                    <TextBlock x:Uid="SettingsSubtitleSkin"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <ComboBox x:Name="SubtitleSkinCombo"
+                              MinWidth="240"
+                              SelectionChanged="OnSubtitleSkinChanged" />
+
+                    <TextBlock x:Uid="SettingsSubtitleFont"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <ComboBox x:Name="SubtitleFontCombo"
+                              MinWidth="240"
+                              SelectionChanged="OnSubtitleFontChanged" />
+
+                    <TextBlock x:Uid="SettingsSubtitleSize"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Slider x:Name="SubtitleSizeSlider"
+                                Grid.Column="0"
+                                Minimum="0" Maximum="120" StepFrequency="1"
+                                VerticalAlignment="Center"
+                                ValueChanged="OnSubtitleSizeChanged" />
+                        <TextBlock x:Name="SubtitleSizeValue"
+                                   Grid.Column="1"
+                                   MinWidth="36"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <CheckBox x:Name="SubtitleSizeDefault"
+                                  Grid.Column="2"
+                                  x:Uid="SettingsFollowDefault"
+                                  MinWidth="0"
+                                  VerticalAlignment="Center"
+                                  Checked="OnSubtitleSizeDefaultChanged"
+                                  Unchecked="OnSubtitleSizeDefaultChanged" />
+                    </Grid>
+
+                    <TextBlock x:Uid="SettingsSubtitleLines"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <ComboBox x:Name="SubtitleLinesCombo"
+                              MinWidth="240"
+                              SelectionChanged="OnSubtitleLinesChanged" />
+
+                    <TextBlock x:Uid="PortfolioPnlTitleColour"
+                               Margin="0,8,0,0"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <DropDownButton x:Name="SubtitleColourButton" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Rectangle x:Name="SubtitleSwatch"
+                                       Width="18" Height="18"
+                                       RadiusX="3" RadiusY="3"
+                                       Stroke="{ThemeResource CardStrokeColorDefaultBrush}"
+                                       StrokeThickness="1" />
+                            <TextBlock x:Uid="PortfolioPnlSubtitleColour" />
+                        </StackPanel>
+                        <DropDownButton.Flyout>
+                            <Flyout>
+                                <mux:ColorPicker x:Name="SubtitleColour"
+                                                 IsAlphaEnabled="False"
+                                                 ColorChanged="OnSubtitleColourChanged" />
+                            </Flyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+                    <Button x:Name="SubtitleColourDefault"
+                            x:Uid="PortfolioPnlTitleColourDefault"
+                            HorizontalAlignment="Left"
+                            Click="OnSubtitleColourDefault" />
+                    </StackPanel>
+                </mux:Expander>
             </Border>
 
             <Border Padding="16" CornerRadius="4"

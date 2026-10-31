@@ -105,9 +105,19 @@ public sealed partial class CryptoPositionPage : StudioPage, IPlaybackHost
         // is no longer switched on is a frame about a list nobody chose.
         Coins.Changed += OnCoinsChanged;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
+
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -219,17 +229,22 @@ public sealed partial class CryptoPositionPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        TitlePanel.TitleText = title;
 
         if (_board is { } board)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
             Preview.Renderer = new PositionRenderer(
-                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight())
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(),
+                titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
 
                 // The coins are quoted in dollars on both sources, whatever language the
                 // interface is in — see `CryptoQuotes`.
@@ -573,6 +588,7 @@ public sealed partial class CryptoPositionPage : StudioPage, IPlaybackHost
         Coins.Select(_prefs.GetString("Coins", "BTC").Split(';', StringSplitOptions.RemoveEmptyEntries));
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
     }
@@ -589,6 +605,7 @@ public sealed partial class CryptoPositionPage : StudioPage, IPlaybackHost
         _prefs.Save("Coins", string.Join(";", Chosen().Select(c => c.Code)));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

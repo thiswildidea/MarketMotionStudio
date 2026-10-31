@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One dialog, two subjects. The page right column no longer carries a dozen controls;
+     it carries a badge and a gear, and this dialog is what the gear opens — once for the
+     main title, once for the subtitle. Which subject is a constructor flag: the subtitle
+     loses the rotation row (a subtitle is not spun) and gains the text and the show
+     switch, because what a subtitle *says* belongs to the page that draws it. -->
+<ContentDialog
+    x:Class="MarketMotionStudio.Views.TitleStyleDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:views="using:MarketMotionStudio.Views"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryClick">
+
+    <StackPanel Width="420" Spacing="12">
+
+        <TextBlock x:Uid="PortfolioPnlStyleHint"
+                   TextWrapping="Wrap"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+        <!-- The headline's own text, first: what it says before what it looks like. The
+             main title's text used to live in the video panel below; the dialog is its
+             editor now, and the panel keeps showing the same value. Hidden under the
+             subtitle, which has always owned its text here. -->
+        <TextBox x:Name="TitleTextBox"
+                 Height="96"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 TextChanged="OnValueChanged" />
+
+        <!-- The badge, again — what the page shows beside the gear, drawn here with the
+             choices as they are being made, so the reader confirms in the dialog rather
+             than after it. A TitlePreview, not a TextBlock: it draws through the frame's
+             own renderer on the frame's own backdrop, so a metal treatment shows its ramp
+             and edge instead of a flat colour that reads as wrong against the canvas. -->
+        <Border BorderThickness="1"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                CornerRadius="8"
+                HorizontalAlignment="Stretch">
+            <views:TitlePreview x:Name="Preview"
+                                Height="80" />
+        </Border>
+
+        <ComboBox x:Name="SkinCombo"
+                  HorizontalAlignment="Stretch"
+                  SelectionChanged="OnComboChanged" />
+
+        <ComboBox x:Name="FontCombo"
+                  HorizontalAlignment="Stretch"
+                  SelectionChanged="OnComboChanged" />
+
+        <!-- The size is a slider too, on the same terms as the rotation: a drag is the
+             whole gesture a font size asks for, and the checkbox beside it is the way back
+             to the global answer — a slider cannot be empty the way a number box can, so
+             "not configured" needs a control of its own. -->
+        <StackPanel Spacing="4">
+            <TextBlock x:Name="SizeLabel"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <Slider x:Name="SizeSlider"
+                        Grid.Column="0"
+                        Minimum="0" Maximum="200" StepFrequency="1"
+                        VerticalAlignment="Center"
+                        ValueChanged="OnSizeChanged" />
+                <TextBlock x:Name="SizeValue"
+                           Grid.Column="1"
+                           MinWidth="40"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <CheckBox x:Name="SizeFollow"
+                          Grid.Column="2"
+                          Checked="OnSizeFollowChanged"
+                          Unchecked="OnSizeFollowChanged"
+                          MinWidth="0"
+                          VerticalAlignment="Center" />
+            </Grid>
+        </StackPanel>
+
+        <!-- The rotation is a slider, not a number box: a drag along one axis is the whole
+             gesture a spin asks for, and a degree is finer than anybody needs to type. The
+             checkbox beside it is the way back to the global answer — a slider cannot be
+             empty the way a number box can, so "not configured" needs a control of its own. -->
+        <StackPanel x:Name="RotationGroup" Spacing="4">
+            <TextBlock x:Name="RotationLabel"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <Slider x:Name="RotationSlider"
+                        Grid.Column="0"
+                        Minimum="-45" Maximum="45" StepFrequency="1"
+                        VerticalAlignment="Center"
+                        ValueChanged="OnValueChanged" />
+                <TextBlock x:Name="RotationValue"
+                           Grid.Column="1"
+                           MinWidth="40"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <CheckBox x:Name="RotationFollow"
+                          Grid.Column="2"
+                          Checked="OnRotationFollowChanged"
+                          Unchecked="OnRotationFollowChanged"
+                          MinWidth="0"
+                          VerticalAlignment="Center" />
+            </Grid>
+        </StackPanel>
+
+        <ComboBox x:Name="LinesCombo"
+                  HorizontalAlignment="Stretch"
+                  SelectionChanged="OnComboChanged" />
+
+        <DropDownButton x:Name="ColourButton" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Rectangle x:Name="Swatch"
+                           Width="18" Height="18"
+                           RadiusX="3" RadiusY="3"
+                           Stroke="{ThemeResource CardStrokeColorDefaultBrush}"
+                           StrokeThickness="1" />
+                <TextBlock x:Name="ColourLabel" />
+            </StackPanel>
+            <DropDownButton.Flyout>
+                <Flyout>
+                    <StackPanel Spacing="10">
+                        <mux:ColorPicker x:Name="ColourPicker"
+                                         IsAlphaEnabled="False"
+                                         ColorChanged="OnColourChanged" />
+                        <Button x:Name="ColourDefault"
+                                HorizontalAlignment="Stretch"
+                                Click="OnColourDefault" />
+                    </StackPanel>
+                </Flyout>
+            </DropDownButton.Flyout>
+        </DropDownButton>
+
+        <!-- The subtitle's own half: what it says — first, like the main title's — and
+             whether it is drawn at all. -->
+        <StackPanel x:Name="SubtitleGroup" Spacing="12">
+            <TextBox x:Name="SubTextBox"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Height="96"
+                     TextChanged="OnValueChanged" />
+            <CheckBox x:Name="ShowCheck" Checked="OnValueChanged" Unchecked="OnValueChanged" />
+        </StackPanel>
+    </StackPanel>
+</ContentDialog>

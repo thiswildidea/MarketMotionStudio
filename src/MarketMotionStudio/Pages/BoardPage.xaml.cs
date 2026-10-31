@@ -160,9 +160,18 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
 
         _feeTimer.Tick += OnFeeSettled;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        VideoSettings.AllowTitleText = false;
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -334,7 +343,11 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = VideoSettings.TitleText;
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 resolved（含默认回退）。
+        TitlePanel.TitleText = title.Length > 0 ? title : Strings.Get("BoardTitle");
 
         if (_session is { Samples.Count: > 1 } session)
         {
@@ -351,10 +364,13 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
                 dynamicAxis: DynamicAxisCheck.IsChecked is true,
                 lunchBreak: LunchCheck.IsChecked is true,
                 indexOnTop: IndexTopCheck.IsChecked is true,
-                maskNames: MaskCheck.IsChecked is true)
+                maskNames: MaskCheck.IsChecked is true,
+                titleStyle: TitlePanel.MainStyle,
+                subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
             };
 
             Preview.Renderer = renderer;
@@ -1210,6 +1226,7 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         FeeKongMinimum.Value = _shared.GetDouble("FeeKongFloor", HongKongFees.Connect.Minimum);
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         _prefs.Restoring = false;
         _shared.Restoring = false;
@@ -1244,5 +1261,6 @@ public sealed partial class BoardPage : StudioPage, IPlaybackHost
         _shared.Save("FeeKongFloor", Read(FeeKongMinimum, HongKongFees.Connect.Minimum));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 }

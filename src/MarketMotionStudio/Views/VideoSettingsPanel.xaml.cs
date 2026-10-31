@@ -85,8 +85,42 @@ public sealed partial class VideoSettingsPanel : UserControl
     public bool AllowHideTitle
     {
         get => HideTitleGroup.Visibility == Visibility.Visible;
-        set => HideTitleGroup.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        set
+        {
+            HideTitleGroup.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+            RefreshTitleSection();
+        }
     }
+
+    /// <summary>
+    /// Offers the headline's own text box. Off where the page edits the headline in its
+    /// title dialog: the box and the dialog would be two editors of one value, and the
+    /// page that has the dialog has no reason to carry both. The note goes with it — a
+    /// paragraph about a control that is not there is worse than no control.
+    /// </summary>
+    public bool AllowTitleText
+    {
+        get => TitleTextGroup.Visibility == Visibility.Visible;
+        set
+        {
+            TitleTextGroup.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+            TitleNote.Visibility = TitleTextGroup.Visibility;
+            RefreshTitleSection();
+        }
+    }
+
+    /// <summary>
+    /// The 「标题」 header stands over the text box and the hide switch together. When a
+    /// page carries neither — the portfolio page edits the headline in its dialog and
+    /// keeps its own hide switch under the badge — the header goes with them: a section
+    /// heading over nothing invites a click that finds nothing.
+    /// </summary>
+    private void RefreshTitleSection() =>
+        TitleSectionGroup.Visibility =
+            TitleTextGroup.Visibility == Visibility.Visible
+            || HideTitleGroup.Visibility == Visibility.Visible
+                ? Visibility.Visible
+                : Visibility.Collapsed;
 
     /// <summary>
     /// What to show in the title box when it is empty — the default the page would
@@ -97,6 +131,13 @@ public sealed partial class VideoSettingsPanel : UserControl
     {
         get => TitleBox.PlaceholderText;
         set => TitleBox.PlaceholderText = value;
+    }
+
+    /// <summary>What to show in the subtitle box when it is empty — a hint, not a value.</summary>
+    public string SubtitlePlaceholder
+    {
+        get => SubtitleBox.PlaceholderText;
+        set => SubtitleBox.PlaceholderText = value;
     }
 
     /// <summary>
@@ -111,6 +152,28 @@ public sealed partial class VideoSettingsPanel : UserControl
     /// keystroke rather than a deliberate empty line.
     /// </summary>
     public string TitleText => TitleBox.Text.Trim().Replace("\r\n", "\n").Replace('\r', '\n');
+
+    /// <summary>
+    /// The typed subtitle, or empty to mean "no subtitle". The same canonicalisation as
+    /// <see cref="TitleText"/> — a text box hands back <c>\r</c> for typed breaks and <c>\r\n</c>
+    /// for pasted ones, and the persisted copy wants <c>\n</c>.
+    /// </summary>
+    public string SubtitleText => SubtitleBox.Text.Trim().Replace("\r\n", "\n").Replace('\r', '\n');
+
+    /// <summary>
+    /// Writes the headline from the title dialog.
+    ///
+    /// The dialog is now the headline's editor and this panel keeps its copy in step rather
+    /// than the other way round: the text box below stays showing what was chosen, and the
+    /// change it raises redraws the preview and persists through the page's usual path. The
+    /// same canonicalisation as <see cref="TitleText"/> applies — the box's own events will
+    /// hand back <c>\r</c> for typed breaks, and the panel's reading of the text is the one
+    /// place that normalisation lives.
+    /// </summary>
+    public void SetTitleText(string text) => TitleBox.Text = text.Trim().Replace("\r\n", "\n").Replace('\r', '\n');
+
+    /// <summary>Writes the subtitle from the dialog, on the same canonicalisation terms.</summary>
+    public void SetSubtitleText(string text) => SubtitleBox.Text = text.Trim().Replace("\r\n", "\n").Replace('\r', '\n');
 
     /// <summary>
     /// Whether the title is drawn. Always true unless the page offered the switch
@@ -162,6 +225,7 @@ public sealed partial class VideoSettingsPanel : UserControl
         MarginBottomSlider.Value = prefs.GetDouble("MarginBottom", margins.Bottom);
 
         TitleBox.Text = prefs.GetString("Title", string.Empty);
+        SubtitleBox.Text = prefs.GetString("Subtitle", string.Empty);
         GuidesToggle.IsOn = prefs.GetBool("Guides", false);
         HideTitleToggle.IsOn = prefs.GetBool("HideTitle", false);
 
@@ -182,6 +246,7 @@ public sealed partial class VideoSettingsPanel : UserControl
         prefs.Save("MarginRight", MarginRightSlider.Value);
         prefs.Save("MarginBottom", MarginBottomSlider.Value);
         prefs.Save("Title", TitleBox.Text);
+        prefs.Save("Subtitle", SubtitleBox.Text);
         prefs.Save("Guides", GuidesToggle.IsOn);
         prefs.Save("HideTitle", HideTitleToggle.IsOn);
     }
@@ -218,6 +283,8 @@ public sealed partial class VideoSettingsPanel : UserControl
     /// the feedback that tells you whether it is still the length you wanted.
     /// </summary>
     private void OnTitleChanged(object sender, TextChangedEventArgs e) => Announce();
+
+    private void OnSubtitleChanged(object sender, TextChangedEventArgs e) => Announce();
 
     private void OnHideTitleToggled(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) => Announce();
 

@@ -136,12 +136,22 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
         RosterCombo.SelectedIndex = 0;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            SavePreferences();
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -161,6 +171,7 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RestorePreferences();
         _prefs.Restoring = false;
 
@@ -182,20 +193,27 @@ public sealed partial class MonthlyMatrixPage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0
+            ? VideoSettings.TitleText
+            : _spec?.Title ?? Strings.Get("MatrixStageTitle");
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        TitlePanel.TitleText = title;
+
         if (_spec is { } spec)
         {
-            Preview.Renderer = new MatrixRenderer(spec, VideoSettings.Duration)
+            Preview.Renderer = new MatrixRenderer(spec, VideoSettings.Duration, TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
-                Title = VideoSettings.TitleText,
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
             };
         }
         else
         {
-            _stage.Title = VideoSettings.TitleText.Length > 0
-                ? VideoSettings.TitleText
-                : Strings.Get("MatrixStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.Title = title;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 

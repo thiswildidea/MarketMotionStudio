@@ -139,9 +139,19 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         // frame about a list nobody chose.
         Watch.Changed += OnWatchChanged;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
+
         VideoSettings.Changed += (_, _) =>
         {
+            ApplyPreviewSettings();
+            SavePreferences();
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
             ApplyPreviewSettings();
             SavePreferences();
         };
@@ -304,17 +314,22 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
         var title = ResolvedTitle();
-        var showTitle = VideoSettings.ShowTitle;
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        TitlePanel.TitleText = title;
 
         if (_board is { } board)
         {
             var plan = AnimationPlan.For(VideoSettings.Duration, board.Dates.Count, board.Peak);
 
             Preview.Renderer = new PositionRenderer(
-                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(), MascotOn(), DynamicAxisOn())
+                board, plan, ChosenMotion(), ChosenWindow(), CrossSafeRight(), MascotOn(), DynamicAxisOn(),
+                TitlePanel.MainStyle, TitlePanel.SubtitleStyle)
             {
                 Title = title,
                 ShowTitle = showTitle,
+                Subtitle = subtitle,
                 CurrencyKey = _market.CurrencyKey,
             };
         }
@@ -760,6 +775,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         }
 
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
 
         // The holdings are the shared list, which the picker loads on its own — there is
         // nothing instrument-shaped left to remember here. What is remembered is the list
@@ -780,6 +796,7 @@ public sealed partial class PositionPage : StudioPage, IPlaybackHost
         _prefs.Save("To", ToDate.Date.ToString("yyyy-MM-dd"));
 
         VideoSettings.Save(_prefs);
+        TitlePanel.Save(_prefs);
     }
 
     private void OnCancel(object sender, RoutedEventArgs e) => CancelRunning();

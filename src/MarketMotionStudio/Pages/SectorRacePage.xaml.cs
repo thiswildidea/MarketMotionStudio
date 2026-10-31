@@ -180,12 +180,22 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         SectorGrid.ItemsSource = _picker;
         PickedStocks.ItemsSource = _stocks;
 
-        VideoSettings.AllowHideTitle = true;
+        VideoSettings.AllowHideTitle = false;
+        VideoSettings.AllowTitleText = false;
 
         VideoSettings.Changed += (_, _) =>
         {
             ApplyPreviewSettings();
             VideoSettings.Save(_prefs);
+        };
+
+        // 标题区的样式与文字归 TitlePanel：面板的标题框和隐藏开关都不再是编辑入口。
+        TitlePanel.Changed += (_, _) =>
+        {
+            VideoSettings.SetTitleText(TitlePanel.TitleText);
+            ApplyPreviewSettings();
+            SavePreferences();
+            TitlePanel.Save(_prefs);
         };
 
         _stage.Subtitle = Strings.Get("StudioStageNoData");
@@ -208,6 +218,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
 
         _prefs.Restoring = true;
         VideoSettings.Restore(_prefs);
+        TitlePanel.Restore(_prefs);
         RaceStyleCombo.Bind(_prefs);
         RaceStyleCombo.Chosen += (_, _) => ApplyPreviewSettings();
         RestorePreferences();
@@ -249,15 +260,28 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
         Preview.Margins = VideoSettings.Margins;
         Preview.ShowGuides = VideoSettings.ShowGuides;
 
+        var title = VideoSettings.TitleText.Length > 0
+            ? VideoSettings.TitleText
+            : Strings.Format(
+                ChosenMetric is RaceMetric.Return ? "SectorAutoTitleReturn" : "SectorAutoTitleAmount",
+                ChosenListLabel());
+        var showTitle = !TitlePanel.HideTitle;
+        var subtitle = TitlePanel.SubtitleText;
+
+        // 徽章画合并后的主标题：标题文字走 title（含默认回退）。
+        TitlePanel.TitleText = title;
+
         if (_series is { } series)
         {
             Preview.Renderer = new SectorRaceRenderer(
-                series, ChosenMetric, VideoSettings.Duration)
+                series, ChosenMetric, VideoSettings.Duration,
+                titleStyle: TitlePanel.MainStyle, subtitleStyle: TitlePanel.SubtitleStyle)
             {
                 Style = RaceStyleCombo.ChosenStyle,
                 Faces = CompanyLogoCache.Shared,
-                Title = VideoSettings.TitleText,
-                ShowTitle = VideoSettings.ShowTitle,
+                Title = title,
+                ShowTitle = showTitle,
+                Subtitle = subtitle,
                 ListLabel = ChosenListLabel(),
                 UnitWord = Strings.Get(ChosenRoster is Roster.Stocks
                     ? "SectorUnitStocks"
@@ -269,7 +293,7 @@ public sealed partial class SectorRacePage : StudioPage, IPlaybackHost
             _stage.Title = VideoSettings.TitleText.Length > 0
                 ? VideoSettings.TitleText
                 : Strings.Get("SectorRaceStageTitle");
-            _stage.ShowTitle = VideoSettings.ShowTitle;
+            _stage.ShowTitle = showTitle;
             Preview.Renderer = _stage;
         }
 
